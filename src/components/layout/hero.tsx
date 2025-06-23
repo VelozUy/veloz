@@ -23,7 +23,9 @@ export default function Hero({
 }: HeroProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-  const [showLogo, setShowLogo] = useState(false);
+  const [logoAnimationPhase, setLogoAnimationPhase] = useState<
+    'hidden' | 'small' | 'large'
+  >('hidden');
 
   // Rotate background images every 5 seconds (only when images are provided)
   useEffect(() => {
@@ -46,16 +48,25 @@ export default function Hero({
     }
   }, [backgroundVideo, isVideoLoading]);
 
-  // Show logo with fade-in effect when it's loaded
+  // Coordinated logo and title animation
   useEffect(() => {
     if (logoUrl && !isLogoLoading) {
-      // Delay the logo appearance for a smooth fade-in effect
-      const timer = setTimeout(() => {
-        setShowLogo(true);
-      }, 500);
-      return () => clearTimeout(timer);
+      // Step 1: Show logo small after 300ms
+      const timer1 = setTimeout(() => {
+        setLogoAnimationPhase('small');
+      }, 300);
+
+      // Step 2: Grow logo and shrink title after another 500ms
+      const timer2 = setTimeout(() => {
+        setLogoAnimationPhase('large');
+      }, 800);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     } else {
-      setShowLogo(false);
+      setLogoAnimationPhase('hidden');
     }
   }, [logoUrl, isLogoLoading]);
 
@@ -91,28 +102,32 @@ export default function Hero({
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
         {/* Logo and Brand Section */}
         <div className="mb-12">
-          {/* Logo - fades in when loaded */}
-          {logoUrl && !isLogoLoading && (
+          {/* Logo - starts small, grows to full size */}
+          {logoUrl && !isLogoLoading && logoAnimationPhase !== 'hidden' && (
             <div>
               <Image
                 src={logoUrl}
                 alt="Veloz Logo"
                 width={800}
                 height={600}
-                className={`mx-auto mb-6 object-contain w-2/3 h-auto transition-opacity duration-1000 ${
-                  showLogo ? 'opacity-100' : 'opacity-0'
+                className={`mx-auto object-contain transition-all duration-1000 ease-out ${
+                  logoAnimationPhase === 'small'
+                    ? 'w-1/4 h-auto mb-3 opacity-100' // Small logo
+                    : 'w-2/3 h-auto mb-6 opacity-100' // Large logo
                 }`}
                 priority
               />
             </div>
           )}
 
-          {/* Brand Title - always visible, animates down and smaller when logo appears */}
+          {/* Brand Title - smoothly transitions size as logo appears and grows */}
           <h1
             className={`font-bold transition-all duration-1000 ease-out ${
-              logoUrl && !isLogoLoading
-                ? 'text-4xl md:text-5xl mb-4' // Smaller and with margin when logo is present
-                : 'text-6xl md:text-8xl mb-4' // Large when logo is loading or failed
+              logoAnimationPhase === 'hidden'
+                ? 'text-6xl md:text-8xl mb-4' // Large when no logo
+                : logoAnimationPhase === 'small'
+                  ? 'text-5xl md:text-7xl mb-4' // Medium when logo is small
+                  : 'text-4xl md:text-5xl mb-4' // Small when logo is large
             }`}
           >
             <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
