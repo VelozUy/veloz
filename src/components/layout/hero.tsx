@@ -66,7 +66,7 @@ export default function Hero({
               alt="Veloz Logo"
               width={800}
               height={600}
-              className="mx-auto mb-4 object-contain w-1/3 h-auto"
+              className="mx-auto mb-4 object-contain w-2/3 h-auto"
               priority
             />
           ) : (
