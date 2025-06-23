@@ -35,7 +35,7 @@ export interface Video {
 }
 
 // Event Types
-export type EventType = 
+export type EventType =
   | 'wedding'
   | 'birthday'
   | 'live-show'
@@ -56,11 +56,14 @@ export interface FAQ {
 
 // Homepage Content
 export interface HomepageContent {
+  id: string;
   headline: LocalizedContent;
   subtitle?: LocalizedContent;
   ctaText: LocalizedContent;
   backgroundImages: string[];
   backgroundVideos?: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Contact Form Types
@@ -101,7 +104,7 @@ export interface BaseComponentProps {
 }
 
 // API Response Types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -113,4 +116,4 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   page: number;
   limit: number;
   hasMore: boolean;
-} 
+}
