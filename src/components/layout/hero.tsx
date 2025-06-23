@@ -64,9 +64,9 @@ export default function Hero({
             <Image
               src={logoUrl}
               alt="Veloz Logo"
-              width={192}
-              height={128}
-              className="mx-auto mb-4 object-contain"
+              width={800}
+              height={600}
+              className="mx-auto mb-4 object-contain w-1/3 h-auto"
               priority
             />
           ) : (
