@@ -100,12 +100,25 @@ export default function Hero({
 
       {/* Main content */}
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
-        {/* Logo and Brand Section - Fixed Layout to Prevent Jumping */}
-        <div className="mb-12">
-          {/* Reserved Logo Space - Always present to prevent layout shift */}
-          <div className="relative w-full flex justify-center">
-            {/* Logo Container - Fixed dimensions */}
-            <div className="relative w-2/3 max-w-2xl h-48 md:h-64 mb-6 flex items-center justify-center">
+        {/* Logo and Brand Section - Dynamic centering based on animation phase */}
+        <div
+          className={`transition-all duration-1000 ease-out ${
+            logoAnimationPhase === 'hidden'
+              ? 'mb-16' // More space when title is centered
+              : 'mb-12' // Normal space when logo is present
+          }`}
+        >
+          {/* Logo Container - Animates from top to center */}
+          <div
+            className={`relative w-full flex justify-center transition-all duration-1000 ease-out ${
+              logoAnimationPhase === 'hidden'
+                ? 'h-0 overflow-hidden opacity-0 -translate-y-8' // Hidden above, no space
+                : logoAnimationPhase === 'small'
+                  ? 'h-32 md:h-40 opacity-100 translate-y-0' // Small, visible
+                  : 'h-48 md:h-64 opacity-100 translate-y-0' // Large, centered
+            }`}
+          >
+            <div className="relative w-2/3 max-w-2xl h-full flex items-center justify-center">
               {logoUrl && !isLogoLoading && logoAnimationPhase !== 'hidden' && (
                 <Image
                   src={logoUrl}
@@ -114,7 +127,7 @@ export default function Hero({
                   height={600}
                   className={`object-contain transition-all duration-1000 ease-out ${
                     logoAnimationPhase === 'small'
-                      ? 'w-1/3 h-auto opacity-100' // Small logo within fixed container
+                      ? 'w-1/3 h-auto opacity-100' // Small logo within container
                       : 'w-full h-auto opacity-100' // Large logo fills container
                   }`}
                   priority
@@ -123,15 +136,21 @@ export default function Hero({
             </div>
           </div>
 
-          {/* Brand Title - Fixed position, only size changes */}
-          <div className="relative">
+          {/* Brand Title - Starts centered, moves down and shrinks */}
+          <div
+            className={`relative transition-all duration-1000 ease-out ${
+              logoAnimationPhase === 'hidden'
+                ? 'transform translate-y-0' // Centered when no logo
+                : 'transform translate-y-4' // Slightly down when logo present
+            }`}
+          >
             <h1
               className={`font-bold transition-all duration-1000 ease-out ${
                 logoAnimationPhase === 'hidden'
-                  ? 'text-6xl md:text-8xl' // Large when no logo
+                  ? 'text-6xl md:text-8xl' // Large when centered
                   : logoAnimationPhase === 'small'
                     ? 'text-5xl md:text-7xl' // Medium when logo is small
-                    : 'text-4xl md:text-5xl' // Small when logo is large
+                    : 'text-4xl md:text-5xl' // Small when logo is large and centered
               }`}
             >
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
