@@ -22,7 +22,7 @@ export default function Hero({
   isLogoLoading = false,
 }: HeroProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [videoCanPlay, setVideoCanPlay] = useState(false);
   const [logoAnimationPhase, setLogoAnimationPhase] = useState<
     'hidden' | 'small' | 'large'
   >('hidden');
@@ -37,16 +37,10 @@ export default function Hero({
     }
   }, [backgroundImages.length]);
 
-  // Show video with smooth transition when it's loaded
+  // Reset video state when URL changes
   useEffect(() => {
-    if (backgroundVideo && !isVideoLoading) {
-      // Small delay to ensure video is actually ready to play
-      const timer = setTimeout(() => {
-        setShowVideo(true);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [backgroundVideo, isVideoLoading]);
+    setVideoCanPlay(false);
+  }, [backgroundVideo]);
 
   // Faster coordinated logo and title animation
   useEffect(() => {
@@ -70,19 +64,41 @@ export default function Hero({
     }
   }, [logoUrl, isLogoLoading]);
 
+  // Video event handlers
+  const handleVideoCanPlay = () => {
+    setVideoCanPlay(true);
+  };
+
+  const handleVideoLoadedData = () => {
+    setVideoCanPlay(true);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video or Images */}
-      {backgroundVideo && showVideo ? (
-        <video
-          autoPlay
-          muted
-          loop
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-          style={{ opacity: showVideo ? 1 : 0 }}
-        >
-          <source src={backgroundVideo} type="video/mp4" />
-        </video>
+      {backgroundVideo && !isVideoLoading ? (
+        <>
+          {/* Video element - always rendered but hidden until ready */}
+          <video
+            autoPlay
+            muted
+            loop
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              videoCanPlay ? 'opacity-100' : 'opacity-0'
+            }`}
+            onCanPlay={handleVideoCanPlay}
+            onLoadedData={handleVideoLoadedData}
+          >
+            <source src={backgroundVideo} type="video/mp4" />
+          </video>
+
+          {/* Fallback background - shown until video is ready */}
+          <div
+            className={`absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black transition-opacity duration-1000 ${
+              videoCanPlay ? 'opacity-0' : 'opacity-100'
+            }`}
+          />
+        </>
       ) : backgroundImages.length > 0 ? (
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000"
