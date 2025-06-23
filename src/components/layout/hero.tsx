@@ -100,40 +100,45 @@ export default function Hero({
 
       {/* Main content */}
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
-        {/* Logo and Brand Section */}
+        {/* Logo and Brand Section - Fixed Layout to Prevent Jumping */}
         <div className="mb-12">
-          {/* Logo - starts small, grows to full size */}
-          {logoUrl && !isLogoLoading && logoAnimationPhase !== 'hidden' && (
-            <div>
-              <Image
-                src={logoUrl}
-                alt="Veloz Logo"
-                width={800}
-                height={600}
-                className={`mx-auto object-contain transition-all duration-1000 ease-out ${
-                  logoAnimationPhase === 'small'
-                    ? 'w-1/4 h-auto mb-3 opacity-100' // Small logo
-                    : 'w-2/3 h-auto mb-6 opacity-100' // Large logo
-                }`}
-                priority
-              />
+          {/* Reserved Logo Space - Always present to prevent layout shift */}
+          <div className="relative w-full flex justify-center">
+            {/* Logo Container - Fixed dimensions */}
+            <div className="relative w-2/3 max-w-2xl h-48 md:h-64 mb-6 flex items-center justify-center">
+              {logoUrl && !isLogoLoading && logoAnimationPhase !== 'hidden' && (
+                <Image
+                  src={logoUrl}
+                  alt="Veloz Logo"
+                  width={800}
+                  height={600}
+                  className={`object-contain transition-all duration-1000 ease-out ${
+                    logoAnimationPhase === 'small'
+                      ? 'w-1/3 h-auto opacity-100' // Small logo within fixed container
+                      : 'w-full h-auto opacity-100' // Large logo fills container
+                  }`}
+                  priority
+                />
+              )}
             </div>
-          )}
+          </div>
 
-          {/* Brand Title - smoothly transitions size as logo appears and grows */}
-          <h1
-            className={`font-bold transition-all duration-1000 ease-out ${
-              logoAnimationPhase === 'hidden'
-                ? 'text-6xl md:text-8xl mb-4' // Large when no logo
-                : logoAnimationPhase === 'small'
-                  ? 'text-5xl md:text-7xl mb-4' // Medium when logo is small
-                  : 'text-4xl md:text-5xl mb-4' // Small when logo is large
-            }`}
-          >
-            <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-              Veloz
-            </span>
-          </h1>
+          {/* Brand Title - Fixed position, only size changes */}
+          <div className="relative">
+            <h1
+              className={`font-bold transition-all duration-1000 ease-out ${
+                logoAnimationPhase === 'hidden'
+                  ? 'text-6xl md:text-8xl' // Large when no logo
+                  : logoAnimationPhase === 'small'
+                    ? 'text-5xl md:text-7xl' // Medium when logo is small
+                    : 'text-4xl md:text-5xl' // Small when logo is large
+              }`}
+            >
+              <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                Veloz
+              </span>
+            </h1>
+          </div>
         </div>
 
         {/* Headline - Always visible immediately */}
