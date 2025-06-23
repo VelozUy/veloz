@@ -75,36 +75,34 @@ export default function Hero({
 
       {/* Main content */}
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
-        {/* Logo */}
+        {/* Logo and Brand Section */}
         <div className="mb-12">
-          {logoUrl && !isLogoLoading ? (
-            <Image
-              src={logoUrl}
-              alt="Veloz Logo"
-              width={800}
-              height={600}
-              className="mx-auto mb-4 object-contain w-2/3 h-auto transition-opacity duration-500"
-              priority
-            />
-          ) : (
-            <div className="transition-all duration-500">
-              {isLogoLoading ? (
-                // Show brand text immediately while logo loads
-                <h1 className="text-6xl md:text-8xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                    Veloz
-                  </span>
-                </h1>
-              ) : (
-                // Logo failed to load, keep showing brand text
-                <h1 className="text-6xl md:text-8xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                    Veloz
-                  </span>
-                </h1>
-              )}
+          {/* Logo - fades in when loaded */}
+          {logoUrl && !isLogoLoading && (
+            <div className="animate-fade-in">
+              <Image
+                src={logoUrl}
+                alt="Veloz Logo"
+                width={800}
+                height={600}
+                className="mx-auto mb-6 object-contain w-2/3 h-auto transition-opacity duration-1000 opacity-0 animate-[fadeIn_1s_ease-in-out_0.5s_forwards]"
+                priority
+              />
             </div>
           )}
+
+          {/* Brand Title - always visible, animates down and smaller when logo appears */}
+          <h1
+            className={`font-bold transition-all duration-1000 ease-out ${
+              logoUrl && !isLogoLoading
+                ? 'text-4xl md:text-5xl mb-4' // Smaller and with margin when logo is present
+                : 'text-6xl md:text-8xl mb-4' // Large when logo is loading or failed
+            }`}
+          >
+            <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+              Veloz
+            </span>
+          </h1>
         </div>
 
         {/* Headline - Always visible immediately */}
