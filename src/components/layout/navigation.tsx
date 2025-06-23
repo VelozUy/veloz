@@ -43,14 +43,63 @@ export default function Navigation() {
     { name: 'Work With Us', href: '/contact', icon: Phone },
   ];
 
+  // Prevent hydration mismatch by ensuring consistent initial render
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-2 group">
+              <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Veloz
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navItems.map(item => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors duration-200 group"
+                  >
+                    <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* CTA Button (Desktop) */}
+            <div className="hidden md:block">
+              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                Get Started
+              </Button>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        mounted && isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}
-      suppressHydrationWarning
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">

@@ -9,4 +9,5 @@
 // export { default as useFileUpload } from './useFileUpload';
 // export { default as useDebounce } from './useDebounce';
 
-export {}; 
+// Firebase hooks
+export { useFirebaseVideo } from './useFirebaseVideo';

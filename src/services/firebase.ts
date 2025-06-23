@@ -13,7 +13,8 @@ import {
   Timestamp,
   DocumentData,
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '@/lib/firebase';
 import { FIREBASE_COLLECTIONS } from '@/constants';
 import type {
   FAQ,
@@ -33,10 +34,20 @@ class BaseFirebaseService {
   }
 
   protected getCollection() {
+    if (!db) {
+      throw new Error(
+        'Firebase Firestore not initialized. Please check your Firebase configuration.'
+      );
+    }
     return collection(db, this.collectionName);
   }
 
   protected getDocRef(id: string) {
+    if (!db) {
+      throw new Error(
+        'Firebase Firestore not initialized. Please check your Firebase configuration.'
+      );
+    }
     return doc(db, this.collectionName, id);
   }
 
@@ -289,9 +300,47 @@ export class ContactService extends BaseFirebaseService {
   }
 }
 
+// Firebase Storage Service
+export class StorageService {
+  async getFileUrl(filePath: string): Promise<ApiResponse<string>> {
+    try {
+      // Check if storage is initialized
+      if (!storage) {
+        console.error('Firebase Storage not initialized');
+        return {
+          success: false,
+          error:
+            'Firebase Storage not initialized. Please check your Firebase configuration.',
+        };
+      }
+
+      const fileRef = ref(storage, filePath);
+      const downloadURL = await getDownloadURL(fileRef);
+      return { success: true, data: downloadURL };
+    } catch (error) {
+      console.error('Error getting file URL from Storage:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getVideoUrl(fileName: string): Promise<ApiResponse<string>> {
+    // Videos are typically stored in a 'videos' folder
+    return this.getFileUrl(`videos/${fileName}`);
+  }
+
+  async getImageUrl(fileName: string): Promise<ApiResponse<string>> {
+    // Images are typically stored in an 'images' folder
+    return this.getFileUrl(`images/${fileName}`);
+  }
+}
+
 // Service instances
 export const homepageService = new HomepageService();
 export const faqService = new FAQService();
 export const photoService = new PhotoService();
 export const videoService = new VideoService();
 export const contactService = new ContactService();
+export const storageService = new StorageService();
