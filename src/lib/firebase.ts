@@ -39,3 +39,4 @@ try {
 }
 
 export default app;
+export { db, auth, storage };
