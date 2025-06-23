@@ -1,36 +1,190 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Veloz - Professional Event Photography & Videography
 
-## Getting Started
+A modern Next.js website for Veloz, a professional event photography and videography service that captures the unrepeatable through a unique team-based production model.
 
-First, run the development server:
+## ✨ Features
+
+- **Modern Next.js 15** with App Router and TypeScript
+- **Responsive Design** with Tailwind CSS and modern OKLCH color system
+- **Component Library** using shadcn/ui with Radix UI primitives
+- **Firebase Integration** for content management and file storage
+- **Professional Landing Page** with video/image backgrounds and smooth animations
+- **Comprehensive About/FAQ Page** with accordion-style questions
+- **SEO Optimized** with proper meta tags and structured data
+- **Accessibility First** with WCAG compliance and keyboard navigation
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Firebase project (for backend services)
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd veloz
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   ```bash
+   # Copy the environment template
+   cp .env.example .env.local
+
+   # Edit .env.local with your Firebase configuration
+   # See ENVIRONMENT.md for detailed instructions
+   ```
+
+4. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📦 Build & Deploy
+
+### Local Build
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Build the application
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Netlify Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is optimized for Netlify deployment with automatic builds from Git.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Setup Steps:
 
-## Learn More
+1. **Connect Repository**
+   - Create a Netlify account
+   - Connect your Git repository
+   - Netlify will auto-detect Next.js settings
 
-To learn more about Next.js, take a look at the following resources:
+2. **Configure Environment Variables**
+   In your Netlify dashboard, add these environment variables:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Deploy**
+   - Push to your main branch
+   - Netlify will automatically build and deploy
+   - Your site will be available at `https://your-site-name.netlify.app`
 
-## Deploy on Vercel
+#### Build Configuration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project includes a `netlify.toml` file with optimized settings:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js plugin for proper routing
+- Security headers
+- Static asset caching
+- Performance optimizations
+
+## 🛠️ Development
+
+### Project Structure
+
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── about/          # About/FAQ page
+│   ├── contact/        # Contact form page
+│   ├── gallery/        # Photo/video gallery
+│   └── admin/          # Admin panel (CMS)
+├── components/         # Reusable UI components
+│   ├── ui/            # shadcn/ui components
+│   ├── layout/        # Layout components (Hero, Navigation)
+│   ├── forms/         # Form components
+│   └── gallery/       # Gallery components
+├── lib/               # Utility libraries
+├── hooks/             # Custom React hooks
+├── services/          # API and Firebase services
+├── types/             # TypeScript type definitions
+└── constants/         # App constants
+```
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start           # Start production server
+npm run lint        # Run ESLint
+npm run type-check  # Run TypeScript checks
+```
+
+### Code Quality
+
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **TypeScript** for type safety
+- **Husky** for git hooks
+- **lint-staged** for pre-commit checks
+
+## 🎨 Styling
+
+- **Tailwind CSS 4** for utility-first styling
+- **OKLCH Color System** for modern, accessible colors
+- **shadcn/ui** for consistent component design
+- **Framer Motion** for smooth animations
+- **Responsive Design** with mobile-first approach
+
+## 🔥 Firebase Setup
+
+The project uses Firebase for:
+
+- **Firestore** - Content management database
+- **Storage** - Image and video file storage
+- **Authentication** - Admin panel access
+
+See `ENVIRONMENT.md` for detailed Firebase configuration instructions.
+
+## 📋 Project Status
+
+This project follows a structured task-based development approach. See `TASK.md` for:
+
+- ✅ Completed features
+- 🚧 Current work in progress
+- 📋 Upcoming tasks
+- 🎯 Project roadmap
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is proprietary software for Veloz. All rights reserved.
+
+## 📞 Support
+
+For questions or support, please contact the development team or create an issue in the repository.

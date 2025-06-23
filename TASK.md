@@ -65,8 +65,8 @@ _Last updated: December 2024_
 
 - [x] **[High] Create landing page component** - ✅ COMPLETED - Beautiful Hero component built
 - [x] **[High] Create hero section layout** - ✅ COMPLETED - Full-screen hero container with gradients
-- [ ] **[High] Add background image/video container** - Setup media background area
-- [ ] **[Medium] Implement background carousel logic** - Add image rotation functionality
+- [x] **[High] Add background image/video container** - ✅ COMPLETED - Video and image background support implemented _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Implement background carousel logic** - ✅ COMPLETED - Image rotation functionality implemented _(Completed: Dec 20, 2024)_
 - [ ] **[Medium] Add carousel navigation controls** - Add prev/next buttons
 - [ ] **[Medium] Add carousel auto-play** - Automatic image rotation
 - [x] **[High] Add brand logo component** - ✅ COMPLETED - Veloz logo with gradient
@@ -82,8 +82,8 @@ _Last updated: December 2024_
 
 ### About Us / FAQ Page
 
-- [ ] **[High] Create FAQ page component** - Build main FAQ page structure
-- [ ] **[High] Create accordion item component** - Individual expandable FAQ item
+- [x] **[High] Create FAQ page component** - ✅ COMPLETED - Comprehensive About/FAQ page with philosophy, methodology, core values, and accordion-style FAQ section _(Completed: Dec 20, 2024)_
+- [ ] **[High] Create accordion item component** - 🚧 IN PROGRESS - Individual expandable FAQ item (using shadcn/ui Accordion)
 - [ ] **[High] Add accordion expand/collapse logic** - Handle open/close functionality
 - [ ] **[Medium] Add accordion keyboard navigation** - Support arrow keys, Enter, Space
 - [ ] **[Medium] Add accordion screen reader support** - ARIA labels and descriptions
@@ -297,16 +297,16 @@ _Last updated: December 2024_
 
 ### Netlify Setup
 
-- [ ] **[Critical] Create Netlify account** - Setup hosting platform
-- [ ] **[Critical] Connect GitHub repository** - Setup automatic deployments
-- [ ] **[Critical] Configure build settings** - Setup Next.js build process
-- [ ] **[Critical] Add environment variables** - Configure Firebase credentials
+- [x] **[Critical] Create Netlify account** - Setup hosting platform _(Completed: Dec 20, 2024)_
+- [x] **[Critical] Connect GitHub repository** - Setup automatic deployments _(Completed: Dec 20, 2024)_
+- [x] **[Critical] Configure build settings** - Setup Next.js build process _(Completed: Dec 20, 2024)_
+- [x] **[Critical] Add environment variables** - Configure Firebase credentials _(Completed: Dec 20, 2024)_
 - [ ] **[High] Setup custom domain** - Configure veloz.com.uy domain
 - [ ] **[High] Configure DNS settings** - Point domain to Netlify
 - [ ] **[High] Configure SSL certificate** - Enable HTTPS
-- [ ] **[Medium] Setup redirects/rewrites** - Handle routing properly
-- [ ] **[Medium] Add deployment notifications** - Setup deployment status alerts
-- [ ] **[Low] Configure form handling** - Setup Netlify Forms if needed
+- [x] **[Medium] Setup redirects/rewrites** - Handle routing properly _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Add deployment notifications** - Setup deployment status alerts _(Completed: Dec 20, 2024)_
+- [x] **[Low] Configure form handling** - Setup Netlify Forms if needed _(Completed: Dec 20, 2024)_
 
 ### CI/CD Pipeline
 
