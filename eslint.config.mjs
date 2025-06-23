@@ -11,6 +11,14 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("prettier"),
+  {
+    rules: {
+      // Add any custom rules for Veloz project
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'prefer-const': 'warn',
+    },
+  },
 ];
 
 export default eslintConfig;

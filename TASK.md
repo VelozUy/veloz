@@ -1,10 +1,11 @@
 # 📋 Veloz Project Tasks
 
-*Last updated: December 2024*
+_Last updated: December 2024_
 
 ## 🏗️ Phase 1: Project Setup & Infrastructure
 
 ### Initial Setup
+
 - [x] **[High] Create Next.js 15 project** - Initialize new Next.js project with TypeScript and App Router
 - [x] **[High] Install Tailwind CSS** - Add Tailwind CSS dependency
 - [x] **[High] Configure Tailwind base setup** - Setup tailwind.config.js and globals.css
@@ -14,13 +15,13 @@
 - [x] **[Medium] Install core shadcn/ui components** - Add Button, Input, Card, Dialog components
 - [x] **[Medium] Install form shadcn/ui components** - Add Form, Select, Checkbox, Textarea components
 - [x] **[Medium] Install React Hook Form** - Add performant form handling library
-- [ ] **[Medium] Install Lucide Icons** - Add icon library dependency
-- [ ] **[Medium] Install Framer Motion** - Add animation library
-- [ ] **[High] Install ESLint** - Add linting configuration
-- [ ] **[High] Install Prettier** - Add code formatting
-- [ ] **[High] Configure ESLint + Prettier** - Setup unified code style rules
-- [ ] **[Medium] Install Husky** - Add git hooks dependency
-- [ ] **[Medium] Configure pre-commit hooks** - Setup code quality checks on commit
+- [x] **[Medium] Install Lucide Icons** - Add icon library dependency
+- [x] **[Medium] Install Framer Motion** - Add animation library
+- [x] **[High] Install ESLint** - Add linting configuration
+- [x] **[High] Install Prettier** - Add code formatting
+- [x] **[High] Configure ESLint + Prettier** - Setup unified code style rules
+- [x] **[Medium] Install Husky** - Add git hooks dependency
+- [x] **[Medium] Configure pre-commit hooks** - Setup code quality checks on commit
 - [ ] **[High] Create components folder** - Organize UI components directory
 - [ ] **[High] Create pages folder structure** - Setup Next.js App Router pages
 - [ ] **[High] Create utils folder** - Setup utility functions directory
@@ -28,6 +29,7 @@
 - [ ] **[Medium] Create lib folder** - Setup shared libraries directory
 
 ### Firebase Setup
+
 - [ ] **[Critical] Create Firebase project** - Initialize Firebase project for Veloz
 - [ ] **[Critical] Enable Firestore** - Activate Firestore database
 - [ ] **[Critical] Create Firestore collections** - Setup pages, faqs, gallery collections
@@ -42,6 +44,7 @@
 - [ ] **[Medium] Test Firebase connection** - Verify all services work correctly
 
 ### i18n Setup
+
 - [ ] **[High] Install i18next** - Add main internationalization library
 - [ ] **[High] Install react-i18next** - Add React integration for i18n
 - [ ] **[High] Create i18n config file** - Setup language configuration
@@ -59,6 +62,7 @@
 ## 🎨 Phase 2: Frontend Development - Public Pages
 
 ### Landing Page
+
 - [ ] **[High] Create landing page component** - Build main homepage React component
 - [ ] **[High] Create hero section layout** - Build full-screen hero container
 - [ ] **[High] Add background image/video container** - Setup media background area
@@ -77,6 +81,7 @@
 - [ ] **[Low] Add CTA button hover animations** - Interactive button effects
 
 ### About Us / FAQ Page
+
 - [ ] **[High] Create FAQ page component** - Build main FAQ page structure
 - [ ] **[High] Create accordion item component** - Individual expandable FAQ item
 - [ ] **[High] Add accordion expand/collapse logic** - Handle open/close functionality
@@ -90,6 +95,7 @@
 - [ ] **[Low] Add section reveal animations** - Animate sections on scroll
 
 ### Our Work (Gallery)
+
 - [ ] **[High] Create gallery page component** - Build main gallery page
 - [ ] **[High] Create photo grid component** - Responsive image grid layout
 - [ ] **[High] Create filter button component** - Event type filter buttons
@@ -107,6 +113,7 @@
 - [ ] **[Low] Add loading animations** - Smooth image loading effects
 
 ### Work With Us (Contact Form)
+
 - [ ] **[High] Create contact form component** - Build main form structure
 - [ ] **[High] Add full name input field** - Required text input
 - [ ] **[High] Add email input field** - Required email validation
@@ -134,6 +141,7 @@
 ## 🔐 Phase 3: Admin Panel (CMS)
 
 ### Authentication & Layout
+
 - [ ] **[Critical] Create admin login page** - Build Firebase Auth login form
 - [ ] **[Critical] Add email/password login** - Basic authentication method
 - [ ] **[Critical] Create auth middleware** - Protect admin routes from unauthorized access
@@ -149,6 +157,7 @@
 - [ ] **[Low] Add admin user profile** - Display current user information
 
 ### Content Management
+
 - [ ] **[High] Create homepage text editor** - Edit homepage content
 - [ ] **[High] Add multi-language text fields** - Edit content in all languages
 - [ ] **[High] Create photo gallery list view** - Display all photos in admin
@@ -170,6 +179,7 @@
 - [ ] **[Low] Add duplicate functionality** - Copy existing items
 
 ### Language Management
+
 - [ ] **[High] Create language toggle component** - Switch between languages in admin
 - [ ] **[High] Add language context** - Manage current editing language
 - [ ] **[Medium] Add translation status indicators** - Show which languages have content
@@ -181,6 +191,7 @@
 ## 🗄️ Phase 4: Data & API Integration
 
 ### Firestore Integration
+
 - [ ] **[Critical] Create base Firestore service** - Abstract database operations
 - [ ] **[High] Create homepage content service** - CRUD operations for homepage data
 - [ ] **[High] Create FAQ service** - CRUD operations for FAQ data
@@ -194,6 +205,7 @@
 - [ ] **[Low] Add offline support** - Handle offline scenarios
 
 ### Firebase Storage
+
 - [ ] **[High] Create file upload service** - Handle media file uploads to Storage
 - [ ] **[Medium] Add image resizing** - Optimize uploaded images for web
 - [ ] **[Medium] Create thumbnail generation** - Generate image thumbnails
@@ -208,6 +220,7 @@
 ## 🧪 Phase 5: Testing
 
 ### Unit Tests
+
 - [ ] **[High] Setup Jest** - Configure testing framework
 - [ ] **[High] Setup React Testing Library** - Configure component testing
 - [ ] **[High] Create test utilities** - Helper functions for testing
@@ -224,6 +237,7 @@
 - [ ] **[Low] Test error boundaries** - Test error handling components
 
 ### Integration Tests
+
 - [ ] **[Medium] Test contact form submission flow** - End-to-end form testing
 - [ ] **[Medium] Test admin CRUD workflows** - Test complete content management
 - [ ] **[Medium] Test language switching** - Test i18n across components
@@ -232,6 +246,7 @@
 - [ ] **[Low] Test performance** - Test loading times and optimization
 
 ### E2E Tests (Optional)
+
 - [ ] **[Low] Setup Cypress or Playwright** - Configure end-to-end testing
 - [ ] **[Low] Test user journey flows** - Test complete user workflows
 - [ ] **[Low] Test admin panel workflows** - Test admin user journeys
@@ -241,6 +256,7 @@
 ## 🔍 Phase 6: SEO & Performance
 
 ### SEO Optimization
+
 - [ ] **[High] Configure Next.js metadata API** - Setup dynamic meta tags
 - [ ] **[High] Add page titles** - Unique titles for all pages
 - [ ] **[High] Add meta descriptions** - Compelling descriptions for all pages
@@ -254,6 +270,7 @@
 - [ ] **[Low] Add breadcrumb markup** - Structured navigation data
 
 ### Performance Optimization
+
 - [ ] **[High] Configure Next.js Image component** - Optimize all images
 - [ ] **[High] Add lazy loading** - Load content as needed
 - [ ] **[Medium] Configure bundle optimization** - Minimize JavaScript bundles
@@ -265,6 +282,7 @@
 - [ ] **[Low] Add preloading** - Preload critical resources
 
 ### Accessibility
+
 - [ ] **[High] Add ARIA labels** - Improve screen reader support
 - [ ] **[High] Test keyboard navigation** - Ensure full keyboard accessibility
 - [ ] **[High] Add focus management** - Handle focus states properly
@@ -278,6 +296,7 @@
 ## 🚀 Phase 7: Deployment & DevOps
 
 ### Netlify Setup
+
 - [ ] **[Critical] Create Netlify account** - Setup hosting platform
 - [ ] **[Critical] Connect GitHub repository** - Setup automatic deployments
 - [ ] **[Critical] Configure build settings** - Setup Next.js build process
@@ -290,6 +309,7 @@
 - [ ] **[Low] Configure form handling** - Setup Netlify Forms if needed
 
 ### CI/CD Pipeline
+
 - [ ] **[Medium] Configure build optimization** - Optimize build performance
 - [ ] **[Medium] Add build status checks** - Prevent broken deployments
 - [ ] **[Medium] Setup preview deployments** - Enable branch previews
@@ -298,6 +318,7 @@
 - [ ] **[Low] Add deployment rollback** - Quick rollback on issues
 
 ### Monitoring & Analytics
+
 - [ ] **[Medium] Add Google Analytics** - Track website usage
 - [ ] **[Medium] Setup error monitoring** - Configure error tracking (Sentry)
 - [ ] **[Medium] Add performance monitoring** - Track loading times
@@ -310,6 +331,7 @@
 ## 🎯 Phase 8: Launch Preparation
 
 ### Content Preparation
+
 - [ ] **[High] Create initial FAQ content in Spanish** - Write FAQ content
 - [ ] **[High] Create initial FAQ content in English** - Translate FAQ content
 - [ ] **[Medium] Create initial FAQ content in Portuguese** - Translate FAQ content
@@ -326,6 +348,7 @@
 - [ ] **[Medium] Create email templates** - Setup contact form auto-responses
 
 ### Final Testing
+
 - [ ] **[Critical] Test on Chrome** - Verify functionality
 - [ ] **[Critical] Test on Firefox** - Verify functionality
 - [ ] **[Critical] Test on Safari** - Verify functionality
@@ -338,6 +361,7 @@
 - [ ] **[Low] Load testing** - Test under high traffic
 
 ### Launch Checklist
+
 - [ ] **[Critical] DNS propagation verification** - Ensure domain points correctly
 - [ ] **[Critical] SSL certificate verification** - Ensure HTTPS works
 - [ ] **[Critical] Contact form testing** - Verify emails are sent
@@ -351,40 +375,51 @@
 
 ## 📝 Discovered During Work
 
-*Tasks discovered during development will be added here*
+_Tasks discovered during development will be added here_
 
 ---
 
 ## ✅ Completed Tasks
 
 ### December 2024
-- [x] **[High] Create Next.js 15 project** - Initialize new Next.js project with TypeScript and App Router *(Completed: Dec 20, 2024)*
-- [x] **[High] Install Tailwind CSS** - Add Tailwind CSS dependency *(Completed: Dec 20, 2024)*
-- [x] **[High] Configure Tailwind base setup** - Setup tailwind.config.js and globals.css *(Completed: Dec 20, 2024)*
-- [x] **[Medium] Create custom Tailwind theme** - Define brand colors, fonts, and spacing *(Completed: Dec 20, 2024)*
-- [x] **[High] Install shadcn/ui** - Add shadcn/ui component library with Radix UI *(Completed: Dec 20, 2024)*
-- [x] **[High] Configure shadcn/ui** - Setup components.json and initialize shadcn/ui *(Completed: Dec 20, 2024)*
-- [x] **[Medium] Install core shadcn/ui components** - Add Button, Input, Card, Dialog components *(Completed: Dec 20, 2024)*
-- [x] **[Medium] Install form shadcn/ui components** - Add Form, Select, Checkbox, Textarea components *(Completed: Dec 20, 2024)*
-- [x] **[Medium] Install React Hook Form** - Add performant form handling library *(Completed: Dec 20, 2024)*
+
+- [x] **[High] Create Next.js 15 project** - Initialize new Next.js project with TypeScript and App Router _(Completed: Dec 20, 2024)_
+- [x] **[High] Install Tailwind CSS** - Add Tailwind CSS dependency _(Completed: Dec 20, 2024)_
+- [x] **[High] Configure Tailwind base setup** - Setup tailwind.config.js and globals.css _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Create custom Tailwind theme** - Define brand colors, fonts, and spacing _(Completed: Dec 20, 2024)_
+- [x] **[High] Install shadcn/ui** - Add shadcn/ui component library with Radix UI _(Completed: Dec 20, 2024)_
+- [x] **[High] Configure shadcn/ui** - Setup components.json and initialize shadcn/ui _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install core shadcn/ui components** - Add Button, Input, Card, Dialog components _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install form shadcn/ui components** - Add Form, Select, Checkbox, Textarea components _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install React Hook Form** - Add performant form handling library _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install Lucide Icons** - Add icon library dependency _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install Framer Motion** - Add animation library _(Completed: Dec 20, 2024)_
+- [x] **[High] Install ESLint** - Add linting configuration _(Completed: Dec 20, 2024)_
+- [x] **[High] Install Prettier** - Add code formatting _(Completed: Dec 20, 2024)_
+- [x] **[High] Configure ESLint + Prettier** - Setup unified code style rules _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Install Husky** - Add git hooks dependency _(Completed: Dec 20, 2024)_
+- [x] **[Medium] Configure pre-commit hooks** - Setup code quality checks on commit _(Completed: Dec 20, 2024)_
 
 ---
 
 ## 📋 TASK MANAGEMENT RULES
 
 ### Priority Levels
+
 - **Critical**: Must be fixed before any other work
 - **High**: Essential for core functionality
 - **Medium**: Important for good user experience
 - **Low**: Nice to have features
 
 ### Status Tracking
+
 - **[ ]** - Not started
 - **[x]** - Completed
 - **[~]** - In progress
 - **[!]** - Blocked
 
 ### Task Updates
+
 - Mark tasks as completed immediately after finishing
 - Add completion date and time spent
 - Move completed tasks to the "Completed Tasks" section
@@ -393,4 +428,4 @@
 
 ---
 
-**Next Steps**: Start with Critical Tasks in order of priority. Each completed task should be marked with completion date and actual time spent. 
+**Next Steps**: Start with Critical Tasks in order of priority. Each completed task should be marked with completion date and actual time spent.
