@@ -17,8 +17,9 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 - Core brand concepts: *Elegance, Warmth, Effectiveness, Optimization, Agility, Boldness*
 - Smooth animations: **Framer Motion**
-- Styling framework: **Tailwind CSS** with **Preline UI** components
+- Styling framework: **Tailwind CSS** with **shadcn/ui** components
 - Icons: **Lucide Icons** (clean and customizable)
+- UI Components: **shadcn/ui** → High-quality, accessible components built on Radix UI
 
 ## 🌍 Multilanguage Support
 
@@ -125,7 +126,8 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 ## 🧪 Dev Utilities & Tooling
 
-- **Preline UI** → prebuilt components compatible with Tailwind
+- **shadcn/ui** → High-quality components built on Radix UI with excellent accessibility
+- **React Hook Form** → Performant forms with easy validation (works great with shadcn/ui)
 - **Framer Motion** → transitions for modals, page entrances
 - **Zod** → schema validation for forms and CMS
 - **Husky** → pre-commit hooks
