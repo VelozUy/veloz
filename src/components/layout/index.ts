@@ -9,4 +9,5 @@
 // export { default as PageLayout } from './PageLayout';
 // export { default as AdminLayout } from './AdminLayout';
 
-export {}; 
+export { default as Hero } from './hero';
+export { default as Navigation } from './navigation';
