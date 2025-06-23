@@ -80,24 +80,6 @@ export default function Home() {
         isVideoLoading={videoLoading}
         isLogoLoading={logoLoading}
       />
-
-      {/* Optional: Show loading indicators for debugging */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-black/80 text-white p-4 rounded-lg text-sm">
-          <div>
-            Video:{' '}
-            {videoLoading
-              ? '⏳ Loading...'
-              : videoUrl
-                ? '✅ Ready'
-                : '❌ Failed'}
-          </div>
-          <div>
-            Logo:{' '}
-            {logoLoading ? '⏳ Loading...' : logoUrl ? '✅ Ready' : '❌ Failed'}
-          </div>
-        </div>
-      )}
     </main>
   );
 }

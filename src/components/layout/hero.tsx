@@ -66,17 +66,12 @@ export default function Hero({
           }}
         />
       ) : (
-        // Always show gradient background immediately for instant loading
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20" />
+        // Black to off-black gradient background - elegant and minimal
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
       )}
 
-      {/* Loading overlay for video transition */}
-      {isVideoLoading && (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20 transition-opacity duration-1000" />
-      )}
-
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Elegant overlay for text readability - reduced opacity for subtlety */}
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* Main content */}
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
@@ -96,14 +91,14 @@ export default function Hero({
               {isLogoLoading ? (
                 // Show brand text immediately while logo loads
                 <h1 className="text-6xl md:text-8xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-white via-secondary to-accent bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
                     Veloz
                   </span>
                 </h1>
               ) : (
                 // Logo failed to load, keep showing brand text
                 <h1 className="text-6xl md:text-8xl font-bold mb-4">
-                  <span className="bg-gradient-to-r from-white via-secondary to-accent bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
                     Veloz
                   </span>
                 </h1>
@@ -137,7 +132,7 @@ export default function Hero({
 
           <Button
             size="lg"
-            className="bg-secondary/80 backdrop-blur-sm text-white hover:bg-secondary px-8 py-6 text-lg font-medium transition-all duration-300"
+            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
             asChild
           >
             <a href="/contact">Work with Us</a>
