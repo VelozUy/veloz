@@ -48,18 +48,18 @@ export default function Hero({
     }
   }, [backgroundVideo, isVideoLoading]);
 
-  // Coordinated logo and title animation
+  // Faster coordinated logo and title animation
   useEffect(() => {
     if (logoUrl && !isLogoLoading) {
-      // Step 1: Show logo small after 300ms
+      // Step 1: Show logo small after 150ms (faster)
       const timer1 = setTimeout(() => {
         setLogoAnimationPhase('small');
-      }, 300);
+      }, 150);
 
-      // Step 2: Grow logo and shrink title after another 500ms
+      // Step 2: Grow logo and shrink title after another 300ms (faster)
       const timer2 = setTimeout(() => {
         setLogoAnimationPhase('large');
-      }, 800);
+      }, 400);
 
       return () => {
         clearTimeout(timer1);
@@ -102,7 +102,7 @@ export default function Hero({
       <div className="relative z-10 text-center text-white px-4 animate-fade-in">
         {/* Logo and Brand Section - Dynamic centering based on animation phase */}
         <div
-          className={`transition-all duration-1000 ease-out ${
+          className={`transition-all duration-500 ease-out ${
             logoAnimationPhase === 'hidden'
               ? 'mb-16' // More space when title is centered
               : 'mb-12' // Normal space when logo is present
@@ -110,7 +110,7 @@ export default function Hero({
         >
           {/* Logo Container - Animates from top to center */}
           <div
-            className={`relative w-full flex justify-center transition-all duration-1000 ease-out ${
+            className={`relative w-full flex justify-center transition-all duration-500 ease-out ${
               logoAnimationPhase === 'hidden'
                 ? 'h-0 overflow-hidden opacity-0 -translate-y-8' // Hidden above, no space
                 : logoAnimationPhase === 'small'
@@ -125,7 +125,7 @@ export default function Hero({
                   alt="Veloz Logo"
                   width={800}
                   height={600}
-                  className={`object-contain transition-all duration-1000 ease-out ${
+                  className={`object-contain transition-all duration-500 ease-out ${
                     logoAnimationPhase === 'small'
                       ? 'w-1/3 h-auto opacity-100' // Small logo within container
                       : 'w-full h-auto opacity-100' // Large logo fills container
@@ -138,14 +138,14 @@ export default function Hero({
 
           {/* Brand Title - Starts centered, moves down and shrinks */}
           <div
-            className={`relative transition-all duration-1000 ease-out ${
+            className={`relative transition-all duration-500 ease-out ${
               logoAnimationPhase === 'hidden'
                 ? 'transform translate-y-0' // Centered when no logo
                 : 'transform translate-y-4' // Slightly down when logo present
             }`}
           >
             <h1
-              className={`font-bold transition-all duration-1000 ease-out ${
+              className={`font-bold transition-all duration-500 ease-out ${
                 logoAnimationPhase === 'hidden'
                   ? 'text-6xl md:text-8xl' // Large when centered
                   : logoAnimationPhase === 'small'
