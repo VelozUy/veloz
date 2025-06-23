@@ -23,6 +23,7 @@ export default function Hero({
 }: HeroProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
 
   // Rotate background images every 5 seconds (only when images are provided)
   useEffect(() => {
@@ -44,6 +45,19 @@ export default function Hero({
       return () => clearTimeout(timer);
     }
   }, [backgroundVideo, isVideoLoading]);
+
+  // Show logo with fade-in effect when it's loaded
+  useEffect(() => {
+    if (logoUrl && !isLogoLoading) {
+      // Delay the logo appearance for a smooth fade-in effect
+      const timer = setTimeout(() => {
+        setShowLogo(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    } else {
+      setShowLogo(false);
+    }
+  }, [logoUrl, isLogoLoading]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -79,13 +93,15 @@ export default function Hero({
         <div className="mb-12">
           {/* Logo - fades in when loaded */}
           {logoUrl && !isLogoLoading && (
-            <div className="animate-fade-in">
+            <div>
               <Image
                 src={logoUrl}
                 alt="Veloz Logo"
                 width={800}
                 height={600}
-                className="mx-auto mb-6 object-contain w-2/3 h-auto transition-opacity duration-1000 opacity-0 animate-[fadeIn_1s_ease-in-out_0.5s_forwards]"
+                className={`mx-auto mb-6 object-contain w-2/3 h-auto transition-opacity duration-1000 ${
+                  showLogo ? 'opacity-100' : 'opacity-0'
+                }`}
                 priority
               />
             </div>
