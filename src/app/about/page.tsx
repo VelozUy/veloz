@@ -141,7 +141,7 @@ export default async function AboutPage() {
         <div className="container mx-auto px-4 py-16 space-y-16">
           {/* Hero Section */}
           <div className="text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold text-primary">
               Sobre Nosotros
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

@@ -197,9 +197,7 @@ export default function Hero({
                     : 'text-4xl md:text-5xl' // Small when logo is large and centered
               }`}
             >
-              <span className="bg-gradient-to-r from-primary-foreground via-muted-foreground to-primary-foreground bg-clip-text text-transparent">
-                Veloz
-              </span>
+              <span className="text-primary-foreground">Veloz</span>
             </h1>
           </div>
         </div>

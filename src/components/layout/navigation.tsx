@@ -52,9 +52,7 @@ export default function Navigation() {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 group">
               <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Veloz
-              </span>
+              <span className="text-2xl font-bold text-primary">Veloz</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -108,9 +106,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Veloz
-            </span>
+            <span className="text-2xl font-bold text-primary">Veloz</span>
           </Link>
 
           {/* Desktop Navigation */}

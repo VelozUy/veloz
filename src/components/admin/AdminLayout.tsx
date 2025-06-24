@@ -75,9 +75,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
           <div className="flex items-center justify-between p-6 border-b">
             <div className="flex items-center">
               <LayoutDashboard className="w-8 h-8 text-primary mr-2" />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Veloz Admin
-              </h1>
+              <h1 className="text-xl font-bold text-primary">Veloz Admin</h1>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
