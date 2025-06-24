@@ -36,13 +36,8 @@ import {
   testFirebaseConnection,
   debugFirebaseState,
 } from '@/lib/firebase-test';
-import {
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp,
-  enableNetwork,
-} from 'firebase/firestore';
+import { quickDiagnostics, attemptAutoFix } from '@/lib/firebase-diagnostics';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import {
   ref,
   uploadBytes,
@@ -194,15 +189,8 @@ export default function HomepageAdminPage() {
           );
         }
 
-        // Ensure Firebase is connected
-        try {
-          await enableNetwork(db);
-        } catch (networkError) {
-          console.warn(
-            'Network enable failed, continuing anyway:',
-            networkError
-          );
-        }
+        // Note: Removed enableNetwork call to prevent assertion errors
+        // Firebase should be online by default
 
         const docRef = doc(db, 'homepage', 'content');
         const docSnap = await getDoc(docRef);
@@ -263,15 +251,11 @@ export default function HomepageAdminPage() {
     setError('');
 
     try {
-      // Ensure Firebase is connected before saving
-      try {
-        await enableNetwork(db);
-      } catch (networkError) {
-        console.warn('Network enable failed, continuing anyway:', networkError);
-      }
+      // Note: Removed enableNetwork call to prevent assertion errors
+      // Firebase should be online by default
 
       const docRef = doc(db, 'homepage', 'content');
-      const { id: _id, ...contentData } = content;
+      const { id, ...contentData } = content;
 
       await setDoc(docRef, {
         ...contentData,
@@ -430,12 +414,39 @@ export default function HomepageAdminPage() {
     }
   };
 
-  const handleRetryConnection = () => {
+  const handleRetryConnection = async () => {
     setConnectionRetries(0);
     setError('');
     setLoading(true);
-    // This will trigger the useEffect to reload content
-    window.location.reload();
+
+    try {
+      // Run diagnostics first
+      console.log('🔧 Running Firebase diagnostics...');
+      const diagnostics = await quickDiagnostics();
+
+      // Attempt auto-fix
+      await attemptAutoFix();
+
+      // Show diagnostic results
+      const failedTests = diagnostics.filter(d => d.status === 'fail');
+      if (failedTests.length > 0) {
+        const errorMessages = failedTests
+          .map(t => `${t.test}: ${t.message}`)
+          .join('\n');
+        setError(`Firebase Issues Detected:\n${errorMessages}`);
+        setLoading(false);
+        return;
+      }
+
+      // Reload the page to re-trigger the useEffect
+      window.location.reload();
+    } catch (error) {
+      console.error('Diagnostics failed:', error);
+      setError(
+        'Failed to run diagnostics. Please check the console for details.'
+      );
+      setLoading(false);
+    }
   };
 
   if (loading) {

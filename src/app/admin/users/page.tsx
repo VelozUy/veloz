@@ -47,7 +47,7 @@ import {
   setDoc,
   deleteDoc,
   updateDoc,
-  onSnapshot,
+  getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
 
@@ -71,26 +71,26 @@ export default function UsersPage() {
   const [inviteSuccess, setInviteSuccess] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchUsers = async () => {
     if (!user) return;
 
-    const unsubscribe = onSnapshot(
-      collection(db, 'adminUsers'),
-      snapshot => {
-        const userList: AdminUser[] = [];
-        snapshot.forEach(doc => {
-          userList.push({ email: doc.id, ...doc.data() } as AdminUser);
-        });
-        setUsers(userList);
-        setLoading(false);
-      },
-      error => {
-        console.error('Error fetching users:', error);
-        setLoading(false);
-      }
-    );
+    setLoading(true);
+    try {
+      const snapshot = await getDocs(collection(db, 'adminUsers'));
+      const userList: AdminUser[] = [];
+      snapshot.forEach(doc => {
+        userList.push({ email: doc.id, ...doc.data() } as AdminUser);
+      });
+      setUsers(userList);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return () => unsubscribe();
+  useEffect(() => {
+    fetchUsers();
   }, [user]);
 
   const handleInviteUser = async (e: React.FormEvent) => {
@@ -126,6 +126,9 @@ export default function UsersPage() {
       setInviteSuccess(`Successfully invited ${inviteEmail}`);
       setInviteEmail('');
 
+      // Refresh the user list
+      await fetchUsers();
+
       // Close dialog after success
       setTimeout(() => {
         setDialogOpen(false);
@@ -153,6 +156,9 @@ export default function UsersPage() {
       await updateDoc(doc(db, 'adminUsers', email), {
         status: newStatus,
       });
+
+      // Refresh the user list
+      await fetchUsers();
     } catch (error) {
       console.error('Error updating user status:', error);
       alert('Failed to update user status.');
@@ -171,6 +177,9 @@ export default function UsersPage() {
 
     try {
       await deleteDoc(doc(db, 'adminUsers', email));
+
+      // Refresh the user list
+      await fetchUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
       alert('Failed to delete user.');
