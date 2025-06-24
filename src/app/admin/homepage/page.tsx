@@ -32,7 +32,17 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { db, storage } from '@/lib/firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  testFirebaseConnection,
+  debugFirebaseState,
+} from '@/lib/firebase-test';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  enableNetwork,
+} from 'firebase/firestore';
 import {
   ref,
   uploadBytes,
@@ -163,6 +173,7 @@ export default function HomepageAdminPage() {
   const [success, setSuccess] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [previewMode, setPreviewMode] = useState(false);
+  const [connectionRetries, setConnectionRetries] = useState(0);
 
   useEffect(() => {
     if (!user) return;
@@ -170,6 +181,29 @@ export default function HomepageAdminPage() {
     const loadContent = async () => {
       try {
         setLoading(true);
+        setError('');
+
+        // Debug Firebase state
+        debugFirebaseState();
+
+        // Test Firebase connection
+        const connectionTest = await testFirebaseConnection();
+        if (!connectionTest.canReadFirestore) {
+          throw new Error(
+            connectionTest.error || 'Firebase connection test failed'
+          );
+        }
+
+        // Ensure Firebase is connected
+        try {
+          await enableNetwork(db);
+        } catch (networkError) {
+          console.warn(
+            'Network enable failed, continuing anyway:',
+            networkError
+          );
+        }
+
         const docRef = doc(db, 'homepage', 'content');
         const docSnap = await getDoc(docRef);
 
@@ -185,15 +219,42 @@ export default function HomepageAdminPage() {
           setContent(defaultWithId);
         }
         setLoading(false);
+        setConnectionRetries(0); // Reset retry counter on success
       } catch (error) {
         console.error('Error loading homepage content:', error);
-        setError('Failed to load homepage content');
+
+        // Handle specific Firebase offline error
+        if (
+          error instanceof Error &&
+          error.message.includes('client is offline')
+        ) {
+          if (connectionRetries < 3) {
+            console.log(
+              `Retrying connection (attempt ${connectionRetries + 1}/3)...`
+            );
+            setConnectionRetries(prev => prev + 1);
+            // Retry after a short delay
+            setTimeout(
+              () => {
+                loadContent();
+              },
+              2000 * (connectionRetries + 1)
+            ); // Exponential backoff
+            return;
+          } else {
+            setError(
+              'Unable to connect to Firebase. Please check your internet connection and try refreshing the page.'
+            );
+          }
+        } else {
+          setError('Failed to load homepage content. Please try again.');
+        }
         setLoading(false);
       }
     };
 
     loadContent();
-  }, [user]);
+  }, [user, connectionRetries]);
 
   const handleSave = async () => {
     if (!content) return;
@@ -202,6 +263,13 @@ export default function HomepageAdminPage() {
     setError('');
 
     try {
+      // Ensure Firebase is connected before saving
+      try {
+        await enableNetwork(db);
+      } catch (networkError) {
+        console.warn('Network enable failed, continuing anyway:', networkError);
+      }
+
       const docRef = doc(db, 'homepage', 'content');
       const { id: _id, ...contentData } = content;
 
@@ -214,7 +282,17 @@ export default function HomepageAdminPage() {
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       console.error('Error saving homepage content:', error);
-      setError('Failed to save homepage content');
+
+      if (
+        error instanceof Error &&
+        error.message.includes('client is offline')
+      ) {
+        setError(
+          'Unable to save changes - you appear to be offline. Please check your internet connection and try again.'
+        );
+      } else {
+        setError('Failed to save homepage content. Please try again.');
+      }
     } finally {
       setSaving(false);
     }
@@ -352,11 +430,24 @@ export default function HomepageAdminPage() {
     }
   };
 
+  const handleRetryConnection = () => {
+    setConnectionRetries(0);
+    setError('');
+    setLoading(true);
+    // This will trigger the useEffect to reload content
+    window.location.reload();
+  };
+
   if (loading) {
     return (
       <AdminLayout title="Homepage Management">
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="flex flex-col items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
+          <p className="text-muted-foreground">
+            {connectionRetries > 0
+              ? `Connecting to Firebase... (Attempt ${connectionRetries + 1}/3)`
+              : 'Loading homepage content...'}
+          </p>
         </div>
       </AdminLayout>
     );
@@ -451,7 +542,20 @@ export default function HomepageAdminPage() {
 
         {error && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription className="flex items-center justify-between">
+              <span>{error}</span>
+              {error.includes('offline') || error.includes('connection') ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRetryConnection}
+                  className="ml-4"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Retry
+                </Button>
+              ) : null}
+            </AlertDescription>
           </Alert>
         )}
 
