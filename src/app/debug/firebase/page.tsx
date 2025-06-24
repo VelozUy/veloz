@@ -30,13 +30,20 @@ import {
   ResetResult,
 } from '@/lib/firestore-reset';
 import { resetDatabase, nuclearReset, ResetStep } from '@/lib/database-reset';
-import {
-  reinitializeFirebase,
-  forceReload,
-  ReinitResult,
-} from '@/lib/firebase-reinit';
+import { reinitializeFirebase, ReinitResult } from '@/lib/firebase-reinit';
 import { simpleBrowserReset, forcePageReplace } from '@/lib/simple-reset';
 import { executeEmergencyFirestoreFix } from '@/lib/emergency-firestore-fix';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
+interface HomepageContent {
+  logo?: {
+    url?: string;
+    enabled?: boolean;
+    filename?: string;
+  };
+  // Add other fields as needed
+}
 
 export default function FirebaseDebugPage() {
   const [diagnostics, setDiagnostics] = useState<DiagnosticResult[]>([]);
@@ -48,13 +55,15 @@ export default function FirebaseDebugPage() {
   const [dbResetting, setDbResetting] = useState(false);
   const [reinitResults, setReinitResults] = useState<ReinitResult[]>([]);
   const [reinitializing, setReinitializing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [autoFixing, setAutoFixing] = useState(false);
   const [checkingRules, setCheckingRules] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [lightResetting, setLightResetting] = useState(false);
   const [targetIdResetting, setTargetIdResetting] = useState(false);
   const [emergencyFixing, setEmergencyFixing] = useState(false);
+  const [content, setContent] = useState<HomepageContent | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const runDiagnostics = async () => {
     setLoading(true);
@@ -201,8 +210,29 @@ export default function FirebaseDebugPage() {
   };
 
   useEffect(() => {
-    runDiagnostics();
-    checkSecurityRules();
+    const loadContent = async () => {
+      try {
+        setLoading(true);
+        const docRef = doc(db, 'homepage', 'content');
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setContent(data);
+          console.log('🔍 Homepage content from Firestore:', data);
+        } else {
+          setError('Homepage content document does not exist');
+          console.log('❌ Homepage content document does not exist');
+        }
+      } catch (err) {
+        console.error('Error loading homepage content:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadContent();
   }, []);
 
   const getStatusIcon = (status: string) => {
@@ -243,6 +273,23 @@ export default function FirebaseDebugPage() {
       d.message?.includes('Target ID collision') ||
       d.details?.error?.toString().includes('Target ID already exists')
   );
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <h1 className="text-2xl font-bold mb-4">Firebase Debug - Loading...</h1>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-8">
+        <h1 className="text-2xl font-bold mb-4">Firebase Debug - Error</h1>
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -886,6 +933,27 @@ export default function FirebaseDebugPage() {
           <Button variant="outline" onClick={() => window.history.back()}>
             ← Back to Admin
           </Button>
+        </div>
+
+        {/* Homepage Content */}
+        <div className="mt-6">
+          <h2 className="text-2xl font-bold mb-4">Homepage Content</h2>
+          <div className="bg-gray-100 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2">Logo Information:</h3>
+            {content?.logo ? (
+              <div className="space-y-2">
+                <p>
+                  <strong>URL:</strong> {content.logo.url || 'No URL'}
+                </p>
+                <p>
+                  <strong>Enabled:</strong>{' '}
+                  {content.logo.enabled ? 'Yes' : 'No'}
+                </p>
+              </div>
+            ) : (
+              <p>No logo content found</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

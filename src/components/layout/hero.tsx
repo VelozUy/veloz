@@ -9,7 +9,6 @@ interface HeroProps {
   backgroundVideo?: string;
   backgroundImages?: string[];
   logoUrl?: string;
-  isVideoLoading?: boolean;
   isLogoLoading?: boolean;
 }
 
@@ -18,7 +17,6 @@ export default function Hero({
   backgroundVideo,
   backgroundImages = [],
   logoUrl,
-  isVideoLoading = false,
   isLogoLoading = false,
 }: HeroProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -37,12 +35,23 @@ export default function Hero({
     }
   }, [backgroundImages.length]);
 
-  // Reset video state when URL changes
-  useEffect(() => {
-    setVideoCanPlay(false);
-  }, [backgroundVideo]);
+  // Reset video state only when URL actually changes, not on re-renders
+  const [previousVideoUrl, setPreviousVideoUrl] = useState<string | undefined>(
+    undefined
+  );
 
-  // Faster coordinated logo and title animation
+  useEffect(() => {
+    if (backgroundVideo !== previousVideoUrl) {
+      console.log('🎥 Video URL changed, resetting state:', {
+        from: previousVideoUrl,
+        to: backgroundVideo,
+      });
+      setVideoCanPlay(false);
+      setPreviousVideoUrl(backgroundVideo);
+    }
+  }, [backgroundVideo, previousVideoUrl]);
+
+  // Faster coordinated logo and title animation (independent of video)
   useEffect(() => {
     if (logoUrl && !isLogoLoading) {
       // Step 1: Show logo small after 150ms (faster)
@@ -64,30 +73,49 @@ export default function Hero({
     }
   }, [logoUrl, isLogoLoading]);
 
-  // Video event handlers
+  // Video event handlers - ensure video stays visible once ready
   const handleVideoCanPlay = () => {
+    console.log('🎥 Video can play - setting visible');
     setVideoCanPlay(true);
   };
 
   const handleVideoLoadedData = () => {
+    console.log('🎥 Video loaded data - setting visible');
     setVideoCanPlay(true);
   };
+
+  const handleVideoError = () => {
+    console.warn('❌ Video failed to load');
+  };
+
+  // Debug logging for video state changes
+  useEffect(() => {
+    console.log('🎥 Video state:', {
+      videoCanPlay,
+      backgroundVideo: !!backgroundVideo,
+      logoAnimationPhase,
+      logoUrl: !!logoUrl,
+    });
+  }, [videoCanPlay, backgroundVideo, logoAnimationPhase, logoUrl]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video or Images */}
-      {backgroundVideo && !isVideoLoading ? (
+      {backgroundVideo ? (
         <>
-          {/* Video element - always rendered but hidden until ready */}
+          {/* Video element - always rendered when URL exists, hidden until ready */}
           <video
             autoPlay
             muted
             loop
+            playsInline
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
               videoCanPlay ? 'opacity-100' : 'opacity-0'
             }`}
             onCanPlay={handleVideoCanPlay}
             onLoadedData={handleVideoLoadedData}
+            onError={handleVideoError}
+            onPlaying={handleVideoCanPlay}
           >
             <source src={backgroundVideo} type="video/mp4" />
           </video>

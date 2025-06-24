@@ -195,6 +195,8 @@ _Last updated: December 2024_
 - [x] **[Medium] Add preview functionality** - ✅ COMPLETED - Preview site button to view changes _(Completed: Dec 21, 2024)_
 - [x] **[Medium] Add media replacement** - ✅ COMPLETED - Replace existing media files with automatic cleanup _(Completed: Dec 21, 2024)_
 - [x] **[Low] Add last updated tracking** - ✅ COMPLETED - Timestamp tracking for content changes _(Completed: Dec 21, 2024)_
+- [x] **[High] Fix logo consistency between admin and homepage** - ✅ COMPLETED - Unified logo display from Firestore content management _(Completed: Dec 21, 2024)_
+- [x] **[Medium] Fix video fade-out during logo animation** - ✅ COMPLETED - Resolved video state conflicts during logo loading _(Completed: Dec 21, 2024)_
 
 ### Legacy Content Management (To be integrated into projects)
 
