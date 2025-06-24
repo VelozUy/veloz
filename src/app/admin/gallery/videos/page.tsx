@@ -44,10 +44,12 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  onSnapshot,
   serverTimestamp,
   query,
   orderBy,
+  limit,
+  startAfter,
+  getDocs,
 } from 'firebase/firestore';
 
 interface Video {
@@ -109,10 +111,14 @@ const extractVideoInfo = (url: string) => {
   };
 };
 
+const VIDEOS_PER_PAGE = 12;
+
 export default function VideoGalleryPage() {
   const { user } = useAuth();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [editVideo, setEditVideo] = useState<Video | null>(null);
@@ -122,6 +128,13 @@ export default function VideoGalleryPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [filterEventType, setFilterEventType] = useState('all');
+  const [lastDoc, setLastDoc] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [totalStats, setTotalStats] = useState({
+    total: 0,
+    featured: 0,
+    youtube: 0,
+    vimeo: 0,
+  });
 
   // Add form state
   const [addForm, setAddForm] = useState({
@@ -136,28 +149,105 @@ export default function VideoGalleryPage() {
     duration: '',
   });
 
+  // Load stats separately (faster query)
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = onSnapshot(
-      query(collection(db, 'videos'), orderBy('createdAt', 'desc')),
-      snapshot => {
+    const loadStats = async () => {
+      try {
+        const statsQuery = query(collection(db, 'videos'));
+        const snapshot = await getDocs(statsQuery);
+
+        let total = 0;
+        let featured = 0;
+        let youtube = 0;
+        let vimeo = 0;
+
+        snapshot.forEach(doc => {
+          const video = doc.data() as Video;
+          total++;
+          if (video.featured) featured++;
+          if (video.platform === 'youtube') youtube++;
+          if (video.platform === 'vimeo') vimeo++;
+        });
+
+        setTotalStats({
+          total,
+          featured,
+          youtube,
+          vimeo,
+        });
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    };
+
+    loadStats();
+  }, [user]);
+
+  // Load initial videos with pagination
+  useEffect(() => {
+    if (!user) return;
+
+    const loadInitialVideos = async () => {
+      try {
+        setLoading(true);
+        const videosQuery = query(
+          collection(db, 'videos'),
+          orderBy('createdAt', 'desc'),
+          limit(VIDEOS_PER_PAGE)
+        );
+
+        const snapshot = await getDocs(videosQuery);
         const videoList: Video[] = [];
+
         snapshot.forEach(doc => {
           videoList.push({ id: doc.id, ...doc.data() } as Video);
         });
+
         setVideos(videoList);
+        setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+        setHasMore(snapshot.docs.length === VIDEOS_PER_PAGE);
         setLoading(false);
-      },
-      error => {
+      } catch (error) {
         console.error('Error fetching videos:', error);
         setError('Failed to load videos');
         setLoading(false);
       }
-    );
+    };
 
-    return () => unsubscribe();
+    loadInitialVideos();
   }, [user]);
+
+  const loadMoreVideos = async () => {
+    if (!lastDoc || loadingMore || !hasMore) return;
+
+    try {
+      setLoadingMore(true);
+      const moreQuery = query(
+        collection(db, 'videos'),
+        orderBy('createdAt', 'desc'),
+        startAfter(lastDoc),
+        limit(VIDEOS_PER_PAGE)
+      );
+
+      const snapshot = await getDocs(moreQuery);
+      const moreVideos: Video[] = [];
+
+      snapshot.forEach(doc => {
+        moreVideos.push({ id: doc.id, ...doc.data() } as Video);
+      });
+
+      setVideos(prev => [...prev, ...moreVideos]);
+      setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+      setHasMore(snapshot.docs.length === VIDEOS_PER_PAGE);
+    } catch (error) {
+      console.error('Error loading more videos:', error);
+      setError('Failed to load more videos');
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -526,7 +616,7 @@ export default function VideoGalleryPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{videos.length}</div>
+              <div className="text-2xl font-bold">{totalStats.total}</div>
             </CardContent>
           </Card>
           <Card>
@@ -536,9 +626,7 @@ export default function VideoGalleryPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {videos.filter(v => v.featured).length}
-              </div>
+              <div className="text-2xl font-bold">{totalStats.featured}</div>
             </CardContent>
           </Card>
           <Card>
@@ -546,9 +634,7 @@ export default function VideoGalleryPage() {
               <CardTitle className="text-sm font-medium">YouTube</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {videos.filter(v => v.platform === 'youtube').length}
-              </div>
+              <div className="text-2xl font-bold">{totalStats.youtube}</div>
             </CardContent>
           </Card>
           <Card>
@@ -556,9 +642,7 @@ export default function VideoGalleryPage() {
               <CardTitle className="text-sm font-medium">Vimeo</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {videos.filter(v => v.platform === 'vimeo').length}
-              </div>
+              <div className="text-2xl font-bold">{totalStats.vimeo}</div>
             </CardContent>
           </Card>
         </div>
@@ -575,11 +659,10 @@ export default function VideoGalleryPage() {
                 size="sm"
                 onClick={() => setFilterEventType('all')}
               >
-                All ({videos.length})
+                All ({totalStats.total})
               </Button>
               {EVENT_TYPES.map(type => {
-                const count = videos.filter(v => v.eventType === type).length;
-                if (count === 0) return null;
+                // For now, show all event types - we can optimize this later with separate counts
                 return (
                   <Button
                     key={type}
@@ -587,7 +670,7 @@ export default function VideoGalleryPage() {
                     size="sm"
                     onClick={() => setFilterEventType(type)}
                   >
-                    {type} ({count})
+                    {type}
                   </Button>
                 );
               })}
@@ -745,6 +828,27 @@ export default function VideoGalleryPage() {
             ))
           )}
         </div>
+
+        {/* Load More Button */}
+        {hasMore && !loading && filteredVideos.length > 0 && (
+          <div className="flex justify-center">
+            <Button
+              onClick={loadMoreVideos}
+              disabled={loadingMore}
+              variant="outline"
+              size="lg"
+            >
+              {loadingMore ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading more...
+                </>
+              ) : (
+                <>Load More Videos</>
+              )}
+            </Button>
+          </div>
+        )}
 
         {/* View Dialog */}
         <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>

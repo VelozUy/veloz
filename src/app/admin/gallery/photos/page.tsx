@@ -43,10 +43,12 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  onSnapshot,
   serverTimestamp,
   query,
   orderBy,
+  limit,
+  startAfter,
+  getDocs,
 } from 'firebase/firestore';
 import {
   ref,
@@ -83,10 +85,14 @@ const EVENT_TYPES = [
   'Other',
 ];
 
+const PHOTOS_PER_PAGE = 12;
+
 export default function PhotoGalleryPage() {
   const { user } = useAuth();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [editPhoto, setEditPhoto] = useState<Photo | null>(null);
@@ -96,6 +102,13 @@ export default function PhotoGalleryPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [filterEventType, setFilterEventType] = useState('all');
+  const [lastDoc, setLastDoc] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
+  const [totalStats, setTotalStats] = useState({
+    total: 0,
+    featured: 0,
+    eventTypes: 0,
+    thisMonth: 0,
+  });
 
   // Upload form state
   const [uploadForm, setUploadForm] = useState({
@@ -109,28 +122,114 @@ export default function PhotoGalleryPage() {
     file: null as File | null,
   });
 
+  // Load stats separately (faster query)
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = onSnapshot(
-      query(collection(db, 'photos'), orderBy('createdAt', 'desc')),
-      snapshot => {
+    const loadStats = async () => {
+      try {
+        const statsQuery = query(collection(db, 'photos'));
+        const snapshot = await getDocs(statsQuery);
+
+        let total = 0;
+        let featured = 0;
+        const eventTypesSet = new Set<string>();
+        let thisMonth = 0;
+        const now = new Date();
+
+        snapshot.forEach(doc => {
+          const photo = doc.data() as Photo;
+          total++;
+          if (photo.featured) featured++;
+          if (photo.eventType) eventTypesSet.add(photo.eventType);
+
+          const photoDate = photo.createdAt?.toDate();
+          if (
+            photoDate &&
+            photoDate.getMonth() === now.getMonth() &&
+            photoDate.getFullYear() === now.getFullYear()
+          ) {
+            thisMonth++;
+          }
+        });
+
+        setTotalStats({
+          total,
+          featured,
+          eventTypes: eventTypesSet.size,
+          thisMonth,
+        });
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    };
+
+    loadStats();
+  }, [user]);
+
+  // Load initial photos with pagination
+  useEffect(() => {
+    if (!user) return;
+
+    const loadInitialPhotos = async () => {
+      try {
+        setLoading(true);
+        const photosQuery = query(
+          collection(db, 'photos'),
+          orderBy('createdAt', 'desc'),
+          limit(PHOTOS_PER_PAGE)
+        );
+
+        const snapshot = await getDocs(photosQuery);
         const photoList: Photo[] = [];
+
         snapshot.forEach(doc => {
           photoList.push({ id: doc.id, ...doc.data() } as Photo);
         });
+
         setPhotos(photoList);
+        setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+        setHasMore(snapshot.docs.length === PHOTOS_PER_PAGE);
         setLoading(false);
-      },
-      error => {
+      } catch (error) {
         console.error('Error fetching photos:', error);
         setError('Failed to load photos');
         setLoading(false);
       }
-    );
+    };
 
-    return () => unsubscribe();
+    loadInitialPhotos();
   }, [user]);
+
+  const loadMorePhotos = async () => {
+    if (!lastDoc || loadingMore || !hasMore) return;
+
+    try {
+      setLoadingMore(true);
+      const moreQuery = query(
+        collection(db, 'photos'),
+        orderBy('createdAt', 'desc'),
+        startAfter(lastDoc),
+        limit(PHOTOS_PER_PAGE)
+      );
+
+      const snapshot = await getDocs(moreQuery);
+      const morePhotos: Photo[] = [];
+
+      snapshot.forEach(doc => {
+        morePhotos.push({ id: doc.id, ...doc.data() } as Photo);
+      });
+
+      setPhotos(prev => [...prev, ...morePhotos]);
+      setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+      setHasMore(snapshot.docs.length === PHOTOS_PER_PAGE);
+    } catch (error) {
+      console.error('Error loading more photos:', error);
+      setError('Failed to load more photos');
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -507,7 +606,7 @@ export default function PhotoGalleryPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{photos.length}</div>
+              <div className="text-2xl font-bold">{totalStats.total}</div>
             </CardContent>
           </Card>
           <Card>
@@ -517,9 +616,7 @@ export default function PhotoGalleryPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {photos.filter(p => p.featured).length}
-              </div>
+              <div className="text-2xl font-bold">{totalStats.featured}</div>
             </CardContent>
           </Card>
           <Card>
@@ -527,9 +624,7 @@ export default function PhotoGalleryPage() {
               <CardTitle className="text-sm font-medium">Event Types</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {new Set(photos.map(p => p.eventType)).size}
-              </div>
+              <div className="text-2xl font-bold">{totalStats.eventTypes}</div>
             </CardContent>
           </Card>
           <Card>
@@ -537,19 +632,7 @@ export default function PhotoGalleryPage() {
               <CardTitle className="text-sm font-medium">This Month</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {
-                  photos.filter(p => {
-                    const photoDate = p.createdAt?.toDate();
-                    const now = new Date();
-                    return (
-                      photoDate &&
-                      photoDate.getMonth() === now.getMonth() &&
-                      photoDate.getFullYear() === now.getFullYear()
-                    );
-                  }).length
-                }
-              </div>
+              <div className="text-2xl font-bold">{totalStats.thisMonth}</div>
             </CardContent>
           </Card>
         </div>
@@ -566,11 +649,10 @@ export default function PhotoGalleryPage() {
                 size="sm"
                 onClick={() => setFilterEventType('all')}
               >
-                All ({photos.length})
+                All ({totalStats.total})
               </Button>
               {EVENT_TYPES.map(type => {
-                const count = photos.filter(p => p.eventType === type).length;
-                if (count === 0) return null;
+                // For now, show all event types - we can optimize this later with separate counts
                 return (
                   <Button
                     key={type}
@@ -578,7 +660,7 @@ export default function PhotoGalleryPage() {
                     size="sm"
                     onClick={() => setFilterEventType(type)}
                   >
-                    {type} ({count})
+                    {type}
                   </Button>
                 );
               })}
@@ -704,6 +786,27 @@ export default function PhotoGalleryPage() {
             ))
           )}
         </div>
+
+        {/* Load More Button */}
+        {hasMore && !loading && filteredPhotos.length > 0 && (
+          <div className="flex justify-center">
+            <Button
+              onClick={loadMorePhotos}
+              disabled={loadingMore}
+              variant="outline"
+              size="lg"
+            >
+              {loadingMore ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading more...
+                </>
+              ) : (
+                <>Load More Photos</>
+              )}
+            </Button>
+          </div>
+        )}
 
         {/* View Dialog */}
         <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
