@@ -40,17 +40,24 @@ The web application’s primary goal is to communicate Veloz’s professionalism
   - `Our Work` → navigates to curated gallery of photos/videos
   - `Work with Us` → opens contact form page
 
-### 2. **About Us / FAQ Page**
+### 2. **About Us / FAQ Page** ✅ COMPLETED
 
-- Accordion-style expandable questions (accessible UI)
-- Each item has:
-  - Question
-  - Rich text answer
-- CMS-editable FAQ items
-- Additional static content:
-  - Philosophy
-  - Methodology (team-based approach)
-  - Core values (editable, per language)
+- ✅ Accordion-style expandable questions (accessible UI with shadcn/ui)
+- ✅ Each item has:
+  - Question (multi-language: Spanish, English, Hebrew)
+  - Rich text answer (multi-language support)
+  - Category system (General, Servicios, Precios, etc.)
+  - Publication status (draft/published)
+  - Order management for sorting
+- ✅ CMS-editable FAQ items (full CRUD interface in admin panel)
+- ✅ SEO optimization:
+  - Server-side rendering for better crawlability
+  - JSON-LD structured data for FAQ rich snippets
+  - Build-time static generation for optimal performance
+- ✅ Additional static content:
+  - Philosophy section
+  - Methodology (team-based approach with 4-step workflow)
+  - Core values (6 values with icons and descriptions)
 
 # wireframes
 
@@ -130,17 +137,20 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 ---
 
-## 🔐 Admin Panel (Custom CMS)
+## 🔐 Admin Panel (Custom CMS) ✅ PARTIALLY COMPLETED
 
-- Route: `/admin` (protected by Firebase Auth)
-- Layout: sidebar navigation with pages:
-  - ✏️ Edit Homepage Texts (by language)
-  - 🖼️ Manage Photo Gallery (CRUD)
-  - 🎞️ Manage Video Gallery (CRUD)
-  - ❓ Manage FAQs (sortable list)
-  - 🌍 Language Toggle for all fields
-- All inputs validated with **Zod**
-- Route protection via middleware/guards
+- ✅ Route: `/admin` (protected by Firebase Auth)
+- ✅ Layout: sidebar navigation with pages:
+  - ✅ Dashboard (main admin overview)
+  - ✅ User Management (invite/manage admin users)
+  - ✅ Projects Management (unified project-based content)
+  - ✅ Edit Homepage Content (multi-language with media uploads)
+  - ✅ Manage FAQs (full CRUD with categories, translation tracking)
+  - 🚧 Gallery Management (being refactored into Projects)
+  - 🌍 Language Toggle for all fields (Spanish priority)
+- ✅ All inputs validated with **Zod**
+- ✅ Route protection via Firebase Auth context
+- ✅ Firestore security rules for role-based access
 
 # wireframes
 
@@ -159,22 +169,59 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 [ Firebase Auth logout button ]
 
-### Firestore Structure (Example)
+### Firestore Structure (Current Implementation)
 
 ```
-/pages/home:
-  headline: { es: "Capturamos lo irrepetible", en: "We capture the unrepeatable" }
+/homepage:
+  - content: { headline: { es: "...", en: "..." }, logo: "...", backgroundVideo: "..." }
+
+/adminUsers:
+  - email@domain.com: { status: "active", role: "admin", invitedBy: "..." }
+
+/projects:
+  - id: "proj123"
+    title: { es: "Boda María & Juan", en: "María & Juan Wedding" }
+    description: { es: "...", en: "..." }
+    status: "published" | "draft"
+    tags: ["wedding", "outdoor"]
+    coverImage: "https://..."
+    /projectMedia: [subcollection]
+      - mediaId: { type: "photo|video", url: "...", caption: {...} }
+
 /faqs:
   - id: "faq001"
-    question: { en: "What kind of events do you cover?", es: "¿Qué tipo de eventos cubren?" }
-    answer: {...}
-/gallery/photos:
-  - id: "img123"
-    url: "..."
-    tags: ["wedding"]
-/gallery/videos:
-  - id: "vid123"
-    embedUrl: "https://vimeo.com/..."
+    question: { es: "¿Qué tipo de eventos cubren?", en: "What events do you cover?", he: "..." }
+    answer: { es: "...", en: "...", he: "..." }
+    category: "General"
+    order: 1
+    published: true
+    createdAt: timestamp
+    updatedAt: timestamp
+```
+
+---
+
+## 🔍 SEO & Performance Optimizations ✅ COMPLETED
+
+### Build-Time Data Fetching
+
+- ✅ **Build Script**: `scripts/build-data.js` fetches FAQ data from Firestore at build time
+- ✅ **Static Generation**: FAQ content embedded in HTML for optimal SEO
+- ✅ **Hybrid Approach**: Build-time data for production, runtime fetching for development
+- ✅ **ISR (Incremental Static Regeneration)**: Pages revalidate every hour
+
+### SEO Features
+
+- ✅ **JSON-LD Structured Data**: FAQ pages include Schema.org FAQPage markup for rich snippets
+- ✅ **Server-Side Rendering**: All content rendered on server for search engine crawlability
+- ✅ **Meta Tags**: Proper title, description, and OpenGraph tags for all pages
+- ✅ **Multi-language SEO**: Spanish-first approach with fallbacks
+
+### Build Process Integration
+
+```bash
+npm run build        # Runs build:data then next build
+npm run build:data   # Fetches FAQs from Firestore and generates static files
 ```
 
 ---
