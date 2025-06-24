@@ -21,6 +21,32 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 - Icons: **Lucide Icons** (clean and customizable)
 - UI Components: **shadcn/ui** → High-quality, accessible components built on Radix UI
 
+### 🎨 Theme System & Color Consistency
+
+**CRITICAL RULE**: All components and pages MUST use the theme color system defined in `tailwind.config.ts` and `globals.css`.
+
+**NEVER use hard-coded Tailwind colors like:**
+
+- ❌ `slate-50`, `slate-100`, `blue-600`, `purple-500`, etc.
+- ❌ `text-slate-800`, `bg-white`, `border-gray-200`, etc.
+
+**ALWAYS use theme variables:**
+
+- ✅ `background`, `foreground` for main colors
+- ✅ `primary`, `primary-foreground` for brand colors
+- ✅ `card`, `card-foreground` for card backgrounds
+- ✅ `muted`, `muted-foreground` for secondary text
+- ✅ `accent`, `accent-foreground` for highlights
+- ✅ `border` for borders
+- ✅ `destructive`, `destructive-foreground` for error states
+
+**Benefits:**
+
+- Automatic light/dark mode support
+- Consistent brand colors across the entire application
+- Easy theme updates and maintenance
+- Better accessibility with proper contrast ratios
+
 ## 🌍 Multilanguage Support
 
 - Library: **i18next + react-i18next**

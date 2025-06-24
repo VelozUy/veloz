@@ -137,14 +137,14 @@ export default async function AboutPage() {
         />
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16 space-y-16">
           {/* Hero Section */}
           <div className="text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Sobre Nosotros
             </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Somos un equipo apasionado dedicado a capturar los momentos más
               importantes de tu vida con excelencia, calidez y agilidad.
             </p>
@@ -153,15 +153,15 @@ export default async function AboutPage() {
           {/* Philosophy Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Nuestra Filosofía
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
 
-            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+            <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
               <CardContent className="p-8 md:p-12">
-                <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed text-center max-w-4xl mx-auto">
+                <p className="text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
                   Creemos que cada evento es único y merece ser documentado con
                   la máxima dedicación. Nuestro enfoque no es solo capturar
                   imágenes, sino contar historias que perduren en el tiempo.
@@ -175,10 +175,10 @@ export default async function AboutPage() {
           {/* Methodology Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Nuestra Metodología
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -210,18 +210,16 @@ export default async function AboutPage() {
               ].map((item, index) => (
                 <Card
                   key={index}
-                  className="group hover:shadow-lg transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0"
+                  className="group hover:shadow-lg transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
                 >
                   <CardContent className="p-6 text-center space-y-4">
-                    <div className="text-3xl font-bold text-blue-500 group-hover:text-purple-500 transition-colors">
+                    <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
                       {item.step}
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+                    <h3 className="text-xl font-semibold text-foreground">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      {item.description}
-                    </p>
+                    <p className="text-muted-foreground">{item.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -231,10 +229,10 @@ export default async function AboutPage() {
           {/* Core Values Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Nuestros Valores
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -243,16 +241,16 @@ export default async function AboutPage() {
                 return (
                   <Card
                     key={index}
-                    className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0"
+                    className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
                   >
                     <CardContent className="p-6 space-y-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <IconComponent className="w-6 h-6 text-primary-foreground" />
                       </div>
-                      <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+                      <h3 className="text-xl font-semibold text-foreground">
                         {value.title}
                       </h3>
-                      <p className="text-slate-600 dark:text-slate-400">
+                      <p className="text-muted-foreground">
                         {value.description}
                       </p>
                     </CardContent>
@@ -265,21 +263,21 @@ export default async function AboutPage() {
           {/* FAQ Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-200 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 Preguntas Frecuentes
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
 
             {faqs.length > 0 ? (
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
                 <CardContent className="p-6 md:p-8">
                   <Accordion type="single" collapsible className="space-y-4">
                     {faqs.map((faq, index) => (
                       <AccordionItem
                         key={faq.id}
                         value={`item-${index}`}
-                        className="border border-slate-200 dark:border-slate-700 rounded-lg px-4"
+                        className="border border-border rounded-lg px-4"
                       >
                         <AccordionTrigger className="text-left hover:no-underline py-4">
                           <div className="flex items-start gap-3 text-left">
@@ -291,7 +289,7 @@ export default async function AboutPage() {
                                 {faq.category}
                               </Badge>
                             )}
-                            <span className="font-medium text-slate-800 dark:text-slate-200">
+                            <span className="font-medium text-foreground">
                               {faq.question.es ||
                                 faq.question.en ||
                                 faq.question.he}
@@ -299,7 +297,7 @@ export default async function AboutPage() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="pb-4 pt-2">
-                          <div className="text-slate-600 dark:text-slate-400 leading-relaxed pl-3">
+                          <div className="text-muted-foreground leading-relaxed pl-3">
                             {faq.answer.es || faq.answer.en || faq.answer.he}
                           </div>
                         </AccordionContent>
@@ -309,14 +307,14 @@ export default async function AboutPage() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
                 <CardContent className="p-8 text-center">
                   <div className="space-y-4">
                     <div className="text-4xl">❓</div>
-                    <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+                    <h3 className="text-xl font-semibold text-foreground">
                       Preguntas Frecuentes
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-muted-foreground">
                       Nuestras preguntas frecuentes aparecerán aquí pronto.
                       Mientras tanto, no dudes en contactarnos directamente para
                       cualquier consulta.
@@ -329,20 +327,20 @@ export default async function AboutPage() {
 
           {/* Call to Action */}
           <section className="text-center space-y-6">
-            <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-0 shadow-xl">
+            <Card className="bg-gradient-to-r from-primary to-accent border-0 shadow-xl">
               <CardContent className="p-8 md:p-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
                   ¿Listo para crear recuerdos inolvidables?
                 </h2>
-                <p className="text-blue-100 text-lg mb-6 max-w-2xl mx-auto">
+                <p className="text-primary-foreground/80 text-lg mb-6 max-w-2xl mx-auto">
                   Contáctanos hoy mismo y descubre cómo podemos hacer que tu
                   evento sea extraordinario.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-semibold transition-colors">
+                  <button className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 px-8 py-3 rounded-lg font-semibold transition-colors">
                     Ver Nuestro Trabajo
                   </button>
-                  <button className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg font-semibold transition-colors">
+                  <button className="bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8 py-3 rounded-lg font-semibold transition-colors">
                     Trabajar con Nosotros
                   </button>
                 </div>
