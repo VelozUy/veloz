@@ -13,14 +13,13 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-  Image,
-  Video,
   HelpCircle,
   Home,
   Plus,
   BarChart3,
   Calendar,
   User,
+  FolderOpen,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -57,17 +56,17 @@ export default function AdminDashboardPage() {
       color: 'text-blue-500',
     },
     {
+      title: 'Create Project',
+      description: 'Start a new photography/videography project',
+      icon: FolderOpen,
+      href: '/admin/projects',
+      color: 'text-green-500',
+    },
+    {
       title: 'Edit Homepage',
       description: 'Update homepage content and headlines',
       icon: Home,
       href: '/admin/homepage',
-      color: 'text-green-500',
-    },
-    {
-      title: 'Add Photos',
-      description: 'Upload new photos to the gallery',
-      icon: Image,
-      href: '/admin/gallery/photos',
       color: 'text-purple-500',
     },
     {
@@ -81,16 +80,16 @@ export default function AdminDashboardPage() {
 
   const stats = [
     {
-      title: 'Total Photos',
+      title: 'Total Projects',
       value: '0',
-      description: 'Images in gallery',
-      icon: Image,
+      description: 'Active projects',
+      icon: FolderOpen,
     },
     {
-      title: 'Total Videos',
+      title: 'Published',
       value: '0',
-      description: 'Videos in gallery',
-      icon: Video,
+      description: 'Live projects',
+      icon: BarChart3,
     },
     {
       title: 'FAQ Items',

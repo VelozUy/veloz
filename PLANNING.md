@@ -92,6 +92,7 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 [ 🖼️ 🎞️ 🖼️ ]
 
 - Photos and videos appear side by side in a single responsive grid.
+- Media supports multiple aspect ratios: 1:1, 16:9, and 9:16.
 - Videos display as preview thumbnails with play icon overlay.
 - All media cards have hover effects and modal/lightbox on click.
 

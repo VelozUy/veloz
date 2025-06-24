@@ -165,18 +165,27 @@ _Last updated: December 2024_
 - [x] **[High] Add user status management** - ✅ COMPLETED - Activate/deactivate user access _(Completed: Dec 20, 2024)_
 - [x] **[Medium] Add user access validation** - ✅ COMPLETED - Check Firestore for user permissions _(Completed: Dec 20, 2024)_
 
-### Content Management
+### Project-Based Content Management
+
+- [x] **[Critical] Refactor to project-based CMS** - ✅ COMPLETED - Replaced separate photo/video pages with unified project management system _(Completed: Dec 21, 2024)_
+- [x] **[High] Create projects list view** - ✅ COMPLETED - Comprehensive project management with grid view, stats, and project cards _(Completed: Dec 21, 2024)_
+- [x] **[High] Create project creation form** - ✅ COMPLETED - Multi-language project creation with metadata, tags, and status management _(Completed: Dec 21, 2024)_
+- [x] **[High] Create project edit functionality** - ✅ COMPLETED - Full project editing with multi-language support _(Completed: Dec 21, 2024)_
+- [x] **[High] Add project delete functionality** - ✅ COMPLETED - Safe delete with confirmation and associated media cleanup _(Completed: Dec 21, 2024)_
+- [x] **[High] Create project detail page** - ✅ COMPLETED - Individual project view with media management interface _(Completed: Dec 21, 2024)_
+- [x] **[High] Update admin navigation** - ✅ COMPLETED - Replaced gallery links with single Projects entry _(Completed: Dec 21, 2024)_
+- [x] **[High] Update Firestore structure** - ✅ COMPLETED - New projects collection with projectMedia subcollection _(Completed: Dec 21, 2024)_
+- [ ] **[High] Add media upload to projects** - Implement photo/video upload within project context
+- [ ] **[High] Add media management within projects** - Edit, delete, reorder media within projects
+- [ ] **[Medium] Add project cover image selection** - Choose cover image from uploaded photos
+- [ ] **[Medium] Add drag-and-drop media upload** - Direct file upload to project pages
+- [ ] **[Medium] Add media bulk operations** - Select and manage multiple media items
+- [ ] **[Low] Add project templates** - Pre-configured project types
+
+### Legacy Content Management (To be integrated into projects)
 
 - [ ] **[High] Create homepage text editor** - Edit homepage content
 - [ ] **[High] Add multi-language text fields** - Edit content in all languages
-- [x] **[High] Create photo gallery list view** - ✅ COMPLETED - Comprehensive photo management with grid view, stats, filters, and metadata display _(Completed: Dec 20, 2024)_
-- [x] **[High] Create photo upload component** - ✅ COMPLETED - File upload with Firebase Storage integration, validation, and metadata forms _(Completed: Dec 20, 2024)_
-- [x] **[High] Create photo edit component** - ✅ COMPLETED - Full edit functionality with form validation and real-time updates _(Completed: Dec 20, 2024)_
-- [x] **[High] Add photo delete functionality** - ✅ COMPLETED - Safe delete with confirmation and Firebase Storage cleanup _(Completed: Dec 20, 2024)_
-- [x] **[High] Create video gallery list view** - ✅ COMPLETED - Video management with platform detection, thumbnails, and metadata display _(Completed: Dec 20, 2024)_
-- [x] **[High] Create video add component** - ✅ COMPLETED - YouTube/Vimeo embed URL support with automatic platform detection _(Completed: Dec 20, 2024)_
-- [x] **[High] Create video edit component** - ✅ COMPLETED - Full edit functionality for video metadata and settings _(Completed: Dec 20, 2024)_
-- [x] **[High] Add video delete functionality** - ✅ COMPLETED - Safe delete with confirmation dialog _(Completed: Dec 20, 2024)_
 - [ ] **[High] Create FAQ list view** - Display all FAQ items
 - [ ] **[High] Create FAQ add component** - Add new FAQ items
 - [ ] **[High] Create FAQ edit component** - Edit existing FAQ items

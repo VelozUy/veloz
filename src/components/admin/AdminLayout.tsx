@@ -7,13 +7,12 @@ import { Button } from '@/components/ui/button';
 import {
   LayoutDashboard,
   Home,
-  Image,
-  Video,
   HelpCircle,
   LogOut,
   Menu,
   X,
   User,
+  FolderOpen,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,9 +24,8 @@ interface AdminLayoutProps {
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Users', href: '/admin/users', icon: User },
+  { name: 'Projects', href: '/admin/projects', icon: FolderOpen },
   { name: 'Homepage', href: '/admin/homepage', icon: Home },
-  { name: 'Photo Gallery', href: '/admin/gallery/photos', icon: Image },
-  { name: 'Video Gallery', href: '/admin/gallery/videos', icon: Video },
   { name: 'FAQ Manager', href: '/admin/faqs', icon: HelpCircle },
 ];
 
