@@ -65,7 +65,7 @@ export default function Navigation() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors duration-200 group"
+                    className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
                   >
                     <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                     <span className="font-medium">{item.name}</span>
@@ -83,7 +83,7 @@ export default function Navigation() {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -98,7 +98,9 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled
+          ? 'bg-background/95 backdrop-blur-md shadow-lg'
+          : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4">
@@ -119,7 +121,7 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
@@ -137,7 +139,7 @@ export default function Navigation() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -151,7 +153,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t">
             <div className="px-4 py-6 space-y-4">
               {navItems.map(item => {
                 const Icon = item.icon;
@@ -159,11 +161,11 @@ export default function Navigation() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-muted/50 transition-colors group"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <Icon className="w-5 h-5 text-primary group-hover:text-accent transition-colors" />
-                    <span className="font-medium text-slate-700">
+                    <span className="font-medium text-foreground">
                       {item.name}
                     </span>
                   </Link>

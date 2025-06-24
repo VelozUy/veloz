@@ -15,7 +15,7 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 ## 🎨 Aesthetic Guidelines
 
-- Core brand concepts: *Elegance, Warmth, Effectiveness, Optimization, Agility, Boldness*
+- Core brand concepts: _Elegance, Warmth, Effectiveness, Optimization, Agility, Boldness_
 - Smooth animations: **Framer Motion**
 - Styling framework: **Tailwind CSS** with **shadcn/ui** components
 - Icons: **Lucide Icons** (clean and customizable)
@@ -52,6 +52,22 @@ The web application’s primary goal is to communicate Veloz’s professionalism
   - Methodology (team-based approach)
   - Core values (editable, per language)
 
+# wireframes
+
+[ Page Title: About Us ]
+
+[ Static Intro Text ]
+
+[ Accordion FAQ ]
+
+> What kind of events do you cover? [+]
+> How fast is delivery? [+]
+> Can I choose who captures my event? [+]
+
+[ Section: Our Philosophy ]
+[ Section: Methodology (Icons/Steps) ]
+[ Section: Our Values (Icon + Text Grid) ]
+
 ### 3. **Our Work** (Gallery)
 
 - Filterable grid by event type:
@@ -62,6 +78,22 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 - Video embeds:
   - Vimeo, YouTube, or Mux embeds
   - Stored in CMS with metadata (title, description, language)
+
+# wireframes
+
+[ Page Title: Our Work ]
+
+[ Filter Bar ]
+[ All | Weddings | Birthdays | Corporate | Cultural | Others ]
+
+[ Mixed Media Grid ]
+[ 🖼️ 🎞️ 🖼️ ]
+[ 🎞️ 🖼️ 🎞️ ]
+[ 🖼️ 🎞️ 🖼️ ]
+
+- Photos and videos appear side by side in a single responsive grid.
+- Videos display as preview thumbnails with play icon overlay.
+- All media cards have hover effects and modal/lightbox on click.
 
 ### 4. **Work With Us** (Contact Form)
 
@@ -80,6 +112,21 @@ The web application’s primary goal is to communicate Veloz’s professionalism
   - Send confirmation email to internal team
   - Optional confirmation screen/message for user
 
+# wireframes
+
+[ Page Title: Let's work together ]
+
+[ Full Name ] [ Input ]
+[ Email ] [ Input ]
+[ Phone ] [ Optional Input ]
+[ Event Type ] [ Dropdown ]
+[ Event Date ] [ Date Picker ]
+[ Location ] [ Input ]
+[ Services Needed ] [ ☐ Photos ☐ Videos ☐ Both ☐ Other ]
+[ Comments ] [ Multiline Text Area ]
+[ Upload Reference ] [ File Upload ]
+[ Schedule a Zoom ] [ Checkbox ]
+
 ---
 
 ## 🔐 Admin Panel (Custom CMS)
@@ -93,6 +140,23 @@ The web application’s primary goal is to communicate Veloz’s professionalism
   - 🌍 Language Toggle for all fields
 - All inputs validated with **Zod**
 - Route protection via middleware/guards
+
+# wireframes
+
+[ Sidebar Navigation ]
+
+- 🏠 Dashboard
+- ✏️ Edit Homepage
+- 🖼️ Photo Gallery
+- 🎞️ Video Gallery
+- ❓ FAQ Manager
+- 🌍 Language Settings
+
+[ Main Panel ]
+[ List of items or edit form ]
+[ + Add New | 🖊️ Edit | 🗑️ Delete ]
+
+[ Firebase Auth logout button ]
 
 ### Firestore Structure (Example)
 
@@ -145,4 +209,3 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 5. Configure `i18next` with basic translation loading
 6. Set up domain veloz.com.uy in Netlify DNS
 7. Define image/video hosting strategy (Cloudinary vs Firebase Storage)
-

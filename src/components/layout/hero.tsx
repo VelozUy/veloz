@@ -94,7 +94,7 @@ export default function Hero({
 
           {/* Fallback background - shown until video is ready */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black transition-opacity duration-1000 ${
+            className={`absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary transition-opacity duration-1000 ${
               videoCanPlay ? 'opacity-0' : 'opacity-100'
             }`}
           />
@@ -107,8 +107,8 @@ export default function Hero({
           }}
         />
       ) : (
-        // Black to off-black gradient background - elegant and minimal
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+        // Theme-based gradient background - elegant and minimal
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary" />
       )}
 
       {/* Elegant overlay for text readability - reduced opacity for subtlety */}
@@ -169,7 +169,7 @@ export default function Hero({
                     : 'text-4xl md:text-5xl' // Small when logo is large and centered
               }`}
             >
-              <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-foreground via-muted-foreground to-primary-foreground bg-clip-text text-transparent">
                 Veloz
               </span>
             </h1>
