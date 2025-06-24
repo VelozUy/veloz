@@ -1,0 +1,136 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is an admin
+    function isAdmin() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email));
+    }
+    
+    // Helper function to check if user is active admin
+    function isActiveAdmin() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email)) &&
+        get(/databases/$(database)/documents/adminUsers/$(request.auth.token.email)).data.status == 'active';
+    }
+    
+    // Helper function to check if user is owner
+    function isOwner() {
+      return request.auth != null && request.auth.token.email == resource.data.ownerEmail;
+    }
+    
+    // Admin Users Collection - Only authenticated admin users can manage
+    match /adminUsers/{email} {
+      allow read, write: if isActiveAdmin() || request.auth.token.email == email;
+      allow create: if isActiveAdmin(); // Only admins can invite new users
+    }
+    
+    // Projects Collection - Admin access required for writes, public read for published
+    match /projects/{projectId} {
+      allow read: if resource.data.status == 'published' || isActiveAdmin();
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+      
+      // Project Media Subcollection
+      match /projectMedia/{mediaId} {
+        allow read: if get(/databases/$(database)/documents/projects/$(projectId)).data.status == 'published' || isActiveAdmin();
+        allow write, delete: if isActiveAdmin();
+        allow create: if isActiveAdmin();
+      }
+    }
+    
+    // Homepage Content - Admin write, public read
+    match /homepage/{document} {
+      allow read: if true; // Public read access for homepage content
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
+    // Pages Collection - Admin write, public read
+    match /pages/{document} {
+      allow read: if true; // Public read access for static pages
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
+    // FAQs Collection - Admin write, public read
+    match /faqs/{document} {
+      allow read: if true; // Public read access for FAQs
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
+    // Gallery Collections (Legacy) - Admin write, public read for published items
+    match /gallery/{document=**} {
+      allow read: if resource.data.status == 'published' || isActiveAdmin();
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
+    // Contact Form Submissions (Optional) - Allow writes for contact forms
+    match /contacts/{document} {
+      allow create: if true; // Allow anyone to submit contact forms
+      allow read, write, delete: if isActiveAdmin(); // Only admins can manage submissions
+    }
+    
+    // Test/Diagnostics Collections - Admin only
+    match /test/{document=**} {
+      allow read, write, delete: if isActiveAdmin();
+    }
+    
+    match /diagnostics/{document=**} {
+      allow read, write, delete: if isActiveAdmin();
+    }
+    
+    // Users Collection (If used for public user data)
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isActiveAdmin(); // Admins can read all user data
+    }
+    
+    // Default deny rule for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// Firebase Storage Rules
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Homepage media (logos, backgrounds) - Admin write, public read
+    match /homepage/{allPaths=**} {
+      allow read: if true; // Public read for homepage media
+      allow write, delete: if request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email));
+    }
+    
+    // Project media - Admin write, public read for published projects
+    match /projects/{projectId}/{allPaths=**} {
+      allow read: if true; // Public read for project media (will be filtered by project status in app)
+      allow write, delete: if request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email));
+    }
+    
+    // General gallery media - Admin write, public read
+    match /gallery/{allPaths=**} {
+      allow read: if true; // Public read for gallery media
+      allow write, delete: if request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email));
+    }
+    
+    // Contact form uploads - Allow uploads, admin management
+    match /uploads/contacts/{allPaths=**} {
+      allow create: if true; // Allow contact form file uploads
+      allow read, write, delete: if request.auth != null && 
+        exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email));
+    }
+    
+    // Default deny for other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+} 
