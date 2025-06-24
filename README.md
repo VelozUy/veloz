@@ -89,6 +89,7 @@ This project is optimized for Netlify deployment with automatic builds from Git.
    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
    NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+   NEXT_PUBLIC_OWNER_EMAIL=your_email@example.com
    ```
 
 3. **Deploy**
@@ -160,7 +161,14 @@ The project uses Firebase for:
 
 - **Firestore** - Content management database
 - **Storage** - Image and video file storage
-- **Authentication** - Admin panel access
+- **Authentication** - Google OAuth for admin panel access
+
+### Admin Panel Access
+
+- **Owner Access**: Set your email in `NEXT_PUBLIC_OWNER_EMAIL` for permanent access
+- **User Invitations**: Only invited users can access the admin panel
+- **Google OAuth**: All users must sign in with Google accounts
+- **User Management**: Invite and manage admin users at `/admin/users`
 
 See `ENVIRONMENT.md` for detailed Firebase configuration instructions.
 

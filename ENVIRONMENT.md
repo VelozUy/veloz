@@ -14,6 +14,9 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+
+# Admin Configuration
+NEXT_PUBLIC_OWNER_EMAIL=your_email@example.com
 ```
 
 ## Local Development
@@ -37,6 +40,23 @@ NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
 4. Scroll down to "Your apps" section
 5. Click on the web app configuration icon
 6. Copy the config values to the corresponding environment variables
+
+## Google OAuth Setup
+
+To enable Google sign-in for the admin panel:
+
+1. In Firebase Console, go to Authentication > Sign-in method
+2. Enable "Google" as a sign-in provider
+3. Add your domain to authorized domains
+4. For local development, add `localhost` to authorized domains
+5. Set the owner email in `NEXT_PUBLIC_OWNER_EMAIL` environment variable
+
+## Admin User System
+
+- The owner email (set in `NEXT_PUBLIC_OWNER_EMAIL`) has permanent access
+- All other users must be invited through the admin panel
+- Only invited users with active status can sign in
+- Users are stored in Firestore collection `adminUsers`
 
 ## Security Note
 
