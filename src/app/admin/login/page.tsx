@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
       const user = result.user;
 
       if (!user.email) {
-        setError('Unable to retrieve email from Google account.');
+        setError('No se pudo obtener el email de la cuenta de Google.');
         return;
       }
 
@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
         // Sign out the user immediately
         await auth.signOut();
         setError(
-          'Access denied. You need to be invited by an administrator to access this system.'
+          'Acceso denegado. Necesitas ser invitado por un administrador para acceder a este sistema.'
         );
         return;
       }
@@ -77,23 +77,23 @@ export default function AdminLoginPage() {
       const firebaseError = error as { code?: string; message?: string };
       switch (firebaseError.code) {
         case 'auth/popup-closed-by-user':
-          setError('Sign-in was cancelled.');
+          setError('El inicio de sesión fue cancelado.');
           break;
         case 'auth/popup-blocked':
           setError(
-            'Pop-up was blocked by your browser. Please allow pop-ups and try again.'
+            'La ventana emergente fue bloqueada por tu navegador. Por favor permite ventanas emergentes e intenta de nuevo.'
           );
           break;
         case 'auth/account-exists-with-different-credential':
           setError(
-            'An account already exists with this email using a different sign-in method.'
+            'Ya existe una cuenta con este email usando un método de inicio de sesión diferente.'
           );
           break;
         case 'auth/cancelled-popup-request':
-          setError('Sign-in was cancelled.');
+          setError('El inicio de sesión fue cancelado.');
           break;
         default:
-          setError('Sign-in failed. Please try again.');
+          setError('Error al iniciar sesión. Por favor intenta de nuevo.');
       }
     } finally {
       setIsLoading(false);
@@ -108,20 +108,21 @@ export default function AdminLoginPage() {
           <div className="flex items-center justify-center mb-4">
             <Lock className="w-8 h-8 text-primary mr-2" />
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Veloz Admin
+              Administración Veloz
             </h1>
           </div>
           <p className="text-muted-foreground">
-            Sign in with Google to access the content management system
+            Inicia sesión con Google para acceder al sistema de gestión de
+            contenido
           </p>
         </div>
 
         {/* Login Card */}
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle>Administrator Sign In</CardTitle>
+            <CardTitle>Inicio de Sesión de Administrador</CardTitle>
             <CardDescription>
-              Only invited administrators can access this system
+              Solo los administradores invitados pueden acceder a este sistema
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -142,12 +143,12 @@ export default function AdminLoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Signing in...
+                  Iniciando sesión...
                 </>
               ) : (
                 <>
                   <Mail className="w-4 h-4 mr-2" />
-                  Continue with Google
+                  Continuar con Google
                 </>
               )}
             </Button>
@@ -155,7 +156,8 @@ export default function AdminLoginPage() {
             {/* Info */}
             <div className="text-center text-sm text-muted-foreground">
               <p>
-                You must be invited by an administrator to access this system.
+                Debes ser invitado por un administrador para acceder a este
+                sistema.
               </p>
             </div>
           </CardContent>
@@ -163,7 +165,7 @@ export default function AdminLoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-muted-foreground">
-          <p>© 2024 Veloz. All rights reserved.</p>
+          <p>© 2024 Veloz. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>

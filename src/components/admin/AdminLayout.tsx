@@ -22,11 +22,11 @@ interface AdminLayoutProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Users', href: '/admin/users', icon: User },
-  { name: 'Projects', href: '/admin/projects', icon: FolderOpen },
-  { name: 'Homepage', href: '/admin/homepage', icon: Home },
-  { name: 'FAQ Manager', href: '/admin/faqs', icon: HelpCircle },
+  { name: 'Panel Principal', href: '/admin', icon: LayoutDashboard },
+  { name: 'Usuarios', href: '/admin/users', icon: User },
+  { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
+  { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
+  { name: 'Preguntas Frecuentes', href: '/admin/faqs', icon: HelpCircle },
 ];
 
 export default function AdminLayout({ children, title }: AdminLayoutProps) {
@@ -48,7 +48,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Cargando...</p>
         </div>
       </div>
     );
@@ -132,7 +132,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                 <p className="text-sm font-medium text-foreground truncate">
                   {user.email}
                 </p>
-                <p className="text-xs text-muted-foreground">Administrator</p>
+                <p className="text-xs text-muted-foreground">Administrador</p>
               </div>
             </div>
             <Button
@@ -142,7 +142,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
               className="w-full"
             >
               <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
+              Cerrar Sesión
             </Button>
           </div>
         </div>
@@ -161,7 +161,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                 <Menu className="w-5 h-5" />
               </button>
               <h2 className="text-2xl font-bold text-foreground">
-                {title || 'Admin Dashboard'}
+                {title || 'Panel de Administración'}
               </h2>
             </div>
             <div className="hidden lg:flex items-center space-x-4">

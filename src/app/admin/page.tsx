@@ -37,7 +37,7 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Cargando...</p>
         </div>
       </div>
     );
@@ -49,29 +49,29 @@ export default function AdminDashboardPage() {
 
   const quickActions = [
     {
-      title: 'Manage Users',
-      description: 'Invite new administrators and manage access',
+      title: 'Gestionar Usuarios',
+      description: 'Invitar nuevos administradores y gestionar accesos',
       icon: User,
       href: '/admin/users',
       color: 'text-blue-500',
     },
     {
-      title: 'Create Project',
-      description: 'Start a new photography/videography project',
+      title: 'Crear Proyecto',
+      description: 'Iniciar un nuevo proyecto de fotografía/videografía',
       icon: FolderOpen,
       href: '/admin/projects',
       color: 'text-green-500',
     },
     {
-      title: 'Edit Homepage',
-      description: 'Update homepage content and headlines',
+      title: 'Editar Página Principal',
+      description: 'Actualizar contenido y títulos de la página principal',
       icon: Home,
       href: '/admin/homepage',
       color: 'text-purple-500',
     },
     {
-      title: 'Manage FAQs',
-      description: 'Add or edit frequently asked questions',
+      title: 'Gestionar Preguntas Frecuentes',
+      description: 'Agregar o editar preguntas frecuentes',
       icon: HelpCircle,
       href: '/admin/faqs',
       color: 'text-orange-500',
@@ -80,42 +80,42 @@ export default function AdminDashboardPage() {
 
   const stats = [
     {
-      title: 'Total Projects',
+      title: 'Proyectos Totales',
       value: '0',
-      description: 'Active projects',
+      description: 'Proyectos activos',
       icon: FolderOpen,
     },
     {
-      title: 'Published',
+      title: 'Publicados',
       value: '0',
-      description: 'Live projects',
+      description: 'Proyectos en vivo',
       icon: BarChart3,
     },
     {
-      title: 'FAQ Items',
+      title: 'Preguntas Frecuentes',
       value: '0',
-      description: 'Active questions',
+      description: 'Preguntas activas',
       icon: HelpCircle,
     },
     {
-      title: 'Last Updated',
-      value: 'Today',
-      description: 'Content modified',
+      title: 'Última Actualización',
+      value: 'Hoy',
+      description: 'Contenido modificado',
       icon: Calendar,
     },
   ];
 
   return (
-    <AdminLayout title="Dashboard">
+    <AdminLayout title="Panel Principal">
       <div className="space-y-8">
         {/* Welcome Section */}
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back! 👋
+            ¡Bienvenido de vuelta! 👋
           </h1>
           <p className="text-muted-foreground">
-            Here&apos;s what&apos;s happening with your Veloz content management
-            system.
+            Esto es lo que está pasando con tu sistema de gestión de contenido
+            Veloz.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ export default function AdminDashboardPage() {
         {/* Quick Actions */}
         <div>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Quick Actions
+            Acciones Rápidas
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {quickActions.map(action => {
@@ -174,7 +174,7 @@ export default function AdminDashboardPage() {
                     <Button asChild className="w-full">
                       <a href={action.href}>
                         <Plus className="w-4 h-4 mr-2" />
-                        Get Started
+                        Comenzar
                       </a>
                     </Button>
                   </CardContent>
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
         {/* Recent Activity */}
         <div>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Recent Activity
+            Actividad Reciente
           </h2>
           <Card>
             <CardContent className="p-6">
@@ -195,10 +195,11 @@ export default function AdminDashboardPage() {
                 <div className="text-center">
                   <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-foreground mb-2">
-                    No recent activity
+                    Sin actividad reciente
                   </h3>
                   <p className="text-muted-foreground">
-                    Start managing your content to see activity here.
+                    Cuando comiences a usar el sistema, verás la actividad
+                    reciente aquí.
                   </p>
                 </div>
               </div>

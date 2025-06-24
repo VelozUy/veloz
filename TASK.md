@@ -42,12 +42,14 @@ _Last updated: December 2024_
 - [x] **[High] Create Firebase config file** - Setup Firebase initialization
 - [x] **[High] Setup environment variables** - Configure Firebase credentials
 - [x] **[Medium] Test Firebase connection** - ✅ COMPLETED - All services verified working
+- [ ] **[Critical] Fix Firestore storage and database rules** - ⏰ **Before lunch** - Review and update security rules for proper production access - _Added: Dec 21, 2024_
 
 ### i18n Setup
 
 - [ ] **[High] Install i18next** - Add main internationalization library
 - [ ] **[High] Install react-i18next** - Add React integration for i18n
 - [ ] **[High] Create i18n config file** - Setup language configuration
+- [x] **[Critical] Configure Spanish as base language** - ✅ COMPLETED - Set Spanish as default/fallback language for admin interface since app will be used by Spanish-speaking admins - _Completed: Dec 21, 2024_
 - [ ] **[High] Create translation files for Spanish** - Setup es.json translation file
 - [ ] **[High] Create translation files for English** - Setup en.json translation file
 - [ ] **[Medium] Create translation files for Portuguese** - Setup pt.json translation file
@@ -56,6 +58,7 @@ _Last updated: December 2024_
 - [ ] **[Medium] Configure browser language detection** - Auto-detect user language
 - [ ] **[Medium] Create language switcher component** - Build language selection UI
 - [ ] **[Low] Add language persistence** - Remember user language choice
+- [ ] **[High] Add OpenAI integration for translations** - Integrate OpenAI API for automated content translation and dynamic language support - _Added: Dec 21, 2024_
 
 ---
 

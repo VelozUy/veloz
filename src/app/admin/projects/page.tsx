@@ -82,15 +82,15 @@ interface Project {
 }
 
 const EVENT_TYPES = [
-  'Wedding',
-  'Corporate Event',
-  'Birthday Party',
-  'Anniversary',
+  'Boda',
+  'Evento Corporativo',
+  'Fiesta de Cumpleaños',
+  'Aniversario',
   'Bar/Bat Mitzvah',
-  'Graduation',
+  'Graduación',
   'Baby Shower',
-  'Engagement',
-  'Other',
+  'Compromiso',
+  'Otro',
 ];
 
 const LANGUAGES = [
@@ -181,7 +181,7 @@ export default function ProjectsPage() {
         setLoading(false);
       } catch (error) {
         console.error('Error loading projects:', error);
-        setError('Failed to load projects');
+        setError('Error al cargar proyectos');
         setLoading(false);
       }
     };

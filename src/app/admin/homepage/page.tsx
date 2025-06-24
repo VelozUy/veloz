@@ -231,11 +231,13 @@ export default function HomepageAdminPage() {
             return;
           } else {
             setError(
-              'Unable to connect to Firebase. Please check your internet connection and try refreshing the page.'
+              'No se puede conectar a Firebase. Por favor verifica tu conexión a internet e intenta refrescar la página.'
             );
           }
         } else {
-          setError('Failed to load homepage content. Please try again.');
+          setError(
+            'Error al cargar el contenido de la página principal. Por favor intenta de nuevo.'
+          );
         }
         setLoading(false);
       }
@@ -262,7 +264,7 @@ export default function HomepageAdminPage() {
         updatedAt: serverTimestamp(),
       });
 
-      setSuccess('Homepage content saved successfully!');
+      setSuccess('¡Contenido de la página principal guardado exitosamente!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       console.error('Error saving homepage content:', error);
@@ -272,10 +274,12 @@ export default function HomepageAdminPage() {
         error.message.includes('client is offline')
       ) {
         setError(
-          'Unable to save changes - you appear to be offline. Please check your internet connection and try again.'
+          'No se pueden guardar los cambios - parece que estás desconectado. Por favor verifica tu conexión a internet e intenta de nuevo.'
         );
       } else {
-        setError('Failed to save homepage content. Please try again.');
+        setError(
+          'Error al guardar el contenido de la página principal. Por favor intenta de nuevo.'
+        );
       }
     } finally {
       setSaving(false);
@@ -296,16 +300,16 @@ export default function HomepageAdminPage() {
       const maxSize = type === 'video' ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100MB for video, 10MB for images
       if (file.size > maxSize) {
         throw new Error(
-          `File too large. Maximum size is ${maxSize / (1024 * 1024)}MB`
+          `Archivo demasiado grande. El tamaño máximo es ${maxSize / (1024 * 1024)}MB`
         );
       }
 
       if (type === 'video' && !file.type.startsWith('video/')) {
-        throw new Error('Please select a valid video file');
+        throw new Error('Por favor selecciona un archivo de video válido');
       }
 
       if (type !== 'video' && !file.type.startsWith('image/')) {
-        throw new Error('Please select a valid image file');
+        throw new Error('Por favor selecciona un archivo de imagen válido');
       }
 
       // Upload to Firebase Storage
@@ -366,7 +370,7 @@ export default function HomepageAdminPage() {
     } catch (error: unknown) {
       console.error('Error uploading file:', error);
       setError(
-        error instanceof Error ? error.message : 'Failed to upload file'
+        error instanceof Error ? error.message : 'Error al subir archivo'
       );
     } finally {
       setUploading(false);
@@ -399,11 +403,11 @@ export default function HomepageAdminPage() {
       }
 
       setContent(updatedContent);
-      setSuccess('Background image deleted successfully!');
+      setSuccess('¡Imagen de fondo eliminada exitosamente!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       console.error('Error deleting background image:', error);
-      setError('Failed to delete background image');
+      setError('Error al eliminar imagen de fondo');
     }
   };
 
@@ -451,13 +455,13 @@ export default function HomepageAdminPage() {
 
   if (loading) {
     return (
-      <AdminLayout title="Homepage Management">
+      <AdminLayout title="Gestión de Página Principal">
         <div className="flex flex-col items-center justify-center py-12">
           <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
           <p className="text-muted-foreground">
             {connectionRetries > 0
-              ? `Connecting to Firebase... (Attempt ${connectionRetries + 1}/3)`
-              : 'Loading homepage content...'}
+              ? `Conectando a Firebase... (Intento ${connectionRetries + 1}/3)`
+              : 'Cargando contenido de la página principal...'}
           </p>
         </div>
       </AdminLayout>
@@ -466,13 +470,13 @@ export default function HomepageAdminPage() {
 
   if (!content) {
     return (
-      <AdminLayout title="Homepage Management">
+      <AdminLayout title="Gestión de Página Principal">
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-foreground mb-4">
-            Content Not Found
+            Contenido No Encontrado
           </h2>
           <p className="text-muted-foreground">
-            Failed to load homepage content.
+            Error al cargar el contenido de la página principal.
           </p>
         </div>
       </AdminLayout>
@@ -480,34 +484,35 @@ export default function HomepageAdminPage() {
   }
 
   return (
-    <AdminLayout title="Homepage Management">
+    <AdminLayout title="Gestión de Página Principal">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
-              Homepage Management
+              Gestión de Página Principal
             </h1>
             <p className="text-muted-foreground">
-              Manage your homepage hero section content and media
+              Gestiona el contenido y medios de la sección hero de tu página
+              principal
             </p>
           </div>
 
           <div className="flex space-x-2">
             <Button variant="outline" onClick={togglePreview}>
               <Eye className="w-4 h-4 mr-2" />
-              Preview Site
+              Vista Previa
             </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
+                  Guardando...
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4 mr-2" />
-                  Save Changes
+                  Guardar Cambios
                 </>
               )}
             </Button>
@@ -519,12 +524,12 @@ export default function HomepageAdminPage() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Globe className="w-5 h-5 mr-2" />
-              Language Settings
+              Configuración de Idioma
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
-              <Label>Editing Language:</Label>
+              <Label>Idioma de Edición:</Label>
               <Select
                 value={currentLanguage}
                 onValueChange={setCurrentLanguage}
@@ -563,7 +568,7 @@ export default function HomepageAdminPage() {
                   className="ml-4"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
-                  Retry
+                  Reintentar
                 </Button>
               ) : null}
             </AlertDescription>
@@ -579,13 +584,13 @@ export default function HomepageAdminPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Type className="w-5 h-5 mr-2" />
-                  Headlines
+                  Títulos
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="headline">
-                    Main Headline (
+                    Título Principal (
                     {LANGUAGES.find(l => l.code === currentLanguage)?.name})
                   </Label>
                   <Input
@@ -608,13 +613,13 @@ export default function HomepageAdminPage() {
                           : prev
                       )
                     }
-                    placeholder="Enter main headline..."
+                    placeholder="Ingresa el título principal..."
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="subheadline">
-                    Subheadline (
+                    Subtítulo (
                     {LANGUAGES.find(l => l.code === currentLanguage)?.name})
                   </Label>
                   <Textarea
@@ -637,7 +642,7 @@ export default function HomepageAdminPage() {
                           : prev
                       )
                     }
-                    placeholder="Enter subheadline..."
+                    placeholder="Ingresa el subtítulo..."
                     rows={2}
                   />
                 </div>
@@ -649,7 +654,7 @@ export default function HomepageAdminPage() {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Link className="w-5 h-5 mr-2" />
-                  Call-to-Action Buttons
+                  Botones de Llamada a la Acción
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -657,7 +662,7 @@ export default function HomepageAdminPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm font-medium">
-                      Primary Button
+                      Botón Primario
                     </Label>
                     <div className="flex items-center space-x-2">
                       <input
@@ -683,7 +688,7 @@ export default function HomepageAdminPage() {
                         className="rounded border-gray-300"
                       />
                       <Label htmlFor="primary-enabled" className="text-sm">
-                        Enabled
+                        Activado
                       </Label>
                     </div>
                   </div>
@@ -712,7 +717,7 @@ export default function HomepageAdminPage() {
                           : prev
                       )
                     }
-                    placeholder="Button text..."
+                    placeholder="Texto del botón..."
                   />
                   <Input
                     value={content.ctaButtons.primary.link}
@@ -740,7 +745,7 @@ export default function HomepageAdminPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm font-medium">
-                      Secondary Button
+                      Botón Secundario
                     </Label>
                     <div className="flex items-center space-x-2">
                       <input
@@ -766,7 +771,7 @@ export default function HomepageAdminPage() {
                         className="rounded border-gray-300"
                       />
                       <Label htmlFor="secondary-enabled" className="text-sm">
-                        Enabled
+                        Activado
                       </Label>
                     </div>
                   </div>
@@ -795,7 +800,7 @@ export default function HomepageAdminPage() {
                           : prev
                       )
                     }
-                    placeholder="Button text..."
+                    placeholder="Texto del botón..."
                   />
                   <Input
                     value={content.ctaButtons.secondary.link}
@@ -853,7 +858,7 @@ export default function HomepageAdminPage() {
                       className="rounded border-gray-300"
                     />
                     <Label htmlFor="logo-enabled" className="text-sm">
-                      Enabled
+                      Activado
                     </Label>
                   </div>
                 </CardTitle>
@@ -889,7 +894,7 @@ export default function HomepageAdminPage() {
                         disabled={uploading}
                       >
                         <RefreshCw className="w-4 h-4 mr-2" />
-                        Replace
+                        Reemplazar
                       </Button>
                     </div>
                   </div>
@@ -897,7 +902,7 @@ export default function HomepageAdminPage() {
                   <div className="text-center py-8">
                     <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <p className="text-muted-foreground mb-4">
-                      No logo uploaded
+                      No se ha subido un logo
                     </p>
                     <input
                       type="file"
@@ -920,12 +925,12 @@ export default function HomepageAdminPage() {
                       {uploading ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Uploading...
+                          Subiendo...
                         </>
                       ) : (
                         <>
                           <Upload className="w-4 h-4 mr-2" />
-                          Upload Logo
+                          Subir Logo
                         </>
                       )}
                     </Button>
