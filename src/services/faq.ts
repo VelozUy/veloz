@@ -7,11 +7,13 @@ export interface FAQ {
     en: string;
     es: string;
     he: string;
+    pt: string;
   };
   answer: {
     en: string;
     es: string;
     he: string;
+    pt: string;
   };
   category?: string;
   order: number;

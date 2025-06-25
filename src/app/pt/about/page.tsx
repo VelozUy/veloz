@@ -42,6 +42,32 @@ async function getFAQs(): Promise<FAQ[]> {
   }
 }
 
+// Helper function to get FAQ text in the appropriate language
+function getFAQText(
+  faq: FAQ,
+  field: 'question' | 'answer',
+  locale: string = 'pt'
+): string {
+  const content = faq[field];
+
+  // Try the requested locale first
+  const localeKey = locale as keyof typeof content;
+  if (content[localeKey] && content[localeKey].trim()) {
+    return content[localeKey];
+  }
+
+  // Fallback order: pt -> es -> en -> he
+  const fallbackOrder = ['pt', 'es', 'en', 'he'] as const;
+
+  for (const fallbackLocale of fallbackOrder) {
+    if (content[fallbackLocale] && content[fallbackLocale].trim()) {
+      return content[fallbackLocale];
+    }
+  }
+
+  return '';
+}
+
 // Generate structured data for FAQs
 function generateFAQStructuredData(faqs: FAQ[], locale: string = 'pt') {
   if (faqs.length === 0) {
@@ -52,13 +78,12 @@ function generateFAQStructuredData(faqs: FAQ[], locale: string = 'pt') {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faqs.map(faq => {
-      const localeKey = locale as keyof typeof faq.question;
       return {
         '@type': 'Question',
-        name: faq.question.es || faq.question.en || faq.question.he,
+        name: getFAQText(faq, 'question', locale),
         acceptedAnswer: {
           '@type': 'Answer',
-          text: faq.answer.es || faq.answer.en || faq.answer.he,
+          text: getFAQText(faq, 'answer', locale),
         },
       };
     }),
@@ -340,9 +365,7 @@ export default async function AboutPagePT() {
                         className="border-0 bg-muted/30 rounded-lg px-4"
                       >
                         <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary transition-colors py-4">
-                          {faq.question.es ||
-                            faq.question.en ||
-                            faq.question.he}
+                          {getFAQText(faq, 'question', 'pt')}
                           {faq.category && (
                             <Badge variant="secondary" className="ml-2 text-xs">
                               {faq.category}
@@ -352,8 +375,7 @@ export default async function AboutPagePT() {
                         <AccordionContent className="text-muted-foreground pb-4 pt-2">
                           <div
                             dangerouslySetInnerHTML={{
-                              __html:
-                                faq.answer.es || faq.answer.en || faq.answer.he,
+                              __html: getFAQText(faq, 'answer', 'pt'),
                             }}
                           />
                         </AccordionContent>
