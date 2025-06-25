@@ -150,12 +150,15 @@ export function InteractiveCTAWidget() {
         eventDate: surveyData.eventDate,
         message: `Solicitud de contacto telefónico desde el widget interactivo.\nTipo de evento: ${surveyData.eventType}\nFecha: ${surveyData.eventDate || 'No especificada'}`,
         source: 'widget',
+        isRead: false,
+        status: 'new',
+        archived: false,
       };
 
       // Execute both operations in parallel
       const [emailResult, firestoreResult] = await Promise.allSettled([
         emailService.sendContactForm(emailData),
-        contactMessageService.submitContactMessage(firestoreData),
+        contactMessageService.create(firestoreData),
       ]);
 
       // Log any failures but continue to show success

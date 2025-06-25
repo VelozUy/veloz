@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-25T17:11:22.266Z
+// Generated on: 2025-06-25T18:39:09.308Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -262,7 +262,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       faqs: [],
       projects: [],
     },
-    lastUpdated: '2025-06-25T17:11:22.262Z',
+    lastUpdated: '2025-06-25T18:39:09.307Z',
     buildTime: true,
   },
   en: {
@@ -493,7 +493,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       faqs: [],
       projects: [],
     },
-    lastUpdated: '2025-06-25T17:11:22.265Z',
+    lastUpdated: '2025-06-25T18:39:09.308Z',
     buildTime: true,
   },
   pt: {
@@ -724,7 +724,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       faqs: [],
       projects: [],
     },
-    lastUpdated: '2025-06-25T17:11:22.265Z',
+    lastUpdated: '2025-06-25T18:39:09.308Z',
     buildTime: true,
   },
 };

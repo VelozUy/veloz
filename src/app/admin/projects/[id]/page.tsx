@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import AdminLayout from '@/components/admin/AdminLayout';
 import MediaUpload from '@/components/admin/MediaUpload';
+import MediaManager from '@/components/admin/MediaManager';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -18,15 +19,10 @@ import {
   MapPin,
   Star,
   Loader2,
-  Grid,
-  List,
-  Trash2,
-  Eye,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
-import Image from 'next/image';
 
 interface Project {
   id: string;
@@ -66,7 +62,6 @@ export default function ProjectDetailPage({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [projectId, setProjectId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Handle async params
   useEffect(() => {
@@ -156,7 +151,11 @@ export default function ProjectDetailPage({
     setTimeout(() => setError(''), 5000);
   };
 
-  const handleDeleteMedia = async (mediaId: string) => {
+  const handleMediaUpdate = (updatedMedia: ProjectMedia[]) => {
+    setProjectMedia(updatedMedia);
+  };
+
+  const handleMediaDelete = async (mediaId: string) => {
     if (!confirm('¿Estás seguro de que quieres eliminar este media?')) {
       return;
     }
@@ -197,6 +196,16 @@ export default function ProjectDetailPage({
       setError('Error al eliminar media');
       setTimeout(() => setError(''), 5000);
     }
+  };
+
+  const handleSuccess = (message: string) => {
+    setSuccess(message);
+    setTimeout(() => setSuccess(''), 3000);
+  };
+
+  const handleError = (message: string) => {
+    setError(message);
+    setTimeout(() => setError(''), 5000);
   };
 
   if (loading) {
@@ -335,119 +344,24 @@ export default function ProjectDetailPage({
         </div>
 
         {/* Media Management */}
-        {projectMedia.length > 0 ? (
+        {mediaLoading ? (
           <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Project Media</CardTitle>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant={viewMode === 'grid' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                  >
-                    <Grid className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'list' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('list')}
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
-                </div>
+            <CardContent className="p-12">
+              <div className="flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-primary mr-3" />
+                <span>Loading media...</span>
               </div>
-            </CardHeader>
-            <CardContent>
-              {mediaLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                </div>
-              ) : (
-                <div
-                  className={
-                    viewMode === 'grid'
-                      ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
-                      : 'space-y-4'
-                  }
-                >
-                  {projectMedia.map(media => (
-                    <div
-                      key={media.id}
-                      className={`border rounded-lg overflow-hidden ${
-                        viewMode === 'list'
-                          ? 'flex items-center space-x-4 p-4'
-                          : ''
-                      }`}
-                    >
-                      {media.type === 'photo' ? (
-                        <div
-                          className={
-                            viewMode === 'grid'
-                              ? 'aspect-square relative'
-                              : 'flex-shrink-0'
-                          }
-                        >
-                          <Image
-                            src={media.url}
-                            alt={media.title?.es || media.fileName}
-                            fill={viewMode === 'grid'}
-                            width={viewMode === 'list' ? 80 : undefined}
-                            height={viewMode === 'list' ? 80 : undefined}
-                            className={`object-cover ${viewMode === 'list' ? 'rounded' : ''}`}
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          className={`bg-blue-100 flex items-center justify-center ${
-                            viewMode === 'grid'
-                              ? 'aspect-square'
-                              : 'w-20 h-20 rounded flex-shrink-0'
-                          }`}
-                        >
-                          <VideoIcon className="w-8 h-8 text-blue-600" />
-                        </div>
-                      )}
-
-                      <div
-                        className={`p-3 ${viewMode === 'list' ? 'flex-1' : ''}`}
-                      >
-                        <h4 className="font-medium text-sm mb-1 truncate">
-                          {media.title?.es || media.fileName}
-                        </h4>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          {(media.fileSize / (1024 * 1024)).toFixed(2)} MB
-                        </p>
-                        {media.featured && (
-                          <Badge variant="secondary" className="text-xs mb-2">
-                            <Star className="w-3 h-3 mr-1" />
-                            Featured
-                          </Badge>
-                        )}
-                        <div className="flex items-center justify-between">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => window.open(media.url, '_blank')}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteMedia(media.id!)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </CardContent>
           </Card>
+        ) : projectMedia.length > 0 ? (
+          <MediaManager
+            projectId={projectId!}
+            media={projectMedia}
+            onMediaUpdate={handleMediaUpdate}
+            onMediaDelete={handleMediaDelete}
+            onSuccess={handleSuccess}
+            onError={handleError}
+          />
         ) : (
           <Card>
             <CardContent className="p-12 text-center">

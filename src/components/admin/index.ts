@@ -3,6 +3,7 @@
 
 export { default as AdminLayout } from './AdminLayout';
 export { default as MediaUpload } from './MediaUpload';
+export { default as MediaManager } from './MediaManager';
 
 // To be created later:
 // export { default as DataTable } from './DataTable';
