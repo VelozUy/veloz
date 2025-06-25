@@ -56,7 +56,7 @@ _Last updated: December 2024_
 - [x] **[High] Remove client-side i18n files** - ✅ COMPLETED - Deleted src/i18n/, translation JSON files, I18nProvider, and language-switcher components _(Completed: Dec 25, 2024)_
 - [x] **[High] Update build process** - ✅ COMPLETED - Modified package.json to run build:data before next build for automatic content generation _(Completed: Dec 25, 2024)_
 - [x] **[High] Resolve build errors** - ✅ COMPLETED - Fixed TypeScript errors, router compatibility issues, and achieved successful build with exit code 0 _(Completed: Dec 25, 2024)_
-- [x] **[Medium] Temporarily disable complex components** - ✅ COMPLETED - Disabled InteractiveCTAWidget due to extensive translation dependencies, renamed to .tsx.disabled _(Completed: Dec 25, 2024)_
+- [x] **[Medium] Re-enable InteractiveCTAWidget for gallery pages only** - ✅ COMPLETED - Re-enabled InteractiveCTAWidget with full multi-language support, auto-detects current language from URL path, uses appropriate translations for ES/EN/PT, and displays only on gallery pages for better user experience _(Completed: Jan 5, 2025)_
 - [x] **[Medium] Create LocaleSwitcher component** - ✅ COMPLETED - Added foundation for future route-based language switching _(Completed: Dec 25, 2024)_
 
 ### Legacy i18n Setup (Replaced by Static Routes)

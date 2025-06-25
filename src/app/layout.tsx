@@ -2,11 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import '@/lib/emergency-console-fix';
-import {
-  ConditionalNavigation,
-  PageLayout,
-  // InteractiveCTAWidget, // Temporarily disabled during localization migration
-} from '@/components/layout';
+import { ConditionalNavigation, PageLayout } from '@/components/layout';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -36,7 +32,6 @@ export default function RootLayout({
       >
         <ConditionalNavigation />
         <PageLayout>{children}</PageLayout>
-        {/* <InteractiveCTAWidget /> Temporarily disabled during localization migration */}
       </body>
     </html>
   );

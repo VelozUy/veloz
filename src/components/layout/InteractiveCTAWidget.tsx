@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useMemo } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +17,7 @@ import {
   Calendar,
   Phone,
   ArrowRight,
-  X,
+  CheckCircle,
 } from 'lucide-react';
 import { emailService, type ContactFormData } from '@/services/email';
 import { contactMessageService } from '@/services/firebase';
@@ -39,20 +39,63 @@ interface SurveyData {
 }
 
 export function InteractiveCTAWidget() {
-  // Get static content for Spanish (default)
-  const content = getStaticContent('es');
-  const t = content.translations;
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Detect current language from pathname
+  const currentLanguage = useMemo(() => {
+    if (pathname.startsWith('/en')) return 'en';
+    if (pathname.startsWith('/pt')) return 'pt';
+    return 'es'; // Default to Spanish
+  }, [pathname]);
+
+  // Get static content for current language
+  const content = getStaticContent(currentLanguage);
+
+  // Helper function to get translations
+  const getTranslation = (path: string): string => {
+    const keys = path.split('.');
+    let current: unknown = content.translations;
+
+    for (const key of keys) {
+      if (
+        current &&
+        typeof current === 'object' &&
+        current !== null &&
+        key in current
+      ) {
+        current = (current as Record<string, unknown>)[key];
+      } else {
+        console.warn(`Translation missing for path: ${path}`);
+        return path; // Return the path as fallback
+      }
+    }
+
+    return typeof current === 'string' ? current : path;
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<SurveyStep>('event-type');
   const [surveyData, setSurveyData] = useState<SurveyData>({});
   const [phoneInput, setPhoneInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
   const eventTypes = [
-    { value: 'boda', label: 'Boda', emoji: '💒' },
-    { value: 'empresarial', label: 'Evento Empresarial', emoji: '🏢' },
-    { value: 'otro', label: 'Otro tipo de evento', emoji: '🎉' },
+    {
+      value: 'wedding',
+      label: getTranslation('widget.eventTypes.wedding'),
+      emoji: '💒',
+    },
+    {
+      value: 'corporate',
+      label: getTranslation('widget.eventTypes.corporate'),
+      emoji: '🏢',
+    },
+    {
+      value: 'other',
+      label: getTranslation('widget.eventTypes.other'),
+      emoji: '🎉',
+    },
   ];
 
   const handleEventTypeSelect = (eventType: string) => {
@@ -72,7 +115,10 @@ export function InteractiveCTAWidget() {
       if (surveyData.eventType) params.set('evento', surveyData.eventType);
       if (surveyData.eventDate) params.set('fecha', surveyData.eventDate);
 
-      router.push(`/contact?${params.toString()}`);
+      // Navigate to the appropriate contact page based on current language
+      const contactPath =
+        currentLanguage === 'es' ? '/contact' : `/${currentLanguage}/contact`;
+      router.push(`${contactPath}?${params.toString()}`);
       setIsOpen(false);
       resetSurvey();
     } else {
@@ -152,10 +198,10 @@ export function InteractiveCTAWidget() {
             <div className="text-center space-y-2">
               <Heart className="w-8 h-8 text-primary mx-auto" />
               <h3 className="text-xl font-semibold text-foreground">
-                {t('widget.steps.eventType.title')}
+                {getTranslation('widget.steps.eventType.title')}
               </h3>
               <p className="text-muted-foreground text-sm">
-                {t('widget.steps.eventType.subtitle')}
+                {getTranslation('widget.steps.eventType.subtitle')}
               </p>
             </div>
             <div className="space-y-3">
@@ -181,10 +227,10 @@ export function InteractiveCTAWidget() {
             <div className="text-center space-y-2">
               <Calendar className="w-8 h-8 text-primary mx-auto" />
               <h3 className="text-xl font-semibold text-foreground">
-                {t('widget.steps.date.title')}
+                {getTranslation('widget.steps.date.title')}
               </h3>
               <p className="text-muted-foreground text-sm">
-                {t('widget.steps.date.subtitle')}
+                {getTranslation('widget.steps.date.subtitle')}
               </p>
             </div>
             <div className="space-y-3">
@@ -204,7 +250,7 @@ export function InteractiveCTAWidget() {
                 className="w-full"
                 onClick={() => handleDateResponse(false)}
               >
-                {t('widget.steps.date.noDate')}
+                {getTranslation('widget.steps.date.noDate')}
               </Button>
             </div>
           </div>
@@ -216,10 +262,10 @@ export function InteractiveCTAWidget() {
             <div className="text-center space-y-2">
               <MessageCircle className="w-8 h-8 text-primary mx-auto" />
               <h3 className="text-xl font-semibold text-foreground">
-                {t('widget.steps.contact.title')}
+                {getTranslation('widget.steps.contact.title')}
               </h3>
               <p className="text-muted-foreground text-sm">
-                {t('widget.steps.contact.subtitle')}
+                {getTranslation('widget.steps.contact.subtitle')}
               </p>
             </div>
             <div className="space-y-3">
@@ -227,13 +273,12 @@ export function InteractiveCTAWidget() {
                 className="w-full justify-start h-auto p-4"
                 onClick={() => handleContactPreference('more-info')}
               >
-                <MessageCircle className="w-5 h-5 mr-3" />
                 <div className="text-left">
                   <div className="font-medium">
-                    {t('widget.steps.contact.moreInfo.title')}
+                    {getTranslation('widget.steps.contact.moreInfo.title')}
                   </div>
-                  <div className="text-xs opacity-90">
-                    {t('widget.steps.contact.moreInfo.subtitle')}
+                  <div className="text-sm text-muted-foreground">
+                    {getTranslation('widget.steps.contact.moreInfo.subtitle')}
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 ml-auto" />
@@ -243,11 +288,13 @@ export function InteractiveCTAWidget() {
                 className="w-full justify-start h-auto p-4"
                 onClick={() => handleContactPreference('call-me')}
               >
-                <Phone className="w-5 h-5 mr-3" />
+                <Phone className="w-5 h-5 mr-3 text-primary" />
                 <div className="text-left">
-                  <div className="font-medium">{t('widget.steps.contact.callMe.title')}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {t('widget.steps.contact.callMe.subtitle')}
+                  <div className="font-medium">
+                    {getTranslation('widget.steps.contact.callMe.title')}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {getTranslation('widget.steps.contact.callMe.subtitle')}
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 ml-auto" />
@@ -262,16 +309,16 @@ export function InteractiveCTAWidget() {
             <div className="text-center space-y-2">
               <Phone className="w-8 h-8 text-primary mx-auto" />
               <h3 className="text-xl font-semibold text-foreground">
-                {t('widget.steps.phone.title')}
+                {getTranslation('widget.steps.phone.title')}
               </h3>
               <p className="text-muted-foreground text-sm">
-                {t('widget.steps.phone.subtitle')}
+                {getTranslation('widget.steps.phone.subtitle')}
               </p>
             </div>
             <div className="space-y-3">
               <Input
                 type="tel"
-                placeholder={t('widget.steps.phone.placeholder')}
+                placeholder={getTranslation('widget.steps.phone.placeholder')}
                 value={phoneInput}
                 onChange={e => setPhoneInput(e.target.value)}
                 className="w-full"
@@ -282,15 +329,12 @@ export function InteractiveCTAWidget() {
                 className="w-full"
               >
                 {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    {t('widget.steps.phone.loading')}
-                  </div>
-                ) : (
                   <>
-                    <Phone className="w-4 h-4 mr-2" />
-                    {t('widget.steps.phone.button')}
+                    <div className="animate-spin rounded-full w-4 h-4 border-b-2 border-primary-foreground mr-2" />
+                    {getTranslation('widget.steps.phone.loading')}
                   </>
+                ) : (
+                  getTranslation('widget.steps.phone.button')
                 )}
               </Button>
             </div>
@@ -300,17 +344,17 @@ export function InteractiveCTAWidget() {
       case 'complete':
         return (
           <div className="space-y-4 text-center">
-            <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-              <Heart className="w-8 h-8 text-green-600 dark:text-green-400" />
-            </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-foreground">{t('widget.steps.complete.title')}</h3>
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+              <h3 className="text-xl font-semibold text-foreground">
+                {getTranslation('widget.steps.complete.title')}
+              </h3>
               <p className="text-muted-foreground text-sm">
-                {t('widget.steps.complete.message')}
+                {getTranslation('widget.steps.complete.message')}
               </p>
             </div>
             <Button onClick={closeSurvey} className="w-full">
-              {t('widget.steps.complete.button')}
+              {getTranslation('widget.steps.complete.button')}
             </Button>
           </div>
         );
@@ -322,32 +366,26 @@ export function InteractiveCTAWidget() {
 
   return (
     <>
-      {/* Sticky Button */}
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 shadow-lg hover:shadow-xl transition-all duration-300 h-14 px-6 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="fixed bottom-4 right-4 z-50 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 h-12 px-4 md:px-6"
         size="lg"
       >
         <MessageCircle className="w-5 h-5 mr-2" />
-        <span className="hidden sm:inline">{t('widget.button.desktop')}</span>
-        <span className="sm:hidden">{t('widget.button.mobile')}</span>
+        <span className="hidden sm:inline">
+          {getTranslation('widget.button.desktop')}
+        </span>
+        <span className="sm:hidden">
+          {getTranslation('widget.button.mobile')}
+        </span>
       </Button>
 
-      {/* Survey Dialog */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={closeSurvey}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="sr-only">
-              {t('widget.dialog.title')}
+            <DialogTitle className="text-center">
+              {getTranslation('widget.dialog.title')}
             </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-4 top-4 p-2"
-              onClick={closeSurvey}
-            >
-              <X className="w-4 h-4" />
-            </Button>
           </DialogHeader>
           <div className="py-4">{renderStepContent()}</div>
         </DialogContent>

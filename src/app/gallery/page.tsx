@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import GalleryContent from '@/components/gallery/GalleryContent';
+import { InteractiveCTAWidget } from '@/components/layout';
 
 export const metadata: Metadata = {
   title: 'Our Work | Veloz Photography & Videography',
@@ -48,6 +49,7 @@ export default function GalleryPage() {
           <GalleryContent />
         </Suspense>
       </div>
+      <InteractiveCTAWidget />
     </div>
   );
 }
