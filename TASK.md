@@ -139,6 +139,10 @@ _Last updated: December 2024_
 - [ ] **[Medium] Add file size validation** - Limit upload file size (if needed)
 - [ ] **[Medium] Add Zoom call checkbox** - Optional consultation request (if needed)
 
+### Navigation & Layout
+
+- [ ] **[High] Implement conditional navigation display** - Show navigation bar on all pages except homepage for cleaner landing page experience
+
 ---
 
 ## 🔐 Phase 3: Admin Panel (CMS)
