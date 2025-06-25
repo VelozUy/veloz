@@ -33,6 +33,17 @@ interface NavigationProps {
   locale: string;
 }
 
+// Helper function to generate locale-aware links
+function getLocalizedPath(path: string, locale: string): string {
+  // Default locale (Spanish) doesn't need prefix
+  if (locale === 'es') {
+    return path;
+  }
+
+  // Other locales get prefix
+  return `/${locale}${path}`;
+}
+
 export default function Navigation({ translations, locale }: NavigationProps) {
   // const router = useRouter(); // Removed for static localized routes
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,17 +73,17 @@ export default function Navigation({ translations, locale }: NavigationProps) {
   const navItems = [
     {
       name: translations.navigation.gallery,
-      href: '/gallery',
+      href: getLocalizedPath('/gallery', locale),
       icon: ImageIcon,
     },
     {
       name: translations.navigation.about,
-      href: '/about',
+      href: getLocalizedPath('/about', locale),
       icon: MessageCircle,
     },
     {
       name: translations.navigation.contact,
-      href: '/contact',
+      href: getLocalizedPath('/contact', locale),
       icon: Phone,
     },
   ];
@@ -84,7 +95,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 group">
+            <Link
+              href={getLocalizedPath('/', locale)}
+              className="flex items-center space-x-2 group"
+            >
               <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
               <span className="text-2xl font-bold text-primary">Veloz</span>
             </Link>
@@ -92,21 +106,21 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <Link
-                href="/gallery"
+                href={getLocalizedPath('/gallery', locale)}
                 className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Our Work</span>
               </Link>
               <Link
-                href="/about"
+                href={getLocalizedPath('/about', locale)}
                 className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">About & FAQ</span>
               </Link>
               <Link
-                href="/contact"
+                href={getLocalizedPath('/contact', locale)}
                 className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -116,7 +130,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
             {/* CTA Button (Desktop) */}
             <div className="hidden md:block">
-              <Link href="/contact">
+              <Link href={getLocalizedPath('/contact', locale)}>
                 <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                   Get Started
                 </Button>
@@ -148,7 +162,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link
+            href={getLocalizedPath('/', locale)}
+            className="flex items-center space-x-2 group"
+          >
             <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
             <span className="text-2xl font-bold text-primary">Veloz</span>
           </Link>
@@ -173,7 +190,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
           {/* Language Switcher & CTA Button (Desktop) */}
           <div className="hidden md:flex items-center space-x-4">
             <LocaleSwitcher currentLocale={locale} />
-            <Link href="/contact">
+            <Link href={getLocalizedPath('/contact', locale)}>
               <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                 {translations.homepage.hero.cta.contact}
               </Button>
@@ -220,7 +237,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <div className="flex justify-center">
                   <LocaleSwitcher currentLocale={locale} />
                 </div>
-                <Link href="/contact">
+                <Link href={getLocalizedPath('/contact', locale)}>
                   <Button
                     className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold"
                     onClick={() => setIsMobileMenuOpen(false)}
