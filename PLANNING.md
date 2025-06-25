@@ -131,35 +131,100 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 
 ### 4. **Work With Us** (Contact Form)
 
-- Form fields:
-  - Full Name
-  - Email
-  - Phone (optional)
-  - Event Type (dropdown)
-  - Event Date (date picker)
-  - Location (text field)
-  - Required services (checkboxes: Photos / Videos / Both / Other)
-  - Comments / Details
-  - File upload (reference image or document)
-  - Checkbox: "I’d like to schedule a Zoom call"
-- On submit:
-  - Send confirmation email to internal team
-  - Optional confirmation screen/message for user
+## Contact Form Planning for Photo & Video Service Website
 
-# wireframes
+### Goal
 
-[ Page Title: Let's work together ]
+Create a contact form that:
 
-[ Full Name ] [ Input ]
-[ Email ] [ Input ]
-[ Phone ] [ Optional Input ]
-[ Event Type ] [ Dropdown ]
-[ Event Date ] [ Date Picker ]
-[ Location ] [ Input ]
-[ Services Needed ] [ ☐ Photos ☐ Videos ☐ Both ☐ Other ]
-[ Comments ] [ Multiline Text Area ]
-[ Upload Reference ] [ File Upload ]
-[ Schedule a Zoom ] [ Checkbox ]
+- Is friendly and non-intrusive
+- Collects just enough information to respond effectively
+- Feels conversational and trustworthy
+
+### Recommended Fields
+
+| Field              | Type               | Required | Notes                                                            |
+| ------------------ | ------------------ | -------- | ---------------------------------------------------------------- |
+| Name               | Short text         | Yes      | Adds a human touch to the conversation                           |
+| Email              | Email              | Yes      | Main method of contact                                           |
+| Event Type         | Dropdown / Buttons | Yes      | Options: Wedding, 15th Birthday, Birthday, Corporate, Other      |
+| Approx. Date       | Date or Free text  | No       | Optional – helps but not mandatory                               |
+| Message / Comments | Textarea           | No       | Prompt: "Tell us about your idea, location, number of guests..." |
+
+### Button Text Suggestions
+
+Avoid cold "Send" buttons. Use warmer CTAs like:
+
+- "Start the conversation"
+- "Ask for a quote"
+- "I want you at my event"
+
+### Extra (Optional) Fields
+
+Only include if useful:
+
+- Phone (only if you plan to use it)
+- How did you find us?
+- Preferred contact method: Email / WhatsApp
+
+### Microcopy for Trust
+
+Below the form or submit button:
+
+> "We don’t share your info. We’ll only reach out to help with your event."
+
+### Design Tips
+
+- Keep validation minimal (only name and email required)
+- Friendly placeholder text to inspire the user
+- Use padding, icons, and soft colors to make the form feel approachable
+
+---
+
+## Interactive CTA Widget (Sticky Button Micro-Survey)
+
+### Objective
+
+Replace the classic top navbar "Contact" link with a **floating sticky button** that opens a conversational micro-survey, guiding users toward the right action in a friendly and engaging way.
+
+### Behavior Flow
+
+1. **Sticky Button** (desktop & mobile):
+   - Visible on all pages
+   - Text: `¿En qué evento estás pensando?`
+   - Position: bottom-right corner, high z-index
+
+2. **On Click → Open Micro-Survey:**
+
+#### Step 1: Event Type
+
+- Options: `Boda`, `Empresarial`, `Otro`
+
+#### Step 2: Approximate Date
+
+- Options: `Sí` → Date selector / `No`
+
+#### Step 3: Want to tell us more?
+
+- Options:
+  - `Sí` → Navigate to `/contacto?evento=boda&fecha=2025-09-01`
+    - URL query pre-fills form
+    - Focus on textarea input
+  - `Quiero que me llamen` → Show phone number input + send button
+
+3. **If "Quiero que me llamen" is selected:**
+   - Show phone number field
+   - Show submit button
+   - Send via email or save in database/API (e.g., Firebase)
+
+### Technical Requirements
+
+- Component built in **React + Tailwind CSS**
+- Must support **query params** on contact page to pre-fill fields
+- Responsive on all screen sizes
+- Accessible and performant
+
+This component improves user interaction and encourages conversions through a conversational, low-friction approach.
 
 ---
 
@@ -252,13 +317,51 @@ npm run build:data   # Fetches FAQs from Firestore and generates static files
 
 ---
 
-## ✉️ Contact Form Submission
+## ✉️ Contact Form & Message Management System
 
-- Implementation Options:
-  - Use **EmailJS** (no backend needed)
-  - OR custom API route using **Nodemailer** (requires SMTP credentials)
-- Optional: log submissions to Firestore
-- Optional: store uploaded files in Firebase Storage
+### Current Implementation (Phase 1)
+
+- ✅ **EmailJS Integration** - Client-side email sending for immediate functionality
+- ✅ **Interactive CTA Widget** - Conversational micro-survey for lead capture
+- ✅ **Contact Form** - Friendly, non-intrusive form with validation
+
+### Enhanced Backend System (Phase 2)
+
+- **Firestore Collection**: `contactMessages` - Store all form submissions with metadata
+- **Firebase Cloud Function**: `sendContactEmail` - Server-side email handling with Resend/Nodemailer
+- **Admin Contact Management**: Full CRUD interface for message management
+- **Email Service Priority**: Resend (preferred) with Nodemailer fallback
+- **Message Lifecycle**: Pending → Archived workflow with admin controls
+
+### Contact Message Data Structure
+
+```typescript
+interface ContactMessage {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  eventType: string;
+  eventDate?: string;
+  message?: string;
+  source: 'contact_form' | 'widget';
+  archived: boolean;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+```
+
+### Admin Contact Management Features
+
+- **Message List View**: All messages with pagination and sorting
+- **Filtering System**:
+  - Status: Pending/Archived
+  - Event Type: Wedding/Corporate/etc.
+  - Date Range: Custom date filtering
+  - Keyword Search: Across all fields
+- **Message Actions**: Archive/Unarchive, view details, export data
+- **Email Integration**: Direct reply-to functionality
+- **Analytics**: Contact conversion tracking and response metrics
 
 ---
 

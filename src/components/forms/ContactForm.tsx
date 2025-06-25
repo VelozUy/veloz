@@ -1,12 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSearchParams } from 'next/navigation';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  emailService,
+  type ContactFormData as EmailFormData,
+} from '@/services/email';
 
 import {
   Select,
@@ -55,6 +60,7 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -67,21 +73,72 @@ export function ContactForm() {
     },
   });
 
+  // Pre-fill form from URL query parameters
+  useEffect(() => {
+    const prefillData: Partial<ContactFormData> = {};
+
+    if (searchParams.get('evento')) {
+      // Map Spanish event types to English values
+      const eventTypeMap: Record<string, string> = {
+        boda: 'wedding',
+        empresarial: 'corporate',
+        cumpleanos: 'birthday',
+        quinceanera: 'quinceanera',
+        otro: 'other',
+      };
+      const evento = searchParams.get('evento');
+      if (evento && eventTypeMap[evento]) {
+        prefillData.eventType = eventTypeMap[evento];
+      }
+    }
+
+    if (searchParams.get('fecha')) {
+      prefillData.eventDate = searchParams.get('fecha') || '';
+    }
+
+    if (searchParams.get('nombre')) {
+      prefillData.name = searchParams.get('nombre') || '';
+    }
+
+    if (searchParams.get('email')) {
+      prefillData.email = searchParams.get('email') || '';
+    }
+
+    // Update form with prefilled data
+    if (Object.keys(prefillData).length > 0) {
+      Object.entries(prefillData).forEach(([key, value]) => {
+        if (value) {
+          form.setValue(key as keyof ContactFormData, value);
+        }
+      });
+    }
+  }, [searchParams, form]);
+
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      // TODO: Implement actual form submission (EmailJS or API endpoint)
-      console.log('Form data:', data);
+      // Convert form data to email service format
+      const emailData: EmailFormData = {
+        name: data.name,
+        email: data.email,
+        eventType: data.eventType,
+        eventDate: data.eventDate,
+        message: data.message,
+        source: 'contact_form',
+        preferredContact: 'email',
+      };
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Send email using EmailJS
+      await emailService.sendContactForm(emailData);
 
       setIsSubmitted(true);
     } catch (error) {
       setSubmitError(
-        'Something went wrong. Please try again or contact us directly.'
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again or contact us directly.'
       );
       console.error('Form submission error:', error);
     } finally {

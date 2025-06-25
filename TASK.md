@@ -115,7 +115,7 @@ _Last updated: December 2024_
 - [x] **[Low] Add image captions** - ✅ COMPLETED - Multi-language caption support with project metadata _(Completed: Dec 22, 2024)_
 - [x] **[Low] Add loading animations** - ✅ COMPLETED - Loading spinners and error handling _(Completed: Dec 22, 2024)_
 
-### Work With Us (Contact Form) ✅ MOSTLY COMPLETED
+### Work With Us (Contact Form) ✅ COMPLETED
 
 - [x] **[High] Create contact form component** - ✅ COMPLETED - Built friendly, conversational contact form with all core fields _(Completed: Dec 22, 2024)_
 - [x] **[High] Add full name input field** - ✅ COMPLETED - Required text input with friendly placeholder _(Completed: Dec 22, 2024)_
@@ -129,8 +129,21 @@ _Last updated: December 2024_
 - [x] **[High] Add error message display** - ✅ COMPLETED - User-friendly error handling _(Completed: Dec 22, 2024)_
 - [x] **[Medium] Add form confirmation screen** - ✅ COMPLETED - Thank you page after submission _(Completed: Dec 22, 2024)_
 - [x] **[Low] Add form loading state** - ✅ COMPLETED - Animated loading spinner during submission _(Completed: Dec 22, 2024)_
-- [ ] **[High] Setup EmailJS** - Configure email service for actual form submission
-- [ ] **[High] Create email template** - Design form submission email
+- [x] **[High] Setup EmailJS** - ✅ COMPLETED - EmailJS service integration with comprehensive setup guide _(Completed: Dec 22, 2024)_
+- [x] **[High] Create email template** - ✅ COMPLETED - Professional email template with all form variables _(Completed: Dec 22, 2024)_
+- [x] **[High] Add URL query parameter support** - ✅ COMPLETED - Contact form pre-fills from widget navigation _(Completed: Dec 22, 2024)_
+
+### Interactive CTA Widget ✅ COMPLETED
+
+- [x] **[High] Create sticky floating button** - ✅ COMPLETED - Bottom-right positioned button with responsive text _(Completed: Dec 22, 2024)_
+- [x] **[High] Build conversational micro-survey** - ✅ COMPLETED - Multi-step survey flow as specified in planning _(Completed: Dec 22, 2024)_
+- [x] **[High] Implement event type selection** - ✅ COMPLETED - Boda, Empresarial, Otro options with emojis _(Completed: Dec 22, 2024)_
+- [x] **[High] Add date capture step** - ✅ COMPLETED - Date picker with flexible "no date yet" option _(Completed: Dec 22, 2024)_
+- [x] **[High] Create contact preference flow** - ✅ COMPLETED - Choice between detailed form or phone callback _(Completed: Dec 22, 2024)_
+- [x] **[High] Add phone number capture** - ✅ COMPLETED - Phone input with EmailJS integration for callback requests _(Completed: Dec 22, 2024)_
+- [x] **[High] Implement navigation to contact form** - ✅ COMPLETED - Pre-fills contact form with survey data _(Completed: Dec 22, 2024)_
+- [x] **[High] Add responsive design** - ✅ COMPLETED - Mobile-optimized button text and dialog layout _(Completed: Dec 22, 2024)_
+- [x] **[High] Integration with layout** - ✅ COMPLETED - Added to root layout, appears on all pages _(Completed: Dec 22, 2024)_
 - [ ] **[Medium] Add phone input field** - Optional phone number (if needed)
 - [ ] **[High] Add location text field** - Event location input (if needed)
 - [ ] **[High] Create services checkboxes** - Photos/Videos/Both/Other options (if needed)
@@ -412,6 +425,50 @@ _Last updated: December 2024_
 
 ## 📝 Discovered During Work
 
+### Contact Management System (Backend Enhancement) - _Added: Dec 22, 2024_
+
+#### Firebase Cloud Functions & Backend
+
+- [ ] **[Critical] Create Firestore contactMessages collection** - Setup collection with proper security rules and indexes
+- [ ] **[Critical] Create Firebase Cloud Function sendContactEmail** - Triggers on new contact message creation
+- [ ] **[High] Implement Resend email service integration** - Primary email service for contact notifications
+- [ ] **[High] Add Nodemailer fallback email service** - Backup email service if Resend fails
+- [ ] **[High] Create email templates for contact notifications** - HTML email templates with company branding
+- [ ] **[Medium] Add email environment variables** - Configure RESEND_API_KEY and SMTP credentials
+- [ ] **[Medium] Test Cloud Function locally** - Firebase emulator testing for email triggers
+- [ ] **[Medium] Deploy and test Cloud Function** - Production deployment and email testing
+
+#### Frontend Contact Form Enhancement
+
+- [ ] **[High] Update contact form to store in Firestore** - Replace/complement EmailJS with Firestore storage
+- [ ] **[High] Update widget to store in Firestore** - Ensure widget submissions are also stored
+- [ ] **[High] Add contact message TypeScript interfaces** - Type definitions for ContactMessage data structure
+- [ ] **[Medium] Add form submission loading states** - Better UX during Firestore operations
+- [ ] **[Medium] Add offline form submission handling** - Queue submissions when offline
+- [ ] **[Low] Add form submission analytics** - Track conversion rates and form completion
+
+#### Admin Contact Management Interface
+
+- [ ] **[Critical] Create contact messages list page** - Admin interface to view all contact submissions
+- [ ] **[High] Add contact message filtering system** - Filter by status, event type, date range, keywords
+- [ ] **[High] Implement message archive/unarchive functionality** - Change message status workflow
+- [ ] **[High] Add contact message detail view** - Full message view with reply functionality
+- [ ] **[High] Create contact message search functionality** - Search across all message fields
+- [ ] **[Medium] Add contact message export feature** - Export messages to CSV/Excel
+- [ ] **[Medium] Add contact message pagination** - Handle large volumes of messages
+- [ ] **[Medium] Add contact analytics dashboard** - Metrics on contact volume, response times, conversion
+- [ ] **[Medium] Add direct email reply functionality** - Reply to contacts from admin interface
+- [ ] **[Low] Add contact message bulk operations** - Archive/delete multiple messages at once
+- [ ] **[Low] Add contact message auto-categorization** - Automatic tagging based on content
+
+#### Data Migration & Integration
+
+- [ ] **[High] Create contact message service layer** - Service functions for CRUD operations
+- [ ] **[High] Update admin navigation** - Add "Contact Messages" section to admin sidebar
+- [ ] **[Medium] Add contact message real-time updates** - Live updates when new messages arrive
+- [ ] **[Medium] Create contact message notifications** - Admin notifications for new contacts
+- [ ] **[Low] Add contact message backup system** - Regular exports for data safety
+
 ### Admin Panel Section Reviews - _Added: Dec 21, 2024_
 
 - [ ] **[High] Review and test Dashboard section** - Complete functionality review of main admin dashboard
@@ -433,7 +490,7 @@ _Tasks discovered during development will be added here_
 
 ### December 22, 2024 - Contact Form, Gallery & Navigation Implementation
 
-**Contact Form Creation**
+**Contact Form Creation (Phase 1 - EmailJS Implementation)**
 
 - [x] **[High] Create contact form component** - Built friendly, conversational contact form with all core fields _(Completed: Dec 22, 2024)_
 - [x] **[High] Add full name input field** - Required text input with friendly placeholder _(Completed: Dec 22, 2024)_
@@ -447,6 +504,8 @@ _Tasks discovered during development will be added here_
 - [x] **[High] Add error message display** - User-friendly error handling _(Completed: Dec 22, 2024)_
 - [x] **[Medium] Add form confirmation screen** - Thank you page after submission _(Completed: Dec 22, 2024)_
 - [x] **[Low] Add form loading state** - Animated loading spinner during submission _(Completed: Dec 22, 2024)_
+
+**Note**: Phase 2 enhancement with Firestore storage, Cloud Functions, and admin management system added to "Discovered During Work" section.
 
 **Conditional Navigation System**
 
