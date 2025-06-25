@@ -80,6 +80,32 @@ export interface ContactFormData {
   attachments?: File[];
 }
 
+// Contact Message Types (Enhanced Backend System)
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  eventType: string;
+  eventDate?: string;
+  message?: string;
+  source: 'contact_form' | 'widget';
+  archived: boolean;
+  createdAt: FirebaseTimestamp;
+  updatedAt: FirebaseTimestamp;
+}
+
+// Contact Message Data for Creation (before Firestore)
+export interface ContactMessageData {
+  name: string;
+  email?: string;
+  phone?: string;
+  eventType: string;
+  eventDate?: string;
+  message?: string;
+  source: 'contact_form' | 'widget';
+}
+
 export type ServiceType = 'photos' | 'videos' | 'both' | 'other';
 
 // Admin/CMS Types

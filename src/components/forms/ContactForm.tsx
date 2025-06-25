@@ -1,18 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  emailService,
-  type ContactFormData as EmailFormData,
-} from '@/services/email';
-
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -20,49 +16,114 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Heart, Send, CheckCircle, AlertCircle } from 'lucide-react';
+  Calendar,
+  Send,
+  CheckCircle,
+  Loader2,
+  Shield,
+  Clock,
+  Heart,
+  AlertCircle,
+} from 'lucide-react';
+import { emailService } from '@/services/email';
+import { cn } from '@/lib/utils';
 
-// Form validation schema
+// Contact form schema with Spanish validation messages
 const contactFormSchema = z.object({
-  name: z.string().min(2, {
-    message: 'We&apos;d love to know your name (at least 2 characters)',
-  }),
-  email: z.string().email({
-    message: 'Please enter a valid email so we can get back to you',
-  }),
-  eventType: z.string().min(1, {
-    message: "Help us understand what kind of event you're planning",
-  }),
+  name: z.string().min(2, 'Debe tener al menos 2 caracteres').max(100),
+  email: z
+    .string()
+    .email('Por favor ingresa un email válido para que podamos responderte'),
+  eventType: z.string().min(1, 'Por favor selecciona un tipo de evento'),
   eventDate: z.string().optional(),
   message: z.string().optional(),
 });
 
-export type ContactFormData = z.infer<typeof contactFormSchema>;
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
-const eventTypes = [
-  { value: 'wedding', label: 'Wedding' },
-  { value: 'quinceanera', label: '15th Birthday (Quinceañera)' },
-  { value: 'birthday', label: 'Birthday Party' },
-  { value: 'corporate', label: 'Corporate Event' },
-  { value: 'other', label: 'Other (tell us in the message!)' },
-];
+interface ContactFormProps {
+  translations: {
+    contact: {
+      title: string;
+      subtitle: string;
+      form: {
+        name: {
+          label: string;
+          placeholder: string;
+        };
+        email: {
+          label: string;
+          placeholder: string;
+        };
+        eventType: {
+          label: string;
+          placeholder: string;
+          options: {
+            wedding: string;
+            quinceanera: string;
+            birthday: string;
+            corporate: string;
+            other: string;
+          };
+        };
+        eventDate: {
+          label: string;
+          optional: string;
+          help: string;
+        };
+        message: {
+          label: string;
+          optional: string;
+          placeholder: string;
+        };
+        submit: {
+          button: string;
+          loading: string;
+        };
+        privacy: {
+          line1: string;
+          line2: string;
+        };
+      };
+      success: {
+        title: string;
+        message: string;
+        action: string;
+      };
+      trust: {
+        response: {
+          title: string;
+          description: string;
+        };
+        commitment: {
+          title: string;
+          description: string;
+        };
+        privacy: {
+          title: string;
+          description: string;
+        };
+      };
+    };
+  };
+}
 
-export function ContactForm() {
+export default function ContactForm({ translations }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // const router = useRouter(); // Removed for static localized routes
   const searchParams = useSearchParams();
 
-  const form = useForm<ContactFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+    reset,
+  } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: '',
@@ -73,294 +134,300 @@ export function ContactForm() {
     },
   });
 
-  // Pre-fill form from URL query parameters
-  useEffect(() => {
-    const prefillData: Partial<ContactFormData> = {};
+  // Pre-fill form from URL parameters
+  useState(() => {
+    const eventType = searchParams.get('evento');
+    const eventDate = searchParams.get('fecha');
+    const message = searchParams.get('mensaje');
 
-    if (searchParams.get('evento')) {
-      // Map Spanish event types to English values
-      const eventTypeMap: Record<string, string> = {
-        boda: 'wedding',
-        empresarial: 'corporate',
-        cumpleanos: 'birthday',
-        quinceanera: 'quinceanera',
-        otro: 'other',
-      };
-      const evento = searchParams.get('evento');
-      if (evento && eventTypeMap[evento]) {
-        prefillData.eventType = eventTypeMap[evento];
-      }
+    if (eventType) {
+      setValue('eventType', eventType);
     }
-
-    if (searchParams.get('fecha')) {
-      prefillData.eventDate = searchParams.get('fecha') || '';
+    if (eventDate) {
+      setValue('eventDate', eventDate);
     }
-
-    if (searchParams.get('nombre')) {
-      prefillData.name = searchParams.get('nombre') || '';
+    if (message) {
+      setValue('message', message);
     }
-
-    if (searchParams.get('email')) {
-      prefillData.email = searchParams.get('email') || '';
-    }
-
-    // Update form with prefilled data
-    if (Object.keys(prefillData).length > 0) {
-      Object.entries(prefillData).forEach(([key, value]) => {
-        if (value) {
-          form.setValue(key as keyof ContactFormData, value);
-        }
-      });
-    }
-  }, [searchParams, form]);
+  });
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      // Convert form data to email service format
-      const emailData: EmailFormData = {
-        name: data.name,
-        email: data.email,
-        eventType: data.eventType,
-        eventDate: data.eventDate,
-        message: data.message,
-        source: 'contact_form',
-        preferredContact: 'email',
-      };
-
-      // Send email using EmailJS
-      await emailService.sendContactForm(emailData);
-
+      await emailService.sendContactForm(data);
       setIsSubmitted(true);
     } catch (error) {
+      console.error('Error submitting contact form:', error);
       setSubmitError(
         error instanceof Error
           ? error.message
-          : 'Something went wrong. Please try again or contact us directly.'
+          : 'Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.'
       );
-      console.error('Form submission error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleSendAnotherMessage = () => {
+    setIsSubmitted(false);
+    setSubmitError(null);
+    reset();
+  };
+
+  const t = translations.contact;
+
+  // Success screen
   if (isSubmitted) {
     return (
-      <Card className="max-w-md mx-auto">
-        <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <div className="mx-auto w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">
-                Message sent!
-              </h3>
-              <p className="text-sm text-muted-foreground mt-2">
-                Thanks for reaching out! We&apos;ll get back to you within 24
-                hours with all the details about making your event amazing.
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsSubmitted(false);
-                form.reset();
-              }}
-              className="mt-4"
-            >
-              Send another message
-            </Button>
+      <div className="min-h-screen flex items-center justify-center px-4 py-8">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          <div className="flex justify-center">
+            <CheckCircle className="w-24 h-24 text-green-500" />
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+              {t.success.title}
+            </h1>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              {t.success.message}
+            </p>
+          </div>
+
+          <Button
+            onClick={handleSendAnotherMessage}
+            size="lg"
+            className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-8 py-6"
+          >
+            {t.success.action}
+          </Button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="shadow-lg border-0 bg-card">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-          <Heart className="w-6 h-6 text-primary" />
+    <div className="min-h-screen py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16 space-y-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground">
+            {t.title}
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            {t.subtitle}
+          </p>
         </div>
-        <CardTitle className="text-2xl font-bold text-foreground">
-          Tell us about your event
-        </CardTitle>
-        <p className="text-muted-foreground">
-          The more we know, the better we can help make your day perfect
-        </p>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Name Field */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">Your name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="What should we call you?"
-                      className="bg-background border-input"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            {/* Email Field */}
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">
-                    Email address
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="your.email@example.com"
-                      className="bg-background border-input"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="grid lg:grid-cols-3 gap-12">
+          {/* Trust Indicators */}
+          <div className="lg:col-span-1 space-y-8">
+            <div className="bg-card rounded-xl p-6 shadow-sm border">
+              <div className="flex items-start space-x-4">
+                <Clock className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    {t.trust.response.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t.trust.response.description}
+                  </p>
+                </div>
+              </div>
+            </div>
 
-            {/* Event Type Field */}
-            <FormField
-              control={form.control}
-              name="eventType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">
-                    What are you celebrating?
-                  </FormLabel>
+            <div className="bg-card rounded-xl p-6 shadow-sm border">
+              <div className="flex items-start space-x-4">
+                <Heart className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    {t.trust.commitment.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t.trust.commitment.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card rounded-xl p-6 shadow-sm border">
+              <div className="flex items-start space-x-4">
+                <Shield className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    {t.trust.privacy.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t.trust.privacy.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="lg:col-span-2">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <div className="bg-card rounded-xl p-8 shadow-sm border space-y-6">
+                {/* Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-base font-medium">
+                    {t.form.name.label}
+                  </Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder={t.form.name.placeholder}
+                    {...register('name')}
+                    className={cn(errors.name && 'border-destructive')}
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-base font-medium">
+                    {t.form.email.label}
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder={t.form.email.placeholder}
+                    {...register('email')}
+                    className={cn(errors.email && 'border-destructive')}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Event Type */}
+                <div className="space-y-2">
+                  <Label htmlFor="eventType" className="text-base font-medium">
+                    {t.form.eventType.label}
+                  </Label>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={watch('eventType')}
+                    onValueChange={value => setValue('eventType', value)}
                   >
-                    <FormControl>
-                      <SelectTrigger className="bg-background border-input">
-                        <SelectValue placeholder="Choose your event type" />
-                      </SelectTrigger>
-                    </FormControl>
+                    <SelectTrigger
+                      className={cn(errors.eventType && 'border-destructive')}
+                    >
+                      <SelectValue placeholder={t.form.eventType.placeholder} />
+                    </SelectTrigger>
                     <SelectContent>
-                      {eventTypes.map(type => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.label}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="wedding">
+                        {t.form.eventType.options.wedding}
+                      </SelectItem>
+                      <SelectItem value="quinceanera">
+                        {t.form.eventType.options.quinceanera}
+                      </SelectItem>
+                      <SelectItem value="birthday">
+                        {t.form.eventType.options.birthday}
+                      </SelectItem>
+                      <SelectItem value="corporate">
+                        {t.form.eventType.options.corporate}
+                      </SelectItem>
+                      <SelectItem value="other">
+                        {t.form.eventType.options.other}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  {errors.eventType && (
+                    <p className="text-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.eventType.message}
+                    </p>
+                  )}
+                </div>
 
-            {/* Event Date Field */}
-            <FormField
-              control={form.control}
-              name="eventDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">
-                    Approximate date{' '}
-                    <span className="text-muted-foreground text-sm">
-                      (optional)
+                {/* Event Date */}
+                <div className="space-y-2">
+                  <Label htmlFor="eventDate" className="text-base font-medium">
+                    {t.form.eventDate.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.eventDate.optional}
                     </span>
-                  </FormLabel>
-                  <FormControl>
+                  </Label>
+                  <div className="relative">
                     <Input
+                      id="eventDate"
                       type="date"
-                      className="bg-background border-input"
-                      {...field}
+                      {...register('eventDate')}
+                      className="pl-10"
                     />
-                  </FormControl>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Don&apos;t worry if you&apos;re not sure yet – we can work
-                    with flexible dates!
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Message Field */}
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground">
-                    Tell us about your vision{' '}
-                    <span className="text-muted-foreground text-sm">
-                      (optional)
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better..."
-                      className="bg-background border-input min-h-[120px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit Button */}
-            <div className="space-y-4 pt-4">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 h-auto"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    Sending your message...
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Start the conversation
+                  <p className="text-sm text-muted-foreground">
+                    {t.form.eventDate.help}
+                  </p>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <Label htmlFor="message" className="text-base font-medium">
+                    {t.form.message.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.message.optional}
+                    </span>
+                  </Label>
+                  <Textarea
+                    id="message"
+                    placeholder={t.form.message.placeholder}
+                    rows={5}
+                    {...register('message')}
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="text-center space-y-6">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-12 py-6 text-lg"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      {t.form.submit.loading}
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      {t.form.submit.button}
+                    </>
+                  )}
+                </Button>
+
+                {submitError && (
+                  <div className="text-destructive text-sm bg-destructive/10 border border-destructive/20 rounded-lg p-4 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    {submitError}
                   </div>
                 )}
-              </Button>
 
-              {/* Error Message */}
-              {submitError && (
-                <div className="flex items-center gap-2 p-3 rounded-md bg-destructive/10 border border-destructive/20">
-                  <AlertCircle className="w-4 h-4 text-destructive" />
-                  <span className="text-sm text-destructive">
-                    {submitError}
-                  </span>
+                {/* Privacy Notice */}
+                <div className="text-sm text-muted-foreground space-y-2 max-w-2xl mx-auto">
+                  <p>{t.form.privacy.line1}</p>
+                  <p>{t.form.privacy.line2}</p>
                 </div>
-              )}
-
-              {/* Trust Message */}
-              <p className="text-xs text-muted-foreground text-center leading-relaxed">
-                We don&apos;t share your info. We&apos;ll only reach out to help
-                with your event.
-                <br />
-                No spam, no pressure – just great photography and videography
-                when you&apos;re ready.
-              </p>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

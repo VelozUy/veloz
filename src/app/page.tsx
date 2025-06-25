@@ -1,170 +1,69 @@
-'use client';
-
+import { getStaticContent, normalizeLocale, getContent } from '@/lib/utils';
 import Hero from '@/components/layout/hero';
-import { useFirebaseVideo } from '@/hooks';
-import { db } from '@/lib/firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import type { Metadata } from 'next';
 
-interface HomepageContent {
-  headline: {
-    en: string;
-    es: string;
-    he: string;
-  };
-  logo: {
-    url: string;
-    enabled: boolean;
-    filename: string;
-  };
-  backgroundVideo: {
-    url: string;
-    enabled: boolean;
-    filename: string;
+// This function will be replaced with proper locale handling when we set up static routes
+function getCurrentLocale(): string {
+  // For now, default to Spanish until we implement proper locale detection
+  return 'es';
+}
+
+// Generate metadata for SEO
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = getCurrentLocale();
+  const content = getStaticContent(locale);
+
+  return {
+    title: `Veloz - Capturamos lo irrepetible`,
+    description: `Fotografía y videografía profesional para eventos especiales`,
+    openGraph: {
+      title: `Veloz - Capturamos lo irrepetible`,
+      description: `Fotografía y videografía profesional para eventos especiales`,
+      type: 'website',
+      locale: locale,
+    },
   };
 }
 
 export default function Home() {
-  // Get the Firebase video URL from the new path - but don't block rendering
-  // This will be used as fallback if no admin video is configured
-  const {
-    videoUrl,
-    loading: videoLoading,
-    error: videoError,
-  } = useFirebaseVideo('videos/veloz-landing-loop-temp.mp4');
+  // Get current locale (will be replaced with proper Next.js locale detection)
+  const locale = getCurrentLocale();
 
-  // State for homepage content - load in background, don't block initial render
-  const [homepageContent, setHomepageContent] =
-    useState<HomepageContent | null>(null);
-  const [contentLoading, setContentLoading] = useState(true);
-  const [contentError, setContentError] = useState<string | null>(null);
+  // Get static content for current locale
+  const staticContent = getStaticContent(locale);
+  const homepageContent = getContent(staticContent, 'homepage') as {
+    headline: string;
+    logo?: { enabled: boolean; url: string };
+    backgroundVideo?: { enabled: boolean; url: string };
+  };
 
-  // Load homepage content from Firestore (same source as admin panel)
-  useEffect(() => {
-    const loadHomepageContent = async () => {
-      try {
-        setContentLoading(true);
-        const docRef = doc(db, 'homepage', 'content');
-        const docSnap = await getDoc(docRef);
+  // Get headline from static content
+  const headline = homepageContent?.headline || 'Capturamos lo irrepetible';
 
-        if (docSnap.exists()) {
-          const data = docSnap.data() as HomepageContent;
-          setHomepageContent(data);
-          setContentError(null);
-        } else {
-          // Document doesn't exist, try to initialize it
-          console.log('📝 Homepage content not found, initializing...');
-          const defaultContent = {
-            headline: {
-              en: 'Capturing the Unrepeatable',
-              es: 'Capturamos lo irrepetible',
-              he: 'לוכדים את מה שלא ניתן לחזור עליו',
-            },
-            logo: {
-              url: '',
-              enabled: false,
-              filename: '',
-            },
-            backgroundVideo: {
-              url: '',
-              enabled: false,
-              filename: '',
-            },
-            updatedAt: serverTimestamp(),
-          };
-
-          try {
-            await setDoc(docRef, defaultContent);
-            setHomepageContent(defaultContent as HomepageContent);
-            setContentError(null);
-            console.log('✅ Homepage content initialized and loaded');
-          } catch (initError) {
-            console.error('Failed to initialize homepage content:', initError);
-            setContentError('Failed to initialize homepage content');
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load homepage content:', error);
-        setContentError(
-          error instanceof Error
-            ? error.message
-            : 'Failed to load homepage content'
-        );
-      } finally {
-        setContentLoading(false);
-      }
-    };
-
-    loadHomepageContent();
-  }, []);
-
-  // Debug logging
-  useEffect(() => {
-    console.log('🎥 Video loading state:', {
-      videoUrl,
-      loading: videoLoading,
-      error: videoError,
-    });
-    console.log('🏠 Homepage content loading state:', {
-      content: homepageContent,
-      loading: contentLoading,
-      error: contentError,
-    });
-
-    // Detailed logo debugging
-    if (homepageContent) {
-      console.log('🔍 Logo debug info:', {
-        logoExists: !!homepageContent.logo,
-        logoUrl: homepageContent.logo?.url,
-        logoEnabled: homepageContent.logo?.enabled,
-        logoFilename: homepageContent.logo?.filename,
-      });
-    }
-  }, [
-    videoUrl,
-    videoLoading,
-    videoError,
-    homepageContent,
-    contentLoading,
-    contentError,
-  ]);
-
-  // Get values from homepage content or defaults
-  const headline = homepageContent?.headline?.es || 'Capturamos lo irrepetible';
+  // Get media URLs from content
   const logoUrl = homepageContent?.logo?.enabled
     ? homepageContent.logo.url
     : undefined;
-  const adminBackgroundVideo = homepageContent?.backgroundVideo?.enabled
+  const backgroundVideo = homepageContent?.backgroundVideo?.enabled
     ? homepageContent.backgroundVideo.url
     : undefined;
 
-  // Prioritize admin video to avoid URL switching during load
-  // If admin video exists and is enabled, use it exclusively
-  // Otherwise, use the fallback video from the hook
-  const finalBackgroundVideo =
-    adminBackgroundVideo ||
-    (!contentLoading && videoUrl ? videoUrl : undefined);
+  // Fallback images for when video is not available
+  const fallbackImages = [
+    '/api/placeholder/1920/1080?text=Event+Photo+1',
+    '/api/placeholder/1920/1080?text=Event+Photo+2',
+    '/api/placeholder/1920/1080?text=Event+Photo+3',
+  ];
 
-  // RENDER IMMEDIATELY - Don't wait for assets to load
-  // This provides instant visual feedback to users
   return (
     <main>
       <Hero
         headline={headline}
-        backgroundVideo={finalBackgroundVideo} // Use consistent video source to avoid URL switching
-        logoUrl={logoUrl} // Will be undefined initially, then populated from admin content
-        backgroundImages={
-          // Fallback images if video fails to load
-          videoError && !adminBackgroundVideo
-            ? [
-                '/api/placeholder/1920/1080?text=Event+Photo+1',
-                '/api/placeholder/1920/1080?text=Event+Photo+2',
-                '/api/placeholder/1920/1080?text=Event+Photo+3',
-              ]
-            : undefined
-        }
-        isVideoLoading={videoLoading}
-        isLogoLoading={contentLoading}
+        backgroundVideo={backgroundVideo}
+        logoUrl={logoUrl}
+        backgroundImages={!backgroundVideo ? fallbackImages : undefined}
+        isVideoLoading={false} // Static content, no loading needed
+        isLogoLoading={false} // Static content, no loading needed
       />
     </main>
   );

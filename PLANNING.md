@@ -47,11 +47,17 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 - Easy theme updates and maintenance
 - Better accessibility with proper contrast ratios
 
-## 🌍 Multilanguage Support
+## 🌍 Multilanguage Support ✅ COMPLETED
 
-- Library: **i18next + react-i18next**
-- Initial supported languages: Spanish (es), English (en), Portuguese (pt), French (fr), Chinese (zh)
-- Content model in Firestore will store localized fields per entry (e.g. `title.en`, `title.es`, ...)
+- **Static Localized Routes Implementation**: Build-time content generation for SEO optimization
+- **Supported Languages**: Spanish (es - base), English (en), Portuguese (pt)
+- **Build-Time Data Fetching**: `scripts/build-data.js` fetches all admin-editable content from Firestore
+- **Static Content Generation**: Generates `content-es.json`, `content-en.json`, `content-pt.json` in `src/data/`
+- **TypeScript Integration**: Auto-generated types in `src/lib/static-content.generated.ts`
+- **Content Access**: `getStaticContent()` utility function for accessing localized content
+- **SEO Benefits**: All content rendered at build time for optimal search engine crawlability
+- **Performance**: No client-side translation loading, faster page loads
+- **Future Ready**: Foundation prepared for full locale routing (/en, /es, /pt) implementation
 
 ---
 
@@ -312,8 +318,24 @@ This component improves user interaction and encourages conversions through a co
 
 ```bash
 npm run build        # Runs build:data then next build
-npm run build:data   # Fetches FAQs from Firestore and generates static files
+npm run build:data   # Fetches all content from Firestore and generates static files
 ```
+
+### Static Content Structure
+
+The build script generates:
+
+- `src/data/content-es.json` - Spanish content (base language)
+- `src/data/content-en.json` - English translations
+- `src/data/content-pt.json` - Portuguese translations
+- `src/lib/static-content.generated.ts` - TypeScript definitions
+
+Each content file includes:
+
+- Homepage content (headlines, CTAs, media URLs)
+- FAQ items with categories and translations
+- Projects data with multilingual metadata
+- Build metadata and timestamps
 
 ---
 
@@ -374,6 +396,8 @@ interface ContactMessage {
 - **Husky** → pre-commit hooks
 - **ESLint + Prettier** → code style enforcement
 - **Netlify CI/CD** → auto-deploy from GitHub
+
+⚠️ Important: Use shadcn/ui components whenever possible for the React frontend. Do not create custom UI components from scratch unless necessary. Assume shadcn/ui is already installed and configured. Use components like <Button>, <Input>, <Textarea>, <Label>, <Card>, <Badge>, <Tabs>, etc.
 
 ---
 

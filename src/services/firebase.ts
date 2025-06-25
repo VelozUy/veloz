@@ -22,6 +22,8 @@ import type {
   Video,
   HomepageContent,
   ContactFormData,
+  ContactMessage,
+  ContactMessageData,
   ApiResponse,
 } from '@/types';
 
@@ -281,6 +283,166 @@ export class VideoService extends BaseFirebaseService {
   }
 }
 
+// Enhanced Contact Message Service
+export class ContactMessageService extends BaseFirebaseService {
+  constructor() {
+    super(FIREBASE_COLLECTIONS.CONTACT_MESSAGES);
+  }
+
+  async submitContactMessage(
+    data: ContactMessageData
+  ): Promise<ApiResponse<string>> {
+    try {
+      // Add default values for new contact messages
+      const contactMessage = {
+        ...data,
+        archived: false,
+      };
+
+      const result = await this.create(contactMessage);
+      return result;
+    } catch (error) {
+      console.error('Error submitting contact message:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getAllContactMessages(): Promise<ApiResponse<ContactMessage[]>> {
+    try {
+      const q = query(this.getCollection(), orderBy('createdAt', 'desc'));
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as ContactMessage[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching contact messages:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getPendingMessages(): Promise<ApiResponse<ContactMessage[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('archived', '==', false),
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as ContactMessage[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching pending contact messages:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getArchivedMessages(): Promise<ApiResponse<ContactMessage[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('archived', '==', true),
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as ContactMessage[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching archived contact messages:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async archiveMessage(id: string): Promise<ApiResponse<void>> {
+    return this.update(id, { archived: true });
+  }
+
+  async unarchiveMessage(id: string): Promise<ApiResponse<void>> {
+    return this.update(id, { archived: false });
+  }
+
+  async getMessagesByEventType(
+    eventType: string
+  ): Promise<ApiResponse<ContactMessage[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('eventType', '==', eventType),
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as ContactMessage[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching contact messages by event type:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async searchMessages(query: string): Promise<ApiResponse<ContactMessage[]>> {
+    try {
+      // Note: For full-text search, you might want to use Algolia or similar
+      // For now, we'll get all messages and filter client-side
+      const allMessages = await this.getAllContactMessages();
+
+      if (!allMessages.success || !allMessages.data) {
+        return allMessages;
+      }
+
+      const searchQuery = query.toLowerCase();
+      const filteredMessages = allMessages.data.filter(
+        message =>
+          message.name.toLowerCase().includes(searchQuery) ||
+          message.email?.toLowerCase().includes(searchQuery) ||
+          message.eventType.toLowerCase().includes(searchQuery) ||
+          message.message?.toLowerCase().includes(searchQuery)
+      );
+
+      return { success: true, data: filteredMessages };
+    } catch (error) {
+      console.error('Error searching contact messages:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+}
+
+// Legacy Contact Service (keeping for backward compatibility if needed)
 export class ContactService extends BaseFirebaseService {
   constructor() {
     super(FIREBASE_COLLECTIONS.CONTACTS);
@@ -342,5 +504,6 @@ export const homepageService = new HomepageService();
 export const faqService = new FAQService();
 export const photoService = new PhotoService();
 export const videoService = new VideoService();
-export const contactService = new ContactService();
+export const contactMessageService = new ContactMessageService(); // Enhanced contact system
+export const contactService = new ContactService(); // Legacy support
 export const storageService = new StorageService();

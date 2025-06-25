@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+// import { useRouter } from 'next/router'; // Removed for static localized routes
 import { Button } from '@/components/ui/button';
+import { LocaleSwitcher } from '@/components/ui/locale-switcher';
 import {
   Menu,
   X,
@@ -12,7 +14,27 @@ import {
   MessageCircle,
 } from 'lucide-react';
 
-export default function Navigation() {
+interface NavigationProps {
+  translations: {
+    navigation: {
+      home: string;
+      about: string;
+      gallery: string;
+      contact: string;
+    };
+    homepage: {
+      hero: {
+        cta: {
+          contact: string;
+        };
+      };
+    };
+  };
+  locale: string;
+}
+
+export default function Navigation({ translations, locale }: NavigationProps) {
+  // const router = useRouter(); // Removed for static localized routes
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -38,9 +60,21 @@ export default function Navigation() {
   }, [mounted]);
 
   const navItems = [
-    { name: 'Our Work', href: '/gallery', icon: ImageIcon },
-    { name: 'About & FAQ', href: '/about', icon: MessageCircle },
-    { name: 'Work With Us', href: '/contact', icon: Phone },
+    {
+      name: translations.navigation.gallery,
+      href: '/gallery',
+      icon: ImageIcon,
+    },
+    {
+      name: translations.navigation.about,
+      href: '/about',
+      icon: MessageCircle,
+    },
+    {
+      name: translations.navigation.contact,
+      href: '/contact',
+      icon: Phone,
+    },
   ];
 
   // Prevent hydration mismatch by ensuring consistent initial render
@@ -57,19 +91,27 @@ export default function Navigation() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              {navItems.map(item => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
-                  >
-                    <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                    <span className="font-medium">{item.name}</span>
-                  </Link>
-                );
-              })}
+              <Link
+                href="/gallery"
+                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+              >
+                <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Our Work</span>
+              </Link>
+              <Link
+                href="/about"
+                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+              >
+                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">About & FAQ</span>
+              </Link>
+              <Link
+                href="/contact"
+                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+              >
+                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Work With Us</span>
+              </Link>
             </div>
 
             {/* CTA Button (Desktop) */}
@@ -128,11 +170,14 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* CTA Button (Desktop) */}
-          <div className="hidden md:block">
-            <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-              Get Started
-            </Button>
+          {/* Language Switcher & CTA Button (Desktop) */}
+          <div className="hidden md:flex items-center space-x-4">
+            <LocaleSwitcher currentLocale={locale} />
+            <Link href="/contact">
+              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                {translations.homepage.hero.cta.contact}
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -170,14 +215,17 @@ export default function Navigation() {
                 );
               })}
 
-              {/* Mobile CTA */}
-              <div className="pt-4 border-t">
+              {/* Language Switcher & Mobile CTA */}
+              <div className="pt-4 border-t space-y-4">
+                <div className="flex justify-center">
+                  <LocaleSwitcher currentLocale={locale} />
+                </div>
                 <Link href="/contact">
                   <Button
                     className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Get Started
+                    {translations.homepage.hero.cta.contact}
                   </Button>
                 </Link>
               </div>

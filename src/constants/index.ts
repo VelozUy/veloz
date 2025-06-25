@@ -90,7 +90,8 @@ export const FIREBASE_COLLECTIONS = {
   FAQS: 'faqs',
   PHOTOS: 'photos',
   VIDEOS: 'videos',
-  CONTACTS: 'contacts',
+  CONTACTS: 'contacts', // Legacy collection
+  CONTACT_MESSAGES: 'contactMessages', // Enhanced contact system
   USERS: 'users',
 } as const;
 
@@ -108,4 +109,4 @@ export const VALIDATION_MESSAGES = {
 export const DEFAULT_LANGUAGE: Language = 'es';
 export const DEFAULT_EVENT_TYPE: EventType = 'wedding';
 export const ITEMS_PER_PAGE = 12;
-export const MAX_RETRIES = 3; 
+export const MAX_RETRIES = 3;

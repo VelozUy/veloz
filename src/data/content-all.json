@@ -1,0 +1,464 @@
+{
+  "es": {
+    "locale": "es",
+    "translations": {
+      "navigation": {
+        "home": "Inicio",
+        "about": "Sobre Nosotros",
+        "gallery": "Nuestro Trabajo",
+        "contact": "Contacto"
+      },
+      "homepage": {
+        "hero": {
+          "headline": "Capturamos lo irrepetible",
+          "cta": {
+            "about": "Sobre Nosotros",
+            "work": "Nuestro Trabajo",
+            "contact": "Trabaja con Nosotros"
+          }
+        }
+      },
+      "contact": {
+        "title": "Cuéntanos sobre tu evento",
+        "subtitle": "Mientras más sepamos, mejor podremos hacer que tu día sea perfecto",
+        "form": {
+          "name": {
+            "label": "Tu nombre",
+            "placeholder": "¿Cómo deberíamos llamarte?"
+          },
+          "email": {
+            "label": "Correo electrónico",
+            "placeholder": "tu.email@ejemplo.com"
+          },
+          "eventType": {
+            "label": "¿Qué estás celebrando?",
+            "placeholder": "Elige tu tipo de evento",
+            "options": {
+              "wedding": "Boda",
+              "quinceanera": "Fiesta de 15 Años",
+              "birthday": "Fiesta de Cumpleaños",
+              "corporate": "Evento Corporativo",
+              "other": "Otro (¡cuéntanos en el mensaje!)"
+            }
+          },
+          "eventDate": {
+            "label": "Fecha aproximada",
+            "optional": "(opcional)",
+            "help": "¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!"
+          },
+          "message": {
+            "label": "Cuéntanos sobre tu visión",
+            "optional": "(opcional)",
+            "placeholder": "Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento..."
+          },
+          "submit": {
+            "button": "Empezar la conversación",
+            "loading": "Enviando tu mensaje..."
+          },
+          "privacy": {
+            "line1": "No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.",
+            "line2": "Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo."
+          }
+        },
+        "success": {
+          "title": "¡Mensaje enviado!",
+          "message": "¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.",
+          "action": "Enviar otro mensaje"
+        },
+        "trust": {
+          "response": {
+            "title": "Respuesta Rápida",
+            "description": "Típicamente respondemos dentro de 24 horas con una cotización personalizada"
+          },
+          "commitment": {
+            "title": "Sin Compromiso",
+            "description": "Obtener una cotización es completamente gratis y sin ataduras"
+          },
+          "privacy": {
+            "title": "Privacidad Primero",
+            "description": "Nunca compartimos tu información y solo te contactamos sobre tu evento"
+          }
+        }
+      },
+      "widget": {
+        "button": {
+          "desktop": "¿En qué evento estás pensando?",
+          "mobile": "¿Tu evento?"
+        },
+        "dialog": {
+          "title": "Cuéntanos sobre tu evento"
+        },
+        "eventTypes": {
+          "wedding": "Boda",
+          "corporate": "Evento Empresarial",
+          "other": "Otro tipo de evento"
+        },
+        "steps": {
+          "eventType": {
+            "title": "¿En qué evento estás pensando?",
+            "subtitle": "Cuéntanos qué quieres celebrar"
+          },
+          "date": {
+            "title": "¿Ya tienes fecha?",
+            "subtitle": "No te preocupes si aún no estás seguro",
+            "noDate": "Aún no tengo fecha definida"
+          },
+          "contact": {
+            "title": "¿Quieres contarnos más?",
+            "subtitle": "Elige cómo prefieres que nos contactemos",
+            "moreInfo": {
+              "title": "Sí, quiero contarte más detalles",
+              "subtitle": "Te llevamos al formulario completo"
+            },
+            "callMe": {
+              "title": "Quiero que me llamen",
+              "subtitle": "Preferimos hablar por teléfono"
+            }
+          },
+          "phone": {
+            "title": "¡Perfecto! Te llamamos",
+            "subtitle": "Déjanos tu número y te contactamos pronto",
+            "placeholder": "Tu número de teléfono",
+            "button": "Solicitar llamada",
+            "loading": "Enviando..."
+          },
+          "complete": {
+            "title": "¡Listo!",
+            "message": "Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.",
+            "button": "Cerrar"
+          }
+        }
+      },
+      "validation": {
+        "required": "Este campo es requerido",
+        "email": "Por favor ingresa un email válido para que podamos responderte",
+        "minLength": "Debe tener al menos {{count}} caracteres"
+      }
+    },
+    "content": {
+      "homepage": {
+        "headline": "Capturamos lo irrepetible",
+        "logo": {
+          "url": "",
+          "enabled": false
+        },
+        "backgroundVideo": {
+          "url": "",
+          "enabled": false
+        }
+      },
+      "faqs": [],
+      "projects": []
+    },
+    "lastUpdated": "2025-06-25T14:31:48.273Z",
+    "buildTime": true
+  },
+  "en": {
+    "locale": "en",
+    "translations": {
+      "navigation": {
+        "home": "Home",
+        "about": "About Us",
+        "gallery": "Our Work",
+        "contact": "Contact"
+      },
+      "homepage": {
+        "hero": {
+          "headline": "Capturing the Unrepeatable",
+          "cta": {
+            "about": "About Us",
+            "work": "Our Work",
+            "contact": "Work with Us"
+          }
+        }
+      },
+      "contact": {
+        "title": "Tell us about your event",
+        "subtitle": "The more we know, the better we can help make your day perfect",
+        "form": {
+          "name": {
+            "label": "Your name",
+            "placeholder": "What should we call you?"
+          },
+          "email": {
+            "label": "Email address",
+            "placeholder": "your.email@example.com"
+          },
+          "eventType": {
+            "label": "What are you celebrating?",
+            "placeholder": "Choose your event type",
+            "options": {
+              "wedding": "Wedding",
+              "quinceanera": "15th Birthday (Quinceañera)",
+              "birthday": "Birthday Party",
+              "corporate": "Corporate Event",
+              "other": "Other (tell us in the message!)"
+            }
+          },
+          "eventDate": {
+            "label": "Approximate date",
+            "optional": "(optional)",
+            "help": "Don't worry if you're not sure yet – we can work with flexible dates!"
+          },
+          "message": {
+            "label": "Tell us about your vision",
+            "optional": "(optional)",
+            "placeholder": "Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better..."
+          },
+          "submit": {
+            "button": "Start the conversation",
+            "loading": "Sending your message..."
+          },
+          "privacy": {
+            "line1": "We don't share your info. We'll only reach out to help with your event.",
+            "line2": "No spam, no pressure – just great photography and videography when you're ready."
+          }
+        },
+        "success": {
+          "title": "Message sent!",
+          "message": "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+          "action": "Send another message"
+        },
+        "trust": {
+          "response": {
+            "title": "Quick Response",
+            "description": "We typically respond within 24 hours with a personalized quote"
+          },
+          "commitment": {
+            "title": "No Commitment",
+            "description": "Getting a quote is completely free with no strings attached"
+          },
+          "privacy": {
+            "title": "Privacy First",
+            "description": "We never share your information and only contact you about your event"
+          }
+        }
+      },
+      "widget": {
+        "button": {
+          "desktop": "What event are you thinking about?",
+          "mobile": "Your event?"
+        },
+        "dialog": {
+          "title": "Tell us about your event"
+        },
+        "eventTypes": {
+          "wedding": "Wedding",
+          "corporate": "Corporate Event",
+          "other": "Other type of event"
+        },
+        "steps": {
+          "eventType": {
+            "title": "What event are you thinking about?",
+            "subtitle": "Tell us what you want to celebrate"
+          },
+          "date": {
+            "title": "Do you have a date already?",
+            "subtitle": "Don't worry if you're not sure yet",
+            "noDate": "I don't have a date set yet"
+          },
+          "contact": {
+            "title": "Want to tell us more?",
+            "subtitle": "Choose how you prefer us to contact you",
+            "moreInfo": {
+              "title": "Yes, I want to tell you more details",
+              "subtitle": "We take you to the complete form"
+            },
+            "callMe": {
+              "title": "I want you to call me",
+              "subtitle": "We prefer to talk by phone"
+            }
+          },
+          "phone": {
+            "title": "Perfect! We call you",
+            "subtitle": "Leave us your number and we contact you soon",
+            "placeholder": "Your phone number",
+            "button": "Request call",
+            "loading": "Sending..."
+          },
+          "complete": {
+            "title": "Ready!",
+            "message": "We will contact you very soon to talk about your event.",
+            "button": "Close"
+          }
+        }
+      },
+      "validation": {
+        "required": "This field is required",
+        "email": "Please enter a valid email so we can get back to you",
+        "minLength": "Must be at least {{count}} characters"
+      }
+    },
+    "content": {
+      "homepage": {
+        "headline": "Capturing the Unrepeatable",
+        "logo": {
+          "url": "",
+          "enabled": false
+        },
+        "backgroundVideo": {
+          "url": "",
+          "enabled": false
+        }
+      },
+      "faqs": [],
+      "projects": []
+    },
+    "lastUpdated": "2025-06-25T14:31:48.273Z",
+    "buildTime": true
+  },
+  "pt": {
+    "locale": "pt",
+    "translations": {
+      "navigation": {
+        "home": "Início",
+        "about": "Sobre Nós",
+        "gallery": "Nosso Trabalho",
+        "contact": "Contato"
+      },
+      "homepage": {
+        "hero": {
+          "headline": "Capturamos o que não se repete",
+          "cta": {
+            "about": "Sobre Nós",
+            "work": "Nosso Trabalho",
+            "contact": "Trabalhe Conosco"
+          }
+        }
+      },
+      "contact": {
+        "title": "Conte-nos sobre seu evento",
+        "subtitle": "Quanto mais soubermos, melhor poderemos tornar seu dia perfeito",
+        "form": {
+          "name": {
+            "label": "Seu nome",
+            "placeholder": "Como devemos chamá-lo?"
+          },
+          "email": {
+            "label": "Endereço de email",
+            "placeholder": "seu.email@exemplo.com"
+          },
+          "eventType": {
+            "label": "O que você está comemorando?",
+            "placeholder": "Escolha seu tipo de evento",
+            "options": {
+              "wedding": "Casamento",
+              "quinceanera": "Festa de 15 Anos",
+              "birthday": "Festa de Aniversário",
+              "corporate": "Evento Corporativo",
+              "other": "Outro (conte-nos na mensagem!)"
+            }
+          },
+          "eventDate": {
+            "label": "Data aproximada",
+            "optional": "(opcional)",
+            "help": "Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!"
+          },
+          "message": {
+            "label": "Conte-nos sobre sua visão",
+            "optional": "(opcional)",
+            "placeholder": "Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento..."
+          },
+          "submit": {
+            "button": "Iniciar a conversa",
+            "loading": "Enviando sua mensagem..."
+          },
+          "privacy": {
+            "line1": "Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.",
+            "line2": "Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto."
+          }
+        },
+        "success": {
+          "title": "Mensagem enviada!",
+          "message": "Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.",
+          "action": "Enviar outra mensagem"
+        },
+        "trust": {
+          "response": {
+            "title": "Resposta Rápida",
+            "description": "Normalmente respondemos dentro de 24 horas com uma cotação personalizada"
+          },
+          "commitment": {
+            "title": "Sem Compromisso",
+            "description": "Obter uma cotação é completamente grátis sem amarras"
+          },
+          "privacy": {
+            "title": "Privacidade em Primeiro Lugar",
+            "description": "Nunca compartilhamos suas informações e só entramos em contato sobre seu evento"
+          }
+        }
+      },
+      "widget": {
+        "button": {
+          "desktop": "Em que evento você está pensando?",
+          "mobile": "Seu evento?"
+        },
+        "dialog": {
+          "title": "Conte-nos sobre seu evento"
+        },
+        "eventTypes": {
+          "wedding": "Casamento",
+          "corporate": "Evento Corporativo",
+          "other": "Outro tipo de evento"
+        },
+        "steps": {
+          "eventType": {
+            "title": "Em que evento você está pensando?",
+            "subtitle": "Conte-nos o que quer comemorar"
+          },
+          "date": {
+            "title": "Já tem uma data?",
+            "subtitle": "Não se preocupe se ainda não tem certeza",
+            "noDate": "Ainda não tenho data definida"
+          },
+          "contact": {
+            "title": "Quer nos contar mais?",
+            "subtitle": "Escolha como prefere que entremos em contato",
+            "moreInfo": {
+              "title": "Sim, quero contar mais detalhes",
+              "subtitle": "Levamos você ao formulário completo"
+            },
+            "callMe": {
+              "title": "Quero que me liguem",
+              "subtitle": "Preferimos falar por telefone"
+            }
+          },
+          "phone": {
+            "title": "Perfeito! Te ligamos",
+            "subtitle": "Deixe seu número e entraremos em contato em breve",
+            "placeholder": "Seu número de telefone",
+            "button": "Solicitar ligação",
+            "loading": "Enviando..."
+          },
+          "complete": {
+            "title": "Pronto!",
+            "message": "Entraremos em contato muito em breve para conversar sobre seu evento.",
+            "button": "Fechar"
+          }
+        }
+      },
+      "validation": {
+        "required": "Este campo é obrigatório",
+        "email": "Por favor insira um email válido para podermos responder",
+        "minLength": "Deve ter pelo menos {{count}} caracteres"
+      }
+    },
+    "content": {
+      "homepage": {
+        "headline": "Capturamos o que não se repete",
+        "logo": {
+          "url": "",
+          "enabled": false
+        },
+        "backgroundVideo": {
+          "url": "",
+          "enabled": false
+        }
+      },
+      "faqs": [],
+      "projects": []
+    },
+    "lastUpdated": "2025-06-25T14:31:48.274Z",
+    "buildTime": true
+  }
+}

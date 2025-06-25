@@ -38,7 +38,6 @@ export const emailService = {
         message: data.message || 'Sin mensaje adicional',
         phone: data.phone || 'No proporcionado',
         source: data.source || 'contact_form',
-        preferred_contact: data.preferredContact || 'email',
         to_name: 'Equipo Veloz',
         reply_to: data.email,
       };

@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 /**
- * Build-time data fetching script
- * This script fetches FAQ data from Firestore and generates static JSON files
- * that can be used during the build process for better SEO and performance
+ * Build-time data fetching script for Static Localized Routes
+ * This script fetches ALL admin-editable content from Firestore and generates
+ * static JSON files for each locale (es, en, pt) for better SEO and performance
  */
 
 const { initializeApp } = require('firebase/app');
@@ -15,11 +15,13 @@ const {
   getDocs,
   query,
   orderBy,
+  doc,
+  getDoc,
 } = require('firebase/firestore');
 const fs = require('fs');
 const path = require('path');
 
-// Firebase configuration (should match your project)
+// Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -29,28 +31,495 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-async function fetchFAQData() {
+// Supported locales
+const LOCALES = ['es', 'en', 'pt'];
+
+// Static translations for UI elements
+const STATIC_TRANSLATIONS = {
+  es: {
+    navigation: {
+      home: 'Inicio',
+      about: 'Sobre Nosotros',
+      gallery: 'Nuestro Trabajo',
+      contact: 'Contacto',
+    },
+    homepage: {
+      hero: {
+        headline: 'Capturamos lo irrepetible',
+        cta: {
+          about: 'Sobre Nosotros',
+          work: 'Nuestro Trabajo',
+          contact: 'Trabaja con Nosotros',
+        },
+      },
+    },
+    contact: {
+      title: 'Cuéntanos sobre tu evento',
+      subtitle:
+        'Mientras más sepamos, mejor podremos hacer que tu día sea perfecto',
+      form: {
+        name: {
+          label: 'Tu nombre',
+          placeholder: '¿Cómo deberíamos llamarte?',
+        },
+        email: {
+          label: 'Correo electrónico',
+          placeholder: 'tu.email@ejemplo.com',
+        },
+        eventType: {
+          label: '¿Qué estás celebrando?',
+          placeholder: 'Elige tu tipo de evento',
+          options: {
+            wedding: 'Boda',
+            quinceanera: 'Fiesta de 15 Años',
+            birthday: 'Fiesta de Cumpleaños',
+            corporate: 'Evento Corporativo',
+            other: 'Otro (¡cuéntanos en el mensaje!)',
+          },
+        },
+        eventDate: {
+          label: 'Fecha aproximada',
+          optional: '(opcional)',
+          help: '¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!',
+        },
+        message: {
+          label: 'Cuéntanos sobre tu visión',
+          optional: '(opcional)',
+          placeholder:
+            'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
+        },
+        submit: {
+          button: 'Empezar la conversación',
+          loading: 'Enviando tu mensaje...',
+        },
+        privacy: {
+          line1:
+            'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
+          line2:
+            'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
+        },
+      },
+      success: {
+        title: '¡Mensaje enviado!',
+        message:
+          '¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+        action: 'Enviar otro mensaje',
+      },
+      trust: {
+        response: {
+          title: 'Respuesta Rápida',
+          description:
+            'Típicamente respondemos dentro de 24 horas con una cotización personalizada',
+        },
+        commitment: {
+          title: 'Sin Compromiso',
+          description:
+            'Obtener una cotización es completamente gratis y sin ataduras',
+        },
+        privacy: {
+          title: 'Privacidad Primero',
+          description:
+            'Nunca compartimos tu información y solo te contactamos sobre tu evento',
+        },
+      },
+    },
+    widget: {
+      button: {
+        desktop: '¿En qué evento estás pensando?',
+        mobile: '¿Tu evento?',
+      },
+      dialog: {
+        title: 'Cuéntanos sobre tu evento',
+      },
+      eventTypes: {
+        wedding: 'Boda',
+        corporate: 'Evento Empresarial',
+        other: 'Otro tipo de evento',
+      },
+      steps: {
+        eventType: {
+          title: '¿En qué evento estás pensando?',
+          subtitle: 'Cuéntanos qué quieres celebrar',
+        },
+        date: {
+          title: '¿Ya tienes fecha?',
+          subtitle: 'No te preocupes si aún no estás seguro',
+          noDate: 'Aún no tengo fecha definida',
+        },
+        contact: {
+          title: '¿Quieres contarnos más?',
+          subtitle: 'Elige cómo prefieres que nos contactemos',
+          moreInfo: {
+            title: 'Sí, quiero contarte más detalles',
+            subtitle: 'Te llevamos al formulario completo',
+          },
+          callMe: {
+            title: 'Quiero que me llamen',
+            subtitle: 'Preferimos hablar por teléfono',
+          },
+        },
+        phone: {
+          title: '¡Perfecto! Te llamamos',
+          subtitle: 'Déjanos tu número y te contactamos pronto',
+          placeholder: 'Tu número de teléfono',
+          button: 'Solicitar llamada',
+          loading: 'Enviando...',
+        },
+        complete: {
+          title: '¡Listo!',
+          message:
+            'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
+          button: 'Cerrar',
+        },
+      },
+    },
+    validation: {
+      required: 'Este campo es requerido',
+      email: 'Por favor ingresa un email válido para que podamos responderte',
+      minLength: 'Debe tener al menos {{count}} caracteres',
+    },
+  },
+  en: {
+    navigation: {
+      home: 'Home',
+      about: 'About Us',
+      gallery: 'Our Work',
+      contact: 'Contact',
+    },
+    homepage: {
+      hero: {
+        headline: 'Capturing the Unrepeatable',
+        cta: {
+          about: 'About Us',
+          work: 'Our Work',
+          contact: 'Work with Us',
+        },
+      },
+    },
+    contact: {
+      title: 'Tell us about your event',
+      subtitle:
+        'The more we know, the better we can help make your day perfect',
+      form: {
+        name: {
+          label: 'Your name',
+          placeholder: 'What should we call you?',
+        },
+        email: {
+          label: 'Email address',
+          placeholder: 'your.email@example.com',
+        },
+        eventType: {
+          label: 'What are you celebrating?',
+          placeholder: 'Choose your event type',
+          options: {
+            wedding: 'Wedding',
+            quinceanera: '15th Birthday (Quinceañera)',
+            birthday: 'Birthday Party',
+            corporate: 'Corporate Event',
+            other: 'Other (tell us in the message!)',
+          },
+        },
+        eventDate: {
+          label: 'Approximate date',
+          optional: '(optional)',
+          help: "Don't worry if you're not sure yet – we can work with flexible dates!",
+        },
+        message: {
+          label: 'Tell us about your vision',
+          optional: '(optional)',
+          placeholder:
+            'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
+        },
+        submit: {
+          button: 'Start the conversation',
+          loading: 'Sending your message...',
+        },
+        privacy: {
+          line1:
+            "We don't share your info. We'll only reach out to help with your event.",
+          line2:
+            "No spam, no pressure – just great photography and videography when you're ready.",
+        },
+      },
+      success: {
+        title: 'Message sent!',
+        message:
+          "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+        action: 'Send another message',
+      },
+      trust: {
+        response: {
+          title: 'Quick Response',
+          description:
+            'We typically respond within 24 hours with a personalized quote',
+        },
+        commitment: {
+          title: 'No Commitment',
+          description:
+            'Getting a quote is completely free with no strings attached',
+        },
+        privacy: {
+          title: 'Privacy First',
+          description:
+            'We never share your information and only contact you about your event',
+        },
+      },
+    },
+    widget: {
+      button: {
+        desktop: 'What event are you thinking about?',
+        mobile: 'Your event?',
+      },
+      dialog: {
+        title: 'Tell us about your event',
+      },
+      eventTypes: {
+        wedding: 'Wedding',
+        corporate: 'Corporate Event',
+        other: 'Other type of event',
+      },
+      steps: {
+        eventType: {
+          title: 'What event are you thinking about?',
+          subtitle: 'Tell us what you want to celebrate',
+        },
+        date: {
+          title: 'Do you have a date already?',
+          subtitle: "Don't worry if you're not sure yet",
+          noDate: "I don't have a date set yet",
+        },
+        contact: {
+          title: 'Want to tell us more?',
+          subtitle: 'Choose how you prefer us to contact you',
+          moreInfo: {
+            title: 'Yes, I want to tell you more details',
+            subtitle: 'We take you to the complete form',
+          },
+          callMe: {
+            title: 'I want you to call me',
+            subtitle: 'We prefer to talk by phone',
+          },
+        },
+        phone: {
+          title: 'Perfect! We call you',
+          subtitle: 'Leave us your number and we contact you soon',
+          placeholder: 'Your phone number',
+          button: 'Request call',
+          loading: 'Sending...',
+        },
+        complete: {
+          title: 'Ready!',
+          message: 'We will contact you very soon to talk about your event.',
+          button: 'Close',
+        },
+      },
+    },
+    validation: {
+      required: 'This field is required',
+      email: 'Please enter a valid email so we can get back to you',
+      minLength: 'Must be at least {{count}} characters',
+    },
+  },
+  pt: {
+    navigation: {
+      home: 'Início',
+      about: 'Sobre Nós',
+      gallery: 'Nosso Trabalho',
+      contact: 'Contato',
+    },
+    homepage: {
+      hero: {
+        headline: 'Capturamos o que não se repete',
+        cta: {
+          about: 'Sobre Nós',
+          work: 'Nosso Trabalho',
+          contact: 'Trabalhe Conosco',
+        },
+      },
+    },
+    contact: {
+      title: 'Conte-nos sobre seu evento',
+      subtitle:
+        'Quanto mais soubermos, melhor poderemos tornar seu dia perfeito',
+      form: {
+        name: {
+          label: 'Seu nome',
+          placeholder: 'Como devemos chamá-lo?',
+        },
+        email: {
+          label: 'Endereço de email',
+          placeholder: 'seu.email@exemplo.com',
+        },
+        eventType: {
+          label: 'O que você está comemorando?',
+          placeholder: 'Escolha seu tipo de evento',
+          options: {
+            wedding: 'Casamento',
+            quinceanera: 'Festa de 15 Anos',
+            birthday: 'Festa de Aniversário',
+            corporate: 'Evento Corporativo',
+            other: 'Outro (conte-nos na mensagem!)',
+          },
+        },
+        eventDate: {
+          label: 'Data aproximada',
+          optional: '(opcional)',
+          help: 'Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!',
+        },
+        message: {
+          label: 'Conte-nos sobre sua visão',
+          optional: '(opcional)',
+          placeholder:
+            'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+        },
+        submit: {
+          button: 'Iniciar a conversa',
+          loading: 'Enviando sua mensagem...',
+        },
+        privacy: {
+          line1:
+            'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
+          line2:
+            'Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto.',
+        },
+      },
+      success: {
+        title: 'Mensagem enviada!',
+        message:
+          'Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+        action: 'Enviar outra mensagem',
+      },
+      trust: {
+        response: {
+          title: 'Resposta Rápida',
+          description:
+            'Normalmente respondemos dentro de 24 horas com uma cotação personalizada',
+        },
+        commitment: {
+          title: 'Sem Compromisso',
+          description: 'Obter uma cotação é completamente grátis sem amarras',
+        },
+        privacy: {
+          title: 'Privacidade em Primeiro Lugar',
+          description:
+            'Nunca compartilhamos suas informações e só entramos em contato sobre seu evento',
+        },
+      },
+    },
+    widget: {
+      button: {
+        desktop: 'Em que evento você está pensando?',
+        mobile: 'Seu evento?',
+      },
+      dialog: {
+        title: 'Conte-nos sobre seu evento',
+      },
+      eventTypes: {
+        wedding: 'Casamento',
+        corporate: 'Evento Corporativo',
+        other: 'Outro tipo de evento',
+      },
+      steps: {
+        eventType: {
+          title: 'Em que evento você está pensando?',
+          subtitle: 'Conte-nos o que quer comemorar',
+        },
+        date: {
+          title: 'Já tem uma data?',
+          subtitle: 'Não se preocupe se ainda não tem certeza',
+          noDate: 'Ainda não tenho data definida',
+        },
+        contact: {
+          title: 'Quer nos contar mais?',
+          subtitle: 'Escolha como prefere que entremos em contato',
+          moreInfo: {
+            title: 'Sim, quero contar mais detalhes',
+            subtitle: 'Levamos você ao formulário completo',
+          },
+          callMe: {
+            title: 'Quero que me liguem',
+            subtitle: 'Preferimos falar por telefone',
+          },
+        },
+        phone: {
+          title: 'Perfeito! Te ligamos',
+          subtitle: 'Deixe seu número e entraremos em contato em breve',
+          placeholder: 'Seu número de telefone',
+          button: 'Solicitar ligação',
+          loading: 'Enviando...',
+        },
+        complete: {
+          title: 'Pronto!',
+          message:
+            'Entraremos em contato muito em breve para conversar sobre seu evento.',
+          button: 'Fechar',
+        },
+      },
+    },
+    validation: {
+      required: 'Este campo é obrigatório',
+      email: 'Por favor insira um email válido para podermos responder',
+      minLength: 'Deve ter pelo menos {{count}} caracteres',
+    },
+  },
+};
+
+/**
+ * Fetch homepage content from Firestore
+ */
+async function fetchHomepageContent(db) {
   try {
-    console.log('🔄 Fetching FAQ data from Firestore...');
+    console.log('🏠 Fetching homepage content...');
+    const docRef = doc(db, 'homepage', 'content');
+    const docSnap = await getDoc(docRef);
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log('✅ Homepage content found');
+      return data;
+    } else {
+      console.log('ℹ️ No homepage content found, using defaults');
+      return {
+        headline: {
+          es: 'Capturamos lo irrepetible',
+          en: 'Capturing the Unrepeatable',
+          pt: 'Capturamos o que não se repete',
+        },
+        logo: { url: '', enabled: false },
+        backgroundVideo: { url: '', enabled: false },
+      };
+    }
+  } catch (error) {
+    console.warn('⚠️ Error fetching homepage content:', error.message);
+    return {
+      headline: {
+        es: 'Capturamos lo irrepetible',
+        en: 'Capturing the Unrepeatable',
+        pt: 'Capturamos o que não se repete',
+      },
+      logo: { url: '', enabled: false },
+      backgroundVideo: { url: '', enabled: false },
+    };
+  }
+}
 
-    // Fetch FAQs with simple query to avoid index issues
+/**
+ * Fetch FAQs from Firestore
+ */
+async function fetchFAQs(db) {
+  try {
+    console.log('❓ Fetching FAQs...');
     const faqsQuery = query(collection(db, 'faqs'), orderBy('order', 'asc'));
-
     const snapshot = await getDocs(faqsQuery);
     const faqs = [];
 
     snapshot.forEach(doc => {
       const data = doc.data();
-      // Only include published FAQs
       if (data.published === true) {
         faqs.push({
           id: doc.id,
           ...data,
-          // Convert Firestore timestamps to strings for JSON serialization
           createdAt: data.createdAt
             ? data.createdAt.toDate().toISOString()
             : null,
@@ -62,82 +531,210 @@ async function fetchFAQData() {
     });
 
     console.log(`✅ Found ${faqs.length} published FAQs`);
+    return faqs;
+  } catch (error) {
+    console.warn('⚠️ Error fetching FAQs:', error.message);
+    return [];
+  }
+}
 
-    // Create build data object
-    const buildData = {
-      faqs,
-      lastUpdated: new Date().toISOString(),
-      buildTime: true,
-    };
+/**
+ * Fetch projects/gallery content from Firestore
+ */
+async function fetchProjects(db) {
+  try {
+    console.log('🖼️ Fetching projects...');
+    const projectsQuery = query(
+      collection(db, 'projects'),
+      orderBy('createdAt', 'desc')
+    );
+    const snapshot = await getDocs(projectsQuery);
+    const projects = [];
 
-    // Ensure the data directory exists
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.status === 'published') {
+        projects.push({
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt
+            ? data.createdAt.toDate().toISOString()
+            : null,
+          updatedAt: data.updatedAt
+            ? data.updatedAt.toDate().toISOString()
+            : null,
+        });
+      }
+    });
+
+    console.log(`✅ Found ${projects.length} published projects`);
+    return projects;
+  } catch (error) {
+    console.warn('⚠️ Error fetching projects:', error.message);
+    return [];
+  }
+}
+
+/**
+ * Generate content for a specific locale
+ */
+function generateLocaleContent(locale, homepageContent, faqs, projects) {
+  return {
+    locale,
+    translations: STATIC_TRANSLATIONS[locale],
+    content: {
+      homepage: {
+        headline:
+          homepageContent.headline?.[locale] ||
+          homepageContent.headline?.es ||
+          STATIC_TRANSLATIONS[locale].homepage.hero.headline,
+        logo: homepageContent.logo,
+        backgroundVideo: homepageContent.backgroundVideo,
+      },
+      faqs: faqs
+        .map(faq => ({
+          id: faq.id,
+          question: faq.question?.[locale] || faq.question?.es || '',
+          answer: faq.answer?.[locale] || faq.answer?.es || '',
+          category: faq.category,
+          order: faq.order,
+        }))
+        .filter(faq => faq.question && faq.answer),
+      projects: projects
+        .map(project => ({
+          id: project.id,
+          title: project.title?.[locale] || project.title?.es || '',
+          description:
+            project.description?.[locale] || project.description?.es || '',
+          coverImage: project.coverImage,
+          tags: project.tags || [],
+          eventType: project.eventType,
+        }))
+        .filter(project => project.title),
+    },
+    lastUpdated: new Date().toISOString(),
+    buildTime: true,
+  };
+}
+
+/**
+ * Main build function
+ */
+async function buildStaticContent() {
+  try {
+    console.log(
+      '🚀 Starting static content generation for localized routes...'
+    );
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Fetch all content from Firestore
+    const [homepageContent, faqs, projects] = await Promise.all([
+      fetchHomepageContent(db),
+      fetchFAQs(db),
+      fetchProjects(db),
+    ]);
+
+    // Ensure data directory exists
     const dataDir = path.join(process.cwd(), 'src', 'data');
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
 
-    // Write FAQ data to JSON file
-    const faqDataPath = path.join(dataDir, 'faqs.json');
-    fs.writeFileSync(faqDataPath, JSON.stringify(buildData, null, 2));
+    // Generate content for each locale
+    const allContent = {};
+    for (const locale of LOCALES) {
+      console.log(`🌍 Generating content for locale: ${locale}`);
+      const localeContent = generateLocaleContent(
+        locale,
+        homepageContent,
+        faqs,
+        projects
+      );
+      allContent[locale] = localeContent;
 
-    console.log(`📄 FAQ data written to ${faqDataPath}`);
+      // Write locale-specific file
+      const localeFilePath = path.join(dataDir, `content-${locale}.json`);
+      fs.writeFileSync(localeFilePath, JSON.stringify(localeContent, null, 2));
+      console.log(
+        `📄 ${locale.toUpperCase()} content written to ${localeFilePath}`
+      );
+    }
 
-    // Generate TypeScript file with the data
-    const tsContent = `// Auto-generated at build time - do not edit manually
+    // Write combined content file
+    const allContentPath = path.join(dataDir, 'content-all.json');
+    fs.writeFileSync(allContentPath, JSON.stringify(allContent, null, 2));
+    console.log(`📄 Combined content written to ${allContentPath}`);
+
+    // Generate TypeScript definitions
+    const tsContent = `// Auto-generated at build time for static localized routes - do not edit manually
 // Generated on: ${new Date().toISOString()}
 
-import { FAQ } from '@/services/faq';
+export type Locale = 'es' | 'en' | 'pt';
 
-export const BUILD_TIME_FAQS: FAQ[] = ${JSON.stringify(faqs, null, 2)};
+export interface LocalizedContent {
+  locale: Locale;
+  translations: Record<string, unknown>;
+  content: {
+    homepage: {
+      headline: string;
+      logo: Record<string, unknown>;
+      backgroundVideo: Record<string, unknown>;
+    };
+    faqs: Array<{
+      id: string;
+      question: string;
+      answer: string;
+      category?: string;
+      order: number;
+    }>;
+    projects: Array<{
+      id: string;
+      title: string;
+      description: string;
+      coverImage?: string;
+      tags: string[];
+      eventType?: string;
+    }>;
+  };
+  lastUpdated: string;
+  buildTime: boolean;
+}
 
-export const BUILD_TIME_DATA = {
-  faqs: BUILD_TIME_FAQS,
-  lastUpdated: '${buildData.lastUpdated}',
-  buildTime: true,
-};
+export const STATIC_CONTENT: Record<Locale, LocalizedContent> = ${JSON.stringify(allContent, null, 2)};
+
+export const SUPPORTED_LOCALES: Locale[] = ${JSON.stringify(LOCALES)};
+
+export function getContentForLocale(locale: Locale): LocalizedContent {
+  return STATIC_CONTENT[locale] || STATIC_CONTENT.es;
+}
 `;
 
     const tsFilePath = path.join(
       process.cwd(),
       'src',
       'lib',
-      'build-time-data.generated.ts'
+      'static-content.generated.ts'
     );
     fs.writeFileSync(tsFilePath, tsContent);
+    console.log(`📄 TypeScript definitions written to ${tsFilePath}`);
 
-    console.log(`📄 TypeScript data file written to ${tsFilePath}`);
-    console.log('✅ Build-time data generation completed successfully!');
+    console.log('✅ Static content generation completed successfully!');
+    console.log(`📊 Generated content for ${LOCALES.length} locales`);
+    console.log(`📝 ${faqs.length} FAQs, ${projects.length} projects`);
 
-    return buildData;
+    return allContent;
   } catch (error) {
-    console.error('❌ Error fetching build-time data:', error);
-
-    // Create empty fallback data
-    const fallbackData = {
-      faqs: [],
-      lastUpdated: new Date().toISOString(),
-      buildTime: false,
-      error: error.message,
-    };
-
-    // Ensure the data directory exists
-    const dataDir = path.join(process.cwd(), 'src', 'data');
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
-
-    // Write fallback data
-    const faqDataPath = path.join(dataDir, 'faqs.json');
-    fs.writeFileSync(faqDataPath, JSON.stringify(fallbackData, null, 2));
-
-    console.log('📄 Fallback data written due to error');
-    return fallbackData;
+    console.error('❌ Error generating static content:', error);
+    throw error;
   }
 }
 
 // Run the script if called directly
 if (require.main === module) {
-  fetchFAQData()
+  buildStaticContent()
     .then(() => process.exit(0))
     .catch(error => {
       console.error('Script failed:', error);
@@ -145,4 +742,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { fetchFAQData };
+module.exports = { buildStaticContent };

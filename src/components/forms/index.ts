@@ -7,10 +7,10 @@
 // export { default as SearchForm } from './SearchForm';
 // export { default as FileUpload } from './FileUpload';
 
-export { ContactForm } from './ContactForm';
+export { default as ContactForm } from './ContactForm';
 
 // Form types and schemas
-export type { ContactFormData } from './ContactForm';
+// ContactFormData is defined locally in ContactForm component
 
 // Form utilities
 // TODO: Add shared form utilities here

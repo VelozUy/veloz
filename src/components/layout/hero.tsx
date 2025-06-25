@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
 
 interface HeroProps {
@@ -10,20 +11,25 @@ interface HeroProps {
   backgroundImages?: string[];
   logoUrl?: string;
   isLogoLoading?: boolean;
+  isVideoLoading?: boolean;
 }
 
 export default function Hero({
-  headline = 'Capturamos lo irrepetible',
+  headline,
   backgroundVideo,
   backgroundImages = [],
   logoUrl,
   isLogoLoading = false,
+  isVideoLoading = false,
 }: HeroProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [videoCanPlay, setVideoCanPlay] = useState(false);
   const [logoAnimationPhase, setLogoAnimationPhase] = useState<
     'hidden' | 'small' | 'large'
   >('hidden');
+
+  // Use headline or fallback if not provided
+  const displayHeadline = headline || 'Capturamos lo irrepetible';
 
   // Rotate background images every 5 seconds (only when images are provided)
   useEffect(() => {
@@ -204,7 +210,7 @@ export default function Hero({
 
         {/* Headline - Always visible immediately */}
         <h2 className="text-2xl md:text-4xl font-light mb-16 max-w-3xl mx-auto">
-          {headline}
+          {displayHeadline}
         </h2>
 
         {/* CTA Buttons - Always visible immediately */}
@@ -214,7 +220,7 @@ export default function Hero({
             className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
             asChild
           >
-            <a href="/about">About Us</a>
+            <a href="/about">Sobre Nosotros</a>
           </Button>
 
           <Button
@@ -222,7 +228,7 @@ export default function Hero({
             className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
             asChild
           >
-            <a href="/gallery">Our Work</a>
+            <a href="/gallery">Nuestro Trabajo</a>
           </Button>
 
           <Button
@@ -230,7 +236,7 @@ export default function Hero({
             className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
             asChild
           >
-            <a href="/contact">Work with Us</a>
+            <a href="/contact">Trabaja con Nosotros</a>
           </Button>
         </div>
       </div>

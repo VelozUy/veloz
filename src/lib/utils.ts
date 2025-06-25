@@ -1,20 +1,16 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-import type { Language, LocalizedContent } from '@/types'
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import {
+  getContentForLocale,
+  type Locale,
+  type LocalizedContent as StaticContent,
+} from './static-content.generated';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-// Localization utilities
-export function getLocalizedContent(
-  content: LocalizedContent | undefined,
-  language: Language,
-  fallback = 'es' as Language
-): string {
-  if (!content) return '';
-  return content[language] || content[fallback] || Object.values(content)[0] || '';
-}
+// Static localization utilities for Next.js i18n routes
 
 // Date utilities
 export function formatDate(date: Date | string, locale = 'es-ES'): string {
@@ -90,7 +86,9 @@ export function getErrorMessage(error: unknown): string {
 }
 
 // Color utilities
-export function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+export function hexToRgb(
+  hex: string
+): { r: number; g: number; b: number } | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
@@ -117,4 +115,69 @@ export function chunkArray<T>(array: T[], size: number): T[][] {
     chunks.push(array.slice(i, i + size));
   }
   return chunks;
+}
+
+/**
+ * Get localized content for a specific locale
+ */
+export function getStaticContent(locale: string = 'es'): StaticContent {
+  // Ensure locale is one of our supported locales
+  const supportedLocale = (
+    ['es', 'en', 'pt'].includes(locale) ? locale : 'es'
+  ) as Locale;
+  return getContentForLocale(supportedLocale);
+}
+
+/**
+ * Get translation from static content
+ */
+export function t(
+  content: StaticContent,
+  path: string,
+  fallback: string = ''
+): string {
+  const keys = path.split('.');
+  let current: unknown = content.translations;
+
+  for (const key of keys) {
+    if (
+      current &&
+      typeof current === 'object' &&
+      current !== null &&
+      key in current
+    ) {
+      current = (current as Record<string, unknown>)[key];
+    } else {
+      console.warn(
+        `Translation missing for path: ${path} in locale: ${content.locale}`
+      );
+      return fallback;
+    }
+  }
+
+  return typeof current === 'string' ? current : fallback;
+}
+
+/**
+ * Get content data from static content
+ */
+export function getContent(
+  content: StaticContent,
+  type: 'homepage' | 'faqs' | 'projects'
+): unknown {
+  return content.content[type];
+}
+
+/**
+ * Normalize locale string for Next.js
+ */
+export function normalizeLocale(locale?: string): Locale {
+  if (!locale) return 'es';
+
+  // Handle common variations
+  const normalized = locale.toLowerCase();
+  if (normalized.startsWith('en')) return 'en';
+  if (normalized.startsWith('pt') || normalized.startsWith('br')) return 'pt';
+
+  return 'es'; // Default fallback
 }

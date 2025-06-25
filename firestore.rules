@@ -68,7 +68,14 @@ service cloud.firestore {
       allow create: if isActiveAdmin();
     }
     
-    // Contact Form Submissions (Optional) - Allow writes for contact forms
+    // Contact Messages Collection - Allow public submission, admin management
+    match /contactMessages/{messageId} {
+      allow create: if true; // Allow anyone to submit contact messages
+      allow read, update, delete: if isActiveAdmin(); // Only admins can manage messages
+      allow list: if isActiveAdmin(); // Only admins can list all messages
+    }
+    
+    // Legacy Contact Form Submissions (Optional) - Allow writes for contact forms
     match /contacts/{document} {
       allow create: if true; // Allow anyone to submit contact forms
       allow read, write, delete: if isActiveAdmin(); // Only admins can manage submissions

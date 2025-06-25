@@ -5,7 +5,7 @@ import '@/lib/emergency-console-fix';
 import {
   ConditionalNavigation,
   PageLayout,
-  InteractiveCTAWidget,
+  // InteractiveCTAWidget, // Temporarily disabled during localization migration
 } from '@/components/layout';
 
 const geistSans = Geist({
@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         <ConditionalNavigation />
         <PageLayout>{children}</PageLayout>
-        <InteractiveCTAWidget />
+        {/* <InteractiveCTAWidget /> Temporarily disabled during localization migration */}
       </body>
     </html>
   );

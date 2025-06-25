@@ -1,0 +1,154 @@
+{
+  "locale": "en",
+  "translations": {
+    "navigation": {
+      "home": "Home",
+      "about": "About Us",
+      "gallery": "Our Work",
+      "contact": "Contact"
+    },
+    "homepage": {
+      "hero": {
+        "headline": "Capturing the Unrepeatable",
+        "cta": {
+          "about": "About Us",
+          "work": "Our Work",
+          "contact": "Work with Us"
+        }
+      }
+    },
+    "contact": {
+      "title": "Tell us about your event",
+      "subtitle": "The more we know, the better we can help make your day perfect",
+      "form": {
+        "name": {
+          "label": "Your name",
+          "placeholder": "What should we call you?"
+        },
+        "email": {
+          "label": "Email address",
+          "placeholder": "your.email@example.com"
+        },
+        "eventType": {
+          "label": "What are you celebrating?",
+          "placeholder": "Choose your event type",
+          "options": {
+            "wedding": "Wedding",
+            "quinceanera": "15th Birthday (Quinceañera)",
+            "birthday": "Birthday Party",
+            "corporate": "Corporate Event",
+            "other": "Other (tell us in the message!)"
+          }
+        },
+        "eventDate": {
+          "label": "Approximate date",
+          "optional": "(optional)",
+          "help": "Don't worry if you're not sure yet – we can work with flexible dates!"
+        },
+        "message": {
+          "label": "Tell us about your vision",
+          "optional": "(optional)",
+          "placeholder": "Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better..."
+        },
+        "submit": {
+          "button": "Start the conversation",
+          "loading": "Sending your message..."
+        },
+        "privacy": {
+          "line1": "We don't share your info. We'll only reach out to help with your event.",
+          "line2": "No spam, no pressure – just great photography and videography when you're ready."
+        }
+      },
+      "success": {
+        "title": "Message sent!",
+        "message": "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+        "action": "Send another message"
+      },
+      "trust": {
+        "response": {
+          "title": "Quick Response",
+          "description": "We typically respond within 24 hours with a personalized quote"
+        },
+        "commitment": {
+          "title": "No Commitment",
+          "description": "Getting a quote is completely free with no strings attached"
+        },
+        "privacy": {
+          "title": "Privacy First",
+          "description": "We never share your information and only contact you about your event"
+        }
+      }
+    },
+    "widget": {
+      "button": {
+        "desktop": "What event are you thinking about?",
+        "mobile": "Your event?"
+      },
+      "dialog": {
+        "title": "Tell us about your event"
+      },
+      "eventTypes": {
+        "wedding": "Wedding",
+        "corporate": "Corporate Event",
+        "other": "Other type of event"
+      },
+      "steps": {
+        "eventType": {
+          "title": "What event are you thinking about?",
+          "subtitle": "Tell us what you want to celebrate"
+        },
+        "date": {
+          "title": "Do you have a date already?",
+          "subtitle": "Don't worry if you're not sure yet",
+          "noDate": "I don't have a date set yet"
+        },
+        "contact": {
+          "title": "Want to tell us more?",
+          "subtitle": "Choose how you prefer us to contact you",
+          "moreInfo": {
+            "title": "Yes, I want to tell you more details",
+            "subtitle": "We take you to the complete form"
+          },
+          "callMe": {
+            "title": "I want you to call me",
+            "subtitle": "We prefer to talk by phone"
+          }
+        },
+        "phone": {
+          "title": "Perfect! We call you",
+          "subtitle": "Leave us your number and we contact you soon",
+          "placeholder": "Your phone number",
+          "button": "Request call",
+          "loading": "Sending..."
+        },
+        "complete": {
+          "title": "Ready!",
+          "message": "We will contact you very soon to talk about your event.",
+          "button": "Close"
+        }
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email so we can get back to you",
+      "minLength": "Must be at least {{count}} characters"
+    }
+  },
+  "content": {
+    "homepage": {
+      "headline": "Capturing the Unrepeatable",
+      "logo": {
+        "url": "",
+        "enabled": false
+      },
+      "backgroundVideo": {
+        "url": "",
+        "enabled": false
+      }
+    },
+    "faqs": [],
+    "projects": []
+  },
+  "lastUpdated": "2025-06-25T14:31:48.273Z",
+  "buildTime": true
+}
