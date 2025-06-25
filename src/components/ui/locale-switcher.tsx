@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,12 +26,27 @@ export function LocaleSwitcher({
   className,
 }: LocaleSwitcherProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const switchLocale = (newLocale: string) => {
-    const { pathname, query, asPath } = router;
+    // Store the locale preference in localStorage
+    localStorage.setItem('preferred-locale', newLocale);
 
-    // Use Next.js router to change locale
-    router.push({ pathname, query }, asPath, { locale: newLocale });
+    // Build the new path based on current pathname and target locale
+    let newPath = '';
+
+    // Remove current locale prefix if it exists
+    const cleanPath = pathname.replace(/^\/(en|pt)/, '');
+
+    // Add new locale prefix if not Spanish (default)
+    if (newLocale === 'es') {
+      newPath = cleanPath || '/';
+    } else {
+      newPath = `/${newLocale}${cleanPath}`;
+    }
+
+    // Navigate to the new localized route
+    router.push(newPath);
   };
 
   const currentLocaleData =

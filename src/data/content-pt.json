@@ -128,6 +128,63 @@
         }
       }
     },
+    "about": {
+      "title": "Sobre Nós",
+      "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
+      "philosophy": {
+        "title": "Nossa Filosofia",
+        "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+      },
+      "methodology": {
+        "title": "Nossa Metodologia",
+        "planning": {
+          "title": "Planejamento",
+          "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
+        },
+        "coverage": {
+          "title": "Cobertura Integral",
+          "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
+        },
+        "capture": {
+          "title": "Captura Profissional",
+          "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
+        },
+        "postproduction": {
+          "title": "Pós-Produção",
+          "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
+        }
+      },
+      "values": {
+        "title": "Nossos Valores",
+        "passion": {
+          "title": "Paixão",
+          "description": "Amamos o que fazemos e isso se reflete em cada imagem que capturamos."
+        },
+        "teamwork": {
+          "title": "Trabalho em Equipe",
+          "description": "Nosso modelo colaborativo nos permite cobrir cada momento importante."
+        },
+        "quality": {
+          "title": "Qualidade Técnica",
+          "description": "Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais."
+        },
+        "agility": {
+          "title": "Agilidade",
+          "description": "Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento."
+        },
+        "excellence": {
+          "title": "Excelência",
+          "description": "Buscamos a perfeição em cada projeto, superando expectativas."
+        },
+        "trust": {
+          "title": "Confiança",
+          "description": "Construímos relacionamentos duradouros baseados na transparência e profissionalismo."
+        }
+      },
+      "faq": {
+        "title": "Perguntas Frequentes"
+      }
+    },
     "validation": {
       "required": "Este campo é obrigatório",
       "email": "Por favor insira um email válido para podermos responder",
@@ -149,6 +206,6 @@
     "faqs": [],
     "projects": []
   },
-  "lastUpdated": "2025-06-25T14:31:48.274Z",
+  "lastUpdated": "2025-06-25T17:11:22.265Z",
   "buildTime": true
 }

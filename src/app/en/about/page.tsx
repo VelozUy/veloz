@@ -43,7 +43,7 @@ async function getFAQs(): Promise<FAQ[]> {
 }
 
 // Generate structured data for FAQs
-function generateFAQStructuredData(faqs: FAQ[], locale: string = 'es') {
+function generateFAQStructuredData(faqs: FAQ[], locale: string = 'en') {
   if (faqs.length === 0) {
     return null;
   }
@@ -51,34 +51,40 @@ function generateFAQStructuredData(faqs: FAQ[], locale: string = 'es') {
   const faqStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
-      '@type': 'Question',
-      name:
-        faq.question[locale] ||
-        faq.question.es ||
-        faq.question.en ||
-        faq.question.he,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text:
-          faq.answer[locale] || faq.answer.es || faq.answer.en || faq.answer.he,
-      },
-    })),
+    mainEntity: faqs.map(faq => {
+      const localeKey = locale as keyof typeof faq.question;
+      return {
+        '@type': 'Question',
+        name:
+          faq.question[localeKey] ||
+          faq.question.en ||
+          faq.question.es ||
+          faq.question.he,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text:
+            faq.answer[localeKey] ||
+            faq.answer.en ||
+            faq.answer.es ||
+            faq.answer.he,
+        },
+      };
+    }),
   };
 
   return faqStructuredData;
 }
 
 export const metadata: Metadata = {
-  title: 'Sobre Nosotros | Veloz - Fotografía y Video Profesional',
+  title: 'About Us | Veloz - Professional Photography & Videography',
   description:
-    'Conoce nuestra filosofía, metodología y valores. Preguntas frecuentes sobre nuestros servicios de fotografía y video para eventos.',
+    'Learn about our philosophy, methodology and values. Frequently asked questions about our photography and video services for events.',
   keywords:
-    'fotografía eventos, video bodas, equipo profesional, Uruguay, preguntas frecuentes',
+    'event photography, wedding video, professional team, Uruguay, frequently asked questions',
   openGraph: {
-    title: 'Sobre Nosotros | Veloz',
+    title: 'About Us | Veloz',
     description:
-      'Conoce nuestra filosofía, metodología y valores en fotografía y video profesional.',
+      'Learn about our philosophy, methodology and values in professional photography and videography.',
     type: 'website',
   },
 };
@@ -87,68 +93,68 @@ export const metadata: Metadata = {
 export const dynamic = 'force-static';
 export const revalidate = 3600; // Revalidate every hour in production
 
-export default async function AboutPage() {
-  // Get static content for Spanish (default locale)
-  const content = getStaticContent('es');
+export default async function AboutPageEN() {
+  // Get static content for English locale
+  const content = getStaticContent('en');
 
   // Fetch FAQs using build-time data or runtime fetching
   const faqs = await getFAQs();
-  const faqStructuredData = generateFAQStructuredData(faqs, 'es');
+  const faqStructuredData = generateFAQStructuredData(faqs, 'en');
 
   // Core values with translations
   const coreValues = [
     {
       icon: Heart,
-      title: t(content, 'about.values.passion.title', 'Pasión'),
+      title: t(content, 'about.values.passion.title', 'Passion'),
       description: t(
         content,
         'about.values.passion.description',
-        'Amamos lo que hacemos y se refleja en cada imagen que capturamos.'
+        'We love what we do and it shows in every image we capture.'
       ),
     },
     {
       icon: Users,
-      title: t(content, 'about.values.teamwork.title', 'Trabajo en Equipo'),
+      title: t(content, 'about.values.teamwork.title', 'Teamwork'),
       description: t(
         content,
         'about.values.teamwork.description',
-        'Nuestro modelo colaborativo nos permite cubrir cada momento importante.'
+        'Our collaborative model allows us to cover every important moment.'
       ),
     },
     {
       icon: Camera,
-      title: t(content, 'about.values.quality.title', 'Calidad Técnica'),
+      title: t(content, 'about.values.quality.title', 'Technical Quality'),
       description: t(
         content,
         'about.values.quality.description',
-        'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.'
+        'We use professional equipment and advanced techniques for exceptional results.'
       ),
     },
     {
       icon: Zap,
-      title: t(content, 'about.values.agility.title', 'Agilidad'),
+      title: t(content, 'about.values.agility.title', 'Agility'),
       description: t(
         content,
         'about.values.agility.description',
-        'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.'
+        'We adapt quickly to any situation to never miss a moment.'
       ),
     },
     {
       icon: Trophy,
-      title: t(content, 'about.values.excellence.title', 'Excelencia'),
+      title: t(content, 'about.values.excellence.title', 'Excellence'),
       description: t(
         content,
         'about.values.excellence.description',
-        'Buscamos la perfección en cada proyecto, superando las expectativas.'
+        'We strive for perfection in every project, exceeding expectations.'
       ),
     },
     {
       icon: Shield,
-      title: t(content, 'about.values.trust.title', 'Confianza'),
+      title: t(content, 'about.values.trust.title', 'Trust'),
       description: t(
         content,
         'about.values.trust.description',
-        'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.'
+        'We build lasting relationships based on transparency and professionalism.'
       ),
     },
   ];
@@ -157,11 +163,11 @@ export default async function AboutPage() {
   const methodologySteps = [
     {
       step: '01',
-      title: t(content, 'about.methodology.planning.title', 'Planificación'),
+      title: t(content, 'about.methodology.planning.title', 'Planning'),
       description: t(
         content,
         'about.methodology.planning.description',
-        'Estudiamos cada detalle del evento para anticipar los momentos clave.'
+        'We study every detail of the event to anticipate key moments.'
       ),
     },
     {
@@ -169,12 +175,12 @@ export default async function AboutPage() {
       title: t(
         content,
         'about.methodology.coverage.title',
-        'Cobertura Integral'
+        'Comprehensive Coverage'
       ),
       description: t(
         content,
         'about.methodology.coverage.description',
-        'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.'
+        'Our team is strategically distributed to not miss any moment.'
       ),
     },
     {
@@ -182,12 +188,12 @@ export default async function AboutPage() {
       title: t(
         content,
         'about.methodology.capture.title',
-        'Captura Profesional'
+        'Professional Capture'
       ),
       description: t(
         content,
         'about.methodology.capture.description',
-        'Utilizamos técnicas avanzadas y equipos de última generación.'
+        'We use advanced techniques and state-of-the-art equipment.'
       ),
     },
     {
@@ -195,12 +201,12 @@ export default async function AboutPage() {
       title: t(
         content,
         'about.methodology.postproduction.title',
-        'Post-Producción'
+        'Post-Production'
       ),
       description: t(
         content,
         'about.methodology.postproduction.description',
-        'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.'
+        'We carefully edit every image and video to achieve exceptional results.'
       ),
     },
   ];
@@ -222,13 +228,13 @@ export default async function AboutPage() {
           {/* Hero Section */}
           <div className="text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold text-primary">
-              {t(content, 'about.title', 'Sobre Nosotros')}
+              {t(content, 'about.title', 'About Us')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               {t(
                 content,
                 'about.subtitle',
-                'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.'
+                'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.'
               )}
             </p>
           </div>
@@ -237,7 +243,7 @@ export default async function AboutPage() {
           <section className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {t(content, 'about.philosophy.title', 'Nuestra Filosofía')}
+                {t(content, 'about.philosophy.title', 'Our Philosophy')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
@@ -248,7 +254,7 @@ export default async function AboutPage() {
                   {t(
                     content,
                     'about.philosophy.description',
-                    'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.'
+                    'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.'
                   )}
                 </p>
               </CardContent>
@@ -259,7 +265,7 @@ export default async function AboutPage() {
           <section className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {t(content, 'about.methodology.title', 'Nuestra Metodología')}
+                {t(content, 'about.methodology.title', 'Our Methodology')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
@@ -288,7 +294,7 @@ export default async function AboutPage() {
           <section className="space-y-8">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {t(content, 'about.values.title', 'Nuestros Valores')}
+                {t(content, 'about.values.title', 'Our Values')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
@@ -323,7 +329,7 @@ export default async function AboutPage() {
             <section className="space-y-8">
               <div className="text-center">
                 <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  {t(content, 'about.faq.title', 'Preguntas Frecuentes')}
+                  {t(content, 'about.faq.title', 'Frequently Asked Questions')}
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
               </div>
@@ -342,8 +348,8 @@ export default async function AboutPage() {
                         className="border-0 bg-muted/30 rounded-lg px-4"
                       >
                         <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary transition-colors py-4">
-                          {faq.question.es ||
-                            faq.question.en ||
+                          {faq.question.en ||
+                            faq.question.es ||
                             faq.question.he}
                           {faq.category && (
                             <Badge variant="secondary" className="ml-2 text-xs">
@@ -355,7 +361,7 @@ export default async function AboutPage() {
                           <div
                             dangerouslySetInnerHTML={{
                               __html:
-                                faq.answer.es || faq.answer.en || faq.answer.he,
+                                faq.answer.en || faq.answer.es || faq.answer.he,
                             }}
                           />
                         </AccordionContent>
