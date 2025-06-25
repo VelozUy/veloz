@@ -59,12 +59,12 @@ interface Project {
   title: {
     en: string;
     es: string;
-    he: string;
+    pt: string;
   };
   description: {
     en: string;
     es: string;
-    he: string;
+    pt: string;
   };
   eventType: string;
   location: string;
@@ -96,7 +96,7 @@ const EVENT_TYPES = [
 const LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'es', name: 'Spanish' },
-  { code: 'he', name: 'Hebrew' },
+  { code: 'pt', name: 'Portuguese' },
 ];
 
 const PROJECTS_PER_PAGE = 12;
@@ -116,8 +116,8 @@ export default function ProjectsPage() {
 
   // Create form state
   const [createForm, setCreateForm] = useState({
-    title: { en: '', es: '', he: '' },
-    description: { en: '', es: '', he: '' },
+    title: { en: '', es: '', pt: '' },
+    description: { en: '', es: '', pt: '' },
     eventType: '',
     location: '',
     eventDate: '',
@@ -216,8 +216,8 @@ export default function ProjectsPage() {
 
       setSuccess('Project created successfully!');
       setCreateForm({
-        title: { en: '', es: '', he: '' },
-        description: { en: '', es: '', he: '' },
+        title: { en: '', es: '', pt: '' },
+        description: { en: '', es: '', pt: '' },
         eventType: '',
         location: '',
         eventDate: '',
@@ -731,7 +731,7 @@ export default function ProjectsPage() {
 
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-foreground mb-1 truncate">
-                    {project.title.en || project.title.es || project.title.he}
+                    {project.title.en || project.title.es || project.title.pt}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
                     {project.eventType}

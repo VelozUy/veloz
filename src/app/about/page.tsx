@@ -56,8 +56,8 @@ function getFAQText(
     return content[localeKey];
   }
 
-  // Fallback order: es -> en -> pt -> he
-  const fallbackOrder = ['es', 'en', 'pt', 'he'] as const;
+  // Fallback order: es -> en -> pt
+  const fallbackOrder = ['es', 'en', 'pt'] as const;
 
   for (const fallbackLocale of fallbackOrder) {
     if (content[fallbackLocale] && content[fallbackLocale].trim()) {

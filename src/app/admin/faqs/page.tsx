@@ -55,13 +55,11 @@ interface FAQ {
   question: {
     en: string;
     es: string;
-    he: string;
     pt: string;
   };
   answer: {
     en: string;
     es: string;
-    he: string;
     pt: string;
   };
   category?: string;
@@ -75,7 +73,6 @@ const LANGUAGES = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'he', name: 'עברית', flag: '🇮🇱' },
 ];
 
 const FAQ_CATEGORIES = [
@@ -102,16 +99,16 @@ export default function FAQsAdminPage() {
 
   // Create form state
   const [createForm, setCreateForm] = useState({
-    question: { en: '', es: '', he: '', pt: '' },
-    answer: { en: '', es: '', he: '', pt: '' },
+    question: { en: '', es: '', pt: '' },
+    answer: { en: '', es: '', pt: '' },
     category: 'General',
     published: true,
   });
 
   // Edit form state
   const [editForm, setEditForm] = useState({
-    question: { en: '', es: '', he: '', pt: '' },
-    answer: { en: '', es: '', he: '', pt: '' },
+    question: { en: '', es: '', pt: '' },
+    answer: { en: '', es: '', pt: '' },
     category: 'General',
     published: true,
   });
@@ -192,8 +189,8 @@ export default function FAQsAdminPage() {
 
       setSuccess('Pregunta frecuente creada exitosamente!');
       setCreateForm({
-        question: { en: '', es: '', he: '', pt: '' },
-        answer: { en: '', es: '', he: '', pt: '' },
+        question: { en: '', es: '', pt: '' },
+        answer: { en: '', es: '', pt: '' },
         category: 'General',
         published: true,
       });
@@ -277,21 +274,19 @@ export default function FAQsAdminPage() {
   const getTranslationStatus = (item: {
     en: string;
     es: string;
-    he: string;
     pt: string;
   }) => {
     const translations = [
       { lang: 'es', text: item.es },
       { lang: 'en', text: item.en },
       { lang: 'pt', text: item.pt },
-      { lang: 'he', text: item.he },
     ];
 
     const completed = translations.filter(t => t.text.trim() !== '').length;
     return {
       completed,
-      total: 4,
-      percentage: Math.round((completed / 4) * 100),
+      total: 3,
+      percentage: Math.round((completed / 3) * 100),
     };
   };
 
@@ -601,7 +596,6 @@ export default function FAQsAdminPage() {
                           <h3 className="font-semibold text-foreground mb-1">
                             {faq.question.es ||
                               faq.question.en ||
-                              faq.question.he ||
                               faq.question.pt ||
                               'Sin título'}
                           </h3>
@@ -609,7 +603,6 @@ export default function FAQsAdminPage() {
                           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                             {faq.answer.es ||
                               faq.answer.en ||
-                              faq.answer.he ||
                               faq.answer.pt ||
                               'Sin respuesta'}
                           </p>
@@ -619,14 +612,14 @@ export default function FAQsAdminPage() {
                             <div className="flex items-center space-x-1">
                               <Globe className="w-3 h-3" />
                               <span>
-                                Pregunta: {questionTranslation.completed}/4
+                                Pregunta: {questionTranslation.completed}/3
                                 idiomas
                               </span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <Globe className="w-3 h-3" />
                               <span>
-                                Respuesta: {answerTranslation.completed}/4
+                                Respuesta: {answerTranslation.completed}/3
                                 idiomas
                               </span>
                             </div>

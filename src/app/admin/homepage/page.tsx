@@ -51,19 +51,19 @@ interface HomepageContent {
   headline: {
     en: string;
     es: string;
-    he: string;
+    pt: string;
   };
   subheadline: {
     en: string;
     es: string;
-    he: string;
+    pt: string;
   };
   ctaButtons: {
     primary: {
       text: {
         en: string;
         es: string;
-        he: string;
+        pt: string;
       };
       link: string;
       enabled: boolean;
@@ -72,7 +72,7 @@ interface HomepageContent {
       text: {
         en: string;
         es: string;
-        he: string;
+        pt: string;
       };
       link: string;
       enabled: boolean;
@@ -103,26 +103,26 @@ interface HomepageContent {
 const LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'es', name: 'Spanish' },
-  { code: 'he', name: 'Hebrew' },
+  { code: 'pt', name: 'Portuguese' },
 ];
 
 const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
   headline: {
     en: 'Capturing the Unrepeatable',
     es: 'Capturamos lo irrepetible',
-    he: 'לוכדים את מה שלא ניתן לחזור עליו',
+    pt: 'Capturamos o Irrepetível',
   },
   subheadline: {
     en: 'Professional photography and videography for your most precious moments',
     es: 'Fotografía y videografía profesional para tus momentos más preciados',
-    he: 'צילום ווידאו מקצועיים לרגעים היקרים ביותר שלכם',
+    pt: 'Fotografia e videografia profissional para os seus momentos mais preciosos',
   },
   ctaButtons: {
     primary: {
       text: {
         en: 'About Us',
         es: 'Sobre Nosotros',
-        he: 'אודותינו',
+        pt: 'Sobre Nós',
       },
       link: '/about',
       enabled: true,
@@ -131,7 +131,7 @@ const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
       text: {
         en: 'Our Work',
         es: 'Nuestro Trabajo',
-        he: 'העבודות שלנו',
+        pt: 'Nosso Trabalho',
       },
       link: '/gallery',
       enabled: true,

@@ -6,13 +6,11 @@ export interface FAQ {
   question: {
     en: string;
     es: string;
-    he: string;
     pt: string;
   };
   answer: {
     en: string;
     es: string;
-    he: string;
     pt: string;
   };
   category?: string;
