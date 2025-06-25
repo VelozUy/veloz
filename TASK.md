@@ -43,6 +43,7 @@ _Last updated: December 2024_
 - [x] **[High] Setup environment variables** - Configure Firebase credentials
 - [x] **[Medium] Test Firebase connection** - ✅ COMPLETED - All services verified working
 - [x] **[Critical] Fix Firestore storage and database rules** - ✅ COMPLETED - Created production-ready security rules for Firestore and Storage with role-based access control _(Completed: Dec 21, 2024)_
+- [x] **[Critical] Fix Firebase v11+ Next.js 15 bundling issues** - ✅ COMPLETED - Resolved 'app.registerVersion is not a function' error by implementing client-side only Firebase initialization, updating webpack configuration for proper module resolution, and using dynamic imports in AuthContext to prevent SSR conflicts _(Completed: Jan 5, 2025)_
 
 ### Static Localized Routes Implementation ✅ COMPLETED
 

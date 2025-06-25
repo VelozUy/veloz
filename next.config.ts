@@ -27,10 +27,61 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    esmExternals: 'loose', // Handle Firebase ESM modules
   },
   eslint: {
     // Only run ESLint on these directories during build
     dirs: ['src'],
+  },
+
+  // Webpack configuration to fix Firebase bundling issues
+  webpack: (config, { isServer, webpack }) => {
+    // Fix Firebase vendor chunks issue and registerVersion error
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      crypto: false,
+      stream: false,
+      url: false,
+      zlib: false,
+      http: false,
+      https: false,
+      assert: false,
+      os: false,
+      path: false,
+    };
+
+    // Optimize Firebase modules for both client and server
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      // Ensure Firebase uses the correct entry points
+      'firebase/app': 'firebase/app',
+      'firebase/firestore': 'firebase/firestore',
+      'firebase/auth': 'firebase/auth',
+      'firebase/storage': 'firebase/storage',
+    };
+
+    // Prevent Firebase from being processed on server side to avoid registerVersion issues
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push({
+        'firebase/app': 'commonjs firebase/app',
+        'firebase/firestore': 'commonjs firebase/firestore',
+        'firebase/auth': 'commonjs firebase/auth',
+        'firebase/storage': 'commonjs firebase/storage',
+      });
+    }
+
+    // Add plugin to handle Firebase module loading
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.FIREBASE_CLIENT_ONLY': JSON.stringify(true),
+      })
+    );
+
+    return config;
   },
 
   // Disable x-powered-by header for security
