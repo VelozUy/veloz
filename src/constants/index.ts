@@ -90,9 +90,12 @@ export const FIREBASE_COLLECTIONS = {
   FAQS: 'faqs',
   PHOTOS: 'photos',
   VIDEOS: 'videos',
+  PROJECTS: 'projects',
+  PROJECT_MEDIA: 'projectMedia',
   CONTACTS: 'contacts', // Legacy collection
   CONTACT_MESSAGES: 'contactMessages', // Enhanced contact system
   USERS: 'users',
+  ADMIN_USERS: 'adminUsers',
 } as const;
 
 // Form Validation Messages

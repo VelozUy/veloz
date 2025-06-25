@@ -2,6 +2,7 @@
 // Export all admin panel related components here
 
 export { default as AdminLayout } from './AdminLayout';
+export { default as MediaUpload } from './MediaUpload';
 
 // To be created later:
 // export { default as DataTable } from './DataTable';

@@ -13,7 +13,14 @@ import {
   Timestamp,
   DocumentData,
 } from 'firebase/firestore';
-import { ref, getDownloadURL } from 'firebase/storage';
+import {
+  ref,
+  getDownloadURL,
+  uploadBytes,
+  deleteObject,
+  uploadBytesResumable,
+  UploadTask,
+} from 'firebase/storage';
 import { db, storage } from '@/lib/firebase';
 import { FIREBASE_COLLECTIONS } from '@/constants';
 import type {
@@ -81,20 +88,19 @@ class BaseFirebaseService {
     }
   }
 
-  async getById<T>(id: string): Promise<ApiResponse<T>> {
+  async getById<T>(id: string): Promise<ApiResponse<T | null>> {
     try {
-      const snapshot = await getDoc(this.getDocRef(id));
+      const docSnap = await getDoc(this.getDocRef(id));
 
-      if (!snapshot.exists()) {
-        return { success: false, error: 'Document not found' };
+      if (docSnap.exists()) {
+        const data = {
+          id: docSnap.id,
+          ...this.convertTimestamp(docSnap.data()),
+        } as T;
+        return { success: true, data };
+      } else {
+        return { success: true, data: null };
       }
-
-      const data = {
-        id: snapshot.id,
-        ...this.convertTimestamp(snapshot.data()),
-      } as T;
-
-      return { success: true, data };
     } catch (error) {
       console.error(`Error fetching ${this.collectionName} by ID:`, error);
       return {
@@ -161,48 +167,17 @@ class BaseFirebaseService {
   }
 }
 
-// Specific service classes
-export class HomepageService extends BaseFirebaseService {
-  constructor() {
-    super(FIREBASE_COLLECTIONS.HOMEPAGE);
-  }
-
-  async getContent(): Promise<ApiResponse<HomepageContent>> {
-    // Homepage should have a single document
-    const result = await this.getAll<HomepageContent>();
-    if (result.success && result.data && result.data.length > 0) {
-      return { success: true, data: result.data[0] };
-    }
-    return { success: false, error: 'Homepage content not found' };
-  }
-
-  async updateContent(
-    data: Partial<HomepageContent>
-  ): Promise<ApiResponse<void>> {
-    // Get the existing homepage document or create one
-    const existing = await this.getContent();
-    if (existing.success && existing.data) {
-      return this.update(existing.data.id, data);
-    } else {
-      // Create new homepage content
-      const result = await this.create(data);
-      return result.success
-        ? { success: true }
-        : { success: false, error: result.error };
-    }
-  }
-}
-
+// FAQ Service
 export class FAQService extends BaseFirebaseService {
   constructor() {
     super(FIREBASE_COLLECTIONS.FAQS);
   }
 
-  async getActiveFAQs(): Promise<ApiResponse<FAQ[]>> {
+  async getByCategory(category: string): Promise<ApiResponse<FAQ[]>> {
     try {
       const q = query(
         this.getCollection(),
-        where('isActive', '==', true),
+        where('category', '==', category),
         orderBy('order', 'asc')
       );
 
@@ -214,7 +189,31 @@ export class FAQService extends BaseFirebaseService {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching active FAQs:', error);
+      console.error('Error fetching FAQs by category:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getPublished(): Promise<ApiResponse<FAQ[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('status', '==', 'published'),
+        orderBy('order', 'asc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as FAQ[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching published FAQs:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -283,157 +282,50 @@ export class VideoService extends BaseFirebaseService {
   }
 }
 
-// Enhanced Contact Message Service
-export class ContactMessageService extends BaseFirebaseService {
+// Homepage Content Service
+export class HomepageService extends BaseFirebaseService {
   constructor() {
-    super(FIREBASE_COLLECTIONS.CONTACT_MESSAGES);
+    super(FIREBASE_COLLECTIONS.HOMEPAGE);
   }
 
-  async submitContactMessage(
-    data: ContactMessageData
-  ): Promise<ApiResponse<string>> {
+  async getContent(): Promise<ApiResponse<HomepageContent | null>> {
     try {
-      // Add default values for new contact messages
-      const contactMessage = {
-        ...data,
-        archived: false,
-      };
+      // Get the default homepage document
+      const docRef = doc(db, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docSnap = await getDoc(docRef);
 
-      const result = await this.create(contactMessage);
-      return result;
-    } catch (error) {
-      console.error('Error submitting contact message:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  async getAllContactMessages(): Promise<ApiResponse<ContactMessage[]>> {
-    try {
-      const q = query(this.getCollection(), orderBy('createdAt', 'desc'));
-
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...this.convertTimestamp(doc.data()),
-      })) as ContactMessage[];
-
-      return { success: true, data };
-    } catch (error) {
-      console.error('Error fetching contact messages:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  async getPendingMessages(): Promise<ApiResponse<ContactMessage[]>> {
-    try {
-      const q = query(
-        this.getCollection(),
-        where('archived', '==', false),
-        orderBy('createdAt', 'desc')
-      );
-
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...this.convertTimestamp(doc.data()),
-      })) as ContactMessage[];
-
-      return { success: true, data };
-    } catch (error) {
-      console.error('Error fetching pending contact messages:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  async getArchivedMessages(): Promise<ApiResponse<ContactMessage[]>> {
-    try {
-      const q = query(
-        this.getCollection(),
-        where('archived', '==', true),
-        orderBy('createdAt', 'desc')
-      );
-
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...this.convertTimestamp(doc.data()),
-      })) as ContactMessage[];
-
-      return { success: true, data };
-    } catch (error) {
-      console.error('Error fetching archived contact messages:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  async archiveMessage(id: string): Promise<ApiResponse<void>> {
-    return this.update(id, { archived: true });
-  }
-
-  async unarchiveMessage(id: string): Promise<ApiResponse<void>> {
-    return this.update(id, { archived: false });
-  }
-
-  async getMessagesByEventType(
-    eventType: string
-  ): Promise<ApiResponse<ContactMessage[]>> {
-    try {
-      const q = query(
-        this.getCollection(),
-        where('eventType', '==', eventType),
-        orderBy('createdAt', 'desc')
-      );
-
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...this.convertTimestamp(doc.data()),
-      })) as ContactMessage[];
-
-      return { success: true, data };
-    } catch (error) {
-      console.error('Error fetching contact messages by event type:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  async searchMessages(query: string): Promise<ApiResponse<ContactMessage[]>> {
-    try {
-      // Note: For full-text search, you might want to use Algolia or similar
-      // For now, we'll get all messages and filter client-side
-      const allMessages = await this.getAllContactMessages();
-
-      if (!allMessages.success || !allMessages.data) {
-        return allMessages;
+      if (docSnap.exists()) {
+        const data = {
+          id: docSnap.id,
+          ...this.convertTimestamp(docSnap.data()),
+        } as HomepageContent;
+        return { success: true, data };
+      } else {
+        return { success: true, data: null };
       }
-
-      const searchQuery = query.toLowerCase();
-      const filteredMessages = allMessages.data.filter(
-        message =>
-          message.name.toLowerCase().includes(searchQuery) ||
-          message.email?.toLowerCase().includes(searchQuery) ||
-          message.eventType.toLowerCase().includes(searchQuery) ||
-          message.message?.toLowerCase().includes(searchQuery)
-      );
-
-      return { success: true, data: filteredMessages };
     } catch (error) {
-      console.error('Error searching contact messages:', error);
+      console.error('Error fetching homepage content:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async updateContent(
+    data: Partial<Omit<HomepageContent, 'id'>>
+  ): Promise<ApiResponse<void>> {
+    try {
+      const docRef = doc(db, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const updateData = {
+        ...data,
+        updatedAt: new Date(),
+      };
+
+      await updateDoc(docRef, updateData);
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating homepage content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -442,18 +334,312 @@ export class ContactMessageService extends BaseFirebaseService {
   }
 }
 
-// Legacy Contact Service (keeping for backward compatibility if needed)
-export class ContactService extends BaseFirebaseService {
+// Contact Message Service
+export class ContactMessageService extends BaseFirebaseService {
   constructor() {
-    super(FIREBASE_COLLECTIONS.CONTACTS);
+    super(FIREBASE_COLLECTIONS.CONTACT_MESSAGES);
   }
 
-  async submitContactForm(data: ContactFormData): Promise<ApiResponse<string>> {
+  async createMessage(formData: ContactFormData): Promise<ApiResponse<string>> {
     try {
-      const result = await this.create(data);
+      const messageData: ContactMessageData = {
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        eventType: formData.eventType,
+        eventDate: formData.eventDate?.toISOString(),
+        message: formData.comments,
+        isRead: false,
+        status: 'new',
+        source: 'contact_form',
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+        metadata: {
+          timestamp: new Date().toISOString(),
+          locale: 'es', // Default to Spanish
+        },
+        archived: false,
+      };
+
+      const result = await this.create<ContactMessage>(messageData);
       return result;
     } catch (error) {
-      console.error('Error submitting contact form:', error);
+      console.error('Error creating contact message:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async markAsRead(id: string): Promise<ApiResponse<void>> {
+    try {
+      await updateDoc(this.getDocRef(id), {
+        isRead: true,
+        updatedAt: new Date(),
+      });
+      return { success: true };
+    } catch (error) {
+      console.error('Error marking message as read:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async updateStatus(
+    id: string,
+    status: 'new' | 'in_progress' | 'completed' | 'archived'
+  ): Promise<ApiResponse<void>> {
+    try {
+      await updateDoc(this.getDocRef(id), {
+        status,
+        updatedAt: new Date(),
+      });
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating message status:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getUnreadCount(): Promise<ApiResponse<number>> {
+    try {
+      const q = query(this.getCollection(), where('isRead', '==', false));
+      const snapshot = await getDocs(q);
+      return { success: true, data: snapshot.size };
+    } catch (error) {
+      console.error('Error getting unread count:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+}
+
+// Project Media Interface
+export interface ProjectMedia {
+  id?: string;
+  projectId: string;
+  type: 'photo' | 'video';
+  fileName: string;
+  filePath: string;
+  fileSize: number;
+  mimeType: string;
+  url: string;
+  thumbnail?: string;
+  title?: {
+    en: string;
+    es: string;
+    pt: string;
+  };
+  description?: {
+    en: string;
+    es: string;
+    pt: string;
+  };
+  tags: string[];
+  order: number;
+  featured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Project Media Service
+export class ProjectMediaService extends BaseFirebaseService {
+  constructor() {
+    super('projectMedia');
+  }
+
+  async getByProjectId(
+    projectId: string
+  ): Promise<ApiResponse<ProjectMedia[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('projectId', '==', projectId),
+        orderBy('order', 'asc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as ProjectMedia[];
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error fetching project media:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async uploadFile(
+    file: File,
+    projectId: string,
+    metadata: Partial<ProjectMedia>,
+    onProgress?: (progress: number) => void
+  ): Promise<ApiResponse<ProjectMedia>> {
+    try {
+      if (!storage) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+        };
+      }
+
+      // Validate file
+      const maxSize = file.type.startsWith('video/')
+        ? 100 * 1024 * 1024
+        : 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        return {
+          success: false,
+          error: `File too large. Maximum size is ${maxSize / (1024 * 1024)}MB`,
+        };
+      }
+
+      // Create file path
+      const timestamp = Date.now();
+      const extension = file.name.split('.').pop();
+      const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filePath = `projects/${projectId}/${timestamp}-${sanitizedFileName}`;
+
+      // Upload to Firebase Storage with progress tracking
+      const storageRef = ref(storage, filePath);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      return new Promise(resolve => {
+        uploadTask.on(
+          'state_changed',
+          snapshot => {
+            // Progress monitoring
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            onProgress?.(progress);
+          },
+          error => {
+            // Handle upload error
+            console.error('Upload error:', error);
+            resolve({
+              success: false,
+              error: `Upload failed: ${error.message}`,
+            });
+          },
+          async () => {
+            try {
+              // Upload completed successfully
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+              // Get the last order number for this project
+              const existingMedia = await this.getByProjectId(projectId);
+              const nextOrder =
+                existingMedia.success && existingMedia.data
+                  ? Math.max(...existingMedia.data.map(m => m.order), 0) + 1
+                  : 1;
+
+              // Create media document
+              const mediaData: Omit<ProjectMedia, 'id'> = {
+                projectId,
+                type: file.type.startsWith('video/') ? 'video' : 'photo',
+                fileName: sanitizedFileName,
+                filePath,
+                fileSize: file.size,
+                mimeType: file.type,
+                url: downloadURL,
+                title: metadata.title || { en: '', es: '', pt: '' },
+                description: metadata.description || { en: '', es: '', pt: '' },
+                tags: metadata.tags || [],
+                order: metadata.order || nextOrder,
+                featured: metadata.featured || false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              };
+
+              // Save to Firestore
+              const createResult = await this.create<ProjectMedia>(mediaData);
+
+              if (createResult.success) {
+                const fullMediaData = { id: createResult.data, ...mediaData };
+                resolve({ success: true, data: fullMediaData });
+              } else {
+                resolve({
+                  success: false,
+                  error: createResult.error || 'Failed to create media record',
+                });
+              }
+            } catch (error) {
+              resolve({
+                success: false,
+                error: error instanceof Error ? error.message : 'Unknown error',
+              });
+            }
+          }
+        );
+      });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async deleteMedia(id: string): Promise<ApiResponse<void>> {
+    try {
+      // Get media info to delete file from storage
+      const mediaResult = await this.getById<ProjectMedia>(id);
+      if (mediaResult.success && mediaResult.data) {
+        const media = mediaResult.data;
+
+        // Delete from Storage
+        if (storage) {
+          try {
+            const storageRef = ref(storage, media.filePath);
+            await deleteObject(storageRef);
+          } catch (storageError) {
+            console.warn('Failed to delete file from storage:', storageError);
+            // Continue with Firestore deletion even if storage deletion fails
+          }
+        }
+      }
+
+      // Delete from Firestore
+      const result = await this.delete(id);
+      return result;
+    } catch (error) {
+      console.error('Error deleting media:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async updateMediaOrder(
+    mediaItems: { id: string; order: number }[]
+  ): Promise<ApiResponse<void>> {
+    try {
+      // Update all items with new order
+      const promises = mediaItems.map(item =>
+        updateDoc(this.getDocRef(item.id), {
+          order: item.order,
+          updatedAt: new Date(),
+        })
+      );
+
+      await Promise.all(promises);
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating media order:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -500,10 +686,12 @@ export class StorageService {
 }
 
 // Service instances
-export const homepageService = new HomepageService();
 export const faqService = new FAQService();
 export const photoService = new PhotoService();
 export const videoService = new VideoService();
-export const contactMessageService = new ContactMessageService(); // Enhanced contact system
-export const contactService = new ContactService(); // Legacy support
+export const homepageService = new HomepageService();
+export const contactMessageService = new ContactMessageService();
+export const projectMediaService = new ProjectMediaService();
+
+// Legacy support
 export const storageService = new StorageService();

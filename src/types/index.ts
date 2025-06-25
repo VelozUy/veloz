@@ -90,7 +90,14 @@ export interface ContactMessage {
   eventDate?: string;
   message?: string;
   source: 'contact_form' | 'widget';
-  archived: boolean;
+  isRead: boolean;
+  status: 'new' | 'in_progress' | 'completed' | 'archived';
+  userAgent?: string;
+  metadata?: {
+    timestamp: string;
+    locale: string;
+  };
+  archived: boolean; // Keep for backward compatibility
   createdAt: FirebaseTimestamp;
   updatedAt: FirebaseTimestamp;
 }
@@ -104,6 +111,14 @@ export interface ContactMessageData {
   eventDate?: string;
   message?: string;
   source: 'contact_form' | 'widget';
+  isRead: boolean;
+  status: 'new' | 'in_progress' | 'completed' | 'archived';
+  userAgent?: string;
+  metadata?: {
+    timestamp: string;
+    locale: string;
+  };
+  archived: boolean;
 }
 
 export type ServiceType = 'photos' | 'videos' | 'both' | 'other';
