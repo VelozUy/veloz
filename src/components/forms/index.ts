@@ -7,4 +7,10 @@
 // export { default as SearchForm } from './SearchForm';
 // export { default as FileUpload } from './FileUpload';
 
-export {}; 
+export { ContactForm } from './ContactForm';
+
+// Form types and schemas
+export type { ContactFormData } from './ContactForm';
+
+// Form utilities
+// TODO: Add shared form utilities here

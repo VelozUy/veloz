@@ -74,9 +74,11 @@ export default function Navigation() {
 
             {/* CTA Button (Desktop) */}
             <div className="hidden md:block">
-              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                Get Started
-              </Button>
+              <Link href="/contact">
+                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                  Get Started
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -170,12 +172,14 @@ export default function Navigation() {
 
               {/* Mobile CTA */}
               <div className="pt-4 border-t">
-                <Button
-                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Get Started
-                </Button>
+                <Link href="/contact">
+                  <Button
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
