@@ -5,6 +5,10 @@ import { cn } from '@/lib/utils';
 interface BentoGridProps {
   children: React.ReactNode;
   className?: string;
+  items?: Array<{
+    size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+    [key: string]: unknown;
+  }>;
 }
 
 interface BentoItemProps {
@@ -88,9 +92,9 @@ const bentoPatterns = {
 const sizeClasses = {
   small: 'col-span-1 row-span-1',
   medium: 'col-span-2 row-span-2',
-  large: 'col-span-3 row-span-3',
+  large: 'col-span-2 row-span-3', // Made less wide but taller
   wide: 'col-span-2 row-span-1',
-  tall: 'col-span-1 row-span-2',
+  tall: 'col-span-1 row-span-3', // Made taller for portrait content
 };
 
 const containerVariants: Variants = {
@@ -127,7 +131,6 @@ const BentoItem: React.FC<BentoItemProps> = ({
   className,
   size = 'small',
   onClick,
-  index = 0,
 }) => {
   return (
     <motion.div
@@ -156,7 +159,11 @@ const BentoItem: React.FC<BentoItemProps> = ({
   );
 };
 
-const BentoGrid: React.FC<BentoGridProps> = ({ children, className }) => {
+const BentoGrid: React.FC<BentoGridProps> = ({
+  children,
+  className,
+  items,
+}) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(
     'desktop'
   );
@@ -197,7 +204,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({ children, className }) => {
       initial="hidden"
       animate="show"
       className={cn(
-        'grid auto-rows-[120px] gap-4 p-4',
+        'grid auto-rows-[140px] gap-4 p-4', // Increased row height for better proportions
         getGridCols(),
         className
       )}
@@ -206,9 +213,12 @@ const BentoGrid: React.FC<BentoGridProps> = ({ children, className }) => {
         {React.Children.map(children, (child, index) => {
           if (!React.isValidElement(child)) return null;
 
-          const size = pattern[
-            index % pattern.length
-          ] as BentoItemProps['size'];
+          // Use custom size from items array if provided, otherwise fall back to pattern
+          const size =
+            items && items[index]
+              ? items[index].size
+              : (pattern[index % pattern.length] as BentoItemProps['size']);
+
           const childProps = child.props as BentoChildProps;
 
           return (

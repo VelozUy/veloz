@@ -1,14 +1,14 @@
-import { Suspense } from 'react';
 import { Metadata } from 'next';
-import GalleryContent from '@/components/gallery/GalleryContent';
+import StaticGalleryContent from '@/components/gallery/StaticGalleryContent';
 import { InteractiveCTAWidget } from '@/components/layout';
+import { getStaticContent } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Nosso Trabalho | Veloz Fotografia & Vídeo',
+  title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
   description:
     'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e muito mais. Veja por que os clientes escolhem a Veloz para seus momentos especiais.',
   openGraph: {
-    title: 'Nosso Trabalho | Veloz Fotografia & Vídeo',
+    title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
     description:
       'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e muito mais. Veja por que os clientes escolhem a Veloz para seus momentos especiais.',
     images: [
@@ -16,35 +16,28 @@ export const metadata: Metadata = {
         url: '/og-gallery.jpg',
         width: 1200,
         height: 630,
-        alt: 'Portfólio Veloz Fotografia & Vídeo',
+        alt: 'Portfólio da Veloz Fotografia e Videografia',
       },
     ],
   },
+  alternates: {
+    canonical: '/pt/gallery',
+    languages: {
+      es: '/gallery',
+      en: '/en/gallery',
+      pt: '/pt/gallery',
+    },
+  },
 };
 
-export default function GalleryPagePT() {
+export default function PortugueseGalleryPage() {
+  // Get static content for Portuguese
+  const content = getStaticContent('pt');
+
   return (
     <div className="relative min-h-screen bg-background">
-      {/* Page Header - positioned absolutely */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-40 text-center px-4">
-        <h1 className="text-2xl md:text-4xl font-bold text-primary mb-2 bg-background/80 backdrop-blur-sm rounded-lg px-4 py-2">
-          Nosso Trabalho
-        </h1>
-        <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto bg-background/80 backdrop-blur-sm rounded-lg px-4 py-2">
-          Descubra nossa paixão por capturar os momentos mais preciosos da vida
-        </p>
-      </div>
-
-      {/* Gallery Content - full screen */}
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center h-screen">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          </div>
-        }
-      >
-        <GalleryContent />
-      </Suspense>
+      {/* Gallery Content - static rendered */}
+      <StaticGalleryContent content={content} />
 
       {/* CTA Widget - positioned absolutely */}
       <div className="fixed bottom-4 right-4 z-50">

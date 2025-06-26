@@ -8,6 +8,9 @@
  * static JSON files for each locale (es, en, pt) for better SEO and performance
  */
 
+// Load environment variables from .env.local
+require('dotenv').config({ path: '.env.local' });
+
 const { initializeApp } = require('firebase/app');
 const {
   getFirestore,
@@ -30,6 +33,23 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
+
+// Debug Firebase configuration
+console.log('🔧 Firebase config validation:');
+console.log('  Project ID:', firebaseConfig.projectId ? 'Present' : 'Missing');
+console.log('  API Key:', firebaseConfig.apiKey ? 'Present' : 'Missing');
+console.log(
+  '  Auth Domain:',
+  firebaseConfig.authDomain ? 'Present' : 'Missing'
+);
+
+// Validate required config
+const requiredFields = ['apiKey', 'authDomain', 'projectId'];
+const missingFields = requiredFields.filter(field => !firebaseConfig[field]);
+if (missingFields.length > 0) {
+  console.error('❌ Missing Firebase configuration:', missingFields);
+  process.exit(1);
+}
 
 // Supported locales
 const LOCALES = ['es', 'en', 'pt'];
@@ -758,10 +778,10 @@ async function fetchProjects(db) {
     const snapshot = await getDocs(projectsQuery);
     const projects = [];
 
-    snapshot.forEach(doc => {
+    for (const doc of snapshot.docs) {
       const data = doc.data();
       if (data.status === 'published') {
-        projects.push({
+        const project = {
           id: doc.id,
           ...data,
           createdAt: data.createdAt
@@ -770,14 +790,76 @@ async function fetchProjects(db) {
           updatedAt: data.updatedAt
             ? data.updatedAt.toDate().toISOString()
             : null,
-        });
+        };
+
+        // Fetch media for this project
+        project.media = await fetchProjectMedia(db, doc.id);
+        projects.push(project);
       }
-    });
+    }
 
     console.log(`✅ Found ${projects.length} published projects`);
     return projects;
   } catch (error) {
     console.warn('⚠️ Error fetching projects:', error.message);
+    return [];
+  }
+}
+
+/**
+ * Fetch media for a specific project
+ */
+async function fetchProjectMedia(db, projectId) {
+  try {
+    console.log(`📸 Fetching media for project ${projectId}...`);
+
+    // Try with orderBy first
+    let mediaQuery;
+    let snapshot;
+
+    try {
+      mediaQuery = query(
+        collection(db, 'projectMedia'),
+        orderBy('order', 'asc')
+      );
+      snapshot = await getDocs(mediaQuery);
+    } catch (error) {
+      // If index doesn't exist, query without orderBy
+      console.log(
+        `⚠️ Index not found for projectMedia orderBy, querying without order...`
+      );
+      mediaQuery = query(collection(db, 'projectMedia'));
+      snapshot = await getDocs(mediaQuery);
+    }
+
+    const media = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.projectId === projectId) {
+        media.push({
+          id: doc.id,
+          projectId: data.projectId,
+          type: data.type,
+          url: data.url,
+          caption: data.caption || {},
+          aspectRatio: data.aspectRatio,
+          order: data.order || 0,
+        });
+      }
+    });
+
+    // Sort by order in memory
+    media.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    console.log(
+      `✅ Found ${media.length} media items for project ${projectId}`
+    );
+    return media;
+  } catch (error) {
+    console.warn(
+      `⚠️ Error fetching media for project ${projectId}:`,
+      error.message
+    );
     return [];
   }
 }
@@ -807,17 +889,33 @@ function generateLocaleContent(locale, homepageContent, faqs, projects) {
           order: faq.order,
         }))
         .filter(faq => faq.question && faq.answer),
-      projects: projects
-        .map(project => ({
-          id: project.id,
-          title: project.title?.[locale] || project.title?.es || '',
-          description:
-            project.description?.[locale] || project.description?.es || '',
-          coverImage: project.coverImage,
-          tags: project.tags || [],
-          eventType: project.eventType,
-        }))
-        .filter(project => project.title),
+      projects: projects.map(project => ({
+        id: project.id,
+        title:
+          // Handle both localized objects and simple strings
+          typeof project.title === 'object' && project.title !== null
+            ? project.title[locale] ||
+              project.title.es ||
+              project.title.en ||
+              ''
+            : project.title || '',
+        description:
+          // Handle both localized objects and simple strings
+          typeof project.description === 'object' &&
+          project.description !== null
+            ? project.description[locale] ||
+              project.description.es ||
+              project.description.en ||
+              ''
+            : project.description || '',
+        coverImage: project.coverImage,
+        tags: project.tags || [],
+        eventType: project.eventType,
+        location: project.location,
+        eventDate: project.eventDate,
+        featured: project.featured || false,
+        media: project.media || [],
+      })),
     },
     lastUpdated: new Date().toISOString(),
     buildTime: true,
@@ -904,6 +1002,18 @@ export interface LocalizedContent {
       coverImage?: string;
       tags: string[];
       eventType?: string;
+      location?: string;
+      eventDate: string;
+      featured: boolean;
+      media: Array<{
+        id: string;
+        projectId: string;
+        type: 'photo' | 'video';
+        url: string;
+        caption?: Record<string, string>;
+        aspectRatio?: '1:1' | '16:9' | '9:16';
+        order: number;
+      }>;
     }>;
   };
   lastUpdated: string;

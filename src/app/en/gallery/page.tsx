@@ -1,7 +1,7 @@
-import { Suspense } from 'react';
 import { Metadata } from 'next';
-import GalleryContent from '@/components/gallery/GalleryContent';
+import StaticGalleryContent from '@/components/gallery/StaticGalleryContent';
 import { InteractiveCTAWidget } from '@/components/layout';
+import { getStaticContent } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Our Work | Veloz Photography & Videography',
@@ -20,36 +20,29 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: '/en/gallery',
+    languages: {
+      es: '/gallery',
+      en: '/en/gallery',
+      pt: '/pt/gallery',
+    },
+  },
 };
 
-export default function GalleryPageEN() {
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            Our Work
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover our passion for capturing life&apos;s most precious
-            moments. From intimate weddings to grand corporate events, each
-            project tells a unique story.
-          </p>
-        </div>
+export default function EnglishGalleryPage() {
+  // Get static content for English
+  const content = getStaticContent('en');
 
-        {/* Gallery Content */}
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-          }
-        >
-          <GalleryContent />
-        </Suspense>
+  return (
+    <div className="relative min-h-screen bg-background">
+      {/* Gallery Content - static rendered */}
+      <StaticGalleryContent content={content} />
+
+      {/* CTA Widget - positioned absolutely */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <InteractiveCTAWidget />
       </div>
-      <InteractiveCTAWidget />
     </div>
   );
 }

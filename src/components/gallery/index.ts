@@ -2,6 +2,7 @@
 // Export all gallery-related components here
 
 export { default as GalleryContent } from './GalleryContent';
+export { default as StaticGalleryContent } from './StaticGalleryContent';
 export { default as GalleryFilter } from './GalleryFilter';
 export { default as MediaCard } from './MediaCard';
 export { default as MediaLightbox } from './MediaLightbox';

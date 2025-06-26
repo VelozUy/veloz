@@ -7,69 +7,25 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
-import { faqService, FAQ } from '@/services/faq';
 import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
 
-// Import build-time data
-let BUILD_TIME_FAQS: FAQ[] = [];
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const buildTimeData = require('@/lib/build-time-data.generated');
-  BUILD_TIME_FAQS = buildTimeData.BUILD_TIME_FAQS || [];
-} catch {
-  // Build-time data not available, will use runtime fetching
-  console.log('Build-time FAQ data not available, using runtime fetching');
+// FAQ interface matching the static content structure
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category?: string;
+  order: number;
 }
 
-// Server-side function to get FAQs with build-time and runtime fallback
-async function getFAQs(): Promise<FAQ[]> {
-  // First, try build-time data if available
-  if (BUILD_TIME_FAQS.length > 0) {
-    console.log(`Using build-time FAQ data: ${BUILD_TIME_FAQS.length} FAQs`);
-    return BUILD_TIME_FAQS;
-  }
-
-  // Fall back to runtime fetching
-  try {
-    console.log('Fetching FAQs at runtime...');
-    const runtimeFaqs = await faqService.getPublishedFAQs();
-    console.log(`Runtime fetch returned ${runtimeFaqs.length} FAQs`);
-    return runtimeFaqs;
-  } catch (error) {
-    console.error('Error fetching FAQs at runtime:', error);
-    return [];
-  }
-}
-
-// Helper function to get FAQ text in the appropriate language
-function getFAQText(
-  faq: FAQ,
-  field: 'question' | 'answer',
-  locale: string = 'es'
-): string {
-  const content = faq[field];
-
-  // Try the requested locale first
-  const localeKey = locale as keyof typeof content;
-  if (content[localeKey] && content[localeKey].trim()) {
-    return content[localeKey];
-  }
-
-  // Fallback order: es -> en -> pt
-  const fallbackOrder = ['es', 'en', 'pt'] as const;
-
-  for (const fallbackLocale of fallbackOrder) {
-    if (content[fallbackLocale] && content[fallbackLocale].trim()) {
-      return content[fallbackLocale];
-    }
-  }
-
-  return '';
+// Helper function to get FAQ text (static content FAQs are already in the correct language)
+function getFAQText(faq: FAQ, field: 'question' | 'answer'): string {
+  return faq[field] || '';
 }
 
 // Generate structured data for FAQs
-function generateFAQStructuredData(faqs: FAQ[], locale: string = 'es') {
+function generateFAQStructuredData(faqs: FAQ[]) {
   if (faqs.length === 0) {
     return null;
   }
@@ -79,10 +35,10 @@ function generateFAQStructuredData(faqs: FAQ[], locale: string = 'es') {
     '@type': 'FAQPage',
     mainEntity: faqs.map(faq => ({
       '@type': 'Question',
-      name: getFAQText(faq, 'question', locale),
+      name: getFAQText(faq, 'question'),
       acceptedAnswer: {
         '@type': 'Answer',
-        text: getFAQText(faq, 'answer', locale),
+        text: getFAQText(faq, 'answer'),
       },
     })),
   };
@@ -112,9 +68,9 @@ export default async function AboutPage() {
   // Get static content for Spanish (default locale)
   const content = getStaticContent('es');
 
-  // Fetch FAQs using build-time data or runtime fetching
-  const faqs = await getFAQs();
-  const faqStructuredData = generateFAQStructuredData(faqs, 'es');
+  // Get FAQs from static content
+  const faqs: FAQ[] = content.content.faqs || [];
+  const faqStructuredData = generateFAQStructuredData(faqs);
 
   // Core values with translations
   const coreValues = [
@@ -363,7 +319,7 @@ export default async function AboutPage() {
                         className="border-0 bg-muted/30 rounded-lg px-4"
                       >
                         <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary transition-colors py-4">
-                          {getFAQText(faq, 'question', 'es')}
+                          {getFAQText(faq, 'question')}
                           {faq.category && (
                             <Badge variant="secondary" className="ml-2 text-xs">
                               {faq.category}
@@ -373,7 +329,7 @@ export default async function AboutPage() {
                         <AccordionContent className="text-muted-foreground pb-4 pt-2">
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: getFAQText(faq, 'answer', 'es'),
+                              __html: getFAQText(faq, 'answer'),
                             }}
                           />
                         </AccordionContent>

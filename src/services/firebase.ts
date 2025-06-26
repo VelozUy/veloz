@@ -16,10 +16,8 @@ import {
 import {
   ref,
   getDownloadURL,
-  uploadBytes,
   deleteObject,
   uploadBytesResumable,
-  UploadTask,
 } from 'firebase/storage';
 import { db, storage } from '@/lib/firebase';
 import { FIREBASE_COLLECTIONS } from '@/constants';
@@ -432,6 +430,9 @@ export interface ProjectMedia {
   mimeType: string;
   url: string;
   thumbnail?: string;
+  aspectRatio: '1:1' | '16:9' | '9:16'; // Detected during upload
+  width?: number; // Original dimensions
+  height?: number; // Original dimensions
   title?: {
     en: string;
     es: string;
@@ -447,6 +448,92 @@ export interface ProjectMedia {
   featured: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// Helper function to detect aspect ratio from file
+async function detectAspectRatio(
+  file: File
+): Promise<{
+  aspectRatio: '1:1' | '16:9' | '9:16';
+  width: number;
+  height: number;
+}> {
+  return new Promise(resolve => {
+    if (file.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.onload = () => {
+        const ratio = img.naturalWidth / img.naturalHeight;
+        let aspectRatio: '1:1' | '16:9' | '9:16';
+
+        if (ratio > 1.3) {
+          aspectRatio = '16:9'; // Landscape
+        } else if (ratio < 0.75) {
+          aspectRatio = '9:16'; // Portrait
+        } else {
+          aspectRatio = '1:1'; // Square-ish
+        }
+
+        resolve({
+          aspectRatio,
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+        });
+      };
+
+      img.onerror = () => {
+        // Fallback for images that fail to load
+        resolve({
+          aspectRatio: '16:9',
+          width: 1920,
+          height: 1080,
+        });
+      };
+
+      img.src = URL.createObjectURL(file);
+    } else if (file.type.startsWith('video/')) {
+      const video = document.createElement('video');
+      video.onloadedmetadata = () => {
+        const ratio = video.videoWidth / video.videoHeight;
+        let aspectRatio: '1:1' | '16:9' | '9:16';
+
+        if (ratio > 1.3) {
+          aspectRatio = '16:9'; // Landscape
+        } else if (ratio < 0.75) {
+          aspectRatio = '9:16'; // Portrait
+        } else {
+          aspectRatio = '1:1'; // Square-ish
+        }
+
+        resolve({
+          aspectRatio,
+          width: video.videoWidth,
+          height: video.videoHeight,
+        });
+
+        // Clean up object URL
+        URL.revokeObjectURL(video.src);
+      };
+
+      video.onerror = () => {
+        // Fallback for videos that fail to load
+        resolve({
+          aspectRatio: '16:9',
+          width: 1920,
+          height: 1080,
+        });
+        URL.revokeObjectURL(video.src);
+      };
+
+      video.src = URL.createObjectURL(file);
+    } else {
+      // Fallback for unsupported file types
+      resolve({
+        aspectRatio: '16:9',
+        width: 1920,
+        height: 1080,
+      });
+    }
+  });
 }
 
 // Project Media Service
@@ -508,7 +595,6 @@ export class ProjectMediaService extends BaseFirebaseService {
 
       // Create file path
       const timestamp = Date.now();
-      const extension = file.name.split('.').pop();
       const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
       const filePath = `projects/${projectId}/${timestamp}-${sanitizedFileName}`;
 
@@ -538,6 +624,10 @@ export class ProjectMediaService extends BaseFirebaseService {
               // Upload completed successfully
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
+              // Detect aspect ratio and dimensions
+              const { aspectRatio, width, height } =
+                await detectAspectRatio(file);
+
               // Get the last order number for this project
               const existingMedia = await this.getByProjectId(projectId);
               const nextOrder =
@@ -554,6 +644,9 @@ export class ProjectMediaService extends BaseFirebaseService {
                 fileSize: file.size,
                 mimeType: file.type,
                 url: downloadURL,
+                aspectRatio,
+                width,
+                height,
                 title: metadata.title || { en: '', es: '', pt: '' },
                 description: metadata.description || { en: '', es: '', pt: '' },
                 tags: metadata.tags || [],

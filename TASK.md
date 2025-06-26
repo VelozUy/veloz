@@ -76,7 +76,7 @@ _Last updated: December 2024_
 - [x] **[REPLACED] Configure browser language detection** - ✅ REPLACED - Will be handled by route-based detection in future _(Completed: Dec 25, 2024)_
 - [x] **[REPLACED] Create language switcher component** - ✅ REPLACED - Foundation created as LocaleSwitcher _(Completed: Dec 25, 2024)_
 - [x] **[REPLACED] Add language persistence** - ✅ REPLACED - Will be handled by URL routing in future _(Completed: Dec 25, 2024)_
-- [ ] **[Future] Add OpenAI integration for translations** - Future enhancement for automated content translation
+- [ ] **[High] Add OpenAI integration for form translations** - Auto-translate all form text content from Spanish to other languages (EN, PT) with button integration _(Added: Jan 6, 2025)_
 
 ---
 
@@ -123,6 +123,8 @@ _Last updated: December 2024_
 - [x] **[High] Add filtering logic** - ✅ COMPLETED - Client-side filtering by event type with real-time updates _(Completed: Dec 22, 2024)_
 - [x] **[High] Implement bento grid layout** - ✅ COMPLETED - Beautiful bento grid with varied card sizes and smooth animations _(Completed: Jan 6, 2025)_
 - [x] **[Medium] Remove text overlays from gallery cards** - ✅ COMPLETED - Clean media-only design for better visual focus _(Completed: Jan 6, 2025)_
+- [x] **[Critical] Implement static gallery pages for SEO** - ✅ COMPLETED - Gallery now uses build-time data fetching with static generation for all languages (es, en, pt), includes media data in static content, and provides perfect SEO with server-side rendering _(Completed: Jan 6, 2025)_
+- [x] **[Critical] Implement build-time aspect ratio detection** - ✅ COMPLETED - Added automatic aspect ratio detection during media upload process, stores aspectRatio ('1:1', '16:9', '9:16') and dimensions in Firestore, eliminates runtime detection for better performance, portrait photos now get tall containers and landscape photos get wide containers _(Completed: Jan 6, 2025)_
 - [ ] **[Medium] Re-implement gallery filtering** - Add back project type navigation with improved design _(Added: Jan 6, 2025)_
 - [x] **[Medium] Create image lightbox modal** - ✅ COMPLETED - Full-screen media viewer with project information _(Completed: Dec 22, 2024)_
 - [x] **[Medium] Add lightbox navigation** - ✅ COMPLETED - Previous/next navigation with visual controls _(Completed: Dec 22, 2024)_
@@ -284,6 +286,30 @@ _Last updated: December 2024_
 - [ ] **[High] Create file deletion service** - Clean up unused files
 - [ ] **[Medium] Add upload progress tracking** - Show upload status to users
 - [ ] **[Low] Add file compression** - Reduce file sizes before upload
+
+### OpenAI Translation Integration
+
+- [ ] **[High] Setup OpenAI API service** - Configure OpenAI client with API key and environment variables _(Added: Jan 6, 2025)_
+- [ ] **[High] Create translation service functions** - Build service to translate text from Spanish to English and Portuguese _(Added: Jan 6, 2025)_
+- [ ] **[High] Add translation buttons to admin forms** - Add "Auto-translate" buttons for each form field in homepage, FAQ, and project management _(Added: Jan 6, 2025)_
+- [ ] **[High] Implement batch translation for content** - Auto-translate all Spanish content to fill English and Portuguese fields _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Add translation validation** - Review and edit translated content before saving _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Add usage tracking** - Monitor OpenAI API usage and costs _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Add translation history** - Track and store translation revisions _(Added: Jan 6, 2025)_
+- [ ] **[Low] Add custom translation prompts** - Allow customization of translation context and style _(Added: Jan 6, 2025)_
+
+### OpenAI Media Analysis Integration
+
+- [ ] **[High] Create media analysis service** - Build OpenAI Vision API service to analyze images and videos for SEO metadata _(Added: Jan 6, 2025)_
+- [ ] **[High] Add "Analyze for SEO" buttons to media cards** - Add analysis buttons to each media item in MediaManager and gallery admin _(Added: Jan 6, 2025)_
+- [ ] **[High] Auto-generate alt text from media analysis** - Use OpenAI to create descriptive alt text for accessibility and SEO _(Added: Jan 6, 2025)_
+- [ ] **[High] Extract relevant tags and keywords** - Automatically identify and suggest relevant tags based on image/video content _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Generate SEO-optimized descriptions** - Create compelling descriptions for media based on visual analysis _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Detect event type from media** - Automatically categorize media as wedding, corporate, birthday, etc. based on visual cues _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Extract color palette and mood** - Analyze dominant colors and emotional tone for better categorization _(Added: Jan 6, 2025)_
+- [ ] **[Medium] Add batch media analysis** - Analyze multiple media items at once for efficiency _(Added: Jan 6, 2025)_
+- [ ] **[Low] Generate social media captions** - Create platform-specific captions for Instagram, Facebook, etc. _(Added: Jan 6, 2025)_
+- [ ] **[Low] Identify people count and composition** - Detect number of people, group dynamics, and composition for better tagging _(Added: Jan 6, 2025)_
 
 ---
 

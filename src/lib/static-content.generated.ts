@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-25T18:39:09.308Z
+// Generated on: 2025-06-26T13:54:29.532Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -26,6 +26,18 @@ export interface LocalizedContent {
       coverImage?: string;
       tags: string[];
       eventType?: string;
+      location?: string;
+      eventDate: string;
+      featured: boolean;
+      media: Array<{
+        id: string;
+        projectId: string;
+        type: 'photo' | 'video';
+        url: string;
+        caption?: Record<string, string>;
+        aspectRatio?: '1:1' | '16:9' | '9:16';
+        order: number;
+      }>;
     }>;
   };
   lastUpdated: string;
@@ -251,18 +263,79 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       homepage: {
         headline: 'Capturamos lo irrepetible',
         logo: {
-          url: '',
-          enabled: false,
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
         },
         backgroundVideo: {
-          url: '',
-          enabled: false,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
         },
       },
-      faqs: [],
-      projects: [],
+      faqs: [
+        {
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
+      ],
+      projects: [
+        {
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
+            {
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 1,
+            },
+            {
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              caption: {},
+              aspectRatio: '9:16',
+              order: 2,
+            },
+          ],
+        },
+        {
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
+            {
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              caption: {},
+              order: 1,
+            },
+          ],
+        },
+      ],
     },
-    lastUpdated: '2025-06-25T18:39:09.307Z',
+    lastUpdated: '2025-06-26T13:54:29.528Z',
     buildTime: true,
   },
   en: {
@@ -482,18 +555,79 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       homepage: {
         headline: 'Capturing the Unrepeatable',
         logo: {
-          url: '',
-          enabled: false,
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
         },
         backgroundVideo: {
-          url: '',
-          enabled: false,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
         },
       },
-      faqs: [],
-      projects: [],
+      faqs: [
+        {
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿hello?',
+          answer: 'yooooo',
+          category: 'General',
+          order: 1,
+        },
+      ],
+      projects: [
+        {
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
+            {
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 1,
+            },
+            {
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              caption: {},
+              aspectRatio: '9:16',
+              order: 2,
+            },
+          ],
+        },
+        {
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
+            {
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              caption: {},
+              order: 1,
+            },
+          ],
+        },
+      ],
     },
-    lastUpdated: '2025-06-25T18:39:09.308Z',
+    lastUpdated: '2025-06-26T13:54:29.530Z',
     buildTime: true,
   },
   pt: {
@@ -711,20 +845,81 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
     },
     content: {
       homepage: {
-        headline: 'Capturamos o que não se repete',
+        headline: 'Capturamos lo irrepetible',
         logo: {
-          url: '',
-          enabled: false,
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
         },
         backgroundVideo: {
-          url: '',
-          enabled: false,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
         },
       },
-      faqs: [],
-      projects: [],
+      faqs: [
+        {
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
+      ],
+      projects: [
+        {
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
+            {
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 1,
+            },
+            {
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              caption: {},
+              aspectRatio: '9:16',
+              order: 2,
+            },
+          ],
+        },
+        {
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
+            {
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              caption: {},
+              order: 1,
+            },
+          ],
+        },
+      ],
     },
-    lastUpdated: '2025-06-25T18:39:09.308Z',
+    lastUpdated: '2025-06-26T13:54:29.531Z',
     buildTime: true,
   },
 };
