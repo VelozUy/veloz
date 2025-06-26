@@ -99,18 +99,52 @@ const sizeClasses = {
   tall: 'col-span-1 row-span-3', // Made taller for portrait content
 };
 
-// Dynamic aspect ratio based styling
-const getAspectRatioStyle = (aspectRatio: string) => {
-  switch (aspectRatio) {
-    case '9:16': // Portrait
-      return { aspectRatio: '9/16' };
-    case '16:9': // Landscape
-      return { aspectRatio: '16/9' };
-    case '1:1': // Square
-      return { aspectRatio: '1/1' };
-    default:
-      return { aspectRatio: '16/9' };
-  }
+// Dynamic aspect ratio based styling with size variations
+const getAspectRatioStyle = (
+  aspectRatio: string,
+  size: 'small' | 'medium' | 'large' | 'wide' | 'tall'
+) => {
+  const baseAspectRatio = (() => {
+    switch (aspectRatio) {
+      case '9:16': // Portrait
+        return '9/16';
+      case '16:9': // Landscape
+        return '16/9';
+      case '1:1': // Square
+        return '1/1';
+      default:
+        return '16/9';
+    }
+  })();
+
+  // Simplified sizing - only use column spans to avoid row overlap issues
+  const gridSpan = (() => {
+    switch (size) {
+      case 'large':
+        return {
+          gridColumn: 'span 2',
+          width: '100%',
+        };
+      case 'wide':
+        return {
+          gridColumn: 'span 2',
+          width: '100%',
+        };
+      case 'tall':
+      case 'medium':
+      case 'small':
+      default:
+        return {
+          gridColumn: 'span 1',
+          width: '100%',
+        };
+    }
+  })();
+
+  return {
+    aspectRatio: baseAspectRatio,
+    ...gridSpan,
+  };
 };
 
 const containerVariants: Variants = {
@@ -150,7 +184,9 @@ const BentoItem: React.FC<BentoItemProps> = ({
   onClick,
 }) => {
   // Use aspect ratio styling if provided, otherwise fall back to size classes
-  const dynamicStyle = aspectRatio ? getAspectRatioStyle(aspectRatio) : {};
+  const dynamicStyle = aspectRatio
+    ? getAspectRatioStyle(aspectRatio, size)
+    : {};
   const useAspectRatio = !!aspectRatio;
 
   return (
@@ -234,7 +270,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({
       className={cn(
         'grid gap-4 p-4',
         useAspectRatioMode
-          ? `${getGridCols()} auto-rows-max` // Masonry-style with aspect ratios
+          ? `${getGridCols()} auto-rows-[minmax(150px,auto)]` // Auto-sizing rows with minimum height
           : `auto-rows-[140px] ${getGridCols()}`, // Original bento grid
         className
       )}

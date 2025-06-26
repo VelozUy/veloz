@@ -144,34 +144,48 @@ export default function StaticGalleryContent({
     };
   }, [allMedia]); // Re-run when media changes
 
-  // Prepare media for bento grid with actual aspect ratio-based sizing
+  // Prepare media for bento grid with varied sizing for visual interest
   const bentoMedia = useMemo(() => {
     return allMedia.map((media, index) => {
-      let size: 'small' | 'medium' | 'large' | 'wide' | 'tall' = 'small';
+      let size: 'small' | 'medium' | 'large' | 'wide' | 'tall' = 'medium';
 
-      // Assign container size based on actual aspect ratio
+      // Create varied sizing patterns based on aspect ratio and position
       switch (media.aspectRatio) {
-        case '9:16': // Portrait - always use tall containers
-          size = 'tall';
-          break;
-        case '16:9': // Landscape - vary between wide, medium, and large
-          if (index % 5 === 0) {
-            size = 'large'; // Occasional large landscape
-          } else if (index % 3 === 0) {
-            size = 'wide'; // Wide landscape
+        case '9:16': // Portrait photos
+          if (index % 8 === 0) {
+            size = 'large'; // Occasional large portrait (2x2)
+          } else if (index % 4 === 0) {
+            size = 'tall'; // Tall portrait (1x2)
           } else {
-            size = 'medium'; // Medium landscape
+            size = 'medium'; // Regular portrait
           }
           break;
-        case '1:1': // Square - vary between medium, small, and occasional large
+        case '16:9': // Landscape photos
+          if (index % 6 === 0) {
+            size = 'large'; // Large landscape showcase (2x2)
+          } else if (index % 3 === 0) {
+            size = 'wide'; // Wide landscape (2x1)
+          } else if (index % 5 === 0) {
+            size = 'medium'; // Regular size
+          } else {
+            size = 'small'; // Smaller landscapes for variety
+          }
+          break;
+        case '1:1': // Square photos
           if (index % 7 === 0) {
-            size = 'large'; // Occasional large square
-          } else if (index % 3 === 0) {
-            size = 'medium'; // Medium square
+            size = 'large'; // Feature large squares (2x2)
+          } else if (index % 4 === 0) {
+            size = 'medium'; // Medium squares
           } else {
-            size = 'small'; // Small square
+            size = 'small'; // Small squares fill gaps
           }
           break;
+        default: // Fallback for unknown aspect ratios
+          if (index % 6 === 0) {
+            size = 'wide';
+          } else {
+            size = 'medium';
+          }
       }
 
       return {

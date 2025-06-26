@@ -195,8 +195,8 @@
     "homepage": {
       "headline": "Capturing the Unrepeatable",
       "logo": {
-        "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
         "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
+        "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
         "enabled": true
       },
       "backgroundVideo": {
@@ -271,11 +271,56 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
             "caption": {},
             "order": 1
+          },
+          {
+            "id": "6oms8LKDjjc3nHV2Z3EC",
+            "projectId": "Ph2wgp6gR7FyfQtIF7cO",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
+            "caption": {},
+            "aspectRatio": "1:1",
+            "order": 2
+          },
+          {
+            "id": "KxA4cNTGxzVSWevU4L9S",
+            "projectId": "Ph2wgp6gR7FyfQtIF7cO",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
+            "caption": {},
+            "aspectRatio": "16:9",
+            "order": 3
+          },
+          {
+            "id": "HLWzOEqR8bUIhF1ovqi0",
+            "projectId": "Ph2wgp6gR7FyfQtIF7cO",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
+            "caption": {},
+            "aspectRatio": "16:9",
+            "order": 4
+          },
+          {
+            "id": "sXgNkKMJnngCezJDdFOH",
+            "projectId": "Ph2wgp6gR7FyfQtIF7cO",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
+            "caption": {},
+            "aspectRatio": "16:9",
+            "order": 5
+          },
+          {
+            "id": "OGnjDnYG91SIEi9r5ME4",
+            "projectId": "Ph2wgp6gR7FyfQtIF7cO",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
+            "caption": {},
+            "aspectRatio": "16:9",
+            "order": 6
           }
         ]
       }
     ]
   },
-  "lastUpdated": "2025-06-26T14:15:08.110Z",
+  "lastUpdated": "2025-06-26T14:24:21.138Z",
   "buildTime": true
 }
