@@ -200,9 +200,9 @@
         "enabled": true
       },
       "backgroundVideo": {
-        "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
+        "enabled": true,
         "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-        "enabled": true
+        "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
       }
     },
     "faqs": [
@@ -215,6 +215,63 @@
       }
     ],
     "projects": [
+      {
+        "id": "VnGJZvO2CsJ9zcHyEm6C",
+        "title": "evento",
+        "description": "",
+        "tags": [],
+        "eventType": "Evento Corporativo",
+        "location": "",
+        "eventDate": "",
+        "featured": false,
+        "media": [
+          {
+            "id": "NdRA3tNcZM846jBlxccO",
+            "projectId": "VnGJZvO2CsJ9zcHyEm6C",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
+            "caption": {},
+            "aspectRatio": "9:16",
+            "order": 1
+          },
+          {
+            "id": "B4jQQYlzmmbTZpVIUY2f",
+            "projectId": "VnGJZvO2CsJ9zcHyEm6C",
+            "type": "photo",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
+            "caption": {},
+            "aspectRatio": "16:9",
+            "order": 2
+          },
+          {
+            "id": "yTRob8EConGj8SAwDGgM",
+            "projectId": "VnGJZvO2CsJ9zcHyEm6C",
+            "type": "video",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
+            "caption": {},
+            "aspectRatio": "9:16",
+            "order": 3
+          },
+          {
+            "id": "O8LaipWGAEuitU47NQbS",
+            "projectId": "VnGJZvO2CsJ9zcHyEm6C",
+            "type": "video",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
+            "caption": {},
+            "aspectRatio": "9:16",
+            "order": 4
+          },
+          {
+            "id": "FQxDDsXeybv2mvgmZAYT",
+            "projectId": "VnGJZvO2CsJ9zcHyEm6C",
+            "type": "video",
+            "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
+            "caption": {},
+            "aspectRatio": "9:16",
+            "order": 5
+          }
+        ]
+      },
       {
         "id": "dHwYXouBfkPIq8ji0Lly",
         "title": "una boda",
@@ -321,6 +378,6 @@
       }
     ]
   },
-  "lastUpdated": "2025-06-26T14:24:21.138Z",
+  "lastUpdated": "2025-06-26T14:42:14.965Z",
   "buildTime": true
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +10,7 @@ interface BentoGridProps {
     aspectRatio?: string;
     [key: string]: unknown;
   }>;
+  enableRandomLayout?: boolean;
 }
 
 interface BentoItemProps {
@@ -27,76 +28,134 @@ interface BentoChildProps {
   children: React.ReactNode;
 }
 
-// Predefined bento grid patterns for different screen sizes
-const bentoPatterns = {
-  mobile: [
-    'small',
-    'small',
-    'medium',
-    'small',
-    'small',
-    'wide',
-    'small',
-    'medium',
-    'small',
-    'small',
-    'wide',
-    'small',
-  ],
-  tablet: [
-    'large',
-    'small',
-    'small',
-    'small',
-    'small',
-    'medium',
-    'small',
-    'wide',
-    'small',
-    'small',
-    'small',
-    'tall',
-    'medium',
-    'small',
-    'small',
-    'wide',
-    'small',
-    'small',
-  ],
-  desktop: [
-    'large',
-    'small',
-    'small',
-    'medium',
-    'small',
-    'small',
-    'small',
-    'tall',
-    'small',
-    'wide',
-    'small',
-    'small',
-    'small',
-    'small',
-    'medium',
-    'small',
-    'large',
-    'small',
-    'wide',
-    'small',
-    'small',
-    'small',
-    'tall',
-    'small',
-  ],
+// Utility function to shuffle array randomly
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Smart size assignment based on aspect ratio and position to minimize gaps
+const getOptimalSize = (
+  aspectRatio: string,
+  index: number,
+  totalItems: number,
+  screenSize: 'mobile' | 'tablet' | 'desktop'
+): 'small' | 'medium' | 'large' | 'wide' | 'tall' => {
+  // Base probabilities for each size to ensure variety and space filling
+  const sizeProbabilities = {
+    mobile: {
+      small: 0.5,
+      medium: 0.3,
+      wide: 0.2,
+      tall: 0,
+      large: 0,
+    },
+    tablet: {
+      small: 0.4,
+      medium: 0.25,
+      wide: 0.15,
+      tall: 0.1,
+      large: 0.1,
+    },
+    desktop: {
+      small: 0.35,
+      medium: 0.25,
+      wide: 0.15,
+      tall: 0.15,
+      large: 0.1,
+    },
+  };
+
+  const probs = sizeProbabilities[screenSize];
+
+  // Adjust size based on aspect ratio for better fitting
+  switch (aspectRatio) {
+    case '9:16': // Portrait
+      // Portrait images work better as tall or medium
+      const portraitOptions: Array<{
+        size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+        weight: number;
+      }> = [
+        { size: 'tall', weight: 0.4 },
+        { size: 'medium', weight: 0.35 },
+        { size: 'small', weight: 0.25 },
+      ];
+      return weightedRandomSelect(portraitOptions);
+
+    case '16:9': // Landscape
+      // Landscape images work better as wide or large
+      const landscapeOptions: Array<{
+        size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+        weight: number;
+      }> = [
+        { size: 'wide', weight: 0.35 },
+        { size: 'medium', weight: 0.3 },
+        { size: 'large', weight: screenSize === 'desktop' ? 0.2 : 0.1 },
+        { size: 'small', weight: 0.15 },
+      ];
+      return weightedRandomSelect(landscapeOptions);
+
+    case '1:1': // Square
+      // Square images work well in any size
+      const squareOptions: Array<{
+        size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+        weight: number;
+      }> = [
+        { size: 'medium', weight: 0.35 },
+        { size: 'small', weight: 0.3 },
+        { size: 'large', weight: screenSize === 'desktop' ? 0.15 : 0.1 },
+        { size: 'wide', weight: 0.1 },
+        { size: 'tall', weight: 0.1 },
+      ];
+      return weightedRandomSelect(squareOptions);
+
+    default:
+      // Default distribution for unknown aspect ratios
+      const defaultOptions: Array<{
+        size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+        weight: number;
+      }> = [
+        { size: 'medium', weight: probs.medium },
+        { size: 'small', weight: probs.small },
+        { size: 'wide', weight: probs.wide },
+        { size: 'tall', weight: probs.tall },
+        { size: 'large', weight: probs.large },
+      ];
+      return weightedRandomSelect(defaultOptions);
+  }
+};
+
+// Helper function for weighted random selection
+const weightedRandomSelect = (
+  options: Array<{
+    size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+    weight: number;
+  }>
+): 'small' | 'medium' | 'large' | 'wide' | 'tall' => {
+  const totalWeight = options.reduce((sum, option) => sum + option.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const option of options) {
+    random -= option.weight;
+    if (random <= 0) {
+      return option.size;
+    }
+  }
+
+  // Fallback to first option
+  return options[0].size;
 };
 
 const sizeClasses = {
   small: 'col-span-1 row-span-1',
   medium: 'col-span-2 row-span-2',
-  large: 'col-span-2 row-span-3', // Made less wide but taller
+  large: 'col-span-2 row-span-3',
   wide: 'col-span-2 row-span-1',
-  tall: 'col-span-1 row-span-3', // Made taller for portrait content
+  tall: 'col-span-1 row-span-3',
 };
 
 // Dynamic aspect ratio based styling with size variations
@@ -117,7 +176,7 @@ const getAspectRatioStyle = (
     }
   })();
 
-  // Simplified sizing - only use column spans to avoid row overlap issues
+  // Optimize grid spanning based on size
   const gridSpan = (() => {
     switch (size) {
       case 'large':
@@ -152,8 +211,8 @@ const containerVariants: Variants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.05, // Faster stagger for better loading feel
+      delayChildren: 0.1,
     },
   },
 };
@@ -224,6 +283,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   children,
   className,
   items,
+  enableRandomLayout = false,
 }) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(
     'desktop'
@@ -245,9 +305,6 @@ const BentoGrid: React.FC<BentoGridProps> = ({
     return () => window.removeEventListener('resize', updateScreenSize);
   }, []);
 
-  const getPattern = () => bentoPatterns[screenSize];
-  const pattern = getPattern();
-
   const getGridCols = () => {
     switch (screenSize) {
       case 'mobile':
@@ -262,16 +319,36 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   // Check if we're using aspect ratio mode (when items have aspectRatio)
   const useAspectRatioMode = items && items.some(item => item.aspectRatio);
 
+  // Create randomized and optimized layout
+  const optimizedItems = useMemo(() => {
+    if (!items || !enableRandomLayout) return null;
+
+    // Shuffle items for random order
+    const shuffledItems = shuffleArray(items);
+
+    // Assign optimal sizes based on aspect ratio and position
+    return shuffledItems.map((item, index) => ({
+      ...item,
+      originalIndex: items.indexOf(item), // Keep track of original index for children mapping
+      size: getOptimalSize(
+        item.aspectRatio || '16:9',
+        index,
+        shuffledItems.length,
+        screenSize
+      ),
+    }));
+  }, [items, enableRandomLayout, screenSize]);
+
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="show"
       className={cn(
-        'grid gap-4 p-4',
+        'grid gap-3 p-4', // Smaller gap for better space utilization
         useAspectRatioMode
-          ? `${getGridCols()} auto-rows-[minmax(150px,auto)]` // Auto-sizing rows with minimum height
-          : `auto-rows-[140px] ${getGridCols()}`, // Original bento grid
+          ? `${getGridCols()} auto-rows-[minmax(120px,auto)]` // Smaller minimum height
+          : `auto-rows-[120px] ${getGridCols()}`, // Smaller row height
         className
       )}
     >
@@ -279,17 +356,23 @@ const BentoGrid: React.FC<BentoGridProps> = ({
         {React.Children.map(children, (child, index) => {
           if (!React.isValidElement(child)) return null;
 
-          // Use custom size from items array if provided, otherwise fall back to pattern
-          const size =
-            items && items[index]
-              ? items[index].size
-              : (pattern[index % pattern.length] as BentoItemProps['size']);
+          let size: BentoItemProps['size'] = 'small';
+          let aspectRatio: string | undefined;
 
-          // Get aspect ratio if available
-          const aspectRatio =
-            items && items[index]
-              ? (items[index].aspectRatio as string)
-              : undefined;
+          if (optimizedItems && enableRandomLayout) {
+            // Use optimized random layout
+            const optimizedItem = optimizedItems.find(
+              item => item.originalIndex === index
+            );
+            if (optimizedItem) {
+              size = optimizedItem.size;
+              aspectRatio = optimizedItem.aspectRatio;
+            }
+          } else if (items && items[index]) {
+            // Use provided items array
+            size = items[index].size;
+            aspectRatio = items[index].aspectRatio as string;
+          }
 
           const childProps = child.props as BentoChildProps;
 

@@ -5,7 +5,6 @@ import MediaLightbox from './MediaLightbox';
 import GalleryContent from './GalleryContent';
 import { BentoGrid } from '@/components/ui/bento-grid';
 import { LocalizedContent } from '@/lib/static-content.generated';
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 // Media interface compatible with existing lightbox
@@ -144,56 +143,14 @@ export default function StaticGalleryContent({
     };
   }, [allMedia]); // Re-run when media changes
 
-  // Prepare media for bento grid with varied sizing for visual interest
+  // Prepare media for bento grid with randomization and optimal space utilization
   const bentoMedia = useMemo(() => {
-    return allMedia.map((media, index) => {
-      let size: 'small' | 'medium' | 'large' | 'wide' | 'tall' = 'medium';
-
-      // Create varied sizing patterns based on aspect ratio and position
-      switch (media.aspectRatio) {
-        case '9:16': // Portrait photos
-          if (index % 8 === 0) {
-            size = 'large'; // Occasional large portrait (2x2)
-          } else if (index % 4 === 0) {
-            size = 'tall'; // Tall portrait (1x2)
-          } else {
-            size = 'medium'; // Regular portrait
-          }
-          break;
-        case '16:9': // Landscape photos
-          if (index % 6 === 0) {
-            size = 'large'; // Large landscape showcase (2x2)
-          } else if (index % 3 === 0) {
-            size = 'wide'; // Wide landscape (2x1)
-          } else if (index % 5 === 0) {
-            size = 'medium'; // Regular size
-          } else {
-            size = 'small'; // Smaller landscapes for variety
-          }
-          break;
-        case '1:1': // Square photos
-          if (index % 7 === 0) {
-            size = 'large'; // Feature large squares (2x2)
-          } else if (index % 4 === 0) {
-            size = 'medium'; // Medium squares
-          } else {
-            size = 'small'; // Small squares fill gaps
-          }
-          break;
-        default: // Fallback for unknown aspect ratios
-          if (index % 6 === 0) {
-            size = 'wide';
-          } else {
-            size = 'medium';
-          }
-      }
-
-      return {
-        ...media,
-        size,
-        aspectRatio: media.aspectRatio,
-      };
-    });
+    // Return media with aspect ratios for the BentoGrid's random layout algorithm
+    return allMedia.map(media => ({
+      ...media,
+      aspectRatio: media.aspectRatio || '16:9',
+      size: 'medium' as const, // Will be overridden by random layout algorithm
+    }));
   }, [allMedia]);
 
   const openLightbox = useCallback((mediaIndex: number) => {
@@ -216,12 +173,17 @@ export default function StaticGalleryContent({
   }
 
   return (
-    <div className="gallery-container">
-      <BentoGrid items={bentoMedia}>
+    <div className="gallery-container min-h-screen bg-background">
+      {/* Random Layout Bento Grid Gallery with optimal space filling */}
+      <BentoGrid
+        items={bentoMedia}
+        enableRandomLayout={true}
+        className="max-w-7xl mx-auto"
+      >
         {bentoMedia.map((media, index) => (
           <div
             key={media.id}
-            className="group relative overflow-hidden rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 cursor-pointer"
+            className="group relative overflow-hidden rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 cursor-pointer h-full w-full"
             onClick={() => openLightbox(index)}
           >
             {media.type === 'photo' ? (
@@ -233,14 +195,9 @@ export default function StaticGalleryContent({
                   `Gallery image ${index + 1}`
                 }
                 fill
-                className={cn(
-                  'group-hover:scale-105 transition-transform duration-300',
-                  // Better object-fit based on container size
-                  media.size === 'tall'
-                    ? 'object-cover object-center'
-                    : 'object-cover'
-                )}
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                priority={index < 6} // Prioritize loading first 6 images
               />
             ) : (
               <video
@@ -252,13 +209,7 @@ export default function StaticGalleryContent({
                   }
                 }}
                 src={media.url}
-                className={cn(
-                  'w-full h-full group-hover:scale-105 transition-transform duration-300',
-                  // Better object-fit based on container size
-                  media.size === 'tall'
-                    ? 'object-cover object-center'
-                    : 'object-cover'
-                )}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 muted
                 loop
                 playsInline
@@ -266,8 +217,23 @@ export default function StaticGalleryContent({
               />
             )}
 
-            {/* Subtle hover effect */}
+            {/* Enhanced hover effect */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+
+            {/* Video play indicator */}
+            {media.type === 'video' && (
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </BentoGrid>

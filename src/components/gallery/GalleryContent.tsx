@@ -302,7 +302,14 @@ export default function GalleryContent() {
       {/* Bento Grid Gallery */}
       {allMedia.length > 0 ? (
         <div className="min-h-screen bg-background pt-4 pb-8">
-          <BentoGrid className="max-w-7xl mx-auto">
+          <BentoGrid
+            className="max-w-7xl mx-auto"
+            items={allMedia.map(media => ({
+              aspectRatio: media.aspectRatio || '16:9',
+              size: 'medium' as const, // Will be overridden by random layout algorithm
+            }))}
+            enableRandomLayout={true}
+          >
             {allMedia.map((media, index) => {
               const project = projects.find(p => p.id === media.projectId);
               if (!project) return null;
@@ -311,23 +318,24 @@ export default function GalleryContent() {
                 <div
                   key={media.id}
                   onClick={() => handleMediaClick(index)}
-                  className="relative group overflow-hidden cursor-pointer h-full w-full"
+                  className="relative group overflow-hidden cursor-pointer h-full w-full rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300"
                 >
                   {/* Media Content */}
-                  <div className="relative w-full h-full bg-muted">
+                  <div className="relative w-full h-full">
                     {media.type === 'photo' ? (
                       <Image
                         src={media.url}
                         alt="Gallery media"
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        priority={index < 6} // Prioritize loading first 6 images
                       />
                     ) : (
                       <video
                         ref={video => setVideoRef(media.id, video)}
                         src={media.url}
-                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                         muted
                         loop
                         playsInline
@@ -335,6 +343,24 @@ export default function GalleryContent() {
                       />
                     )}
                   </div>
+
+                  {/* Enhanced hover effect */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+
+                  {/* Video play indicator */}
+                  {media.type === 'video' && (
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                        <svg
+                          className="w-6 h-6 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })}
