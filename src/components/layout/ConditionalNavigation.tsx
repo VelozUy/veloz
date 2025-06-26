@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { getStaticContent } from '@/lib/utils';
-import Navigation from './navigation';
+import { TubelightNavBar } from '@/components/ui/tubelight-navbar';
 
 export default function ConditionalNavigation() {
   const pathname = usePathname();
@@ -39,22 +39,14 @@ export default function ConditionalNavigation() {
   // Get static content for current locale
   const content = getStaticContent(currentLocale);
 
-  // Cast translations to expected type for Navigation
+  // Cast translations to expected type for TubelightNavBar
   const translations = content.translations as {
     navigation: {
-      home: string;
-      about: string;
       gallery: string;
+      about: string;
       contact: string;
-    };
-    homepage: {
-      hero: {
-        cta: {
-          contact: string;
-        };
-      };
     };
   };
 
-  return <Navigation translations={translations} locale={currentLocale} />;
+  return <TubelightNavBar translations={translations} locale={currentLocale} />;
 }
