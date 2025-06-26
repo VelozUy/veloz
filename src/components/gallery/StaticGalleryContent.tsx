@@ -177,6 +177,7 @@ export default function StaticGalleryContent({
       return {
         ...media,
         size,
+        aspectRatio: media.aspectRatio,
       };
     });
   }, [allMedia]);

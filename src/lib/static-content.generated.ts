@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-26T13:54:29.532Z
+// Generated on: 2025-06-26T14:05:17.903Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -264,13 +264,13 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         headline: 'Capturamos lo irrepetible',
         logo: {
           enabled: true,
-          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           enabled: true,
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
         },
       },
       faqs: [
@@ -311,6 +311,15 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               aspectRatio: '9:16',
               order: 2,
             },
+            {
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 3,
+            },
           ],
         },
         {
@@ -335,7 +344,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T13:54:29.528Z',
+    lastUpdated: '2025-06-26T14:05:17.900Z',
     buildTime: true,
   },
   en: {
@@ -556,13 +565,13 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         headline: 'Capturing the Unrepeatable',
         logo: {
           enabled: true,
-          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           enabled: true,
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
         },
       },
       faqs: [
@@ -603,6 +612,15 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               aspectRatio: '9:16',
               order: 2,
             },
+            {
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 3,
+            },
           ],
         },
         {
@@ -627,7 +645,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T13:54:29.530Z',
+    lastUpdated: '2025-06-26T14:05:17.901Z',
     buildTime: true,
   },
   pt: {
@@ -848,13 +866,13 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         headline: 'Capturamos lo irrepetible',
         logo: {
           enabled: true,
-          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           enabled: true,
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
         },
       },
       faqs: [
@@ -895,6 +913,15 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               aspectRatio: '9:16',
               order: 2,
             },
+            {
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              caption: {},
+              aspectRatio: '16:9',
+              order: 3,
+            },
           ],
         },
         {
@@ -919,7 +946,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T13:54:29.531Z',
+    lastUpdated: '2025-06-26T14:05:17.902Z',
     buildTime: true,
   },
 };

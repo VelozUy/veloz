@@ -7,6 +7,7 @@ interface BentoGridProps {
   className?: string;
   items?: Array<{
     size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+    aspectRatio?: string;
     [key: string]: unknown;
   }>;
 }
@@ -15,6 +16,7 @@ interface BentoItemProps {
   children: React.ReactNode;
   className?: string;
   size?: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+  aspectRatio?: string;
   onClick?: () => void;
   index?: number;
 }
@@ -97,6 +99,20 @@ const sizeClasses = {
   tall: 'col-span-1 row-span-3', // Made taller for portrait content
 };
 
+// Dynamic aspect ratio based styling
+const getAspectRatioStyle = (aspectRatio: string) => {
+  switch (aspectRatio) {
+    case '9:16': // Portrait
+      return { aspectRatio: '9/16' };
+    case '16:9': // Landscape
+      return { aspectRatio: '16/9' };
+    case '1:1': // Square
+      return { aspectRatio: '1/1' };
+    default:
+      return { aspectRatio: '16/9' };
+  }
+};
+
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -130,19 +146,28 @@ const BentoItem: React.FC<BentoItemProps> = ({
   children,
   className,
   size = 'small',
+  aspectRatio,
   onClick,
 }) => {
+  // Use aspect ratio styling if provided, otherwise fall back to size classes
+  const dynamicStyle = aspectRatio ? getAspectRatioStyle(aspectRatio) : {};
+  const useAspectRatio = !!aspectRatio;
+
   return (
     <motion.div
       variants={itemVariants}
       className={cn(
-        sizeClasses[size],
+        // Only use size classes if we're not using aspect ratio
+        !useAspectRatio && sizeClasses[size],
         'group cursor-pointer overflow-hidden rounded-xl bg-card',
         'hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300',
         'hover:scale-[1.02] hover:-translate-y-1',
         'border border-border/50 hover:border-primary/20',
+        // When using aspect ratio, ensure proper sizing
+        useAspectRatio && 'w-full',
         className
       )}
+      style={dynamicStyle}
       onClick={onClick}
       whileHover={{
         scale: 1.02,
@@ -192,11 +217,14 @@ const BentoGrid: React.FC<BentoGridProps> = ({
       case 'mobile':
         return 'grid-cols-2';
       case 'tablet':
-        return 'grid-cols-4';
+        return 'grid-cols-3';
       case 'desktop':
-        return 'grid-cols-6';
+        return 'grid-cols-4';
     }
   };
+
+  // Check if we're using aspect ratio mode (when items have aspectRatio)
+  const useAspectRatioMode = items && items.some(item => item.aspectRatio);
 
   return (
     <motion.div
@@ -204,8 +232,10 @@ const BentoGrid: React.FC<BentoGridProps> = ({
       initial="hidden"
       animate="show"
       className={cn(
-        'grid auto-rows-[140px] gap-4 p-4', // Increased row height for better proportions
-        getGridCols(),
+        'grid gap-4 p-4',
+        useAspectRatioMode
+          ? `${getGridCols()} auto-rows-max` // Masonry-style with aspect ratios
+          : `auto-rows-[140px] ${getGridCols()}`, // Original bento grid
         className
       )}
     >
@@ -219,12 +249,19 @@ const BentoGrid: React.FC<BentoGridProps> = ({
               ? items[index].size
               : (pattern[index % pattern.length] as BentoItemProps['size']);
 
+          // Get aspect ratio if available
+          const aspectRatio =
+            items && items[index]
+              ? (items[index].aspectRatio as string)
+              : undefined;
+
           const childProps = child.props as BentoChildProps;
 
           return (
             <BentoItem
               key={`bento-item-${index}`}
               size={size}
+              aspectRatio={aspectRatio}
               index={index}
               onClick={childProps.onClick}
               className={childProps.className}
