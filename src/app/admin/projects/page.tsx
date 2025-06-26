@@ -35,7 +35,6 @@ import {
   Video as VideoIcon,
   Edit,
   Trash2,
-  Eye,
   Loader2,
   Star,
 } from 'lucide-react';
@@ -52,7 +51,6 @@ import {
   limit,
   getDocs,
 } from 'firebase/firestore';
-import Image from 'next/image';
 
 interface Project {
   id: string;
@@ -634,145 +632,157 @@ export default function ProjectsPage() {
           </Alert>
         )}
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <FolderOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-foreground mb-2">
-                No projects yet
-              </h3>
-              <p className="text-muted-foreground">
-                Create your first project to start organizing your work
-              </p>
-            </div>
-          ) : (
-            projects.map(project => (
-              <Card key={project.id} className="overflow-hidden group">
-                <div className="relative aspect-video bg-muted">
-                  {project.coverImage ? (
-                    <Image
-                      src={project.coverImage}
-                      alt={project.title.en}
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <FolderOpen className="w-16 h-16 text-muted-foreground" />
-                    </div>
-                  )}
-
-                  {/* Status Badge */}
-                  <Badge
-                    className={`absolute top-2 left-2 text-white ${getStatusColor(
-                      project.status
-                    )}`}
-                  >
-                    {project.status}
-                  </Badge>
-
-                  {/* Featured Badge */}
-                  {project.featured && (
-                    <Badge className="absolute top-2 right-2 bg-yellow-500">
-                      <Star className="w-3 h-3 mr-1" />
-                      Featured
-                    </Badge>
-                  )}
-
-                  {/* Media Count */}
-                  <div className="absolute bottom-2 left-2 flex space-x-2">
-                    {project.mediaCount.photos > 0 && (
-                      <Badge variant="secondary" className="text-xs">
-                        <ImageIcon className="w-3 h-3 mr-1" />
-                        {project.mediaCount.photos}
-                      </Badge>
-                    )}
-                    {project.mediaCount.videos > 0 && (
-                      <Badge variant="secondary" className="text-xs">
-                        <VideoIcon className="w-3 h-3 mr-1" />
-                        {project.mediaCount.videos}
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Hover Actions */}
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() =>
-                          router.push(`/admin/projects/${project.id}`)
-                        }
+        {/* Projects List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Projects</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {projects.length === 0 ? (
+              <div className="text-center py-12">
+                <FolderOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">
+                  No projects yet
+                </h3>
+                <p className="text-muted-foreground">
+                  Create your first project to start organizing your work
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="border-b">
+                    <tr className="text-left">
+                      <th className="p-4 font-medium text-muted-foreground">
+                        Project Name
+                      </th>
+                      <th className="p-4 font-medium text-muted-foreground">
+                        Location
+                      </th>
+                      <th className="p-4 font-medium text-muted-foreground">
+                        Event Date
+                      </th>
+                      <th className="p-4 font-medium text-muted-foreground">
+                        Status
+                      </th>
+                      <th className="p-4 font-medium text-muted-foreground">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map(project => (
+                      <tr
+                        key={project.id}
+                        className="border-b hover:bg-muted/50"
                       >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => {
-                          setEditProject(project);
-                          setEditDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDeleteProject(project)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-foreground mb-1 truncate">
-                    {project.title.en || project.title.es || project.title.pt}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {project.eventType}
-                  </p>
-                  <div className="flex items-center text-xs text-muted-foreground space-x-4">
-                    {project.location && (
-                      <div className="flex items-center">
-                        <MapPin className="w-3 h-3 mr-1" />
-                        {project.location}
-                      </div>
-                    )}
-                    {project.eventDate && (
-                      <div className="flex items-center">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(project.eventDate).toLocaleDateString()}
-                      </div>
-                    )}
-                  </div>
-                  {project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {project.tags.slice(0, 3).map(tag => (
-                        <Badge
-                          key={tag}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                      {project.tags.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{project.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                        <td className="p-4">
+                          <div className="flex items-center space-x-3">
+                            <div>
+                              <div className="font-medium text-foreground">
+                                {project.title.en ||
+                                  project.title.es ||
+                                  project.title.pt}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {project.eventType}
+                              </div>
+                              <div className="flex items-center space-x-2 mt-1">
+                                {project.featured && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
+                                    <Star className="w-3 h-3 mr-1" />
+                                    Featured
+                                  </Badge>
+                                )}
+                                {project.mediaCount.photos > 0 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    <ImageIcon className="w-3 h-3 mr-1" />
+                                    {project.mediaCount.photos}
+                                  </Badge>
+                                )}
+                                {project.mediaCount.videos > 0 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    <VideoIcon className="w-3 h-3 mr-1" />
+                                    {project.mediaCount.videos}
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            {project.location ? (
+                              <>
+                                <MapPin className="w-4 h-4 mr-1" />
+                                {project.location}
+                              </>
+                            ) : (
+                              <span className="text-muted-foreground">
+                                No location
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            {project.eventDate ? (
+                              <>
+                                <Calendar className="w-4 h-4 mr-1" />
+                                {new Date(
+                                  project.eventDate
+                                ).toLocaleDateString()}
+                              </>
+                            ) : (
+                              <span className="text-muted-foreground">
+                                No date
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-4">
+                          <Badge
+                            className={`text-white ${getStatusColor(project.status)}`}
+                          >
+                            {project.status}
+                          </Badge>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditProject(project);
+                                setEditDialogOpen(true);
+                              }}
+                            >
+                              <Edit className="w-4 h-4 mr-1" />
+                              Edit Info
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() =>
+                                router.push(`/admin/projects/${project.id}`)
+                              }
+                            >
+                              <ImageIcon className="w-4 h-4 mr-1" />
+                              Edit Media
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Edit Dialog - Similar structure to create dialog */}
         <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>

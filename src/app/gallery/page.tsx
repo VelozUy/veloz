@@ -24,32 +24,22 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            Our Work
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover our passion for capturing life&apos;s most precious
-            moments. From intimate weddings to grand corporate events, each
-            project tells a unique story.
-          </p>
-        </div>
+    <div className="relative min-h-screen bg-background">
+      {/* Gallery Content - full screen */}
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        }
+      >
+        <GalleryContent />
+      </Suspense>
 
-        {/* Gallery Content */}
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-          }
-        >
-          <GalleryContent />
-        </Suspense>
+      {/* CTA Widget - positioned absolutely */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <InteractiveCTAWidget />
       </div>
-      <InteractiveCTAWidget />
     </div>
   );
 }

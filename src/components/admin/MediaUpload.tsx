@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Upload,
   Image as ImageIcon,
@@ -74,6 +75,7 @@ export default function MediaUpload({
     featured: false,
   });
   const [isUploading, setIsUploading] = useState(false);
+  const [activeLanguage, setActiveLanguage] = useState('es');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
@@ -324,109 +326,119 @@ export default function MediaUpload({
                 <CardTitle className="text-lg">Información del Media</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Titles */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="title-es">Título (Español)</Label>
-                    <Input
-                      id="title-es"
-                      value={metadata.title.es}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          title: { ...prev.title, es: e.target.value },
-                        }))
-                      }
-                      placeholder="Título en español"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="title-en">Título (English)</Label>
-                    <Input
-                      id="title-en"
-                      value={metadata.title.en}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          title: { ...prev.title, en: e.target.value },
-                        }))
-                      }
-                      placeholder="Title in English"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="title-pt">Título (Português)</Label>
-                    <Input
-                      id="title-pt"
-                      value={metadata.title.pt}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          title: { ...prev.title, pt: e.target.value },
-                        }))
-                      }
-                      placeholder="Título em português"
-                    />
-                  </div>
-                </div>
+                {/* Language Tabs */}
+                <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="es">Español</TabsTrigger>
+                    <TabsTrigger value="en">English</TabsTrigger>
+                    <TabsTrigger value="pt">Português</TabsTrigger>
+                  </TabsList>
 
-                {/* Descriptions */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="desc-es">Descripción (Español)</Label>
-                    <Textarea
-                      id="desc-es"
-                      value={metadata.description.es}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          description: {
-                            ...prev.description,
-                            es: e.target.value,
-                          },
-                        }))
-                      }
-                      placeholder="Descripción en español"
-                      rows={3}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="desc-en">Descripción (English)</Label>
-                    <Textarea
-                      id="desc-en"
-                      value={metadata.description.en}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          description: {
-                            ...prev.description,
-                            en: e.target.value,
-                          },
-                        }))
-                      }
-                      placeholder="Description in English"
-                      rows={3}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="desc-pt">Descripción (Português)</Label>
-                    <Textarea
-                      id="desc-pt"
-                      value={metadata.description.pt}
-                      onChange={e =>
-                        setMetadata(prev => ({
-                          ...prev,
-                          description: {
-                            ...prev.description,
-                            pt: e.target.value,
-                          },
-                        }))
-                      }
-                      placeholder="Descrição em português"
-                      rows={3}
-                    />
-                  </div>
-                </div>
+                  <TabsContent value="es" className="space-y-4">
+                    <div>
+                      <Label htmlFor="title-es">Título</Label>
+                      <Input
+                        id="title-es"
+                        value={metadata.title.es}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            title: { ...prev.title, es: e.target.value },
+                          }))
+                        }
+                        placeholder="Título en español"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="desc-es">Descripción</Label>
+                      <Textarea
+                        id="desc-es"
+                        value={metadata.description.es}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            description: {
+                              ...prev.description,
+                              es: e.target.value,
+                            },
+                          }))
+                        }
+                        placeholder="Descripción en español"
+                        rows={3}
+                      />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="en" className="space-y-4">
+                    <div>
+                      <Label htmlFor="title-en">Title</Label>
+                      <Input
+                        id="title-en"
+                        value={metadata.title.en}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            title: { ...prev.title, en: e.target.value },
+                          }))
+                        }
+                        placeholder="Title in English"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="desc-en">Description</Label>
+                      <Textarea
+                        id="desc-en"
+                        value={metadata.description.en}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            description: {
+                              ...prev.description,
+                              en: e.target.value,
+                            },
+                          }))
+                        }
+                        placeholder="Description in English"
+                        rows={3}
+                      />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="pt" className="space-y-4">
+                    <div>
+                      <Label htmlFor="title-pt">Título</Label>
+                      <Input
+                        id="title-pt"
+                        value={metadata.title.pt}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            title: { ...prev.title, pt: e.target.value },
+                          }))
+                        }
+                        placeholder="Título em português"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="desc-pt">Descrição</Label>
+                      <Textarea
+                        id="desc-pt"
+                        value={metadata.description.pt}
+                        onChange={e =>
+                          setMetadata(prev => ({
+                            ...prev,
+                            description: {
+                              ...prev.description,
+                              pt: e.target.value,
+                            },
+                          }))
+                        }
+                        placeholder="Descrição em português"
+                        rows={3}
+                      />
+                    </div>
+                  </TabsContent>
+                </Tabs>
 
                 {/* Tags and Featured */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

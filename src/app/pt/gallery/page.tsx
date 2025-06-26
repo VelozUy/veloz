@@ -24,32 +24,32 @@ export const metadata: Metadata = {
 
 export default function GalleryPagePT() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-            Nosso Trabalho
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Descubra nossa paixão por capturar os momentos mais preciosos da
-            vida. Desde casamentos íntimos até grandes eventos corporativos,
-            cada projeto conta uma história única.
-          </p>
-        </div>
-
-        {/* Gallery Content */}
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-          }
-        >
-          <GalleryContent />
-        </Suspense>
+    <div className="relative min-h-screen bg-background">
+      {/* Page Header - positioned absolutely */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-40 text-center px-4">
+        <h1 className="text-2xl md:text-4xl font-bold text-primary mb-2 bg-background/80 backdrop-blur-sm rounded-lg px-4 py-2">
+          Nosso Trabalho
+        </h1>
+        <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto bg-background/80 backdrop-blur-sm rounded-lg px-4 py-2">
+          Descubra nossa paixão por capturar os momentos mais preciosos da vida
+        </p>
       </div>
-      <InteractiveCTAWidget />
+
+      {/* Gallery Content - full screen */}
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        }
+      >
+        <GalleryContent />
+      </Suspense>
+
+      {/* CTA Widget - positioned absolutely */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <InteractiveCTAWidget />
+      </div>
     </div>
   );
 }

@@ -121,6 +121,9 @@ _Last updated: December 2024_
 - [x] **[High] Create photo grid component** - ✅ COMPLETED - Responsive media grid with mixed photo/video layout _(Completed: Dec 22, 2024)_
 - [x] **[High] Create filter button component** - ✅ COMPLETED - Event type filter with counts and responsive design _(Completed: Dec 22, 2024)_
 - [x] **[High] Add filtering logic** - ✅ COMPLETED - Client-side filtering by event type with real-time updates _(Completed: Dec 22, 2024)_
+- [x] **[High] Implement bento grid layout** - ✅ COMPLETED - Beautiful bento grid with varied card sizes and smooth animations _(Completed: Jan 6, 2025)_
+- [x] **[Medium] Remove text overlays from gallery cards** - ✅ COMPLETED - Clean media-only design for better visual focus _(Completed: Jan 6, 2025)_
+- [ ] **[Medium] Re-implement gallery filtering** - Add back project type navigation with improved design _(Added: Jan 6, 2025)_
 - [x] **[Medium] Create image lightbox modal** - ✅ COMPLETED - Full-screen media viewer with project information _(Completed: Dec 22, 2024)_
 - [x] **[Medium] Add lightbox navigation** - ✅ COMPLETED - Previous/next navigation with visual controls _(Completed: Dec 22, 2024)_
 - [x] **[Medium] Add lightbox keyboard controls** - ✅ COMPLETED - ESC to close, arrow keys for navigation _(Completed: Dec 22, 2024)_

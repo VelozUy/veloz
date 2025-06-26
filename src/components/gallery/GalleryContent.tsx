@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import GalleryFilter from './GalleryFilter';
-import MediaCard from './MediaCard';
+
 import MediaLightbox from './MediaLightbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, AlertCircle } from 'lucide-react';
+import { RefreshCw, AlertCircle, Play } from 'lucide-react';
+import { BentoGrid } from '@/components/ui/bento-grid';
+import Image from 'next/image';
 
 interface MediaItem {
   id: string;
@@ -54,9 +55,12 @@ export default function GalleryContent() {
   const [allMedia, setAllMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState('all');
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
+  // Video refs for intersection observer
+  const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
   // Load projects and their media
   useEffect(() => {
@@ -93,25 +97,58 @@ export default function GalleryContent() {
         const mediaPromises = projectsList.map(async project => {
           try {
             const mediaQuery = query(
-              collection(db, 'projects', project.id, 'projectMedia')
+              collection(db, 'projectMedia'),
+              where('projectId', '==', project.id),
+              orderBy('order', 'asc')
             );
             const mediaSnapshot = await getDocs(mediaQuery);
             const projectMedia: MediaItem[] = [];
 
             mediaSnapshot.forEach(mediaDoc => {
               projectMedia.push({
-                id: `${project.id}_${mediaDoc.id}`,
+                id: mediaDoc.id,
                 projectId: project.id,
                 ...mediaDoc.data(),
               } as MediaItem);
             });
 
+            projectMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
             return projectMedia;
           } catch (error) {
             console.error(
               `Error loading media for project ${project.id}:`,
               error
             );
+
+            // If it's an index error, try without orderBy
+            if (error instanceof Error && error.message.includes('index')) {
+              try {
+                const fallbackQuery = query(
+                  collection(db, 'projectMedia'),
+                  where('projectId', '==', project.id)
+                );
+                const fallbackSnapshot = await getDocs(fallbackQuery);
+                const fallbackMedia: MediaItem[] = [];
+
+                fallbackSnapshot.forEach(mediaDoc => {
+                  fallbackMedia.push({
+                    id: mediaDoc.id,
+                    projectId: project.id,
+                    ...mediaDoc.data(),
+                  } as MediaItem);
+                });
+
+                fallbackMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
+                return fallbackMedia;
+              } catch (fallbackError) {
+                console.error(
+                  `Fallback query failed for project ${project.id}:`,
+                  fallbackError
+                );
+                return [];
+              }
+            }
+
             return [];
           }
         });
@@ -156,34 +193,40 @@ export default function GalleryContent() {
     loadGalleryData();
   }, []);
 
-  // Filter media based on active filter
-  const filteredMedia = useMemo(() => {
-    if (activeFilter === 'all') {
-      return allMedia;
-    }
+  // Video autoplay with intersection observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            // Video is in viewport - start playing
+            video.play().catch(error => {
+              console.log('Autoplay prevented:', error);
+            });
+          } else {
+            // Video is out of viewport - pause
+            video.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Video needs to be 50% visible to autoplay
+        rootMargin: '0px',
+      }
+    );
 
-    return allMedia.filter(media => {
-      const project = projects.find(p => p.id === media.projectId);
-      return project?.eventType === activeFilter;
-    });
-  }, [allMedia, projects, activeFilter]);
-
-  // Calculate project counts for filter buttons
-  const projectCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-
-    projects.forEach(project => {
-      const mediaCount = allMedia.filter(
-        m => m.projectId === project.id
-      ).length;
-      if (mediaCount > 0) {
-        counts[project.eventType] =
-          (counts[project.eventType] || 0) + mediaCount;
+    // Observe all video elements
+    videoRefs.current.forEach(video => {
+      if (video) {
+        observer.observe(video);
       }
     });
 
-    return counts;
-  }, [projects, allMedia]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [allMedia]); // Re-run when media changes
 
   // Create projects lookup for lightbox
   const projectsLookup = useMemo(() => {
@@ -202,6 +245,18 @@ export default function GalleryContent() {
   const handleRetry = () => {
     window.location.reload();
   };
+
+  // Helper function to set video ref
+  const setVideoRef = useCallback(
+    (mediaId: string, video: HTMLVideoElement | null) => {
+      if (video) {
+        videoRefs.current.set(mediaId, video);
+      } else {
+        videoRefs.current.delete(mediaId);
+      }
+    },
+    []
+  );
 
   if (loading) {
     return (
@@ -243,49 +298,59 @@ export default function GalleryContent() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Filter Bar */}
-      <GalleryFilter
-        activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
-        projectCounts={projectCounts}
-      />
+    <>
+      {/* Bento Grid Gallery */}
+      {allMedia.length > 0 ? (
+        <div className="min-h-screen bg-background pt-4 pb-8">
+          <BentoGrid className="max-w-7xl mx-auto">
+            {allMedia.map((media, index) => {
+              const project = projects.find(p => p.id === media.projectId);
+              if (!project) return null;
 
-      {/* Media Grid */}
-      {filteredMedia.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {filteredMedia.map((media, index) => {
-            const project = projects.find(p => p.id === media.projectId);
-            if (!project) return null;
-
-            return (
-              <MediaCard
-                key={media.id}
-                media={media}
-                project={project}
-                onClick={() => handleMediaClick(index)}
-              />
-            );
-          })}
+              return (
+                <div
+                  key={media.id}
+                  onClick={() => handleMediaClick(index)}
+                  className="relative group overflow-hidden cursor-pointer h-full w-full"
+                >
+                  {/* Media Content */}
+                  <div className="relative w-full h-full bg-muted">
+                    {media.type === 'photo' ? (
+                      <Image
+                        src={media.url}
+                        alt="Gallery media"
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      />
+                    ) : (
+                      <video
+                        ref={video => setVideoRef(media.id, video)}
+                        src={media.url}
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                      />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </BentoGrid>
         </div>
       ) : (
-        <div className="text-center py-16">
-          <div className="text-4xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-foreground mb-2">
-            No media found
-          </h3>
-          <p className="text-muted-foreground">
-            Try selecting a different category or check back later.
-          </p>
-        </div>
-      )}
-
-      {/* Media Count */}
-      {filteredMedia.length > 0 && (
-        <div className="text-center text-sm text-muted-foreground">
-          Showing {filteredMedia.length}{' '}
-          {filteredMedia.length === 1 ? 'item' : 'items'}
-          {activeFilter !== 'all' && ` in ${activeFilter}`}
+        <div className="h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold text-foreground mb-2">
+              No media found
+            </h3>
+            <p className="text-muted-foreground">
+              Try selecting a different category or check back later.
+            </p>
+          </div>
         </div>
       )}
 
@@ -293,11 +358,11 @@ export default function GalleryContent() {
       <MediaLightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
-        media={filteredMedia}
-        projects={projectsLookup}
+        media={allMedia}
         currentIndex={currentMediaIndex}
         onNavigate={setCurrentMediaIndex}
+        projects={projectsLookup}
       />
-    </div>
+    </>
   );
 }
