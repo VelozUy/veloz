@@ -3,7 +3,8 @@ import { openaiService } from '@/services/openai';
 
 // Media analysis request interface
 interface MediaAnalysisRequest {
-  imageUrl: string;
+  mediaUrl: string;
+  mediaType: 'photo' | 'video';
   analysisType:
     | 'seo'
     | 'description'
@@ -23,9 +24,26 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate request body
-    if (!body.imageUrl || typeof body.imageUrl !== 'string') {
+    if (!body.mediaUrl || typeof body.mediaUrl !== 'string') {
       return NextResponse.json(
-        { error: 'imageUrl is required and must be a string' },
+        { error: 'mediaUrl is required and must be a string' },
+        { status: 400 }
+      );
+    }
+
+    if (!body.mediaType || typeof body.mediaType !== 'string') {
+      return NextResponse.json(
+        { error: 'mediaType is required and must be "photo" or "video"' },
+        { status: 400 }
+      );
+    }
+
+    const validMediaTypes = ['photo', 'video'];
+    if (!validMediaTypes.includes(body.mediaType)) {
+      return NextResponse.json(
+        {
+          error: `mediaType must be one of: ${validMediaTypes.join(', ')}`,
+        },
         { status: 400 }
       );
     }
@@ -56,17 +74,18 @@ export async function POST(request: NextRequest) {
 
     // Validate URL format
     try {
-      new URL(body.imageUrl);
+      new URL(body.mediaUrl);
     } catch {
       return NextResponse.json(
-        { error: 'imageUrl must be a valid URL' },
+        { error: 'mediaUrl must be a valid URL' },
         { status: 400 }
       );
     }
 
     // Prepare analysis request
     const analysisRequest: MediaAnalysisRequest = {
-      imageUrl: body.imageUrl,
+      mediaUrl: body.mediaUrl,
+      mediaType: body.mediaType,
       analysisType: body.analysisType,
       context: body.context || {},
     };

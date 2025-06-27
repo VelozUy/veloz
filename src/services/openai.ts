@@ -29,7 +29,8 @@ interface TranslationResponse {
 
 // Media analysis request interface
 interface MediaAnalysisRequest {
-  imageUrl: string;
+  mediaUrl: string;
+  mediaType: 'photo' | 'video';
   analysisType:
     | 'seo'
     | 'description'
@@ -294,7 +295,7 @@ export class OpenAIService {
               {
                 type: 'image_url',
                 image_url: {
-                  url: request.imageUrl,
+                  url: request.mediaUrl,
                   detail: 'high',
                 },
               },
@@ -481,8 +482,7 @@ export class OpenAIService {
     let prompt =
       'You are an expert SEO assistant for a professional photo and video service business. Your goal is to create descriptions that attract people searching to hire event photographers or videographers.\n\n';
 
-    prompt +=
-      'Analyze this image and provide SEO-focused analysis in JSON format:\n\n';
+    prompt += `Analyze this ${request.mediaType === 'video' ? 'video' : 'image'} and provide SEO-focused analysis in JSON format:\n\n`;
 
     prompt += `{
   "description": {
@@ -529,17 +529,31 @@ export class OpenAIService {
     prompt +=
       '• Make descriptions actionable for people looking to hire services\n\n';
 
-    prompt += 'EXAMPLES OF GOOD SEO DESCRIPTIONS:\n';
-    prompt +=
-      '• "Wedding photographer in Montevideo captures emotional first dance under twinkle lights"\n';
-    prompt +=
-      '• "Professional corporate photographer documenting business event in Uruguay"\n';
-    prompt +=
-      '• "Event videographer filming quinceañera celebration with professional lighting"\n';
-    prompt +=
-      '• "Fotógrafo de bodas en Montevideo registrando momentos únicos de la ceremonia"\n';
-    prompt +=
-      '• "Serviço profissional de fotografia de eventos em Montevidéu"\n\n';
+    prompt += `EXAMPLES OF GOOD SEO DESCRIPTIONS:\n`;
+
+    if (request.mediaType === 'video') {
+      prompt +=
+        '• "Professional wedding videographer in Montevideo filming ceremony highlights"\n';
+      prompt +=
+        '• "Corporate event videography service capturing business conference in Uruguay"\n';
+      prompt +=
+        '• "Birthday party videographer documenting celebration with cinematic quality"\n';
+      prompt +=
+        '• "Videógrafo profesional de bodas en Montevideo filmando momentos únicos"\n';
+      prompt +=
+        '• "Serviço profissional de videoografia de eventos em Montevidéu"\n\n';
+    } else {
+      prompt +=
+        '• "Wedding photographer in Montevideo captures emotional first dance under twinkle lights"\n';
+      prompt +=
+        '• "Professional corporate photographer documenting business event in Uruguay"\n';
+      prompt +=
+        '• "Event photographer capturing quinceañera celebration with professional lighting"\n';
+      prompt +=
+        '• "Fotógrafo de bodas en Montevideo registrando momentos únicos de la ceremonia"\n';
+      prompt +=
+        '• "Serviço profissional de fotografia de eventos em Montevidéu"\n\n';
+    }
 
     prompt +=
       'Generate SEO-optimized content that helps potential clients find and hire our photography/videography services. Provide only valid JSON.';
@@ -585,9 +599,9 @@ export class OpenAIService {
       // Return fallback response
       return {
         description: {
-          es: 'Image analysis unavailable',
-          en: 'Image analysis unavailable',
-          pt: 'Análise de imagem indisponível',
+          es: 'Análisis de media no disponible',
+          en: 'Media analysis unavailable',
+          pt: 'Análise de mídia indisponível',
         },
         tags: [],
         eventType: 'other',

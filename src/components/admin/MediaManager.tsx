@@ -208,23 +208,25 @@ function SortableMediaItem({
             <Button variant="ghost" size="sm" onClick={() => onEdit(media)}>
               <Edit className="w-4 h-4" />
             </Button>
-            {/* SEO Analysis Button - only for photos */}
-            {media.type === 'photo' && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onAnalyze(media)}
-                disabled={isAnalyzing}
-                className="text-purple-600 hover:text-purple-700"
-                title="Analizar para SEO"
-              >
-                {isAnalyzing ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Sparkles className="w-4 h-4" />
-                )}
-              </Button>
-            )}
+            {/* SEO Analysis Button - for both photos and videos */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onAnalyze(media)}
+              disabled={isAnalyzing}
+              className="text-purple-600 hover:text-purple-700"
+              title={
+                media.type === 'video'
+                  ? 'Analizar video para SEO'
+                  : 'Analizar foto para SEO'
+              }
+            >
+              {isAnalyzing ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4" />
+              )}
+            </Button>
           </div>
           <Button
             variant="ghost"
@@ -627,6 +629,7 @@ export default function MediaManager({
       // Analyze the media using the client service
       const analysis = await mediaAnalysisClientService.analyzeSEO(
         mediaItem.url,
+        mediaItem.type,
         {
           eventType: 'photography_event',
         }
@@ -651,13 +654,17 @@ export default function MediaManager({
           m.id === mediaItem.id ? { ...m, ...updates } : m
         );
         onMediaUpdate(updatedMedia);
-        onSuccess?.('Análisis SEO completado exitosamente');
+        onSuccess?.(
+          `Análisis SEO de ${mediaItem.type === 'video' ? 'video' : 'foto'} completado exitosamente`
+        );
       } else {
         onError?.(result.error || 'Error al guardar análisis SEO');
       }
     } catch (error) {
       console.error('Error analyzing media:', error);
-      onError?.('Error al analizar media para SEO');
+      onError?.(
+        `Error al analizar ${mediaItem.type === 'video' ? 'video' : 'foto'} para SEO`
+      );
     } finally {
       // Remove from analyzing set
       setAnalyzingMedia(prev => {

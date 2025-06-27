@@ -3,7 +3,8 @@
 
 // Media analysis request interface
 interface MediaAnalysisRequest {
-  imageUrl: string;
+  mediaUrl: string;
+  mediaType: 'photo' | 'video';
   analysisType:
     | 'seo'
     | 'description'
@@ -114,11 +115,13 @@ export class MediaAnalysisClientService {
    * Analyze media for SEO (convenience method)
    */
   async analyzeSEO(
-    imageUrl: string,
+    mediaUrl: string,
+    mediaType: 'photo' | 'video',
     context?: MediaAnalysisRequest['context']
   ): Promise<MediaAnalysisResponse> {
     return this.analyzeMedia({
-      imageUrl,
+      mediaUrl,
+      mediaType,
       analysisType: 'comprehensive',
       context: {
         brand: 'Veloz Photography',
