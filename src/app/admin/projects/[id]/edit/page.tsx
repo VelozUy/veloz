@@ -79,15 +79,12 @@ interface Project {
 }
 
 const EVENT_TYPES = [
-  'Boda',
-  'Evento Corporativo',
-  'Fiesta de Cumpleaños',
-  'Aniversario',
-  'Bar/Bat Mitzvah',
-  'Graduación',
-  'Baby Shower',
-  'Compromiso',
-  'Otro',
+  'Casamiento',
+  'Corporativos',
+  'Culturales y artísticos',
+  'Photoshoot',
+  'Prensa',
+  'Otros',
 ];
 
 const LANGUAGES = [
