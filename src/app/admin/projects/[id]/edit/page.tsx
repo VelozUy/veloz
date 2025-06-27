@@ -557,7 +557,7 @@ export default function UnifiedProjectEditPage({
         {/* Unified editing interface */}
         <Card>
           <CardHeader>
-            <CardTitle>Project Editor</CardTitle>
+            <CardTitle>Editor de Proyecto</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs
@@ -566,7 +566,7 @@ export default function UnifiedProjectEditPage({
               className="space-y-6"
             >
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="details">Project Details</TabsTrigger>
+                <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
                   className="flex items-center space-x-2"
@@ -577,7 +577,7 @@ export default function UnifiedProjectEditPage({
                   </Badge>
                   {isCreateMode && (
                     <Badge variant="outline" className="ml-1 text-xs">
-                      Auto-save on upload
+                      Auto-guardado al subir
                     </Badge>
                   )}
                 </TabsTrigger>
@@ -587,7 +587,7 @@ export default function UnifiedProjectEditPage({
               <TabsContent value="details" className="space-y-6">
                 {/* Language Selector */}
                 <div className="flex items-center space-x-2">
-                  <Label>Editing Language:</Label>
+                  <Label>Idioma de Edición:</Label>
                   <Select
                     value={currentLanguage}
                     onValueChange={setCurrentLanguage}
@@ -608,7 +608,7 @@ export default function UnifiedProjectEditPage({
                 {/* Title */}
                 <div className="space-y-2">
                   <Label htmlFor="title">
-                    Title (
+                    Título (
                     {LANGUAGES.find(l => l.code === currentLanguage)?.name}) *
                   </Label>
                   <Input
@@ -626,7 +626,7 @@ export default function UnifiedProjectEditPage({
                         },
                       })
                     }
-                    placeholder="Beautiful Wedding at Central Park"
+                    placeholder="Hermosa Boda en el Parque Central"
                     required
                   />
                 </div>
@@ -634,7 +634,7 @@ export default function UnifiedProjectEditPage({
                 {/* Description */}
                 <div className="space-y-2">
                   <Label htmlFor="description">
-                    Description (
+                    Descripción (
                     {LANGUAGES.find(l => l.code === currentLanguage)?.name})
                   </Label>
                   <Textarea
@@ -652,7 +652,7 @@ export default function UnifiedProjectEditPage({
                         },
                       })
                     }
-                    placeholder="Describe this project..."
+                    placeholder="Describe este proyecto..."
                     rows={3}
                   />
                 </div>
@@ -660,7 +660,7 @@ export default function UnifiedProjectEditPage({
                 {/* Event Type and Location */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="eventType">Event Type *</Label>
+                    <Label htmlFor="eventType">Tipo de Evento *</Label>
                     <Select
                       value={draftProject.eventType}
                       onValueChange={value =>
@@ -669,7 +669,7 @@ export default function UnifiedProjectEditPage({
                       required
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select event type" />
+                        <SelectValue placeholder="Selecciona tipo de evento" />
                       </SelectTrigger>
                       <SelectContent>
                         {EVENT_TYPES.map(type => (
@@ -681,14 +681,14 @@ export default function UnifiedProjectEditPage({
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="location">Location</Label>
+                    <Label htmlFor="location">Ubicación</Label>
                     <Input
                       id="location"
                       value={draftProject.location}
                       onChange={e =>
                         updateDraftProject({ location: e.target.value })
                       }
-                      placeholder="New York, NY"
+                      placeholder="Montevideo, Uruguay"
                     />
                   </div>
                 </div>
@@ -696,7 +696,7 @@ export default function UnifiedProjectEditPage({
                 {/* Event Date and Status */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="eventDate">Event Date</Label>
+                    <Label htmlFor="eventDate">Fecha del Evento</Label>
                     <Input
                       id="eventDate"
                       type="date"
@@ -707,7 +707,7 @@ export default function UnifiedProjectEditPage({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">Estado</Label>
                     <Select
                       value={draftProject.status}
                       onValueChange={value =>
@@ -720,9 +720,9 @@ export default function UnifiedProjectEditPage({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="archived">Archived</SelectItem>
+                        <SelectItem value="draft">Borrador</SelectItem>
+                        <SelectItem value="published">Publicado</SelectItem>
+                        <SelectItem value="archived">Archivado</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -730,7 +730,7 @@ export default function UnifiedProjectEditPage({
 
                 {/* Tags */}
                 <div className="space-y-2">
-                  <Label htmlFor="tags">Tags</Label>
+                  <Label htmlFor="tags">Etiquetas</Label>
                   <Input
                     id="tags"
                     value={draftProject.tags.join(', ')}
@@ -742,10 +742,10 @@ export default function UnifiedProjectEditPage({
                           .filter(tag => tag.length > 0),
                       })
                     }
-                    placeholder="outdoor, ceremony, reception, romantic"
+                    placeholder="outdoor, ceremonia, recepción, romántico"
                   />
                   <p className="text-sm text-muted-foreground">
-                    Separate tags with commas
+                    Separa las etiquetas con comas
                   </p>
                 </div>
 
@@ -758,7 +758,7 @@ export default function UnifiedProjectEditPage({
                       updateDraftProject({ featured: !!checked })
                     }
                   />
-                  <Label htmlFor="featured">Featured Project</Label>
+                  <Label htmlFor="featured">Proyecto Destacado</Label>
                 </div>
               </TabsContent>
 
@@ -770,14 +770,14 @@ export default function UnifiedProjectEditPage({
                     <CardContent className="p-8 text-center">
                       <Upload className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-xl font-semibold text-foreground mb-2">
-                        Ready to Upload Media
+                        Listo para Subir Media
                       </h3>
                       <p className="text-muted-foreground mb-4">
                         {draftProject.title.en ||
                         draftProject.title.es ||
                         draftProject.title.pt
-                          ? 'Save the project first, then you can upload and manage media.'
-                          : 'Please add a project title in the Details tab first.'}
+                          ? 'Guarda el proyecto primero, luego podrás subir y gestionar media.'
+                          : 'Por favor agrega un título al proyecto en la pestaña Detalles primero.'}
                       </p>
                       {draftProject.title.en ||
                       draftProject.title.es ||
@@ -786,12 +786,12 @@ export default function UnifiedProjectEditPage({
                           {saving ? (
                             <>
                               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Saving Project...
+                              Guardando Proyecto...
                             </>
                           ) : (
                             <>
                               <Save className="w-4 h-4 mr-2" />
-                              Save Project & Enable Media Upload
+                              Guardar Proyecto y Habilitar Subida de Media
                             </>
                           )}
                         </Button>
@@ -800,7 +800,7 @@ export default function UnifiedProjectEditPage({
                           variant="outline"
                           onClick={() => setActiveTab('details')}
                         >
-                          Go to Project Details
+                          Ir a Detalles del Proyecto
                         </Button>
                       )}
                     </CardContent>
@@ -810,9 +810,11 @@ export default function UnifiedProjectEditPage({
                   <>
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold">Project Media</h3>
+                        <h3 className="text-lg font-semibold">
+                          Media del Proyecto
+                        </h3>
                         <p className="text-sm text-muted-foreground">
-                          {photos.length} photos, {videos.length} videos
+                          {photos.length} fotos, {videos.length} videos
                         </p>
                       </div>
                       <MediaUpload
@@ -839,10 +841,10 @@ export default function UnifiedProjectEditPage({
                         <CardContent className="p-12 text-center">
                           <Upload className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                           <h3 className="text-xl font-semibold text-foreground mb-2">
-                            No Media Uploaded Yet
+                            Aún No Hay Media Subida
                           </h3>
                           <p className="text-muted-foreground mb-4">
-                            Start uploading photos and videos for this project.
+                            Comienza subiendo fotos y videos para este proyecto.
                           </p>
                         </CardContent>
                       </Card>
@@ -860,11 +862,11 @@ export default function UnifiedProjectEditPage({
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-2">
                 <AlertTriangle className="w-5 h-5 text-yellow-500" />
-                <span>Unsaved Changes</span>
+                <span>Cambios Sin Guardar</span>
               </DialogTitle>
               <DialogDescription>
-                You have unsaved changes that will be lost if you continue. What
-                would you like to do?
+                Tienes cambios sin guardar que se perderán si continúas. ¿Qué te
+                gustaría hacer?
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-end space-x-2 mt-6">
@@ -872,21 +874,21 @@ export default function UnifiedProjectEditPage({
                 variant="outline"
                 onClick={() => setShowUnsavedDialog(false)}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button variant="destructive" onClick={handleDiscardChanges}>
-                Discard Changes
+                Descartar Cambios
               </Button>
               <Button onClick={handleSaveChanges} disabled={saving}>
                 {saving ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Saving...
+                    Guardando...
                   </>
                 ) : (
                   <>
                     <Save className="w-4 h-4 mr-2" />
-                    Save & Continue
+                    Guardar y Continuar
                   </>
                 )}
               </Button>

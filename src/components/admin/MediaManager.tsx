@@ -292,9 +292,9 @@ function EditMediaModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Editar Medio</DialogTitle>
+          <DialogTitle>Editar Media</DialogTitle>
           <DialogDescription>
-            Actualizar información y metadatos del medio.
+            Actualizar información y metadatos del media.
           </DialogDescription>
         </DialogHeader>
 
