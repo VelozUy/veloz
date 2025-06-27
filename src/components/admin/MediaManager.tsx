@@ -10,6 +10,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -35,6 +42,7 @@ import {
   X,
   Sparkles,
   Loader2,
+  Languages,
 } from 'lucide-react';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
 import { mediaAnalysisClientService } from '@/services/media-analysis-client';
@@ -245,6 +253,10 @@ function EditMediaModal({
     featured: false,
   });
   const [loading, setLoading] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<'es' | 'en' | 'pt'>(
+    'es'
+  );
+  const [tagInput, setTagInput] = useState('');
 
   // Reset form when media changes
   useEffect(() => {
@@ -254,6 +266,7 @@ function EditMediaModal({
         tags: media.tags || [],
         featured: media.featured || false,
       });
+      setTagInput(''); // Reset tag input when opening modal
     }
   }, [media]);
 
@@ -269,14 +282,6 @@ function EditMediaModal({
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleTagsChange = (value: string) => {
-    const tags = value
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(Boolean);
-    setFormData(prev => ({ ...prev, tags }));
   };
 
   if (!media) return null;
@@ -315,65 +320,137 @@ function EditMediaModal({
             </div>
           </div>
 
-          {/* Descriptions (SEO-optimized for alt text and structured data) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="desc-es">Descripción (Español)</Label>
-              <Textarea
-                id="desc-es"
-                value={formData.description?.es || ''}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    description: { ...prev.description, es: e.target.value },
-                  }))
+          {/* Language selector and description */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Languages className="w-4 h-4 text-muted-foreground" />
+              <Label>Idioma de edición</Label>
+              <Select
+                value={selectedLanguage}
+                onValueChange={(value: 'es' | 'en' | 'pt') =>
+                  setSelectedLanguage(value)
                 }
-                placeholder="Descripción en español"
-                rows={3}
-              />
+              >
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="es">🇪🇸 Español</SelectItem>
+                  <SelectItem value="en">🇺🇸 English</SelectItem>
+                  <SelectItem value="pt">🇧🇷 Português (Brasil)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+
             <div>
-              <Label htmlFor="desc-en">Description (English)</Label>
+              <Label htmlFor="description">
+                {selectedLanguage === 'es' &&
+                  'Descripción (SEO optimizada para alt text)'}
+                {selectedLanguage === 'en' &&
+                  'Description (SEO optimized for alt text)'}
+                {selectedLanguage === 'pt' &&
+                  'Descrição (SEO otimizada para alt text)'}
+              </Label>
               <Textarea
-                id="desc-en"
-                value={formData.description?.en || ''}
+                id="description"
+                value={formData.description?.[selectedLanguage] || ''}
                 onChange={e =>
                   setFormData(prev => ({
                     ...prev,
-                    description: { ...prev.description, en: e.target.value },
+                    description: {
+                      ...prev.description,
+                      [selectedLanguage]: e.target.value,
+                    },
                   }))
                 }
-                placeholder="Description in English"
-                rows={3}
-              />
-            </div>
-            <div>
-              <Label htmlFor="desc-pt">Descrição (Português - Brasil)</Label>
-              <Textarea
-                id="desc-pt"
-                value={formData.description?.pt || ''}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    description: { ...prev.description, pt: e.target.value },
-                  }))
+                placeholder={
+                  selectedLanguage === 'es'
+                    ? 'Descripción detallada en español'
+                    : selectedLanguage === 'en'
+                      ? 'Detailed description in English'
+                      : 'Descrição detalhada em português brasileiro'
                 }
-                placeholder="Descrição em português brasileiro"
-                rows={3}
+                rows={4}
+                className="resize-none"
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                {selectedLanguage === 'es' &&
+                  'Esta descripción se usa como texto alternativo para SEO y accesibilidad'}
+                {selectedLanguage === 'en' &&
+                  'This description is used as alt text for SEO and accessibility'}
+                {selectedLanguage === 'pt' &&
+                  'Esta descrição é usada como texto alternativo para SEO e acessibilidade'}
+              </p>
             </div>
           </div>
 
           {/* Tags and Featured */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="tags">Etiquetas (separadas por comas)</Label>
-              <Input
-                id="tags"
-                value={formData.tags?.join(', ') || ''}
-                onChange={e => handleTagsChange(e.target.value)}
-                placeholder="boda, ceremonia, outdoor"
-              />
+              <Label htmlFor="tags">Etiquetas</Label>
+              <div className="space-y-2">
+                <Input
+                  id="tags"
+                  value={tagInput}
+                  onChange={e => {
+                    const value = e.target.value;
+                    if (value.endsWith(',')) {
+                      const newTag = value.slice(0, -1).trim();
+                      if (newTag && !formData.tags?.includes(newTag)) {
+                        setFormData(prev => ({
+                          ...prev,
+                          tags: [...(prev.tags || []), newTag],
+                        }));
+                      }
+                      setTagInput('');
+                    } else {
+                      setTagInput(value);
+                    }
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const newTag = tagInput.trim();
+                      if (newTag && !formData.tags?.includes(newTag)) {
+                        setFormData(prev => ({
+                          ...prev,
+                          tags: [...(prev.tags || []), newTag],
+                        }));
+                        setTagInput('');
+                      }
+                    }
+                  }}
+                  placeholder="Escribir etiqueta y presionar Enter o coma"
+                />
+                {formData.tags && formData.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {formData.tags.map((tag, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="flex items-center gap-1 px-2 py-1"
+                      >
+                        <span>{tag}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-auto w-auto p-0 hover:bg-transparent"
+                          onClick={() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              tags:
+                                prev.tags?.filter((_, i) => i !== index) || [],
+                            }));
+                          }}
+                        >
+                          <X className="h-3 w-3 hover:text-destructive" />
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex items-center space-x-2 pt-6">
               <Checkbox
