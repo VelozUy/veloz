@@ -86,6 +86,7 @@ const DEFAULT_RETRY_CONFIG: RetryConfig = {
 // Enhanced Base Firebase Service
 export abstract class BaseFirebaseService {
   protected collectionName: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected cache: Map<string, CacheEntry<any>>;
   protected cacheConfig: CacheConfig;
   protected retryConfig: RetryConfig;
@@ -174,7 +175,11 @@ export abstract class BaseFirebaseService {
   }
 
   // Cache utilities
-  protected getCacheKey(operation: string, params?: Record<string, any>): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected getCacheKey(
+    operation: string,
+    params?: Record<string, any>
+  ): string {
     const paramString = params ? JSON.stringify(params) : '';
     return `${this.collectionName}:${operation}:${paramString}`;
   }
@@ -200,7 +205,9 @@ export abstract class BaseFirebaseService {
     // Remove oldest entries if cache is full
     if (this.cache.size >= this.cacheConfig.maxSize) {
       const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
+      }
     }
 
     this.cache.set(key, {
@@ -266,7 +273,10 @@ export abstract class BaseFirebaseService {
         );
 
         await new Promise(resolve => setTimeout(resolve, delay));
-        delay = Math.min(delay * this.retryConfig.backoffFactor, this.retryConfig.maxDelay);
+        delay = Math.min(
+          delay * this.retryConfig.backoffFactor,
+          this.retryConfig.maxDelay
+        );
       }
     }
 
@@ -292,7 +302,9 @@ export abstract class BaseFirebaseService {
   }
 
   // Core CRUD operations with enhanced error handling
-  async getAll<T>(options: { useCache?: boolean } = {}): Promise<ApiResponse<T[]>> {
+  async getAll<T>(
+    options: { useCache?: boolean } = {}
+  ): Promise<ApiResponse<T[]>> {
     const cacheKey = this.getCacheKey('getAll');
     const useCache = options.useCache !== false;
 
@@ -368,6 +380,7 @@ export abstract class BaseFirebaseService {
 
       const now = new Date();
       const docData = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...(validatedData as Record<string, any>),
         createdAt: now,
         updatedAt: now,
@@ -398,6 +411,7 @@ export abstract class BaseFirebaseService {
         : data;
 
       const updateData = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...(validatedData as Record<string, any>),
         updatedAt: new Date(),
       };
@@ -445,10 +459,7 @@ export abstract class BaseFirebaseService {
       // Add ordering
       if (pagination.orderBy) {
         constraints.push(
-          orderBy(
-            pagination.orderBy,
-            pagination.orderDirection || 'asc'
-          )
+          orderBy(pagination.orderBy, pagination.orderDirection || 'asc')
         );
       }
 
@@ -478,10 +489,15 @@ export abstract class BaseFirebaseService {
 
   async queryByField<T>(
     field: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any,
     options: { useCache?: boolean; orderBy?: string } = {}
   ): Promise<ApiResponse<T[]>> {
-    const cacheKey = this.getCacheKey('queryByField', { field, value, options });
+    const cacheKey = this.getCacheKey('queryByField', {
+      field,
+      value,
+      options,
+    });
     const useCache = options.useCache !== false;
 
     // Try cache first
@@ -511,10 +527,12 @@ export abstract class BaseFirebaseService {
       }
 
       return { success: true, data };
-    }, `queryByField ${field}=${value} from ${this.collectionName}`).catch(error => ({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }));
+    }, `queryByField ${field}=${value} from ${this.collectionName}`).catch(
+      error => ({
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      })
+    );
   }
 
   // Batch operations
@@ -528,22 +546,23 @@ export abstract class BaseFirebaseService {
       const batch = writeBatch(db);
       const docIds: string[] = [];
 
-             items.forEach(item => {
-         // Validate data if schema is provided
-         const validatedData = this.validationSchema
-           ? this.validateData(item)
-           : item;
+      items.forEach(item => {
+        // Validate data if schema is provided
+        const validatedData = this.validationSchema
+          ? this.validateData(item)
+          : item;
 
-         const docRef = doc(this.getCollection());
-         const docData = {
-           ...(validatedData as Record<string, any>),
-           createdAt: now,
-           updatedAt: now,
-         };
+        const docRef = doc(this.getCollection());
+        const docData = {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...(validatedData as Record<string, any>),
+          createdAt: now,
+          updatedAt: now,
+        };
 
-         batch.set(docRef, docData);
-         docIds.push(docRef.id);
-       });
+        batch.set(docRef, docData);
+        docIds.push(docRef.id);
+      });
 
       await batch.commit();
 
@@ -573,7 +592,7 @@ export abstract class BaseFirebaseService {
           : data;
 
         const updateData = {
-          ...validatedData,
+          ...(validatedData as Record<string, unknown>),
           updatedAt: now,
         };
 
@@ -638,7 +657,7 @@ export abstract class BaseFirebaseService {
           : updateData;
 
         const finalUpdateData = {
-          ...validatedData,
+          ...(validatedData as Record<string, unknown>),
           updatedAt: new Date(),
         };
 
@@ -674,7 +693,9 @@ export abstract class BaseFirebaseService {
   }
 
   // Utility methods
-  async count(constraints: QueryConstraint[] = []): Promise<ApiResponse<number>> {
+  async count(
+    constraints: QueryConstraint[] = []
+  ): Promise<ApiResponse<number>> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
 
@@ -699,4 +720,4 @@ export abstract class BaseFirebaseService {
       error: error instanceof Error ? error.message : 'Unknown error',
     }));
   }
-} 
+}
