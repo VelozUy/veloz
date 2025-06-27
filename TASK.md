@@ -58,6 +58,7 @@ _All user management functionality completed - see Completed Tasks Summary_
 ### Project-Based Content Management
 
 - [x] **[High] Implement unified project edit flow with draft system** - Redesign project editing so all content (texts, media, metadata) is edited on a single page with staging/draft functionality - changes are only persisted when user explicitly approves them, otherwise discarded on navigation/tab close. Updated to also handle project creation in the same unified form. Removed redundant "Quick Edit" and "Media Only" buttons, now only one "Edit Project" button that goes to unified form. Enhanced to support media upload during project creation - after user adds project title, they can save the project and immediately switch to media upload tab. _(Added: Jan 7, 2025)_ _(Completed: Jan 7, 2025)_
+- [x] **[High] Fix media upload modal to allow individual metadata per media item** - Currently the upload modal only allows a single description/title/tags for all uploaded media, but each media should have its own alt text, aria-label, description, title and tags. Redesign the upload flow to collect individual metadata for each selected file. _(Added: Jan 7, 2025)_ _(Completed: Jan 7, 2025)_
 - [ ] **[Medium] Add project cover image selection** - Choose cover image from uploaded photos
 - [ ] **[Medium] Add drag-and-drop media upload** - Direct file upload to project pages
 - [ ] **[Medium] Add media bulk operations** - Select and manage multiple media items
@@ -338,6 +339,13 @@ _Tasks discovered during development will be added here_
 ## ✅ Completed Tasks Summary
 
 ### Major Milestones
+
+**Jan 7, 2025: Media Upload UX Enhancement**
+
+- ✅ Individual metadata per media item - Fixed media upload modal to allow individual title, description, tags, and featured status for each uploaded file instead of applying single metadata to all files
+- ✅ Enhanced media upload flow with file previews, individual forms per file, and "Copy to All" functionality for batch operations
+- ✅ Improved accessibility and SEO with proper alt text and aria-labels for each media item
+- ✅ Added metadata validation requiring at least one title or description per file before upload
 
 **Jan 6, 2025: Contact Management System & Gallery Enhancement**
 

@@ -27,22 +27,15 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  Copy,
 } from 'lucide-react';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
+import Image from 'next/image';
 
 interface MediaUploadProps {
   projectId: string;
   onUploadSuccess?: (media: ProjectMedia) => void;
   onUploadError?: (error: string) => void;
-}
-
-interface UploadFile {
-  file: File;
-  id: string;
-  progress: number;
-  status: 'pending' | 'uploading' | 'success' | 'error';
-  error?: string;
-  result?: ProjectMedia;
 }
 
 interface MediaMetadata {
@@ -60,6 +53,252 @@ interface MediaMetadata {
   featured: boolean;
 }
 
+interface UploadFile {
+  file: File;
+  id: string;
+  progress: number;
+  status: 'pending' | 'uploading' | 'success' | 'error';
+  error?: string;
+  result?: ProjectMedia;
+  metadata: MediaMetadata;
+  previewUrl?: string;
+}
+
+// Individual File Metadata Editor Component
+function FileMetadataEditor({
+  uploadFile,
+  onUpdate,
+  onCopyToAll,
+  activeLanguage,
+  setActiveLanguage,
+}: {
+  uploadFile: UploadFile;
+  onUpdate: (fileId: string, metadata: MediaMetadata) => void;
+  onCopyToAll?: (metadata: MediaMetadata) => void;
+  activeLanguage: string;
+  setActiveLanguage: (lang: string) => void;
+}) {
+  const handleTagsChange = (value: string) => {
+    const tags = value
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(Boolean);
+    onUpdate(uploadFile.id, { ...uploadFile.metadata, tags });
+  };
+
+  const handleMetadataChange = (field: string, lang: string, value: string) => {
+    const updatedMetadata = {
+      ...uploadFile.metadata,
+      [field]: {
+        ...(uploadFile.metadata[field as keyof MediaMetadata] as Record<
+          string,
+          string
+        >),
+        [lang]: value,
+      },
+    };
+    onUpdate(uploadFile.id, updatedMetadata);
+  };
+
+  const handleFeaturedChange = (checked: boolean) => {
+    onUpdate(uploadFile.id, { ...uploadFile.metadata, featured: checked });
+  };
+
+  return (
+    <Card className="mb-4">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            {/* File preview */}
+            <div className="flex-shrink-0">
+              {uploadFile.file.type.startsWith('video/') ? (
+                <div className="w-12 h-12 bg-blue-100 flex items-center justify-center rounded">
+                  <VideoIcon className="w-6 h-6 text-blue-600" />
+                </div>
+              ) : uploadFile.previewUrl ? (
+                <Image
+                  src={uploadFile.previewUrl}
+                  alt={uploadFile.file.name}
+                  width={48}
+                  height={48}
+                  className="object-cover rounded"
+                />
+              ) : (
+                <div className="w-12 h-12 bg-green-100 flex items-center justify-center rounded">
+                  <ImageIcon className="w-6 h-6 text-green-600" />
+                </div>
+              )}
+            </div>
+
+            <div>
+              <CardTitle className="text-sm font-medium truncate max-w-48">
+                {uploadFile.file.name}
+              </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {(uploadFile.file.size / (1024 * 1024)).toFixed(2)} MB
+              </p>
+            </div>
+          </div>
+
+          {onCopyToAll && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onCopyToAll(uploadFile.metadata)}
+              title="Copy this metadata to all other files"
+            >
+              <Copy className="w-4 h-4 mr-1" />
+              Copy to All
+            </Button>
+          )}
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        {/* Language Tabs */}
+        <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="es">Español</TabsTrigger>
+            <TabsTrigger value="en">English</TabsTrigger>
+            <TabsTrigger value="pt">Português</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="es" className="space-y-3 mt-4">
+            <div>
+              <Label htmlFor={`title-es-${uploadFile.id}`}>Título</Label>
+              <Input
+                id={`title-es-${uploadFile.id}`}
+                value={uploadFile.metadata.title.es}
+                onChange={e =>
+                  handleMetadataChange('title', 'es', e.target.value)
+                }
+                placeholder="Título en español"
+              />
+            </div>
+            <div>
+              <Label htmlFor={`desc-es-${uploadFile.id}`}>Descripción</Label>
+              <Textarea
+                id={`desc-es-${uploadFile.id}`}
+                value={uploadFile.metadata.description.es}
+                onChange={e =>
+                  handleMetadataChange('description', 'es', e.target.value)
+                }
+                placeholder="Descripción en español (para alt text y SEO)"
+                rows={2}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="en" className="space-y-3 mt-4">
+            <div>
+              <Label htmlFor={`title-en-${uploadFile.id}`}>Title</Label>
+              <Input
+                id={`title-en-${uploadFile.id}`}
+                value={uploadFile.metadata.title.en}
+                onChange={e =>
+                  handleMetadataChange('title', 'en', e.target.value)
+                }
+                placeholder="Title in English"
+              />
+            </div>
+            <div>
+              <Label htmlFor={`desc-en-${uploadFile.id}`}>Description</Label>
+              <Textarea
+                id={`desc-en-${uploadFile.id}`}
+                value={uploadFile.metadata.description.en}
+                onChange={e =>
+                  handleMetadataChange('description', 'en', e.target.value)
+                }
+                placeholder="Description in English (for alt text and SEO)"
+                rows={2}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="pt" className="space-y-3 mt-4">
+            <div>
+              <Label htmlFor={`title-pt-${uploadFile.id}`}>Título</Label>
+              <Input
+                id={`title-pt-${uploadFile.id}`}
+                value={uploadFile.metadata.title.pt}
+                onChange={e =>
+                  handleMetadataChange('title', 'pt', e.target.value)
+                }
+                placeholder="Título em português"
+              />
+            </div>
+            <div>
+              <Label htmlFor={`desc-pt-${uploadFile.id}`}>Descrição</Label>
+              <Textarea
+                id={`desc-pt-${uploadFile.id}`}
+                value={uploadFile.metadata.description.pt}
+                onChange={e =>
+                  handleMetadataChange('description', 'pt', e.target.value)
+                }
+                placeholder="Descrição em português (para alt text e SEO)"
+                rows={2}
+              />
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Tags and Featured */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor={`tags-${uploadFile.id}`}>
+              Etiquetas (separadas por comas)
+            </Label>
+            <Input
+              id={`tags-${uploadFile.id}`}
+              value={uploadFile.metadata.tags.join(', ')}
+              onChange={e => handleTagsChange(e.target.value)}
+              placeholder="boda, ceremonia, outdoor"
+            />
+          </div>
+          <div className="flex items-center space-x-2 pt-6">
+            <Checkbox
+              id={`featured-${uploadFile.id}`}
+              checked={uploadFile.metadata.featured}
+              onCheckedChange={handleFeaturedChange}
+            />
+            <Label htmlFor={`featured-${uploadFile.id}`}>
+              Marcar como destacado
+            </Label>
+          </div>
+        </div>
+
+        {/* Upload status */}
+        {uploadFile.status === 'uploading' && (
+          <div className="mt-3">
+            <Progress value={uploadFile.progress} className="h-2" />
+            <p className="text-xs text-muted-foreground mt-1">
+              {uploadFile.progress}% completado
+            </p>
+          </div>
+        )}
+
+        {uploadFile.status === 'error' && uploadFile.error && (
+          <Alert variant="destructive" className="mt-3">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription className="text-sm">
+              {uploadFile.error}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {uploadFile.status === 'success' && (
+          <Alert className="mt-3">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-sm text-green-800">
+              ¡Archivo subido exitosamente!
+            </AlertDescription>
+          </Alert>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function MediaUpload({
   projectId,
   onUploadSuccess,
@@ -68,12 +307,6 @@ export default function MediaUpload({
   const [isOpen, setIsOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
-  const [metadata, setMetadata] = useState<MediaMetadata>({
-    title: { en: '', es: '', pt: '' },
-    description: { en: '', es: '', pt: '' },
-    tags: [],
-    featured: false,
-  });
   const [isUploading, setIsUploading] = useState(false);
   const [activeLanguage, setActiveLanguage] = useState('es');
 
@@ -105,35 +338,72 @@ export default function MediaUpload({
     return null;
   };
 
+  const createFilePreview = (file: File): Promise<string | undefined> => {
+    return new Promise(resolve => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target?.result as string);
+        reader.onerror = () => resolve(undefined);
+        reader.readAsDataURL(file);
+      } else {
+        resolve(undefined);
+      }
+    });
+  };
+
   const addFiles = useCallback(
-    (files: FileList | File[]) => {
+    async (files: FileList | File[]) => {
       const newFiles: UploadFile[] = [];
 
-      Array.from(files).forEach(file => {
+      for (const file of Array.from(files)) {
         const validationError = validateFile(file);
 
         if (validationError) {
           onUploadError?.(validationError);
-          return;
+          continue;
         }
+
+        const previewUrl = await createFilePreview(file);
 
         const uploadFile: UploadFile = {
           file,
           id: `${Date.now()}-${Math.random()}`,
           progress: 0,
           status: 'pending',
+          previewUrl,
+          metadata: {
+            title: { en: '', es: '', pt: '' },
+            description: { en: '', es: '', pt: '' },
+            tags: [],
+            featured: false,
+          },
         };
 
         newFiles.push(uploadFile);
-      });
+      }
 
       setUploadFiles(prev => [...prev, ...newFiles]);
     },
-    [onUploadError]
+    [onUploadError, validateFile]
   );
 
   const removeFile = useCallback((id: string) => {
     setUploadFiles(prev => prev.filter(f => f.id !== id));
+  }, []);
+
+  const updateFileMetadata = useCallback(
+    (fileId: string, metadata: MediaMetadata) => {
+      setUploadFiles(prev =>
+        prev.map(f => (f.id === fileId ? { ...f, metadata } : f))
+      );
+    },
+    []
+  );
+
+  const copyMetadataToAll = useCallback((sourceMetadata: MediaMetadata) => {
+    setUploadFiles(prev =>
+      prev.map(f => ({ ...f, metadata: { ...sourceMetadata } }))
+    );
   }, []);
 
   const handleFileSelect = useCallback(
@@ -186,14 +456,6 @@ export default function MediaUpload({
     [addFiles]
   );
 
-  const handleTagsChange = (value: string) => {
-    const tags = value
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(Boolean);
-    setMetadata(prev => ({ ...prev, tags }));
-  };
-
   const uploadFile = async (uploadFile: UploadFile): Promise<void> => {
     return new Promise(resolve => {
       setUploadFiles(prev =>
@@ -205,15 +467,20 @@ export default function MediaUpload({
       );
 
       projectMediaService
-        .uploadFile(uploadFile.file, projectId, metadata, progress => {
-          setUploadFiles(prev =>
-            prev.map(f =>
-              f.id === uploadFile.id
-                ? { ...f, progress: Math.round(progress) }
-                : f
-            )
-          );
-        })
+        .uploadFile(
+          uploadFile.file,
+          projectId,
+          uploadFile.metadata,
+          progress => {
+            setUploadFiles(prev =>
+              prev.map(f =>
+                f.id === uploadFile.id
+                  ? { ...f, progress: Math.round(progress) }
+                  : f
+              )
+            );
+          }
+        )
         .then(result => {
           if (result.success) {
             setUploadFiles(prev =>
@@ -247,6 +514,25 @@ export default function MediaUpload({
   const handleUpload = async () => {
     if (uploadFiles.length === 0) return;
 
+    // Check if all files have at least one description or title filled
+    const filesWithoutMetadata = uploadFiles.filter(
+      f =>
+        f.status === 'pending' &&
+        !f.metadata.title.es &&
+        !f.metadata.title.en &&
+        !f.metadata.title.pt &&
+        !f.metadata.description.es &&
+        !f.metadata.description.en &&
+        !f.metadata.description.pt
+    );
+
+    if (filesWithoutMetadata.length > 0) {
+      onUploadError?.(
+        `Por favor, agrega al menos un título o descripción para ${filesWithoutMetadata.length} archivo(s).`
+      );
+      return;
+    }
+
     setIsUploading(true);
 
     try {
@@ -274,12 +560,12 @@ export default function MediaUpload({
           Subir Media
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Subir Media al Proyecto</DialogTitle>
           <DialogDescription>
-            Sube fotos y videos para este proyecto. Puedes arrastrar archivos o
-            hacer clic para seleccionar.
+            Sube fotos y videos para este proyecto. Cada archivo puede tener su
+            propia información (título, descripción, etiquetas).
           </DialogDescription>
         </DialogHeader>
 
@@ -319,237 +605,52 @@ export default function MediaUpload({
             </CardContent>
           </Card>
 
-          {/* Metadata Section */}
+          {/* Files with Individual Metadata */}
           {uploadFiles.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Información del Media</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Language Tabs */}
-                <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="es">Español</TabsTrigger>
-                    <TabsTrigger value="en">English</TabsTrigger>
-                    <TabsTrigger value="pt">Português</TabsTrigger>
-                  </TabsList>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">
+                  Archivos Seleccionados ({uploadFiles.length})
+                </h3>
+                {uploadFiles.length > 1 && (
+                  <p className="text-sm text-muted-foreground">
+                    Tip: Usa &quot;Copy to All&quot; para aplicar la misma
+                    información a todos los archivos
+                  </p>
+                )}
+              </div>
 
-                  <TabsContent value="es" className="space-y-4">
-                    <div>
-                      <Label htmlFor="title-es">Título</Label>
-                      <Input
-                        id="title-es"
-                        value={metadata.title.es}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            title: { ...prev.title, es: e.target.value },
-                          }))
-                        }
-                        placeholder="Título en español"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="desc-es">Descripción</Label>
-                      <Textarea
-                        id="desc-es"
-                        value={metadata.description.es}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            description: {
-                              ...prev.description,
-                              es: e.target.value,
-                            },
-                          }))
-                        }
-                        placeholder="Descripción en español"
-                        rows={3}
-                      />
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="en" className="space-y-4">
-                    <div>
-                      <Label htmlFor="title-en">Title</Label>
-                      <Input
-                        id="title-en"
-                        value={metadata.title.en}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            title: { ...prev.title, en: e.target.value },
-                          }))
-                        }
-                        placeholder="Title in English"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="desc-en">Description</Label>
-                      <Textarea
-                        id="desc-en"
-                        value={metadata.description.en}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            description: {
-                              ...prev.description,
-                              en: e.target.value,
-                            },
-                          }))
-                        }
-                        placeholder="Description in English"
-                        rows={3}
-                      />
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="pt" className="space-y-4">
-                    <div>
-                      <Label htmlFor="title-pt">Título</Label>
-                      <Input
-                        id="title-pt"
-                        value={metadata.title.pt}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            title: { ...prev.title, pt: e.target.value },
-                          }))
-                        }
-                        placeholder="Título em português"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="desc-pt">Descrição</Label>
-                      <Textarea
-                        id="desc-pt"
-                        value={metadata.description.pt}
-                        onChange={e =>
-                          setMetadata(prev => ({
-                            ...prev,
-                            description: {
-                              ...prev.description,
-                              pt: e.target.value,
-                            },
-                          }))
-                        }
-                        placeholder="Descrição em português"
-                        rows={3}
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                {/* Tags and Featured */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="tags">
-                      Etiquetas (separadas por comas)
-                    </Label>
-                    <Input
-                      id="tags"
-                      value={metadata.tags.join(', ')}
-                      onChange={e => handleTagsChange(e.target.value)}
-                      placeholder="boda, ceremonia, outdoor"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2 pt-6">
-                    <Checkbox
-                      id="featured"
-                      checked={metadata.featured}
-                      onCheckedChange={checked =>
-                        setMetadata(prev => ({ ...prev, featured: !!checked }))
-                      }
-                    />
-                    <Label htmlFor="featured">Marcar como destacado</Label>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Upload Queue */}
-          {uploadFiles.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Cola de Subida</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {uploadFiles.map(uploadFile => (
-                    <div
-                      key={uploadFile.id}
-                      className="flex items-center space-x-3 p-3 border rounded-lg"
+              {uploadFiles.map(uploadFile => (
+                <div key={uploadFile.id} className="relative">
+                  {/* Remove file button */}
+                  {uploadFile.status !== 'uploading' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute top-2 right-2 z-10 h-8 w-8 p-0"
+                      onClick={() => removeFile(uploadFile.id)}
                     >
-                      <div className="flex-shrink-0">
-                        {uploadFile.file.type.startsWith('video/') ? (
-                          <VideoIcon className="w-8 h-8 text-blue-500" />
-                        ) : (
-                          <ImageIcon className="w-8 h-8 text-green-500" />
-                        )}
-                      </div>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
 
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">
-                          {uploadFile.file.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {(uploadFile.file.size / (1024 * 1024)).toFixed(2)} MB
-                        </p>
-
-                        {uploadFile.status === 'uploading' && (
-                          <div className="mt-2">
-                            <Progress
-                              value={uploadFile.progress}
-                              className="h-2"
-                            />
-                            <p className="text-xs text-muted-foreground mt-1">
-                              {uploadFile.progress}% completado
-                            </p>
-                          </div>
-                        )}
-
-                        {uploadFile.status === 'error' && uploadFile.error && (
-                          <Alert variant="destructive" className="mt-2">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertDescription className="text-xs">
-                              {uploadFile.error}
-                            </AlertDescription>
-                          </Alert>
-                        )}
-                      </div>
-
-                      <div className="flex-shrink-0 flex items-center space-x-2">
-                        {uploadFile.status === 'success' && (
-                          <CheckCircle className="w-5 h-5 text-green-500" />
-                        )}
-                        {uploadFile.status === 'error' && (
-                          <AlertCircle className="w-5 h-5 text-red-500" />
-                        )}
-                        {uploadFile.status === 'uploading' && (
-                          <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
-                        )}
-
-                        {uploadFile.status !== 'uploading' && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeFile(uploadFile.id)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                  <FileMetadataEditor
+                    uploadFile={uploadFile}
+                    onUpdate={updateFileMetadata}
+                    onCopyToAll={
+                      uploadFiles.length > 1 ? copyMetadataToAll : undefined
+                    }
+                    activeLanguage={activeLanguage}
+                    setActiveLanguage={setActiveLanguage}
+                  />
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
           )}
 
           {/* Actions */}
           {uploadFiles.length > 0 && (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pt-4 border-t">
               <div className="space-x-2">
                 {hasCompletedUploads && (
                   <Button variant="outline" onClick={clearCompletedUploads}>
@@ -572,7 +673,11 @@ export default function MediaUpload({
                     ) : (
                       <>
                         <Upload className="w-4 h-4 mr-2" />
-                        Subir Archivos
+                        Subir{' '}
+                        {
+                          uploadFiles.filter(f => f.status === 'pending').length
+                        }{' '}
+                        Archivo(s)
                       </>
                     )}
                   </Button>
