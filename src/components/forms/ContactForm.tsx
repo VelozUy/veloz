@@ -1,10 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,18 +26,14 @@ import {
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
 
-// Contact form schema with Spanish validation messages
-const contactFormSchema = z.object({
-  name: z.string().min(2, 'Debe tener al menos 2 caracteres').max(100),
-  email: z
-    .string()
-    .email('Por favor ingresa un email válido para que podamos responderte'),
-  eventType: z.string().min(1, 'Por favor selecciona un tipo de evento'),
-  eventDate: z.string().optional(),
-  message: z.string().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
+// Contact form data type
+interface ContactFormData {
+  name: string;
+  email: string;
+  eventType: string;
+  eventDate: string;
+  message: string;
+}
 
 interface ContactFormProps {
   translations: {
@@ -113,50 +106,64 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  // const router = useRouter(); // Removed for static localized routes
   const searchParams = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-    reset,
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      eventType: '',
-      eventDate: '',
-      message: '',
-    },
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    eventType: '',
+    eventDate: '',
+    message: '',
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Pre-fill form from URL parameters
-  useState(() => {
+  useEffect(() => {
     const eventType = searchParams.get('evento');
     const eventDate = searchParams.get('fecha');
     const message = searchParams.get('mensaje');
 
-    if (eventType) {
-      setValue('eventType', eventType);
-    }
-    if (eventDate) {
-      setValue('eventDate', eventDate);
-    }
-    if (message) {
-      setValue('message', message);
-    }
-  });
+    setFormData(prev => ({
+      ...prev,
+      eventType: eventType || '',
+      eventDate: eventDate || '',
+      message: message || '',
+    }));
+  }, [searchParams]);
 
-  const onSubmit = async (data: ContactFormData) => {
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim() || formData.name.length < 2) {
+      newErrors.name = 'Debe tener al menos 2 caracteres';
+    }
+
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email =
+        'Por favor ingresa un email válido para que podamos responderte';
+    }
+
+    if (!formData.eventType) {
+      newErrors.eventType = 'Por favor selecciona un tipo de evento';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      await emailService.sendContactForm(data);
+      await emailService.sendContactForm(formData as ContactFormData);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting contact form:', error);
@@ -173,7 +180,22 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const handleSendAnotherMessage = () => {
     setIsSubmitted(false);
     setSubmitError(null);
-    reset();
+    setFormData({
+      name: '',
+      email: '',
+      eventType: '',
+      eventDate: '',
+      message: '',
+    });
+    setErrors({});
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   const t = translations.contact;
@@ -269,7 +291,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={onSubmit} className="space-y-8">
               <div className="bg-card rounded-xl p-8 shadow-sm border space-y-6">
                 {/* Name */}
                 <div className="space-y-2">
@@ -280,13 +302,14 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     id="name"
                     type="text"
                     placeholder={t.form.name.placeholder}
-                    {...register('name')}
+                    value={formData.name}
+                    onChange={e => handleInputChange('name', e.target.value)}
                     className={cn(errors.name && 'border-destructive')}
                   />
                   {errors.name && (
                     <p className="text-sm text-destructive flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.name.message}
+                      {errors.name}
                     </p>
                   )}
                 </div>
@@ -300,13 +323,14 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     id="email"
                     type="email"
                     placeholder={t.form.email.placeholder}
-                    {...register('email')}
+                    value={formData.email}
+                    onChange={e => handleInputChange('email', e.target.value)}
                     className={cn(errors.email && 'border-destructive')}
                   />
                   {errors.email && (
                     <p className="text-sm text-destructive flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.email.message}
+                      {errors.email}
                     </p>
                   )}
                 </div>
@@ -317,8 +341,10 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     {t.form.eventType.label}
                   </Label>
                   <Select
-                    value={watch('eventType')}
-                    onValueChange={value => setValue('eventType', value)}
+                    value={formData.eventType}
+                    onValueChange={value =>
+                      handleInputChange('eventType', value)
+                    }
                   >
                     <SelectTrigger
                       className={cn(errors.eventType && 'border-destructive')}
@@ -346,7 +372,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   {errors.eventType && (
                     <p className="text-sm text-destructive flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
-                      {errors.eventType.message}
+                      {errors.eventType}
                     </p>
                   )}
                 </div>
@@ -363,7 +389,10 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     <Input
                       id="eventDate"
                       type="date"
-                      {...register('eventDate')}
+                      value={formData.eventDate}
+                      onChange={e =>
+                        handleInputChange('eventDate', e.target.value)
+                      }
                       className="pl-10"
                     />
                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -385,7 +414,8 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     id="message"
                     placeholder={t.form.message.placeholder}
                     rows={5}
-                    {...register('message')}
+                    value={formData.message}
+                    onChange={e => handleInputChange('message', e.target.value)}
                   />
                 </div>
               </div>

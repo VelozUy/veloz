@@ -38,6 +38,161 @@ interface SurveyData {
   phone?: string;
 }
 
+// Inline Calendar Component
+const InlineCalendar = ({
+  onDateSelect,
+  selectedDate,
+}: {
+  onDateSelect: (date: string) => void;
+  selectedDate?: string;
+}) => {
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+
+  const [displayMonth, setDisplayMonth] = useState(currentMonth);
+  const [displayYear, setDisplayYear] = useState(currentYear);
+
+  const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(displayYear, displayMonth, 1).getDay();
+
+  const monthNames = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+
+  const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+  const previousMonth = () => {
+    if (displayMonth === 0) {
+      setDisplayMonth(11);
+      setDisplayYear(displayYear - 1);
+    } else {
+      setDisplayMonth(displayMonth - 1);
+    }
+  };
+
+  const nextMonth = () => {
+    if (displayMonth === 11) {
+      setDisplayMonth(0);
+      setDisplayYear(displayYear + 1);
+    } else {
+      setDisplayMonth(displayMonth + 1);
+    }
+  };
+
+  const handleDateClick = (day: number) => {
+    const date = new Date(displayYear, displayMonth, day);
+    const dateString = date.toISOString().split('T')[0];
+    onDateSelect(dateString);
+  };
+
+  const isDateSelected = (day: number) => {
+    if (!selectedDate) return false;
+    const date = new Date(displayYear, displayMonth, day);
+    const dateString = date.toISOString().split('T')[0];
+    return dateString === selectedDate;
+  };
+
+  const isDatePast = (day: number) => {
+    const date = new Date(displayYear, displayMonth, day);
+    const todayStart = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    return date < todayStart;
+  };
+
+  const renderCalendarDays = () => {
+    const days = [];
+
+    // Empty cells for days before the first day of the month
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push(<div key={`empty-${i}`} className="h-8"></div>);
+    }
+
+    // Days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const isPast = isDatePast(day);
+      const isSelected = isDateSelected(day);
+
+      days.push(
+        <button
+          key={day}
+          onClick={() => !isPast && handleDateClick(day)}
+          disabled={isPast}
+          className={`
+            h-8 w-8 rounded-full text-sm transition-colors
+            ${
+              isPast
+                ? 'text-gray-300 cursor-not-allowed'
+                : 'hover:bg-primary hover:text-primary-foreground cursor-pointer'
+            }
+            ${
+              isSelected
+                ? 'bg-primary text-primary-foreground font-semibold'
+                : 'text-foreground'
+            }
+          `}
+        >
+          {day}
+        </button>
+      );
+    }
+
+    return days;
+  };
+
+  return (
+    <div className="bg-card border rounded-lg p-4">
+      {/* Calendar Header */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={previousMonth}
+          className="p-1 hover:bg-muted rounded transition-colors"
+        >
+          <ArrowRight className="h-4 w-4 rotate-180" />
+        </button>
+        <h3 className="font-semibold text-lg">
+          {monthNames[displayMonth]} {displayYear}
+        </h3>
+        <button
+          onClick={nextMonth}
+          className="p-1 hover:bg-muted rounded transition-colors"
+        >
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Day Names */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {dayNames.map(day => (
+          <div
+            key={day}
+            className="text-center text-xs font-medium text-muted-foreground p-1"
+          >
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar Days */}
+      <div className="grid grid-cols-7 gap-1">{renderCalendarDays()}</div>
+    </div>
+  );
+};
+
 export function InteractiveCTAWidget() {
   const pathname = usePathname();
   const router = useRouter();
@@ -236,18 +391,11 @@ export function InteractiveCTAWidget() {
                 {getTranslation('widget.steps.date.subtitle')}
               </p>
             </div>
-            <div className="space-y-3">
-              <div className="space-y-2">
-                <Input
-                  type="date"
-                  className="w-full"
-                  onChange={e => {
-                    if (e.target.value) {
-                      handleDateResponse(true, e.target.value);
-                    }
-                  }}
-                />
-              </div>
+            <div className="space-y-4">
+              <InlineCalendar
+                onDateSelect={date => handleDateResponse(true, date)}
+                selectedDate={surveyData.eventDate}
+              />
               <Button
                 variant="outline"
                 className="w-full"

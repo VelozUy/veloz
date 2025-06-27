@@ -13,6 +13,7 @@ import {
   X,
   User,
   FolderOpen,
+  Mail,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -27,6 +28,7 @@ const navigation = [
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
   { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
   { name: 'Preguntas Frecuentes', href: '/admin/faqs', icon: HelpCircle },
+  { name: 'Mensajes de Contacto', href: '/admin/contacts', icon: Mail },
 ];
 
 export default function AdminLayout({ children, title }: AdminLayoutProps) {

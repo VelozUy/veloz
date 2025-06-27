@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-26T14:42:14.966Z
+// Generated on: 2025-06-27T02:24:23.909Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -263,8 +263,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       homepage: {
         headline: 'Capturamos lo irrepetible',
         logo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           enabled: true,
         },
         backgroundVideo: {
@@ -446,7 +446,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T14:42:14.963Z',
+    lastUpdated: '2025-06-27T02:24:23.902Z',
     buildTime: true,
   },
   en: {
@@ -666,8 +666,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       homepage: {
         headline: 'Capturing the Unrepeatable',
         logo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           enabled: true,
         },
         backgroundVideo: {
@@ -849,7 +849,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T14:42:14.965Z',
+    lastUpdated: '2025-06-27T02:24:23.905Z',
     buildTime: true,
   },
   pt: {
@@ -1069,8 +1069,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
       homepage: {
         headline: 'Capturamos lo irrepetible',
         logo: {
-          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
           enabled: true,
         },
         backgroundVideo: {
@@ -1252,7 +1252,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-26T14:42:14.965Z',
+    lastUpdated: '2025-06-27T02:24:23.907Z',
     buildTime: true,
   },
 };
