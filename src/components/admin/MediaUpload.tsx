@@ -224,7 +224,7 @@ function FileMetadataEditor({
                 onChange={e =>
                   handleMetadataChange('title', 'pt', e.target.value)
                 }
-                                  placeholder="Título em português brasileiro"
+                placeholder="Título em português brasileiro"
               />
             </div>
             <div>
@@ -235,7 +235,7 @@ function FileMetadataEditor({
                 onChange={e =>
                   handleMetadataChange('description', 'pt', e.target.value)
                 }
-                                  placeholder="Descrição em português brasileiro (para alt text e SEO)"
+                placeholder="Descrição em português brasileiro (para alt text e SEO)"
                 rows={2}
               />
             </div>
@@ -514,25 +514,6 @@ export default function MediaUpload({
   const handleUpload = async () => {
     if (uploadFiles.length === 0) return;
 
-    // Check if all files have at least one description or title filled
-    const filesWithoutMetadata = uploadFiles.filter(
-      f =>
-        f.status === 'pending' &&
-        !f.metadata.title.es &&
-        !f.metadata.title.en &&
-        !f.metadata.title.pt &&
-        !f.metadata.description.es &&
-        !f.metadata.description.en &&
-        !f.metadata.description.pt
-    );
-
-    if (filesWithoutMetadata.length > 0) {
-      onUploadError?.(
-        `Por favor, agrega al menos un título o descripción para ${filesWithoutMetadata.length} archivo(s).`
-      );
-      return;
-    }
-
     setIsUploading(true);
 
     try {
@@ -564,8 +545,9 @@ export default function MediaUpload({
         <DialogHeader>
           <DialogTitle>Subir Media al Proyecto</DialogTitle>
           <DialogDescription>
-            Sube fotos y videos para este proyecto. Cada archivo puede tener su
-            propia información (título, descripción, etiquetas).
+            Sube fotos y videos para este proyecto. La información (título,
+            descripción, etiquetas) es opcional - puedes usar AI para generar
+            contenido SEO después de subir.
           </DialogDescription>
         </DialogHeader>
 
