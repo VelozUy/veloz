@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-27T19:16:06.552Z
+// Generated on: 2025-06-27T20:16:01.921Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -34,7 +34,8 @@ export interface LocalizedContent {
         projectId: string;
         type: 'photo' | 'video';
         url: string;
-        caption?: Record<string, string>;
+        description?: Record<string, string>;
+        tags?: string[];
         aspectRatio?: '1:1' | '16:9' | '9:16';
         order: number;
       }>;
@@ -45,1158 +46,1429 @@ export interface LocalizedContent {
 }
 
 export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
-  "es": {
-    "locale": "es",
-    "translations": {
-      "navigation": {
-        "home": "Inicio",
-        "about": "Sobre Nosotros",
-        "gallery": "Nuestro Trabajo",
-        "contact": "Contacto"
+  es: {
+    locale: 'es',
+    translations: {
+      navigation: {
+        home: 'Inicio',
+        about: 'Sobre Nosotros',
+        gallery: 'Nuestro Trabajo',
+        contact: 'Contacto',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturamos lo irrepetible",
-          "cta": {
-            "about": "Sobre Nosotros",
-            "work": "Nuestro Trabajo",
-            "contact": "Trabaja con Nosotros"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturamos lo irrepetible',
+          cta: {
+            about: 'Sobre Nosotros',
+            work: 'Nuestro Trabajo',
+            contact: 'Trabaja con Nosotros',
+          },
+        },
       },
-      "contact": {
-        "title": "Cuéntanos sobre tu evento",
-        "subtitle": "Mientras más sepamos, mejor podremos hacer que tu día sea perfecto",
-        "form": {
-          "name": {
-            "label": "Tu nombre",
-            "placeholder": "¿Cómo deberíamos llamarte?"
+      contact: {
+        title: 'Cuéntanos sobre tu evento',
+        subtitle:
+          'Mientras más sepamos, mejor podremos hacer que tu día sea perfecto',
+        form: {
+          name: {
+            label: 'Tu nombre',
+            placeholder: '¿Cómo deberíamos llamarte?',
           },
-          "email": {
-            "label": "Correo electrónico",
-            "placeholder": "tu.email@ejemplo.com"
+          email: {
+            label: 'Correo electrónico',
+            placeholder: 'tu.email@ejemplo.com',
           },
-          "eventType": {
-            "label": "¿Qué estás celebrando?",
-            "placeholder": "Elige tu tipo de evento",
-            "options": {
-              "wedding": "Boda",
-              "quinceanera": "Fiesta de 15 Años",
-              "birthday": "Fiesta de Cumpleaños",
-              "corporate": "Evento Corporativo",
-              "other": "Otro (¡cuéntanos en el mensaje!)"
-            }
-          },
-          "eventDate": {
-            "label": "Fecha aproximada",
-            "optional": "(opcional)",
-            "help": "¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!"
-          },
-          "message": {
-            "label": "Cuéntanos sobre tu visión",
-            "optional": "(opcional)",
-            "placeholder": "Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento..."
-          },
-          "submit": {
-            "button": "Empezar la conversación",
-            "loading": "Enviando tu mensaje..."
-          },
-          "privacy": {
-            "line1": "No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.",
-            "line2": "Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo."
-          }
-        },
-        "success": {
-          "title": "¡Mensaje enviado!",
-          "message": "¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.",
-          "action": "Enviar otro mensaje"
-        },
-        "trust": {
-          "response": {
-            "title": "Respuesta Rápida",
-            "description": "Típicamente respondemos dentro de 24 horas con una cotización personalizada"
-          },
-          "commitment": {
-            "title": "Sin Compromiso",
-            "description": "Obtener una cotización es completamente gratis y sin ataduras"
-          },
-          "privacy": {
-            "title": "Privacidad Primero",
-            "description": "Nunca compartimos tu información y solo te contactamos sobre tu evento"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "¿En qué evento estás pensando?",
-          "mobile": "¿Tu evento?"
-        },
-        "dialog": {
-          "title": "Cuéntanos sobre tu evento"
-        },
-        "eventTypes": {
-          "wedding": "Boda",
-          "corporate": "Evento Empresarial",
-          "other": "Otro tipo de evento"
-        },
-        "steps": {
-          "eventType": {
-            "title": "¿En qué evento estás pensando?",
-            "subtitle": "Cuéntanos qué quieres celebrar"
-          },
-          "date": {
-            "title": "¿Ya tienes fecha?",
-            "subtitle": "No te preocupes si aún no estás seguro",
-            "noDate": "Aún no tengo fecha definida"
-          },
-          "contact": {
-            "title": "¿Quieres contarnos más?",
-            "subtitle": "Elige cómo prefieres que nos contactemos",
-            "moreInfo": {
-              "title": "Sí, quiero contarte más detalles",
-              "subtitle": "Te llevamos al formulario completo"
+          eventType: {
+            label: '¿Qué estás celebrando?',
+            placeholder: 'Elige tu tipo de evento',
+            options: {
+              wedding: 'Boda',
+              quinceanera: 'Fiesta de 15 Años',
+              birthday: 'Fiesta de Cumpleaños',
+              corporate: 'Evento Corporativo',
+              other: 'Otro (¡cuéntanos en el mensaje!)',
             },
-            "callMe": {
-              "title": "Quiero que me llamen",
-              "subtitle": "Preferimos hablar por teléfono"
-            }
           },
-          "phone": {
-            "title": "¡Perfecto! Te llamamos",
-            "subtitle": "Déjanos tu número y te contactamos pronto",
-            "placeholder": "Tu número de teléfono",
-            "button": "Solicitar llamada",
-            "loading": "Enviando..."
+          eventDate: {
+            label: 'Fecha aproximada',
+            optional: '(opcional)',
+            help: '¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!',
           },
-          "complete": {
-            "title": "¡Listo!",
-            "message": "Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.",
-            "button": "Cerrar"
-          }
-        }
+          message: {
+            label: 'Cuéntanos sobre tu visión',
+            optional: '(opcional)',
+            placeholder:
+              'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
+          },
+          submit: {
+            button: 'Empezar la conversación',
+            loading: 'Enviando tu mensaje...',
+          },
+          privacy: {
+            line1:
+              'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
+            line2:
+              'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
+          },
+        },
+        success: {
+          title: '¡Mensaje enviado!',
+          message:
+            '¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+          action: 'Enviar otro mensaje',
+        },
+        trust: {
+          response: {
+            title: 'Respuesta Rápida',
+            description:
+              'Típicamente respondemos dentro de 24 horas con una cotización personalizada',
+          },
+          commitment: {
+            title: 'Sin Compromiso',
+            description:
+              'Obtener una cotización es completamente gratis y sin ataduras',
+          },
+          privacy: {
+            title: 'Privacidad Primero',
+            description:
+              'Nunca compartimos tu información y solo te contactamos sobre tu evento',
+          },
+        },
       },
-      "about": {
-        "title": "Sobre Nosotros",
-        "subtitle": "Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.",
-        "philosophy": {
-          "title": "Nuestra Filosofía",
-          "description": "Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones."
+      widget: {
+        button: {
+          desktop: '¿En qué evento estás pensando?',
+          mobile: '¿Tu evento?',
         },
-        "methodology": {
-          "title": "Nuestra Metodología",
-          "planning": {
-            "title": "Planificación",
-            "description": "Estudiamos cada detalle del evento para anticipar los momentos clave."
-          },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nuestro equipo se distribuye estratégicamente para no perder ningún momento."
-          },
-          "capture": {
-            "title": "Captura Profesional",
-            "description": "Utilizamos técnicas avanzadas y equipos de última generación."
-          },
-          "postproduction": {
-            "title": "Post-Producción",
-            "description": "Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales."
-          }
+        dialog: {
+          title: 'Cuéntanos sobre tu evento',
         },
-        "values": {
-          "title": "Nuestros Valores",
-          "passion": {
-            "title": "Pasión",
-            "description": "Amamos lo que hacemos y se refleja en cada imagen que capturamos."
-          },
-          "teamwork": {
-            "title": "Trabajo en Equipo",
-            "description": "Nuestro modelo colaborativo nos permite cubrir cada momento importante."
-          },
-          "quality": {
-            "title": "Calidad Técnica",
-            "description": "Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales."
-          },
-          "agility": {
-            "title": "Agilidad",
-            "description": "Nos adaptamos rápidamente a cualquier situación para no perder ningún momento."
-          },
-          "excellence": {
-            "title": "Excelencia",
-            "description": "Buscamos la perfección en cada proyecto, superando las expectativas."
-          },
-          "trust": {
-            "title": "Confianza",
-            "description": "Construimos relaciones duraderas basadas en la transparencia y profesionalismo."
-          }
+        eventTypes: {
+          wedding: 'Boda',
+          corporate: 'Evento Empresarial',
+          other: 'Otro tipo de evento',
         },
-        "faq": {
-          "title": "Preguntas Frecuentes"
-        }
+        steps: {
+          eventType: {
+            title: '¿En qué evento estás pensando?',
+            subtitle: 'Cuéntanos qué quieres celebrar',
+          },
+          date: {
+            title: '¿Ya tienes fecha?',
+            subtitle: 'No te preocupes si aún no estás seguro',
+            noDate: 'Aún no tengo fecha definida',
+          },
+          contact: {
+            title: '¿Quieres contarnos más?',
+            subtitle: 'Elige cómo prefieres que nos contactemos',
+            moreInfo: {
+              title: 'Sí, quiero contarte más detalles',
+              subtitle: 'Te llevamos al formulario completo',
+            },
+            callMe: {
+              title: 'Quiero que me llamen',
+              subtitle: 'Preferimos hablar por teléfono',
+            },
+          },
+          phone: {
+            title: '¡Perfecto! Te llamamos',
+            subtitle: 'Déjanos tu número y te contactamos pronto',
+            placeholder: 'Tu número de teléfono',
+            button: 'Solicitar llamada',
+            loading: 'Enviando...',
+          },
+          complete: {
+            title: '¡Listo!',
+            message:
+              'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
+            button: 'Cerrar',
+          },
+        },
       },
-      "validation": {
-        "required": "Este campo es requerido",
-        "email": "Por favor ingresa un email válido para que podamos responderte",
-        "minLength": "Debe tener al menos {{count}} caracteres"
-      }
+      about: {
+        title: 'Sobre Nosotros',
+        subtitle:
+          'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.',
+        philosophy: {
+          title: 'Nuestra Filosofía',
+          description:
+            'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.',
+        },
+        methodology: {
+          title: 'Nuestra Metodología',
+          planning: {
+            title: 'Planificación',
+            description:
+              'Estudiamos cada detalle del evento para anticipar los momentos clave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
+          },
+          capture: {
+            title: 'Captura Profesional',
+            description:
+              'Utilizamos técnicas avanzadas y equipos de última generación.',
+          },
+          postproduction: {
+            title: 'Post-Producción',
+            description:
+              'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
+          },
+        },
+        values: {
+          title: 'Nuestros Valores',
+          passion: {
+            title: 'Pasión',
+            description:
+              'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabajo en Equipo',
+            description:
+              'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
+          },
+          quality: {
+            title: 'Calidad Técnica',
+            description:
+              'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
+          },
+          agility: {
+            title: 'Agilidad',
+            description:
+              'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
+          },
+          excellence: {
+            title: 'Excelencia',
+            description:
+              'Buscamos la perfección en cada proyecto, superando las expectativas.',
+          },
+          trust: {
+            title: 'Confianza',
+            description:
+              'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
+          },
+        },
+        faq: {
+          title: 'Preguntas Frecuentes',
+        },
+      },
+      validation: {
+        required: 'Este campo es requerido',
+        email: 'Por favor ingresa un email válido para que podamos responderte',
+        minLength: 'Debe tener al menos {{count}} caracteres',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturamos lo irrepetible",
-        "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "enabled": true,
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturamos lo irrepetible',
+        logo: {
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
-        }
+        backgroundVideo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "VnGJZvO2CsJ9zcHyEm6C",
-          "title": "evento",
-          "description": "",
-          "tags": [],
-          "eventType": "Evento Corporativo",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'VnGJZvO2CsJ9zcHyEm6C',
+          title: 'evento',
+          description: '',
+          tags: [],
+          eventType: 'Evento Corporativo',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "NdRA3tNcZM846jBlxccO",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 1
+              id: 'NdRA3tNcZM846jBlxccO',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7',
+              description: {
+                pt: "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                es: "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                en: "A group of women posing in front of a L'Oréal Paris sign with champagne glasses.",
+              },
+              tags: ["L'Oréal", 'celebration', 'glamour', 'event', 'fashion'],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "B4jQQYlzmmbTZpVIUY2f",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 2
+              id: 'B4jQQYlzmmbTZpVIUY2f',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a',
+              description: {
+                en: 'A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.',
+                pt: 'Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.',
+                es: 'Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel.',
+              },
+              tags: ['fashion', 'event', 'Paris', 'Eiffel Tower', 'diversity'],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "yTRob8EConGj8SAwDGgM",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 3
+              id: 'yTRob8EConGj8SAwDGgM',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
             },
             {
-              "id": "O8LaipWGAEuitU47NQbS",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 4
+              id: 'O8LaipWGAEuitU47NQbS',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 4,
             },
             {
-              "id": "FQxDDsXeybv2mvgmZAYT",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 5
-            }
-          ]
+              id: 'FQxDDsXeybv2mvgmZAYT',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 5,
+            },
+          ],
         },
         {
-          "id": "dHwYXouBfkPIq8ji0Lly",
-          "title": "una boda",
-          "description": "asasda",
-          "tags": [],
-          "eventType": "Bar/Bat Mitzvah",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "EwSei5nVxoyJbEaSMJQU",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 1
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "W1z6yHwRxxdjJgbzb0ja",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 2
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "Tozof4A8ksGW5WsxUVNB",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
-            }
-          ]
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "Ph2wgp6gR7FyfQtIF7cO",
-          "title": "prueba 1",
-          "description": "divino",
-          "tags": [],
-          "eventType": "Boda",
-          "location": "Montevideo",
-          "eventDate": "2025-06-25",
-          "featured": false,
-          "media": [
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
             {
-              "id": "1aq9ljhj60j9FNiAOkwn",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
-              "order": 1
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              order: 1,
             },
             {
-              "id": "6oms8LKDjjc3nHV2Z3EC",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
-              "aspectRatio": "1:1",
-              "order": 2
+              id: '6oms8LKDjjc3nHV2Z3EC',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
             },
             {
-              "id": "KxA4cNTGxzVSWevU4L9S",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
+              id: 'KxA4cNTGxzVSWevU4L9S',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "HLWzOEqR8bUIhF1ovqi0",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 4
+              id: 'HLWzOEqR8bUIhF1ovqi0',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "sXgNkKMJnngCezJDdFOH",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 5
+              id: 'sXgNkKMJnngCezJDdFOH',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "OGnjDnYG91SIEi9r5ME4",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 6
-            }
-          ]
-        }
-      ]
+              id: 'OGnjDnYG91SIEi9r5ME4',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-06-27T19:16:06.547Z",
-    "buildTime": true
+    lastUpdated: '2025-06-27T20:16:01.917Z',
+    buildTime: true,
   },
-  "en": {
-    "locale": "en",
-    "translations": {
-      "navigation": {
-        "home": "Home",
-        "about": "About Us",
-        "gallery": "Our Work",
-        "contact": "Contact"
+  en: {
+    locale: 'en',
+    translations: {
+      navigation: {
+        home: 'Home',
+        about: 'About Us',
+        gallery: 'Our Work',
+        contact: 'Contact',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturing the Unrepeatable",
-          "cta": {
-            "about": "About Us",
-            "work": "Our Work",
-            "contact": "Work with Us"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturing the Unrepeatable',
+          cta: {
+            about: 'About Us',
+            work: 'Our Work',
+            contact: 'Work with Us',
+          },
+        },
       },
-      "contact": {
-        "title": "Tell us about your event",
-        "subtitle": "The more we know, the better we can help make your day perfect",
-        "form": {
-          "name": {
-            "label": "Your name",
-            "placeholder": "What should we call you?"
+      contact: {
+        title: 'Tell us about your event',
+        subtitle:
+          'The more we know, the better we can help make your day perfect',
+        form: {
+          name: {
+            label: 'Your name',
+            placeholder: 'What should we call you?',
           },
-          "email": {
-            "label": "Email address",
-            "placeholder": "your.email@example.com"
+          email: {
+            label: 'Email address',
+            placeholder: 'your.email@example.com',
           },
-          "eventType": {
-            "label": "What are you celebrating?",
-            "placeholder": "Choose your event type",
-            "options": {
-              "wedding": "Wedding",
-              "quinceanera": "15th Birthday (Quinceañera)",
-              "birthday": "Birthday Party",
-              "corporate": "Corporate Event",
-              "other": "Other (tell us in the message!)"
-            }
-          },
-          "eventDate": {
-            "label": "Approximate date",
-            "optional": "(optional)",
-            "help": "Don't worry if you're not sure yet – we can work with flexible dates!"
-          },
-          "message": {
-            "label": "Tell us about your vision",
-            "optional": "(optional)",
-            "placeholder": "Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better..."
-          },
-          "submit": {
-            "button": "Start the conversation",
-            "loading": "Sending your message..."
-          },
-          "privacy": {
-            "line1": "We don't share your info. We'll only reach out to help with your event.",
-            "line2": "No spam, no pressure – just great photography and videography when you're ready."
-          }
-        },
-        "success": {
-          "title": "Message sent!",
-          "message": "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
-          "action": "Send another message"
-        },
-        "trust": {
-          "response": {
-            "title": "Quick Response",
-            "description": "We typically respond within 24 hours with a personalized quote"
-          },
-          "commitment": {
-            "title": "No Commitment",
-            "description": "Getting a quote is completely free with no strings attached"
-          },
-          "privacy": {
-            "title": "Privacy First",
-            "description": "We never share your information and only contact you about your event"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "What event are you thinking about?",
-          "mobile": "Your event?"
-        },
-        "dialog": {
-          "title": "Tell us about your event"
-        },
-        "eventTypes": {
-          "wedding": "Wedding",
-          "corporate": "Corporate Event",
-          "other": "Other type of event"
-        },
-        "steps": {
-          "eventType": {
-            "title": "What event are you thinking about?",
-            "subtitle": "Tell us what you want to celebrate"
-          },
-          "date": {
-            "title": "Do you have a date already?",
-            "subtitle": "Don't worry if you're not sure yet",
-            "noDate": "I don't have a date set yet"
-          },
-          "contact": {
-            "title": "Want to tell us more?",
-            "subtitle": "Choose how you prefer us to contact you",
-            "moreInfo": {
-              "title": "Yes, I want to tell you more details",
-              "subtitle": "We take you to the complete form"
+          eventType: {
+            label: 'What are you celebrating?',
+            placeholder: 'Choose your event type',
+            options: {
+              wedding: 'Wedding',
+              quinceanera: '15th Birthday (Quinceañera)',
+              birthday: 'Birthday Party',
+              corporate: 'Corporate Event',
+              other: 'Other (tell us in the message!)',
             },
-            "callMe": {
-              "title": "I want you to call me",
-              "subtitle": "We prefer to talk by phone"
-            }
           },
-          "phone": {
-            "title": "Perfect! We call you",
-            "subtitle": "Leave us your number and we contact you soon",
-            "placeholder": "Your phone number",
-            "button": "Request call",
-            "loading": "Sending..."
+          eventDate: {
+            label: 'Approximate date',
+            optional: '(optional)',
+            help: "Don't worry if you're not sure yet – we can work with flexible dates!",
           },
-          "complete": {
-            "title": "Ready!",
-            "message": "We will contact you very soon to talk about your event.",
-            "button": "Close"
-          }
-        }
+          message: {
+            label: 'Tell us about your vision',
+            optional: '(optional)',
+            placeholder:
+              'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
+          },
+          submit: {
+            button: 'Start the conversation',
+            loading: 'Sending your message...',
+          },
+          privacy: {
+            line1:
+              "We don't share your info. We'll only reach out to help with your event.",
+            line2:
+              "No spam, no pressure – just great photography and videography when you're ready.",
+          },
+        },
+        success: {
+          title: 'Message sent!',
+          message:
+            "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+          action: 'Send another message',
+        },
+        trust: {
+          response: {
+            title: 'Quick Response',
+            description:
+              'We typically respond within 24 hours with a personalized quote',
+          },
+          commitment: {
+            title: 'No Commitment',
+            description:
+              'Getting a quote is completely free with no strings attached',
+          },
+          privacy: {
+            title: 'Privacy First',
+            description:
+              'We never share your information and only contact you about your event',
+          },
+        },
       },
-      "about": {
-        "title": "About Us",
-        "subtitle": "We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.",
-        "philosophy": {
-          "title": "Our Philosophy",
-          "description": "We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations."
+      widget: {
+        button: {
+          desktop: 'What event are you thinking about?',
+          mobile: 'Your event?',
         },
-        "methodology": {
-          "title": "Our Methodology",
-          "planning": {
-            "title": "Planning",
-            "description": "We study every detail of the event to anticipate key moments."
-          },
-          "coverage": {
-            "title": "Comprehensive Coverage",
-            "description": "Our team is strategically distributed to not miss any moment."
-          },
-          "capture": {
-            "title": "Professional Capture",
-            "description": "We use advanced techniques and state-of-the-art equipment."
-          },
-          "postproduction": {
-            "title": "Post-Production",
-            "description": "We carefully edit every image and video to achieve exceptional results."
-          }
+        dialog: {
+          title: 'Tell us about your event',
         },
-        "values": {
-          "title": "Our Values",
-          "passion": {
-            "title": "Passion",
-            "description": "We love what we do and it shows in every image we capture."
-          },
-          "teamwork": {
-            "title": "Teamwork",
-            "description": "Our collaborative model allows us to cover every important moment."
-          },
-          "quality": {
-            "title": "Technical Quality",
-            "description": "We use professional equipment and advanced techniques for exceptional results."
-          },
-          "agility": {
-            "title": "Agility",
-            "description": "We adapt quickly to any situation to never miss a moment."
-          },
-          "excellence": {
-            "title": "Excellence",
-            "description": "We strive for perfection in every project, exceeding expectations."
-          },
-          "trust": {
-            "title": "Trust",
-            "description": "We build lasting relationships based on transparency and professionalism."
-          }
+        eventTypes: {
+          wedding: 'Wedding',
+          corporate: 'Corporate Event',
+          other: 'Other type of event',
         },
-        "faq": {
-          "title": "Frequently Asked Questions"
-        }
+        steps: {
+          eventType: {
+            title: 'What event are you thinking about?',
+            subtitle: 'Tell us what you want to celebrate',
+          },
+          date: {
+            title: 'Do you have a date already?',
+            subtitle: "Don't worry if you're not sure yet",
+            noDate: "I don't have a date set yet",
+          },
+          contact: {
+            title: 'Want to tell us more?',
+            subtitle: 'Choose how you prefer us to contact you',
+            moreInfo: {
+              title: 'Yes, I want to tell you more details',
+              subtitle: 'We take you to the complete form',
+            },
+            callMe: {
+              title: 'I want you to call me',
+              subtitle: 'We prefer to talk by phone',
+            },
+          },
+          phone: {
+            title: 'Perfect! We call you',
+            subtitle: 'Leave us your number and we contact you soon',
+            placeholder: 'Your phone number',
+            button: 'Request call',
+            loading: 'Sending...',
+          },
+          complete: {
+            title: 'Ready!',
+            message: 'We will contact you very soon to talk about your event.',
+            button: 'Close',
+          },
+        },
       },
-      "validation": {
-        "required": "This field is required",
-        "email": "Please enter a valid email so we can get back to you",
-        "minLength": "Must be at least {{count}} characters"
-      }
+      about: {
+        title: 'About Us',
+        subtitle:
+          'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.',
+        philosophy: {
+          title: 'Our Philosophy',
+          description:
+            'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.',
+        },
+        methodology: {
+          title: 'Our Methodology',
+          planning: {
+            title: 'Planning',
+            description:
+              'We study every detail of the event to anticipate key moments.',
+          },
+          coverage: {
+            title: 'Comprehensive Coverage',
+            description:
+              'Our team is strategically distributed to not miss any moment.',
+          },
+          capture: {
+            title: 'Professional Capture',
+            description:
+              'We use advanced techniques and state-of-the-art equipment.',
+          },
+          postproduction: {
+            title: 'Post-Production',
+            description:
+              'We carefully edit every image and video to achieve exceptional results.',
+          },
+        },
+        values: {
+          title: 'Our Values',
+          passion: {
+            title: 'Passion',
+            description:
+              'We love what we do and it shows in every image we capture.',
+          },
+          teamwork: {
+            title: 'Teamwork',
+            description:
+              'Our collaborative model allows us to cover every important moment.',
+          },
+          quality: {
+            title: 'Technical Quality',
+            description:
+              'We use professional equipment and advanced techniques for exceptional results.',
+          },
+          agility: {
+            title: 'Agility',
+            description:
+              'We adapt quickly to any situation to never miss a moment.',
+          },
+          excellence: {
+            title: 'Excellence',
+            description:
+              'We strive for perfection in every project, exceeding expectations.',
+          },
+          trust: {
+            title: 'Trust',
+            description:
+              'We build lasting relationships based on transparency and professionalism.',
+          },
+        },
+        faq: {
+          title: 'Frequently Asked Questions',
+        },
+      },
+      validation: {
+        required: 'This field is required',
+        email: 'Please enter a valid email so we can get back to you',
+        minLength: 'Must be at least {{count}} characters',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturing the Unrepeatable",
-        "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "enabled": true,
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturing the Unrepeatable',
+        logo: {
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
-        }
+        backgroundVideo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿hello?",
-          "answer": "yooooo",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿hello?',
+          answer: 'yooooo',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "VnGJZvO2CsJ9zcHyEm6C",
-          "title": "evento",
-          "description": "",
-          "tags": [],
-          "eventType": "Evento Corporativo",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'VnGJZvO2CsJ9zcHyEm6C',
+          title: 'evento',
+          description: '',
+          tags: [],
+          eventType: 'Evento Corporativo',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "NdRA3tNcZM846jBlxccO",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 1
+              id: 'NdRA3tNcZM846jBlxccO',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7',
+              description: {
+                pt: "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                es: "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                en: "A group of women posing in front of a L'Oréal Paris sign with champagne glasses.",
+              },
+              tags: ["L'Oréal", 'celebration', 'glamour', 'event', 'fashion'],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "B4jQQYlzmmbTZpVIUY2f",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 2
+              id: 'B4jQQYlzmmbTZpVIUY2f',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a',
+              description: {
+                en: 'A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.',
+                pt: 'Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.',
+                es: 'Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel.',
+              },
+              tags: ['fashion', 'event', 'Paris', 'Eiffel Tower', 'diversity'],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "yTRob8EConGj8SAwDGgM",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 3
+              id: 'yTRob8EConGj8SAwDGgM',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
             },
             {
-              "id": "O8LaipWGAEuitU47NQbS",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 4
+              id: 'O8LaipWGAEuitU47NQbS',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 4,
             },
             {
-              "id": "FQxDDsXeybv2mvgmZAYT",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 5
-            }
-          ]
+              id: 'FQxDDsXeybv2mvgmZAYT',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 5,
+            },
+          ],
         },
         {
-          "id": "dHwYXouBfkPIq8ji0Lly",
-          "title": "una boda",
-          "description": "asasda",
-          "tags": [],
-          "eventType": "Bar/Bat Mitzvah",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "EwSei5nVxoyJbEaSMJQU",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 1
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "W1z6yHwRxxdjJgbzb0ja",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 2
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "Tozof4A8ksGW5WsxUVNB",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
-            }
-          ]
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "Ph2wgp6gR7FyfQtIF7cO",
-          "title": "prueba 1",
-          "description": "divino",
-          "tags": [],
-          "eventType": "Boda",
-          "location": "Montevideo",
-          "eventDate": "2025-06-25",
-          "featured": false,
-          "media": [
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
             {
-              "id": "1aq9ljhj60j9FNiAOkwn",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
-              "order": 1
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              order: 1,
             },
             {
-              "id": "6oms8LKDjjc3nHV2Z3EC",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
-              "aspectRatio": "1:1",
-              "order": 2
+              id: '6oms8LKDjjc3nHV2Z3EC',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
             },
             {
-              "id": "KxA4cNTGxzVSWevU4L9S",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
+              id: 'KxA4cNTGxzVSWevU4L9S',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "HLWzOEqR8bUIhF1ovqi0",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 4
+              id: 'HLWzOEqR8bUIhF1ovqi0',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "sXgNkKMJnngCezJDdFOH",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 5
+              id: 'sXgNkKMJnngCezJDdFOH',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "OGnjDnYG91SIEi9r5ME4",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 6
-            }
-          ]
-        }
-      ]
+              id: 'OGnjDnYG91SIEi9r5ME4',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-06-27T19:16:06.549Z",
-    "buildTime": true
+    lastUpdated: '2025-06-27T20:16:01.919Z',
+    buildTime: true,
   },
-  "pt": {
-    "locale": "pt",
-    "translations": {
-      "navigation": {
-        "home": "Início",
-        "about": "Sobre Nós",
-        "gallery": "Nosso Trabalho",
-        "contact": "Contato"
+  pt: {
+    locale: 'pt',
+    translations: {
+      navigation: {
+        home: 'Início',
+        about: 'Sobre Nós',
+        gallery: 'Nosso Trabalho',
+        contact: 'Contato',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturamos o que não se repete",
-          "cta": {
-            "about": "Sobre Nós",
-            "work": "Nosso Trabalho",
-            "contact": "Trabalhe Conosco"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturamos o que não se repete',
+          cta: {
+            about: 'Sobre Nós',
+            work: 'Nosso Trabalho',
+            contact: 'Trabalhe Conosco',
+          },
+        },
       },
-      "contact": {
-        "title": "Conte-nos sobre seu evento",
-        "subtitle": "Quanto mais soubermos, melhor poderemos tornar seu dia perfeito",
-        "form": {
-          "name": {
-            "label": "Seu nome",
-            "placeholder": "Como devemos chamá-lo?"
+      contact: {
+        title: 'Conte-nos sobre seu evento',
+        subtitle:
+          'Quanto mais soubermos, melhor poderemos tornar seu dia perfeito',
+        form: {
+          name: {
+            label: 'Seu nome',
+            placeholder: 'Como devemos chamá-lo?',
           },
-          "email": {
-            "label": "Endereço de email",
-            "placeholder": "seu.email@exemplo.com"
+          email: {
+            label: 'Endereço de email',
+            placeholder: 'seu.email@exemplo.com',
           },
-          "eventType": {
-            "label": "O que você está comemorando?",
-            "placeholder": "Escolha seu tipo de evento",
-            "options": {
-              "wedding": "Casamento",
-              "quinceanera": "Festa de 15 Anos",
-              "birthday": "Festa de Aniversário",
-              "corporate": "Evento Corporativo",
-              "other": "Outro (conte-nos na mensagem!)"
-            }
-          },
-          "eventDate": {
-            "label": "Data aproximada",
-            "optional": "(opcional)",
-            "help": "Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!"
-          },
-          "message": {
-            "label": "Conte-nos sobre sua visão",
-            "optional": "(opcional)",
-            "placeholder": "Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento..."
-          },
-          "submit": {
-            "button": "Iniciar a conversa",
-            "loading": "Enviando sua mensagem..."
-          },
-          "privacy": {
-            "line1": "Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.",
-            "line2": "Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto."
-          }
-        },
-        "success": {
-          "title": "Mensagem enviada!",
-          "message": "Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.",
-          "action": "Enviar outra mensagem"
-        },
-        "trust": {
-          "response": {
-            "title": "Resposta Rápida",
-            "description": "Normalmente respondemos dentro de 24 horas com uma cotação personalizada"
-          },
-          "commitment": {
-            "title": "Sem Compromisso",
-            "description": "Obter uma cotação é completamente grátis sem amarras"
-          },
-          "privacy": {
-            "title": "Privacidade em Primeiro Lugar",
-            "description": "Nunca compartilhamos suas informações e só entramos em contato sobre seu evento"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "Em que evento você está pensando?",
-          "mobile": "Seu evento?"
-        },
-        "dialog": {
-          "title": "Conte-nos sobre seu evento"
-        },
-        "eventTypes": {
-          "wedding": "Casamento",
-          "corporate": "Evento Corporativo",
-          "other": "Outro tipo de evento"
-        },
-        "steps": {
-          "eventType": {
-            "title": "Em que evento você está pensando?",
-            "subtitle": "Conte-nos o que quer comemorar"
-          },
-          "date": {
-            "title": "Já tem uma data?",
-            "subtitle": "Não se preocupe se ainda não tem certeza",
-            "noDate": "Ainda não tenho data definida"
-          },
-          "contact": {
-            "title": "Quer nos contar mais?",
-            "subtitle": "Escolha como prefere que entremos em contato",
-            "moreInfo": {
-              "title": "Sim, quero contar mais detalhes",
-              "subtitle": "Levamos você ao formulário completo"
+          eventType: {
+            label: 'O que você está comemorando?',
+            placeholder: 'Escolha seu tipo de evento',
+            options: {
+              wedding: 'Casamento',
+              quinceanera: 'Festa de 15 Anos',
+              birthday: 'Festa de Aniversário',
+              corporate: 'Evento Corporativo',
+              other: 'Outro (conte-nos na mensagem!)',
             },
-            "callMe": {
-              "title": "Quero que me liguem",
-              "subtitle": "Preferimos falar por telefone"
-            }
           },
-          "phone": {
-            "title": "Perfeito! Te ligamos",
-            "subtitle": "Deixe seu número e entraremos em contato em breve",
-            "placeholder": "Seu número de telefone",
-            "button": "Solicitar ligação",
-            "loading": "Enviando..."
+          eventDate: {
+            label: 'Data aproximada',
+            optional: '(opcional)',
+            help: 'Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!',
           },
-          "complete": {
-            "title": "Pronto!",
-            "message": "Entraremos em contato muito em breve para conversar sobre seu evento.",
-            "button": "Fechar"
-          }
-        }
+          message: {
+            label: 'Conte-nos sobre sua visão',
+            optional: '(opcional)',
+            placeholder:
+              'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+          },
+          submit: {
+            button: 'Iniciar a conversa',
+            loading: 'Enviando sua mensagem...',
+          },
+          privacy: {
+            line1:
+              'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
+            line2:
+              'Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto.',
+          },
+        },
+        success: {
+          title: 'Mensagem enviada!',
+          message:
+            'Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+          action: 'Enviar outra mensagem',
+        },
+        trust: {
+          response: {
+            title: 'Resposta Rápida',
+            description:
+              'Normalmente respondemos dentro de 24 horas com uma cotação personalizada',
+          },
+          commitment: {
+            title: 'Sem Compromisso',
+            description: 'Obter uma cotação é completamente grátis sem amarras',
+          },
+          privacy: {
+            title: 'Privacidade em Primeiro Lugar',
+            description:
+              'Nunca compartilhamos suas informações e só entramos em contato sobre seu evento',
+          },
+        },
       },
-      "about": {
-        "title": "Sobre Nós",
-        "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
-        "philosophy": {
-          "title": "Nossa Filosofia",
-          "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+      widget: {
+        button: {
+          desktop: 'Em que evento você está pensando?',
+          mobile: 'Seu evento?',
         },
-        "methodology": {
-          "title": "Nossa Metodologia",
-          "planning": {
-            "title": "Planejamento",
-            "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
-          },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
-          },
-          "capture": {
-            "title": "Captura Profissional",
-            "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
-          },
-          "postproduction": {
-            "title": "Pós-Produção",
-            "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
-          }
+        dialog: {
+          title: 'Conte-nos sobre seu evento',
         },
-        "values": {
-          "title": "Nossos Valores",
-          "passion": {
-            "title": "Paixão",
-            "description": "Amamos o que fazemos e isso se reflete em cada imagem que capturamos."
-          },
-          "teamwork": {
-            "title": "Trabalho em Equipe",
-            "description": "Nosso modelo colaborativo nos permite cobrir cada momento importante."
-          },
-          "quality": {
-            "title": "Qualidade Técnica",
-            "description": "Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais."
-          },
-          "agility": {
-            "title": "Agilidade",
-            "description": "Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento."
-          },
-          "excellence": {
-            "title": "Excelência",
-            "description": "Buscamos a perfeição em cada projeto, superando expectativas."
-          },
-          "trust": {
-            "title": "Confiança",
-            "description": "Construímos relacionamentos duradouros baseados na transparência e profissionalismo."
-          }
+        eventTypes: {
+          wedding: 'Casamento',
+          corporate: 'Evento Corporativo',
+          other: 'Outro tipo de evento',
         },
-        "faq": {
-          "title": "Perguntas Frequentes"
-        }
+        steps: {
+          eventType: {
+            title: 'Em que evento você está pensando?',
+            subtitle: 'Conte-nos o que quer comemorar',
+          },
+          date: {
+            title: 'Já tem uma data?',
+            subtitle: 'Não se preocupe se ainda não tem certeza',
+            noDate: 'Ainda não tenho data definida',
+          },
+          contact: {
+            title: 'Quer nos contar mais?',
+            subtitle: 'Escolha como prefere que entremos em contato',
+            moreInfo: {
+              title: 'Sim, quero contar mais detalhes',
+              subtitle: 'Levamos você ao formulário completo',
+            },
+            callMe: {
+              title: 'Quero que me liguem',
+              subtitle: 'Preferimos falar por telefone',
+            },
+          },
+          phone: {
+            title: 'Perfeito! Te ligamos',
+            subtitle: 'Deixe seu número e entraremos em contato em breve',
+            placeholder: 'Seu número de telefone',
+            button: 'Solicitar ligação',
+            loading: 'Enviando...',
+          },
+          complete: {
+            title: 'Pronto!',
+            message:
+              'Entraremos em contato muito em breve para conversar sobre seu evento.',
+            button: 'Fechar',
+          },
+        },
       },
-      "validation": {
-        "required": "Este campo é obrigatório",
-        "email": "Por favor insira um email válido para podermos responder",
-        "minLength": "Deve ter pelo menos {{count}} caracteres"
-      }
+      about: {
+        title: 'Sobre Nós',
+        subtitle:
+          'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.',
+        philosophy: {
+          title: 'Nossa Filosofia',
+          description:
+            'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.',
+        },
+        methodology: {
+          title: 'Nossa Metodologia',
+          planning: {
+            title: 'Planejamento',
+            description:
+              'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
+          },
+          capture: {
+            title: 'Captura Profissional',
+            description:
+              'Utilizamos técnicas avançadas e equipamentos de última geração.',
+          },
+          postproduction: {
+            title: 'Pós-Produção',
+            description:
+              'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
+          },
+        },
+        values: {
+          title: 'Nossos Valores',
+          passion: {
+            title: 'Paixão',
+            description:
+              'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabalho em Equipe',
+            description:
+              'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
+          },
+          quality: {
+            title: 'Qualidade Técnica',
+            description:
+              'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
+          },
+          agility: {
+            title: 'Agilidade',
+            description:
+              'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
+          },
+          excellence: {
+            title: 'Excelência',
+            description:
+              'Buscamos a perfeição em cada projeto, superando expectativas.',
+          },
+          trust: {
+            title: 'Confiança',
+            description:
+              'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
+          },
+        },
+        faq: {
+          title: 'Perguntas Frequentes',
+        },
+      },
+      validation: {
+        required: 'Este campo é obrigatório',
+        email: 'Por favor insira um email válido para podermos responder',
+        minLength: 'Deve ter pelo menos {{count}} caracteres',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturamos lo irrepetible",
-        "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "enabled": true,
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturamos lo irrepetible',
+        logo: {
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
-        }
+        backgroundVideo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+          enabled: true,
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "VnGJZvO2CsJ9zcHyEm6C",
-          "title": "evento",
-          "description": "",
-          "tags": [],
-          "eventType": "Evento Corporativo",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'VnGJZvO2CsJ9zcHyEm6C',
+          title: 'evento',
+          description: '',
+          tags: [],
+          eventType: 'Evento Corporativo',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "NdRA3tNcZM846jBlxccO",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 1
+              id: 'NdRA3tNcZM846jBlxccO',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7',
+              description: {
+                pt: "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                es: "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                en: "A group of women posing in front of a L'Oréal Paris sign with champagne glasses.",
+              },
+              tags: ["L'Oréal", 'celebration', 'glamour', 'event', 'fashion'],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "B4jQQYlzmmbTZpVIUY2f",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 2
+              id: 'B4jQQYlzmmbTZpVIUY2f',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a',
+              description: {
+                en: 'A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.',
+                pt: 'Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.',
+                es: 'Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel.',
+              },
+              tags: ['fashion', 'event', 'Paris', 'Eiffel Tower', 'diversity'],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "yTRob8EConGj8SAwDGgM",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 3
+              id: 'yTRob8EConGj8SAwDGgM',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
             },
             {
-              "id": "O8LaipWGAEuitU47NQbS",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 4
+              id: 'O8LaipWGAEuitU47NQbS',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 4,
             },
             {
-              "id": "FQxDDsXeybv2mvgmZAYT",
-              "projectId": "VnGJZvO2CsJ9zcHyEm6C",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 5
-            }
-          ]
+              id: 'FQxDDsXeybv2mvgmZAYT',
+              projectId: 'VnGJZvO2CsJ9zcHyEm6C',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 5,
+            },
+          ],
         },
         {
-          "id": "dHwYXouBfkPIq8ji0Lly",
-          "title": "una boda",
-          "description": "asasda",
-          "tags": [],
-          "eventType": "Bar/Bat Mitzvah",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'dHwYXouBfkPIq8ji0Lly',
+          title: 'una boda',
+          description: 'asasda',
+          tags: [],
+          eventType: 'Bar/Bat Mitzvah',
+          location: '',
+          eventDate: '',
+          featured: false,
+          media: [
             {
-              "id": "EwSei5nVxoyJbEaSMJQU",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 1
+              id: 'EwSei5nVxoyJbEaSMJQU',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "W1z6yHwRxxdjJgbzb0ja",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
-              "aspectRatio": "9:16",
-              "order": 2
+              id: 'W1z6yHwRxxdjJgbzb0ja',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "Tozof4A8ksGW5WsxUVNB",
-              "projectId": "dHwYXouBfkPIq8ji0Lly",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
-            }
-          ]
+              id: 'Tozof4A8ksGW5WsxUVNB',
+              projectId: 'dHwYXouBfkPIq8ji0Lly',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "Ph2wgp6gR7FyfQtIF7cO",
-          "title": "prueba 1",
-          "description": "divino",
-          "tags": [],
-          "eventType": "Boda",
-          "location": "Montevideo",
-          "eventDate": "2025-06-25",
-          "featured": false,
-          "media": [
+          id: 'Ph2wgp6gR7FyfQtIF7cO',
+          title: 'prueba 1',
+          description: 'divino',
+          tags: [],
+          eventType: 'Boda',
+          location: 'Montevideo',
+          eventDate: '2025-06-25',
+          featured: false,
+          media: [
             {
-              "id": "1aq9ljhj60j9FNiAOkwn",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
-              "order": 1
+              id: '1aq9ljhj60j9FNiAOkwn',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              order: 1,
             },
             {
-              "id": "6oms8LKDjjc3nHV2Z3EC",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
-              "aspectRatio": "1:1",
-              "order": 2
+              id: '6oms8LKDjjc3nHV2Z3EC',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
             },
             {
-              "id": "KxA4cNTGxzVSWevU4L9S",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 3
+              id: 'KxA4cNTGxzVSWevU4L9S',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "HLWzOEqR8bUIhF1ovqi0",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 4
+              id: 'HLWzOEqR8bUIhF1ovqi0',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "sXgNkKMJnngCezJDdFOH",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 5
+              id: 'sXgNkKMJnngCezJDdFOH',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "OGnjDnYG91SIEi9r5ME4",
-              "projectId": "Ph2wgp6gR7FyfQtIF7cO",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
-              "aspectRatio": "16:9",
-              "order": 6
-            }
-          ]
-        }
-      ]
+              id: 'OGnjDnYG91SIEi9r5ME4',
+              projectId: 'Ph2wgp6gR7FyfQtIF7cO',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-06-27T19:16:06.550Z",
-    "buildTime": true
-  }
+    lastUpdated: '2025-06-27T20:16:01.920Z',
+    buildTime: true,
+  },
 };
 
-export const SUPPORTED_LOCALES: Locale[] = ["es","en","pt"];
+export const SUPPORTED_LOCALES: Locale[] = ['es', 'en', 'pt'];
 
 export function getContentForLocale(locale: Locale): LocalizedContent {
   return STATIC_CONTENT[locale] || STATIC_CONTENT.es;

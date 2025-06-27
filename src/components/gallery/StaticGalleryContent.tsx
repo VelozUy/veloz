@@ -12,11 +12,12 @@ interface MediaItem {
   id: string;
   type: 'photo' | 'video';
   url: string;
-  caption?: {
+  description?: {
     en?: string;
     es?: string;
-    he?: string;
+    pt?: string;
   };
+  tags?: string[];
   aspectRatio?: '1:1' | '16:9' | '9:16';
 }
 
@@ -47,7 +48,8 @@ interface Project {
     id: string;
     type: 'photo' | 'video';
     url: string;
-    caption?: Record<string, string>;
+    description?: Record<string, string>;
+    tags?: string[];
     aspectRatio?: '1:1' | '16:9' | '9:16';
     order?: number;
   }>;
@@ -85,11 +87,12 @@ export default function StaticGalleryContent({
         id: media.id,
         type: media.type,
         url: media.url,
-        caption: {
-          en: media.caption?.en || '',
-          es: media.caption?.es || '',
-          he: media.caption?.he || '',
+        description: {
+          en: media.description?.en || '',
+          es: media.description?.es || '',
+          pt: media.description?.pt || '',
         },
+        tags: media.tags || [],
         // Use the aspect ratio detected during upload, fallback to 16:9
         aspectRatio: media.aspectRatio || ('16:9' as const),
       }))
@@ -172,8 +175,51 @@ export default function StaticGalleryContent({
     return <GalleryContent />;
   }
 
+  // Generate structured data for SEO
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: 'Veloz Photography Gallery',
+    description:
+      'Professional event photography and videography portfolio showcasing weddings, corporate events, and special celebrations',
+    url: 'https://veloz.com.uy/gallery',
+    image: allMedia
+      .filter(media => media.type === 'photo')
+      .map(media => ({
+        '@type': 'ImageObject',
+        url: media.url,
+        name:
+          media.description?.es ||
+          media.description?.en ||
+          media.description?.pt ||
+          `Gallery Image ${media.id}`,
+        description:
+          media.description?.es ||
+          media.description?.en ||
+          media.description?.pt ||
+          'Professional event photography by Veloz',
+        keywords: media.tags?.join(', ') || 'photography, events, professional',
+        contentUrl: media.url,
+        thumbnailUrl: media.url,
+        encodingFormat: 'image/jpeg',
+        creator: {
+          '@type': 'Organization',
+          name: 'Veloz Photography',
+          url: 'https://veloz.com.uy',
+        },
+      })),
+  };
+
   return (
     <div className="gallery-container min-h-screen bg-background">
+      {/* SEO Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+
       {/* Random Layout Bento Grid Gallery with optimal space filling */}
       <BentoGrid
         items={bentoMedia}
@@ -190,8 +236,9 @@ export default function StaticGalleryContent({
               <Image
                 src={media.url}
                 alt={
-                  media.caption?.es ||
-                  media.caption?.en ||
+                  media.description?.es ||
+                  media.description?.en ||
+                  media.description?.pt ||
                   `Gallery image ${index + 1}`
                 }
                 fill

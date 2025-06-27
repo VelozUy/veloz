@@ -3,7 +3,7 @@ import OpenAI from 'openai';
 // OpenAI Configuration
 interface OpenAIConfig {
   apiKey: string;
-  organization?: string;  
+  organization?: string;
   project?: string;
   baseURL?: string;
 }
@@ -30,7 +30,13 @@ interface TranslationResponse {
 // Media analysis request interface
 interface MediaAnalysisRequest {
   imageUrl: string;
-  analysisType: 'seo' | 'description' | 'tags' | 'event_type' | 'accessibility' | 'comprehensive';
+  analysisType:
+    | 'seo'
+    | 'description'
+    | 'tags'
+    | 'event_type'
+    | 'accessibility'
+    | 'comprehensive';
   context?: {
     eventType?: string;
     brand?: string;
@@ -40,13 +46,7 @@ interface MediaAnalysisRequest {
 
 // Media analysis response interface
 interface MediaAnalysisResponse {
-  altText: string;
   description: {
-    es: string;
-    en: string;
-    pt: string;
-  };
-  title: {
     es: string;
     en: string;
     pt: string;
@@ -87,14 +87,13 @@ export class OpenAIService {
     tokensUsed: 0,
     requestCount: 0,
     lastUsed: new Date(),
-    estimatedCost: 0
+    estimatedCost: 0,
   };
 
   private readonly PRICING = {
     'gpt-4o': { input: 0.0025, output: 0.01 }, // per 1K tokens
     'gpt-4o-mini': { input: 0.00015, output: 0.0006 },
     'gpt-4-turbo': { input: 0.01, output: 0.03 },
-    'gpt-4-vision-preview': { input: 0.01, output: 0.03 }
   };
 
   constructor() {
@@ -102,7 +101,9 @@ export class OpenAIService {
     if (typeof window === 'undefined') {
       this.initializeFromEnv();
     } else {
-      console.warn('OpenAI service should not be initialized in browser. Use API routes instead.');
+      console.warn(
+        'OpenAI service should not be initialized in browser. Use API routes instead.'
+      );
     }
   }
 
@@ -117,8 +118,9 @@ export class OpenAIService {
    * Initialize OpenAI client from environment variables
    */
   private initializeFromEnv(): void {
-    const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-    
+    const apiKey =
+      process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+
     if (!apiKey) {
       console.warn('OpenAI API key not found in environment variables');
       return;
@@ -151,31 +153,35 @@ export class OpenAIService {
   /**
    * Translate text from one language to another
    */
-  async translateText(request: TranslationRequest): Promise<TranslationResponse> {
+  async translateText(
+    request: TranslationRequest
+  ): Promise<TranslationResponse> {
     if (!this.isConfigured()) {
       throw new Error('OpenAI service not configured. Please set up API key.');
     }
 
     try {
       const prompt = this.buildTranslationPrompt(request);
-      
+
       const completion = await this.client!.chat.completions.create({
         model: 'gpt-4o-mini', // Cost-effective for translation
         messages: [
           {
             role: 'system',
-            content: 'You are a professional translator specializing in Spanish, English, and Brazilian Portuguese. Focus on maintaining the tone and context of the original text. When translating to Portuguese, always use Brazilian Portuguese variants, vocabulary, and cultural references.'
+            content:
+              'You are a professional translator specializing in Spanish, English, and Brazilian Portuguese. Focus on maintaining the tone and context of the original text. When translating to Portuguese, always use Brazilian Portuguese variants, vocabulary, and cultural references.',
           },
           {
             role: 'user',
-            content: prompt
-          }
+            content: prompt,
+          },
         ],
         temperature: 0.3, // Lower temperature for more consistent translations
         max_tokens: 1000,
       });
 
-      const translatedText = completion.choices[0]?.message?.content?.trim() || '';
+      const translatedText =
+        completion.choices[0]?.message?.content?.trim() || '';
       const tokensUsed = completion.usage?.total_tokens || 0;
 
       // Update usage stats
@@ -187,12 +193,13 @@ export class OpenAIService {
         originalText: request.text,
         fromLanguage: request.fromLanguage,
         toLanguage: request.toLanguage,
-        tokensUsed
+        tokensUsed,
       };
-
     } catch (error) {
       console.error('Translation error:', error);
-      throw new Error(`Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -210,19 +217,25 @@ export class OpenAIService {
     }
 
     try {
-      const prompt = this.buildBatchTranslationPrompt(texts, fromLanguage, toLanguage, contentType);
-      
+      const prompt = this.buildBatchTranslationPrompt(
+        texts,
+        fromLanguage,
+        toLanguage,
+        contentType
+      );
+
       const completion = await this.client!.chat.completions.create({
         model: 'gpt-4o-mini', // Cost-effective for translation
         messages: [
           {
             role: 'system',
-            content: 'You are a professional translator specializing in Spanish, English, and Brazilian Portuguese. Focus on maintaining the tone and context of the original text. When translating to Portuguese, always use Brazilian Portuguese variants, vocabulary, and cultural references. Always return clean text without surrounding quotes or formatting.'
+            content:
+              'You are a professional translator specializing in Spanish, English, and Brazilian Portuguese. Focus on maintaining the tone and context of the original text. When translating to Portuguese, always use Brazilian Portuguese variants, vocabulary, and cultural references. Always return clean text without surrounding quotes or formatting.',
           },
           {
             role: 'user',
-            content: prompt
-          }
+            content: prompt,
+          },
         ],
         temperature: 0.3, // Lower temperature for more consistent translations
         max_tokens: 2000,
@@ -235,18 +248,27 @@ export class OpenAIService {
       this.updateUsageStats(tokensUsed, 'gpt-4o-mini');
 
       // Parse the batch response
-      return this.parseBatchTranslationResponse(response, texts, fromLanguage, toLanguage, tokensUsed);
-
+      return this.parseBatchTranslationResponse(
+        response,
+        texts,
+        fromLanguage,
+        toLanguage,
+        tokensUsed
+      );
     } catch (error) {
       console.error('Batch translation error:', error);
-      throw new Error(`Batch translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Batch translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
   /**
    * Analyze media using OpenAI Vision API
    */
-  async analyzeMedia(request: MediaAnalysisRequest): Promise<MediaAnalysisResponse> {
+  async analyzeMedia(
+    request: MediaAnalysisRequest
+  ): Promise<MediaAnalysisResponse> {
     if (!this.isConfigured()) {
       throw new Error('OpenAI service not configured. Please set up API key.');
     }
@@ -255,45 +277,48 @@ export class OpenAIService {
       const prompt = this.buildMediaAnalysisPrompt(request);
 
       const completion = await this.client!.chat.completions.create({
-        model: 'gpt-4-vision-preview',
+        model: 'gpt-4o',
         messages: [
           {
             role: 'system',
-            content: 'You are an expert in image analysis, SEO optimization, and multilingual content creation. Analyze images for photography/videography business purposes.'
+            content:
+              'You are an expert in image analysis, SEO optimization, and multilingual content creation. Analyze images for photography/videography business purposes.',
           },
           {
             role: 'user',
             content: [
               {
                 type: 'text',
-                text: prompt
+                text: prompt,
               },
               {
                 type: 'image_url',
                 image_url: {
                   url: request.imageUrl,
-                  detail: 'high'
-                }
-              }
-            ]
-          }
+                  detail: 'high',
+                },
+              },
+            ],
+          },
         ],
         temperature: 0.4,
         max_tokens: 1500,
       });
 
-      const analysisResult = completion.choices[0]?.message?.content?.trim() || '';
+      const analysisResult =
+        completion.choices[0]?.message?.content?.trim() || '';
       const tokensUsed = completion.usage?.total_tokens || 0;
 
       // Update usage stats
-      this.updateUsageStats(tokensUsed, 'gpt-4-vision-preview');
+      this.updateUsageStats(tokensUsed, 'gpt-4o');
 
       // Parse the structured response
       return this.parseMediaAnalysisResponse(analysisResult, tokensUsed);
-
     } catch (error) {
       console.error('Media analysis error:', error);
-      throw new Error(`Media analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Media analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -312,7 +337,7 @@ export class OpenAIService {
       tokensUsed: 0,
       requestCount: 0,
       lastUsed: new Date(),
-      estimatedCost: 0
+      estimatedCost: 0,
     };
   }
 
@@ -322,17 +347,18 @@ export class OpenAIService {
   private buildTranslationPrompt(request: TranslationRequest): string {
     const languageNames = {
       es: 'Spanish',
-      en: 'English', 
-      pt: 'Brazilian Portuguese'
+      en: 'English',
+      pt: 'Brazilian Portuguese',
     };
 
     const contextInstructions = {
       general: 'Maintain a natural, conversational tone.',
-      marketing: 'Use engaging marketing language that converts. Focus on benefits and emotional appeal.',
+      marketing:
+        'Use engaging marketing language that converts. Focus on benefits and emotional appeal.',
       form: 'Keep form labels and instructions clear and concise.',
       faq: 'Maintain a helpful, informative tone suitable for frequently asked questions.',
       project: 'Use professional language suitable for project descriptions.',
-      seo: 'Optimize for search engines while maintaining readability.'
+      seo: 'Optimize for search engines while maintaining readability.',
     };
 
     let prompt = `Translate the following text from ${languageNames[request.fromLanguage]} to ${languageNames[request.toLanguage]}:\n\n${request.text}\n\n`;
@@ -345,7 +371,8 @@ export class OpenAIService {
       prompt += `Additional context: ${request.context}\n\n`;
     }
 
-    prompt += 'Provide only the translation without any additional explanation, quotes, or formatting.';
+    prompt +=
+      'Provide only the translation without any additional explanation, quotes, or formatting.';
 
     return prompt;
   }
@@ -361,17 +388,18 @@ export class OpenAIService {
   ): string {
     const languageNames = {
       es: 'Spanish',
-      en: 'English', 
-      pt: 'Brazilian Portuguese'
+      en: 'English',
+      pt: 'Brazilian Portuguese',
     };
 
     const contextInstructions = {
       general: 'Maintain a natural, conversational tone.',
-      marketing: 'Use engaging marketing language that converts. Focus on benefits and emotional appeal.',
+      marketing:
+        'Use engaging marketing language that converts. Focus on benefits and emotional appeal.',
       form: 'Keep form labels and instructions clear and concise.',
       faq: 'Maintain a helpful, informative tone suitable for frequently asked questions.',
       project: 'Use professional language suitable for project descriptions.',
-      seo: 'Optimize for search engines while maintaining readability.'
+      seo: 'Optimize for search engines while maintaining readability.',
     };
 
     let prompt = `Translate the following texts from ${languageNames[fromLanguage]} to ${languageNames[toLanguage]}:\n\n`;
@@ -386,11 +414,13 @@ export class OpenAIService {
       prompt += `Context: ${contextInstructions[contentType]}\n\n`;
     }
 
-    prompt += 'Provide the translations in the same order, one per line, numbered as follows:\n';
+    prompt +=
+      'Provide the translations in the same order, one per line, numbered as follows:\n';
     prompt += '1. [translation of first text]\n';
     prompt += '2. [translation of second text]\n';
     prompt += '...\n\n';
-    prompt += 'Provide only the clean translations without any additional explanation, quotes, or formatting.';
+    prompt +=
+      'Provide only the clean translations without any additional explanation, quotes, or formatting.';
 
     return prompt;
   }
@@ -410,12 +440,12 @@ export class OpenAIService {
 
     originalTexts.forEach((originalText, index) => {
       let translatedText = '';
-      
+
       // Look for numbered line (e.g., "1. Translation text")
-      const numberedLine = lines.find(line => 
+      const numberedLine = lines.find(line =>
         line.trim().startsWith(`${index + 1}.`)
       );
-      
+
       if (numberedLine) {
         // Remove the number prefix and clean up
         translatedText = numberedLine.replace(/^\d+\.\s*/, '').trim();
@@ -437,7 +467,7 @@ export class OpenAIService {
         originalText,
         fromLanguage,
         toLanguage,
-        tokensUsed: Math.floor(tokensUsed / originalTexts.length) // Distribute tokens evenly
+        tokensUsed: Math.floor(tokensUsed / originalTexts.length), // Distribute tokens evenly
       });
     });
 
@@ -448,19 +478,14 @@ export class OpenAIService {
    * Build media analysis prompt
    */
   private buildMediaAnalysisPrompt(request: MediaAnalysisRequest): string {
-    let prompt = 'Analyze this image and provide a comprehensive analysis in JSON format with the following structure:\n\n';
-    
+    let prompt =
+      'Analyze this image and provide a comprehensive analysis in JSON format with the following structure:\n\n';
+
     prompt += `{
-  "altText": "Accessible description for screen readers",
   "description": {
-    "es": "Detailed description in Spanish",
-    "en": "Detailed description in English", 
-            "pt": "Detailed description in Brazilian Portuguese"
-  },
-  "title": {
-    "es": "Compelling title in Spanish",
-    "en": "Compelling title in English",
-            "pt": "Compelling title in Brazilian Portuguese"
+    "es": "SEO-optimized description in Spanish (suitable for alt text and structured data)",
+    "en": "SEO-optimized description in English (suitable for alt text and structured data)", 
+    "pt": "SEO-optimized description in Brazilian Portuguese (suitable for alt text and structured data)"
   },
   "tags": ["relevant", "keyword", "tags"],
   "eventType": "wedding|corporate|birthday|quinceañera|other",
@@ -478,13 +503,17 @@ export class OpenAIService {
 
     if (request.context) {
       prompt += 'Context:\n';
-      if (request.context.eventType) prompt += `- Event type: ${request.context.eventType}\n`;
-      if (request.context.brand) prompt += `- Brand: ${request.context.brand}\n`;
-      if (request.context.targetAudience) prompt += `- Target audience: ${request.context.targetAudience}\n`;
+      if (request.context.eventType)
+        prompt += `- Event type: ${request.context.eventType}\n`;
+      if (request.context.brand)
+        prompt += `- Brand: ${request.context.brand}\n`;
+      if (request.context.targetAudience)
+        prompt += `- Target audience: ${request.context.targetAudience}\n`;
       prompt += '\n';
     }
 
-    prompt += 'Focus on professional photography/videography business needs. Provide only valid JSON.';
+    prompt +=
+      'Focus on professional photography/videography business needs. Provide only valid JSON.';
 
     return prompt;
   }
@@ -492,7 +521,10 @@ export class OpenAIService {
   /**
    * Parse media analysis response from OpenAI
    */
-  private parseMediaAnalysisResponse(response: string, tokensUsed: number): MediaAnalysisResponse {
+  private parseMediaAnalysisResponse(
+    response: string,
+    tokensUsed: number
+  ): MediaAnalysisResponse {
     try {
       // Try to extract JSON from the response
       const jsonMatch = response.match(/\{[\s\S]*\}/);
@@ -501,11 +533,9 @@ export class OpenAIService {
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
-      
+
       return {
-        altText: parsed.altText || '',
         description: parsed.description || { es: '', en: '', pt: '' },
-        title: parsed.title || { es: '', en: '', pt: '' },
         tags: parsed.tags || [],
         eventType: parsed.eventType || 'other',
         colorPalette: parsed.colorPalette || [],
@@ -513,18 +543,23 @@ export class OpenAIService {
         peopleCount: parsed.peopleCount || 0,
         composition: parsed.composition || '',
         seoKeywords: parsed.seoKeywords || [],
-        socialMediaCaptions: parsed.socialMediaCaptions || { instagram: '', facebook: '' },
+        socialMediaCaptions: parsed.socialMediaCaptions || {
+          instagram: '',
+          facebook: '',
+        },
         confidence: parsed.confidence || 0.8,
-        tokensUsed
+        tokensUsed,
       };
     } catch (error) {
       console.error('Failed to parse media analysis response:', error);
-      
+
       // Return fallback response
       return {
-        altText: 'Image analysis unavailable',
-        description: { es: '', en: '', pt: '' },
-        title: { es: '', en: '', pt: '' },
+        description: {
+          es: 'Image analysis unavailable',
+          en: 'Image analysis unavailable',
+          pt: 'Análise de imagem indisponível',
+        },
         tags: [],
         eventType: 'other',
         colorPalette: [],
@@ -534,7 +569,7 @@ export class OpenAIService {
         seoKeywords: [],
         socialMediaCaptions: { instagram: '', facebook: '' },
         confidence: 0,
-        tokensUsed
+        tokensUsed,
       };
     }
   }
@@ -542,19 +577,24 @@ export class OpenAIService {
   /**
    * Update usage statistics
    */
-  private updateUsageStats(tokensUsed: number, model: keyof typeof this.PRICING): void {
+  private updateUsageStats(
+    tokensUsed: number,
+    model: keyof typeof this.PRICING
+  ): void {
     this.usageStats.tokensUsed += tokensUsed;
     this.usageStats.requestCount += 1;
     this.usageStats.lastUsed = new Date();
-    
+
     // Estimate cost (rough calculation)
     const pricing = this.PRICING[model];
     if (pricing) {
       // Assuming 50/50 split between input and output tokens
       const inputTokens = Math.floor(tokensUsed * 0.5);
       const outputTokens = Math.ceil(tokensUsed * 0.5);
-      
-      const cost = (inputTokens / 1000) * pricing.input + (outputTokens / 1000) * pricing.output;
+
+      const cost =
+        (inputTokens / 1000) * pricing.input +
+        (outputTokens / 1000) * pricing.output;
       this.usageStats.estimatedCost += cost;
     }
   }
@@ -569,5 +609,5 @@ export type {
   TranslationResponse,
   MediaAnalysisRequest,
   MediaAnalysisResponse,
-  UsageStats
-}; 
+  UsageStats,
+};

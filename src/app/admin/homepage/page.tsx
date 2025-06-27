@@ -258,7 +258,7 @@ export default function HomepageAdminPage() {
       // Firebase should be online by default
 
       const docRef = doc(db, 'homepage', 'content');
-      const { id, ...contentData } = content;
+      const { id: _, ...contentData } = content;
 
       await setDoc(docRef, {
         ...contentData,
@@ -594,16 +594,20 @@ export default function HomepageAdminPage() {
                     onTranslated={(language, updates) => {
                       setContent(prev => {
                         if (!prev) return prev;
-                        
+
                         return {
                           ...prev,
                           headline: {
                             ...prev.headline,
-                            [language]: updates.headline?.[language] || prev.headline[language],
+                            [language]:
+                              updates.headline?.[language] ||
+                              prev.headline[language],
                           },
                           subheadline: {
                             ...prev.subheadline,
-                            [language]: updates.subheadline?.[language] || prev.subheadline[language],
+                            [language]:
+                              updates.subheadline?.[language] ||
+                              prev.subheadline[language],
                           },
                           ctaButtons: {
                             ...prev.ctaButtons,
@@ -611,14 +615,18 @@ export default function HomepageAdminPage() {
                               ...prev.ctaButtons.primary,
                               text: {
                                 ...prev.ctaButtons.primary.text,
-                                [language]: updates.primaryButtonText?.[language] || prev.ctaButtons.primary.text[language],
+                                [language]:
+                                  updates.primaryButtonText?.[language] ||
+                                  prev.ctaButtons.primary.text[language],
                               },
                             },
                             secondary: {
                               ...prev.ctaButtons.secondary,
                               text: {
                                 ...prev.ctaButtons.secondary.text,
-                                [language]: updates.secondaryButtonText?.[language] || prev.ctaButtons.secondary.text[language],
+                                [language]:
+                                  updates.secondaryButtonText?.[language] ||
+                                  prev.ctaButtons.secondary.text[language],
                               },
                             },
                           },

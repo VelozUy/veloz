@@ -433,11 +433,6 @@ export interface ProjectMedia {
   aspectRatio: '1:1' | '16:9' | '9:16'; // Detected during upload
   width?: number; // Original dimensions
   height?: number; // Original dimensions
-  title?: {
-    en: string;
-    es: string;
-    pt: string;
-  };
   description?: {
     en: string;
     es: string;
@@ -451,9 +446,7 @@ export interface ProjectMedia {
 }
 
 // Helper function to detect aspect ratio from file
-async function detectAspectRatio(
-  file: File
-): Promise<{
+async function detectAspectRatio(file: File): Promise<{
   aspectRatio: '1:1' | '16:9' | '9:16';
   width: number;
   height: number;
@@ -647,7 +640,6 @@ export class ProjectMediaService extends BaseFirebaseService {
                 aspectRatio,
                 width,
                 height,
-                title: metadata.title || { en: '', es: '', pt: '' },
                 description: metadata.description || { en: '', es: '', pt: '' },
                 tags: metadata.tags || [],
                 order: metadata.order || nextOrder,

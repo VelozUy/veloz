@@ -196,14 +196,14 @@
       "homepage": {
         "headline": "Capturamos lo irrepetible",
         "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "enabled": true,
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
         },
         "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
           "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
+          "enabled": true,
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "faqs": [
@@ -231,7 +231,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
+              "description": {
+                "pt": "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                "es": "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                "en": "A group of women posing in front of a L'Oréal Paris sign with champagne glasses."
+              },
+              "tags": ["L'Oréal", "celebration", "glamour", "event", "fashion"],
               "aspectRatio": "9:16",
               "order": 1
             },
@@ -240,7 +245,18 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
+              "description": {
+                "en": "A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.",
+                "pt": "Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.",
+                "es": "Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel."
+              },
+              "tags": [
+                "fashion",
+                "event",
+                "Paris",
+                "Eiffel Tower",
+                "diversity"
+              ],
               "aspectRatio": "16:9",
               "order": 2
             },
@@ -249,7 +265,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 3
             },
@@ -258,7 +279,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 4
             },
@@ -267,7 +293,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 5
             }
@@ -288,7 +319,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 1
             },
@@ -297,7 +333,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 2
             },
@@ -306,7 +347,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             }
@@ -327,7 +373,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "order": 1
             },
             {
@@ -335,7 +386,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "en": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "1:1",
               "order": 2
             },
@@ -344,7 +400,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             },
@@ -353,7 +414,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 4
             },
@@ -362,7 +428,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 5
             },
@@ -371,7 +442,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 6
             }
@@ -379,7 +455,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-06-27T19:16:06.547Z",
+    "lastUpdated": "2025-06-27T20:16:01.917Z",
     "buildTime": true
   },
   "en": {
@@ -579,14 +655,14 @@
       "homepage": {
         "headline": "Capturing the Unrepeatable",
         "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "enabled": true,
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
         },
         "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
           "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
+          "enabled": true,
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "faqs": [
@@ -614,7 +690,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
+              "description": {
+                "pt": "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                "es": "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                "en": "A group of women posing in front of a L'Oréal Paris sign with champagne glasses."
+              },
+              "tags": ["L'Oréal", "celebration", "glamour", "event", "fashion"],
               "aspectRatio": "9:16",
               "order": 1
             },
@@ -623,7 +704,18 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
+              "description": {
+                "en": "A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.",
+                "pt": "Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.",
+                "es": "Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel."
+              },
+              "tags": [
+                "fashion",
+                "event",
+                "Paris",
+                "Eiffel Tower",
+                "diversity"
+              ],
               "aspectRatio": "16:9",
               "order": 2
             },
@@ -632,7 +724,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 3
             },
@@ -641,7 +738,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 4
             },
@@ -650,7 +752,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 5
             }
@@ -671,7 +778,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 1
             },
@@ -680,7 +792,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 2
             },
@@ -689,7 +806,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             }
@@ -710,7 +832,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "order": 1
             },
             {
@@ -718,7 +845,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "en": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "1:1",
               "order": 2
             },
@@ -727,7 +859,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             },
@@ -736,7 +873,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 4
             },
@@ -745,7 +887,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 5
             },
@@ -754,7 +901,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 6
             }
@@ -762,7 +914,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-06-27T19:16:06.549Z",
+    "lastUpdated": "2025-06-27T20:16:01.919Z",
     "buildTime": true
   },
   "pt": {
@@ -962,14 +1114,14 @@
       "homepage": {
         "headline": "Capturamos lo irrepetible",
         "logo": {
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "enabled": true,
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
         },
         "backgroundVideo": {
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
           "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "enabled": true
+          "enabled": true,
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "faqs": [
@@ -997,7 +1149,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948117848-3-4-24-LOreal-Event-Worth-It-Wall-91.webp?alt=media&token=366be1d4-0a11-4e6f-ae69-e0beb30fecf7",
-              "caption": {},
+              "description": {
+                "pt": "Um grupo de mulheres posando em frente a um letreiro da L'Oréal Paris com taças de champanhe.",
+                "es": "Un grupo de mujeres posando frente a un cartel de L'Oréal Paris con copas de champán.",
+                "en": "A group of women posing in front of a L'Oréal Paris sign with champagne glasses."
+              },
+              "tags": ["L'Oréal", "celebration", "glamour", "event", "fashion"],
               "aspectRatio": "9:16",
               "order": 1
             },
@@ -1006,7 +1163,18 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948121746-638_main-40.jpg?alt=media&token=186bac13-9eda-49e5-9b94-6cfe3ab0d85a",
-              "caption": {},
+              "description": {
+                "en": "A diverse group of individuals on stage at a fashion event in front of the Eiffel Tower.",
+                "pt": "Um grupo diversificado de pessoas no palco de um evento de moda em frente à Torre Eiffel.",
+                "es": "Un grupo diverso de personas en el escenario de un evento de moda frente a la Torre Eiffel."
+              },
+              "tags": [
+                "fashion",
+                "event",
+                "Paris",
+                "Eiffel Tower",
+                "diversity"
+              ],
               "aspectRatio": "16:9",
               "order": 2
             },
@@ -1015,7 +1183,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948124414-GARNIER_EVENT____garnier_beauty_beautytips_skincare.mp4?alt=media&token=c0d0cac9-2a0d-47a7-8020-dd85e2680a82",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 3
             },
@@ -1024,7 +1197,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948135269-Loreal_Paris_event_shorts_minivlog_lorealparis_haircare_event.mp4?alt=media&token=ac019ef3-4ff7-4957-a521-94e5cb7eb110",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 4
             },
@@ -1033,7 +1211,12 @@
               "projectId": "VnGJZvO2CsJ9zcHyEm6C",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FVnGJZvO2CsJ9zcHyEm6C%2F1750948151726-PLT_x_Garnier_x_L_Oreal_event___.mp4?alt=media&token=0c491ac0-1619-423e-a75c-d1bd4abdd185",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 5
             }
@@ -1054,7 +1237,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750945994657-event_photographer_dublin-2.jpg?alt=media&token=78fa79a1-3f6f-48e4-a921-81219c75a29a",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 1
             },
@@ -1063,7 +1251,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946058789-istockphoto-1288974709-612x612.jpg?alt=media&token=7a9cf079-242a-447d-b608-6da5773a915f",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "es": "",
+                "en": ""
+              },
+              "tags": [],
               "aspectRatio": "9:16",
               "order": 2
             },
@@ -1072,7 +1265,12 @@
               "projectId": "dHwYXouBfkPIq8ji0Lly",
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FdHwYXouBfkPIq8ji0Lly%2F1750946480463-veloz-landing-loop-temp.mp4?alt=media&token=0e6c7620-fb6e-423a-aedc-f26133483b3c",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             }
@@ -1093,7 +1291,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750945863435-American_Heart_circle_of_RED._waltz.kenton.jpg?alt=media&token=e34dc937-7727-48d2-8f81-6e306ea014a6",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "order": 1
             },
             {
@@ -1101,7 +1304,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947536979-images__2_.jpeg?alt=media&token=6b13bda1-6647-41d9-86a7-d2f0b64f62d3",
-              "caption": {},
+              "description": {
+                "pt": "",
+                "en": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "1:1",
               "order": 2
             },
@@ -1110,7 +1318,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947541775-images__3_.jpeg?alt=media&token=a3cbb8a4-1c5f-49b9-87aa-38515efe9639",
-              "caption": {},
+              "description": {
+                "es": "",
+                "en": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 3
             },
@@ -1119,7 +1332,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947544502-images.jpeg?alt=media&token=fdc0e2f2-8675-4e8f-966a-ba6c3498d9fb",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 4
             },
@@ -1128,7 +1346,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947547428-istockphoto-479977238-612x612.jpg?alt=media&token=73b5903e-c4ef-4b9e-8a97-b82c51121d2e",
-              "caption": {},
+              "description": {
+                "en": "",
+                "es": "",
+                "pt": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 5
             },
@@ -1137,7 +1360,12 @@
               "projectId": "Ph2wgp6gR7FyfQtIF7cO",
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPh2wgp6gR7FyfQtIF7cO%2F1750947774893-events-carousel-15.webp?alt=media&token=d231d469-a054-4124-bafb-680ad272bf9b",
-              "caption": {},
+              "description": {
+                "en": "",
+                "pt": "",
+                "es": ""
+              },
+              "tags": [],
               "aspectRatio": "16:9",
               "order": 6
             }
@@ -1145,7 +1373,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-06-27T19:16:06.550Z",
+    "lastUpdated": "2025-06-27T20:16:01.920Z",
     "buildTime": true
   }
 }

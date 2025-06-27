@@ -841,7 +841,8 @@ async function fetchProjectMedia(db, projectId) {
           projectId: data.projectId,
           type: data.type,
           url: data.url,
-          caption: data.caption || {},
+          description: data.description || {},
+          tags: data.tags || [],
           aspectRatio: data.aspectRatio,
           order: data.order || 0,
         });
@@ -1010,7 +1011,8 @@ export interface LocalizedContent {
         projectId: string;
         type: 'photo' | 'video';
         url: string;
-        caption?: Record<string, string>;
+        description?: Record<string, string>;
+        tags?: string[];
         aspectRatio?: '1:1' | '16:9' | '9:16';
         order: number;
       }>;

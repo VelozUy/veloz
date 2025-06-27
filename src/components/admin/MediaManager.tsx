@@ -33,8 +33,11 @@ import {
   MoreHorizontal,
   Check,
   X,
+  Sparkles,
+  Loader2,
 } from 'lucide-react';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
+import { mediaAnalysisClientService } from '@/services/media-analysis-client';
 import Image from 'next/image';
 import {
   DndContext,
@@ -79,6 +82,8 @@ function SortableMediaItem({
   onSelect,
   onDelete,
   onEdit,
+  onAnalyze,
+  isAnalyzing,
 }: {
   media: ProjectMedia;
   viewMode: 'grid' | 'list';
@@ -86,6 +91,8 @@ function SortableMediaItem({
   onSelect: (id: string, selected: boolean) => void;
   onDelete: (id: string) => void;
   onEdit: (media: ProjectMedia) => void;
+  onAnalyze: (media: ProjectMedia) => void;
+  isAnalyzing: boolean;
 }) {
   const {
     attributes,
@@ -139,7 +146,12 @@ function SortableMediaItem({
         >
           <Image
             src={media.url}
-            alt={media.title?.es || media.fileName}
+            alt={
+              media.description?.es ||
+              media.description?.en ||
+              media.description?.pt ||
+              media.fileName
+            }
             fill={viewMode === 'grid'}
             width={viewMode === 'list' ? 80 : undefined}
             height={viewMode === 'list' ? 80 : undefined}
@@ -161,7 +173,10 @@ function SortableMediaItem({
       {/* Media info */}
       <div className={`p-3 ${viewMode === 'list' ? 'flex-1' : ''}`}>
         <h4 className="font-medium text-sm mb-1 truncate">
-          {media.title?.es || media.fileName}
+          {media.description?.es ||
+            media.description?.en ||
+            media.description?.pt ||
+            media.fileName}
         </h4>
         <p className="text-xs text-muted-foreground mb-2">
           {(media.fileSize / (1024 * 1024)).toFixed(2)} MB • Orden:{' '}
@@ -185,6 +200,23 @@ function SortableMediaItem({
             <Button variant="ghost" size="sm" onClick={() => onEdit(media)}>
               <Edit className="w-4 h-4" />
             </Button>
+            {/* SEO Analysis Button - only for photos */}
+            {media.type === 'photo' && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onAnalyze(media)}
+                disabled={isAnalyzing}
+                className="text-purple-600 hover:text-purple-700"
+                title="Analizar para SEO"
+              >
+                {isAnalyzing ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+              </Button>
+            )}
           </div>
           <Button
             variant="ghost"
@@ -208,7 +240,6 @@ function EditMediaModal({
   onSave,
 }: EditMediaModalProps) {
   const [formData, setFormData] = useState({
-    title: { en: '', es: '', pt: '' },
     description: { en: '', es: '', pt: '' },
     tags: [] as string[],
     featured: false,
@@ -219,7 +250,6 @@ function EditMediaModal({
   useEffect(() => {
     if (media) {
       setFormData({
-        title: media.title || { en: '', es: '', pt: '' },
         description: media.description || { en: '', es: '', pt: '' },
         tags: media.tags || [],
         featured: media.featured || false,
@@ -256,9 +286,9 @@ function EditMediaModal({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Editar Medio</DialogTitle>
-                      <DialogDescription>
-              Actualizar información y metadatos del medio.
-            </DialogDescription>
+          <DialogDescription>
+            Actualizar información y metadatos del medio.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -285,53 +315,7 @@ function EditMediaModal({
             </div>
           </div>
 
-          {/* Titles */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="title-es">Título (Español)</Label>
-              <Input
-                id="title-es"
-                value={formData.title?.es || ''}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    title: { ...prev.title, es: e.target.value },
-                  }))
-                }
-                placeholder="Título en español"
-              />
-            </div>
-            <div>
-              <Label htmlFor="title-en">Title (English)</Label>
-              <Input
-                id="title-en"
-                value={formData.title?.en || ''}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    title: { ...prev.title, en: e.target.value },
-                  }))
-                }
-                placeholder="Title in English"
-              />
-            </div>
-            <div>
-              <Label htmlFor="title-pt">Título (Português - Brasil)</Label>
-              <Input
-                id="title-pt"
-                value={formData.title?.pt || ''}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    title: { ...prev.title, pt: e.target.value },
-                  }))
-                }
-                                  placeholder="Título em português brasileiro"
-              />
-            </div>
-          </div>
-
-          {/* Descriptions */}
+          {/* Descriptions (SEO-optimized for alt text and structured data) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <Label htmlFor="desc-es">Descripción (Español)</Label>
@@ -374,7 +358,7 @@ function EditMediaModal({
                     description: { ...prev.description, pt: e.target.value },
                   }))
                 }
-                                  placeholder="Descrição em português brasileiro"
+                placeholder="Descrição em português brasileiro"
                 rows={3}
               />
             </div>
@@ -432,6 +416,7 @@ export default function MediaManager({
   const [editingMedia, setEditingMedia] = useState<ProjectMedia | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isReordering, setIsReordering] = useState(false);
+  const [analyzingMedia, setAnalyzingMedia] = useState<Set<string>>(new Set());
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -555,6 +540,57 @@ export default function MediaManager({
     }
   };
 
+  const handleAnalyzeMedia = async (mediaItem: ProjectMedia) => {
+    if (!mediaItem.id || analyzingMedia.has(mediaItem.id)) return;
+
+    // Add to analyzing set
+    setAnalyzingMedia(prev => new Set(prev).add(mediaItem.id!));
+
+    try {
+      // Analyze the media using the client service
+      const analysis = await mediaAnalysisClientService.analyzeSEO(
+        mediaItem.url,
+        {
+          eventType: 'photography_event',
+        }
+      );
+
+      // Update media with analyzed metadata
+      const updates: Partial<ProjectMedia> = {
+        description: {
+          es: analysis.description.es || mediaItem.description?.es || '',
+          en: analysis.description.en || mediaItem.description?.en || '',
+          pt: analysis.description.pt || mediaItem.description?.pt || '',
+        },
+        tags: analysis.tags || mediaItem.tags || [],
+      };
+
+      // Save to database
+      const result = await projectMediaService.update(mediaItem.id, updates);
+
+      if (result.success) {
+        // Update local state
+        const updatedMedia = media.map(m =>
+          m.id === mediaItem.id ? { ...m, ...updates } : m
+        );
+        onMediaUpdate(updatedMedia);
+        onSuccess?.('Análisis SEO completado exitosamente');
+      } else {
+        onError?.(result.error || 'Error al guardar análisis SEO');
+      }
+    } catch (error) {
+      console.error('Error analyzing media:', error);
+      onError?.('Error al analizar media para SEO');
+    } finally {
+      // Remove from analyzing set
+      setAnalyzingMedia(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(mediaItem.id!);
+        return newSet;
+      });
+    }
+  };
+
   if (media.length === 0) {
     return null;
   }
@@ -653,6 +689,8 @@ export default function MediaManager({
                   onSelect={handleSelectMedia}
                   onDelete={onMediaDelete}
                   onEdit={handleEditMedia}
+                  onAnalyze={handleAnalyzeMedia}
+                  isAnalyzing={analyzingMedia.has(mediaItem.id!)}
                 />
               ))}
             </div>
