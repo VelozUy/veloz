@@ -57,6 +57,7 @@ _All user management functionality completed - see Completed Tasks Summary_
 
 ### Project-Based Content Management
 
+- [x] **[High] Implement unified project edit flow with draft system** - Redesign project editing so all content (texts, media, metadata) is edited on a single page with staging/draft functionality - changes are only persisted when user explicitly approves them, otherwise discarded on navigation/tab close. Updated to also handle project creation in the same unified form. Removed redundant "Quick Edit" and "Media Only" buttons, now only one "Edit Project" button that goes to unified form. Enhanced to support media upload during project creation - after user adds project title, they can save the project and immediately switch to media upload tab. _(Added: Jan 7, 2025)_ _(Completed: Jan 7, 2025)_
 - [ ] **[Medium] Add project cover image selection** - Choose cover image from uploaded photos
 - [ ] **[Medium] Add drag-and-drop media upload** - Direct file upload to project pages
 - [ ] **[Medium] Add media bulk operations** - Select and manage multiple media items
@@ -219,6 +220,7 @@ _All homepage content management functionality completed - see Completed Tasks S
 
 ### CI/CD Pipeline
 
+- [ ] **[High] Add Netlify rebuild trigger for project media changes** - Automatically trigger Netlify rebuild when media is added/removed/modified in projects to update static content generation _(Added: Jan 7, 2025)_
 - [ ] **[Medium] Configure build optimization** - Optimize build performance
 - [ ] **[Medium] Add build status checks** - Prevent broken deployments
 - [ ] **[Medium] Setup preview deployments** - Enable branch previews
