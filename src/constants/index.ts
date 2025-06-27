@@ -15,21 +15,41 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
 
 // Event Types
 export const EVENT_TYPES: EventType[] = [
-  'wedding',
-  'birthday',
-  'live-show',
-  'corporate',
-  'cultural',
-  'other',
+  'casamiento',
+  'corporativos',
+  'culturales-artisticos',
+  'photoshoot',
+  'prensa',
+  'otros',
 ];
 
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
-  wedding: 'Weddings',
-  birthday: 'Birthdays',
-  'live-show': 'Live Shows',
-  corporate: 'Corporate',
-  cultural: 'Cultural',
-  other: 'Other',
+  casamiento: 'Casamiento',
+  corporativos: 'Corporativos',
+  'culturales-artisticos': 'Culturales y artísticos',
+  photoshoot: 'Photoshoot',
+  prensa: 'Prensa',
+  otros: 'Otros',
+};
+
+// English labels for event types
+export const EVENT_TYPE_LABELS_EN: Record<EventType, string> = {
+  casamiento: 'Wedding',
+  corporativos: 'Corporate',
+  'culturales-artisticos': 'Cultural & Artistic',
+  photoshoot: 'Photoshoot',
+  prensa: 'Press',
+  otros: 'Others',
+};
+
+// Portuguese labels for event types
+export const EVENT_TYPE_LABELS_PT: Record<EventType, string> = {
+  casamiento: 'Casamento',
+  corporativos: 'Corporativo',
+  'culturales-artisticos': 'Cultural e Artístico',
+  photoshoot: 'Photoshoot',
+  prensa: 'Imprensa',
+  otros: 'Outros',
 };
 
 // Service Types
@@ -110,6 +130,6 @@ export const VALIDATION_MESSAGES = {
 
 // Default Values
 export const DEFAULT_LANGUAGE: Language = 'es';
-export const DEFAULT_EVENT_TYPE: EventType = 'wedding';
+export const DEFAULT_EVENT_TYPE: EventType = 'casamiento';
 export const ITEMS_PER_PAGE = 12;
 export const MAX_RETRIES = 3;

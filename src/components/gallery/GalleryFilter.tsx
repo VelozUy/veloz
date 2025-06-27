@@ -10,13 +10,16 @@ interface GalleryFilterProps {
 
 const EVENT_TYPES = [
   { key: 'all', label: 'All', icon: '🎯' },
-  { key: 'Boda', label: 'Weddings', icon: '💐' },
-  { key: 'Evento Corporativo', label: 'Corporate', icon: '🏢' },
-  { key: 'Fiesta de Cumpleaños', label: 'Birthdays', icon: '🎂' },
-  { key: 'Aniversario', label: 'Anniversaries', icon: '💕' },
-  { key: 'Bar/Bat Mitzvah', label: 'Bar/Bat Mitzvah', icon: '✡️' },
-  { key: 'Graduación', label: 'Graduations', icon: '🎓' },
-  { key: 'Otro', label: 'Others', icon: '📸' },
+  { key: 'Casamiento', label: 'Weddings', icon: '💐' },
+  { key: 'Corporativos', label: 'Corporate', icon: '🏢' },
+  {
+    key: 'Culturales y artísticos',
+    label: 'Cultural & Artistic',
+    icon: '🎶🎨',
+  },
+  { key: 'Photoshoot', label: 'Photoshoot', icon: '📸' },
+  { key: 'Prensa', label: 'Press', icon: '📰' },
+  { key: 'Otros', label: 'Others', icon: '🎭' },
 ];
 
 export default function GalleryFilter({

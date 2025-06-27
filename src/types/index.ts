@@ -36,12 +36,12 @@ export interface Video {
 
 // Event Types
 export type EventType =
-  | 'wedding'
-  | 'birthday'
-  | 'live-show'
-  | 'corporate'
-  | 'cultural'
-  | 'other';
+  | 'casamiento'
+  | 'corporativos'
+  | 'culturales-artisticos'
+  | 'photoshoot'
+  | 'prensa'
+  | 'otros';
 
 // FAQ Types
 export interface FAQ {
