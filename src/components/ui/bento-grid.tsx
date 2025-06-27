@@ -288,15 +288,21 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(
     'desktop'
   );
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  // Prevent hydration mismatch by only enabling random layout after hydration
   useEffect(() => {
+    setIsHydrated(true);
+
     const updateScreenSize = () => {
-      if (window.innerWidth < 768) {
-        setScreenSize('mobile');
-      } else if (window.innerWidth < 1024) {
-        setScreenSize('tablet');
-      } else {
-        setScreenSize('desktop');
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth < 768) {
+          setScreenSize('mobile');
+        } else if (window.innerWidth < 1024) {
+          setScreenSize('tablet');
+        } else {
+          setScreenSize('desktop');
+        }
       }
     };
 
@@ -319,9 +325,9 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   // Check if we're using aspect ratio mode (when items have aspectRatio)
   const useAspectRatioMode = items && items.some(item => item.aspectRatio);
 
-  // Create randomized and optimized layout
+  // Create randomized and optimized layout - only after hydration to prevent mismatch
   const optimizedItems = useMemo(() => {
-    if (!items || !enableRandomLayout) return null;
+    if (!items || !enableRandomLayout || !isHydrated) return null;
 
     // Shuffle items for random order
     const shuffledItems = shuffleArray(items);
@@ -337,7 +343,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({
         screenSize
       ),
     }));
-  }, [items, enableRandomLayout, screenSize]);
+  }, [items, enableRandomLayout, screenSize, isHydrated]);
 
   return (
     <motion.div
@@ -359,8 +365,8 @@ const BentoGrid: React.FC<BentoGridProps> = ({
           let size: BentoItemProps['size'] = 'small';
           let aspectRatio: string | undefined;
 
-          if (optimizedItems && enableRandomLayout) {
-            // Use optimized random layout
+          if (optimizedItems && enableRandomLayout && isHydrated) {
+            // Use optimized random layout only after hydration
             const optimizedItem = optimizedItems.find(
               item => item.originalIndex === index
             );

@@ -175,10 +175,9 @@ export abstract class BaseFirebaseService {
   }
 
   // Cache utilities
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected getCacheKey(
     operation: string,
-    params?: Record<string, any>
+    params?: Record<string, unknown>
   ): string {
     const paramString = params ? JSON.stringify(params) : '';
     return `${this.collectionName}:${operation}:${paramString}`;
@@ -449,7 +448,10 @@ export abstract class BaseFirebaseService {
     pagination: PaginationConfig,
     additionalConstraints: QueryConstraint[] = []
   ): Promise<ApiResponse<PaginatedResult<T>>> {
-    const cacheKey = this.getCacheKey('getPaginated', pagination);
+    const cacheKey = this.getCacheKey(
+      'getPaginated',
+      pagination as unknown as Record<string, unknown>
+    );
 
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
