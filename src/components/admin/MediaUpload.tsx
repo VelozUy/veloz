@@ -160,7 +160,7 @@ function FileMetadataEditor({
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="es">Español</TabsTrigger>
             <TabsTrigger value="en">English</TabsTrigger>
-            <TabsTrigger value="pt">Português</TabsTrigger>
+            <TabsTrigger value="pt">Português (Brasil)</TabsTrigger>
           </TabsList>
 
           <TabsContent value="es" className="space-y-3 mt-4">
@@ -224,7 +224,7 @@ function FileMetadataEditor({
                 onChange={e =>
                   handleMetadataChange('title', 'pt', e.target.value)
                 }
-                placeholder="Título em português"
+                                  placeholder="Título em português brasileiro"
               />
             </div>
             <div>
@@ -235,7 +235,7 @@ function FileMetadataEditor({
                 onChange={e =>
                   handleMetadataChange('description', 'pt', e.target.value)
                 }
-                placeholder="Descrição em português (para alt text e SEO)"
+                                  placeholder="Descrição em português brasileiro (para alt text e SEO)"
                 rows={2}
               />
             </div>

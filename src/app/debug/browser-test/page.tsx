@@ -290,7 +290,7 @@ export default function BrowserTestPage() {
               variant="outline" 
               onClick={() => window.open('/pt', '_blank')}
             >
-              Test Portuguese
+                                Test Português (Brasil)
             </Button>
             <Button 
               variant="outline" 

@@ -8,7 +8,7 @@ export const LANGUAGES: Language[] = ['es', 'en', 'pt', 'fr', 'zh'];
 export const LANGUAGE_NAMES: Record<Language, string> = {
   es: 'Español',
   en: 'English',
-  pt: 'Português',
+  pt: 'Português (Brasil)',
   fr: 'Français',
   zh: '中文',
 };

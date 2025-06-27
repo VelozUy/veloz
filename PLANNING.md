@@ -50,7 +50,7 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 ## 🌍 Multilanguage Support ✅ COMPLETED
 
 - **Static Localized Routes Implementation**: Build-time content generation for SEO optimization
-- **Supported Languages**: Spanish (es - base), English (en), Portuguese (pt)
+- **Supported Languages**: Spanish (es - base), English (en), Brazilian Portuguese (pt)
 - **Build-Time Data Fetching**: `scripts/build-data.js` fetches all admin-editable content from Firestore
 - **Static Content Generation**: Generates `content-es.json`, `content-en.json`, `content-pt.json` in `src/data/`
 - **TypeScript Integration**: Auto-generated types in `src/lib/static-content.generated.ts`
@@ -327,7 +327,7 @@ The build script generates:
 
 - `src/data/content-es.json` - Spanish content (base language)
 - `src/data/content-en.json` - English translations
-- `src/data/content-pt.json` - Portuguese translations
+- `src/data/content-pt.json` - Brazilian Portuguese translations
 - `src/lib/static-content.generated.ts` - TypeScript definitions
 
 Each content file includes:

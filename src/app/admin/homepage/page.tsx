@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import GlobalTranslationButtons from '@/components/admin/GlobalTranslationButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -101,9 +102,9 @@ interface HomepageContent {
 }
 
 const LANGUAGES = [
+  { code: 'es', name: 'Español' },
   { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'pt', name: 'Portuguese' },
+  { code: 'pt', name: 'Português (Brasil)' },
 ];
 
 const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
@@ -166,7 +167,7 @@ export default function HomepageAdminPage() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState('es');
   const [previewMode, setPreviewMode] = useState(false);
   const [connectionRetries, setConnectionRetries] = useState(0);
 
@@ -519,36 +520,6 @@ export default function HomepageAdminPage() {
           </div>
         </div>
 
-        {/* Language Selector */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Globe className="w-5 h-5 mr-2" />
-              Configuración de Idioma
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2">
-              <Label>Idioma de Edición:</Label>
-              <Select
-                value={currentLanguage}
-                onValueChange={setCurrentLanguage}
-              >
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {LANGUAGES.map(lang => (
-                    <SelectItem key={lang.code} value={lang.code}>
-                      {lang.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Success/Error Messages */}
         {success && (
           <Alert>
@@ -579,6 +550,90 @@ export default function HomepageAdminPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Text Content */}
           <div className="space-y-6">
+            {/* Language Configuration & Translation - Half Width */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center text-sm">
+                  <Globe className="w-4 h-4 mr-2" />
+                  Idioma y Traducción
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/* Language Selector */}
+                <div className="flex items-center space-x-2">
+                  <Label className="text-xs whitespace-nowrap">Editando:</Label>
+                  <Select
+                    value={currentLanguage}
+                    onValueChange={setCurrentLanguage}
+                  >
+                    <SelectTrigger className="w-32 h-8 text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {LANGUAGES.map(lang => (
+                        <SelectItem key={lang.code} value={lang.code}>
+                          {lang.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Translation Buttons */}
+                <div className="border-t pt-2">
+                  <Label className="text-xs font-medium mb-2 block">
+                    Auto-traducir:
+                  </Label>
+                  <GlobalTranslationButtons
+                    contentData={{
+                      headline: content.headline,
+                      subheadline: content.subheadline,
+                      primaryButtonText: content.ctaButtons.primary.text,
+                      secondaryButtonText: content.ctaButtons.secondary.text,
+                    }}
+                    onTranslated={(language, updates) => {
+                      setContent(prev => {
+                        if (!prev) return prev;
+                        
+                        return {
+                          ...prev,
+                          headline: {
+                            ...prev.headline,
+                            [language]: updates.headline?.[language] || prev.headline[language],
+                          },
+                          subheadline: {
+                            ...prev.subheadline,
+                            [language]: updates.subheadline?.[language] || prev.subheadline[language],
+                          },
+                          ctaButtons: {
+                            ...prev.ctaButtons,
+                            primary: {
+                              ...prev.ctaButtons.primary,
+                              text: {
+                                ...prev.ctaButtons.primary.text,
+                                [language]: updates.primaryButtonText?.[language] || prev.ctaButtons.primary.text[language],
+                              },
+                            },
+                            secondary: {
+                              ...prev.ctaButtons.secondary,
+                              text: {
+                                ...prev.ctaButtons.secondary.text,
+                                [language]: updates.secondaryButtonText?.[language] || prev.ctaButtons.secondary.text[language],
+                              },
+                            },
+                          },
+                        };
+                      });
+                    }}
+                    contentType="marketing"
+                    disabled={saving}
+                    showTranslateAll
+                    compact
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Headlines */}
             <Card>
               <CardHeader>
@@ -598,7 +653,7 @@ export default function HomepageAdminPage() {
                     value={
                       content.headline[
                         currentLanguage as keyof typeof content.headline
-                      ]
+                      ] || ''
                     }
                     onChange={e =>
                       setContent(prev =>
@@ -627,7 +682,7 @@ export default function HomepageAdminPage() {
                     value={
                       content.subheadline[
                         currentLanguage as keyof typeof content.subheadline
-                      ]
+                      ] || ''
                     }
                     onChange={e =>
                       setContent(prev =>
@@ -696,7 +751,7 @@ export default function HomepageAdminPage() {
                     value={
                       content.ctaButtons.primary.text[
                         currentLanguage as keyof typeof content.ctaButtons.primary.text
-                      ]
+                      ] || ''
                     }
                     onChange={e =>
                       setContent(prev =>
@@ -779,7 +834,7 @@ export default function HomepageAdminPage() {
                     value={
                       content.ctaButtons.secondary.text[
                         currentLanguage as keyof typeof content.ctaButtons.secondary.text
-                      ]
+                      ] || ''
                     }
                     onChange={e =>
                       setContent(prev =>

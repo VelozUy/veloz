@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PortugueseGalleryPage() {
-  // Get static content for Portuguese
+export default function BrazilianPortugueseGalleryPage() {
+  // Get static content for Brazilian Portuguese
   const content = getStaticContent('pt');
 
   return (

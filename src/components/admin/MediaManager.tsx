@@ -164,13 +164,13 @@ function SortableMediaItem({
           {media.title?.es || media.fileName}
         </h4>
         <p className="text-xs text-muted-foreground mb-2">
-          {(media.fileSize / (1024 * 1024)).toFixed(2)} MB • Order:{' '}
+          {(media.fileSize / (1024 * 1024)).toFixed(2)} MB • Orden:{' '}
           {media.order}
         </p>
         {media.featured && (
           <Badge variant="secondary" className="text-xs mb-2">
             <Star className="w-3 h-3 mr-1" />
-            Featured
+            Destacado
           </Badge>
         )}
         <div className="flex items-center justify-between">
@@ -255,10 +255,10 @@ function EditMediaModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit Media</DialogTitle>
-          <DialogDescription>
-            Update media information and metadata.
-          </DialogDescription>
+          <DialogTitle>Editar Medio</DialogTitle>
+                      <DialogDescription>
+              Actualizar información y metadatos del medio.
+            </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -316,7 +316,7 @@ function EditMediaModal({
               />
             </div>
             <div>
-              <Label htmlFor="title-pt">Título (Português)</Label>
+              <Label htmlFor="title-pt">Título (Português - Brasil)</Label>
               <Input
                 id="title-pt"
                 value={formData.title?.pt || ''}
@@ -326,7 +326,7 @@ function EditMediaModal({
                     title: { ...prev.title, pt: e.target.value },
                   }))
                 }
-                placeholder="Título em português"
+                                  placeholder="Título em português brasileiro"
               />
             </div>
           </div>
@@ -364,7 +364,7 @@ function EditMediaModal({
               />
             </div>
             <div>
-              <Label htmlFor="desc-pt">Descrição (Português)</Label>
+              <Label htmlFor="desc-pt">Descrição (Português - Brasil)</Label>
               <Textarea
                 id="desc-pt"
                 value={formData.description?.pt || ''}
@@ -374,7 +374,7 @@ function EditMediaModal({
                     description: { ...prev.description, pt: e.target.value },
                   }))
                 }
-                placeholder="Descrição em português"
+                                  placeholder="Descrição em português brasileiro"
                 rows={3}
               />
             </div>

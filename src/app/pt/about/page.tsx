@@ -111,7 +111,7 @@ export const dynamic = 'force-static';
 export const revalidate = 3600; // Revalidate every hour in production
 
 export default async function AboutPagePT() {
-  // Get static content for Portuguese locale
+  // Get static content for Brazilian Portuguese locale
   const content = getStaticContent('pt');
 
   // Fetch FAQs using build-time data or runtime fetching

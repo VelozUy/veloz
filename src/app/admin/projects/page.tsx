@@ -91,9 +91,9 @@ const EVENT_TYPES = [
 ];
 
 const LANGUAGES = [
+  { code: 'es', name: 'Español' },
   { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'pt', name: 'Portuguese' },
+  { code: 'pt', name: 'Português (Brasil)' },
 ];
 
 const PROJECTS_PER_PAGE = 12;
@@ -172,7 +172,7 @@ export default function ProjectsPage() {
   const handleDeleteProject = async (project: Project) => {
     if (
       !confirm(
-        `Are you sure you want to delete "${project.title.en}"? This will also delete all associated media. This action cannot be undone.`
+        `¿Estás seguro de que quieres eliminar "${project.title.es || project.title.en}"? Esto también eliminará todos los medios asociados. Esta acción no se puede deshacer.`
       )
     ) {
       return;
@@ -181,14 +181,14 @@ export default function ProjectsPage() {
     try {
       // TODO: Delete all associated media files and documents
       await deleteDoc(doc(db, 'projects', project.id));
-      setSuccess('Project deleted successfully!');
+      setSuccess('¡Proyecto eliminado exitosamente!');
       setTimeout(() => {
         setSuccess('');
         window.location.reload();
       }, 2000);
     } catch (error) {
       console.error('Error deleting project:', error);
-      setError('Failed to delete project');
+      setError('Error al eliminar proyecto');
     }
   };
 

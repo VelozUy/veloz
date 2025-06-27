@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function ContactPageContent() {
-  // Get static content for Portuguese
+  // Get static content for Brazilian Portuguese
   const content = getStaticContent('pt');
 
   // Cast translations to expected type for ContactForm

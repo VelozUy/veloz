@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import { MultiLanguageTranslationButtons, BatchTranslationButton } from '@/components/admin/TranslationButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -53,14 +54,14 @@ import {
 interface FAQ {
   id: string;
   question: {
-    en: string;
-    es: string;
-    pt: string;
+    en?: string;
+    es?: string;
+    pt?: string;
   };
   answer: {
-    en: string;
-    es: string;
-    pt: string;
+    en?: string;
+    es?: string;
+    pt?: string;
   };
   category?: string;
   order: number;
@@ -72,7 +73,7 @@ interface FAQ {
 const LANGUAGES = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
+  { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
 ];
 
 const FAQ_CATEGORIES = [
@@ -99,16 +100,16 @@ export default function FAQsAdminPage() {
 
   // Create form state
   const [createForm, setCreateForm] = useState({
-    question: { en: '', es: '', pt: '' },
-    answer: { en: '', es: '', pt: '' },
+    question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+    answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
     category: 'General',
     published: true,
   });
 
   // Edit form state
   const [editForm, setEditForm] = useState({
-    question: { en: '', es: '', pt: '' },
-    answer: { en: '', es: '', pt: '' },
+    question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+    answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
     category: 'General',
     published: true,
   });
@@ -189,8 +190,8 @@ export default function FAQsAdminPage() {
 
       setSuccess('Pregunta frecuente creada exitosamente!');
       setCreateForm({
-        question: { en: '', es: '', pt: '' },
-        answer: { en: '', es: '', pt: '' },
+        question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+        answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
         category: 'General',
         published: true,
       });
@@ -272,14 +273,14 @@ export default function FAQsAdminPage() {
   };
 
   const getTranslationStatus = (item: {
-    en: string;
-    es: string;
-    pt: string;
+    en?: string;
+    es?: string;
+    pt?: string;
   }) => {
     const translations = [
-      { lang: 'es', text: item.es },
-      { lang: 'en', text: item.en },
-      { lang: 'pt', text: item.pt },
+      { lang: 'es', text: item.es || '' },
+      { lang: 'en', text: item.en || '' },
+      { lang: 'pt', text: item.pt || '' },
     ];
 
     const completed = translations.filter(t => t.text.trim() !== '').length;
@@ -367,10 +368,27 @@ export default function FAQsAdminPage() {
 
                 {/* Question */}
                 <div className="space-y-2">
-                  <Label htmlFor={`question-${currentLanguage}`}>
-                    Pregunta (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={`question-${currentLanguage}`}>
+                      Pregunta (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <MultiLanguageTranslationButtons
+                      sourceText={createForm.question.es || ''}
+                      sourceLanguage="es"
+                      onTranslated={(language, translatedText) => {
+                        setCreateForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            [language]: translatedText,
+                          },
+                        }));
+                      }}
+                      contentType="faq"
+                      disabled={submitLoading}
+                    />
+                  </div>
                   <Input
                     id={`question-${currentLanguage}`}
                     value={
@@ -394,10 +412,27 @@ export default function FAQsAdminPage() {
 
                 {/* Answer */}
                 <div className="space-y-2">
-                  <Label htmlFor={`answer-${currentLanguage}`}>
-                    Respuesta (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={`answer-${currentLanguage}`}>
+                      Respuesta (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <MultiLanguageTranslationButtons
+                      sourceText={createForm.answer.es || ''}
+                      sourceLanguage="es"
+                      onTranslated={(language, translatedText) => {
+                        setCreateForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            [language]: translatedText,
+                          },
+                        }));
+                      }}
+                      contentType="faq"
+                      disabled={submitLoading}
+                    />
+                  </div>
                   <Textarea
                     id={`answer-${currentLanguage}`}
                     value={
@@ -699,10 +734,27 @@ export default function FAQsAdminPage() {
 
                 {/* Question */}
                 <div className="space-y-2">
-                  <Label htmlFor={`edit-question-${currentLanguage}`}>
-                    Pregunta (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={`edit-question-${currentLanguage}`}>
+                      Pregunta (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <MultiLanguageTranslationButtons
+                      sourceText={editForm.question.es || ''}
+                      sourceLanguage="es"
+                      onTranslated={(language, translatedText) => {
+                        setEditForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            [language]: translatedText,
+                          },
+                        }));
+                      }}
+                      contentType="faq"
+                      disabled={submitLoading}
+                    />
+                  </div>
                   <Input
                     id={`edit-question-${currentLanguage}`}
                     value={
@@ -725,10 +777,27 @@ export default function FAQsAdminPage() {
 
                 {/* Answer */}
                 <div className="space-y-2">
-                  <Label htmlFor={`edit-answer-${currentLanguage}`}>
-                    Respuesta (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={`edit-answer-${currentLanguage}`}>
+                      Respuesta (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <MultiLanguageTranslationButtons
+                      sourceText={editForm.answer.es || ''}
+                      sourceLanguage="es"
+                      onTranslated={(language, translatedText) => {
+                        setEditForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            [language]: translatedText,
+                          },
+                        }));
+                      }}
+                      contentType="faq"
+                      disabled={submitLoading}
+                    />
+                  </div>
                   <Textarea
                     id={`edit-answer-${currentLanguage}`}
                     value={

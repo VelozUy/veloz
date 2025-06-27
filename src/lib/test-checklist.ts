@@ -38,7 +38,7 @@ export const coreTests = {
     tests: [
       'Homepage loads (Spanish)',
       'English routes work (/en/)',
-      'Portuguese routes work (/pt/)',
+      'Brazilian Portuguese routes work (/pt/)',
       'About page loads',
       'Gallery page loads',
       'Contact page loads',

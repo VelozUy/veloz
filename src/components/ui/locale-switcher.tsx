@@ -18,7 +18,7 @@ interface LocaleSwitcherProps {
 const LOCALES = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+  { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
 ];
 
 export function LocaleSwitcher({

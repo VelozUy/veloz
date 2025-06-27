@@ -94,9 +94,9 @@ const EVENT_TYPES = [
 ];
 
 const LANGUAGES = [
+  { code: 'es', name: 'Español' },
   { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'pt', name: 'Portuguese' },
+  { code: 'pt', name: 'Português (Brasil)' },
 ];
 
 export default function UnifiedProjectEditPage({
