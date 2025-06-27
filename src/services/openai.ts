@@ -282,7 +282,7 @@ export class OpenAIService {
           {
             role: 'system',
             content:
-              'You are an expert in image analysis, SEO optimization, and multilingual content creation. Analyze images for photography/videography business purposes.',
+              'You are an expert SEO assistant for a professional photography and videography business. Your primary goal is to create descriptions that attract people who are actively searching to hire event photographers or videographers. Focus on business-driving keywords and location-based search terms that potential clients use when looking for photography services.',
           },
           {
             role: 'user',
@@ -479,21 +479,24 @@ export class OpenAIService {
    */
   private buildMediaAnalysisPrompt(request: MediaAnalysisRequest): string {
     let prompt =
-      'Analyze this image and provide a comprehensive analysis in JSON format with the following structure:\n\n';
+      'You are an expert SEO assistant for a professional photo and video service business. Your goal is to create descriptions that attract people searching to hire event photographers or videographers.\n\n';
+
+    prompt +=
+      'Analyze this image and provide SEO-focused analysis in JSON format:\n\n';
 
     prompt += `{
   "description": {
-    "es": "SEO-optimized description in Spanish (suitable for alt text and structured data)",
-    "en": "SEO-optimized description in English (suitable for alt text and structured data)", 
-    "pt": "SEO-optimized description in Brazilian Portuguese (suitable for alt text and structured data)"
+    "es": "SEO description targeting people searching for photographers/videographers in Spanish",
+    "en": "SEO description targeting people searching for photographers/videographers in English", 
+    "pt": "SEO description targeting people searching for photographers/videographers in Brazilian Portuguese"
   },
-  "tags": ["relevant", "keyword", "tags"],
+  "tags": ["relevant", "seo", "keywords"],
   "eventType": "wedding|corporate|birthday|quinceañera|other",
   "colorPalette": ["#color1", "#color2", "#color3"],
   "mood": "emotional description",
   "peopleCount": 0,
   "composition": "description of visual composition",
-  "seoKeywords": ["seo", "keywords"],
+  "seoKeywords": ["seo", "keywords", "for", "search"],
   "socialMediaCaptions": {
     "instagram": "Instagram-optimized caption",
     "facebook": "Facebook-optimized caption"
@@ -512,8 +515,34 @@ export class OpenAIService {
       prompt += '\n';
     }
 
+    prompt += 'CRITICAL SEO REQUIREMENTS:\n';
     prompt +=
-      'Focus on professional photography/videography business needs. Provide only valid JSON.';
+      '• Focus descriptions on attracting people searching to hire photographers/videographers\n';
+    prompt +=
+      '• Include service keywords: "event photographer", "wedding videographer", "professional photo session", "corporate photography", "birthday photographer"\n';
+    prompt +=
+      '• Add location context: "in Montevideo", "in Uruguay", "fotógrafo en Montevideo"\n';
+    prompt +=
+      '• Use long-tail keywords people actually search: "hire wedding photographer", "professional event videography service"\n';
+    prompt +=
+      '• Avoid generic artistic descriptions - every word should serve SEO intent\n';
+    prompt +=
+      '• Make descriptions actionable for people looking to hire services\n\n';
+
+    prompt += 'EXAMPLES OF GOOD SEO DESCRIPTIONS:\n';
+    prompt +=
+      '• "Wedding photographer in Montevideo captures emotional first dance under twinkle lights"\n';
+    prompt +=
+      '• "Professional corporate photographer documenting business event in Uruguay"\n';
+    prompt +=
+      '• "Event videographer filming quinceañera celebration with professional lighting"\n';
+    prompt +=
+      '• "Fotógrafo de bodas en Montevideo registrando momentos únicos de la ceremonia"\n';
+    prompt +=
+      '• "Serviço profissional de fotografia de eventos em Montevidéu"\n\n';
+
+    prompt +=
+      'Generate SEO-optimized content that helps potential clients find and hire our photography/videography services. Provide only valid JSON.';
 
     return prompt;
   }
