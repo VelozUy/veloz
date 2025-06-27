@@ -37,9 +37,6 @@ import {
   Calendar,
   MapPin,
   Upload,
-  Image as ImageIcon,
-  Video as VideoIcon,
-  RefreshCw,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import {
@@ -899,6 +896,48 @@ export default function UnifiedProjectEditPage({
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Floating Unsaved Changes Notice - Always Visible */}
+        <div className="fixed top-4 right-4 z-50">
+          <div
+            className={`
+              px-6 py-4 rounded-lg shadow-2xl transition-all duration-300 border-2
+              ${
+                hasUnsavedChanges
+                  ? 'bg-yellow-500 border-yellow-600 text-yellow-900 animate-pulse shadow-yellow-500/50'
+                  : 'bg-green-500 border-green-600 text-green-900 shadow-green-500/50'
+              }
+            `}
+          >
+            <div className="flex items-center space-x-3">
+              {hasUnsavedChanges ? (
+                <>
+                  <AlertTriangle className="w-6 h-6 animate-bounce" />
+                  <div className="flex flex-col">
+                    <span className="font-bold text-lg">
+                      ⚠️ UNSAVED CHANGES
+                    </span>
+                    <span className="text-sm opacity-90">
+                      Don&apos;t forget to save your work!
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-6 h-6 bg-green-700 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xs">✓</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-lg">All Changes Saved</span>
+                    <span className="text-sm opacity-90">
+                      Your work is secure
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </AdminLayout>
   );
