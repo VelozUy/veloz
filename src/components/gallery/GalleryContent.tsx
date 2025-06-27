@@ -7,7 +7,7 @@ import { db } from '@/lib/firebase';
 import MediaLightbox from './MediaLightbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, AlertCircle, Play } from 'lucide-react';
+import { RefreshCw, AlertCircle } from 'lucide-react';
 import { BentoGrid } from '@/components/ui/bento-grid';
 import Image from 'next/image';
 
@@ -62,6 +62,22 @@ export default function GalleryContent() {
   // Video refs for intersection observer
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
+  // Utility function to add timeout to promises
+  const withTimeout = <T,>(
+    promise: Promise<T>,
+    timeoutMs: number
+  ): Promise<T> => {
+    return Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        setTimeout(
+          () => reject(new Error(`Operation timed out after ${timeoutMs}ms`)),
+          timeoutMs
+        );
+      }),
+    ]);
+  };
+
   // Load projects and their media
   useEffect(() => {
     const loadGalleryData = async () => {
@@ -69,13 +85,16 @@ export default function GalleryContent() {
         setLoading(true);
         setError(null);
 
-        // Load published projects
+        // Load published projects with timeout protection
         const projectsQuery = query(
           collection(db, 'projects'),
           where('status', '==', 'published')
         );
 
-        const projectsSnapshot = await getDocs(projectsQuery);
+        const projectsSnapshot = await withTimeout(
+          getDocs(projectsQuery),
+          10000 // 10 second timeout
+        );
         const projectsList: Project[] = [];
 
         projectsSnapshot.forEach(doc => {
@@ -93,7 +112,7 @@ export default function GalleryContent() {
 
         setProjects(projectsList);
 
-        // Load media for all projects
+        // Load media for all projects with timeout protection and better error handling
         const mediaPromises = projectsList.map(async project => {
           try {
             const mediaQuery = query(
@@ -101,7 +120,11 @@ export default function GalleryContent() {
               where('projectId', '==', project.id),
               orderBy('order', 'asc')
             );
-            const mediaSnapshot = await getDocs(mediaQuery);
+
+            const mediaSnapshot = await withTimeout(
+              getDocs(mediaQuery),
+              8000 // 8 second timeout per project
+            );
             const projectMedia: MediaItem[] = [];
 
             mediaSnapshot.forEach(mediaDoc => {
@@ -127,7 +150,11 @@ export default function GalleryContent() {
                   collection(db, 'projectMedia'),
                   where('projectId', '==', project.id)
                 );
-                const fallbackSnapshot = await getDocs(fallbackQuery);
+
+                const fallbackSnapshot = await withTimeout(
+                  getDocs(fallbackQuery),
+                  8000 // 8 second timeout for fallback
+                );
                 const fallbackMedia: MediaItem[] = [];
 
                 fallbackSnapshot.forEach(mediaDoc => {
@@ -149,15 +176,39 @@ export default function GalleryContent() {
               }
             }
 
+            // For timeout or other errors, return empty array instead of failing
+            if (error instanceof Error && error.message.includes('timeout')) {
+              console.warn(
+                `Media query timed out for project ${project.id}, skipping`
+              );
+            }
             return [];
           }
         });
 
-        const allProjectMedia = await Promise.all(mediaPromises);
-        const flattenedMedia = allProjectMedia.flat();
+        // Use Promise.allSettled instead of Promise.all to handle partial failures
+        const mediaResults = await Promise.allSettled(mediaPromises);
+        const allProjectMedia = mediaResults
+          .filter(
+            (result): result is PromiseFulfilledResult<MediaItem[]> =>
+              result.status === 'fulfilled'
+          )
+          .map(result => result.value)
+          .flat();
+
+        // Log any rejected promises for debugging
+        const rejectedResults = mediaResults.filter(
+          result => result.status === 'rejected'
+        );
+        if (rejectedResults.length > 0) {
+          console.warn(
+            `${rejectedResults.length} media queries failed:`,
+            rejectedResults
+          );
+        }
 
         // Sort media by project featured status, then by order, then by date
-        flattenedMedia.sort((a, b) => {
+        allProjectMedia.sort((a, b) => {
           const projectA = projectsList.find(p => p.id === a.projectId);
           const projectB = projectsList.find(p => p.id === b.projectId);
 
@@ -181,11 +232,19 @@ export default function GalleryContent() {
           return 0;
         });
 
-        setAllMedia(flattenedMedia);
+        setAllMedia(allProjectMedia);
         setLoading(false);
       } catch (error) {
         console.error('Error loading gallery data:', error);
-        setError('Failed to load gallery. Please try again.');
+
+        // Provide more specific error messages
+        if (error instanceof Error && error.message.includes('timeout')) {
+          setError(
+            'Gallery is taking longer than expected to load. Please check your internet connection and try again.'
+          );
+        } else {
+          setError('Failed to load gallery. Please try again.');
+        }
         setLoading(false);
       }
     };
@@ -346,21 +405,6 @@ export default function GalleryContent() {
 
                   {/* Enhanced hover effect */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-
-                  {/* Video play indicator */}
-                  {media.type === 'video' && (
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                  )}
                 </div>
               );
             })}

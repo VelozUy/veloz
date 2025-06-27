@@ -2,6 +2,13 @@
 
 _Last updated: December 2024_
 
+## 🚨 Critical Issues & Fixes
+
+- [x] **[Critical] Fix React hydration mismatch in BentoGrid component** - Resolved hydration errors by adding `isHydrated` state to prevent random layout generation during SSR. Added proper window existence checks and ensured consistent server/client rendering _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[Critical] Fix Firebase timeout errors in gallery** - Added timeout protection to all Firebase queries in GalleryContent component. Implemented `withTimeout` utility function with 10s timeout for projects and 8s per project media query. Replaced `Promise.all` with `Promise.allSettled` for graceful partial failure handling. Prevents gallery from hanging indefinitely on slow connections _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+
+---
+
 ## 🏗️ Phase 1: Project Setup & Infrastructure
 
 ### Legacy i18n Setup (Replaced by Static Routes)
