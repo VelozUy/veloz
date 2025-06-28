@@ -225,8 +225,8 @@ const BentoItem: React.FC<BentoItemProps> = ({
 
   return (
     <BlurFade
-      delay={index * 0.05} // Stagger animation based on index
-      duration={0.6}
+      delay={index * 0.02} // Stagger animation based on index
+      duration={0.15}
       direction="up"
       inViewMargin="0px" // Trigger exactly when entering viewport
       threshold={0.05} // Require 5% of element to be visible
