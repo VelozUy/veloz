@@ -118,22 +118,51 @@ export default function StaticGalleryContent({
     return lookup;
   }, [projects]);
 
-  // Video autoplay intersection observer
+  // Video autoplay intersection observer with proper promise handling
   useEffect(() => {
+    const playingVideos = new Set<HTMLVideoElement>();
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           const video = entry.target as HTMLVideoElement;
+
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             // Video is more than 50% visible, play it
-            video.play().catch(console.error);
+            if (!playingVideos.has(video) && video.paused) {
+              playingVideos.add(video);
+              const playPromise = video.play();
+
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    // Video started playing successfully
+                  })
+                  .catch(error => {
+                    // Auto-play was prevented or interrupted
+                    playingVideos.delete(video);
+                    console.debug('Video autoplay prevented:', error);
+                  });
+              }
+            }
           } else {
             // Video is not visible enough, pause it
-            video.pause();
+            if (playingVideos.has(video) && !video.paused) {
+              playingVideos.delete(video);
+              // Add small delay to prevent interrupting play() promise
+              setTimeout(() => {
+                if (!entry.isIntersecting) {
+                  video.pause();
+                }
+              }, 100);
+            }
           }
         });
       },
-      { threshold: 0.5 }
+      {
+        threshold: 0.5,
+        rootMargin: '50px', // Add some margin to reduce rapid triggering
+      }
     );
 
     // Observe all videos
@@ -143,6 +172,7 @@ export default function StaticGalleryContent({
 
     return () => {
       observer.disconnect();
+      playingVideos.clear();
     };
   }, [allMedia]); // Re-run when media changes
 

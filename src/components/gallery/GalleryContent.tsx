@@ -252,26 +252,50 @@ export default function GalleryContent() {
     loadGalleryData();
   }, []);
 
-  // Video autoplay with intersection observer
+  // Video autoplay with intersection observer - improved promise handling
   useEffect(() => {
+    const playingVideos = new Set<HTMLVideoElement>();
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           const video = entry.target as HTMLVideoElement;
+
           if (entry.isIntersecting) {
             // Video is in viewport - start playing
-            video.play().catch(error => {
-              console.log('Autoplay prevented:', error);
-            });
+            if (!playingVideos.has(video) && video.paused) {
+              playingVideos.add(video);
+              const playPromise = video.play();
+
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    // Video started playing successfully
+                  })
+                  .catch(error => {
+                    // Auto-play was prevented or interrupted
+                    playingVideos.delete(video);
+                    console.debug('Video autoplay prevented:', error);
+                  });
+              }
+            }
           } else {
             // Video is out of viewport - pause
-            video.pause();
+            if (playingVideos.has(video) && !video.paused) {
+              playingVideos.delete(video);
+              // Add small delay to prevent interrupting play() promise
+              setTimeout(() => {
+                if (!entry.isIntersecting) {
+                  video.pause();
+                }
+              }, 100);
+            }
           }
         });
       },
       {
         threshold: 0.5, // Video needs to be 50% visible to autoplay
-        rootMargin: '0px',
+        rootMargin: '50px', // Add margin to reduce rapid triggering
       }
     );
 
@@ -284,6 +308,7 @@ export default function GalleryContent() {
 
     return () => {
       observer.disconnect();
+      playingVideos.clear();
     };
   }, [allMedia]); // Re-run when media changes
 
