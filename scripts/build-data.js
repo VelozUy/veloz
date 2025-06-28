@@ -146,7 +146,7 @@ const STATIC_TRANSLATIONS = {
     widget: {
       button: {
         desktop: '¿En qué evento estás pensando?',
-        mobile: '¿Tu evento?',
+        mobile: '¿En qué evento estás pensando?',
       },
       dialog: {
         title: 'Cuéntanos sobre tu evento',

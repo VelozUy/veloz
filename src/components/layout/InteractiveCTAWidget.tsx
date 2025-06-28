@@ -260,10 +260,10 @@ export function InteractiveCTAWidget() {
     const checkMobile = () => window.innerWidth < 768;
     setIsMobile(checkMobile());
 
-    // Add a small delay for the entrance animation
+    // Add a small delay for the entrance animation to feel more natural
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 100);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -338,7 +338,10 @@ export function InteractiveCTAWidget() {
       setDwellProgress(progress);
 
       if (progress >= 1) {
-        setIsUserEngaged(true);
+        // Add a small delay before showing the widget to make it feel more natural
+        setTimeout(() => {
+          setIsUserEngaged(true);
+        }, 300);
         clearInterval(progressInterval);
       }
     }, 100); // Update progress every 100ms for smooth animation
@@ -355,9 +358,11 @@ export function InteractiveCTAWidget() {
   const getWidgetTransformStyle = (): React.CSSProperties => {
     if (!mounted || !isVisible || !isUserEngaged) {
       return {
-        transform: 'translateY(20px) scale(0.9)',
+        transform: 'translateY(30px) scale(0.85) rotate(-2deg)',
         opacity: 0,
-        transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        filter: 'blur(2px)',
+        transition:
+          'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out, filter 0.3s ease-out',
         // Default positioning during load
         top: 'auto',
         bottom: '80px', // Above bottom nav on mobile
@@ -389,9 +394,14 @@ export function InteractiveCTAWidget() {
     }
 
     return {
-      transform: 'translateY(0) scale(1)',
+      transform: 'translateY(0) scale(1.02) rotate(0deg)',
       opacity: 1,
-      transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      filter: 'blur(0px)',
+      transition:
+        'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease-out, filter 0.4s ease-out, box-shadow 0.5s ease-out',
+      boxShadow:
+        '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
+      animation: 'breathe 4s ease-in-out infinite',
       ...positioning,
     };
   };
@@ -685,16 +695,19 @@ export function InteractiveCTAWidget() {
         {/* Progress indicator ring - shows when user is dwelling but not yet engaged */}
         {mounted && dwellProgress > 0 && !isUserEngaged && (
           <div
-            className="absolute inset-0 rounded-full border-2 border-primary/30"
+            className="absolute inset-0 rounded-full border-2 border-primary/20 animate-pulse"
             style={{
-              background: `conic-gradient(from 0deg, transparent 0deg, rgba(var(--primary), 0.3) ${dwellProgress * 360}deg, transparent ${dwellProgress * 360}deg)`,
+              background: `conic-gradient(from -90deg, transparent 0deg, rgba(var(--primary), ${0.2 + dwellProgress * 0.3}) ${dwellProgress * 360}deg, transparent ${dwellProgress * 360}deg)`,
+              transform: `scale(${1 + dwellProgress * 0.05}) rotate(${dwellProgress * 10}deg)`,
+              transition: 'all 0.2s ease-out',
+              filter: `blur(${Math.max(0, 1 - dwellProgress)}px)`,
             }}
           />
         )}
 
         <Button
           onClick={() => setIsOpen(true)}
-          className="relative rounded-full shadow-lg hover:shadow-xl h-12 px-4 md:px-6 w-full"
+          className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1"
           size="lg"
         >
           <MessageCircle className="w-5 h-5 mr-2" />

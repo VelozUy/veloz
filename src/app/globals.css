@@ -198,6 +198,17 @@ html {
   border-radius: 4px;
 }
 
+/* Subtle breathing animation for the CTA widget */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
