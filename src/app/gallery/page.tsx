@@ -39,10 +39,8 @@ export default function GalleryPage() {
       {/* Gallery Content - static rendered */}
       <StaticGalleryContent content={content} />
 
-      {/* CTA Widget - positioned absolutely */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <InteractiveCTAWidget />
-      </div>
+      {/* CTA Widget */}
+      <InteractiveCTAWidget />
     </div>
   );
 }

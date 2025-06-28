@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -234,6 +234,114 @@ export function InteractiveCTAWidget() {
   const [surveyData, setSurveyData] = useState<SurveyData>({});
   const [phoneInput, setPhoneInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Scroll direction and positioning state
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Default to mobile to avoid hydration issues
+
+  // Handle mounting to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+
+    // Set initial mobile state
+    const checkMobile = () => window.innerWidth < 768;
+    setIsMobile(checkMobile());
+
+    // Add a small delay for the entrance animation
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle scroll direction detection and window resize
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down and past initial threshold
+        setScrollDirection('down');
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setScrollDirection('up');
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    const handleResize = () => {
+      // Update mobile state and force re-render on resize
+      const checkMobile = () => window.innerWidth < 768;
+      setIsMobile(checkMobile());
+      setIsVisible(false);
+      setTimeout(() => setIsVisible(true), 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [lastScrollY, mounted]);
+
+  // Calculate widget base position classes
+  const getWidgetBaseClasses = () => {
+    return 'fixed right-4 z-40';
+  };
+
+  // Add smooth transform animation styles with positioning and entrance animation
+  const getWidgetTransformStyle = (): React.CSSProperties => {
+    if (!mounted || !isVisible) {
+      return {
+        transform: 'translateY(20px) scale(0.9)',
+        opacity: 0,
+        transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        // Default positioning during load
+        top: 'auto',
+        bottom: '80px', // Above bottom nav on mobile
+      };
+    }
+
+    // Determine position based on screen size and scroll direction
+    let positioning: React.CSSProperties = {};
+
+    if (isMobile) {
+      // Mobile: Dynamic positioning based on scroll direction
+      if (scrollDirection === 'down') {
+        positioning = {
+          top: '96px', // Below top nav (96px = 6rem = top-24)
+          bottom: 'auto',
+        };
+      } else {
+        positioning = {
+          top: 'auto',
+          bottom: '80px', // Above bottom nav (80px = 5rem = bottom-20)
+        };
+      }
+    } else {
+      // Desktop: Always at top
+      positioning = {
+        top: '96px', // Below top nav
+        bottom: 'auto',
+      };
+    }
+
+    return {
+      transform: 'translateY(0) scale(1)',
+      opacity: 1,
+      transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      ...positioning,
+    };
+  };
 
   const eventTypes = [
     {
@@ -519,7 +627,8 @@ export function InteractiveCTAWidget() {
     <>
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 h-12 px-4 md:px-6"
+        className={`${getWidgetBaseClasses()} rounded-full shadow-lg hover:shadow-xl h-12 px-4 md:px-6`}
+        style={getWidgetTransformStyle()}
         size="lg"
       >
         <MessageCircle className="w-5 h-5 mr-2" />

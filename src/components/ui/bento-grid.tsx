@@ -329,7 +329,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   return (
     <div
       className={cn(
-        'grid gap-1 p-1', // Minimal gap and padding for full screen utilization
+        'grid gap-1 p-1 w-full max-w-full overflow-hidden', // Added width constraints and overflow hidden
         useAspectRatioMode
           ? `${getGridCols()} auto-rows-[minmax(100px,auto)]` // Smaller minimum height for full screen
           : `auto-rows-[100px] ${getGridCols()}`, // Smaller row height for full screen

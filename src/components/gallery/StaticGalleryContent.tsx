@@ -241,7 +241,7 @@ export default function StaticGalleryContent({
   };
 
   return (
-    <div className="gallery-container min-h-screen w-full bg-background">
+    <div className="gallery-container w-full">
       {/* SEO Structured Data */}
       <script
         type="application/ld+json"

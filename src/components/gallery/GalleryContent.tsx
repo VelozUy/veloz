@@ -385,7 +385,7 @@ export default function GalleryContent() {
     <>
       {/* Bento Grid Gallery */}
       {allMedia.length > 0 ? (
-        <div className="min-h-screen bg-background pt-4 pb-8">
+        <div className="w-full pt-4 pb-8">
           <BentoGrid
             className="max-w-7xl mx-auto"
             items={allMedia.map(media => ({
