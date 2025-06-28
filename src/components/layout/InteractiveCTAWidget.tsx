@@ -242,6 +242,16 @@ export function InteractiveCTAWidget() {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(true); // Default to mobile to avoid hydration issues
 
+  // Dwell time tracking for user engagement
+  const [dwellStartTime, setDwellStartTime] = useState<number | null>(null);
+  const [dwellPosition, setDwellPosition] = useState<number>(0);
+  const [isUserEngaged, setIsUserEngaged] = useState(false);
+  const [dwellProgress, setDwellProgress] = useState(0); // Progress from 0 to 1
+
+  // Dwell time constants
+  const DWELL_THRESHOLD = 5000; // 5 seconds in milliseconds
+  const MOVEMENT_THRESHOLD = 100; // 100px allowed movement before resetting dwell timer
+
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -258,19 +268,34 @@ export function InteractiveCTAWidget() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle scroll direction detection and window resize
+  // Handle scroll direction detection, dwell time tracking, and window resize
   useEffect(() => {
     if (!mounted) return;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
+      // Update scroll direction
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down and past initial threshold
         setScrollDirection('down');
       } else if (currentScrollY < lastScrollY) {
-        // Scrolling up
         setScrollDirection('up');
+      }
+
+      // Check for significant movement that would reset dwell timer
+      const hasMovedSignificantly =
+        dwellStartTime !== null &&
+        Math.abs(currentScrollY - dwellPosition) > MOVEMENT_THRESHOLD;
+
+      if (hasMovedSignificantly) {
+        // User moved significantly, reset dwell tracking
+        setDwellStartTime(null);
+        setIsUserEngaged(false);
+      } else if (dwellStartTime === null) {
+        // Start new dwell timer
+        const startTime = Date.now();
+        setDwellStartTime(startTime);
+        setDwellPosition(currentScrollY);
       }
 
       setLastScrollY(currentScrollY);
@@ -291,7 +316,35 @@ export function InteractiveCTAWidget() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
-  }, [lastScrollY, mounted]);
+  }, [
+    lastScrollY,
+    mounted,
+    dwellStartTime,
+    dwellPosition,
+    DWELL_THRESHOLD,
+    MOVEMENT_THRESHOLD,
+  ]);
+
+  // Handle dwell timer and progress tracking
+  useEffect(() => {
+    if (!mounted || dwellStartTime === null) {
+      setDwellProgress(0);
+      return;
+    }
+
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - dwellStartTime;
+      const progress = Math.min(elapsed / DWELL_THRESHOLD, 1);
+      setDwellProgress(progress);
+
+      if (progress >= 1) {
+        setIsUserEngaged(true);
+        clearInterval(progressInterval);
+      }
+    }, 100); // Update progress every 100ms for smooth animation
+
+    return () => clearInterval(progressInterval);
+  }, [dwellStartTime, mounted, DWELL_THRESHOLD]);
 
   // Calculate widget base position classes
   const getWidgetBaseClasses = () => {
@@ -300,7 +353,7 @@ export function InteractiveCTAWidget() {
 
   // Add smooth transform animation styles with positioning and entrance animation
   const getWidgetTransformStyle = (): React.CSSProperties => {
-    if (!mounted || !isVisible) {
+    if (!mounted || !isVisible || !isUserEngaged) {
       return {
         transform: 'translateY(20px) scale(0.9)',
         opacity: 0,
@@ -625,20 +678,34 @@ export function InteractiveCTAWidget() {
 
   return (
     <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        className={`${getWidgetBaseClasses()} rounded-full shadow-lg hover:shadow-xl h-12 px-4 md:px-6`}
+      <div
+        className={`${getWidgetBaseClasses()}`}
         style={getWidgetTransformStyle()}
-        size="lg"
       >
-        <MessageCircle className="w-5 h-5 mr-2" />
-        <span className="hidden sm:inline">
-          {getTranslation('widget.button.desktop')}
-        </span>
-        <span className="sm:hidden">
-          {getTranslation('widget.button.mobile')}
-        </span>
-      </Button>
+        {/* Progress indicator ring - shows when user is dwelling but not yet engaged */}
+        {mounted && dwellProgress > 0 && !isUserEngaged && (
+          <div
+            className="absolute inset-0 rounded-full border-2 border-primary/30"
+            style={{
+              background: `conic-gradient(from 0deg, transparent 0deg, rgba(var(--primary), 0.3) ${dwellProgress * 360}deg, transparent ${dwellProgress * 360}deg)`,
+            }}
+          />
+        )}
+
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="relative rounded-full shadow-lg hover:shadow-xl h-12 px-4 md:px-6 w-full"
+          size="lg"
+        >
+          <MessageCircle className="w-5 h-5 mr-2" />
+          <span className="hidden sm:inline">
+            {getTranslation('widget.button.desktop')}
+          </span>
+          <span className="sm:hidden">
+            {getTranslation('widget.button.mobile')}
+          </span>
+        </Button>
+      </div>
 
       <Dialog open={isOpen} onOpenChange={closeSurvey}>
         <DialogContent className="sm:max-w-md">
