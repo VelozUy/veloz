@@ -240,10 +240,10 @@ const BentoItem: React.FC<BentoItemProps> = ({
     >
       <motion.div
         className={cn(
-          'relative w-full h-full group cursor-pointer overflow-hidden rounded-xl bg-card',
+          'relative w-full h-full group cursor-pointer overflow-hidden rounded-sm bg-card',
           'hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300',
-          'hover:scale-[1.02] hover:-translate-y-1',
-          'border border-border/50 hover:border-primary/20'
+          'hover:scale-[1.01] hover:-translate-y-0.5',
+          'border border-border/30 hover:border-primary/20'
         )}
         onClick={onClick}
         whileHover={{
@@ -297,9 +297,9 @@ const BentoGrid: React.FC<BentoGridProps> = ({
       case 'mobile':
         return 'grid-cols-2';
       case 'tablet':
-        return 'grid-cols-3';
-      case 'desktop':
         return 'grid-cols-4';
+      case 'desktop':
+        return 'grid-cols-6';
     }
   };
 
@@ -329,10 +329,10 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   return (
     <div
       className={cn(
-        'grid gap-3 p-4', // Smaller gap for better space utilization
+        'grid gap-1 p-1', // Minimal gap and padding for full screen utilization
         useAspectRatioMode
-          ? `${getGridCols()} auto-rows-[minmax(120px,auto)]` // Smaller minimum height
-          : `auto-rows-[120px] ${getGridCols()}`, // Smaller row height
+          ? `${getGridCols()} auto-rows-[minmax(100px,auto)]` // Smaller minimum height for full screen
+          : `auto-rows-[100px] ${getGridCols()}`, // Smaller row height for full screen
         className
       )}
     >

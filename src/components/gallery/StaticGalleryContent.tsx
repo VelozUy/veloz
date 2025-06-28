@@ -211,7 +211,7 @@ export default function StaticGalleryContent({
   };
 
   return (
-    <div className="gallery-container min-h-screen bg-background">
+    <div className="gallery-container min-h-screen w-full bg-background">
       {/* SEO Structured Data */}
       <script
         type="application/ld+json"
@@ -224,12 +224,12 @@ export default function StaticGalleryContent({
       <BentoGrid
         items={bentoMedia}
         enableRandomLayout={true}
-        className="max-w-7xl mx-auto"
+        className="w-full h-full"
       >
         {bentoMedia.map((media, index) => (
           <div
             key={media.id}
-            className="group relative overflow-hidden rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300 cursor-pointer h-full w-full"
+            className="group relative overflow-hidden rounded-sm bg-card/50 hover:bg-card/80 transition-all duration-300 cursor-pointer h-full w-full"
             onClick={() => openLightbox(index)}
           >
             {media.type === 'photo' ? (

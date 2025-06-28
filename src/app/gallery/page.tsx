@@ -35,7 +35,7 @@ export default function GalleryPage() {
   const content = getStaticContent('es');
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen w-full bg-background overflow-x-hidden">
       {/* Gallery Content - static rendered */}
       <StaticGalleryContent content={content} />
 
