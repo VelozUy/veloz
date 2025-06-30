@@ -4,3 +4,4 @@
 export * from './firebase';
 export * from './email';
 export * from './openai';
+export * from './form-content';

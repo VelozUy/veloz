@@ -5,7 +5,7 @@ import { StorageError } from 'firebase/storage';
 import type { ApiResponse } from '@/types';
 
 // Error types and categories
-export type ErrorCategory = 
+export type ErrorCategory =
   | 'network'
   | 'auth'
   | 'permission'
@@ -27,7 +27,7 @@ export interface ErrorDetails {
   userMessage: string;
   retryable: boolean;
   suggestedAction?: string;
-  technicalDetails?: Record<string, any>;
+  technicalDetails?: Record<string, unknown>;
 }
 
 export interface RetryOptions {
@@ -53,113 +53,113 @@ const DEFAULT_RETRY_OPTIONS: Required<RetryOptions> = {
     'data-loss',
     'network-request-failed',
     'storage/retry-limit-exceeded',
-    'storage/canceled'
+    'storage/canceled',
   ],
-  onRetry: () => {}
+  onRetry: () => {},
 };
 
 // User-friendly error messages in Spanish (primary language)
 const ERROR_MESSAGES: Record<string, { es: string; en: string; pt: string }> = {
   // Network errors
-  'unavailable': {
+  unavailable: {
     es: 'El servicio no está disponible temporalmente. Intenta nuevamente en unos momentos.',
     en: 'Service temporarily unavailable. Please try again in a few moments.',
-    pt: 'Serviço temporariamente indisponível. Tente novamente em alguns momentos.'
+    pt: 'Serviço temporariamente indisponível. Tente novamente em alguns momentos.',
   },
   'network-request-failed': {
     es: 'Error de conexión. Verifica tu conexión a internet.',
     en: 'Connection error. Please check your internet connection.',
-    pt: 'Erro de conexão. Verifique sua conexão com a internet.'
+    pt: 'Erro de conexão. Verifique sua conexão com a internet.',
   },
   'deadline-exceeded': {
     es: 'La operación tardó demasiado tiempo. Intenta nuevamente.',
     en: 'Operation timed out. Please try again.',
-    pt: 'Operação expirou. Tente novamente.'
+    pt: 'Operação expirou. Tente novamente.',
   },
-  
+
   // Auth errors
-  'unauthenticated': {
+  unauthenticated: {
     es: 'Debes iniciar sesión para realizar esta acción.',
     en: 'You must sign in to perform this action.',
-    pt: 'Você deve fazer login para executar esta ação.'
+    pt: 'Você deve fazer login para executar esta ação.',
   },
   'permission-denied': {
     es: 'No tienes permisos para realizar esta acción.',
-    en: 'You don\'t have permission to perform this action.',
-    pt: 'Você não tem permissão para executar esta ação.'
+    en: "You don't have permission to perform this action.",
+    pt: 'Você não tem permissão para executar esta ação.',
   },
-  
+
   // Validation errors
   'invalid-argument': {
     es: 'Los datos proporcionados no son válidos.',
     en: 'The provided data is not valid.',
-    pt: 'Os dados fornecidos não são válidos.'
+    pt: 'Os dados fornecidos não são válidos.',
   },
   'failed-precondition': {
     es: 'No se pueden completar las condiciones necesarias para esta operación.',
     en: 'Required conditions for this operation cannot be met.',
-    pt: 'As condições necessárias para esta operação não podem ser atendidas.'
+    pt: 'As condições necessárias para esta operação não podem ser atendidas.',
   },
-  
+
   // Resource errors
   'not-found': {
     es: 'El recurso solicitado no fue encontrado.',
     en: 'The requested resource was not found.',
-    pt: 'O recurso solicitado não foi encontrado.'
+    pt: 'O recurso solicitado não foi encontrado.',
   },
   'already-exists': {
     es: 'El recurso ya existe.',
     en: 'The resource already exists.',
-    pt: 'O recurso já existe.'
+    pt: 'O recurso já existe.',
   },
-  
+
   // Quota errors
   'resource-exhausted': {
     es: 'Se ha excedido el límite de uso del servicio.',
     en: 'Service usage limit has been exceeded.',
-    pt: 'O limite de uso do serviço foi excedido.'
+    pt: 'O limite de uso do serviço foi excedido.',
   },
   'quota-exceeded': {
     es: 'Se ha excedido la cuota disponible.',
     en: 'Available quota has been exceeded.',
-    pt: 'A cota disponível foi excedida.'
+    pt: 'A cota disponível foi excedida.',
   },
-  
+
   // Server errors
-  'internal': {
+  internal: {
     es: 'Error interno del servidor. Intenta nuevamente más tarde.',
     en: 'Internal server error. Please try again later.',
-    pt: 'Erro interno do servidor. Tente novamente mais tarde.'
+    pt: 'Erro interno do servidor. Tente novamente mais tarde.',
   },
   'data-loss': {
     es: 'Se detectó pérdida de datos. Contacta al soporte técnico.',
     en: 'Data loss detected. Please contact technical support.',
-    pt: 'Perda de dados detectada. Entre em contato com o suporte técnico.'
+    pt: 'Perda de dados detectada. Entre em contato com o suporte técnico.',
   },
-  
+
   // Storage errors
   'storage/unauthorized': {
     es: 'No tienes autorización para acceder a este archivo.',
     en: 'You are not authorized to access this file.',
-    pt: 'Você não tem autorização para acessar este arquivo.'
+    pt: 'Você não tem autorização para acessar este arquivo.',
   },
   'storage/quota-exceeded': {
     es: 'Se ha excedido el límite de almacenamiento.',
     en: 'Storage limit has been exceeded.',
-    pt: 'O limite de armazenamento foi excedido.'
+    pt: 'O limite de armazenamento foi excedido.',
   },
   'storage/retry-limit-exceeded': {
     es: 'Se ha excedido el límite de intentos de subida.',
     en: 'Upload retry limit has been exceeded.',
-    pt: 'O limite de tentativas de upload foi excedido.'
+    pt: 'O limite de tentativas de upload foi excedido.',
   },
-  
+
   // Default fallback
-  'unknown': {
+  unknown: {
     es: 'Ha ocurrido un error inesperado. Intenta nuevamente.',
     en: 'An unexpected error occurred. Please try again.',
-    pt: 'Ocorreu um erro inesperado. Tente novamente.'
-  }
+    pt: 'Ocorreu um erro inesperado. Tente novamente.',
+  },
 };
 
 /**
@@ -169,7 +169,11 @@ const ERROR_MESSAGES: Record<string, { es: string; en: string; pt: string }> = {
 export class FirebaseErrorHandler {
   private static instance: FirebaseErrorHandler;
   private language: 'es' | 'en' | 'pt' = 'es';
-  private errorLog: Array<{ timestamp: Date; error: ErrorDetails; context?: string }> = [];
+  private errorLog: Array<{
+    timestamp: Date;
+    error: ErrorDetails;
+    context?: string;
+  }> = [];
   private maxLogSize = 100;
 
   private constructor() {}
@@ -194,8 +198,12 @@ export class FirebaseErrorHandler {
   parseError(error: unknown, context?: string): ErrorDetails {
     let errorDetails: ErrorDetails;
 
-    if (error instanceof FirebaseError || error instanceof AuthError || 
-        error instanceof FirestoreError || error instanceof StorageError) {
+    if (
+      error instanceof FirebaseError ||
+      error instanceof AuthError ||
+      error instanceof FirestoreError ||
+      error instanceof StorageError
+    ) {
       errorDetails = this.parseFirebaseError(error);
     } else if (error instanceof Error) {
       errorDetails = this.parseGenericError(error);
@@ -207,7 +215,7 @@ export class FirebaseErrorHandler {
         message: 'Unknown error occurred',
         userMessage: this.getUserMessage('unknown'),
         retryable: false,
-        technicalDetails: { originalError: error }
+        technicalDetails: { originalError: error },
       };
     }
 
@@ -238,8 +246,8 @@ export class FirebaseErrorHandler {
       suggestedAction,
       technicalDetails: {
         customData: error.customData,
-        stack: error.stack
-      }
+        stack: error.stack,
+      },
     };
   }
 
@@ -247,9 +255,10 @@ export class FirebaseErrorHandler {
    * Parse generic errors
    */
   private parseGenericError(error: Error): ErrorDetails {
-    const isNetworkError = error.message.toLowerCase().includes('network') ||
-                          error.message.toLowerCase().includes('fetch') ||
-                          error.message.toLowerCase().includes('connection');
+    const isNetworkError =
+      error.message.toLowerCase().includes('network') ||
+      error.message.toLowerCase().includes('fetch') ||
+      error.message.toLowerCase().includes('connection');
 
     const category: ErrorCategory = isNetworkError ? 'network' : 'client';
     const severity: ErrorSeverity = isNetworkError ? 'high' : 'medium';
@@ -259,11 +268,13 @@ export class FirebaseErrorHandler {
       severity,
       code: error.name || 'generic-error',
       message: error.message,
-      userMessage: this.getUserMessage(isNetworkError ? 'network-request-failed' : 'unknown'),
+      userMessage: this.getUserMessage(
+        isNetworkError ? 'network-request-failed' : 'unknown'
+      ),
       retryable: isNetworkError,
       technicalDetails: {
-        stack: error.stack
-      }
+        stack: error.stack,
+      },
     };
   }
 
@@ -271,10 +282,18 @@ export class FirebaseErrorHandler {
    * Categorize error by code
    */
   private categorizeError(code: string): ErrorCategory {
-    if (code.includes('network') || code.includes('unavailable') || code.includes('deadline')) {
+    if (
+      code.includes('network') ||
+      code.includes('unavailable') ||
+      code.includes('deadline')
+    ) {
       return 'network';
     }
-    if (code.includes('auth') || code.includes('unauthenticated') || code.includes('permission')) {
+    if (
+      code.includes('auth') ||
+      code.includes('unauthenticated') ||
+      code.includes('permission')
+    ) {
       return 'auth';
     }
     if (code.includes('permission') || code.includes('unauthorized')) {
@@ -301,11 +320,18 @@ export class FirebaseErrorHandler {
   /**
    * Determine error severity
    */
-  private determineSeverity(code: string, category: ErrorCategory): ErrorSeverity {
+  private determineSeverity(
+    code: string,
+    category: ErrorCategory
+  ): ErrorSeverity {
     if (code.includes('data-loss') || code.includes('internal')) {
       return 'critical';
     }
-    if (category === 'network' || category === 'server' || category === 'quota') {
+    if (
+      category === 'network' ||
+      category === 'server' ||
+      category === 'quota'
+    ) {
       return 'high';
     }
     if (category === 'auth' || category === 'permission') {
@@ -332,28 +358,28 @@ export class FirebaseErrorHandler {
   /**
    * Get suggested action for error
    */
-  private getSuggestedAction(code: string, category: ErrorCategory): string | undefined {
+  private getSuggestedAction(code: string): string | undefined {
     const actionMap: Record<string, { es: string; en: string; pt: string }> = {
       'network-request-failed': {
         es: 'Verifica tu conexión a internet y vuelve a intentar',
         en: 'Check your internet connection and try again',
-        pt: 'Verifique sua conexão com a internet e tente novamente'
+        pt: 'Verifique sua conexão com a internet e tente novamente',
       },
-      'unauthenticated': {
+      unauthenticated: {
         es: 'Inicia sesión nuevamente',
         en: 'Sign in again',
-        pt: 'Faça login novamente'
+        pt: 'Faça login novamente',
       },
       'permission-denied': {
         es: 'Contacta al administrador si crees que deberías tener acceso',
         en: 'Contact the administrator if you believe you should have access',
-        pt: 'Entre em contato com o administrador se você acredita que deveria ter acesso'
+        pt: 'Entre em contato com o administrador se você acredita que deveria ter acesso',
       },
       'quota-exceeded': {
         es: 'Espera un momento antes de intentar nuevamente',
         en: 'Wait a moment before trying again',
-        pt: 'Aguarde um momento antes de tentar novamente'
-      }
+        pt: 'Aguarde um momento antes de tentar novamente',
+      },
     };
 
     const action = actionMap[code];
@@ -367,11 +393,11 @@ export class FirebaseErrorHandler {
     const logEntry = {
       timestamp: new Date(),
       error,
-      context
+      context,
     };
 
     this.errorLog.unshift(logEntry);
-    
+
     // Keep log size manageable
     if (this.errorLog.length > this.maxLogSize) {
       this.errorLog = this.errorLog.slice(0, this.maxLogSize);
@@ -424,8 +450,10 @@ export class FirebaseErrorHandler {
         );
 
         config.onRetry(attempt, lastError);
-        
-        console.log(`🔄 Retrying operation (attempt ${attempt + 1}/${config.maxAttempts}) in ${delay}ms...`);
+
+        console.log(
+          `🔄 Retrying operation (attempt ${attempt + 1}/${config.maxAttempts}) in ${delay}ms...`
+        );
         await this.sleep(delay);
       }
     }
@@ -438,7 +466,7 @@ export class FirebaseErrorHandler {
    */
   createErrorResponse<T>(error: unknown, context?: string): ApiResponse<T> {
     const errorDetails = this.parseError(error, context);
-    
+
     return {
       success: false,
       error: errorDetails.userMessage,
@@ -449,15 +477,19 @@ export class FirebaseErrorHandler {
         severity: errorDetails.severity,
         retryable: errorDetails.retryable,
         suggestedAction: errorDetails.suggestedAction,
-        technicalDetails: errorDetails.technicalDetails
-      }
+        technicalDetails: errorDetails.technicalDetails,
+      },
     };
   }
 
   /**
    * Get error history for debugging
    */
-  getErrorHistory(): Array<{ timestamp: Date; error: ErrorDetails; context?: string }> {
+  getErrorHistory(): Array<{
+    timestamp: Date;
+    error: ErrorDetails;
+    context?: string;
+  }> {
     return [...this.errorLog];
   }
 
@@ -481,12 +513,14 @@ export class FirebaseErrorHandler {
       totalErrors: this.errorLog.length,
       errorsByCategory: {} as Record<ErrorCategory, number>,
       errorsBySeverity: {} as Record<ErrorSeverity, number>,
-      retryableErrors: 0
+      retryableErrors: 0,
     };
 
     this.errorLog.forEach(({ error }) => {
-      stats.errorsByCategory[error.category] = (stats.errorsByCategory[error.category] || 0) + 1;
-      stats.errorsBySeverity[error.severity] = (stats.errorsBySeverity[error.severity] || 0) + 1;
+      stats.errorsByCategory[error.category] =
+        (stats.errorsByCategory[error.category] || 0) + 1;
+      stats.errorsBySeverity[error.severity] =
+        (stats.errorsBySeverity[error.severity] || 0) + 1;
       if (error.retryable) {
         stats.retryableErrors++;
       }
@@ -507,7 +541,7 @@ export class FirebaseErrorHandler {
 export const firebaseErrorHandler = FirebaseErrorHandler.getInstance();
 
 // Export convenience functions
-export const parseFirebaseError = (error: unknown, context?: string) => 
+export const parseFirebaseError = (error: unknown, context?: string) =>
   firebaseErrorHandler.parseError(error, context);
 
 export const withRetry = <T>(
@@ -520,4 +554,4 @@ export const createErrorResponse = <T>(error: unknown, context?: string) =>
   firebaseErrorHandler.createErrorResponse<T>(error, context);
 
 // Export types for use in other modules
-export type { ErrorDetails, RetryOptions, ErrorCategory, ErrorSeverity }; 
+export type { ErrorDetails, RetryOptions, ErrorCategory, ErrorSeverity };

@@ -66,6 +66,141 @@ export interface HomepageContent {
   updatedAt: Date;
 }
 
+// Form Content Types
+export interface FormContent {
+  id: string;
+  contact: {
+    title: LocalizedContent;
+    subtitle: LocalizedContent;
+    form: {
+      name: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+      };
+      email: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+      };
+      eventType: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+        options: {
+          wedding: LocalizedContent;
+          quinceanera: LocalizedContent;
+          birthday: LocalizedContent;
+          corporate: LocalizedContent;
+          other: LocalizedContent;
+        };
+      };
+      eventDate: {
+        label: LocalizedContent;
+        optional: LocalizedContent;
+        help: LocalizedContent;
+      };
+      message: {
+        label: LocalizedContent;
+        optional: LocalizedContent;
+        placeholder: LocalizedContent;
+      };
+      submit: {
+        button: LocalizedContent;
+        loading: LocalizedContent;
+      };
+      privacy: {
+        line1: LocalizedContent;
+        line2: LocalizedContent;
+      };
+    };
+    success: {
+      title: LocalizedContent;
+      message: LocalizedContent;
+      action: LocalizedContent;
+    };
+    trust: {
+      response: {
+        title: LocalizedContent;
+        description: LocalizedContent;
+      };
+      commitment: {
+        title: LocalizedContent;
+        description: LocalizedContent;
+      };
+      privacy: {
+        title: LocalizedContent;
+        description: LocalizedContent;
+      };
+    };
+  };
+  widget: {
+    button: {
+      desktop: LocalizedContent;
+      mobile: LocalizedContent;
+    };
+    dialog: {
+      title: LocalizedContent;
+    };
+    eventTypes: {
+      wedding: LocalizedContent;
+      corporate: LocalizedContent;
+      other: LocalizedContent;
+    };
+    steps: {
+      eventType: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+      };
+      date: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+        noDate: LocalizedContent;
+      };
+      contact: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+        moreInfo: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        callMe: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+      };
+      phone: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+        placeholder: LocalizedContent;
+        button: LocalizedContent;
+        loading: LocalizedContent;
+      };
+      complete: {
+        title: LocalizedContent;
+        message: LocalizedContent;
+        button: LocalizedContent;
+      };
+    };
+  };
+  validation: {
+    required: LocalizedContent;
+    email: LocalizedContent;
+    minLength: LocalizedContent;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Form Content Data for Creation (before Firestore timestamps)
+export interface CreateFormContentData {
+  contact: FormContent['contact'];
+  widget: FormContent['widget'];
+  validation: FormContent['validation'];
+}
+
+// Form Content Data for Updates - compatible with BaseFirebaseService
+export type UpdateFormContentData = Partial<
+  Omit<FormContent, 'id' | 'createdAt' | 'updatedAt'>
+>;
+
 // Contact Form Types
 export interface ContactFormData {
   fullName: string;

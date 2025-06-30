@@ -20,6 +20,7 @@ import {
   Calendar,
   User,
   FolderOpen,
+  FileText,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -68,6 +69,13 @@ export default function AdminDashboardPage() {
       icon: Home,
       href: '/admin/homepage',
       color: 'text-purple-500',
+    },
+    {
+      title: 'Gestionar Formularios',
+      description: 'Editar textos y traducciones de formularios de contacto',
+      icon: FileText,
+      href: '/admin/forms',
+      color: 'text-cyan-500',
     },
     {
       title: 'Gestionar Preguntas Frecuentes',

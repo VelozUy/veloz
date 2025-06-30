@@ -197,6 +197,127 @@ export const homepageContentSchema = baseSchema.extend({
   lastModifiedBy: z.string().optional(),
 });
 
+// Form Content Schema
+export const formContentSchema = baseSchema.extend({
+  contact: z.object({
+    title: multiLanguageTextSchema,
+    subtitle: multiLanguageTextSchema,
+    form: z.object({
+      name: z.object({
+        label: multiLanguageTextSchema,
+        placeholder: multiLanguageTextSchema,
+      }),
+      email: z.object({
+        label: multiLanguageTextSchema,
+        placeholder: multiLanguageTextSchema,
+      }),
+      eventType: z.object({
+        label: multiLanguageTextSchema,
+        placeholder: multiLanguageTextSchema,
+        options: z.object({
+          wedding: multiLanguageTextSchema,
+          quinceanera: multiLanguageTextSchema,
+          birthday: multiLanguageTextSchema,
+          corporate: multiLanguageTextSchema,
+          other: multiLanguageTextSchema,
+        }),
+      }),
+      eventDate: z.object({
+        label: multiLanguageTextSchema,
+        optional: multiLanguageTextSchema,
+        help: multiLanguageTextSchema,
+      }),
+      message: z.object({
+        label: multiLanguageTextSchema,
+        optional: multiLanguageTextSchema,
+        placeholder: multiLanguageTextSchema,
+      }),
+      submit: z.object({
+        button: multiLanguageTextSchema,
+        loading: multiLanguageTextSchema,
+      }),
+      privacy: z.object({
+        line1: multiLanguageTextSchema,
+        line2: multiLanguageTextSchema,
+      }),
+    }),
+    success: z.object({
+      title: multiLanguageTextSchema,
+      message: multiLanguageTextSchema,
+      action: multiLanguageTextSchema,
+    }),
+    trust: z.object({
+      response: z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+      }),
+      commitment: z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+      }),
+      privacy: z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+      }),
+    }),
+  }),
+  widget: z.object({
+    button: z.object({
+      desktop: multiLanguageTextSchema,
+      mobile: multiLanguageTextSchema,
+    }),
+    dialog: z.object({
+      title: multiLanguageTextSchema,
+    }),
+    eventTypes: z.object({
+      wedding: multiLanguageTextSchema,
+      corporate: multiLanguageTextSchema,
+      other: multiLanguageTextSchema,
+    }),
+    steps: z.object({
+      eventType: z.object({
+        title: multiLanguageTextSchema,
+        subtitle: multiLanguageTextSchema,
+      }),
+      date: z.object({
+        title: multiLanguageTextSchema,
+        subtitle: multiLanguageTextSchema,
+        noDate: multiLanguageTextSchema,
+      }),
+      contact: z.object({
+        title: multiLanguageTextSchema,
+        subtitle: multiLanguageTextSchema,
+        moreInfo: z.object({
+          title: multiLanguageTextSchema,
+          subtitle: multiLanguageTextSchema,
+        }),
+        callMe: z.object({
+          title: multiLanguageTextSchema,
+          subtitle: multiLanguageTextSchema,
+        }),
+      }),
+      phone: z.object({
+        title: multiLanguageTextSchema,
+        subtitle: multiLanguageTextSchema,
+        placeholder: multiLanguageTextSchema,
+        button: multiLanguageTextSchema,
+        loading: multiLanguageTextSchema,
+      }),
+      complete: z.object({
+        title: multiLanguageTextSchema,
+        message: multiLanguageTextSchema,
+        button: multiLanguageTextSchema,
+      }),
+    }),
+  }),
+  validation: z.object({
+    required: multiLanguageTextSchema,
+    email: multiLanguageTextSchema,
+    minLength: multiLanguageTextSchema,
+  }),
+  lastModifiedBy: z.string().optional(),
+});
+
 // Email notification preferences schema
 export const emailNotificationPreferencesSchema = z.object({
   contactMessages: z.boolean().default(true),
@@ -355,6 +476,7 @@ export const schemas = {
   pagination: paginationSchema,
   bulkOperation: bulkOperationSchema,
   emailTemplate: emailTemplateSchema,
+  formContent: formContentSchema,
 } as const;
 
 // Type exports for TypeScript
@@ -374,6 +496,7 @@ export type SearchQueryData = z.infer<typeof searchQuerySchema>;
 export type PaginationData = z.infer<typeof paginationSchema>;
 export type BulkOperationData = z.infer<typeof bulkOperationSchema>;
 export type EmailTemplateData = z.infer<typeof emailTemplateSchema>;
+export type FormContentData = z.infer<typeof formContentSchema>;
 
 // Validation helper functions
 export const validateContactForm = (data: unknown) =>
@@ -402,3 +525,9 @@ export const safeValidateHomepageContent = (data: unknown) =>
   homepageContentSchema.safeParse(data);
 export const safeValidateAdminUser = (data: unknown) =>
   adminUserSchema.safeParse(data);
+
+export const validateFormContent = (data: unknown) =>
+  formContentSchema.parse(data);
+
+export const safeValidateFormContent = (data: unknown) =>
+  formContentSchema.safeParse(data);

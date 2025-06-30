@@ -24,7 +24,7 @@ import {
   QueryConstraint,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { firebaseErrorHandler, withRetry, createErrorResponse } from '@/lib/firebase-error-handler';
+import { createErrorResponse } from '@/lib/firebase-error-handler';
 import type { ApiResponse } from '@/types';
 import type { RetryOptions } from '@/lib/firebase-error-handler';
 import { z } from 'zod';
@@ -329,7 +329,7 @@ export abstract class BaseFirebaseService {
       }
 
       return { success: true, data };
-    }, `getAll from ${this.collectionName}`).catch(error => 
+    }, `getAll from ${this.collectionName}`).catch(error =>
       createErrorResponse<T[]>(error, `${this.collectionName}.getAll`)
     );
   }
@@ -393,7 +393,7 @@ export abstract class BaseFirebaseService {
       this.invalidateCache();
 
       return { success: true, data: docRef.id };
-    }, `create in ${this.collectionName}`).catch(error => 
+    }, `create in ${this.collectionName}`).catch(error =>
       createErrorResponse<string>(error, `${this.collectionName}.create`)
     );
   }
