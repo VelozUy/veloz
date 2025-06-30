@@ -24,7 +24,9 @@ import {
   QueryConstraint,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { firebaseErrorHandler, withRetry, createErrorResponse } from '@/lib/firebase-error-handler';
 import type { ApiResponse } from '@/types';
+import type { RetryOptions } from '@/lib/firebase-error-handler';
 import { z } from 'zod';
 
 // Cache configuration
@@ -302,7 +304,7 @@ export abstract class BaseFirebaseService {
 
   // Core CRUD operations with enhanced error handling
   async getAll<T>(
-    options: { useCache?: boolean } = {}
+    options: { useCache?: boolean; retryOptions?: RetryOptions } = {}
   ): Promise<ApiResponse<T[]>> {
     const cacheKey = this.getCacheKey('getAll');
     const useCache = options.useCache !== false;
@@ -327,10 +329,9 @@ export abstract class BaseFirebaseService {
       }
 
       return { success: true, data };
-    }, `getAll from ${this.collectionName}`).catch(error => ({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }));
+    }, `getAll from ${this.collectionName}`).catch(error => 
+      createErrorResponse<T[]>(error, `${this.collectionName}.getAll`)
+    );
   }
 
   async getById<T>(
@@ -367,7 +368,8 @@ export abstract class BaseFirebaseService {
   }
 
   async create<T>(
-    data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>
+    data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>,
+    options: { retryOptions?: RetryOptions } = {}
   ): Promise<ApiResponse<string>> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
@@ -391,10 +393,9 @@ export abstract class BaseFirebaseService {
       this.invalidateCache();
 
       return { success: true, data: docRef.id };
-    }, `create in ${this.collectionName}`).catch(error => ({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    }));
+    }, `create in ${this.collectionName}`).catch(error => 
+      createErrorResponse<string>(error, `${this.collectionName}.create`)
+    );
   }
 
   async update<T>(
