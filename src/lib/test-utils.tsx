@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { ReactElement } from 'react';
+import { render, RenderOptions } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 // Mock user data for testing
 export const mockUser = {
@@ -8,45 +8,37 @@ export const mockUser = {
   email: 'test@example.com',
   displayName: 'Test User',
   photoURL: null,
-}
+};
 
 // Mock authenticated user context
 export const mockAuthContextValue = {
   user: mockUser,
   loading: false,
   signOut: jest.fn(),
-}
+};
 
 // Mock unauthenticated user context
 export const mockUnauthenticatedContextValue = {
   user: null,
   loading: false,
   signOut: jest.fn(),
-}
+};
 
 // Custom render function with providers
-interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
-  authenticated?: boolean
-}
-
-// Mock the useAuth hook based on authentication state
-const mockUseAuth = (authenticated: boolean) => {
-  return authenticated ? mockAuthContextValue : mockUnauthenticatedContextValue
-}
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return <div data-testid="test-wrapper">{children}</div>
-}
+  return <div data-testid="test-wrapper">{children}</div>;
+};
 
 export const customRender = (
   ui: ReactElement,
-  { authenticated = false, ...options }: CustomRenderOptions = {}
+  options: Omit<RenderOptions, 'wrapper'> = {}
 ) => {
   return render(ui, {
     wrapper: AllTheProviders,
     ...options,
-  })
-}
+  });
+};
 
 // Helper function to create mock FAQ data
 export const createMockFAQ = (overrides = {}) => ({
@@ -67,7 +59,7 @@ export const createMockFAQ = (overrides = {}) => ({
   createdAt: { toDate: () => new Date('2024-01-01') },
   updatedAt: { toDate: () => new Date('2024-01-01') },
   ...overrides,
-})
+});
 
 // Helper function to create mock project data
 export const createMockProject = (overrides = {}) => ({
@@ -89,7 +81,7 @@ export const createMockProject = (overrides = {}) => ({
   createdAt: { toDate: () => new Date('2024-01-01') },
   updatedAt: { toDate: () => new Date('2024-01-01') },
   ...overrides,
-})
+});
 
 // Helper function to create mock media data
 export const createMockMedia = (overrides = {}) => ({
@@ -117,7 +109,7 @@ export const createMockMedia = (overrides = {}) => ({
   createdAt: { toDate: () => new Date('2024-01-01') },
   updatedAt: { toDate: () => new Date('2024-01-01') },
   ...overrides,
-})
+});
 
 // Helper function to create mock homepage content
 export const createMockHomepageContent = (overrides = {}) => ({
@@ -139,44 +131,42 @@ export const createMockHomepageContent = (overrides = {}) => ({
   backgroundVideo: 'https://example.com/bg-video.mp4',
   logo: 'https://example.com/logo.png',
   ...overrides,
-})
+});
 
 // Wait for async operations to complete
 export const waitForAsyncOperations = () => {
-  return new Promise(resolve => setTimeout(resolve, 0))
-}
+  return new Promise(resolve => setTimeout(resolve, 0));
+};
 
 // Mock Firebase service responses
 export const mockFirebaseResponse = {
   success: { success: true, data: {} },
   error: { success: false, error: 'Test error' },
   loading: { success: false, loading: true },
-}
+};
 
 // Mock translation service responses
 export const mockTranslationResponse = {
   success: 'Translated text',
   error: null,
-}
-
-
+};
 
 // Helper to simulate user interactions
 export const userInteraction = {
   type: async (element: HTMLElement, text: string) => {
-    const user = userEvent.setup()
-    await user.type(element, text)
+    const user = userEvent.setup();
+    await user.type(element, text);
   },
   click: async (element: HTMLElement) => {
-    const user = userEvent.setup()
-    await user.click(element)
+    const user = userEvent.setup();
+    await user.click(element);
   },
   selectOption: async (element: HTMLElement, option: string) => {
-    const user = userEvent.setup()
-    await user.selectOptions(element, option)
+    const user = userEvent.setup();
+    await user.selectOptions(element, option);
   },
-}
+};
 
 // Re-export everything from testing-library
-export * from '@testing-library/react'
-export { customRender as render } 
+export * from '@testing-library/react';
+export { customRender as render };

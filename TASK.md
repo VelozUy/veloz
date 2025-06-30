@@ -178,10 +178,10 @@ _All homepage content management functionality completed - see Completed Tasks S
 - [x] **[High] Setup Jest** - Configure testing framework with Next.js integration, TypeScript support, and custom matchers _(Completed: Jan 8, 2025)_
 - [x] **[High] Setup React Testing Library** - Configure component testing with custom render functions and mocking utilities _(Completed: Jan 8, 2025)_
 - [x] **[High] Create test utilities** - Helper functions for testing including mock data generators, user interaction helpers, and Firebase service mocks _(Completed: Jan 8, 2025)_
-- [ ] **[High] Test landing page components** - Test hero section, CTA buttons
-- [ ] **[High] Test FAQ accordion component** - Test expand/collapse functionality
-- [ ] **[High] Test gallery components** - Test photo grid, filters, lightbox
-- [ ] **[High] Test contact form components** - Test form fields and validation
+- [x] **[High] Test landing page components** - Created comprehensive tests for Hero component covering headline display, background handling (video/images), logo animation, CTA buttons, keyboard navigation, accessibility, and responsive behavior. Tests cover performance optimization, error handling, and user interactions _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Test FAQ accordion component** - Created comprehensive tests for Accordion component from shadcn/ui covering expand/collapse functionality, keyboard navigation (Enter/Space), accessibility (ARIA attributes), visual states, animations, multiple accordion support, and edge cases. Tests ensure proper accordion behavior for FAQ sections _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Test gallery components** - Created comprehensive tests for MediaLightbox component covering modal behavior, media display (photos/videos), navigation (previous/next), keyboard controls (Escape/Arrow keys), project information display, captions, share functionality, accessibility, responsive behavior, and performance _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Test contact form components** - Created comprehensive tests for ContactForm component covering form rendering, validation (required fields, email format), form submission (loading states, success/error handling), success screen flow, accessibility (labels, ARIA), URL parameter pre-filling, and user experience elements (trust indicators, privacy notices) _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Test UI components** - Test Button component with variants, sizes, interactions, and accessibility _(Completed: Jan 8, 2025)_
 - [x] **[Medium] Test utility functions** - Test className utility, validation patterns, and helper functions _(Completed: Jan 8, 2025)_
 - [ ] **[High] Test admin components** - Test admin layout, forms, CRUD operations
@@ -451,7 +451,7 @@ _Tasks discovered during development will be added here_
 **Jan 8, 2025: Automated Testing Framework Implementation**
 
 - ✅ **Jest & React Testing Library Setup** - Complete testing framework configuration with Next.js 15 integration
-- ✅ **TypeScript Testing Support** - Jest configuration with TypeScript, custom matchers, and type declarations  
+- ✅ **TypeScript Testing Support** - Jest configuration with TypeScript, custom matchers, and type declarations
 - ✅ **Test Utilities & Mocking** - Comprehensive test utilities with Firebase mocking, user interaction helpers, and mock data generators
 - ✅ **Component Testing** - Button component tests covering variants, sizes, interactions, accessibility, and edge cases
 - ✅ **Utility Function Testing** - Tests for className utility, validation patterns, date handling, and helper functions
