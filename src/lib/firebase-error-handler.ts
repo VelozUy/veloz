@@ -1,5 +1,4 @@
 import { FirebaseError } from 'firebase/app';
-import { AuthError } from 'firebase/auth';
 import { FirestoreError } from 'firebase/firestore';
 import { StorageError } from 'firebase/storage';
 import type { ApiResponse } from '@/types';
@@ -200,7 +199,6 @@ export class FirebaseErrorHandler {
 
     if (
       error instanceof FirebaseError ||
-      error instanceof AuthError ||
       error instanceof FirestoreError ||
       error instanceof StorageError
     ) {
@@ -234,7 +232,7 @@ export class FirebaseErrorHandler {
     const severity = this.determineSeverity(code, category);
     const retryable = this.isRetryable(code);
     const userMessage = this.getUserMessage(code);
-    const suggestedAction = this.getSuggestedAction(code, category);
+    const suggestedAction = this.getSuggestedAction(code);
 
     return {
       category,
@@ -424,7 +422,7 @@ export class FirebaseErrorHandler {
     context?: string
   ): Promise<T> {
     const config = { ...DEFAULT_RETRY_OPTIONS, ...options };
-    let lastError: Error;
+    let lastError: Error = new Error('Retry failed');
 
     for (let attempt = 1; attempt <= config.maxAttempts; attempt++) {
       try {
@@ -471,14 +469,6 @@ export class FirebaseErrorHandler {
       success: false,
       error: errorDetails.userMessage,
       data: undefined,
-      metadata: {
-        errorCode: errorDetails.code,
-        errorCategory: errorDetails.category,
-        severity: errorDetails.severity,
-        retryable: errorDetails.retryable,
-        suggestedAction: errorDetails.suggestedAction,
-        technicalDetails: errorDetails.technicalDetails,
-      },
     };
   }
 
@@ -553,5 +543,4 @@ export const withRetry = <T>(
 export const createErrorResponse = <T>(error: unknown, context?: string) =>
   firebaseErrorHandler.createErrorResponse<T>(error, context);
 
-// Export types for use in other modules
-export type { ErrorDetails, RetryOptions, ErrorCategory, ErrorSeverity };
+// Types are already exported above as interface/type declarations

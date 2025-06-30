@@ -1,12 +1,13 @@
-import { 
-  ref, 
-  uploadBytesResumable, 
-  getDownloadURL, 
-  deleteObject, 
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
   listAll,
   getMetadata,
   updateMetadata,
-  UploadTaskSnapshot
+  UploadTaskSnapshot,
+  UploadTask,
 } from 'firebase/storage';
 import { storage } from '@/lib/firebase';
 import type { ApiResponse } from '@/types';
@@ -28,7 +29,7 @@ export interface FileUploadResult {
   fileSize: number;
   mimeType: string;
   uploadedAt: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // File upload progress
@@ -60,11 +61,20 @@ const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
       'image/gif',
       'image/bmp',
       'image/tiff',
-      'image/svg+xml'
+      'image/svg+xml',
     ],
-    allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp', '.tiff', '.svg'],
+    allowedExtensions: [
+      '.jpg',
+      '.jpeg',
+      '.png',
+      '.webp',
+      '.gif',
+      '.bmp',
+      '.tiff',
+      '.svg',
+    ],
     generateThumbnails: true,
-    compressionQuality: 0.8
+    compressionQuality: 0.8,
   },
   video: {
     maxFileSizeBytes: 500 * 1024 * 1024, // 500MB
@@ -75,11 +85,19 @@ const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
       'video/webm',
       'video/ogg',
       'video/3gpp',
-      'video/x-ms-wmv'
+      'video/x-ms-wmv',
     ],
-    allowedExtensions: ['.mp4', '.mov', '.avi', '.webm', '.ogv', '.3gp', '.wmv'],
+    allowedExtensions: [
+      '.mp4',
+      '.mov',
+      '.avi',
+      '.webm',
+      '.ogv',
+      '.3gp',
+      '.wmv',
+    ],
     generateThumbnails: false,
-    compressionQuality: 0.7
+    compressionQuality: 0.7,
   },
   document: {
     maxFileSizeBytes: 25 * 1024 * 1024, // 25MB
@@ -90,11 +108,19 @@ const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'text/plain',
-      'text/csv'
+      'text/csv',
     ],
-    allowedExtensions: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.csv'],
-    generateThumbnails: false
-  }
+    allowedExtensions: [
+      '.pdf',
+      '.doc',
+      '.docx',
+      '.xls',
+      '.xlsx',
+      '.txt',
+      '.csv',
+    ],
+    generateThumbnails: false,
+  },
 };
 
 /**
@@ -102,31 +128,50 @@ const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
  * Handles file uploads, validation, progress tracking, and file management
  */
 export class FileUploadService {
-  private uploadTasks: Map<string, any> = new Map();
-  private progressCallbacks: Map<string, (progress: FileUploadProgress) => void> = new Map();
+  private uploadTasks: Map<string, UploadTask> = new Map();
+  private progressCallbacks: Map<
+    string,
+    (progress: FileUploadProgress) => void
+  > = new Map();
 
   /**
    * Validate a file against upload configuration
    */
-  validateFile(file: File, config: FileUploadConfig = {}): FileValidationResult {
+  validateFile(
+    file: File,
+    config: FileUploadConfig = {}
+  ): FileValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
 
     // Check file size
     if (config.maxFileSizeBytes && file.size > config.maxFileSizeBytes) {
-      errors.push(`File size (${this.formatFileSize(file.size)}) exceeds maximum allowed size (${this.formatFileSize(config.maxFileSizeBytes)})`);
+      errors.push(
+        `File size (${this.formatFileSize(file.size)}) exceeds maximum allowed size (${this.formatFileSize(config.maxFileSizeBytes)})`
+      );
     }
 
     // Check MIME type
-    if (config.allowedMimeTypes && !config.allowedMimeTypes.includes(file.type)) {
-      errors.push(`File type "${file.type}" is not allowed. Allowed types: ${config.allowedMimeTypes.join(', ')}`);
+    if (
+      config.allowedMimeTypes &&
+      !config.allowedMimeTypes.includes(file.type)
+    ) {
+      errors.push(
+        `File type "${file.type}" is not allowed. Allowed types: ${config.allowedMimeTypes.join(', ')}`
+      );
     }
 
     // Check file extension
     if (config.allowedExtensions) {
       const fileExtension = this.getFileExtension(file.name).toLowerCase();
-      if (!config.allowedExtensions.some(ext => ext.toLowerCase() === fileExtension)) {
-        errors.push(`File extension "${fileExtension}" is not allowed. Allowed extensions: ${config.allowedExtensions.join(', ')}`);
+      if (
+        !config.allowedExtensions.some(
+          ext => ext.toLowerCase() === fileExtension
+        )
+      ) {
+        errors.push(
+          `File extension "${fileExtension}" is not allowed. Allowed extensions: ${config.allowedExtensions.join(', ')}`
+        );
       }
     }
 
@@ -143,12 +188,14 @@ export class FileUploadService {
     const suspiciousPatterns = [
       /\.(exe|bat|cmd|scr|pif|com|msi|dll)$/i,
       /^\./, // Hidden files
-      /[<>:"|?*]/ // Invalid characters
+      /[<>:"|?*]/, // Invalid characters
     ];
 
     for (const pattern of suspiciousPatterns) {
       if (pattern.test(file.name)) {
-        errors.push('File name contains invalid characters or suspicious extension');
+        errors.push(
+          'File name contains invalid characters or suspicious extension'
+        );
         break;
       }
     }
@@ -156,7 +203,7 @@ export class FileUploadService {
     return {
       isValid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 
@@ -176,11 +223,11 @@ export class FileUploadService {
       // Validate file
       const validation = this.validateFile(file, config);
       if (!validation.isValid) {
-                 return {
-           success: false,
-           error: validation.errors.join('; '),
-           data: undefined
-         };
+        return {
+          success: false,
+          error: validation.errors.join('; '),
+          data: undefined,
+        };
       }
 
       // Sanitize file name and create full path
@@ -196,8 +243,8 @@ export class FileUploadService {
           uploadedAt: new Date().toISOString(),
           uploadedBy: 'admin', // TODO: Replace with actual user ID
           fileSize: file.size.toString(),
-          taskId
-        }
+          taskId,
+        },
       };
 
       // Create upload task
@@ -209,31 +256,37 @@ export class FileUploadService {
       }
 
       // Track upload progress
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         const startTime = Date.now();
         let lastBytesTransferred = 0;
         let lastUpdateTime = startTime;
 
-        uploadTask.on('state_changed',
+        uploadTask.on(
+          'state_changed',
           (snapshot: UploadTaskSnapshot) => {
             const currentTime = Date.now();
             const timeDiff = currentTime - lastUpdateTime;
             const bytesTransferred = snapshot.bytesTransferred;
             const totalBytes = snapshot.totalBytes;
-            const percentage = Math.round((bytesTransferred / totalBytes) * 100);
+            const percentage = Math.round(
+              (bytesTransferred / totalBytes) * 100
+            );
 
             // Calculate speed and time remaining
             let speed = 0;
             let timeRemaining: number | undefined;
 
             if (timeDiff > 1000 && bytesTransferred > lastBytesTransferred) {
-              const bytesPerSecond = (bytesTransferred - lastBytesTransferred) / (timeDiff / 1000);
+              const bytesPerSecond =
+                (bytesTransferred - lastBytesTransferred) / (timeDiff / 1000);
               speed = bytesPerSecond;
-              
+
               if (speed > 0) {
-                timeRemaining = Math.round((totalBytes - bytesTransferred) / speed);
+                timeRemaining = Math.round(
+                  (totalBytes - bytesTransferred) / speed
+                );
               }
-              
+
               lastBytesTransferred = bytesTransferred;
               lastUpdateTime = currentTime;
             }
@@ -244,28 +297,28 @@ export class FileUploadService {
               percentage,
               state: snapshot.state as FileUploadProgress['state'],
               speed,
-              timeRemaining
+              timeRemaining,
             };
 
             if (onProgress) {
               onProgress(progress);
             }
           },
-          (error) => {
+          error => {
             this.uploadTasks.delete(taskId);
             this.progressCallbacks.delete(taskId);
-            
-                         resolve({
-               success: false,
-               error: `Upload failed: ${error.message}`,
-               data: undefined
-             });
+
+            resolve({
+              success: false,
+              error: `Upload failed: ${error.message}`,
+              data: undefined,
+            });
           },
           async () => {
             try {
               // Upload completed successfully
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              
+
               this.uploadTasks.delete(taskId);
               this.progressCallbacks.delete(taskId);
 
@@ -276,30 +329,30 @@ export class FileUploadService {
                 fileSize: file.size,
                 mimeType: file.type,
                 uploadedAt: new Date(),
-                metadata: metadata.customMetadata
+                metadata: metadata.customMetadata,
               };
 
-                               resolve({
-                   success: true,
-                   data: result,
-                   error: undefined
-                 });
+              resolve({
+                success: true,
+                data: result,
+                error: undefined,
+              });
             } catch (error) {
-                             resolve({
-                 success: false,
-                 error: `Failed to get download URL: ${error instanceof Error ? error.message : 'Unknown error'}`,
-                 data: undefined
-               });
+              resolve({
+                success: false,
+                error: `Failed to get download URL: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                data: undefined,
+              });
             }
           }
         );
       });
     } catch (error) {
-             return {
-         success: false,
-         error: `Upload initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-         data: undefined
-       };
+      return {
+        success: false,
+        error: `Upload initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        data: undefined,
+      };
     }
   }
 
@@ -318,12 +371,12 @@ export class FileUploadService {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         const result = await this.uploadFile(
           file,
           path,
           config,
-          onProgress ? (progress) => onProgress(i, progress) : undefined
+          onProgress ? progress => onProgress(i, progress) : undefined
         );
 
         if (result.success && result.data) {
@@ -334,24 +387,27 @@ export class FileUploadService {
       }
 
       if (errors.length > 0 && results.length === 0) {
-                 return {
-           success: false,
-           error: `All uploads failed: ${errors.join('; ')}`,
-           data: undefined
-         };
+        return {
+          success: false,
+          error: `All uploads failed: ${errors.join('; ')}`,
+          data: undefined,
+        };
       }
 
       return {
         success: true,
         data: results,
-                 error: errors.length > 0 ? `Some uploads failed: ${errors.join('; ')}` : undefined
+        error:
+          errors.length > 0
+            ? `Some uploads failed: ${errors.join('; ')}`
+            : undefined,
       };
     } catch (error) {
-             return {
-         success: false,
-         error: `Batch upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-         data: undefined
-       };
+      return {
+        success: false,
+        error: `Batch upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        data: undefined,
+      };
     }
   }
 
@@ -363,25 +419,23 @@ export class FileUploadService {
       const fileRef = ref(storage, filePath);
       await deleteObject(fileRef);
 
-             return {
-         success: true,
-         data: true,
-         error: undefined
-       };
+      return {
+        success: true,
+        data: true,
+        error: undefined,
+      };
     } catch (error: any) {
       // Handle case where file doesn't exist
       if (error.code === 'storage/object-not-found') {
-                 return {
-           success: true,
-           data: true,
-           error: undefined // Consider it successful if file was already deleted
-         };
+        return {
+          success: true,
+          data: true,
+        };
       }
 
       return {
         success: false,
         error: `Failed to delete file: ${error.message}`,
-        data: null
       };
     }
   }
@@ -389,13 +443,15 @@ export class FileUploadService {
   /**
    * Delete multiple files
    */
-  async deleteFiles(filePaths: string[]): Promise<ApiResponse<{ deleted: string[], failed: string[] }>> {
+  async deleteFiles(
+    filePaths: string[]
+  ): Promise<ApiResponse<{ deleted: string[]; failed: string[] }>> {
     try {
       const deleted: string[] = [];
       const failed: string[] = [];
 
       await Promise.allSettled(
-        filePaths.map(async (filePath) => {
+        filePaths.map(async filePath => {
           const result = await this.deleteFile(filePath);
           if (result.success) {
             deleted.push(filePath);
@@ -408,13 +464,15 @@ export class FileUploadService {
       return {
         success: true,
         data: { deleted, failed },
-        error: failed.length > 0 ? `Failed to delete ${failed.length} files` : null
+        error:
+          failed.length > 0
+            ? `Failed to delete ${failed.length} files`
+            : undefined,
       };
     } catch (error) {
       return {
         success: false,
         error: `Batch delete failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        data: null
       };
     }
   }
@@ -430,13 +488,11 @@ export class FileUploadService {
       return {
         success: true,
         data: metadata,
-        error: null
       };
     } catch (error: any) {
       return {
         success: false,
         error: `Failed to get metadata: ${error.message}`,
-        data: null
       };
     }
   }
@@ -444,21 +500,24 @@ export class FileUploadService {
   /**
    * Update file metadata
    */
-  async updateFileMetadata(filePath: string, metadata: Record<string, any>): Promise<ApiResponse<any>> {
+  async updateFileMetadata(
+    filePath: string,
+    metadata: Record<string, any>
+  ): Promise<ApiResponse<any>> {
     try {
       const fileRef = ref(storage, filePath);
-      const updatedMetadata = await updateMetadata(fileRef, { customMetadata: metadata });
+      const updatedMetadata = await updateMetadata(fileRef, {
+        customMetadata: metadata,
+      });
 
       return {
         success: true,
         data: updatedMetadata,
-        error: null
       };
     } catch (error: any) {
       return {
         success: false,
         error: `Failed to update metadata: ${error.message}`,
-        data: null
       };
     }
   }
@@ -476,13 +535,11 @@ export class FileUploadService {
       return {
         success: true,
         data: filePaths,
-        error: null
       };
     } catch (error: any) {
       return {
         success: false,
         error: `Failed to list files: ${error.message}`,
-        data: null
       };
     }
   }
@@ -528,7 +585,9 @@ export class FileUploadService {
   /**
    * Get upload configuration for file type
    */
-  getConfigForFileType(fileType: 'image' | 'video' | 'document'): FileUploadConfig {
+  getConfigForFileType(
+    fileType: 'image' | 'video' | 'document'
+  ): FileUploadConfig {
     return { ...DEFAULT_CONFIGS[fileType] };
   }
 
@@ -540,14 +599,14 @@ export class FileUploadService {
       maxFileSizeBytes: 200 * 1024 * 1024, // 200MB
       allowedMimeTypes: [
         ...DEFAULT_CONFIGS.image.allowedMimeTypes!,
-        ...DEFAULT_CONFIGS.video.allowedMimeTypes!
+        ...DEFAULT_CONFIGS.video.allowedMimeTypes!,
       ],
       allowedExtensions: [
         ...DEFAULT_CONFIGS.image.allowedExtensions!,
-        ...DEFAULT_CONFIGS.video.allowedExtensions!
+        ...DEFAULT_CONFIGS.video.allowedExtensions!,
       ],
       generateThumbnails: true,
-      compressionQuality: 0.8
+      compressionQuality: 0.8,
     };
   }
 
@@ -582,14 +641,14 @@ export class FileUploadService {
    */
   private formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 B';
-    
+
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 }
 
 // Export singleton instance
-export const fileUploadService = new FileUploadService(); 
+export const fileUploadService = new FileUploadService();

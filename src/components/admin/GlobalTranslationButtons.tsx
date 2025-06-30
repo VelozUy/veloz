@@ -3,12 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Loader2, 
-  Check, 
-  AlertCircle,
-  Sparkles 
-} from 'lucide-react';
+import { Loader2, Check, AlertCircle, Sparkles } from 'lucide-react';
 import { translationClientService } from '@/services/translation-client';
 import TranslationReviewDialog from './TranslationReviewDialog';
 
@@ -28,7 +23,10 @@ type TranslationReview = {
 
 interface GlobalTranslationButtonsProps {
   contentData: Record<string, { es?: string; en?: string; pt?: string }>;
-  onTranslated: (language: 'en' | 'pt', updates: Record<string, { es?: string; en?: string; pt?: string }>) => void;
+  onTranslated: (
+    language: 'en' | 'pt',
+    updates: Record<string, { es?: string; en?: string; pt?: string }>
+  ) => void;
   contentType?: 'general' | 'marketing' | 'form' | 'faq' | 'project' | 'seo';
   disabled?: boolean;
   className?: string;
@@ -51,7 +49,7 @@ export default function GlobalTranslationButtons({
   compact = false,
   mobile = false,
   enableReview = false,
-  fieldLabels = {}
+  fieldLabels = {},
 }: GlobalTranslationButtonsProps) {
   const [enStatus, setEnStatus] = useState<TranslationStatus>('idle');
   const [ptStatus, setPtStatus] = useState<TranslationStatus>('idle');
@@ -61,16 +59,20 @@ export default function GlobalTranslationButtons({
   const [allProgress, setAllProgress] = useState({ current: 0, total: 0 });
   const [error, setError] = useState('');
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [reviewTranslations, setReviewTranslations] = useState<TranslationReview[]>([]);
+  const [reviewTranslations, setReviewTranslations] = useState<
+    TranslationReview[]
+  >([]);
 
   const translateToLanguage = async (targetLanguage: 'en' | 'pt') => {
     const setStatus = targetLanguage === 'en' ? setEnStatus : setPtStatus;
     const setProgress = targetLanguage === 'en' ? setEnProgress : setPtProgress;
-    
+
     // Check if translation service is available
     const isAvailable = await translationClientService.isAvailable();
     if (!isAvailable) {
-      setError('Servicio de traducción no disponible. Por favor verifica tu configuración.');
+      setError(
+        'Servicio de traducción no disponible. Por favor verifica tu configuración.'
+      );
       setStatus('error');
       setTimeout(() => {
         setStatus('idle');
@@ -90,7 +92,7 @@ export default function GlobalTranslationButtons({
       if (sourceText && sourceText.trim()) {
         translationTasks.push({
           fieldKey,
-          sourceText
+          sourceText,
         });
       }
     });
@@ -112,7 +114,7 @@ export default function GlobalTranslationButtons({
     try {
       // Use batch translation for all texts at once
       const texts = translationTasks.map(task => task.sourceText);
-      
+
       const responses = await translationClientService.batchTranslate({
         texts,
         fromLanguage: 'es',
@@ -121,8 +123,9 @@ export default function GlobalTranslationButtons({
       });
 
       // Process responses and create updates
-      const updates: Record<string, { es?: string; en?: string; pt?: string }> = {};
-      
+      const updates: Record<string, { es?: string; en?: string; pt?: string }> =
+        {};
+
       responses.forEach((response, index) => {
         const task = translationTasks[index];
         if (task) {
@@ -134,7 +137,7 @@ export default function GlobalTranslationButtons({
       });
 
       setProgress({ current: 1, total: 1 });
-      
+
       // If review is enabled, open review dialog
       if (enableReview) {
         const reviewData = responses.map((response, index) => {
@@ -153,7 +156,7 @@ export default function GlobalTranslationButtons({
             isEdited: false,
           };
         });
-        
+
         setReviewTranslations(reviewData);
         setReviewDialogOpen(true);
         setStatus('idle');
@@ -162,18 +165,19 @@ export default function GlobalTranslationButtons({
         onTranslated(targetLanguage, updates);
         setStatus('success');
       }
-      
+
       // Reset success status after 3 seconds
       setTimeout(() => {
         setStatus('idle');
         setProgress({ current: 0, total: 0 });
       }, 3000);
-      
     } catch (error) {
       console.error(`Global translation error for ${targetLanguage}:`, error);
-      setError(`Error al traducir a ${targetLanguage === 'en' ? 'inglés' : 'portugués brasileño'}`);
+      setError(
+        `Error al traducir a ${targetLanguage === 'en' ? 'inglés' : 'portugués brasileño'}`
+      );
       setStatus('error');
-      
+
       // Reset error status after 5 seconds
       setTimeout(() => {
         setStatus('idle');
@@ -187,7 +191,9 @@ export default function GlobalTranslationButtons({
     // Check if translation service is available
     const isAvailable = await translationClientService.isAvailable();
     if (!isAvailable) {
-      setError('Servicio de traducción no disponible. Por favor verifica tu configuración.');
+      setError(
+        'Servicio de traducción no disponible. Por favor verifica tu configuración.'
+      );
       setAllStatus('error');
       setTimeout(() => {
         setAllStatus('idle');
@@ -207,7 +213,7 @@ export default function GlobalTranslationButtons({
       if (sourceText && sourceText.trim()) {
         translationTasks.push({
           fieldKey,
-          sourceText
+          sourceText,
         });
       }
     });
@@ -229,13 +235,16 @@ export default function GlobalTranslationButtons({
     try {
       const languages: ('en' | 'pt')[] = ['en', 'pt'];
       const texts = translationTasks.map(task => task.sourceText);
-      
+
       // Store all translation responses for review
-      const allResponses: Record<string, Array<{ translatedText: string; confidence?: number }>> = {};
+      const allResponses: Record<
+        string,
+        Array<{ translatedText: string; confidence?: number }>
+      > = {};
 
       for (let i = 0; i < languages.length; i++) {
         const language = languages[i];
-        
+
         try {
           // Use batch translation for all texts at once
           const responses = await translationClientService.batchTranslate({
@@ -244,14 +253,17 @@ export default function GlobalTranslationButtons({
             toLanguage: language,
             contentType,
           });
-          
+
           allResponses[language] = responses;
 
           // If review is not enabled, apply translations immediately
           if (!enableReview) {
             // Process responses and create updates
-            const updates: Record<string, { es?: string; en?: string; pt?: string }> = {};
-            
+            const updates: Record<
+              string,
+              { es?: string; en?: string; pt?: string }
+            > = {};
+
             responses.forEach((response, index) => {
               const task = translationTasks[index];
               if (task) {
@@ -265,10 +277,9 @@ export default function GlobalTranslationButtons({
             // Apply translations for this language
             onTranslated(language, updates);
           }
-          
+
           // Update progress
           setAllProgress({ current: i + 1, total: languages.length });
-          
         } catch (error) {
           console.error(`Batch translation failed for ${language}:`, error);
           // Continue with other languages
@@ -277,20 +288,8 @@ export default function GlobalTranslationButtons({
 
       // If review is enabled, open review dialog with all translations
       if (enableReview) {
-        const reviewData: Array<{
-          fieldKey: string;
-          fieldLabel: string;
-          sourceText: string;
-          sourceLanguage: 'es';
-          targetLanguage: 'en' | 'pt';
-          originalTranslation: string;
-          editedTranslation: string;
-          confidence: number;
-          contentType?: string;
-          isApproved: boolean;
-          isEdited: boolean;
-        }> = [];
-        
+        const reviewData: TranslationReview[] = [];
+
         // Add all language translations to review
         Object.entries(allResponses).forEach(([language, responses]) => {
           responses.forEach((response, index) => {
@@ -312,7 +311,7 @@ export default function GlobalTranslationButtons({
             }
           });
         });
-        
+
         setReviewTranslations(reviewData);
         setReviewDialogOpen(true);
         setAllStatus('idle');
@@ -320,18 +319,17 @@ export default function GlobalTranslationButtons({
       } else {
         setAllStatus('success');
       }
-      
+
       // Reset success status after 3 seconds
       setTimeout(() => {
         setAllStatus('idle');
         setAllProgress({ current: 0, total: 0 });
       }, 3000);
-      
     } catch (error) {
       console.error('Global translation error for all languages:', error);
       setError('Error al traducir a todos los idiomas');
       setAllStatus('error');
-      
+
       // Reset error status after 5 seconds
       setTimeout(() => {
         setAllStatus('idle');
@@ -341,15 +339,19 @@ export default function GlobalTranslationButtons({
     }
   };
 
-  const getButtonContent = (language: 'en' | 'pt', status: TranslationStatus, progress: { current: number; total: number }) => {
+  const getButtonContent = (
+    language: 'en' | 'pt',
+    status: TranslationStatus,
+    progress: { current: number; total: number }
+  ) => {
     const languageNames = {
       en: 'Inglés',
-      pt: 'Português (Brasil)'
+      pt: 'Português (Brasil)',
     };
-    
+
     const flags = {
       en: '🇺🇸',
-      pt: '🇧🇷'
+      pt: '🇧🇷',
     };
 
     if (status === 'translating') {
@@ -432,7 +434,12 @@ export default function GlobalTranslationButtons({
           <Button
             variant={allStatus === 'error' ? 'destructive' : 'default'}
             onClick={translateAll}
-            disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+            disabled={
+              disabled ||
+              enStatus === 'translating' ||
+              ptStatus === 'translating' ||
+              allStatus === 'translating'
+            }
             className={`
               w-full transition-all duration-200
               ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -449,7 +456,12 @@ export default function GlobalTranslationButtons({
             variant={enStatus === 'error' ? 'destructive' : 'outline'}
             size="sm"
             onClick={() => translateToLanguage('en')}
-            disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+            disabled={
+              disabled ||
+              enStatus === 'translating' ||
+              ptStatus === 'translating' ||
+              allStatus === 'translating'
+            }
             className={`
               transition-all duration-200
               ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -463,7 +475,12 @@ export default function GlobalTranslationButtons({
             variant={ptStatus === 'error' ? 'destructive' : 'outline'}
             size="sm"
             onClick={() => translateToLanguage('pt')}
-            disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+            disabled={
+              disabled ||
+              enStatus === 'translating' ||
+              ptStatus === 'translating' ||
+              allStatus === 'translating'
+            }
             className={`
               transition-all duration-200
               ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -475,57 +492,64 @@ export default function GlobalTranslationButtons({
         </div>
 
         {/* Error Alert */}
-        {error && (enStatus === 'error' || ptStatus === 'error' || allStatus === 'error') && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-sm">
-              {error}
-            </AlertDescription>
-          </Alert>
-        )}
-        
+        {error &&
+          (enStatus === 'error' ||
+            ptStatus === 'error' ||
+            allStatus === 'error') && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="text-sm">{error}</AlertDescription>
+            </Alert>
+          )}
+
         {/* Translation Review Dialog */}
         <TranslationReviewDialog
           isOpen={reviewDialogOpen}
           onClose={() => setReviewDialogOpen(false)}
           translations={reviewTranslations}
-          onApprove={(approvedTranslations) => {
+          onApprove={approvedTranslations => {
             // Group approved translations by language
-            const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
-            
-            approvedTranslations.forEach((translation) => {
+            const updatesByLanguage: Record<
+              string,
+              Record<string, { es?: string; en?: string; pt?: string }>
+            > = {};
+
+            approvedTranslations.forEach(translation => {
               const lang = translation.targetLanguage;
               if (!updatesByLanguage[lang]) {
                 updatesByLanguage[lang] = {};
               }
-              
+
               if (!updatesByLanguage[lang][translation.fieldKey]) {
-                updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+                updatesByLanguage[lang][translation.fieldKey] = {
+                  ...contentData[translation.fieldKey],
+                };
               }
-              
-              updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+
+              updatesByLanguage[lang][translation.fieldKey][lang] =
+                translation.editedTranslation;
             });
-            
+
             // Apply updates for each language
             Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
               if (lang === 'en' || lang === 'pt') {
                 onTranslated(lang as 'en' | 'pt', updates);
               }
             });
-            
+
             setReviewDialogOpen(false);
           }}
           onRetranslate={async (fieldKey, targetLanguage) => {
             const sourceText = contentData[fieldKey]?.es;
             if (!sourceText) throw new Error('No source text found');
-            
+
             const response = await translationClientService.translateText({
               text: sourceText,
               fromLanguage: 'es',
               toLanguage: targetLanguage,
               contentType,
             });
-            
+
             return response.translatedText;
           }}
         />
@@ -542,7 +566,12 @@ export default function GlobalTranslationButtons({
           variant={enStatus === 'error' ? 'destructive' : 'outline'}
           size="sm"
           onClick={() => translateToLanguage('en')}
-          disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+          disabled={
+            disabled ||
+            enStatus === 'translating' ||
+            ptStatus === 'translating' ||
+            allStatus === 'translating'
+          }
           className={`
             transition-all duration-200
             ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -556,7 +585,12 @@ export default function GlobalTranslationButtons({
           variant={ptStatus === 'error' ? 'destructive' : 'outline'}
           size="sm"
           onClick={() => translateToLanguage('pt')}
-          disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+          disabled={
+            disabled ||
+            enStatus === 'translating' ||
+            ptStatus === 'translating' ||
+            allStatus === 'translating'
+          }
           className={`
             transition-all duration-200
             ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -572,7 +606,12 @@ export default function GlobalTranslationButtons({
             variant={allStatus === 'error' ? 'destructive' : 'default'}
             size="sm"
             onClick={translateAll}
-            disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+            disabled={
+              disabled ||
+              enStatus === 'translating' ||
+              ptStatus === 'translating' ||
+              allStatus === 'translating'
+            }
             className={`
               transition-all duration-200
               ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -604,54 +643,61 @@ export default function GlobalTranslationButtons({
         )}
 
         {/* Error Alert - Compact */}
-        {error && (enStatus === 'error' || ptStatus === 'error' || allStatus === 'error') && (
-          <div className="ml-2 text-red-600 text-xs">
-            Error
-          </div>
-        )}
-        
+        {error &&
+          (enStatus === 'error' ||
+            ptStatus === 'error' ||
+            allStatus === 'error') && (
+            <div className="ml-2 text-red-600 text-xs">Error</div>
+          )}
+
         {/* Translation Review Dialog */}
         <TranslationReviewDialog
           isOpen={reviewDialogOpen}
           onClose={() => setReviewDialogOpen(false)}
           translations={reviewTranslations}
-          onApprove={(approvedTranslations) => {
+          onApprove={approvedTranslations => {
             // Group approved translations by language
-            const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
-            
-            approvedTranslations.forEach((translation) => {
+            const updatesByLanguage: Record<
+              string,
+              Record<string, { es?: string; en?: string; pt?: string }>
+            > = {};
+
+            approvedTranslations.forEach(translation => {
               const lang = translation.targetLanguage;
               if (!updatesByLanguage[lang]) {
                 updatesByLanguage[lang] = {};
               }
-              
+
               if (!updatesByLanguage[lang][translation.fieldKey]) {
-                updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+                updatesByLanguage[lang][translation.fieldKey] = {
+                  ...contentData[translation.fieldKey],
+                };
               }
-              
-              updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+
+              updatesByLanguage[lang][translation.fieldKey][lang] =
+                translation.editedTranslation;
             });
-            
+
             // Apply updates for each language
             Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
               if (lang === 'en' || lang === 'pt') {
                 onTranslated(lang as 'en' | 'pt', updates);
               }
             });
-            
+
             setReviewDialogOpen(false);
           }}
           onRetranslate={async (fieldKey, targetLanguage) => {
             const sourceText = contentData[fieldKey]?.es;
             if (!sourceText) throw new Error('No source text found');
-            
+
             const response = await translationClientService.translateText({
               text: sourceText,
               fromLanguage: 'es',
               toLanguage: targetLanguage,
               contentType,
             });
-            
+
             return response.translatedText;
           }}
         />
@@ -667,7 +713,12 @@ export default function GlobalTranslationButtons({
         <Button
           variant={enStatus === 'error' ? 'destructive' : 'default'}
           onClick={() => translateToLanguage('en')}
-          disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+          disabled={
+            disabled ||
+            enStatus === 'translating' ||
+            ptStatus === 'translating' ||
+            allStatus === 'translating'
+          }
           className={`
             transition-all duration-200 flex-1
             ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -680,7 +731,12 @@ export default function GlobalTranslationButtons({
         <Button
           variant={ptStatus === 'error' ? 'destructive' : 'default'}
           onClick={() => translateToLanguage('pt')}
-          disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+          disabled={
+            disabled ||
+            enStatus === 'translating' ||
+            ptStatus === 'translating' ||
+            allStatus === 'translating'
+          }
           className={`
             transition-all duration-200 flex-1
             ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -696,7 +752,12 @@ export default function GlobalTranslationButtons({
         <Button
           variant={allStatus === 'error' ? 'destructive' : 'outline'}
           onClick={translateAll}
-          disabled={disabled || enStatus === 'translating' || ptStatus === 'translating' || allStatus === 'translating'}
+          disabled={
+            disabled ||
+            enStatus === 'translating' ||
+            ptStatus === 'translating' ||
+            allStatus === 'translating'
+          }
           className={`
             w-full transition-all duration-200
             ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
@@ -708,60 +769,67 @@ export default function GlobalTranslationButtons({
       )}
 
       {/* Error Alert */}
-      {error && (enStatus === 'error' || ptStatus === 'error' || allStatus === 'error') && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription className="text-sm">
-            {error}
-          </AlertDescription>
-        </Alert>
-      )}
-      
+      {error &&
+        (enStatus === 'error' ||
+          ptStatus === 'error' ||
+          allStatus === 'error') && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription className="text-sm">{error}</AlertDescription>
+          </Alert>
+        )}
+
       {/* Translation Review Dialog */}
       <TranslationReviewDialog
         isOpen={reviewDialogOpen}
         onClose={() => setReviewDialogOpen(false)}
         translations={reviewTranslations}
-        onApprove={(approvedTranslations) => {
+        onApprove={approvedTranslations => {
           // Group approved translations by language
-          const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
-          
-          approvedTranslations.forEach((translation) => {
+          const updatesByLanguage: Record<
+            string,
+            Record<string, { es?: string; en?: string; pt?: string }>
+          > = {};
+
+          approvedTranslations.forEach(translation => {
             const lang = translation.targetLanguage;
             if (!updatesByLanguage[lang]) {
               updatesByLanguage[lang] = {};
             }
-            
+
             if (!updatesByLanguage[lang][translation.fieldKey]) {
-              updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+              updatesByLanguage[lang][translation.fieldKey] = {
+                ...contentData[translation.fieldKey],
+              };
             }
-            
-            updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+
+            updatesByLanguage[lang][translation.fieldKey][lang] =
+              translation.editedTranslation;
           });
-          
+
           // Apply updates for each language
           Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
             if (lang === 'en' || lang === 'pt') {
               onTranslated(lang as 'en' | 'pt', updates);
             }
           });
-          
+
           setReviewDialogOpen(false);
         }}
         onRetranslate={async (fieldKey, targetLanguage) => {
           const sourceText = contentData[fieldKey]?.es;
           if (!sourceText) throw new Error('No source text found');
-          
+
           const response = await translationClientService.translateText({
             text: sourceText,
             fromLanguage: 'es',
             toLanguage: targetLanguage,
             contentType,
           });
-          
+
           return response.translatedText;
         }}
       />
     </div>
   );
-} 
+}

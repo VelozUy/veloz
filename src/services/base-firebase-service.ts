@@ -11,16 +11,13 @@ import {
   where,
   orderBy,
   limit,
-  startAfter,
   DocumentData,
   QueryDocumentSnapshot,
   Timestamp,
   enableNetwork,
   disableNetwork,
   runTransaction,
-  WriteBatch,
   writeBatch,
-  Query,
   QueryConstraint,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -369,7 +366,7 @@ export abstract class BaseFirebaseService {
 
   async create<T>(
     data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>,
-    options: { retryOptions?: RetryOptions } = {}
+    _options: { retryOptions?: RetryOptions } = {}
   ): Promise<ApiResponse<string>> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
@@ -449,10 +446,11 @@ export abstract class BaseFirebaseService {
     pagination: PaginationConfig,
     additionalConstraints: QueryConstraint[] = []
   ): Promise<ApiResponse<PaginatedResult<T>>> {
-    const cacheKey = this.getCacheKey(
-      'getPaginated',
-      pagination as unknown as Record<string, unknown>
-    );
+    // Note: Pagination results are not cached as they change frequently
+    // const cacheKey = this.getCacheKey(
+    //   'getPaginated',
+    //   pagination as unknown as Record<string, unknown>
+    // );
 
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
