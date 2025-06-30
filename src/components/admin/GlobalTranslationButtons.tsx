@@ -10,6 +10,7 @@ import {
   Sparkles 
 } from 'lucide-react';
 import { translationClientService } from '@/services/translation-client';
+import TranslationReviewDialog from './TranslationReviewDialog';
 
 interface GlobalTranslationButtonsProps {
   contentData: Record<string, { es?: string; en?: string; pt?: string }>;
@@ -20,6 +21,8 @@ interface GlobalTranslationButtonsProps {
   showTranslateAll?: boolean;
   compact?: boolean;
   mobile?: boolean;
+  enableReview?: boolean; // New prop for review dialog
+  fieldLabels?: Record<string, string>; // New prop for field labels
 }
 
 type TranslationStatus = 'idle' | 'translating' | 'success' | 'error';
@@ -32,7 +35,9 @@ export default function GlobalTranslationButtons({
   className = '',
   showTranslateAll = false,
   compact = false,
-  mobile = false
+  mobile = false,
+  enableReview = false,
+  fieldLabels = {}
 }: GlobalTranslationButtonsProps) {
   const [enStatus, setEnStatus] = useState<TranslationStatus>('idle');
   const [ptStatus, setPtStatus] = useState<TranslationStatus>('idle');
@@ -41,6 +46,8 @@ export default function GlobalTranslationButtons({
   const [ptProgress, setPtProgress] = useState({ current: 0, total: 0 });
   const [allProgress, setAllProgress] = useState({ current: 0, total: 0 });
   const [error, setError] = useState('');
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [reviewTranslations, setReviewTranslations] = useState<any[]>([]);
 
   const translateToLanguage = async (targetLanguage: 'en' | 'pt') => {
     const setStatus = targetLanguage === 'en' ? setEnStatus : setPtStatus;
@@ -113,8 +120,34 @@ export default function GlobalTranslationButtons({
       });
 
       setProgress({ current: 1, total: 1 });
-      onTranslated(targetLanguage, updates);
-      setStatus('success');
+      
+      // If review is enabled, open review dialog
+      if (enableReview) {
+        const reviewData = responses.map((response, index) => {
+          const task = translationTasks[index];
+          return {
+            fieldKey: task.fieldKey,
+            fieldLabel: fieldLabels[task.fieldKey] || task.fieldKey,
+            sourceText: task.sourceText,
+            sourceLanguage: 'es' as const,
+            targetLanguage: targetLanguage,
+            originalTranslation: response.translatedText,
+            editedTranslation: response.translatedText,
+            confidence: response.confidence || 0.95,
+            contentType,
+            isApproved: false,
+            isEdited: false,
+          };
+        });
+        
+        setReviewTranslations(reviewData);
+        setReviewDialogOpen(true);
+        setStatus('idle');
+        setProgress({ current: 0, total: 0 });
+      } else {
+        onTranslated(targetLanguage, updates);
+        setStatus('success');
+      }
       
       // Reset success status after 3 seconds
       setTimeout(() => {
@@ -182,6 +215,9 @@ export default function GlobalTranslationButtons({
     try {
       const languages: ('en' | 'pt')[] = ['en', 'pt'];
       const texts = translationTasks.map(task => task.sourceText);
+      
+      // Store all translation responses for review
+      const allResponses: Record<string, any[]> = {};
 
       for (let i = 0; i < languages.length; i++) {
         const language = languages[i];
@@ -194,22 +230,27 @@ export default function GlobalTranslationButtons({
             toLanguage: language,
             contentType,
           });
-
-          // Process responses and create updates
-          const updates: Record<string, { es?: string; en?: string; pt?: string }> = {};
           
-          responses.forEach((response, index) => {
-            const task = translationTasks[index];
-            if (task) {
-              if (!updates[task.fieldKey]) {
-                updates[task.fieldKey] = { ...contentData[task.fieldKey] };
-              }
-              updates[task.fieldKey][language] = response.translatedText;
-            }
-          });
+          allResponses[language] = responses;
 
-          // Apply translations for this language
-          onTranslated(language, updates);
+          // If review is not enabled, apply translations immediately
+          if (!enableReview) {
+            // Process responses and create updates
+            const updates: Record<string, { es?: string; en?: string; pt?: string }> = {};
+            
+            responses.forEach((response, index) => {
+              const task = translationTasks[index];
+              if (task) {
+                if (!updates[task.fieldKey]) {
+                  updates[task.fieldKey] = { ...contentData[task.fieldKey] };
+                }
+                updates[task.fieldKey][language] = response.translatedText;
+              }
+            });
+
+            // Apply translations for this language
+            onTranslated(language, updates);
+          }
           
           // Update progress
           setAllProgress({ current: i + 1, total: languages.length });
@@ -220,7 +261,39 @@ export default function GlobalTranslationButtons({
         }
       }
 
-      setAllStatus('success');
+      // If review is enabled, open review dialog with all translations
+      if (enableReview) {
+        const reviewData: any[] = [];
+        
+        // Add all language translations to review
+        Object.entries(allResponses).forEach(([language, responses]) => {
+          responses.forEach((response, index) => {
+            const task = translationTasks[index];
+            if (task) {
+              reviewData.push({
+                fieldKey: task.fieldKey,
+                fieldLabel: fieldLabels[task.fieldKey] || task.fieldKey,
+                sourceText: task.sourceText,
+                sourceLanguage: 'es' as const,
+                targetLanguage: language as 'en' | 'pt',
+                originalTranslation: response.translatedText,
+                editedTranslation: response.translatedText,
+                confidence: response.confidence || 0.95,
+                contentType,
+                isApproved: false,
+                isEdited: false,
+              });
+            }
+          });
+        });
+        
+        setReviewTranslations(reviewData);
+        setReviewDialogOpen(true);
+        setAllStatus('idle');
+        setAllProgress({ current: 0, total: 0 });
+      } else {
+        setAllStatus('success');
+      }
       
       // Reset success status after 3 seconds
       setTimeout(() => {
@@ -384,6 +457,52 @@ export default function GlobalTranslationButtons({
             </AlertDescription>
           </Alert>
         )}
+        
+        {/* Translation Review Dialog */}
+        <TranslationReviewDialog
+          isOpen={reviewDialogOpen}
+          onClose={() => setReviewDialogOpen(false)}
+          translations={reviewTranslations}
+          onApprove={(approvedTranslations) => {
+            // Group approved translations by language
+            const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
+            
+            approvedTranslations.forEach((translation) => {
+              const lang = translation.targetLanguage;
+              if (!updatesByLanguage[lang]) {
+                updatesByLanguage[lang] = {};
+              }
+              
+              if (!updatesByLanguage[lang][translation.fieldKey]) {
+                updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+              }
+              
+              updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+            });
+            
+            // Apply updates for each language
+            Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
+              if (lang === 'en' || lang === 'pt') {
+                onTranslated(lang as 'en' | 'pt', updates);
+              }
+            });
+            
+            setReviewDialogOpen(false);
+          }}
+          onRetranslate={async (fieldKey, targetLanguage) => {
+            const sourceText = contentData[fieldKey]?.es;
+            if (!sourceText) throw new Error('No source text found');
+            
+            const response = await translationClientService.translateText({
+              text: sourceText,
+              fromLanguage: 'es',
+              toLanguage: targetLanguage,
+              contentType,
+            });
+            
+            return response.translatedText;
+          }}
+        />
       </div>
     );
   }
@@ -464,6 +583,52 @@ export default function GlobalTranslationButtons({
             Error
           </div>
         )}
+        
+        {/* Translation Review Dialog */}
+        <TranslationReviewDialog
+          isOpen={reviewDialogOpen}
+          onClose={() => setReviewDialogOpen(false)}
+          translations={reviewTranslations}
+          onApprove={(approvedTranslations) => {
+            // Group approved translations by language
+            const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
+            
+            approvedTranslations.forEach((translation) => {
+              const lang = translation.targetLanguage;
+              if (!updatesByLanguage[lang]) {
+                updatesByLanguage[lang] = {};
+              }
+              
+              if (!updatesByLanguage[lang][translation.fieldKey]) {
+                updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+              }
+              
+              updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+            });
+            
+            // Apply updates for each language
+            Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
+              if (lang === 'en' || lang === 'pt') {
+                onTranslated(lang as 'en' | 'pt', updates);
+              }
+            });
+            
+            setReviewDialogOpen(false);
+          }}
+          onRetranslate={async (fieldKey, targetLanguage) => {
+            const sourceText = contentData[fieldKey]?.es;
+            if (!sourceText) throw new Error('No source text found');
+            
+            const response = await translationClientService.translateText({
+              text: sourceText,
+              fromLanguage: 'es',
+              toLanguage: targetLanguage,
+              contentType,
+            });
+            
+            return response.translatedText;
+          }}
+        />
       </div>
     );
   }
@@ -525,6 +690,52 @@ export default function GlobalTranslationButtons({
           </AlertDescription>
         </Alert>
       )}
+      
+      {/* Translation Review Dialog */}
+      <TranslationReviewDialog
+        isOpen={reviewDialogOpen}
+        onClose={() => setReviewDialogOpen(false)}
+        translations={reviewTranslations}
+        onApprove={(approvedTranslations) => {
+          // Group approved translations by language
+          const updatesByLanguage: Record<string, Record<string, { es?: string; en?: string; pt?: string }>> = {};
+          
+          approvedTranslations.forEach((translation) => {
+            const lang = translation.targetLanguage;
+            if (!updatesByLanguage[lang]) {
+              updatesByLanguage[lang] = {};
+            }
+            
+            if (!updatesByLanguage[lang][translation.fieldKey]) {
+              updatesByLanguage[lang][translation.fieldKey] = { ...contentData[translation.fieldKey] };
+            }
+            
+            updatesByLanguage[lang][translation.fieldKey][lang] = translation.editedTranslation;
+          });
+          
+          // Apply updates for each language
+          Object.entries(updatesByLanguage).forEach(([lang, updates]) => {
+            if (lang === 'en' || lang === 'pt') {
+              onTranslated(lang as 'en' | 'pt', updates);
+            }
+          });
+          
+          setReviewDialogOpen(false);
+        }}
+        onRetranslate={async (fieldKey, targetLanguage) => {
+          const sourceText = contentData[fieldKey]?.es;
+          if (!sourceText) throw new Error('No source text found');
+          
+          const response = await translationClientService.translateText({
+            text: sourceText,
+            fromLanguage: 'es',
+            toLanguage: targetLanguage,
+            contentType,
+          });
+          
+          return response.translatedText;
+        }}
+      />
     </div>
   );
 } 

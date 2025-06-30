@@ -6,6 +6,7 @@ export { default as MediaUpload } from './MediaUpload';
 export { default as MediaManager } from './MediaManager';
 export { default as TranslationButton, MultiLanguageTranslationButtons, BatchTranslationButton } from './TranslationButton';
 export { default as GlobalTranslationButtons } from './GlobalTranslationButtons';
+export { default as TranslationReviewDialog } from './TranslationReviewDialog';
 
 // To be created later:
 // export { default as DataTable } from './DataTable';
