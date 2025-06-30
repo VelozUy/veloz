@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import GlobalTranslationButtons from '@/components/admin/GlobalTranslationButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,7 @@ import {
   AlertTriangle,
   RefreshCw,
   Trash2,
+  Sparkles,
 } from 'lucide-react';
 import { aboutContentService } from '@/services/about-content';
 import {
@@ -466,6 +468,156 @@ export default function AboutAdminPage() {
     setHasChanges(true);
   };
 
+  // === Translation Handlers ===
+
+  const buildTranslationData = () => {
+    if (!formData) return {};
+
+    const translationData: Record<
+      string,
+      { es?: string; en?: string; pt?: string }
+    > = {};
+
+    // Main content
+    translationData['title'] = formData.title;
+    translationData['subtitle'] = formData.subtitle;
+
+    // Philosophy section
+    translationData['philosophy.title'] = formData.philosophy.title;
+    formData.philosophy.items.forEach((point, index) => {
+      translationData[`philosophy.item.${index}.title`] = point.title;
+      translationData[`philosophy.item.${index}.description`] =
+        point.description;
+    });
+
+    // Methodology section
+    translationData['methodology.title'] = formData.methodology.title;
+    formData.methodology.items.forEach((step, index) => {
+      translationData[`methodology.item.${index}.title`] = step.title;
+      translationData[`methodology.item.${index}.description`] =
+        step.description;
+    });
+
+    // Values section
+    translationData['values.title'] = formData.values.title;
+    formData.values.items.forEach((value, index) => {
+      translationData[`values.item.${index}.title`] = value.title;
+      translationData[`values.item.${index}.description`] = value.description;
+    });
+
+    return translationData;
+  };
+
+  const getFieldLabels = () => {
+    return {
+      title: 'Título Principal',
+      subtitle: 'Subtítulo',
+      'philosophy.title': 'Título de Filosofía',
+      'methodology.title': 'Título de Metodología',
+      'values.title': 'Título de Valores',
+    };
+  };
+
+  const handleTranslation = (
+    language: 'en' | 'pt',
+    updates: Record<string, { es?: string; en?: string; pt?: string }>
+  ) => {
+    if (!formData) return;
+
+    setFormData(prev => {
+      if (!prev) return prev;
+
+      const updated = { ...prev };
+
+      Object.entries(updates).forEach(([fieldKey, translation]) => {
+        const targetText = translation[language];
+        if (!targetText) return;
+
+        if (fieldKey === 'title') {
+          updated.title = { ...updated.title, [language]: targetText };
+        } else if (fieldKey === 'subtitle') {
+          updated.subtitle = { ...updated.subtitle, [language]: targetText };
+        } else if (fieldKey === 'philosophy.title') {
+          updated.philosophy = {
+            ...updated.philosophy,
+            title: { ...updated.philosophy.title, [language]: targetText },
+          };
+        } else if (fieldKey.startsWith('philosophy.item.')) {
+          const match = fieldKey.match(
+            /philosophy\.item\.(\d+)\.(title|description)/
+          );
+          if (match) {
+            const [, indexStr, field] = match;
+            const index = parseInt(indexStr, 10);
+            if (updated.philosophy.items[index]) {
+              updated.philosophy.items[index] = {
+                ...updated.philosophy.items[index],
+                [field]: {
+                  ...updated.philosophy.items[index][
+                    field as 'title' | 'description'
+                  ],
+                  [language]: targetText,
+                },
+              };
+            }
+          }
+        } else if (fieldKey === 'methodology.title') {
+          updated.methodology = {
+            ...updated.methodology,
+            title: { ...updated.methodology.title, [language]: targetText },
+          };
+        } else if (fieldKey.startsWith('methodology.item.')) {
+          const match = fieldKey.match(
+            /methodology\.item\.(\d+)\.(title|description)/
+          );
+          if (match) {
+            const [, indexStr, field] = match;
+            const index = parseInt(indexStr, 10);
+            if (updated.methodology.items[index]) {
+              updated.methodology.items[index] = {
+                ...updated.methodology.items[index],
+                [field]: {
+                  ...updated.methodology.items[index][
+                    field as 'title' | 'description'
+                  ],
+                  [language]: targetText,
+                },
+              };
+            }
+          }
+        } else if (fieldKey === 'values.title') {
+          updated.values = {
+            ...updated.values,
+            title: { ...updated.values.title, [language]: targetText },
+          };
+        } else if (fieldKey.startsWith('values.item.')) {
+          const match = fieldKey.match(
+            /values\.item\.(\d+)\.(title|description)/
+          );
+          if (match) {
+            const [, indexStr, field] = match;
+            const index = parseInt(indexStr, 10);
+            if (updated.values.items[index]) {
+              updated.values.items[index] = {
+                ...updated.values.items[index],
+                [field]: {
+                  ...updated.values.items[index][
+                    field as 'title' | 'description'
+                  ],
+                  [language]: targetText,
+                },
+              };
+            }
+          }
+        }
+      });
+
+      return updated;
+    });
+
+    setHasChanges(true);
+  };
+
   if (loading) {
     return (
       <AdminLayout title="Página Sobre Nosotros">
@@ -554,29 +706,57 @@ export default function AboutAdminPage() {
           </Alert>
         )}
 
-        {/* Language Selector */}
+        {/* Language Configuration & Translation */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Globe className="h-5 w-5" />
-              Configuración de Idioma
+              Configuración de Idioma y Traducción
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-4">
-              {LANGUAGES.map(lang => (
-                <Button
-                  key={lang.code}
-                  variant={
-                    currentLanguage === lang.code ? 'default' : 'outline'
-                  }
-                  onClick={() => setCurrentLanguage(lang.code)}
-                  className="flex items-center gap-2"
-                >
-                  <span>{lang.flag}</span>
-                  {lang.name}
-                </Button>
-              ))}
+            <div className="space-y-4">
+              {/* Language Selector */}
+              <div>
+                <Label className="text-sm font-medium mb-2 block">
+                  Idioma de Edición
+                </Label>
+                <div className="flex gap-3">
+                  {LANGUAGES.map(lang => (
+                    <Button
+                      key={lang.code}
+                      variant={
+                        currentLanguage === lang.code ? 'default' : 'outline'
+                      }
+                      onClick={() => setCurrentLanguage(lang.code)}
+                      className="flex items-center gap-2"
+                      size="sm"
+                    >
+                      <span>{lang.flag}</span>
+                      {lang.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Translation Controls */}
+              <div className="border-t pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="h-4 w-4" />
+                  <Label className="text-sm font-medium">
+                    Traducción Automática
+                  </Label>
+                </div>
+                <GlobalTranslationButtons
+                  contentData={buildTranslationData()}
+                  onTranslated={handleTranslation}
+                  contentType="marketing"
+                  fieldLabels={getFieldLabels()}
+                  showTranslateAll={true}
+                  enableReview={true}
+                  compact={true}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
