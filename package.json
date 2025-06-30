@@ -16,6 +16,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
+    "seed:about": "node scripts/seed-about-content.js",
     "prepare": "husky"
   },
   "dependencies": {
@@ -63,6 +64,7 @@
     "eslint-config-next": "15.3.4",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.0",
+    "firebase-admin": "^13.4.0",
     "firebase-tools": "^14.9.0",
     "husky": "^9.1.7",
     "jest": "^30.0.3",
