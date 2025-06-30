@@ -12,6 +12,20 @@ import {
 import { translationClientService } from '@/services/translation-client';
 import TranslationReviewDialog from './TranslationReviewDialog';
 
+type TranslationReview = {
+  fieldKey: string;
+  fieldLabel: string;
+  sourceText: string;
+  sourceLanguage: 'es' | 'en' | 'pt';
+  targetLanguage: 'es' | 'en' | 'pt';
+  originalTranslation: string;
+  editedTranslation: string;
+  confidence: number;
+  contentType?: 'general' | 'marketing' | 'form' | 'faq' | 'project' | 'seo';
+  isApproved: boolean;
+  isEdited: boolean;
+};
+
 interface GlobalTranslationButtonsProps {
   contentData: Record<string, { es?: string; en?: string; pt?: string }>;
   onTranslated: (language: 'en' | 'pt', updates: Record<string, { es?: string; en?: string; pt?: string }>) => void;
@@ -47,7 +61,7 @@ export default function GlobalTranslationButtons({
   const [allProgress, setAllProgress] = useState({ current: 0, total: 0 });
   const [error, setError] = useState('');
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [reviewTranslations, setReviewTranslations] = useState<any[]>([]);
+  const [reviewTranslations, setReviewTranslations] = useState<TranslationReview[]>([]);
 
   const translateToLanguage = async (targetLanguage: 'en' | 'pt') => {
     const setStatus = targetLanguage === 'en' ? setEnStatus : setPtStatus;
@@ -217,7 +231,7 @@ export default function GlobalTranslationButtons({
       const texts = translationTasks.map(task => task.sourceText);
       
       // Store all translation responses for review
-      const allResponses: Record<string, any[]> = {};
+      const allResponses: Record<string, Array<{ translatedText: string; confidence?: number }>> = {};
 
       for (let i = 0; i < languages.length; i++) {
         const language = languages[i];
@@ -263,7 +277,19 @@ export default function GlobalTranslationButtons({
 
       // If review is enabled, open review dialog with all translations
       if (enableReview) {
-        const reviewData: any[] = [];
+        const reviewData: Array<{
+          fieldKey: string;
+          fieldLabel: string;
+          sourceText: string;
+          sourceLanguage: 'es';
+          targetLanguage: 'en' | 'pt';
+          originalTranslation: string;
+          editedTranslation: string;
+          confidence: number;
+          contentType?: string;
+          isApproved: boolean;
+          isEdited: boolean;
+        }> = [];
         
         // Add all language translations to review
         Object.entries(allResponses).forEach(([language, responses]) => {

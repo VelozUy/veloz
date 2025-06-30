@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Check, 
@@ -186,11 +186,7 @@ export default function TranslationReviewDialog({
     }));
   };
 
-  const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.9) return 'text-green-600';
-    if (confidence >= 0.7) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+
 
   const getConfidenceBadge = (confidence: number) => {
     if (confidence >= 0.9) return { variant: 'default' as const, text: 'Alta' };
@@ -271,7 +267,7 @@ export default function TranslationReviewDialog({
                     </Button>
                   </div>
 
-                  <ScrollArea className="h-[calc(100vh-300px)]">
+                  <div className="h-[calc(100vh-300px)] overflow-y-auto">
                     <div className="space-y-4 pr-4">
                       {translationsByLanguage[lang].map((translation) => {
                         const showKey = `${translation.fieldKey}-${translation.targetLanguage}`;
@@ -429,7 +425,7 @@ export default function TranslationReviewDialog({
                         );
                       })}
                     </div>
-                  </ScrollArea>
+                  </div>
                 </div>
               </TabsContent>
             ))}
