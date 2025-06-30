@@ -28,6 +28,7 @@ const navigation = [
   { name: 'Usuarios', href: '/admin/users', icon: User },
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
   { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
+  { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },
   { name: 'Preguntas Frecuentes', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Mensajes de Contacto', href: '/admin/contacts', icon: Mail },

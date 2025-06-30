@@ -197,6 +197,54 @@ export const homepageContentSchema = baseSchema.extend({
   lastModifiedBy: z.string().optional(),
 });
 
+// About Content Philosophy Point Schema
+export const aboutPhilosophyPointSchema = z.object({
+  id: z.string(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  order: z.number().int().min(0).default(0),
+});
+
+// About Content Methodology Step Schema
+export const aboutMethodologyStepSchema = z.object({
+  id: z.string(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  order: z.number().int().min(0).default(0),
+});
+
+// About Content Value Schema
+export const aboutValueSchema = z.object({
+  id: z.string(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  order: z.number().int().min(0).default(0),
+});
+
+// About Content Schema
+export const aboutContentSchema = baseSchema.extend({
+  title: multiLanguageTextSchema,
+  subtitle: multiLanguageTextSchema,
+  philosophy: z.object({
+    title: multiLanguageTextSchema,
+    items: z.array(aboutPhilosophyPointSchema).default([]),
+  }),
+  methodology: z.object({
+    title: multiLanguageTextSchema,
+    items: z.array(aboutMethodologyStepSchema).default([]),
+  }),
+  values: z.object({
+    title: multiLanguageTextSchema,
+    items: z.array(aboutValueSchema).default([]),
+  }),
+  faq: z.object({
+    title: multiLanguageTextSchema,
+  }),
+  seoTitle: multiLanguageTextSchema.optional(),
+  seoDescription: multiLanguageTextSchema.optional(),
+  lastModifiedBy: z.string().optional(),
+});
+
 // Form Content Schema
 export const formContentSchema = baseSchema.extend({
   contact: z.object({
@@ -468,6 +516,7 @@ export const schemas = {
   project: projectSchema,
   projectMedia: projectMediaSchema,
   homepageContent: homepageContentSchema,
+  aboutContent: aboutContentSchema,
   adminUser: adminUserSchema,
   emailNotificationPreferences: emailNotificationPreferencesSchema,
   fileUpload: fileUploadSchema,
@@ -486,6 +535,14 @@ export type FAQData = z.infer<typeof faqSchema>;
 export type ProjectData = z.infer<typeof projectSchema>;
 export type ProjectMediaData = z.infer<typeof projectMediaSchema>;
 export type HomepageContentData = z.infer<typeof homepageContentSchema>;
+export type AboutContentData = z.infer<typeof aboutContentSchema>;
+export type AboutPhilosophyPointData = z.infer<
+  typeof aboutPhilosophyPointSchema
+>;
+export type AboutMethodologyStepData = z.infer<
+  typeof aboutMethodologyStepSchema
+>;
+export type AboutValueData = z.infer<typeof aboutValueSchema>;
 export type AdminUserData = z.infer<typeof adminUserSchema>;
 export type EmailNotificationPreferencesData = z.infer<
   typeof emailNotificationPreferencesSchema
@@ -509,6 +566,8 @@ export const validateProjectMedia = (data: unknown) =>
   projectMediaSchema.parse(data);
 export const validateHomepageContent = (data: unknown) =>
   homepageContentSchema.parse(data);
+export const validateAboutContent = (data: unknown) =>
+  aboutContentSchema.parse(data);
 export const validateAdminUser = (data: unknown) => adminUserSchema.parse(data);
 
 // Safe parsing functions (returns success/error objects)
@@ -523,6 +582,8 @@ export const safeValidateProjectMedia = (data: unknown) =>
   projectMediaSchema.safeParse(data);
 export const safeValidateHomepageContent = (data: unknown) =>
   homepageContentSchema.safeParse(data);
+export const safeValidateAboutContent = (data: unknown) =>
+  aboutContentSchema.safeParse(data);
 export const safeValidateAdminUser = (data: unknown) =>
   adminUserSchema.safeParse(data);
 
