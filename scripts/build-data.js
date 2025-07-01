@@ -766,6 +766,39 @@ async function fetchFAQs(db) {
 }
 
 /**
+ * Fetch about content from Firestore
+ */
+async function fetchAboutContent(db) {
+  try {
+    console.log('📖 Fetching about content...');
+    const aboutQuery = query(collection(db, 'aboutContent'));
+    const snapshot = await getDocs(aboutQuery);
+
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      const data = doc.data();
+      console.log('✅ About content found');
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt
+          ? data.createdAt.toDate().toISOString()
+          : null,
+        updatedAt: data.updatedAt
+          ? data.updatedAt.toDate().toISOString()
+          : null,
+      };
+    } else {
+      console.log('ℹ️ No about content found, using defaults');
+      return null;
+    }
+  } catch (error) {
+    console.warn('⚠️ Error fetching about content:', error.message);
+    return null;
+  }
+}
+
+/**
  * Fetch projects/gallery content from Firestore
  */
 async function fetchProjects(db) {
@@ -868,7 +901,13 @@ async function fetchProjectMedia(db, projectId) {
 /**
  * Generate content for a specific locale
  */
-function generateLocaleContent(locale, homepageContent, faqs, projects) {
+function generateLocaleContent(
+  locale,
+  homepageContent,
+  faqs,
+  projects,
+  aboutContent
+) {
   return {
     locale,
     translations: STATIC_TRANSLATIONS[locale],
@@ -881,6 +920,152 @@ function generateLocaleContent(locale, homepageContent, faqs, projects) {
         logo: homepageContent.logo,
         backgroundVideo: homepageContent.backgroundVideo,
       },
+      about: aboutContent
+        ? {
+            title:
+              aboutContent.title?.[locale] ||
+              aboutContent.title?.es ||
+              STATIC_TRANSLATIONS[locale].about.title,
+            subtitle:
+              aboutContent.subtitle?.[locale] ||
+              aboutContent.subtitle?.es ||
+              STATIC_TRANSLATIONS[locale].about.subtitle,
+            philosophy: {
+              title:
+                aboutContent.philosophy?.title?.[locale] ||
+                aboutContent.philosophy?.title?.es ||
+                STATIC_TRANSLATIONS[locale].about.philosophy.title,
+              description:
+                aboutContent.philosophy?.items?.[0]?.description?.[locale] ||
+                aboutContent.philosophy?.items?.[0]?.description?.es ||
+                STATIC_TRANSLATIONS[locale].about.philosophy.description,
+            },
+            methodology: {
+              title:
+                aboutContent.methodology?.title?.[locale] ||
+                aboutContent.methodology?.title?.es ||
+                STATIC_TRANSLATIONS[locale].about.methodology.title,
+              planning: {
+                title:
+                  aboutContent.methodology?.items?.[0]?.title?.[locale] ||
+                  aboutContent.methodology?.items?.[0]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.planning.title,
+                description:
+                  aboutContent.methodology?.items?.[0]?.description?.[locale] ||
+                  aboutContent.methodology?.items?.[0]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.planning
+                    .description,
+              },
+              coverage: {
+                title:
+                  aboutContent.methodology?.items?.[1]?.title?.[locale] ||
+                  aboutContent.methodology?.items?.[1]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.coverage.title,
+                description:
+                  aboutContent.methodology?.items?.[1]?.description?.[locale] ||
+                  aboutContent.methodology?.items?.[1]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.coverage
+                    .description,
+              },
+              capture: {
+                title:
+                  aboutContent.methodology?.items?.[2]?.title?.[locale] ||
+                  aboutContent.methodology?.items?.[2]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.capture.title,
+                description:
+                  aboutContent.methodology?.items?.[2]?.description?.[locale] ||
+                  aboutContent.methodology?.items?.[2]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.capture
+                    .description,
+              },
+              postproduction: {
+                title:
+                  aboutContent.methodology?.items?.[3]?.title?.[locale] ||
+                  aboutContent.methodology?.items?.[3]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.postproduction
+                    .title,
+                description:
+                  aboutContent.methodology?.items?.[3]?.description?.[locale] ||
+                  aboutContent.methodology?.items?.[3]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.methodology.postproduction
+                    .description,
+              },
+            },
+            values: {
+              title:
+                aboutContent.values?.title?.[locale] ||
+                aboutContent.values?.title?.es ||
+                STATIC_TRANSLATIONS[locale].about.values.title,
+              passion: {
+                title:
+                  aboutContent.values?.items?.[0]?.title?.[locale] ||
+                  aboutContent.values?.items?.[0]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.passion.title,
+                description:
+                  aboutContent.values?.items?.[0]?.description?.[locale] ||
+                  aboutContent.values?.items?.[0]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.passion.description,
+              },
+              teamwork: {
+                title:
+                  aboutContent.values?.items?.[1]?.title?.[locale] ||
+                  aboutContent.values?.items?.[1]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.teamwork.title,
+                description:
+                  aboutContent.values?.items?.[1]?.description?.[locale] ||
+                  aboutContent.values?.items?.[1]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.teamwork.description,
+              },
+              quality: {
+                title:
+                  aboutContent.values?.items?.[2]?.title?.[locale] ||
+                  aboutContent.values?.items?.[2]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.quality.title,
+                description:
+                  aboutContent.values?.items?.[2]?.description?.[locale] ||
+                  aboutContent.values?.items?.[2]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.quality.description,
+              },
+              agility: {
+                title:
+                  aboutContent.values?.items?.[3]?.title?.[locale] ||
+                  aboutContent.values?.items?.[3]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.agility.title,
+                description:
+                  aboutContent.values?.items?.[3]?.description?.[locale] ||
+                  aboutContent.values?.items?.[3]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.agility.description,
+              },
+              excellence: {
+                title:
+                  aboutContent.values?.items?.[4]?.title?.[locale] ||
+                  aboutContent.values?.items?.[4]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.excellence.title,
+                description:
+                  aboutContent.values?.items?.[4]?.description?.[locale] ||
+                  aboutContent.values?.items?.[4]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.excellence
+                    .description,
+              },
+              trust: {
+                title:
+                  aboutContent.values?.items?.[5]?.title?.[locale] ||
+                  aboutContent.values?.items?.[5]?.title?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.trust.title,
+                description:
+                  aboutContent.values?.items?.[5]?.description?.[locale] ||
+                  aboutContent.values?.items?.[5]?.description?.es ||
+                  STATIC_TRANSLATIONS[locale].about.values.trust.description,
+              },
+            },
+            faq: {
+              title:
+                aboutContent.faq?.title?.[locale] ||
+                aboutContent.faq?.title?.es ||
+                STATIC_TRANSLATIONS[locale].about.faq.title,
+            },
+          }
+        : STATIC_TRANSLATIONS[locale].about,
       faqs: faqs
         .map(faq => ({
           id: faq.id,
@@ -937,10 +1122,11 @@ async function buildStaticContent() {
     const db = getFirestore(app);
 
     // Fetch all content from Firestore
-    const [homepageContent, faqs, projects] = await Promise.all([
+    const [homepageContent, faqs, projects, aboutContent] = await Promise.all([
       fetchHomepageContent(db),
       fetchFAQs(db),
       fetchProjects(db),
+      fetchAboutContent(db),
     ]);
 
     // Ensure data directory exists
@@ -957,7 +1143,8 @@ async function buildStaticContent() {
         locale,
         homepageContent,
         faqs,
-        projects
+        projects,
+        aboutContent
       );
       allContent[locale] = localeContent;
 
@@ -988,6 +1175,63 @@ export interface LocalizedContent {
       headline: string;
       logo: Record<string, unknown>;
       backgroundVideo: Record<string, unknown>;
+    };
+    about: {
+      title: string;
+      subtitle: string;
+      philosophy: {
+        title: string;
+        description: string;
+      };
+      methodology: {
+        title: string;
+        planning: {
+          title: string;
+          description: string;
+        };
+        coverage: {
+          title: string;
+          description: string;
+        };
+        capture: {
+          title: string;
+          description: string;
+        };
+        postproduction: {
+          title: string;
+          description: string;
+        };
+      };
+      values: {
+        title: string;
+        passion: {
+          title: string;
+          description: string;
+        };
+        teamwork: {
+          title: string;
+          description: string;
+        };
+        quality: {
+          title: string;
+          description: string;
+        };
+        agility: {
+          title: string;
+          description: string;
+        };
+        excellence: {
+          title: string;
+          description: string;
+        };
+        trust: {
+          title: string;
+          description: string;
+        };
+      };
+      faq: {
+        title: string;
+      };
     };
     faqs: Array<{
       id: string;
