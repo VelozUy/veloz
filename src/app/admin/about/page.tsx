@@ -23,7 +23,25 @@ import {
   RefreshCw,
   Trash2,
   Sparkles,
+  GripVertical,
 } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { aboutContentService } from '@/services/about-content';
 import {
   AboutContentData,
@@ -38,10 +56,133 @@ const LANGUAGES = [
   { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
 ];
 
+// Sortable Value Card Component
+function SortableValueCard({
+  value,
+  index,
+  currentLanguage,
+  onValueChange,
+  onRemoveValue,
+}: {
+  value: AboutValueData;
+  index: number;
+  currentLanguage: string;
+  onValueChange: (
+    valueId: string,
+    field: 'title' | 'description',
+    language: string,
+    value: string
+  ) => void;
+  onRemoveValue: (valueId: string) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: value.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card className="bg-muted/50">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Drag handle */}
+              <div
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+              >
+                <GripVertical className="w-4 h-4 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">
+                {value.title[currentLanguage as keyof typeof value.title] ||
+                  `Valor ${index + 1}`}
+              </CardTitle>
+            </div>
+            <Button
+              onClick={() => onRemoveValue(value.id)}
+              size="sm"
+              variant="destructive"
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Eliminar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor={`${value.id}-title`}>Título</Label>
+            <Input
+              id={`${value.id}-title`}
+              value={
+                value.title[currentLanguage as keyof typeof value.title] || ''
+              }
+              onChange={e =>
+                onValueChange(
+                  value.id,
+                  'title',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor={`${value.id}-description`}>Descripción</Label>
+            <Textarea
+              id={`${value.id}-description`}
+              value={
+                value.description[
+                  currentLanguage as keyof typeof value.description
+                ] || ''
+              }
+              onChange={e =>
+                onValueChange(
+                  value.id,
+                  'description',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+              rows={3}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function AboutAdminPage() {
   const { user } = useAuth();
   const [aboutContent, setAboutContent] = useState<AboutContentData | null>(
     null
+  );
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
   );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -516,6 +657,41 @@ export default function AboutAdminPage() {
       'methodology.title': 'Título de Metodología',
       'values.title': 'Título de Valores',
     };
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id && formData) {
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const oldIndex = prev.values.items.findIndex(
+          item => item.id === active.id
+        );
+        const newIndex = prev.values.items.findIndex(
+          item => item.id === over?.id
+        );
+
+        const newItems = arrayMove(prev.values.items, oldIndex, newIndex);
+
+        // Update order values
+        const updatedItems = newItems.map((item, index) => ({
+          ...item,
+          order: index,
+        }));
+
+        return {
+          ...prev,
+          values: {
+            ...prev.values,
+            items: updatedItems,
+          },
+        };
+      });
+
+      setHasChanges(true);
+    }
   };
 
   const handleTranslation = (
@@ -1125,76 +1301,29 @@ export default function AboutAdminPage() {
                     </p>
                   </div>
                 ) : (
-                  formData.values.items
-                    .sort((a, b) => a.order - b.order)
-                    .map((value, index) => (
-                      <Card key={value.id} className="bg-muted/50">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-lg">
-                              {value.title[
-                                currentLanguage as keyof typeof value.title
-                              ] || `Valor ${index + 1}`}
-                            </CardTitle>
-                            <Button
-                              onClick={() => handleRemoveValue(value.id)}
-                              size="sm"
-                              variant="destructive"
-                              className="flex items-center gap-2"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Eliminar
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div>
-                            <Label htmlFor={`${value.id}-title`}>Título</Label>
-                            <Input
-                              id={`${value.id}-title`}
-                              value={
-                                value.title[
-                                  currentLanguage as keyof typeof value.title
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handleValueChange(
-                                  value.id,
-                                  'title',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor={`${value.id}-description`}>
-                              Descripción
-                            </Label>
-                            <Textarea
-                              id={`${value.id}-description`}
-                              value={
-                                value.description[
-                                  currentLanguage as keyof typeof value.description
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handleValueChange(
-                                  value.id,
-                                  'description',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                              rows={3}
-                            />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <SortableContext
+                      items={formData.values.items.map(item => item.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {formData.values.items
+                        .sort((a, b) => a.order - b.order)
+                        .map((value, index) => (
+                          <SortableValueCard
+                            key={value.id}
+                            value={value}
+                            index={index}
+                            currentLanguage={currentLanguage}
+                            onValueChange={handleValueChange}
+                            onRemoveValue={handleRemoveValue}
+                          />
+                        ))}
+                    </SortableContext>
+                  </DndContext>
                 )}
               </CardContent>
             </Card>
