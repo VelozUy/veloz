@@ -9,7 +9,7 @@ import {
   UploadTaskSnapshot,
   UploadTask,
 } from 'firebase/storage';
-import { storage } from '@/lib/firebase';
+import { getStorageService } from '@/lib/firebase';
 import type { ApiResponse } from '@/types';
 
 // File upload configuration
@@ -233,7 +233,15 @@ export class FileUploadService {
       // Sanitize file name and create full path
       const sanitizedFileName = this.sanitizeFileName(file.name);
       const fullPath = `${path}/${sanitizedFileName}`;
-      const storageRef = ref(storage, fullPath);
+      const storageService = getStorageService();
+      if (!storageService) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+          data: undefined,
+        };
+      }
+      const storageRef = ref(storageService, fullPath);
 
       // Set up upload metadata
       const metadata = {
@@ -416,7 +424,15 @@ export class FileUploadService {
    */
   async deleteFile(filePath: string): Promise<ApiResponse<boolean>> {
     try {
-      const fileRef = ref(storage, filePath);
+      const storageService = getStorageService();
+      if (!storageService) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+          data: undefined,
+        };
+      }
+      const fileRef = ref(storageService, filePath);
       await deleteObject(fileRef);
 
       return {
@@ -482,7 +498,15 @@ export class FileUploadService {
    */
   async getFileMetadata(filePath: string): Promise<ApiResponse<any>> {
     try {
-      const fileRef = ref(storage, filePath);
+      const storageService = getStorageService();
+      if (!storageService) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+          data: undefined,
+        };
+      }
+      const fileRef = ref(storageService, filePath);
       const metadata = await getMetadata(fileRef);
 
       return {
@@ -505,7 +529,15 @@ export class FileUploadService {
     metadata: Record<string, any>
   ): Promise<ApiResponse<any>> {
     try {
-      const fileRef = ref(storage, filePath);
+      const storageService = getStorageService();
+      if (!storageService) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+          data: undefined,
+        };
+      }
+      const fileRef = ref(storageService, filePath);
       const updatedMetadata = await updateMetadata(fileRef, {
         customMetadata: metadata,
       });
@@ -527,7 +559,15 @@ export class FileUploadService {
    */
   async listFiles(path: string): Promise<ApiResponse<string[]>> {
     try {
-      const listRef = ref(storage, path);
+      const storageService = getStorageService();
+      if (!storageService) {
+        return {
+          success: false,
+          error: 'Firebase Storage not initialized',
+          data: undefined,
+        };
+      }
+      const listRef = ref(storageService, path);
       const result = await listAll(listRef);
 
       const filePaths = result.items.map(item => item.fullPath);

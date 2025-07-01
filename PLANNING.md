@@ -2,7 +2,7 @@
 
 Veloz is a company specialized in capturing moments from events — social, corporate, cultural, and beyond — through high-quality photo and audiovisual documentation. What makes Veloz unique is its production model: it breaks down the entire workflow (client intake, shooting, curation, editing, delivery) into specialized roles, handled by different professionals. This results in faster delivery, higher quality, and better scalability than traditional freelance-only models.
 
-The web application’s primary goal is to communicate Veloz’s professionalism and warmth through a visually elegant and intuitive experience. It enables visitors to preview the work, understand the values behind the brand, and submit a service request without friction. Internally, it includes a custom admin panel (CMS) to allow the team to update content and media easily, while supporting multiple languages.
+The web application's primary goal is to communicate Veloz's professionalism and warmth through a visually elegant and intuitive experience. It enables visitors to preview the work, understand the values behind the brand, and submit a service request without friction. Internally, it includes a custom admin panel (CMS) to allow the team to update content and media easily, while supporting multiple languages.
 
 ## 🧱 Overall Architecture
 
@@ -135,6 +135,70 @@ The web application’s primary goal is to communicate Veloz’s professionalism
 - Videos display as preview thumbnails with play icon overlay.
 - All media cards have hover effects and modal/lightbox on click.
 
+### 3.5. **Enhanced Project & Crew Features** 🆕
+
+#### 🧩 Modular Project Presentation
+
+Each project now supports multiple layout templates that can be selected via the CMS. This allows Veloz to present each event with its own editorial structure — no two project pages need to look the same. Layouts can include combinations like:
+
+- **Hero full-width image/video** - Immersive opening with large media
+- **2-column grid with alternating media/text** - Story-driven narrative flow
+- **Vertical story flow with annotated blocks** - Timeline-style presentation
+- **Custom layouts** - Admin-defined combinations for unique projects
+
+#### 🖼️ Custom Hero Media Ratios (Per Project Page)
+
+Each individual project page supports a custom hero section where admins can select the most suitable media type and aspect ratio to highlight the project visually. Available formats include:
+
+- **1:1** - Square format for portrait-style content
+- **16:9** - Widescreen for cinematic video content
+- **4:5** - Instagram-style portrait for social media optimization
+- **9:16** - Mobile-first vertical content
+- **Custom ratios** - Admin-defined dimensions for unique content
+
+This flexibility allows matching the media's original composition and storytelling goals.
+
+#### 🎨 Visual Category Cues (Project List & Project Page)
+
+Each project can be tagged by event type (wedding, birthday, corporate, etc.), and the UI applies subtle visual differentiation using:
+
+- **Typography styles** - Different font weights and sizes per category
+- **Accent colors** - Category-specific color schemes
+- **Visual indicators** - Icons, badges, or subtle background patterns
+
+These visual cues appear both on the `/our-work` project listing and on individual project pages, enhancing consistency while reinforcing emotional and contextual alignment with each event.
+
+#### 👥 Crew Section Per Project
+
+Projects include a new "Meet the Team" section where admins can assign one or more crew members. Each crew member has:
+
+- **Name** - Full name with proper formatting
+- **Role** - Professional title or specialization
+- **Portrait** - Professional headshot or team photo
+- **Bio** - Multilingual professional background and expertise
+
+This humanizes the work and builds trust with potential clients by showcasing the team behind each project.
+
+#### 📁 Centralized Crew Management in CMS
+
+A new section in the admin panel lets you manage all crew members in one place:
+
+- **Add/edit crew profiles** - Complete CRUD operations for team members
+- **Assign them to projects** - Link crew members to specific projects
+- **Upload/update portraits** - Professional photo management
+- **Multilingual bios** - Support for Spanish, English, and Portuguese
+
+#### 🔗 Instagram-like Feed
+
+Each project page includes a manually curated feed of social-style posts:
+
+- **Images and videos** - Behind-the-scenes content
+- **Captions** - Informal, engaging descriptions
+- **Timeline layout** - Chronological or curated order
+- **Social integration** - Optional links to actual social media posts
+
+This lets you add informal or behind-the-scenes content alongside the main media layout, creating a more personal connection with visitors.
+
 ### 4. **Work With Us** (Contact Form)
 
 ## Contact Form Planning for Photo & Video Service Website
@@ -177,7 +241,7 @@ Only include if useful:
 
 Below the form or submit button:
 
-> "We don’t share your info. We’ll only reach out to help with your event."
+> "We don't share your info. We'll only reach out to help with your event."
 
 ### Design Tips
 
@@ -282,8 +346,24 @@ This component improves user interaction and encourages conversions through a co
     status: "published" | "draft"
     tags: ["wedding", "outdoor"]
     coverImage: "https://..."
+    layoutTemplate: "hero" | "2-column" | "vertical-story" | "custom"
+    heroRatio: "1:1" | "16:9" | "4:5" | "9:16" | "custom"
+    crewMembers: ["crew123", "crew456"]
     /projectMedia: [subcollection]
       - mediaId: { type: "photo|video", url: "...", caption: {...} }
+    /socialFeed: [subcollection]
+      - postId: { type: "image|video", url: "...", caption: {...}, order: 1 }
+
+/crewMembers:
+  - id: "crew123"
+    name: { es: "María García", en: "María García" }
+    role: { es: "Fotógrafa Principal", en: "Lead Photographer" }
+    portrait: "https://..."
+    bio: { es: "...", en: "...", pt: "..." }
+    socialLinks: { instagram: "...", linkedin: "..." }
+    availability: "available" | "busy" | "unavailable"
+    createdAt: timestamp
+    updatedAt: timestamp
 
 /faqs:
   - id: "faq001"

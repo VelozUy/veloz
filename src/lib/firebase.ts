@@ -1,20 +1,24 @@
 // Firebase Configuration & Initialization
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getFirestore, Firestore } from 'firebase/firestore';
-import { getAuth, Auth } from 'firebase/auth';
-import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { firebaseConfig, validateFirebaseConfig } from './firebase-config';
 
 // Initialize Firebase
 let app: FirebaseApp;
 let db: Firestore;
-let auth: Auth;
-let storage: FirebaseStorage;
+let auth: any; // Will be properly typed when imported
+let storage: any; // Will be properly typed when imported
 
 // Function to safely initialize Firebase
 const initializeFirebase = () => {
   try {
-    // Validate configuration first
+    // Skip validation in Node environment (tests)
+    if (typeof window === 'undefined') {
+      // Return dummy app for server-side
+      return {} as FirebaseApp;
+    }
+
+    // Validate configuration first (browser only)
     const validation = validateFirebaseConfig();
     if (!validation.isValid) {
       throw new Error(
@@ -36,48 +40,47 @@ const initializeFirebase = () => {
   }
 };
 
-// Initialize Firebase only on client side to prevent SSR issues
+// Initialize Firebase app
+const firebaseApp = initializeFirebase();
+app = firebaseApp;
+
+// Initialize Firestore (always available)
+db = getFirestore(firebaseApp);
+
+// Initialize Auth and Storage only in browser
 if (typeof window !== 'undefined') {
-  try {
-    app = initializeFirebase();
+  // Dynamic imports to avoid SSR issues
+  import('firebase/auth').then(({ getAuth }) => {
+    auth = getAuth(firebaseApp);
+  }).catch((error) => {
+    console.warn('Firebase Auth not available:', error);
+  });
 
-    // Initialize services
-    db = getFirestore(app);
-    auth = getAuth(app);
-    storage = getStorage(app);
-
-    // CRITICAL: Disable offline persistence to prevent assertion errors
-    // This prevents the ca9 assertion error by avoiding corrupted offline state
-    console.log('🔧 Configuring Firestore for assertion error prevention...');
-
-    // Development: Add error handling for assertion errors (client-side only)
-    if (process.env.NODE_ENV === 'development') {
-      // Listen for uncaught Firebase errors
-      window.addEventListener('error', event => {
-        if (event.error?.message?.includes('INTERNAL ASSERTION FAILED')) {
-          console.error('🚨 Firebase Internal Assertion Error detected!');
-          console.error('Navigate to /debug/firebase for emergency fixes');
-          console.error('Or run: emergencyFirestoreFix() in console');
-        }
-      });
-    }
-
-    console.log('✅ Firebase initialized successfully');
-  } catch (error: unknown) {
-    console.error('❌ Firebase client initialization failed:', error);
-    // Initialize with dummy values to prevent app crash
-    app = {} as FirebaseApp;
-    db = {} as Firestore;
-    auth = {} as Auth;
-    storage = {} as FirebaseStorage;
-  }
-} else {
-  // Server-side: Initialize with dummy values to prevent errors
-  app = {} as FirebaseApp;
-  db = {} as Firestore;
-  auth = {} as Auth;
-  storage = {} as FirebaseStorage;
+  import('firebase/storage').then(({ getStorage }) => {
+    storage = getStorage(firebaseApp);
+  }).catch((error) => {
+    console.warn('Firebase Storage not available:', error);
+  });
 }
+
+// Function to get Storage service only when needed
+export const getStorageService = () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  
+  if (!storage) {
+    try {
+      const { getStorage } = require('firebase/storage');
+      storage = getStorage(app);
+    } catch (error) {
+      console.error('❌ Firebase Storage initialization failed:', error);
+      return null;
+    }
+  }
+  
+  return storage;
+};
 
 export default app;
 export { db, auth, storage };

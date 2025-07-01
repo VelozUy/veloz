@@ -73,7 +73,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
   const navItems = [
     {
       name: translations.navigation.gallery,
-      href: getLocalizedPath('/gallery', locale),
+      href: getLocalizedPath('/our-work', locale),
       icon: ImageIcon,
     },
     {
@@ -106,7 +106,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <Link
-                href={getLocalizedPath('/gallery', locale)}
+                href={getLocalizedPath('/our-work', locale)}
                 className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />

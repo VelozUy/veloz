@@ -30,12 +30,113 @@ _Last updated: December 2024_
 
 ### Our Work (Gallery)
 
+- [x] **[High] Create /our-work page with project showcase** - Implemented comprehensive project showcase page with full-width desktop layout, alternating carousel/content sides, continuous slow movement carousels with seamless looping, Framer Motion animations, event type filtering, and CTA functionality. Features include: responsive design (mobile: stacked cards, desktop: full-width alternating layout), continuous slow horizontal sliding carousel with 6-second intervals and 6-second linear transitions, media properly resized to match container dimensions with object-cover, all media items duplicated for seamless infinite loop, no manual controls for distraction-free viewing, enhanced typography and spacing, video/photo previews, event type badges, featured project highlighting, and "I want something like this" CTAs that prefills contact form. Supports all three languages (ES/EN/PT) with localized UI text and proper SEO metadata. Integrated with existing static content generation system for optimal performance _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[Medium] Replace gallery media animations with blur fade effect** - Replaced current BentoGrid scale/opacity animations with blur fade effect using motion library. Created new BlurFade component with blur and fade transitions triggered by viewport intersection. Enhanced viewport detection to only trigger animations when images are actually entering the viewport (5% visibility threshold for responsive animation). Optimized animation timing with fast 0.15s duration and 0.02s stagger delays for snappy, modern gallery appearance _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[Medium] Make gallery content use full screen size** - Removed width constraints, reduced padding/gaps, increased grid columns (mobile: 2, tablet: 4, desktop: 6), smaller border radius for edge-to-edge feel. Gallery now utilizes full viewport width and height for immersive viewing experience _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Fix video autoplay console errors** - Fixed "play() request was interrupted by pause()" errors by implementing proper promise handling, state tracking for playing videos, and delayed pause calls to prevent race conditions. Added rootMargin to intersection observer to reduce rapid triggering _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Low] Re-implement gallery filtering** - Add back project type navigation with improved design _(Added: Jan 6, 2025)_
 - [ ] **[Medium] Add lightbox touch gestures** - Swipe navigation on mobile
 - [ ] **[Low] Add gallery pagination** - Handle large image collections
+
+### Enhanced Project & Crew Features 🆕
+
+#### 🧩 Modular Project Presentation
+
+- [ ] **[High] Create project layout template system** - Build template selection interface in admin panel with predefined layouts (hero, 2-column, vertical story, custom) _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement hero full-width layout template** - Create immersive opening layout with large media and minimal text overlay _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement 2-column alternating layout template** - Create story-driven narrative flow with media and text alternating in columns _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement vertical story flow template** - Create timeline-style presentation with annotated blocks and chronological flow _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add custom layout builder** - Allow admins to create custom layout combinations using drag-and-drop interface _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add layout preview functionality** - Show real-time preview of selected layout template in admin panel _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add layout template import/export** - Allow sharing and reusing layout templates across projects _(Added: Jan 8, 2025)_
+
+#### 🖼️ Custom Hero Media Ratios
+
+- [ ] **[High] Add hero media ratio selector to project editor** - Create dropdown/radio button interface for selecting hero aspect ratios (1:1, 16:9, 4:5, 9:16, custom) _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement 1:1 square hero layout** - Create square format hero section optimized for portrait-style content _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement 16:9 widescreen hero layout** - Create cinematic widescreen hero section for video content _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement 4:5 Instagram-style hero layout** - Create portrait hero section optimized for social media content _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement 9:16 mobile-first hero layout** - Create vertical hero section optimized for mobile viewing _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add custom ratio input field** - Allow admins to specify custom aspect ratios for unique content requirements _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add hero media cropping interface** - Provide visual cropping tool to adjust media to selected aspect ratio _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add hero media optimization** - Automatically optimize hero media for web performance based on selected ratio _(Added: Jan 8, 2025)_
+
+#### 🎨 Visual Category Cues
+
+- [ ] **[High] Create category-specific typography system** - Define different font weights, sizes, and styles for each event category _(Added: Jan 8, 2025)_
+- [ ] **[High] Implement category accent color system** - Create color schemes for each event type (wedding, corporate, birthday, etc.) _(Added: Jan 8, 2025)_
+- [ ] **[High] Add visual category indicators** - Create icons, badges, or subtle background patterns for each category _(Added: Jan 8, 2025)_
+- [ ] **[High] Apply category styling to project listings** - Update `/our-work` page to use category-specific visual cues _(Added: Jan 8, 2025)_
+- [ ] **[High] Apply category styling to project pages** - Update individual project pages to use category-specific visual cues _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add category color customization** - Allow admins to customize category colors in admin panel _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add category icon selection** - Allow admins to choose custom icons for each event category _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add category-based animations** - Implement subtle animations that vary by event category _(Added: Jan 8, 2025)_
+
+#### 👥 Crew Section Per Project
+
+- [x] **[High] Create crew member data model** - Define TypeScript interfaces and Zod schemas for crew member data (name, role, portrait, bio) _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [ ] **[High] Add crew assignment to project editor** - Create interface for assigning crew members to projects in admin panel _(Added: Jan 8, 2025)_
+- [ ] **[High] Create "Meet the Team" section component** - Build React component to display crew members on project pages _(Added: Jan 8, 2025)_
+- [ ] **[High] Add crew member portrait upload** - Implement portrait upload functionality with image optimization _(Added: Jan 8, 2025)_
+- [ ] **[High] Add multilingual crew bio support** - Support Spanish, English, and Portuguese bios for each crew member _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member role templates** - Provide predefined role templates (photographer, videographer, editor, etc.) _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member social links** - Allow adding social media profiles for each crew member _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add crew member availability status** - Show if crew members are available for new projects _(Added: Jan 8, 2025)_
+
+#### 📁 Centralized Crew Management
+
+- [x] **[High] Create crew management admin page** - Build `/admin/crew` page with full CRUD interface for crew members _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Add crew navigation to admin sidebar** - Add "Gestión de Equipo" navigation item to AdminLayout _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Create crew member list view** - Display all crew members with search, filter, and pagination _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Create crew member add/edit forms** - Build forms for creating and editing crew member profiles _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Add crew member deletion with confirmation** - Allow removal of crew members with proper confirmation dialogs _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [ ] **[High] Add crew member portrait management** - Upload, crop, and manage professional photos for crew members _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member project assignment interface** - Show which projects each crew member is assigned to _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member bulk operations** - Select and manage multiple crew members at once _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member import/export** - Allow importing crew data from CSV and exporting to various formats _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add crew member analytics** - Track crew member project participation and performance metrics _(Added: Jan 8, 2025)_
+
+#### 🔗 Instagram-like Feed
+
+- [ ] **[High] Create social feed data model** - Define TypeScript interfaces and Zod schemas for social-style posts (images, videos, captions) _(Added: Jan 8, 2025)_
+- [ ] **[High] Add social feed to project editor** - Create interface for adding social-style posts to projects in admin panel _(Added: Jan 8, 2025)_
+- [ ] **[High] Create Instagram-like feed component** - Build React component to display social-style posts on project pages _(Added: Jan 8, 2025)_
+- [ ] **[High] Add social post media upload** - Implement upload functionality for images and videos in social feed _(Added: Jan 8, 2025)_
+- [ ] **[High] Add social post caption editor** - Create rich text editor for social post captions with formatting options _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add social post ordering** - Allow drag-and-drop reordering of social posts within project feed _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add social media integration** - Allow linking social posts to actual Instagram/Facebook posts _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add social post scheduling** - Allow scheduling social posts to appear at specific times _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add social post analytics** - Track engagement metrics for social posts (views, likes, shares) _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add social post templates** - Provide predefined templates for common social post types _(Added: Jan 8, 2025)_
+
+#### Database & Service Layer
+
+- [x] **[High] Create crew member Firestore service** - Build service functions for CRUD operations on crew member data _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [ ] **[High] Create social feed Firestore service** - Build service functions for CRUD operations on social feed data _(Added: Jan 8, 2025)_
+- [ ] **[High] Update project data model** - Extend existing project schema to include layout templates, hero ratios, crew assignments, and social feeds _(Added: Jan 8, 2025)_
+- [ ] **[High] Create project layout service** - Build service functions for managing project layout templates and configurations _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew member validation** - Implement comprehensive validation for crew member data including required fields and format checks _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add social feed validation** - Implement validation for social post data including media requirements and caption limits _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add crew member search functionality** - Implement search and filtering for crew members by name, role, or skills _(Added: Jan 8, 2025)_
+
+#### Frontend Integration
+
+- [ ] **[High] Update project detail pages** - Modify existing project pages to support new layout templates and crew sections _(Added: Jan 8, 2025)_
+- [ ] **[High] Update project listing pages** - Modify `/our-work` pages to display category visual cues and enhanced project cards _(Added: Jan 8, 2025)_
+- [ ] **[High] Create responsive crew section** - Ensure crew member display works well on all device sizes _(Added: Jan 8, 2025)_
+- [ ] **[High] Create responsive social feed** - Ensure Instagram-like feed displays properly on mobile and desktop _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add crew section animations** - Implement smooth animations for crew member cards and transitions _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Add social feed animations** - Implement smooth animations for social post loading and interactions _(Added: Jan 8, 2025)_
+- [ ] **[Low] Add crew member lightbox** - Allow clicking on crew member portraits to view larger images _(Added: Jan 8, 2025)_
+
+#### Testing & Quality Assurance
+
+- [x] **[High] Test crew management functionality** - Create comprehensive tests for crew member CRUD operations _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [ ] **[High] Test social feed functionality** - Create tests for social post creation, editing, and display _(Added: Jan 8, 2025)_
+- [ ] **[High] Test project layout templates** - Create tests for layout template selection and rendering _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Test category visual cues** - Create tests for category-specific styling and visual indicators _(Added: Jan 8, 2025)_
+- [ ] **[Medium] Test hero media ratios** - Create tests for different aspect ratio layouts and media cropping _(Added: Jan 8, 2025)_
+- [ ] **[Low] Test crew member assignments** - Create tests for assigning crew members to projects and displaying assignments _(Added: Jan 8, 2025)_
 
 ### Work With Us (Contact Form)
 

@@ -15,6 +15,7 @@ import {
   FolderOpen,
   Mail,
   FileText,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -27,6 +28,7 @@ const navigation = [
   { name: 'Panel Principal', href: '/admin', icon: LayoutDashboard },
   { name: 'Usuarios', href: '/admin/users', icon: User },
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
+  { name: 'Gestión de Equipo', href: '/admin/crew', icon: Users },
   { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
   { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },

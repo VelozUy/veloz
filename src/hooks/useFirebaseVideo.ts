@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { storageService } from '@/services/firebase';
+import { StorageService } from '@/services/firebase';
 
 export function useFirebaseVideo(fileName: string) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -13,6 +13,7 @@ export function useFirebaseVideo(fileName: string) {
         setError(null);
 
         // Try to get the video URL from Firebase Storage
+        const storageService = new StorageService();
         const result = await storageService.getFileUrl(fileName);
 
         if (result.success) {

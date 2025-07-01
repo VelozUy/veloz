@@ -32,7 +32,7 @@ import {
   Trash2,
   RefreshCw,
 } from 'lucide-react';
-import { db, storage } from '@/lib/firebase';
+import { db, getStorageService } from '@/lib/firebase';
 import {
   testFirebaseConnection,
   debugFirebaseState,
@@ -314,8 +314,12 @@ export default function HomepageAdminPage() {
       }
 
       // Upload to Firebase Storage
+      const storageService = getStorageService();
+      if (!storageService) {
+        throw new Error('Firebase Storage not initialized');
+      }
       const filename = `homepage/${type}s/${Date.now()}-${file.name}`;
-      const storageRef = ref(storage, filename);
+      const storageRef = ref(storageService, filename);
 
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
@@ -327,7 +331,7 @@ export default function HomepageAdminPage() {
         // Delete old logo if exists
         if (updatedContent.logo.url) {
           try {
-            const oldRef = ref(storage, updatedContent.logo.filename);
+            const oldRef = ref(storageService, updatedContent.logo.filename);
             await deleteObject(oldRef);
           } catch (error) {
             console.warn('Could not delete old logo:', error);
@@ -343,7 +347,7 @@ export default function HomepageAdminPage() {
         if (updatedContent.backgroundVideo.url) {
           try {
             const oldRef = ref(
-              storage,
+              storageService,
               updatedContent.backgroundVideo.filename
             );
             await deleteObject(oldRef);
@@ -387,8 +391,11 @@ export default function HomepageAdminPage() {
       // Delete from storage
       if (imageToDelete) {
         try {
-          const storageRef = ref(storage, imageToDelete);
-          await deleteObject(storageRef);
+          const storageService = getStorageService();
+          if (storageService) {
+            const storageRef = ref(storageService, imageToDelete);
+            await deleteObject(storageRef);
+          }
         } catch (error) {
           console.warn('Could not delete image from storage:', error);
         }

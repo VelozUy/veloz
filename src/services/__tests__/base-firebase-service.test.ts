@@ -6,7 +6,13 @@ jest.mock('@/lib/firebase', () => ({
   db: {
     collection: jest.fn(),
     doc: jest.fn(),
+    enableNetwork: jest.fn(),
+    disableNetwork: jest.fn(),
+    runTransaction: jest.fn(),
+    writeBatch: jest.fn(),
   },
+  auth: {},
+  storage: {},
 }));
 
 jest.mock('firebase/firestore', () => ({
@@ -22,20 +28,9 @@ jest.mock('firebase/firestore', () => ({
   orderBy: jest.fn(),
   limit: jest.fn(),
   startAfter: jest.fn(),
-  enableNetwork: jest.fn(),
-  disableNetwork: jest.fn(),
-  runTransaction: jest.fn(),
-  writeBatch: jest.fn(),
   Timestamp: {
     now: jest.fn(() => ({ toDate: () => new Date('2024-01-01') })),
     fromDate: jest.fn(),
-  },
-}));
-
-jest.mock('@/lib/firebase', () => ({
-  db: {
-    collection: jest.fn(),
-    doc: jest.fn(),
   },
 }));
 

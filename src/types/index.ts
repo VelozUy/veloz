@@ -293,3 +293,36 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   limit: number;
   hasMore: boolean;
 }
+
+// Crew Member Types
+export interface CrewMember {
+  id: string;
+  name: LocalizedContent;
+  role: LocalizedContent;
+  portrait: string; // URL to portrait image
+  bio: LocalizedContent;
+  socialLinks?: {
+    instagram?: string;
+    linkedin?: string;
+    website?: string;
+    email?: string;
+  };
+  skills: string[]; // Array of skill tags
+  order: number; // For display ordering
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Crew Member Data for Creation (before Firestore timestamps)
+export interface CreateCrewMemberData {
+  name: LocalizedContent;
+  role: LocalizedContent;
+  portrait: string;
+  bio: LocalizedContent;
+  socialLinks?: CrewMember['socialLinks'];
+  skills: string[];
+  order: number;
+}
+
+// Crew Member Data for Updates - compatible with BaseFirebaseService
+export type UpdateCrewMemberData = Partial<Omit<CrewMember, 'id' | 'createdAt'>>;

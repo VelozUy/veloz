@@ -508,6 +508,25 @@ export const apiResponseSchema = <T>(dataSchema: z.ZodSchema<T>) =>
       .optional(),
   });
 
+// Crew Member Schema
+export const crewMemberSchema = baseSchema.extend({
+  name: multiLanguageTextSchema,
+  role: multiLanguageTextSchema,
+  portrait: z.string().url('Portrait must be a valid URL'),
+  bio: multiLanguageTextSchema,
+  socialLinks: z
+    .object({
+      instagram: z.string().url('Instagram must be a valid URL').optional(),
+      linkedin: z.string().url('LinkedIn must be a valid URL').optional(),
+      website: z.string().url('Website must be a valid URL').optional(),
+      email: z.string().email('Email must be a valid email address').optional(),
+    })
+    .optional(),
+  skills: z.array(z.string().min(1, 'Skill cannot be empty')).default([]),
+  order: z.number().int().min(0).default(0),
+  lastModifiedBy: z.string().optional(),
+});
+
 // Export commonly used schemas
 export const schemas = {
   contactForm: contactFormSchema,
@@ -526,6 +545,7 @@ export const schemas = {
   bulkOperation: bulkOperationSchema,
   emailTemplate: emailTemplateSchema,
   formContent: formContentSchema,
+  crewMember: crewMemberSchema,
 } as const;
 
 // Type exports for TypeScript
@@ -554,6 +574,7 @@ export type PaginationData = z.infer<typeof paginationSchema>;
 export type BulkOperationData = z.infer<typeof bulkOperationSchema>;
 export type EmailTemplateData = z.infer<typeof emailTemplateSchema>;
 export type FormContentData = z.infer<typeof formContentSchema>;
+export type CrewMemberData = z.infer<typeof crewMemberSchema>;
 
 // Validation helper functions
 export const validateContactForm = (data: unknown) =>
@@ -590,5 +611,11 @@ export const safeValidateAdminUser = (data: unknown) =>
 export const validateFormContent = (data: unknown) =>
   formContentSchema.parse(data);
 
+export const validateCrewMember = (data: unknown) =>
+  crewMemberSchema.parse(data);
+
 export const safeValidateFormContent = (data: unknown) =>
   formContentSchema.safeParse(data);
+
+export const safeValidateCrewMember = (data: unknown) =>
+  crewMemberSchema.safeParse(data);

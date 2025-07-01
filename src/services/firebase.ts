@@ -19,7 +19,7 @@ import {
   deleteObject,
   uploadBytesResumable,
 } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db, getStorageService } from '@/lib/firebase';
 import { FIREBASE_COLLECTIONS } from '@/constants';
 import type {
   FAQ,
@@ -568,7 +568,8 @@ export class ProjectMediaService extends BaseFirebaseService {
     onProgress?: (progress: number) => void
   ): Promise<ApiResponse<ProjectMedia>> {
     try {
-      if (!storage) {
+      const storageService = getStorageService();
+      if (!storageService) {
         return {
           success: false,
           error: 'Firebase Storage not initialized',
@@ -592,7 +593,7 @@ export class ProjectMediaService extends BaseFirebaseService {
       const filePath = `projects/${projectId}/${timestamp}-${sanitizedFileName}`;
 
       // Upload to Firebase Storage with progress tracking
-      const storageRef = ref(storage, filePath);
+      const storageRef = ref(storageService, filePath);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       return new Promise(resolve => {
@@ -686,9 +687,10 @@ export class ProjectMediaService extends BaseFirebaseService {
         const media = mediaResult.data;
 
         // Delete from Storage
-        if (storage) {
+        const storageService = getStorageService();
+        if (storageService) {
           try {
-            const storageRef = ref(storage, media.filePath);
+            const storageRef = ref(storageService, media.filePath);
             await deleteObject(storageRef);
           } catch (storageError) {
             console.warn('Failed to delete file from storage:', storageError);
@@ -738,7 +740,8 @@ export class StorageService {
   async getFileUrl(filePath: string): Promise<ApiResponse<string>> {
     try {
       // Check if storage is initialized
-      if (!storage) {
+      const storageService = getStorageService();
+      if (!storageService) {
         console.error('Firebase Storage not initialized');
         return {
           success: false,
@@ -747,7 +750,7 @@ export class StorageService {
         };
       }
 
-      const fileRef = ref(storage, filePath);
+      const fileRef = ref(storageService, filePath);
       const downloadURL = await getDownloadURL(fileRef);
       return { success: true, data: downloadURL };
     } catch (error) {
