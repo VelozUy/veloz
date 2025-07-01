@@ -85,6 +85,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
             <button
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              aria-label="Close sidebar"
             >
               <X className="w-5 h-5" />
             </button>
@@ -109,6 +110,8 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                           : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                       }`}
                       onClick={() => setSidebarOpen(false)}
+                      aria-label={`Navigate to ${item.name}`}
+                      aria-current={isActive ? 'page' : undefined}
                     >
                       <Icon
                         className={`w-5 h-5 mr-3 ${
@@ -143,6 +146,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
               size="sm"
               onClick={handleSignOut}
               className="w-full"
+              aria-label="Sign out of admin panel"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Cerrar Sesión
@@ -160,6 +164,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors mr-4"
+                aria-label="Open sidebar"
               >
                 <Menu className="w-5 h-5" />
               </button>

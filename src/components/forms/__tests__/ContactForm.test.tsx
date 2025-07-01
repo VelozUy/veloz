@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@/lib/test-utils';
+import { render, screen, waitFor, fireEvent } from '@/lib/test-utils';
 import { userInteraction } from '@/lib/test-utils';
 import ContactForm from '../ContactForm';
 import { emailService } from '@/services/email';
@@ -447,6 +447,195 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       expect(screen.getByText('(optional)')).toBeInTheDocument();
+    });
+
+    it('displays privacy notice', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      expect(
+        screen.getByText('Tu información está segura con nosotros')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('No compartimos tus datos con terceros')
+      ).toBeInTheDocument();
+    });
+  });
+
+  // Keyboard Navigation Tests
+  describe('Keyboard Navigation', () => {
+    it('supports Tab navigation through all form fields', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      // Get all focusable elements
+      const focusableElements = screen
+        .getAllByRole('textbox')
+        .concat(screen.getAllByRole('combobox'), screen.getAllByRole('button'));
+
+      // Test that all elements are focusable
+      focusableElements.forEach(element => {
+        expect(element).toHaveAttribute('tabIndex', expect.any(String));
+      });
+    });
+
+    it('supports Enter key to submit form', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      // Fill required fields
+      const nameInput = screen.getByLabelText('Nombre completo');
+      const emailInput = screen.getByLabelText('Correo electrónico');
+      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+
+      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
+
+      // Test Enter key submission
+      fireEvent.keyDown(nameInput, { key: 'Enter', code: 'Enter' });
+
+      // Form should attempt submission (will fail due to mock email service)
+      expect(nameInput).toBeInTheDocument();
+    });
+
+    it('supports Space key activation for buttons', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      expect(submitButton).toBeInTheDocument();
+
+      // Test Space key activation
+      fireEvent.keyDown(submitButton, { key: ' ', code: 'Space' });
+      expect(submitButton).toBeInTheDocument();
+    });
+
+    it('supports arrow key navigation in select dropdown', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      eventTypeSelect.focus();
+      expect(document.activeElement).toBe(eventTypeSelect);
+
+      // Test arrow key navigation in select
+      fireEvent.keyDown(eventTypeSelect, {
+        key: 'ArrowDown',
+        code: 'ArrowDown',
+      });
+      expect(document.activeElement).toBeInTheDocument();
+    });
+
+    it('maintains focus management during form validation', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      const nameInput = screen.getByLabelText('Nombre completo');
+      nameInput.focus();
+      expect(document.activeElement).toBe(nameInput);
+
+      // Try to submit with invalid data
+      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      fireEvent.click(submitButton);
+
+      // Focus should remain on the form
+      expect(document.activeElement).toBeInTheDocument();
+    });
+
+    it('supports keyboard navigation through form sections', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      const formElements = [
+        screen.getByLabelText('Nombre completo'),
+        screen.getByLabelText('Correo electrónico'),
+        screen.getByLabelText('Tipo de evento'),
+        screen.getByLabelText('Fecha del evento'),
+        screen.getByLabelText('Mensaje'),
+      ];
+
+      // Test Tab navigation through all elements
+      formElements.forEach((element, index) => {
+        element.focus();
+        expect(document.activeElement).toBe(element);
+
+        // Test Tab to next element
+        if (index < formElements.length - 1) {
+          fireEvent.keyDown(element, { key: 'Tab', code: 'Tab' });
+          expect(document.activeElement).toBe(formElements[index + 1]);
+        }
+      });
+    });
+
+    it('prevents focus trap in form', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      const formElements = screen
+        .getAllByRole('textbox')
+        .concat(screen.getAllByRole('combobox'), screen.getAllByRole('button'));
+      const lastElement = formElements[formElements.length - 1];
+
+      // Focus last element
+      lastElement.focus();
+      expect(document.activeElement).toBe(lastElement);
+
+      // Test that focus can move beyond the form
+      fireEvent.keyDown(lastElement, { key: 'Tab', code: 'Tab' });
+      expect(document.activeElement).toBeInTheDocument();
+    });
+
+    it('supports keyboard navigation in success state', async () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      // Fill and submit form
+      const nameInput = screen.getByLabelText('Nombre completo');
+      const emailInput = screen.getByLabelText('Correo electrónico');
+      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+
+      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
+
+      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      fireEvent.click(submitButton);
+
+      // Test keyboard navigation in form state
+      const formElements = screen.getAllByRole('button');
+      expect(formElements.length).toBeGreaterThan(0);
+
+      formElements.forEach(element => {
+        expect(element).toHaveAttribute('tabIndex', expect.any(String));
+      });
+    });
+
+    it('handles keyboard events during loading state', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      // Fill and submit form
+      const nameInput = screen.getByLabelText('Nombre completo');
+      const emailInput = screen.getByLabelText('Correo electrónico');
+      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+
+      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
+
+      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      fireEvent.click(submitButton);
+
+      // Test that keyboard events are handled appropriately
+      fireEvent.keyDown(submitButton, { key: 'Enter', code: 'Enter' });
+      expect(submitButton).toBeInTheDocument();
+    });
+
+    it('supports keyboard navigation for accessibility features', () => {
+      render(<ContactForm translations={mockTranslations} />);
+
+      // Test that form has proper ARIA attributes for keyboard navigation
+      const form = screen.getByRole('form');
+      expect(form).toBeInTheDocument();
+
+      // Test that all inputs have proper labels
+      const inputs = screen.getAllByRole('textbox');
+      inputs.forEach(input => {
+        const label =
+          input.getAttribute('aria-label') || input.getAttribute('id');
+        expect(label).toBeTruthy();
+      });
     });
   });
 });

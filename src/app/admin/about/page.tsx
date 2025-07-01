@@ -126,6 +126,7 @@ function SortablePhilosophyCard({
               size="sm"
               variant="destructive"
               className="flex items-center gap-2"
+              aria-label={`Remove philosophy point ${index + 1}`}
             >
               <Trash2 className="h-4 w-4" />
               Eliminar
@@ -145,6 +146,7 @@ function SortablePhilosophyCard({
                   }
                   disabled={isTranslating(point.id, 'title', 'en')}
                   className="text-xs h-7 px-2"
+                  aria-label="Translate title to English"
                 >
                   {isTranslating(point.id, 'title', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
@@ -160,6 +162,7 @@ function SortablePhilosophyCard({
                   }
                   disabled={isTranslating(point.id, 'title', 'pt')}
                   className="text-xs h-7 px-2"
+                  aria-label="Translate title to Portuguese"
                 >
                   {isTranslating(point.id, 'title', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
@@ -304,6 +307,7 @@ function SortableMethodologyCard({
                 {...attributes}
                 {...listeners}
                 className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+                aria-label={`Drag to reorder methodology step ${index + 1}`}
               >
                 <GripVertical className="w-4 h-4 text-muted-foreground" />
               </div>
@@ -317,6 +321,7 @@ function SortableMethodologyCard({
               size="sm"
               variant="destructive"
               className="flex items-center gap-2"
+              aria-label={`Remove methodology step ${index + 1}`}
             >
               <Trash2 className="h-4 w-4" />
               Eliminar

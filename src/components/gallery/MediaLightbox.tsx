@@ -185,6 +185,7 @@ export default function MediaLightbox({
                   size="sm"
                   onClick={handleShare}
                   className="text-white hover:bg-white/20"
+                  aria-label="Share media"
                 >
                   <Share2 className="w-4 h-4" />
                 </Button>
@@ -193,6 +194,7 @@ export default function MediaLightbox({
                   size="sm"
                   onClick={onClose}
                   className="text-white hover:bg-white/20"
+                  aria-label="Close lightbox"
                 >
                   <X className="w-5 h-5" />
                 </Button>
@@ -209,6 +211,7 @@ export default function MediaLightbox({
                 size="lg"
                 onClick={handlePrevious}
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-40 text-white hover:bg-white/20 h-12 w-12"
+                aria-label="Previous media"
               >
                 <ChevronLeft className="w-8 h-8" />
               </Button>
@@ -220,6 +223,7 @@ export default function MediaLightbox({
                 size="lg"
                 onClick={handleNext}
                 className="absolute right-4 top-1/2 -translate-y-1/2 z-40 text-white hover:bg-white/20 h-12 w-12"
+                aria-label="Next media"
               >
                 <ChevronRight className="w-8 h-8" />
               </Button>
@@ -260,6 +264,7 @@ export default function MediaLightbox({
                       <Button
                         size="lg"
                         className="bg-white/20 hover:bg-white/30 text-white border-white/20"
+                        aria-label="Play video"
                       >
                         <Play className="w-8 h-8 mr-2 fill-white" />
                         Play Video

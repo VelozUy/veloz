@@ -181,6 +181,8 @@ export default function Hero({
                       : 'w-full h-auto opacity-100' // Large logo fills container
                   }`}
                   priority
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  quality={90}
                 />
               )}
             </div>
