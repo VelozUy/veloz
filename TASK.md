@@ -119,15 +119,15 @@ _All homepage content management functionality completed - see Completed Tasks S
 #### Philosophy Section Management
 
 - [ ] **[High] Create philosophy content editor** - Build form section for editing philosophy title and description with textarea inputs _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Add philosophy translation controls** - Add individual translation buttons for philosophy section content _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add philosophy translation controls** - Add individual translation buttons for philosophy section content _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Low] Add character count indicators** - Show character count for philosophy description to help with content length management _(Added: Jan 8, 2025)_
 
 #### Methodology Section Management
 
 - [ ] **[High] Create methodology steps list view** - Display all 4 methodology steps (Planning, Coverage, Capture, Post-Production) in editable list format _(Added: Jan 8, 2025)_
 - [ ] **[High] Create methodology step editor** - Build form component for editing individual methodology step title and description _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Add methodology step reordering** - Implement drag-and-drop functionality to reorder methodology steps _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Add methodology step translation** - Add translation buttons for each methodology step content _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add methodology step reordering** - Implement drag-and-drop functionality to reorder methodology steps _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[Medium] Add methodology step translation** - Add translation buttons for each methodology step content _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Low] Add methodology step icons** - Allow admin to select or upload custom icons for each methodology step _(Added: Jan 8, 2025)_
 
 #### Values Section Management
