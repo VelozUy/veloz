@@ -105,24 +105,10 @@ export class FirestoreReset {
 
   private async step4_TerminateFirestore() {
     try {
-      // First try to clear any active listeners to prevent Target ID conflicts
-      await this.clearActiveListeners();
       await terminate(db);
       this.addResult('Terminate Firestore Instance', true);
     } catch (error) {
       this.addResult('Terminate Firestore Instance', false, String(error));
-    }
-  }
-
-  private async clearActiveListeners() {
-    try {
-      // Force disable network first to stop all listeners
-      await disableNetwork(db);
-      // Wait a moment for listeners to clean up
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      this.addResult('Clear Active Listeners', true);
-    } catch (error) {
-      this.addResult('Clear Active Listeners', false, String(error));
     }
   }
 
@@ -175,7 +161,6 @@ export class FirestoreReset {
     console.log('🔄 Starting Target ID collision reset...');
 
     // Specific sequence for Target ID issues
-    await this.clearActiveListeners();
     await this.step2_ClearLocalStorage();
     await this.step3_ClearIndexedDB();
 
@@ -192,6 +177,17 @@ export class FirestoreReset {
     await this.step6_TestConnection();
 
     console.log('🔄 Target ID reset complete:', this.results);
+    return this.results;
+  }
+
+  async performFullReset(): Promise<ResetResult[]> {
+    this.results = [];
+    try {
+      await this.step1_DisableNetwork();
+      await this.step4_TerminateFirestore();
+    } catch (error) {
+      this.addResult('Full Reset', false, String(error));
+    }
     return this.results;
   }
 }

@@ -64,6 +64,7 @@ function SortablePhilosophyCard({
   onPhilosophyPointChange,
   onRemovePhilosophyPoint,
   onTranslatePhilosophyPoint,
+  isTranslating,
 }: {
   point: AboutPhilosophyPointData;
   index: number;
@@ -80,6 +81,11 @@ function SortablePhilosophyCard({
     field: 'title' | 'description',
     language: 'en' | 'pt'
   ) => void;
+  isTranslating: (
+    pointId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => boolean;
 }) {
   const {
     attributes,
@@ -137,9 +143,14 @@ function SortablePhilosophyCard({
                   onClick={() =>
                     onTranslatePhilosophyPoint(point.id, 'title', 'en')
                   }
+                  disabled={isTranslating(point.id, 'title', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(point.id, 'title', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
@@ -147,9 +158,14 @@ function SortablePhilosophyCard({
                   onClick={() =>
                     onTranslatePhilosophyPoint(point.id, 'title', 'pt')
                   }
+                  disabled={isTranslating(point.id, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(point.id, 'title', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -180,9 +196,14 @@ function SortablePhilosophyCard({
                   onClick={() =>
                     onTranslatePhilosophyPoint(point.id, 'description', 'en')
                   }
+                  disabled={isTranslating(point.id, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(point.id, 'description', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
@@ -190,9 +211,14 @@ function SortablePhilosophyCard({
                   onClick={() =>
                     onTranslatePhilosophyPoint(point.id, 'description', 'pt')
                   }
+                  disabled={isTranslating(point.id, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(point.id, 'description', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -229,6 +255,7 @@ function SortableMethodologyCard({
   onMethodologyStepChange,
   onRemoveMethodologyStep,
   onTranslateMethodologyStep,
+  isTranslating,
 }: {
   step: AboutMethodologyStepData;
   index: number;
@@ -245,6 +272,11 @@ function SortableMethodologyCard({
     field: 'title' | 'description',
     language: 'en' | 'pt'
   ) => void;
+  isTranslating: (
+    stepId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => boolean;
 }) {
   const {
     attributes,
@@ -302,9 +334,14 @@ function SortableMethodologyCard({
                   onClick={() =>
                     onTranslateMethodologyStep(step.id, 'title', 'en')
                   }
+                  disabled={isTranslating(step.id, 'title', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(step.id, 'title', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
@@ -312,9 +349,14 @@ function SortableMethodologyCard({
                   onClick={() =>
                     onTranslateMethodologyStep(step.id, 'title', 'pt')
                   }
+                  disabled={isTranslating(step.id, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(step.id, 'title', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -345,9 +387,14 @@ function SortableMethodologyCard({
                   onClick={() =>
                     onTranslateMethodologyStep(step.id, 'description', 'en')
                   }
+                  disabled={isTranslating(step.id, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(step.id, 'description', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
@@ -355,9 +402,14 @@ function SortableMethodologyCard({
                   onClick={() =>
                     onTranslateMethodologyStep(step.id, 'description', 'pt')
                   }
+                  disabled={isTranslating(step.id, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(step.id, 'description', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -394,6 +446,7 @@ function SortableValueCard({
   onValueChange,
   onRemoveValue,
   onTranslateValue,
+  isTranslating,
 }: {
   value: AboutValueData;
   index: number;
@@ -410,6 +463,11 @@ function SortableValueCard({
     field: 'title' | 'description',
     language: 'en' | 'pt'
   ) => void;
+  isTranslating: (
+    valueId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => boolean;
 }) {
   const {
     attributes,
@@ -465,17 +523,27 @@ function SortableValueCard({
                   size="sm"
                   variant="outline"
                   onClick={() => onTranslateValue(value.id, 'title', 'en')}
+                  disabled={isTranslating(value.id, 'title', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(value.id, 'title', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => onTranslateValue(value.id, 'title', 'pt')}
+                  disabled={isTranslating(value.id, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(value.id, 'title', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -506,9 +574,14 @@ function SortableValueCard({
                   onClick={() =>
                     onTranslateValue(value.id, 'description', 'en')
                   }
+                  disabled={isTranslating(value.id, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  🇺🇸 EN
+                  {isTranslating(value.id, 'description', 'en') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇺🇸 EN'
+                  )}
                 </Button>
                 <Button
                   size="sm"
@@ -516,9 +589,14 @@ function SortableValueCard({
                   onClick={() =>
                     onTranslateValue(value.id, 'description', 'pt')
                   }
+                  disabled={isTranslating(value.id, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  🇧🇷 PT
+                  {isTranslating(value.id, 'description', 'pt') ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    '🇧🇷 PT'
+                  )}
                 </Button>
               </div>
             </div>
@@ -570,6 +648,17 @@ export default function AboutAdminPage() {
   const [success, setSuccess] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('es');
   const [hasChanges, setHasChanges] = useState(false);
+
+  // Translation loading states
+  const [translatingValues, setTranslatingValues] = useState<
+    Record<string, boolean>
+  >({});
+  const [translatingPhilosophy, setTranslatingPhilosophy] = useState<
+    Record<string, boolean>
+  >({});
+  const [translatingMethodology, setTranslatingMethodology] = useState<
+    Record<string, boolean>
+  >({});
 
   // Form state
   const [formData, setFormData] = useState<Omit<
@@ -1151,7 +1240,11 @@ export default function AboutAdminPage() {
   ) => {
     if (!formData) return;
 
+    const translationKey = `${valueId}-${field}-${language}`;
+
     try {
+      setTranslatingValues(prev => ({ ...prev, [translationKey]: true }));
+
       // Find the value by ID
       const valueIndex = formData.values.items.findIndex(
         item => item.id === valueId
@@ -1196,6 +1289,8 @@ export default function AboutAdminPage() {
       setHasChanges(true);
     } catch (error) {
       console.error('Error translating value:', error);
+    } finally {
+      setTranslatingValues(prev => ({ ...prev, [translationKey]: false }));
     }
   };
 
@@ -1206,7 +1301,11 @@ export default function AboutAdminPage() {
   ) => {
     if (!formData) return;
 
+    const translationKey = `${pointId}-${field}-${language}`;
+
     try {
+      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: true }));
+
       // Find the philosophy point by ID
       const pointIndex = formData.philosophy.items.findIndex(
         item => item.id === pointId
@@ -1253,6 +1352,8 @@ export default function AboutAdminPage() {
       setHasChanges(true);
     } catch (error) {
       console.error('Error translating philosophy point:', error);
+    } finally {
+      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: false }));
     }
   };
 
@@ -1263,7 +1364,11 @@ export default function AboutAdminPage() {
   ) => {
     if (!formData) return;
 
+    const translationKey = `${stepId}-${field}-${language}`;
+
     try {
+      setTranslatingMethodology(prev => ({ ...prev, [translationKey]: true }));
+
       // Find the methodology step by ID
       const stepIndex = formData.methodology.items.findIndex(
         item => item.id === stepId
@@ -1310,7 +1415,37 @@ export default function AboutAdminPage() {
       setHasChanges(true);
     } catch (error) {
       console.error('Error translating methodology step:', error);
+    } finally {
+      setTranslatingMethodology(prev => ({ ...prev, [translationKey]: false }));
     }
+  };
+
+  // Helper function to check if a specific translation is in progress
+  const isValueTranslating = (
+    valueId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    const translationKey = `${valueId}-${field}-${language}`;
+    return translatingValues[translationKey] || false;
+  };
+
+  const isPhilosophyTranslating = (
+    pointId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    const translationKey = `${pointId}-${field}-${language}`;
+    return translatingPhilosophy[translationKey] || false;
+  };
+
+  const isMethodologyTranslating = (
+    stepId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    const translationKey = `${stepId}-${field}-${language}`;
+    return translatingMethodology[translationKey] || false;
   };
 
   const handleTranslation = (
@@ -1692,6 +1827,7 @@ export default function AboutAdminPage() {
                             onTranslatePhilosophyPoint={
                               handleTranslatePhilosophyPoint
                             }
+                            isTranslating={isPhilosophyTranslating}
                           />
                         ))}
                     </SortableContext>
@@ -1778,6 +1914,7 @@ export default function AboutAdminPage() {
                             onTranslateMethodologyStep={
                               handleTranslateMethodologyStep
                             }
+                            isTranslating={isMethodologyTranslating}
                           />
                         ))}
                     </SortableContext>
@@ -1856,6 +1993,7 @@ export default function AboutAdminPage() {
                             onValueChange={handleValueChange}
                             onRemoveValue={handleRemoveValue}
                             onTranslateValue={handleTranslateValue}
+                            isTranslating={isValueTranslating}
                           />
                         ))}
                     </SortableContext>
