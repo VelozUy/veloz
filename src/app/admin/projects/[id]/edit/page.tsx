@@ -50,6 +50,7 @@ import {
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
 import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
+import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 
 interface Project {
   id: string;
@@ -74,6 +75,7 @@ interface Project {
     photos: number;
     videos: number;
   };
+  crewMembers?: string[]; // Array of crew member IDs
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
 }
@@ -158,6 +160,7 @@ export default function UnifiedProjectEditPage({
             featured: false,
             status: 'draft',
             mediaCount: { photos: 0, videos: 0 },
+            crewMembers: [],
             createdAt: null,
             updatedAt: null,
           };
@@ -307,6 +310,7 @@ export default function UnifiedProjectEditPage({
           tags: draftProject.tags,
           featured: draftProject.featured,
           status: draftProject.status,
+          crewMembers: draftProject.crewMembers || [],
           mediaCount: { photos: 0, videos: 0 },
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
@@ -350,6 +354,7 @@ export default function UnifiedProjectEditPage({
           tags: draftProject.tags,
           featured: draftProject.featured,
           status: draftProject.status,
+          crewMembers: draftProject.crewMembers || [],
           updatedAt: serverTimestamp(),
         });
 
@@ -565,7 +570,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -581,6 +586,7 @@ export default function UnifiedProjectEditPage({
                     </Badge>
                   )}
                 </TabsTrigger>
+                <TabsTrigger value="crew">Equipo</TabsTrigger>
               </TabsList>
 
               {/* Project Details Tab */}
@@ -851,6 +857,18 @@ export default function UnifiedProjectEditPage({
                     )}
                   </>
                 )}
+              </TabsContent>
+
+              {/* Crew Members Tab */}
+              <TabsContent value="crew" className="space-y-6">
+                <CrewMemberAssignment
+                  selectedCrewMemberIds={draftProject.crewMembers || []}
+                  onCrewMembersChange={(crewMemberIds) => {
+                    console.log('🔍 Project Edit - crew members changed:', crewMemberIds);
+                    updateDraftProject({ crewMembers: crewMemberIds });
+                  }}
+                  disabled={saving}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>

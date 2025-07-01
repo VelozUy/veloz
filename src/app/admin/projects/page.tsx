@@ -5,25 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import {
   Plus,
@@ -37,14 +20,12 @@ import {
   Loader2,
   Star,
 } from 'lucide-react';
+import CrewMemberDisplay from '@/components/admin/CrewMemberDisplay';
 import { db } from '@/lib/firebase';
 import {
   collection,
   doc,
-  addDoc,
-  updateDoc,
   deleteDoc,
-  serverTimestamp,
   query,
   orderBy,
   limit,
@@ -74,24 +55,25 @@ interface Project {
     photos: number;
     videos: number;
   };
+  crewMembers?: string[];
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
 }
 
-const EVENT_TYPES = [
-  'Casamiento',
-  'Corporativos',
-  'Culturales y artísticos',
-  'Photoshoot',
-  'Prensa',
-  'Otros',
-];
+// const EVENT_TYPES = [
+//   'Casamiento',
+//   'Corporativos',
+//   'Culturales y artísticos',
+//   'Photoshoot',
+//   'Prensa',
+//   'Otros',
+// ];
 
-const LANGUAGES = [
-  { code: 'es', name: 'Español' },
-  { code: 'en', name: 'English' },
-  { code: 'pt', name: 'Português (Brasil)' },
-];
+// const LANGUAGES = [
+//   { code: 'es', name: 'Español' },
+//   { code: 'en', name: 'English' },
+//   { code: 'pt', name: 'Português (Brasil)' },
+// ];
 
 const PROJECTS_PER_PAGE = 12;
 
@@ -312,6 +294,9 @@ export default function ProjectsPage() {
                         Event Date
                       </th>
                       <th className="p-4 font-medium text-muted-foreground">
+                        Crew
+                      </th>
+                      <th className="p-4 font-medium text-muted-foreground">
                         Status
                       </th>
                       <th className="p-4 font-medium text-muted-foreground">
@@ -391,6 +376,13 @@ export default function ProjectsPage() {
                               </span>
                             )}
                           </div>
+                        </td>
+                        <td className="p-4">
+                          <CrewMemberDisplay
+                            crewMemberIds={project.crewMembers || []}
+                            maxDisplay={2}
+                            showCount={true}
+                          />
                         </td>
                         <td className="p-4">
                           <Badge

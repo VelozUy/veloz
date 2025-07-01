@@ -12,6 +12,9 @@ export {
 export { default as GlobalTranslationButtons } from './GlobalTranslationButtons';
 export { default as TranslationReviewDialog } from './TranslationReviewDialog';
 export { default as FormsManagement } from './FormsManagement';
+export { default as CrewMemberAssignment } from './CrewMemberAssignment';
+export { default as CrewMemberDisplay } from './CrewMemberDisplay';
+export { TranslationDropdown } from './TranslationDropdown';
 
 // To be created later:
 // export { default as DataTable } from './DataTable';

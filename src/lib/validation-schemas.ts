@@ -516,8 +516,16 @@ export const crewMemberSchema = baseSchema.extend({
   bio: multiLanguageTextSchema,
   socialLinks: z
     .object({
-      instagram: z.string().url('Instagram must be a valid URL').optional(),
-      linkedin: z.string().url('LinkedIn must be a valid URL').optional(),
+      instagram: z.string().optional().refine(
+        (val) => {
+          if (!val) return true; // Allow empty/undefined
+          // Allow Instagram username (alphanumeric, dots, underscores) or full URL
+          const usernameRegex = /^[a-zA-Z0-9._]+$/;
+          const urlRegex = /^https?:\/\/.+/;
+          return usernameRegex.test(val) || urlRegex.test(val);
+        },
+        'Instagram must be a valid username or URL'
+      ),
       website: z.string().url('Website must be a valid URL').optional(),
       email: z.string().email('Email must be a valid email address').optional(),
     })

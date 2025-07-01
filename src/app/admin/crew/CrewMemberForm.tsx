@@ -9,11 +9,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { X, Upload, User } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { X, Upload, User, Loader2 } from 'lucide-react';
 import { crewMemberService, crewMemberSchema } from '@/services/crew-member';
+import { FileUploadService } from '@/services/file-upload';
 import type { CrewMember } from '@/types';
 import { z } from 'zod';
-import { MultiLanguageTranslationButtons, BatchTranslationButton } from '@/components/admin/TranslationButton';
+import { BatchTranslationButton, TranslationDropdown } from '@/components/admin';
 
 // Create a form-specific schema that makes optional fields truly optional
 const crewMemberFormSchema = crewMemberSchema.partial().pick({
@@ -36,6 +39,18 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
   const [loading, setLoading] = useState(false);
   const [portraitUrl, setPortraitUrl] = useState(crewMember?.portrait || '');
   const [selectedLang, setSelectedLang] = useState<'es' | 'en' | 'pt'>('es');
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const fileUploadService = new FileUploadService();
+  
+  // Debug FileUploadService initialization
+  console.log('🔧 CrewMemberForm initialized');
+  console.log('FileUploadService instance:', fileUploadService);
+  console.log('Image config:', fileUploadService.getConfigForFileType('image'));
 
   const {
     register,
@@ -64,7 +79,6 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
       portrait: crewMember?.portrait || '',
       socialLinks: {
         instagram: crewMember?.socialLinks?.instagram || '',
-        linkedin: crewMember?.socialLinks?.linkedin || '',
       },
     },
   });
@@ -75,10 +89,10 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
     // Update form fields with translated content
     Object.entries(updates).forEach(([fieldKey, translations]) => {
       if (translations.en) {
-        setValue(`${fieldKey}.en` as any, translations.en, { shouldDirty: true });
+        setValue(`${fieldKey}.en` as keyof FormData, translations.en, { shouldDirty: true });
       }
       if (translations.pt) {
-        setValue(`${fieldKey}.pt` as any, translations.pt, { shouldDirty: true });
+        setValue(`${fieldKey}.pt` as keyof FormData, translations.pt, { shouldDirty: true });
       }
     });
   };
@@ -140,21 +154,96 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
     }
   };
 
-  const handlePortraitUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePortraitUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('🎯 handlePortraitUpload called');
+    console.log('Event:', event);
+    console.log('Files:', event.target.files);
+    
     const file = event.target.files?.[0];
-    if (file) {
-      // For now, we'll use a placeholder URL
-      // In a real implementation, you'd upload to Firebase Storage
-      const url = URL.createObjectURL(file);
-      setPortraitUrl(url);
-      setValue('portrait', url, { shouldDirty: true });
+    if (!file) {
+      console.log('❌ No file selected');
+      return;
+    }
+
+    console.log('📁 File selected:', file);
+    console.log('File name:', file.name);
+    console.log('File size:', file.size);
+    console.log('File type:', file.type);
+
+    // Validate file
+    console.log('🔍 Validating file...');
+    const validation = fileUploadService.validateFile(file, fileUploadService.getConfigForFileType('image'));
+    console.log('Validation result:', validation);
+    
+    if (!validation.isValid) {
+      console.log('❌ File validation failed:', validation.errors);
+      setUploadError(validation.errors.join(', '));
+      return;
+    }
+
+    console.log('✅ File validation passed');
+    // setSelectedFile(file);
+    setUploadError(null);
+    setUploadProgress(0);
+
+    // Create preview
+    console.log('🖼️ Creating preview...');
+    const preview = URL.createObjectURL(file);
+    setPreviewUrl(preview);
+    console.log('Preview URL created:', preview);
+
+    // Upload to Firebase Storage
+    try {
+      console.log('🚀 Starting upload to Firebase Storage...');
+      setUploading(true);
+      const fileName = `crew-members/${Date.now()}-${file.name}`;
+      console.log('File path:', fileName);
+      
+      const result = await fileUploadService.uploadFile(
+        file,
+        fileName,
+        fileUploadService.getConfigForFileType('image'),
+        (progress) => {
+          console.log('📊 Upload progress:', progress.percentage + '%');
+          setUploadProgress(progress.percentage);
+        }
+      );
+
+      console.log('📤 Upload result:', result);
+
+      if (result.success && result.data) {
+        console.log('✅ Upload successful! URL:', result.data.url);
+        setPortraitUrl(result.data.url);
+        setValue('portrait', result.data.url, { shouldDirty: true });
+        setUploadError(null);
+      } else {
+        console.log('❌ Upload failed:', result.error);
+        setUploadError(result.error || 'Error al subir la imagen');
+      }
+    } catch (error) {
+      console.error('💥 Upload error:', error);
+      setUploadError('Error inesperado al subir la imagen');
+    } finally {
+      console.log('🏁 Upload process finished');
+      setUploading(false);
+      setUploadProgress(0);
+      // Clean up preview URL
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
     }
   };
 
   const removePortrait = () => {
     setPortraitUrl('');
     setValue('portrait', '', { shouldDirty: true });
+    // setSelectedFile(null);
+    setPreviewUrl(null);
+    setUploadError(null);
   };
+
+  const displayImage = previewUrl || portraitUrl;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -189,7 +278,7 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
                 {...register(`name.${selectedLang}`)}
                 placeholder={selectedLang === 'es' ? 'Nombre completo' : selectedLang === 'en' ? 'Full name' : 'Nome completo'}
               />
-              <MultiLanguageTranslationButtons
+              <TranslationDropdown
                 sourceText={watchedValues.name?.[selectedLang] || ''}
                 sourceLanguage={selectedLang}
                 onTranslated={(language, translatedText) => {
@@ -211,7 +300,7 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
                 {...register(`role.${selectedLang}`)}
                 placeholder={selectedLang === 'es' ? 'Fotógrafo, Editor, etc.' : selectedLang === 'en' ? 'Photographer, Editor, etc.' : 'Fotógrafo, Editor, etc.'}
               />
-              <MultiLanguageTranslationButtons
+              <TranslationDropdown
                 sourceText={watchedValues.role?.[selectedLang] || ''}
                 sourceLanguage={selectedLang}
                 onTranslated={(language, translatedText) => {
@@ -236,7 +325,7 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
               rows={4}
             />
             <div className="flex justify-end">
-              <MultiLanguageTranslationButtons
+              <TranslationDropdown
                 sourceText={watchedValues.bio?.[selectedLang] || ''}
                 sourceLanguage={selectedLang}
                 onTranslated={(language, translatedText) => {
@@ -260,11 +349,27 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {portraitUrl ? (
+            {uploadError && (
+              <Alert variant="destructive">
+                <AlertDescription>{uploadError}</AlertDescription>
+              </Alert>
+            )}
+
+            {uploading && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-sm">Subiendo imagen...</span>
+                </div>
+                <Progress value={uploadProgress} className="w-full" />
+              </div>
+            )}
+
+            {displayImage ? (
               <div className="flex items-center space-x-4">
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
                   <img
-                    src={portraitUrl}
+                    src={displayImage}
                     alt="Portrait preview"
                     className="w-20 h-20 object-cover"
                   />
@@ -274,6 +379,7 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
                   variant="outline"
                   size="sm"
                   onClick={removePortrait}
+                  disabled={uploading}
                 >
                   <X className="w-4 h-4 mr-2" />
                   Remover
@@ -284,7 +390,21 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
                 <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <Label htmlFor="portrait-upload" className="cursor-pointer">
                   <div className="space-y-2">
-                    <Button type="button" variant="outline">
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      disabled={uploading}
+                      onClick={() => {
+                        console.log('🔘 Upload button clicked');
+                        const fileInput = document.getElementById('portrait-upload') as HTMLInputElement;
+                        if (fileInput) {
+                          console.log('📁 File input found, triggering click');
+                          fileInput.click();
+                        } else {
+                          console.log('❌ File input not found');
+                        }
+                      }}
+                    >
                       <Upload className="w-4 h-4 mr-2" />
                       Subir Foto
                     </Button>
@@ -299,6 +419,10 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
                   accept="image/*"
                   onChange={handlePortraitUpload}
                   className="hidden"
+                  disabled={uploading}
+                  onClick={() => {
+                    console.log('📁 File input clicked');
+                  }}
                 />
               </div>
             )}
@@ -313,25 +437,17 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="instagram">Instagram</Label>
+            <Label htmlFor="instagram">Instagram (opcional)</Label>
             <Input
               id="instagram"
               {...register('socialLinks.instagram')}
-              placeholder="usuario_instagram"
+              placeholder="usuario_instagram o https://instagram.com/usuario"
             />
+            <p className="text-sm text-muted-foreground mt-1">
+              Puedes ingresar solo el nombre de usuario o la URL completa
+            </p>
             {errors.socialLinks?.instagram && (
               <p className="text-sm text-destructive mt-1">{errors.socialLinks.instagram.message}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="linkedin">LinkedIn</Label>
-            <Input
-              id="linkedin"
-              {...register('socialLinks.linkedin')}
-              placeholder="usuario-linkedin"
-            />
-            {errors.socialLinks?.linkedin && (
-              <p className="text-sm text-destructive mt-1">{errors.socialLinks.linkedin.message}</p>
             )}
           </div>
         </CardContent>
@@ -339,10 +455,10 @@ export default function CrewMemberForm({ crewMember, onSuccess, onCancel }: Crew
 
       {/* Form Actions */}
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outline" onClick={onCancel} disabled={loading || uploading}>
           Cancelar
         </Button>
-        <Button type="submit" disabled={loading || !isDirty}>
+        <Button type="submit" disabled={loading || uploading || !isDirty}>
           {loading ? 'Guardando...' : crewMember ? 'Actualizar' : 'Crear'}
         </Button>
       </div>

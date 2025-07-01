@@ -27,9 +27,13 @@ export default function CrewManagementPage() {
   const loadCrewMembers = async () => {
     try {
       setLoading(true);
+      console.log('🔍 Crew page - loading crew members...');
       const result = await crewMemberService.getAll();
+      console.log('🔍 Crew page - getAll result:', result);
       if (result.success) {
-        setCrewMembers((result.data as CrewMember[]) || []);
+        const crewData = (result.data as CrewMember[]) || [];
+        console.log('🔍 Crew page - crew data:', crewData);
+        setCrewMembers(crewData);
       } else {
         console.error('Failed to load crew members:', result.error);
       }
