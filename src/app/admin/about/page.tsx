@@ -63,6 +63,7 @@ function SortableValueCard({
   currentLanguage,
   onValueChange,
   onRemoveValue,
+  onTranslateValue,
 }: {
   value: AboutValueData;
   index: number;
@@ -74,6 +75,11 @@ function SortableValueCard({
     value: string
   ) => void;
   onRemoveValue: (valueId: string) => void;
+  onTranslateValue: (
+    valueId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => void;
 }) {
   const {
     attributes,
@@ -122,7 +128,27 @@ function SortableValueCard({
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor={`${value.id}-title`}>Título</Label>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${value.id}-title`}>Título</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onTranslateValue(value.id, 'title', 'en')}
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onTranslateValue(value.id, 'title', 'pt')}
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
             <Input
               id={`${value.id}-title`}
               value={
@@ -141,7 +167,31 @@ function SortableValueCard({
           </div>
 
           <div>
-            <Label htmlFor={`${value.id}-description`}>Descripción</Label>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${value.id}-description`}>Descripción</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateValue(value.id, 'description', 'en')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateValue(value.id, 'description', 'pt')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
             <Textarea
               id={`${value.id}-description`}
               value={
@@ -691,6 +741,61 @@ export default function AboutAdminPage() {
       });
 
       setHasChanges(true);
+    }
+  };
+
+  const handleTranslateValue = async (
+    valueId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    if (!formData) return;
+
+    try {
+      // Find the value by ID
+      const valueIndex = formData.values.items.findIndex(
+        item => item.id === valueId
+      );
+      if (valueIndex === -1) return;
+
+      const value = formData.values.items[valueIndex];
+      const sourceText = value[field].es;
+
+      if (!sourceText) {
+        console.warn(`No Spanish text found for ${field} of value ${valueId}`);
+        return;
+      }
+
+      // Use the translation service to translate the text
+      const { TranslationClientService } = await import(
+        '@/services/translation-client'
+      );
+      const translationService = new TranslationClientService();
+      const response = await translationService.translateText({
+        text: sourceText,
+        fromLanguage: 'es',
+        toLanguage: language,
+        contentType: 'marketing',
+      });
+
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const updated = { ...prev };
+        updated.values.items[valueIndex] = {
+          ...updated.values.items[valueIndex],
+          [field]: {
+            ...updated.values.items[valueIndex][field],
+            [language]: response.translatedText,
+          },
+        };
+
+        return updated;
+      });
+
+      setHasChanges(true);
+    } catch (error) {
+      console.error('Error translating value:', error);
     }
   };
 
@@ -1320,6 +1425,7 @@ export default function AboutAdminPage() {
                             currentLanguage={currentLanguage}
                             onValueChange={handleValueChange}
                             onRemoveValue={handleRemoveValue}
+                            onTranslateValue={handleTranslateValue}
                           />
                         ))}
                     </SortableContext>
