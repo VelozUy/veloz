@@ -11,335 +11,410 @@
  * Usage: node scripts/seed-about-content.js
  */
 
-const { readFileSync } = require('fs');
-const { join } = require('path');
-const admin = require('firebase-admin');
+const fs = require('fs');
+const path = require('path');
 
-// Initialize Firebase Admin if not already initialized
-if (!admin.apps.length) {
-  const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY
-    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
-    : null;
+// Firebase Client SDK setup (instead of Admin SDK)
+const { initializeApp } = require('firebase/app');
+const {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  connectFirestoreEmulator,
+} = require('firebase/firestore');
 
-  if (serviceAccount) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    });
-  } else {
-    // For local development, use default credentials
-    admin.initializeApp({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'veloz-6efe6',
-    });
+// Load environment variables
+require('dotenv').config({ path: '.env.local' });
+
+// Firebase configuration from environment variables
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Read the static content files
+const contentEsPath = path.join(__dirname, '../src/data/content-es.json');
+const contentEnPath = path.join(__dirname, '../src/data/content-en.json');
+const contentPtPath = path.join(__dirname, '../src/data/content-pt.json');
+
+function readJsonFile(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return null;
   }
 }
 
-const db = admin.firestore();
-
-// Utility function to generate IDs
 function generateId() {
   return Math.random().toString(36).substr(2, 9);
 }
 
-// Load static content files
-function loadStaticContent() {
-  const contentDir = join(process.cwd(), 'src', 'data');
+function transformAboutContent(esContent, enContent, ptContent) {
+  // Extract about content from each language
+  const esAbout = esContent.translations.about;
+  const enAbout = enContent.translations.about;
+  const ptAbout = ptContent.translations.about;
 
-  const esContent = JSON.parse(
-    readFileSync(join(contentDir, 'content-es.json'), 'utf8')
-  );
-  const enContent = JSON.parse(
-    readFileSync(join(contentDir, 'content-en.json'), 'utf8')
-  );
-  const ptContent = JSON.parse(
-    readFileSync(join(contentDir, 'content-pt.json'), 'utf8')
-  );
-
-  return {
-    es: esContent.translations.about,
-    en: enContent.translations.about,
-    pt: ptContent.translations.about,
-  };
-}
-
-// Transform static content to new dynamic schema
-function transformAboutContent(staticContent) {
-  console.log('🔄 Transforming static content to dynamic schema...');
-
-  // Transform philosophy from single description to array of points
-  const philosophyItems = [
-    {
-      id: generateId(),
-      title: {
-        es: 'Historias que Perduran',
-        en: 'Stories that Endure',
-        pt: 'Histórias que Perduram',
-      },
-      description: {
-        es: staticContent.es.philosophy.description,
-        en: staticContent.en.philosophy.description,
-        pt: staticContent.pt.philosophy.description,
-      },
-      order: 0,
-    },
-  ];
-
-  // Transform methodology from fixed steps to dynamic array
-  const methodologyItems = [
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.methodology.planning.title,
-        en: staticContent.en.methodology.planning.title,
-        pt: staticContent.pt.methodology.planning.title,
-      },
-      description: {
-        es: staticContent.es.methodology.planning.description,
-        en: staticContent.en.methodology.planning.description,
-        pt: staticContent.pt.methodology.planning.description,
-      },
-      order: 0,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.methodology.coverage.title,
-        en: staticContent.en.methodology.coverage.title,
-        pt: staticContent.pt.methodology.coverage.title,
-      },
-      description: {
-        es: staticContent.es.methodology.coverage.description,
-        en: staticContent.en.methodology.coverage.description,
-        pt: staticContent.pt.methodology.coverage.description,
-      },
-      order: 1,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.methodology.capture.title,
-        en: staticContent.en.methodology.capture.title,
-        pt: staticContent.pt.methodology.capture.title,
-      },
-      description: {
-        es: staticContent.es.methodology.capture.description,
-        en: staticContent.en.methodology.capture.description,
-        pt: staticContent.pt.methodology.capture.description,
-      },
-      order: 2,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.methodology.postproduction.title,
-        en: staticContent.en.methodology.postproduction.title,
-        pt: staticContent.pt.methodology.postproduction.title,
-      },
-      description: {
-        es: staticContent.es.methodology.postproduction.description,
-        en: staticContent.en.methodology.postproduction.description,
-        pt: staticContent.pt.methodology.postproduction.description,
-      },
-      order: 3,
-    },
-  ];
-
-  // Transform values from fixed structure to dynamic array
-  const valueItems = [
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.passion.title,
-        en: staticContent.en.values.passion.title,
-        pt: staticContent.pt.values.passion.title,
-      },
-      description: {
-        es: staticContent.es.values.passion.description,
-        en: staticContent.en.values.passion.description,
-        pt: staticContent.pt.values.passion.description,
-      },
-      order: 0,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.teamwork.title,
-        en: staticContent.en.values.teamwork.title,
-        pt: staticContent.pt.values.teamwork.title,
-      },
-      description: {
-        es: staticContent.es.values.teamwork.description,
-        en: staticContent.en.values.teamwork.description,
-        pt: staticContent.pt.values.teamwork.description,
-      },
-      order: 1,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.quality.title,
-        en: staticContent.en.values.quality.title,
-        pt: staticContent.pt.values.quality.title,
-      },
-      description: {
-        es: staticContent.es.values.quality.description,
-        en: staticContent.en.values.quality.description,
-        pt: staticContent.pt.values.quality.description,
-      },
-      order: 2,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.agility.title,
-        en: staticContent.en.values.agility.title,
-        pt: staticContent.pt.values.agility.title,
-      },
-      description: {
-        es: staticContent.es.values.agility.description,
-        en: staticContent.en.values.agility.description,
-        pt: staticContent.pt.values.agility.description,
-      },
-      order: 3,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.excellence.title,
-        en: staticContent.en.values.excellence.title,
-        pt: staticContent.pt.values.excellence.title,
-      },
-      description: {
-        es: staticContent.es.values.excellence.description,
-        en: staticContent.en.values.excellence.description,
-        pt: staticContent.pt.values.excellence.description,
-      },
-      order: 4,
-    },
-    {
-      id: generateId(),
-      title: {
-        es: staticContent.es.values.trust.title,
-        en: staticContent.en.values.trust.title,
-        pt: staticContent.pt.values.trust.title,
-      },
-      description: {
-        es: staticContent.es.values.trust.description,
-        en: staticContent.en.values.trust.description,
-        pt: staticContent.pt.values.trust.description,
-      },
-      order: 5,
-    },
-  ];
-
-  return {
+  // Transform the static structure to the new dynamic structure
+  const transformedContent = {
     title: {
-      es: staticContent.es.title,
-      en: staticContent.en.title,
-      pt: staticContent.pt.title,
+      es: esAbout.title,
+      en: enAbout.title,
+      pt: ptAbout.title,
     },
     subtitle: {
-      es: staticContent.es.subtitle,
-      en: staticContent.en.subtitle,
-      pt: staticContent.pt.subtitle,
+      es: esAbout.subtitle,
+      en: enAbout.subtitle,
+      pt: ptAbout.subtitle,
     },
     philosophy: {
       title: {
-        es: staticContent.es.philosophy.title,
-        en: staticContent.en.philosophy.title,
-        pt: staticContent.pt.philosophy.title,
+        es: esAbout.philosophy.title,
+        en: enAbout.philosophy.title,
+        pt: ptAbout.philosophy.title,
       },
-      items: philosophyItems,
+      items: [
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.philosophy.title,
+            en: enAbout.philosophy.title,
+            pt: ptAbout.philosophy.title,
+          },
+          description: {
+            es: esAbout.philosophy.description,
+            en: enAbout.philosophy.description,
+            pt: ptAbout.philosophy.description,
+          },
+          order: 0,
+        },
+      ],
     },
     methodology: {
       title: {
-        es: staticContent.es.methodology.title,
-        en: staticContent.en.methodology.title,
-        pt: staticContent.pt.methodology.title,
+        es: esAbout.methodology.title,
+        en: enAbout.methodology.title,
+        pt: ptAbout.methodology.title,
       },
-      items: methodologyItems,
+      items: [
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.methodology.planning.title,
+            en: enAbout.methodology.planning.title,
+            pt: ptAbout.methodology.planning.title,
+          },
+          description: {
+            es: esAbout.methodology.planning.description,
+            en: enAbout.methodology.planning.description,
+            pt: ptAbout.methodology.planning.description,
+          },
+          order: 0,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.methodology.coverage.title,
+            en: enAbout.methodology.coverage.title,
+            pt: ptAbout.methodology.coverage.title,
+          },
+          description: {
+            es: esAbout.methodology.coverage.description,
+            en: enAbout.methodology.coverage.description,
+            pt: ptAbout.methodology.coverage.description,
+          },
+          order: 1,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.methodology.capture.title,
+            en: enAbout.methodology.capture.title,
+            pt: ptAbout.methodology.capture.title,
+          },
+          description: {
+            es: esAbout.methodology.capture.description,
+            en: enAbout.methodology.capture.description,
+            pt: ptAbout.methodology.capture.description,
+          },
+          order: 2,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.methodology.postproduction.title,
+            en: enAbout.methodology.postproduction.title,
+            pt: ptAbout.methodology.postproduction.title,
+          },
+          description: {
+            es: esAbout.methodology.postproduction.description,
+            en: enAbout.methodology.postproduction.description,
+            pt: ptAbout.methodology.postproduction.description,
+          },
+          order: 3,
+        },
+      ],
     },
     values: {
       title: {
-        es: staticContent.es.values.title,
-        en: staticContent.en.values.title,
-        pt: staticContent.pt.values.title,
+        es: esAbout.values.title,
+        en: enAbout.values.title,
+        pt: ptAbout.values.title,
       },
-      items: valueItems,
+      items: [
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.passion.title,
+            en: enAbout.values.passion.title,
+            pt: ptAbout.values.passion.title,
+          },
+          description: {
+            es: esAbout.values.passion.description,
+            en: enAbout.values.passion.description,
+            pt: ptAbout.values.passion.description,
+          },
+          order: 0,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.teamwork.title,
+            en: enAbout.values.teamwork.title,
+            pt: ptAbout.values.teamwork.title,
+          },
+          description: {
+            es: esAbout.values.teamwork.description,
+            en: enAbout.values.teamwork.description,
+            pt: ptAbout.values.teamwork.description,
+          },
+          order: 1,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.quality.title,
+            en: enAbout.values.quality.title,
+            pt: ptAbout.values.quality.title,
+          },
+          description: {
+            es: esAbout.values.quality.description,
+            en: enAbout.values.quality.description,
+            pt: ptAbout.values.quality.description,
+          },
+          order: 2,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.agility.title,
+            en: enAbout.values.agility.title,
+            pt: ptAbout.values.agility.title,
+          },
+          description: {
+            es: esAbout.values.agility.description,
+            en: enAbout.values.agility.description,
+            pt: ptAbout.values.agility.description,
+          },
+          order: 3,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.excellence.title,
+            en: enAbout.values.excellence.title,
+            pt: ptAbout.values.excellence.title,
+          },
+          description: {
+            es: esAbout.values.excellence.description,
+            en: enAbout.values.excellence.description,
+            pt: ptAbout.values.excellence.description,
+          },
+          order: 4,
+        },
+        {
+          id: generateId(),
+          title: {
+            es: esAbout.values.trust.title,
+            en: enAbout.values.trust.title,
+            pt: ptAbout.values.trust.title,
+          },
+          description: {
+            es: esAbout.values.trust.description,
+            en: enAbout.values.trust.description,
+            pt: ptAbout.values.trust.description,
+          },
+          order: 5,
+        },
+      ],
     },
     faq: {
       title: {
-        es: staticContent.es.faq.title,
-        en: staticContent.en.faq.title,
-        pt: staticContent.pt.faq.title,
+        es: esAbout.faq.title,
+        en: enAbout.faq.title,
+        pt: ptAbout.faq.title,
       },
     },
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    lastModifiedBy: 'system-seed',
+    seoTitle: {
+      es: esAbout.title,
+      en: enAbout.title,
+      pt: ptAbout.title,
+    },
+    seoDescription: {
+      es: esAbout.subtitle,
+      en: enAbout.subtitle,
+      pt: ptAbout.subtitle,
+    },
+    lastModifiedBy: 'migration-script',
   };
+
+  return transformedContent;
 }
 
-// Seed about content to Firestore
 async function seedAboutContent() {
   try {
-    console.log('🌱 Starting about content seeding...');
+    console.log('🚀 Starting about content migration...');
 
-    // Load static content
-    console.log('📖 Loading static content files...');
-    const staticContent = loadStaticContent();
-
-    // Transform content
-    const aboutContent = transformAboutContent(staticContent);
-
-    // Check if about content already exists
-    const aboutCollection = db.collection('aboutContent');
-    const existingDocs = await aboutCollection.limit(1).get();
-
-    if (!existingDocs.empty) {
-      console.log('⚠️  About content already exists in Firestore.');
-      console.log(
-        '   To reseed, delete existing content first or modify this script.'
+    // Validate Firebase configuration
+    if (!firebaseConfig.projectId) {
+      console.error(
+        '❌ Firebase project ID not found in environment variables'
       );
-      process.exit(0);
+      console.log(
+        '   Please ensure NEXT_PUBLIC_FIREBASE_PROJECT_ID is set in .env.local'
+      );
+      process.exit(1);
     }
 
-    // Create the about content document
-    console.log('💾 Saving to Firestore...');
-    const docRef = await aboutCollection.add(aboutContent);
+    console.log(`🔧 Using Firebase project: ${firebaseConfig.projectId}`);
 
-    // Log success details
-    console.log('✅ About content seeded successfully!');
+    // Read static content files
+    console.log('📖 Reading static content files...');
+    const esContent = readJsonFile(contentEsPath);
+    const enContent = readJsonFile(contentEnPath);
+    const ptContent = readJsonFile(contentPtPath);
+
+    if (!esContent || !enContent || !ptContent) {
+      throw new Error('Failed to read one or more content files');
+    }
+
+    console.log('✅ Successfully read all content files');
+
+    // Transform content to new structure
+    console.log('🔄 Transforming content structure...');
+    const transformedContent = transformAboutContent(
+      esContent,
+      enContent,
+      ptContent
+    );
+    console.log('✅ Content transformation completed');
+
+    // Check if about content already exists
+    console.log('🔍 Checking for existing about content...');
+    const aboutCollection = collection(db, 'aboutContent');
+    const existingDocs = await getDocs(aboutCollection);
+
+    if (!existingDocs.empty) {
+      console.log('⚠️  About content already exists in Firestore');
+      console.log('📊 Existing documents:');
+      existingDocs.forEach(doc => {
+        console.log(
+          `   - ${doc.id} (created: ${doc.data().createdAt?.toDate()})`
+        );
+      });
+
+      const shouldOverwrite = process.argv.includes('--overwrite');
+      if (!shouldOverwrite) {
+        console.log('💡 Use --overwrite flag to replace existing content');
+        console.log('❌ Migration aborted');
+        process.exit(0);
+      }
+
+      console.log('🗑️  Removing existing content...');
+      const deletePromises = existingDocs.docs.map(docSnapshot =>
+        deleteDoc(doc(db, 'aboutContent', docSnapshot.id))
+      );
+      await Promise.all(deletePromises);
+      console.log('✅ Existing content removed');
+    }
+
+    // Add timestamps
+    const contentWithTimestamps = {
+      ...transformedContent,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Upload to Firestore
+    console.log('📤 Uploading content to Firestore...');
+    const docRef = await addDoc(aboutCollection, contentWithTimestamps);
+
+    console.log('✅ About content successfully migrated!');
     console.log(`📄 Document ID: ${docRef.id}`);
-    console.log(`📊 Content summary:`);
+    console.log('📊 Migration summary:');
     console.log(
-      `   - Philosophy points: ${aboutContent.philosophy.items.length}`
+      `   - Philosophy items: ${transformedContent.philosophy.items.length}`
     );
     console.log(
-      `   - Methodology steps: ${aboutContent.methodology.items.length}`
+      `   - Methodology steps: ${transformedContent.methodology.items.length}`
     );
-    console.log(`   - Values: ${aboutContent.values.items.length}`);
+    console.log(`   - Values: ${transformedContent.values.items.length}`);
     console.log(`   - Languages: ES, EN, PT`);
 
-    process.exit(0);
+    // Verify the upload
+    console.log('🔍 Verifying upload...');
+    const uploadedDoc = await getDocs(collection(db, 'aboutContent'));
+    if (!uploadedDoc.empty) {
+      console.log('✅ Upload verification successful');
+      const doc = uploadedDoc.docs[0];
+      console.log(`📅 Created at: ${doc.data().createdAt?.toDate()}`);
+    } else {
+      console.log('❌ Upload verification failed');
+    }
   } catch (error) {
-    console.error('❌ Error seeding about content:', error);
+    console.error('❌ Migration failed:', error);
+
+    if (error.code === 'permission-denied') {
+      console.log('💡 This might be a Firestore security rules issue.');
+      console.log(
+        '   Make sure your Firestore rules allow write access for seeding.'
+      );
+    }
+
     process.exit(1);
   }
 }
 
-// Main execution
+// Run the migration
 if (require.main === module) {
   const args = process.argv.slice(2);
 
   if (args.includes('--help') || args.includes('-h')) {
-    console.log('📚 About Content Seeding Script');
+    console.log('📚 About Content Migration Script');
     console.log('');
     console.log(
       'This script migrates static about content from JSON files to Firestore.'
     );
     console.log('');
-    console.log('Usage: node scripts/seed-about-content.js');
+    console.log('Usage: node scripts/seed-about-content.js [--overwrite]');
+    console.log('');
+    console.log('Options:');
+    console.log('  --overwrite    Replace existing about content if it exists');
+    console.log('  --help, -h     Show this help message');
     console.log('');
     process.exit(0);
   }
@@ -347,4 +422,4 @@ if (require.main === module) {
   seedAboutContent();
 }
 
-module.exports = { seedAboutContent, transformAboutContent, loadStaticContent };
+module.exports = { seedAboutContent };
