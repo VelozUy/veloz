@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-06-30T15:10:02.239Z
+// Generated on: 2025-07-01T12:19:25.474Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -11,6 +11,63 @@ export interface LocalizedContent {
       headline: string;
       logo: Record<string, unknown>;
       backgroundVideo: Record<string, unknown>;
+    };
+    about: {
+      title: string;
+      subtitle: string;
+      philosophy: {
+        title: string;
+        description: string;
+      };
+      methodology: {
+        title: string;
+        planning: {
+          title: string;
+          description: string;
+        };
+        coverage: {
+          title: string;
+          description: string;
+        };
+        capture: {
+          title: string;
+          description: string;
+        };
+        postproduction: {
+          title: string;
+          description: string;
+        };
+      };
+      values: {
+        title: string;
+        passion: {
+          title: string;
+          description: string;
+        };
+        teamwork: {
+          title: string;
+          description: string;
+        };
+        quality: {
+          title: string;
+          description: string;
+        };
+        agility: {
+          title: string;
+          description: string;
+        };
+        excellence: {
+          title: string;
+          description: string;
+        };
+        trust: {
+          title: string;
+          description: string;
+        };
+      };
+      faq: {
+        title: string;
+      };
     };
     faqs: Array<{
       id: string;
@@ -269,9 +326,78 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
+          enabled: true,
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
-          enabled: true,
+        },
+      },
+      about: {
+        title: 'Sobre Nosotros',
+        subtitle:
+          'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.',
+        philosophy: {
+          title: 'Nuestra Filosofía',
+          description:
+            'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.',
+        },
+        methodology: {
+          title: 'Nuestra Metodología',
+          planning: {
+            title: 'Planificación',
+            description:
+              'Estudiamos cada detalle del evento para anticipar los momentos clave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
+          },
+          capture: {
+            title: 'Captura Profesional',
+            description:
+              'Utilizamos técnicas avanzadas y equipos de última generación.',
+          },
+          postproduction: {
+            title: 'Post-Producción',
+            description:
+              'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
+          },
+        },
+        values: {
+          title: 'Nuestros Valores',
+          passion: {
+            title: 'Pasión',
+            description:
+              'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabajo en Equipo',
+            description:
+              'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
+          },
+          quality: {
+            title: 'Calidad Técnica',
+            description:
+              'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
+          },
+          agility: {
+            title: 'Agilidad',
+            description:
+              'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
+          },
+          excellence: {
+            title: 'Excelencia',
+            description:
+              'Buscamos la perfección en cada proyecto, superando las expectativas.',
+          },
+          trust: {
+            title: 'Confianza',
+            description:
+              'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
+          },
+        },
+        faq: {
+          title: 'Preguntas Frecuentes',
         },
       },
       faqs: [
@@ -300,9 +426,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
               description: {
-                es: '',
-                en: '',
                 pt: '',
+                en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -314,8 +440,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -328,9 +454,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -342,9 +468,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -371,8 +497,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -384,8 +510,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
               description: {
-                en: '',
                 es: '',
+                en: '',
                 pt: '',
               },
               tags: [],
@@ -398,9 +524,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -426,9 +552,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -483,8 +609,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -497,8 +623,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -511,8 +637,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -552,9 +678,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -566,9 +692,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -581,8 +707,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -595,8 +721,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
               description: {
                 pt: '',
-                en: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -608,9 +734,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
               description: {
-                pt: '',
                 es: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -634,8 +760,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -648,8 +774,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
               description: {
-                en: '',
                 pt: '',
+                en: '',
                 es: '',
               },
               tags: [],
@@ -688,9 +814,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
               description: {
-                en: '',
                 pt: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -702,9 +828,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -717,8 +843,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -730,9 +856,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -744,9 +870,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -758,8 +884,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -772,9 +898,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -800,8 +926,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -814,9 +940,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -828,8 +954,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -842,9 +968,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -856,9 +982,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -899,8 +1025,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -924,9 +1050,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
               description: {
-                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
                 en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
                 pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
               },
               tags: [
                 'event photographer',
@@ -945,8 +1071,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
               description: {
                 en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
-                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
                 es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
               },
               tags: [
                 'event photographer',
@@ -964,9 +1090,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
               description: {
-                pt: '',
-                en: '',
                 es: '',
+                en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1005,8 +1131,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1019,8 +1145,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1033,8 +1159,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1046,9 +1172,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1060,9 +1186,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
               description: {
+                es: '',
                 en: '',
                 pt: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1074,9 +1200,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1088,9 +1214,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
               description: {
-                en: '',
                 es: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1102,9 +1228,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1116,9 +1242,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -1130,9 +1256,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
               description: {
-                pt: '',
                 en: '',
                 es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1144,9 +1270,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1159,8 +1285,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1172,9 +1298,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1186,8 +1312,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
               description: {
-                es: '',
                 en: '',
+                es: '',
                 pt: '',
               },
               tags: [],
@@ -1214,9 +1340,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1226,7 +1352,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-30T15:10:02.234Z',
+    lastUpdated: '2025-07-01T12:19:25.468Z',
     buildTime: true,
   },
   en: {
@@ -1451,9 +1577,78 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
+          enabled: true,
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
-          enabled: true,
+        },
+      },
+      about: {
+        title: 'About Us',
+        subtitle:
+          'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.',
+        philosophy: {
+          title: 'Our Philosophy',
+          description:
+            'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.',
+        },
+        methodology: {
+          title: 'Our Methodology',
+          planning: {
+            title: 'Planning',
+            description:
+              'We study every detail of the event to anticipate key moments.',
+          },
+          coverage: {
+            title: 'Comprehensive Coverage',
+            description:
+              'Our team is strategically distributed to not miss any moment.',
+          },
+          capture: {
+            title: 'Professional Capture',
+            description:
+              'We use advanced techniques and state-of-the-art equipment.',
+          },
+          postproduction: {
+            title: 'Post-Production',
+            description:
+              'We carefully edit every image and video to achieve exceptional results.',
+          },
+        },
+        values: {
+          title: 'Our Values',
+          passion: {
+            title: 'Passion',
+            description:
+              'We love what we do and it shows in every image we capture.',
+          },
+          teamwork: {
+            title: 'Teamwork',
+            description:
+              'Our collaborative model allows us to cover every important moment.',
+          },
+          quality: {
+            title: 'Technical Quality',
+            description:
+              'We use professional equipment and advanced techniques for exceptional results.',
+          },
+          agility: {
+            title: 'Agility',
+            description:
+              'We adapt quickly to any situation to never miss a moment.',
+          },
+          excellence: {
+            title: 'Excellence',
+            description:
+              'We strive for perfection in every project, exceeding expectations.',
+          },
+          trust: {
+            title: 'Trust',
+            description:
+              'We build lasting relationships based on transparency and professionalism.',
+          },
+        },
+        faq: {
+          title: 'Frequently Asked Questions',
         },
       },
       faqs: [
@@ -1482,9 +1677,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
               description: {
-                es: '',
-                en: '',
                 pt: '',
+                en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1496,8 +1691,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -1510,9 +1705,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1524,9 +1719,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1553,8 +1748,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1566,8 +1761,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
               description: {
-                en: '',
                 es: '',
+                en: '',
                 pt: '',
               },
               tags: [],
@@ -1580,9 +1775,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1608,9 +1803,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1665,8 +1860,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1679,8 +1874,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1693,8 +1888,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -1734,9 +1929,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -1748,9 +1943,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -1763,8 +1958,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1777,8 +1972,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
               description: {
                 pt: '',
-                en: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -1790,9 +1985,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
               description: {
-                pt: '',
                 es: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1816,8 +2011,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -1830,8 +2025,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
               description: {
-                en: '',
                 pt: '',
+                en: '',
                 es: '',
               },
               tags: [],
@@ -1870,9 +2065,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
               description: {
-                en: '',
                 pt: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1884,9 +2079,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1899,8 +2094,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1912,9 +2107,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1926,9 +2121,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1940,8 +2135,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -1954,9 +2149,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -1982,8 +2177,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -1996,9 +2191,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2010,8 +2205,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -2024,9 +2219,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2038,9 +2233,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2081,8 +2276,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2106,9 +2301,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
               description: {
-                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
                 en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
                 pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
               },
               tags: [
                 'event photographer',
@@ -2127,8 +2322,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
               description: {
                 en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
-                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
                 es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
               },
               tags: [
                 'event photographer',
@@ -2146,9 +2341,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
               description: {
-                pt: '',
-                en: '',
                 es: '',
+                en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2187,8 +2382,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2201,8 +2396,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2215,8 +2410,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2228,9 +2423,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2242,9 +2437,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
               description: {
+                es: '',
                 en: '',
                 pt: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2256,9 +2451,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2270,9 +2465,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
               description: {
-                en: '',
                 es: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2284,9 +2479,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2298,9 +2493,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -2312,9 +2507,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
               description: {
-                pt: '',
                 en: '',
                 es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2326,9 +2521,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2341,8 +2536,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2354,9 +2549,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2368,8 +2563,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
               description: {
-                es: '',
                 en: '',
+                es: '',
                 pt: '',
               },
               tags: [],
@@ -2396,9 +2591,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2408,7 +2603,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-30T15:10:02.236Z',
+    lastUpdated: '2025-07-01T12:19:25.470Z',
     buildTime: true,
   },
   pt: {
@@ -2633,9 +2828,78 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
         backgroundVideo: {
+          enabled: true,
           url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
           filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
-          enabled: true,
+        },
+      },
+      about: {
+        title: 'Sobre Nós',
+        subtitle:
+          'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.',
+        philosophy: {
+          title: 'Nossa Filosofia',
+          description:
+            'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.',
+        },
+        methodology: {
+          title: 'Nossa Metodologia',
+          planning: {
+            title: 'Planejamento',
+            description:
+              'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
+          },
+          capture: {
+            title: 'Captura Profissional',
+            description:
+              'Utilizamos técnicas avançadas e equipamentos de última geração.',
+          },
+          postproduction: {
+            title: 'Pós-Produção',
+            description:
+              'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
+          },
+        },
+        values: {
+          title: 'Nossos Valores',
+          passion: {
+            title: 'Paixão',
+            description:
+              'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabalho em Equipe',
+            description:
+              'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
+          },
+          quality: {
+            title: 'Qualidade Técnica',
+            description:
+              'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
+          },
+          agility: {
+            title: 'Agilidade',
+            description:
+              'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
+          },
+          excellence: {
+            title: 'Excelência',
+            description:
+              'Buscamos a perfeição em cada projeto, superando expectativas.',
+          },
+          trust: {
+            title: 'Confiança',
+            description:
+              'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
+          },
+        },
+        faq: {
+          title: 'Perguntas Frequentes',
         },
       },
       faqs: [
@@ -2664,9 +2928,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
               description: {
-                es: '',
-                en: '',
                 pt: '',
+                en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2678,8 +2942,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -2692,9 +2956,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2706,9 +2970,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2735,8 +2999,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2748,8 +3012,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
               description: {
-                en: '',
                 es: '',
+                en: '',
                 pt: '',
               },
               tags: [],
@@ -2762,9 +3026,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2790,9 +3054,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2847,8 +3111,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2861,8 +3125,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
               description: {
                 es: '',
-                pt: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2875,8 +3139,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -2916,9 +3180,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
               description: {
-                pt: '',
-                es: '',
                 en: '',
+                es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -2930,9 +3194,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -2945,8 +3209,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2959,8 +3223,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
               description: {
                 pt: '',
-                en: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -2972,9 +3236,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
               description: {
-                pt: '',
                 es: '',
                 en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -2998,8 +3262,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -3012,8 +3276,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'video',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
               description: {
-                en: '',
                 pt: '',
+                en: '',
                 es: '',
               },
               tags: [],
@@ -3052,9 +3316,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
               description: {
-                en: '',
                 pt: '',
                 es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3066,9 +3330,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3081,8 +3345,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
               description: {
                 pt: '',
-                es: '',
                 en: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3094,9 +3358,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3108,9 +3372,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3122,8 +3386,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -3136,9 +3400,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3164,8 +3428,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
               description: {
-                pt: '',
                 en: '',
+                pt: '',
                 es: '',
               },
               tags: [],
@@ -3178,9 +3442,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3192,8 +3456,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
               description: {
-                es: '',
                 pt: '',
+                es: '',
                 en: '',
               },
               tags: [],
@@ -3206,9 +3470,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3220,9 +3484,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3263,8 +3527,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3288,9 +3552,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
               description: {
-                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
                 en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
                 pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
               },
               tags: [
                 'event photographer',
@@ -3309,8 +3573,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
               description: {
                 en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
-                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
                 es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
               },
               tags: [
                 'event photographer',
@@ -3328,9 +3592,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
               description: {
-                pt: '',
-                en: '',
                 es: '',
+                en: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -3369,8 +3633,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3383,8 +3647,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3397,8 +3661,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
               description: {
                 en: '',
-                es: '',
                 pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3410,9 +3674,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
               description: {
+                en: '',
                 pt: '',
                 es: '',
-                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3424,9 +3688,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
               description: {
+                es: '',
                 en: '',
                 pt: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3438,9 +3702,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -3452,9 +3716,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
               description: {
-                en: '',
                 es: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3466,9 +3730,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
               description: {
-                en: '',
-                pt: '',
                 es: '',
+                pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3480,9 +3744,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
               description: {
-                en: '',
-                es: '',
                 pt: '',
+                es: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '1:1',
@@ -3494,9 +3758,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
               description: {
-                pt: '',
                 en: '',
                 es: '',
+                pt: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3508,9 +3772,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
               description: {
-                es: '',
-                pt: '',
                 en: '',
+                pt: '',
+                es: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3523,8 +3787,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
               description: {
                 es: '',
-                en: '',
                 pt: '',
+                en: '',
               },
               tags: [],
               aspectRatio: '16:9',
@@ -3536,9 +3800,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
               description: {
+                pt: '',
                 es: '',
                 en: '',
-                pt: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -3550,8 +3814,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
               description: {
-                es: '',
                 en: '',
+                es: '',
                 pt: '',
               },
               tags: [],
@@ -3578,9 +3842,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               type: 'photo',
               url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
               description: {
+                es: '',
                 pt: '',
                 en: '',
-                es: '',
               },
               tags: [],
               aspectRatio: '9:16',
@@ -3590,7 +3854,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
       ],
     },
-    lastUpdated: '2025-06-30T15:10:02.237Z',
+    lastUpdated: '2025-07-01T12:19:25.471Z',
     buildTime: true,
   },
 };

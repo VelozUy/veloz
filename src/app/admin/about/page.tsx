@@ -56,6 +56,336 @@ const LANGUAGES = [
   { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
 ];
 
+// Sortable Philosophy Point Card Component
+function SortablePhilosophyCard({
+  point,
+  index,
+  currentLanguage,
+  onPhilosophyPointChange,
+  onRemovePhilosophyPoint,
+  onTranslatePhilosophyPoint,
+}: {
+  point: AboutPhilosophyPointData;
+  index: number;
+  currentLanguage: string;
+  onPhilosophyPointChange: (
+    pointId: string,
+    field: 'title' | 'description',
+    language: string,
+    value: string
+  ) => void;
+  onRemovePhilosophyPoint: (pointId: string) => void;
+  onTranslatePhilosophyPoint: (
+    pointId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: point.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card className="bg-muted/50">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Drag handle */}
+              <div
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+              >
+                <GripVertical className="w-4 h-4 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">
+                {point.title[currentLanguage as keyof typeof point.title] ||
+                  `Punto ${index + 1}`}
+              </CardTitle>
+            </div>
+            <Button
+              onClick={() => onRemovePhilosophyPoint(point.id)}
+              size="sm"
+              variant="destructive"
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Eliminar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${point.id}-title`}>Título</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslatePhilosophyPoint(point.id, 'title', 'en')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslatePhilosophyPoint(point.id, 'title', 'pt')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
+            <Input
+              id={`${point.id}-title`}
+              value={
+                point.title[currentLanguage as keyof typeof point.title] || ''
+              }
+              onChange={e =>
+                onPhilosophyPointChange(
+                  point.id,
+                  'title',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${point.id}-description`}>Descripción</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslatePhilosophyPoint(point.id, 'description', 'en')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslatePhilosophyPoint(point.id, 'description', 'pt')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
+            <Textarea
+              id={`${point.id}-description`}
+              value={
+                point.description[
+                  currentLanguage as keyof typeof point.description
+                ] || ''
+              }
+              onChange={e =>
+                onPhilosophyPointChange(
+                  point.id,
+                  'description',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+              rows={4}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Sortable Methodology Step Card Component
+function SortableMethodologyCard({
+  step,
+  index,
+  currentLanguage,
+  onMethodologyStepChange,
+  onRemoveMethodologyStep,
+  onTranslateMethodologyStep,
+}: {
+  step: AboutMethodologyStepData;
+  index: number;
+  currentLanguage: string;
+  onMethodologyStepChange: (
+    stepId: string,
+    field: 'title' | 'description',
+    language: string,
+    value: string
+  ) => void;
+  onRemoveMethodologyStep: (stepId: string) => void;
+  onTranslateMethodologyStep: (
+    stepId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: step.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card className="bg-muted/50">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Drag handle */}
+              <div
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+              >
+                <GripVertical className="w-4 h-4 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">
+                {step.title[currentLanguage as keyof typeof step.title] ||
+                  `Paso ${index + 1}`}
+              </CardTitle>
+            </div>
+            <Button
+              onClick={() => onRemoveMethodologyStep(step.id)}
+              size="sm"
+              variant="destructive"
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              Eliminar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${step.id}-title`}>Título</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateMethodologyStep(step.id, 'title', 'en')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateMethodologyStep(step.id, 'title', 'pt')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
+            <Input
+              id={`${step.id}-title`}
+              value={
+                step.title[currentLanguage as keyof typeof step.title] || ''
+              }
+              onChange={e =>
+                onMethodologyStepChange(
+                  step.id,
+                  'title',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label htmlFor={`${step.id}-description`}>Descripción</Label>
+              <div className="flex gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateMethodologyStep(step.id, 'description', 'en')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇺🇸 EN
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onTranslateMethodologyStep(step.id, 'description', 'pt')
+                  }
+                  className="text-xs h-7 px-2"
+                >
+                  🇧🇷 PT
+                </Button>
+              </div>
+            </div>
+            <Textarea
+              id={`${step.id}-description`}
+              value={
+                step.description[
+                  currentLanguage as keyof typeof step.description
+                ] || ''
+              }
+              onChange={e =>
+                onMethodologyStepChange(
+                  step.id,
+                  'description',
+                  currentLanguage,
+                  e.target.value
+                )
+              }
+              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+              rows={3}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // Sortable Value Card Component
 function SortableValueCard({
   value,
@@ -709,7 +1039,7 @@ export default function AboutAdminPage() {
     };
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleValuesDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active.id !== over?.id && formData) {
@@ -735,6 +1065,76 @@ export default function AboutAdminPage() {
           ...prev,
           values: {
             ...prev.values,
+            items: updatedItems,
+          },
+        };
+      });
+
+      setHasChanges(true);
+    }
+  };
+
+  const handlePhilosophyDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id && formData) {
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const oldIndex = prev.philosophy.items.findIndex(
+          item => item.id === active.id
+        );
+        const newIndex = prev.philosophy.items.findIndex(
+          item => item.id === over?.id
+        );
+
+        const newItems = arrayMove(prev.philosophy.items, oldIndex, newIndex);
+
+        // Update order values
+        const updatedItems = newItems.map((item, index) => ({
+          ...item,
+          order: index,
+        }));
+
+        return {
+          ...prev,
+          philosophy: {
+            ...prev.philosophy,
+            items: updatedItems,
+          },
+        };
+      });
+
+      setHasChanges(true);
+    }
+  };
+
+  const handleMethodologyDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id && formData) {
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const oldIndex = prev.methodology.items.findIndex(
+          item => item.id === active.id
+        );
+        const newIndex = prev.methodology.items.findIndex(
+          item => item.id === over?.id
+        );
+
+        const newItems = arrayMove(prev.methodology.items, oldIndex, newIndex);
+
+        // Update order values
+        const updatedItems = newItems.map((item, index) => ({
+          ...item,
+          order: index,
+        }));
+
+        return {
+          ...prev,
+          methodology: {
+            ...prev.methodology,
             items: updatedItems,
           },
         };
@@ -796,6 +1196,120 @@ export default function AboutAdminPage() {
       setHasChanges(true);
     } catch (error) {
       console.error('Error translating value:', error);
+    }
+  };
+
+  const handleTranslatePhilosophyPoint = async (
+    pointId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    if (!formData) return;
+
+    try {
+      // Find the philosophy point by ID
+      const pointIndex = formData.philosophy.items.findIndex(
+        item => item.id === pointId
+      );
+      if (pointIndex === -1) return;
+
+      const point = formData.philosophy.items[pointIndex];
+      const sourceText = point[field].es;
+
+      if (!sourceText) {
+        console.warn(
+          `No Spanish text found for ${field} of philosophy point ${pointId}`
+        );
+        return;
+      }
+
+      // Use the translation service to translate the text
+      const { TranslationClientService } = await import(
+        '@/services/translation-client'
+      );
+      const translationService = new TranslationClientService();
+      const response = await translationService.translateText({
+        text: sourceText,
+        fromLanguage: 'es',
+        toLanguage: language,
+        contentType: 'marketing',
+      });
+
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const updated = { ...prev };
+        updated.philosophy.items[pointIndex] = {
+          ...updated.philosophy.items[pointIndex],
+          [field]: {
+            ...updated.philosophy.items[pointIndex][field],
+            [language]: response.translatedText,
+          },
+        };
+
+        return updated;
+      });
+
+      setHasChanges(true);
+    } catch (error) {
+      console.error('Error translating philosophy point:', error);
+    }
+  };
+
+  const handleTranslateMethodologyStep = async (
+    stepId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    if (!formData) return;
+
+    try {
+      // Find the methodology step by ID
+      const stepIndex = formData.methodology.items.findIndex(
+        item => item.id === stepId
+      );
+      if (stepIndex === -1) return;
+
+      const step = formData.methodology.items[stepIndex];
+      const sourceText = step[field].es;
+
+      if (!sourceText) {
+        console.warn(
+          `No Spanish text found for ${field} of methodology step ${stepId}`
+        );
+        return;
+      }
+
+      // Use the translation service to translate the text
+      const { TranslationClientService } = await import(
+        '@/services/translation-client'
+      );
+      const translationService = new TranslationClientService();
+      const response = await translationService.translateText({
+        text: sourceText,
+        fromLanguage: 'es',
+        toLanguage: language,
+        contentType: 'marketing',
+      });
+
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const updated = { ...prev };
+        updated.methodology.items[stepIndex] = {
+          ...updated.methodology.items[stepIndex],
+          [field]: {
+            ...updated.methodology.items[stepIndex][field],
+            [language]: response.translatedText,
+          },
+        };
+
+        return updated;
+      });
+
+      setHasChanges(true);
+    } catch (error) {
+      console.error('Error translating methodology step:', error);
     }
   };
 
@@ -1152,78 +1666,36 @@ export default function AboutAdminPage() {
                     </p>
                   </div>
                 ) : (
-                  formData.philosophy.items
-                    .sort((a, b) => a.order - b.order)
-                    .map((point, index) => (
-                      <Card key={point.id} className="bg-muted/50">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-lg">
-                              {point.title[
-                                currentLanguage as keyof typeof point.title
-                              ] || `Punto ${index + 1}`}
-                            </CardTitle>
-                            <Button
-                              onClick={() =>
-                                handleRemovePhilosophyPoint(point.id)
-                              }
-                              size="sm"
-                              variant="destructive"
-                              className="flex items-center gap-2"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Eliminar
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div>
-                            <Label htmlFor={`${point.id}-title`}>Título</Label>
-                            <Input
-                              id={`${point.id}-title`}
-                              value={
-                                point.title[
-                                  currentLanguage as keyof typeof point.title
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handlePhilosophyPointChange(
-                                  point.id,
-                                  'title',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor={`${point.id}-description`}>
-                              Descripción
-                            </Label>
-                            <Textarea
-                              id={`${point.id}-description`}
-                              value={
-                                point.description[
-                                  currentLanguage as keyof typeof point.description
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handlePhilosophyPointChange(
-                                  point.id,
-                                  'description',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                              rows={4}
-                            />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handlePhilosophyDragEnd}
+                  >
+                    <SortableContext
+                      items={formData.philosophy.items.map(item => item.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {formData.philosophy.items
+                        .sort((a, b) => a.order - b.order)
+                        .map((point, index) => (
+                          <SortablePhilosophyCard
+                            key={point.id}
+                            point={point}
+                            index={index}
+                            currentLanguage={currentLanguage}
+                            onPhilosophyPointChange={
+                              handlePhilosophyPointChange
+                            }
+                            onRemovePhilosophyPoint={
+                              handleRemovePhilosophyPoint
+                            }
+                            onTranslatePhilosophyPoint={
+                              handleTranslatePhilosophyPoint
+                            }
+                          />
+                        ))}
+                    </SortableContext>
+                  </DndContext>
                 )}
               </CardContent>
             </Card>
@@ -1280,78 +1752,36 @@ export default function AboutAdminPage() {
                     </p>
                   </div>
                 ) : (
-                  formData.methodology.items
-                    .sort((a, b) => a.order - b.order)
-                    .map((step, index) => (
-                      <Card key={step.id} className="bg-muted/50">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-lg">
-                              {step.title[
-                                currentLanguage as keyof typeof step.title
-                              ] || `Paso ${index + 1}`}
-                            </CardTitle>
-                            <Button
-                              onClick={() =>
-                                handleRemoveMethodologyStep(step.id)
-                              }
-                              size="sm"
-                              variant="destructive"
-                              className="flex items-center gap-2"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Eliminar
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div>
-                            <Label htmlFor={`${step.id}-title`}>Título</Label>
-                            <Input
-                              id={`${step.id}-title`}
-                              value={
-                                step.title[
-                                  currentLanguage as keyof typeof step.title
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handleMethodologyStepChange(
-                                  step.id,
-                                  'title',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor={`${step.id}-description`}>
-                              Descripción
-                            </Label>
-                            <Textarea
-                              id={`${step.id}-description`}
-                              value={
-                                step.description[
-                                  currentLanguage as keyof typeof step.description
-                                ] || ''
-                              }
-                              onChange={e =>
-                                handleMethodologyStepChange(
-                                  step.id,
-                                  'description',
-                                  currentLanguage,
-                                  e.target.value
-                                )
-                              }
-                              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                              rows={3}
-                            />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleMethodologyDragEnd}
+                  >
+                    <SortableContext
+                      items={formData.methodology.items.map(item => item.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {formData.methodology.items
+                        .sort((a, b) => a.order - b.order)
+                        .map((step, index) => (
+                          <SortableMethodologyCard
+                            key={step.id}
+                            step={step}
+                            index={index}
+                            currentLanguage={currentLanguage}
+                            onMethodologyStepChange={
+                              handleMethodologyStepChange
+                            }
+                            onRemoveMethodologyStep={
+                              handleRemoveMethodologyStep
+                            }
+                            onTranslateMethodologyStep={
+                              handleTranslateMethodologyStep
+                            }
+                          />
+                        ))}
+                    </SortableContext>
+                  </DndContext>
                 )}
               </CardContent>
             </Card>
@@ -1409,7 +1839,7 @@ export default function AboutAdminPage() {
                   <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
+                    onDragEnd={handleValuesDragEnd}
                   >
                     <SortableContext
                       items={formData.values.items.map(item => item.id)}

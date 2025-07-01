@@ -100,8 +100,8 @@ _All homepage content management functionality completed - see Completed Tasks S
 
 - [x] **[High] Create about content Zod validation schema** - Define TypeScript interfaces and validation for about page content structure (title, subtitle, philosophy, methodology, values) with multilingual support _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Create about content Firestore service** - Build service functions for CRUD operations on about page content using BaseFirebaseService pattern _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
-- [ ] **[Medium] Add about content database seeding** - Create migration script to move existing static about content from JSON files to Firestore collection _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Update about pages to use dynamic content** - Modify `/about`, `/en/about`, `/pt/about` pages to fetch content from Firestore instead of static JSON _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add about content database seeding** - Create migration script to move existing static about content from JSON files to Firestore collection _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[Medium] Update about pages to use dynamic content** - Modify `/about`, `/en/about`, `/pt/about` pages to fetch content from Firestore instead of static JSON _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 
 #### Basic Admin Interface
 
@@ -139,7 +139,7 @@ _All homepage content management functionality completed - see Completed Tasks S
 - [x] **[High] Make values dynamic** - Converted fixed 6 values (Passion, Teamwork, Quality, Agility, Excellence, Trust) to dynamic array structure allowing unlimited values _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Make all about sections dynamic** - Converted philosophy and methodology sections to dynamic arrays similar to values. Philosophy now supports unlimited philosophy points, methodology supports unlimited steps. All sections now allow admins to add/remove/edit items with full multilingual support and proper ordering _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Add auto translate buttons for about us forms** - Integrated GlobalTranslationButtons component with full support for dynamic content translation. Translates all main content (titles, subtitles), philosophy points, methodology steps, and values from Spanish to English and Portuguese using OpenAI. Includes translation review dialog and proper field labeling _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
-- [ ] **[Medium] Add values reordering functionality** - Allow drag-and-drop reordering of core values display order _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add values reordering functionality** - Allow drag-and-drop reordering of core values display order _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Medium] Add value translation controls** - Individual translation buttons for each value's title and description _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Create value icon selector** - Build icon picker component allowing admin to choose from Lucide React icons for each value _(Added: Jan 8, 2025)_
 
