@@ -76,6 +76,9 @@ export interface MediaBlock {
   font?: string;
   fontSize?: number;
   color?: string;
+  // Media positioning within block (for image/video blocks)
+  mediaOffsetX?: number; // Offset from center (0 = centered)
+  mediaOffsetY?: number; // Offset from center (0 = centered)
 }
 
 interface VisualGridEditorProps {
@@ -103,6 +106,9 @@ export default function VisualGridEditor({
   const [resizeMode, setResizeMode] = useState<
     'none' | 'width' | 'height' | 'corner'
   >('none');
+  const [isDraggingMedia, setIsDraggingMedia] = useState(false);
+  const [mediaDragStart, setMediaDragStart] = useState({ x: 0, y: 0 });
+  const [initialMediaOffset, setInitialMediaOffset] = useState({ x: 0, y: 0 });
   const [isDesktopOnly, setIsDesktopOnly] = useState(true);
   const [containerSize, setContainerSize] = useState({
     width: 900,
@@ -202,10 +208,65 @@ export default function VisualGridEditor({
     [disabled, mediaBlocks, GRID_CELL_SIZE]
   );
 
+  // Handle mouse down on media content (for repositioning within block)
+  const handleMediaMouseDown = useCallback(
+    (e: React.MouseEvent, blockId: string) => {
+      if (disabled) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const block = mediaBlocks.find(b => b.id === blockId);
+      if (!block || block.type === 'title') return;
+
+      setSelectedBlock(blockId);
+      setIsDraggingMedia(true);
+
+      const rect = gridRef.current?.getBoundingClientRect();
+      if (rect) {
+        setMediaDragStart({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+      }
+
+      // Store the initial media offset
+      setInitialMediaOffset({
+        x: block.mediaOffsetX || 0,
+        y: block.mediaOffsetY || 0,
+      });
+    },
+    [disabled, mediaBlocks]
+  );
+
+  // Calculate maximum allowed offset for media positioning
+  const calculateMaxOffset = useCallback(
+    (block: MediaBlock, media: ProjectMedia) => {
+      if (block.type === 'title') return { maxX: 0, maxY: 0 };
+
+      // Get block dimensions
+      const blockWidth = block.width * GRID_CELL_SIZE;
+      const blockHeight = block.height * GRID_CELL_SIZE;
+      const blockAspectRatio = blockWidth / blockHeight;
+
+      // Since we're scaling the image to 1.5x, we can allow more movement
+      // The image is 50% larger than the block, so we can move it up to 25% in each direction
+      // This ensures there's always image content visible in the block
+      const maxOffset = 25; // 25% of block size in each direction
+
+      return {
+        maxX: maxOffset,
+        maxY: maxOffset,
+      };
+    },
+    [GRID_CELL_SIZE]
+  );
+
   // Enhanced handle mouse move with better resize constraints
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!isDragging || !selectedBlock || !gridRef.current) return;
+      if (!isDragging && !isDraggingMedia) return;
+      if (!selectedBlock || !gridRef.current) return;
 
       const rect = gridRef.current.getBoundingClientRect();
       const currentX = e.clientX - rect.left;
@@ -214,6 +275,44 @@ export default function VisualGridEditor({
       const block = mediaBlocks.find(b => b.id === selectedBlock);
       if (!block) return;
 
+      if (isDraggingMedia && block.type !== 'title') {
+        // Media dragging mode - adjust media position within block
+        const deltaX = currentX - mediaDragStart.x;
+        const deltaY = currentY - mediaDragStart.y;
+
+        // Convert delta to percentage of block size
+        const blockWidthPx = block.width * GRID_CELL_SIZE;
+        const blockHeightPx = block.height * GRID_CELL_SIZE;
+
+        const newOffsetX = initialMediaOffset.x + (deltaX / blockWidthPx) * 100;
+        const newOffsetY =
+          initialMediaOffset.y + (deltaY / blockHeightPx) * 100;
+
+        // Get the media to calculate proper limits
+        const media = block.mediaId ? getMediaById(block.mediaId) : null;
+        const { maxX, maxY } = media
+          ? calculateMaxOffset(block, media)
+          : { maxX: 15, maxY: 15 };
+
+        // Constrain offset to calculated bounds
+        const constrainedOffsetX = Math.max(-maxX, Math.min(maxX, newOffsetX));
+        const constrainedOffsetY = Math.max(-maxY, Math.min(maxY, newOffsetY));
+
+        const updatedBlocks = mediaBlocks.map(b =>
+          b.id === selectedBlock
+            ? {
+                ...b,
+                mediaOffsetX: constrainedOffsetX,
+                mediaOffsetY: constrainedOffsetY,
+              }
+            : b
+        );
+
+        onMediaBlocksChange(updatedBlocks);
+        return;
+      }
+
+      // Block dragging/resizing mode
       let newX = block.x;
       let newY = block.y;
       let newWidth = block.width;
@@ -271,27 +370,32 @@ export default function VisualGridEditor({
     },
     [
       isDragging,
+      isDraggingMedia,
       selectedBlock,
       mediaBlocks,
       dragStart,
+      mediaDragStart,
+      initialMediaOffset,
       resizeMode,
       snapToGrid,
       constrainToGrid,
       onMediaBlocksChange,
       initialBlockPos,
       GRID_CELL_SIZE,
+      calculateMaxOffset,
     ]
   );
 
   // Handle mouse up
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    setIsDraggingMedia(false);
     setResizeMode('none');
   }, []);
 
   // Add event listeners
   useEffect(() => {
-    if (isDragging) {
+    if (isDragging || isDraggingMedia) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
 
@@ -300,7 +404,7 @@ export default function VisualGridEditor({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, handleMouseMove, handleMouseUp]);
+  }, [isDragging, isDraggingMedia, handleMouseMove, handleMouseUp]);
 
   // Add title block with proper grid constraints
   const addTitleBlock = useCallback(() => {
@@ -781,6 +885,37 @@ export default function VisualGridEditor({
                           }
                         }}
                       >
+                        {/* Drag Handle */}
+                        {!disabled && (
+                          <div
+                            className="absolute top-1 left-1 w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-sm flex items-center justify-center z-10"
+                            onMouseDown={e => {
+                              e.stopPropagation();
+                              handleMouseDown(e, block.id, 'drag');
+                            }}
+                            title="Mover bloque"
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="text-white"
+                            >
+                              <circle cx="9" cy="5" r="1" />
+                              <circle cx="9" cy="12" r="1" />
+                              <circle cx="9" cy="19" r="1" />
+                              <circle cx="15" cy="5" r="1" />
+                              <circle cx="15" cy="12" r="1" />
+                              <circle cx="15" cy="19" r="1" />
+                            </svg>
+                          </div>
+                        )}
+
                         {/* Media Content */}
                         <div className="w-full h-full relative overflow-hidden rounded">
                           {block.type === 'title' ? (
@@ -802,24 +937,44 @@ export default function VisualGridEditor({
                               </div>
                             </div>
                           ) : media ? (
-                            media.type === 'video' ? (
-                              <video
-                                src={media.url}
-                                className="w-full h-full object-cover"
-                                muted
-                                loop
-                                playsInline
-                                autoPlay
-                              />
-                            ) : (
-                              <Image
-                                src={media.url}
-                                alt={media.fileName || 'Media'}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                              />
-                            )
+                            <div
+                              className="w-full h-full relative"
+                              onMouseDown={e =>
+                                handleMediaMouseDown(e, block.id)
+                              }
+                              style={{
+                                cursor:
+                                  isDraggingMedia && selectedBlock === block.id
+                                    ? 'grabbing'
+                                    : 'grab',
+                              }}
+                            >
+                              {media.type === 'video' ? (
+                                <video
+                                  src={media.url}
+                                  className="w-full h-full object-cover"
+                                  muted
+                                  loop
+                                  playsInline
+                                  autoPlay
+                                  style={{
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                                  }}
+                                />
+                              ) : (
+                                <Image
+                                  src={media.url}
+                                  alt={media.fileName || 'Media'}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 768px) 100vw, 50vw"
+                                  style={{
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                                    objectPosition: 'center',
+                                  }}
+                                />
+                              )}
+                            </div>
                           ) : (
                             <div className="w-full h-full bg-gray-300 flex items-center justify-center">
                               <span className="text-gray-500 text-sm">
@@ -829,7 +984,7 @@ export default function VisualGridEditor({
                           )}
 
                           {/* Media Type Badge */}
-                          <div className="absolute top-1 left-1">
+                          <div className="absolute top-1 right-1">
                             <Badge variant="secondary" className="text-xs">
                               {block.type === 'title'
                                 ? '📝'
@@ -844,7 +999,7 @@ export default function VisualGridEditor({
                             <Button
                               variant="destructive"
                               size="sm"
-                              className="absolute top-1 right-1 w-6 h-6 p-0"
+                              className="absolute bottom-1 right-1 w-6 h-6 p-0"
                               onClick={e => {
                                 e.stopPropagation();
                                 removeMediaBlock(block.id);
@@ -857,7 +1012,7 @@ export default function VisualGridEditor({
                           {/* Resize Handle */}
                           {!disabled && (
                             <div
-                              className="absolute bottom-0 right-0 w-4 h-4 bg-primary cursor-se-resize"
+                              className="absolute bottom-0 left-0 w-4 h-4 bg-primary cursor-se-resize"
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 handleMouseDown(e, block.id, 'resize');

@@ -53,6 +53,9 @@ interface Project {
     font?: string;
     fontSize?: number;
     color?: string;
+    // Media positioning within block (for image/video blocks)
+    mediaOffsetX?: number; // Offset from center (0 = centered)
+    mediaOffsetY?: number; // Offset from center (0 = centered)
   }>;
   media: Array<{
     id: string;
@@ -395,6 +398,9 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     loop
                     playsInline
                     autoPlay
+                    style={{
+                      transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                    }}
                   />
                 ) : (
                   <Image
@@ -403,6 +409,10 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{
+                      transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                      objectPosition: 'center',
+                    }}
                   />
                 )}
               </div>
