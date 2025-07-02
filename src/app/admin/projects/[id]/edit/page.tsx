@@ -899,6 +899,11 @@ export default function UnifiedProjectEditPage({
                     updateDraftProject({ mediaBlocks: blocks });
                   }}
                   disabled={saving}
+                  projectName={
+                    draftProject.title.en ||
+                    draftProject.title.es ||
+                    draftProject.title.pt
+                  }
                 />
               </TabsContent>
             </Tabs>

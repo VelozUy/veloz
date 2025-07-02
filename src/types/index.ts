@@ -14,13 +14,18 @@ export interface LocalizedContent {
 // Visual Grid Editor Types - The only layout system
 export interface MediaBlock {
   id: string;
-  mediaId: string;
+  mediaId?: string; // Optional for title blocks
   x: number;
   y: number;
   width: number;
   height: number;
-  type: 'image' | 'video';
+  type: 'image' | 'video' | 'title';
   zIndex: number;
+  // Title-specific properties
+  title?: string;
+  font?: string;
+  fontSize?: number;
+  color?: string;
 }
 
 // Social Feed Types

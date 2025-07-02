@@ -26,6 +26,7 @@ import {
   Filter,
 } from 'lucide-react';
 import Image from 'next/image';
+import { FONT_OPTIONS } from '@/components/admin/VisualGridEditor';
 
 // Project interface for the our-work page
 interface Project {
@@ -40,13 +41,18 @@ interface Project {
   status?: 'published' | 'draft' | 'archived';
   mediaBlocks?: Array<{
     id: string;
-    mediaId: string;
+    mediaId?: string; // Optional for title blocks
     x: number;
     y: number;
     width: number;
     height: number;
-    type: 'image' | 'video';
+    type: 'image' | 'video' | 'title';
     zIndex: number;
+    // Title-specific properties
+    title?: string;
+    font?: string;
+    fontSize?: number;
+    color?: string;
   }>;
   media: Array<{
     id: string;
@@ -289,6 +295,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     muted
                     loop
                     playsInline
+                    autoPlay
                   />
                 ) : (
                   <Image
@@ -326,25 +333,54 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
         </div>
 
         {/* Visual Grid Layout */}
-        <div className="relative w-full h-[600px] bg-gray-100 overflow-hidden">
+        <div
+          className="relative w-full bg-gray-100 overflow-hidden"
+          style={{ aspectRatio: '18/12' }}
+        >
           {sortedBlocks.map(block => {
-            const media = project.media.find(m => m.id === block.mediaId);
-            if (!media) return null;
-
-            // Convert pixel coordinates to percentages
-            // Grid is 480x320px (6x4 cells of 80px each)
-            const GRID_WIDTH_PX = 6 * 80; // 480px
-            const GRID_HEIGHT_PX = 4 * 80; // 320px
+            // Convert grid coordinates to percentages
+            // Grid is 18x12 cells
+            const GRID_WIDTH = 18;
+            const GRID_HEIGHT = 12;
 
             const blockStyle = {
               position: 'absolute' as const,
-              left: `${(block.x / GRID_WIDTH_PX) * 100}%`,
-              top: `${(block.y / GRID_HEIGHT_PX) * 100}%`,
-              width: `${(block.width / GRID_WIDTH_PX) * 100}%`,
-              height: `${(block.height / GRID_HEIGHT_PX) * 100}%`,
+              left: `${(block.x / GRID_WIDTH) * 100}%`,
+              top: `${(block.y / GRID_HEIGHT) * 100}%`,
+              width: `${(block.width / GRID_WIDTH) * 100}%`,
+              height: `${(block.height / GRID_HEIGHT) * 100}%`,
               zIndex: block.zIndex,
             };
 
+            // Handle title blocks first
+            if (block.type === 'title') {
+              return (
+                <div
+                  key={block.id}
+                  style={blockStyle}
+                  className="overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-300"
+                >
+                  <div
+                    className="text-center font-bold break-words"
+                    style={{
+                      fontFamily: block.font
+                        ? FONT_OPTIONS.find(f => f.value === block.font)
+                            ?.fontFamily
+                        : 'Inter, sans-serif',
+                      fontSize: `${block.fontSize || 24}px`,
+                      color: block.color || '#000000',
+                    }}
+                  >
+                    {block.title || project.title}
+                  </div>
+                </div>
+              );
+            }
+            // Only look up media for image/video blocks
+            const media = project.media.find(m => m.id === block.mediaId);
+            if (!media) return null;
+
+            // Handle media blocks
             return (
               <div
                 key={block.id}
@@ -358,6 +394,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     muted
                     loop
                     playsInline
+                    autoPlay
                   />
                 ) : (
                   <Image

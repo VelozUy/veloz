@@ -10,6 +10,16 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { ProjectMedia } from '@/services/firebase';
 import {
   Grid,
@@ -27,16 +37,45 @@ const GRID_WIDTH = 18;
 const GRID_HEIGHT = 12;
 // We'll calculate cell size dynamically
 
+// Font options for title blocks
+export const FONT_OPTIONS = [
+  { value: 'inter', label: 'Inter', fontFamily: 'Inter, sans-serif' },
+  {
+    value: 'playfair',
+    label: 'Playfair Display',
+    fontFamily: 'Playfair Display, serif',
+  },
+  { value: 'roboto', label: 'Roboto', fontFamily: 'Roboto, sans-serif' },
+  {
+    value: 'montserrat',
+    label: 'Montserrat',
+    fontFamily: 'Montserrat, sans-serif',
+  },
+  {
+    value: 'opensans',
+    label: 'Open Sans',
+    fontFamily: 'Open Sans, sans-serif',
+  },
+  { value: 'poppins', label: 'Poppins', fontFamily: 'Poppins, sans-serif' },
+  { value: 'raleway', label: 'Raleway', fontFamily: 'Raleway, sans-serif' },
+  { value: 'lato', label: 'Lato', fontFamily: 'Lato, sans-serif' },
+] as const;
+
 // Media block interface
 export interface MediaBlock {
   id: string;
-  mediaId: string;
+  mediaId?: string; // Optional for title blocks
   x: number;
   y: number;
   width: number;
   height: number;
-  type: 'image' | 'video';
+  type: 'image' | 'video' | 'title';
   zIndex: number;
+  // Title-specific properties
+  title?: string;
+  font?: string;
+  fontSize?: number;
+  color?: string;
 }
 
 interface VisualGridEditorProps {
@@ -44,6 +83,7 @@ interface VisualGridEditorProps {
   mediaBlocks: MediaBlock[];
   onMediaBlocksChange: (blocks: MediaBlock[]) => void;
   disabled?: boolean;
+  projectName?: string;
 }
 
 export default function VisualGridEditor({
@@ -51,6 +91,7 @@ export default function VisualGridEditor({
   mediaBlocks,
   onMediaBlocksChange,
   disabled = false,
+  projectName,
 }: VisualGridEditorProps) {
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -67,6 +108,10 @@ export default function VisualGridEditor({
     width: 900,
     height: 600,
   });
+  const [editingTitleBlock, setEditingTitleBlock] = useState<MediaBlock | null>(
+    null
+  );
+  const [showTitleToolbar, setShowTitleToolbar] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
@@ -257,6 +302,71 @@ export default function VisualGridEditor({
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
+  // Add title block with proper grid constraints
+  const addTitleBlock = useCallback(() => {
+    if (disabled) return;
+
+    // Find a valid position for the new title block (in grid coordinates)
+    const defaultWidth = 6; // 6 grid cells for title
+    const defaultHeight = 2; // 2 grid cells for title
+
+    // Try to place the block at (0,0) first, then find next available position
+    let placementX = 0;
+    let placementY = 0;
+
+    // Simple collision detection to find available space
+    const maxAttempts = 20;
+    let attempts = 0;
+
+    while (attempts < maxAttempts) {
+      const wouldCollide = mediaBlocks.some(block => {
+        return (
+          placementX < block.x + block.width &&
+          placementX + defaultWidth > block.x &&
+          placementY < block.y + block.height &&
+          placementY + defaultHeight > block.y
+        );
+      });
+
+      if (!wouldCollide) {
+        break;
+      }
+
+      // Move to next position
+      placementX += 1; // 1 grid cell
+      if (placementX + defaultWidth > GRID_WIDTH) {
+        placementX = 0;
+        placementY += 1; // 1 grid cell
+      }
+
+      attempts++;
+    }
+
+    const newBlock: MediaBlock = {
+      id: `title-${Date.now()}`,
+      x: placementX,
+      y: placementY,
+      width: defaultWidth,
+      height: defaultHeight,
+      type: 'title',
+      zIndex: mediaBlocks.length + 1,
+      title: projectName || 'Título del Proyecto',
+      font: 'inter',
+      fontSize: 24,
+      color: '#000000',
+    };
+
+    // Apply constraints to ensure the block is within grid bounds
+    const constrained = constrainToGrid(
+      newBlock.x,
+      newBlock.y,
+      newBlock.width,
+      newBlock.height
+    );
+
+    onMediaBlocksChange([...mediaBlocks, { ...newBlock, ...constrained }]);
+  }, [mediaBlocks, onMediaBlocksChange, disabled, constrainToGrid]);
+
   // Add media block with proper grid constraints
   const addMediaBlock = useCallback(
     (media: ProjectMedia) => {
@@ -355,6 +465,22 @@ export default function VisualGridEditor({
     media => !mediaBlocks.some(block => block.mediaId === media.id)
   );
 
+  // Update title block
+  const updateTitleBlock = useCallback(
+    (blockId: string, updates: Partial<MediaBlock>) => {
+      const updatedBlocks = mediaBlocks.map(block =>
+        block.id === blockId ? { ...block, ...updates } : block
+      );
+      onMediaBlocksChange(updatedBlocks);
+
+      // Update the editingTitleBlock state to reflect changes
+      if (editingTitleBlock && editingTitleBlock.id === blockId) {
+        setEditingTitleBlock({ ...editingTitleBlock, ...updates });
+      }
+    },
+    [mediaBlocks, onMediaBlocksChange, editingTitleBlock]
+  );
+
   // Validate and fix existing blocks on mount
   useEffect(() => {
     const maxWidth = GRID_WIDTH;
@@ -430,6 +556,166 @@ export default function VisualGridEditor({
         <div className="lg:col-span-2">
           <Card>
             <CardContent className="p-6">
+              {/* Title Block Toolbar */}
+              {showTitleToolbar && editingTitleBlock && (
+                <div className="mb-3 p-3 bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
+                  <div className="flex items-center justify-end mb-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 text-gray-400 hover:text-white hover:bg-gray-800"
+                      onClick={() => {
+                        setShowTitleToolbar(false);
+                        setEditingTitleBlock(null);
+                      }}
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1">
+                      <Input
+                        id="title"
+                        value={editingTitleBlock.title || ''}
+                        onChange={e =>
+                          updateTitleBlock(editingTitleBlock.id, {
+                            title: e.target.value,
+                          })
+                        }
+                        placeholder="Título"
+                        className="text-xs h-7 bg-gray-800 border-gray-600 text-gray-200 placeholder-gray-500"
+                      />
+                    </div>
+
+                    <Select
+                      value={editingTitleBlock.font || 'inter'}
+                      onValueChange={value =>
+                        updateTitleBlock(editingTitleBlock.id, { font: value })
+                      }
+                    >
+                      <SelectTrigger className="text-xs h-8 w-24 bg-gray-800 border-gray-600 text-gray-200">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-800 border-gray-600">
+                        {FONT_OPTIONS.map(font => (
+                          <SelectItem
+                            key={font.value}
+                            value={font.value}
+                            className="text-gray-200 hover:bg-gray-700"
+                          >
+                            {font.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Input
+                      id="fontSize"
+                      type="number"
+                      min="12"
+                      max="72"
+                      value={editingTitleBlock.fontSize || 24}
+                      onChange={e =>
+                        updateTitleBlock(editingTitleBlock.id, {
+                          fontSize: parseInt(e.target.value) || 24,
+                        })
+                      }
+                      className="text-xs h-8 w-16 bg-gray-800 border-gray-600 text-gray-200"
+                    />
+
+                    <div className="flex items-center gap-1">
+                      <Input
+                        id="color"
+                        type="color"
+                        value={editingTitleBlock.color || '#000000'}
+                        onChange={e =>
+                          updateTitleBlock(editingTitleBlock.id, {
+                            color: e.target.value,
+                          })
+                        }
+                        className="w-8 h-8 p-1 bg-gray-800 border-gray-600"
+                      />
+                      <span className="text-xs text-gray-400 w-12">
+                        {editingTitleBlock.color || '#000000'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Z-Index Toolbar */}
+              {selectedBlock && (
+                <div className="mb-2 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 shadow-lg w-fit">
+                  <span className="text-xs text-gray-300 mr-2">
+                    Orden de superposición:
+                  </span>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 text-gray-400 hover:text-white"
+                    onClick={() => {
+                      // Move block up (increase zIndex)
+                      const block = mediaBlocks.find(
+                        b => b.id === selectedBlock
+                      );
+                      if (!block) return;
+                      const maxZ = Math.max(...mediaBlocks.map(b => b.zIndex));
+                      if (block.zIndex === maxZ) return;
+                      const updatedBlocks = mediaBlocks.map(b => {
+                        if (b.id === block.id)
+                          return { ...b, zIndex: b.zIndex + 1 };
+                        if (b.zIndex === block.zIndex + 1)
+                          return { ...b, zIndex: b.zIndex - 1 };
+                        return b;
+                      });
+                      onMediaBlocksChange(updatedBlocks);
+                    }}
+                    disabled={(() => {
+                      const block = mediaBlocks.find(
+                        b => b.id === selectedBlock
+                      );
+                      if (!block) return true;
+                      const maxZ = Math.max(...mediaBlocks.map(b => b.zIndex));
+                      return block.zIndex === maxZ;
+                    })()}
+                    title="Subir"
+                  >
+                    ▲
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 text-gray-400 hover:text-white"
+                    onClick={() => {
+                      // Move block down (decrease zIndex)
+                      const block = mediaBlocks.find(
+                        b => b.id === selectedBlock
+                      );
+                      if (!block) return;
+                      const minZ = Math.min(...mediaBlocks.map(b => b.zIndex));
+                      if (block.zIndex === minZ) return;
+                      const updatedBlocks = mediaBlocks.map(b => {
+                        if (b.id === block.id)
+                          return { ...b, zIndex: b.zIndex - 1 };
+                        if (b.zIndex === block.zIndex - 1)
+                          return { ...b, zIndex: b.zIndex + 1 };
+                        return b;
+                      });
+                      onMediaBlocksChange(updatedBlocks);
+                    }}
+                    disabled={(() => {
+                      const block = mediaBlocks.find(
+                        b => b.id === selectedBlock
+                      );
+                      if (!block) return true;
+                      const minZ = Math.min(...mediaBlocks.map(b => b.zIndex));
+                      return block.zIndex === minZ;
+                    })()}
+                    title="Bajar"
+                  >
+                    ▼
+                  </Button>
+                </div>
+              )}
               {/* Responsive Grid Container */}
               <div
                 ref={containerRef}
@@ -465,7 +751,9 @@ export default function VisualGridEditor({
 
                   {/* Media Blocks */}
                   {mediaBlocks.map(block => {
-                    const media = getMediaById(block.mediaId);
+                    const media = block.mediaId
+                      ? getMediaById(block.mediaId)
+                      : null;
                     const isSelected = selectedBlock === block.id;
 
                     return (
@@ -485,10 +773,35 @@ export default function VisualGridEditor({
                           zIndex: block.zIndex,
                         }}
                         onMouseDown={e => handleMouseDown(e, block.id, 'drag')}
+                        onDoubleClick={e => {
+                          if (block.type === 'title') {
+                            e.stopPropagation();
+                            setEditingTitleBlock(block);
+                            setShowTitleToolbar(true);
+                          }
+                        }}
                       >
                         {/* Media Content */}
                         <div className="w-full h-full relative overflow-hidden rounded">
-                          {media ? (
+                          {block.type === 'title' ? (
+                            // Title block
+                            <div
+                              className="w-full h-full flex items-center justify-center p-4"
+                              style={{
+                                fontFamily: block.font
+                                  ? FONT_OPTIONS.find(
+                                      f => f.value === block.font
+                                    )?.fontFamily
+                                  : 'Inter, sans-serif',
+                                fontSize: `${block.fontSize || 24}px`,
+                                color: block.color || '#000000',
+                              }}
+                            >
+                              <div className="text-center font-bold break-words">
+                                {block.title || 'Título del Proyecto'}
+                              </div>
+                            </div>
+                          ) : media ? (
                             media.type === 'video' ? (
                               <video
                                 src={media.url}
@@ -496,6 +809,7 @@ export default function VisualGridEditor({
                                 muted
                                 loop
                                 playsInline
+                                autoPlay
                               />
                             ) : (
                               <Image
@@ -517,7 +831,11 @@ export default function VisualGridEditor({
                           {/* Media Type Badge */}
                           <div className="absolute top-1 left-1">
                             <Badge variant="secondary" className="text-xs">
-                              {media?.type === 'video' ? '🎥' : '📷'}
+                              {block.type === 'title'
+                                ? '📝'
+                                : media?.type === 'video'
+                                  ? '🎥'
+                                  : '📷'}
                             </Badge>
                           </div>
 
@@ -563,9 +881,9 @@ export default function VisualGridEditor({
               <div className="mt-4 text-sm text-muted-foreground">
                 <p>
                   • Arrastra los bloques para moverlos • Usa la esquina inferior
-                  derecha para redimensionar • Los bloques se ajustan
-                  automáticamente a la cuadrícula y no pueden salir de los
-                  límites
+                  derecha para redimensionar • Haz doble clic en bloques de
+                  título para editar • Los bloques se ajustan automáticamente a
+                  la cuadrícula y no pueden salir de los límites
                 </p>
               </div>
             </CardContent>
@@ -582,6 +900,17 @@ export default function VisualGridEditor({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Add Title Block Button */}
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={addTitleBlock}
+                disabled={disabled}
+              >
+                <span className="mr-2">📝</span>
+                Agregar Título
+              </Button>
+
               {availableMedia.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <p>Todos los media han sido colocados en la cuadrícula</p>
@@ -602,6 +931,7 @@ export default function VisualGridEditor({
                             muted
                             loop
                             playsInline
+                            autoPlay
                           />
                         ) : (
                           <Image
