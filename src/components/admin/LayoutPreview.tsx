@@ -3,11 +3,13 @@
 import { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { LayoutTemplate, HeroRatio } from '@/types';
 import { ProjectMedia } from '@/services/firebase';
 import Image from 'next/image';
-import { 
-  Image as ImageIcon, 
+import {
+  Image as ImageIcon,
   Settings,
   Monitor,
   Video,
@@ -20,15 +22,71 @@ interface LayoutPreviewProps {
   layoutTemplate: LayoutTemplate;
   heroRatio: HeroRatio;
   customHeroRatio?: { width: number; height: number };
+  onLayoutTemplateChange?: (template: LayoutTemplate) => void;
+  onHeroRatioChange?: (ratio: HeroRatio) => void;
+  onCustomHeroRatioChange?: (ratio: { width: number; height: number }) => void;
+  showCustomRatio?: boolean;
+  setShowCustomRatio?: (show: boolean) => void;
   projectTitle?: string;
   projectDescription?: string;
   projectMedia: ProjectMedia[];
   selectedHeroMedia?: ProjectMedia;
   className?: string;
+  disabled?: boolean;
 }
 
+const layoutTemplates = [
+  {
+    value: 'hero' as LayoutTemplate,
+    label: 'Hero',
+  },
+  {
+    value: '2-column' as LayoutTemplate,
+    label: '2-Column',
+  },
+  {
+    value: 'vertical-story' as LayoutTemplate,
+    label: 'Vertical',
+  },
+  {
+    value: 'custom' as LayoutTemplate,
+    label: 'Custom',
+  },
+];
+
+const heroRatios = [
+  {
+    value: '1:1' as HeroRatio,
+    label: '1:1',
+  },
+  {
+    value: '16:9' as HeroRatio,
+    label: '16:9',
+  },
+  {
+    value: '4:5' as HeroRatio,
+    label: '4:5',
+  },
+  {
+    value: '9:16' as HeroRatio,
+    label: '9:16',
+  },
+  {
+    value: 'custom' as HeroRatio,
+    label: 'Custom',
+  },
+];
+
 // Media Preview Component with Loading State
-function MediaPreview({ media, className = "", isHero = false }: { media: ProjectMedia; className?: string; isHero?: boolean }) {
+function MediaPreview({
+  media,
+  className = '',
+  isHero = false,
+}: {
+  media: ProjectMedia;
+  className?: string;
+  isHero?: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -141,13 +199,18 @@ export default function LayoutPreview({
   layoutTemplate,
   heroRatio,
   customHeroRatio,
-  projectTitle = "Mi Proyecto de Ejemplo",
-  projectDescription = "Una descripción de ejemplo que muestra cómo se verá el contenido en esta plantilla.",
+  onLayoutTemplateChange,
+  onHeroRatioChange,
+  onCustomHeroRatioChange,
+  showCustomRatio,
+  setShowCustomRatio,
+  projectTitle = 'Mi Proyecto de Ejemplo',
+  projectDescription = 'Una descripción de ejemplo que muestra cómo se verá el contenido en esta plantilla.',
   projectMedia = [],
   selectedHeroMedia,
-  className = "",
+  className = '',
+  disabled = false,
 }: LayoutPreviewProps) {
-  
   const aspectRatioClass = useMemo(() => {
     switch (heroRatio) {
       case '1:1':
@@ -169,20 +232,30 @@ export default function LayoutPreview({
     }
   }, [heroRatio, customHeroRatio]);
 
-    // Get remaining media (excluding hero)
+  // Get remaining media (excluding hero)
   const remainingMedia = useMemo(() => {
     if (!selectedHeroMedia) return projectMedia;
     return projectMedia.filter(media => media.id !== selectedHeroMedia.id);
-  }, [projectMedia, selectedHeroMedia]);;
+  }, [projectMedia, selectedHeroMedia]);
 
   const renderHeroLayout = () => (
     <div className="space-y-4">
       {/* Hero Section */}
-      <div className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}>
+      <div
+        className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}
+      >
         {selectedHeroMedia ? (
-          <MediaPreview media={selectedHeroMedia} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={selectedHeroMedia}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : projectMedia.length > 0 ? (
-          <MediaPreview media={projectMedia[0]} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={projectMedia[0]}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
             <div className="text-center">
@@ -199,11 +272,14 @@ export default function LayoutPreview({
           </div>
         </div>
       </div>
-      
+
       {/* Content Section with Real Media */}
       <div className="space-y-4">
         {remainingMedia.slice(0, 2).map((media, index) => (
-          <div key={media.id || index} className="h-20 bg-gray-100 rounded-lg overflow-hidden">
+          <div
+            key={media.id || index}
+            className="h-20 bg-gray-100 rounded-lg overflow-hidden"
+          >
             <MediaPreview media={media} className="w-full h-full" />
           </div>
         ))}
@@ -224,11 +300,21 @@ export default function LayoutPreview({
   const render2ColumnLayout = () => (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}>
+      <div
+        className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}
+      >
         {selectedHeroMedia ? (
-          <MediaPreview media={selectedHeroMedia} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={selectedHeroMedia}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : projectMedia.length > 0 ? (
-          <MediaPreview media={projectMedia[0]} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={projectMedia[0]}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
             <div className="text-center">
@@ -238,7 +324,7 @@ export default function LayoutPreview({
           </div>
         )}
       </div>
-      
+
       {/* 2-Column Content with Real Media */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
@@ -247,14 +333,20 @@ export default function LayoutPreview({
           </div>
           {remainingMedia[0] && (
             <div className="h-32 bg-gray-100 rounded-lg overflow-hidden">
-              <MediaPreview media={remainingMedia[0]} className="w-full h-full" />
+              <MediaPreview
+                media={remainingMedia[0]}
+                className="w-full h-full"
+              />
             </div>
           )}
         </div>
         <div className="space-y-4">
           {remainingMedia[1] && (
             <div className="h-32 bg-gray-100 rounded-lg overflow-hidden">
-              <MediaPreview media={remainingMedia[1]} className="w-full h-full" />
+              <MediaPreview
+                media={remainingMedia[1]}
+                className="w-full h-full"
+              />
             </div>
           )}
           <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -268,11 +360,21 @@ export default function LayoutPreview({
   const renderVerticalStoryLayout = () => (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}>
+      <div
+        className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}
+      >
         {selectedHeroMedia ? (
-          <MediaPreview media={selectedHeroMedia} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={selectedHeroMedia}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : projectMedia.length > 0 ? (
-          <MediaPreview media={projectMedia[0]} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={projectMedia[0]}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
             <div className="text-center">
@@ -282,7 +384,7 @@ export default function LayoutPreview({
           </div>
         )}
       </div>
-      
+
       {/* Vertical Timeline with Real Media */}
       <div className="space-y-4">
         {remainingMedia.slice(0, 3).map((media, index) => (
@@ -321,11 +423,21 @@ export default function LayoutPreview({
 
   const renderCustomLayout = () => (
     <div className="space-y-4">
-      <div className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}>
+      <div
+        className={`${aspectRatioClass} bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg relative overflow-hidden`}
+      >
         {selectedHeroMedia ? (
-          <MediaPreview media={selectedHeroMedia} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={selectedHeroMedia}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : projectMedia.length > 0 ? (
-          <MediaPreview media={projectMedia[0]} className="w-full h-full" isHero={true} />
+          <MediaPreview
+            media={projectMedia[0]}
+            className="w-full h-full"
+            isHero={true}
+          />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-yellow-100 to-orange-100 flex items-center justify-center">
             <div className="text-center">
@@ -335,10 +447,13 @@ export default function LayoutPreview({
           </div>
         )}
       </div>
-      
+
       <div className="grid grid-cols-3 gap-4">
         {remainingMedia.slice(0, 3).map((media, index) => (
-          <div key={media.id || index} className="h-20 bg-gray-100 rounded-lg overflow-hidden">
+          <div
+            key={media.id || index}
+            className="h-20 bg-gray-100 rounded-lg overflow-hidden"
+          >
             <MediaPreview media={media} className="w-full h-full" />
           </div>
         ))}
@@ -402,14 +517,115 @@ export default function LayoutPreview({
               </Badge>
             </div>
           </div>
-          
+
           {/* Preview Container */}
           <div className="border rounded-lg p-4 bg-white">
             <div className="max-w-2xl mx-auto">
+              {/* Toolbar: Layout + Aspect Ratio */}
+              {(onLayoutTemplateChange || onHeroRatioChange) && (
+                <div className="mb-4 pb-4 border-b border-gray-800 bg-gray-900 rounded-t-lg px-4 py-2 flex flex-wrap items-center gap-4">
+                  {/* Layout Template Buttons */}
+                  {onLayoutTemplateChange && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs font-medium text-gray-200 mr-1">
+                        Layout:
+                      </span>
+                      {layoutTemplates.map(template => {
+                        const isSelected = layoutTemplate === template.value;
+                        return (
+                          <button
+                            key={template.value}
+                            className={`px-3 py-1 text-xs rounded border transition-all font-semibold ${
+                              isSelected
+                                ? 'border-primary bg-primary text-primary-foreground'
+                                : 'border-gray-700 bg-gray-800 text-gray-200 hover:border-primary/50 hover:bg-gray-700'
+                            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={() =>
+                              !disabled &&
+                              onLayoutTemplateChange(template.value)
+                            }
+                            title={template.label}
+                          >
+                            {template.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {/* Aspect Ratio Buttons */}
+                  {onHeroRatioChange && (
+                    <div className="flex items-center gap-1 ml-6">
+                      <span className="text-xs font-medium text-gray-200 mr-1">
+                        Ratio:
+                      </span>
+                      {heroRatios.map(ratio => {
+                        const isSelected = heroRatio === ratio.value;
+                        return (
+                          <button
+                            key={ratio.value}
+                            className={`px-3 py-1 text-xs rounded border transition-all font-semibold ${
+                              isSelected
+                                ? 'border-primary bg-primary text-primary-foreground'
+                                : 'border-gray-700 bg-gray-800 text-gray-200 hover:border-primary/50 hover:bg-gray-700'
+                            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            onClick={() =>
+                              !disabled && onHeroRatioChange(ratio.value)
+                            }
+                            title={ratio.label}
+                          >
+                            {ratio.label}
+                          </button>
+                        );
+                      })}
+                      {/* Custom Ratio Input - Compact */}
+                      {showCustomRatio && onCustomHeroRatioChange && (
+                        <div className="flex items-center gap-1 ml-2">
+                          <Label className="text-xs font-medium text-gray-200 whitespace-nowrap">
+                            Custom:
+                          </Label>
+                          <div className="flex items-center gap-1">
+                            <Input
+                              id="custom-width"
+                              type="number"
+                              min="1"
+                              value={customHeroRatio?.width || 16}
+                              onChange={e => {
+                                const width = parseInt(e.target.value) || 1;
+                                onCustomHeroRatioChange({
+                                  width,
+                                  height: customHeroRatio?.height || 9,
+                                });
+                              }}
+                              disabled={disabled}
+                              className="w-12 h-6 text-xs bg-gray-800 text-gray-100 border-gray-700"
+                            />
+                            <span className="text-xs text-gray-200">:</span>
+                            <Input
+                              id="custom-height"
+                              type="number"
+                              min="1"
+                              value={customHeroRatio?.height || 9}
+                              onChange={e => {
+                                const height = parseInt(e.target.value) || 1;
+                                onCustomHeroRatioChange({
+                                  width: customHeroRatio?.width || 16,
+                                  height,
+                                });
+                              }}
+                              disabled={disabled}
+                              className="w-12 h-6 text-xs bg-gray-800 text-gray-100 border-gray-700"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
               {renderLayoutContent()}
             </div>
           </div>
-          
+
           {/* Responsive Preview */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -425,4 +641,4 @@ export default function LayoutPreview({
       </CardContent>
     </Card>
   );
-} 
+}
