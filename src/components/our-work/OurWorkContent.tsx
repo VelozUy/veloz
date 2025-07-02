@@ -4,17 +4,26 @@ import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { LocalizedContent } from '@/lib/static-content.generated';
-import { EVENT_TYPE_LABELS, EVENT_TYPE_LABELS_EN, EVENT_TYPE_LABELS_PT } from '@/constants';
+import {
+  EVENT_TYPE_LABELS,
+  EVENT_TYPE_LABELS_EN,
+  EVENT_TYPE_LABELS_PT,
+} from '@/constants';
 import { EventType } from '@/types';
-import { 
-  Calendar, 
-  MapPin, 
-  Play, 
-  ExternalLink, 
+import {
+  Calendar,
+  MapPin,
+  Play,
+  ExternalLink,
   Heart,
-  Filter
+  Filter,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -29,6 +38,16 @@ interface Project {
   eventDate: string;
   featured: boolean;
   status?: 'published' | 'draft' | 'archived';
+  mediaBlocks?: Array<{
+    id: string;
+    mediaId: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    type: 'image' | 'video';
+    zIndex: number;
+  }>;
   media: Array<{
     id: string;
     type: 'photo' | 'video';
@@ -48,40 +67,46 @@ interface OurWorkContentProps {
 const UI_TEXT = {
   es: {
     title: 'Nuestro Trabajo',
-    subtitle: 'Explora nuestra colección de proyectos pasados. Cada imagen y video cuenta una historia única de momentos especiales capturados con pasión y profesionalismo.',
+    subtitle:
+      'Explora nuestra colección de proyectos pasados. Cada imagen y video cuenta una historia única de momentos especiales capturados con pasión y profesionalismo.',
     allProjects: 'Todos los Proyectos',
     noProjects: 'No se encontraron proyectos para esta categoría.',
     featured: 'Destacado',
     wantSomethingLikeThis: 'Quiero algo así',
     tooltipText: 'Contactar para un proyecto similar',
     readyTitle: '¿Listo para crear algo increíble?',
-    readySubtitle: 'Cada proyecto es único. Cuéntanos sobre tu evento y crearemos algo extraordinario juntos.',
+    readySubtitle:
+      'Cada proyecto es único. Cuéntanos sobre tu evento y crearemos algo extraordinario juntos.',
     startConversation: 'Comenzar Conversación',
     noImage: 'Sin imagen',
   },
   en: {
     title: 'Our Work',
-    subtitle: 'Explore our collection of past projects. Each image and video tells a unique story of special moments captured with passion and professionalism.',
+    subtitle:
+      'Explore our collection of past projects. Each image and video tells a unique story of special moments captured with passion and professionalism.',
     allProjects: 'All Projects',
     noProjects: 'No projects found for this category.',
     featured: 'Featured',
     wantSomethingLikeThis: 'I want something like this',
     tooltipText: 'Contact for a similar project',
     readyTitle: 'Ready to create something amazing?',
-    readySubtitle: 'Every project is unique. Tell us about your event and we\'ll create something extraordinary together.',
+    readySubtitle:
+      "Every project is unique. Tell us about your event and we'll create something extraordinary together.",
     startConversation: 'Start Conversation',
     noImage: 'No image',
   },
   pt: {
     title: 'Nosso Trabalho',
-    subtitle: 'Explore nossa coleção de projetos passados. Cada imagem e vídeo conta uma história única de momentos especiais capturados com paixão e profissionalismo.',
+    subtitle:
+      'Explore nossa coleção de projetos passados. Cada imagem e vídeo conta uma história única de momentos especiais capturados com paixão e profissionalismo.',
     allProjects: 'Todos os Projetos',
     noProjects: 'Nenhum projeto encontrado para esta categoria.',
     featured: 'Destacado',
     wantSomethingLikeThis: 'Quero algo assim',
     tooltipText: 'Contatar para um projeto similar',
     readyTitle: 'Pronto para criar algo incrível?',
-    readySubtitle: 'Cada projeto é único. Conte-nos sobre seu evento e criaremos algo extraordinário juntos.',
+    readySubtitle:
+      'Cada projeto é único. Conte-nos sobre seu evento e criaremos algo extraordinário juntos.',
     startConversation: 'Iniciar Conversa',
     noImage: 'Sem imagem',
   },
@@ -98,24 +123,26 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 40,
+const projectVariants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
-      ease: "easeOut" as const
-    }
+      duration: 0.8,
+      ease: 'easeOut' as const,
+    },
   },
 };
 
 export function OurWorkContent({ content }: OurWorkContentProps) {
   const [selectedEventType, setSelectedEventType] = useState<string>('all');
-  const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({});
+  const [carouselIndices, setCarouselIndices] = useState<
+    Record<string, number>
+  >({});
 
   // Determine current locale from content
   const currentLocale = content.locale || 'es';
@@ -137,7 +164,10 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
         // Featured projects first, then by date
         if (a.featured && !b.featured) return -1;
         if (!a.featured && b.featured) return 1;
-        return new Date(b.eventDate || 0).getTime() - new Date(a.eventDate || 0).getTime();
+        return (
+          new Date(b.eventDate || 0).getTime() -
+          new Date(a.eventDate || 0).getTime()
+        );
       });
   }, [content]);
 
@@ -151,7 +181,11 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
   // Get unique event types from projects
   const availableEventTypes = useMemo(() => {
-    const types = new Set(projects.map(p => p.eventType).filter((type): type is string => Boolean(type)));
+    const types = new Set(
+      projects
+        .map(p => p.eventType)
+        .filter((type): type is string => Boolean(type))
+    );
     return Array.from(types);
   }, [projects]);
 
@@ -177,8 +211,6 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     window.location.href = '/contact';
   };
 
-
-
   // Format date
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -187,7 +219,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       return date.toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       });
     } catch {
       return dateString;
@@ -197,7 +229,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   // Continuous slow movement carousel for each project
   useEffect(() => {
     const intervals: NodeJS.Timeout[] = [];
-    
+
     filteredProjects.forEach(project => {
       if (project.media.length > 1) {
         const interval = setInterval(() => {
@@ -206,11 +238,11 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             const nextIndex = (currentIndex + 1) % project.media.length;
             return {
               ...prev,
-              [project.id]: nextIndex
+              [project.id]: nextIndex,
             };
           });
         }, 6000); // Change every 6 seconds for slow continuous movement
-        
+
         intervals.push(interval);
       }
     });
@@ -225,11 +257,171 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     return carouselIndices[projectId] || 0;
   };
 
+  // Render Custom Layout using Visual Grid Editor blocks
+  const renderCustomLayout = (project: Project) => {
+    // If no media blocks defined, show a simple grid
+    if (!project.mediaBlocks || project.mediaBlocks.length === 0) {
+      return (
+        <div className="space-y-8">
+          {/* Project Title and Description */}
+          <div className="text-center space-y-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground">
+              {project.title}
+            </h1>
+            {project.description && (
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                {project.description}
+              </p>
+            )}
+          </div>
+
+          {/* Simple Grid Fallback */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {project.media.slice(0, 6).map((media, index) => (
+              <div
+                key={media.id || index}
+                className="aspect-square relative overflow-hidden"
+              >
+                {media.type === 'video' ? (
+                  <video
+                    src={media.url}
+                    className="w-full h-full object-cover"
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : (
+                  <Image
+                    src={media.url}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Sort media blocks by z-index and position
+    const sortedBlocks = [...project.mediaBlocks].sort(
+      (a, b) => a.zIndex - b.zIndex
+    );
+
+    return (
+      <div className="space-y-8">
+        {/* Project Title and Description */}
+        <div className="text-center space-y-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground">
+            {project.title}
+          </h1>
+          {project.description && (
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              {project.description}
+            </p>
+          )}
+        </div>
+
+        {/* Visual Grid Layout */}
+        <div className="relative w-full h-[600px] bg-gray-100 overflow-hidden">
+          {sortedBlocks.map(block => {
+            const media = project.media.find(m => m.id === block.mediaId);
+            if (!media) return null;
+
+            // Convert pixel coordinates to percentages
+            // Grid is 480x320px (6x4 cells of 80px each)
+            const GRID_WIDTH_PX = 6 * 80; // 480px
+            const GRID_HEIGHT_PX = 4 * 80; // 320px
+
+            const blockStyle = {
+              position: 'absolute' as const,
+              left: `${(block.x / GRID_WIDTH_PX) * 100}%`,
+              top: `${(block.y / GRID_HEIGHT_PX) * 100}%`,
+              width: `${(block.width / GRID_WIDTH_PX) * 100}%`,
+              height: `${(block.height / GRID_HEIGHT_PX) * 100}%`,
+              zIndex: block.zIndex,
+            };
+
+            return (
+              <div
+                key={block.id}
+                style={blockStyle}
+                className="overflow-hidden"
+              >
+                {media.type === 'video' ? (
+                  <video
+                    src={media.url}
+                    className="w-full h-full object-cover"
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : (
+                  <Image
+                    src={media.url}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Badges */}
+        <div className="flex justify-center gap-3">
+          {project.featured && (
+            <Badge className="bg-primary text-primary-foreground">
+              <Heart className="w-3 h-3 mr-1" />
+              {uiText.featured}
+            </Badge>
+          )}
+          {project.eventType && (
+            <Badge variant="secondary">
+              {getEventTypeLabel(project.eventType)}
+            </Badge>
+          )}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center pt-8">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => handleCTAClick(project.eventType || '')}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold text-lg px-8 py-4"
+                >
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  {uiText.wantSomethingLikeThis}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{uiText.tooltipText}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+    );
+  };
+
+  // Render project using only custom layout
+  const renderProject = (project: Project) => {
+    return renderCustomLayout(project);
+  };
+
   return (
     <div className="min-h-screen pt-20 pb-16">
       {/* Hero Section */}
-      <section className="relative py-16 px-4">
-        <div className="container mx-auto text-center">
+      <section className="relative py-16 px-4 md:px-8 lg:px-12">
+        <div className="w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -246,8 +438,8 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       </section>
 
       {/* Filter Section */}
-      <section className="px-4 mb-12">
-        <div className="container mx-auto">
+      <section className="px-4 md:px-8 lg:px-12 mb-12">
+        <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -262,11 +454,13 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
               <Filter className="w-4 h-4" />
               {uiText.allProjects}
             </Button>
-            
+
             {availableEventTypes.map(eventType => (
               <Button
                 key={eventType}
-                variant={selectedEventType === eventType ? 'default' : 'outline'}
+                variant={
+                  selectedEventType === eventType ? 'default' : 'outline'
+                }
                 onClick={() => setSelectedEventType(eventType)}
                 className="flex items-center gap-2"
               >
@@ -277,10 +471,10 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
         </div>
       </section>
 
-      {/* Projects Full-Width Layout */}
-      <section className="px-4">
-        <div className="container mx-auto">
-          {filteredProjects.length === 0 ? (
+      {/* Projects Full-Width Wall-to-Wall Layout */}
+      {filteredProjects.length === 0 ? (
+        <section className="px-4 md:px-8 lg:px-12">
+          <div className="w-full">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -290,187 +484,41 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                 {uiText.noProjects}
               </div>
             </motion.div>
-          ) : (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="space-y-16"
+          </div>
+        </section>
+      ) : (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-0"
+        >
+          {filteredProjects.map((project, index) => (
+            <motion.section
+              key={project.id}
+              variants={projectVariants}
+              className="w-full"
             >
-              {filteredProjects.map((project, index) => {
-                const currentMediaIndex = getCurrentCarouselIndex(project.id);
-                const isCarouselLeft = index % 2 === 0; // Alternate carousel position
-                
-                return (
-                  <motion.div
-                    key={project.id}
-                    variants={cardVariants}
-                    className="group"
-                  >
-                    <div className="flex flex-col lg:flex-row lg:min-h-[500px] bg-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                      {/* Carousel Section */}
-                      <div className={`relative lg:w-1/2 ${isCarouselLeft ? 'lg:order-1' : 'lg:order-2'}`}>
-                        {project.media.length > 0 ? (
-                          <div className="relative w-full h-64 lg:h-full overflow-hidden" style={{ minHeight: '256px', maxHeight: '100%' }}>
-                            {/* Continuous Sliding Carousel Container */}
-                            <motion.div 
-                              className="flex h-full"
-                              animate={{ 
-                                x: project.media.length > 1 ? `-${currentMediaIndex * 100}%` : 0 
-                              }}
-                              transition={{ 
-                                duration: 6, 
-                                ease: "linear",
-                                repeat: 0
-                              }}
-                              onAnimationComplete={() => {
-                                if (project.media.length > 1) {
-                                  // Move to next image or reset to first
-                                  setCarouselIndices(prev => ({
-                                    ...prev,
-                                    [project.id]: (currentMediaIndex + 1) % project.media.length
-                                  }));
-                                }
-                              }}
-                            >
-                              {/* Show all media items in sequence */}
-                              {project.media.map((media, mediaIndex) => (
-                                <div 
-                                  key={`${project.id}-media-${mediaIndex}`}
-                                  className="relative flex-shrink-0 w-full h-full"
-                                  style={{ minWidth: '100%', maxWidth: '100%' }}
-                                >
-                                  {media.type === 'video' ? (
-                                    <video
-                                      src={media.url}
-                                      className="w-full h-full object-cover"
-                                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                      muted
-                                      loop
-                                      playsInline
-                                    />
-                                  ) : (
-                                    <Image
-                                      src={media.url}
-                                      alt={project.title}
-                                      fill
-                                      className="object-cover"
-                                      style={{ objectFit: 'cover' }}
-                                      sizes="(max-width: 1024px) 100vw, 50vw"
-                                    />
-                                  )}
-                                  
-                                  {/* Play Button for Videos */}
-                                  {media.type === 'video' && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                      <div className="w-16 h-16 bg-background/80 rounded-full flex items-center justify-center">
-                                        <Play className="w-8 h-8 text-foreground ml-1" />
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-                            </motion.div>
+              {/* Project Container - Full Width */}
+              <div className="w-full bg-background">
+                {/* Project Content - Full Width */}
+                <div className="w-full px-4 md:px-8 lg:px-12">
+                  {renderProject(project)}
+                </div>
+              </div>
 
-                            {/* Badges */}
-                            <div className="absolute top-4 left-4 flex gap-2 z-10">
-                              {project.featured && (
-                                <Badge className="bg-primary text-primary-foreground">
-                                  <Heart className="w-3 h-3 mr-1" />
-                                  {uiText.featured}
-                                </Badge>
-                              )}
-                              {project.eventType && (
-                                <Badge variant="secondary">
-                                  {getEventTypeLabel(project.eventType)}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-full h-64 lg:h-full bg-muted flex items-center justify-center">
-                            <div className="text-muted-foreground">{uiText.noImage}</div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Content Section */}
-                      <div className={`lg:w-1/2 p-8 flex flex-col justify-center ${isCarouselLeft ? 'lg:order-2' : 'lg:order-1'}`}>
-                        <div className="space-y-6">
-                          {/* Title and Description */}
-                          <div className="space-y-4">
-                            <h3 className="text-3xl lg:text-4xl font-bold text-foreground">
-                              {project.title}
-                            </h3>
-                            {project.description && (
-                              <p className="text-lg text-muted-foreground leading-relaxed">
-                                {project.description}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Metadata */}
-                          <div className="space-y-4">
-                            {project.location && (
-                              <div className="flex items-center gap-3 text-muted-foreground">
-                                <MapPin className="w-5 h-5" />
-                                <span className="text-lg">{project.location}</span>
-                              </div>
-                            )}
-                            
-                            {project.eventDate && (
-                              <div className="flex items-center gap-3 text-muted-foreground">
-                                <Calendar className="w-5 h-5" />
-                                <span className="text-lg">{formatDate(project.eventDate)}</span>
-                              </div>
-                            )}
-                            
-                            {/* Tags */}
-                            {project.tags && project.tags.length > 0 && (
-                              <div className="flex flex-wrap gap-2">
-                                {project.tags.map(tag => (
-                                  <Badge key={tag} variant="outline" className="text-sm">
-                                    {tag}
-                                  </Badge>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-
-                          {/* CTA Button */}
-                          <div className="pt-4">
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Button
-                                    onClick={() => handleCTAClick(project.eventType || '')}
-                                    size="lg"
-                                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold text-lg px-8 py-4"
-                                  >
-                                    <ExternalLink className="w-5 h-5 mr-2" />
-                                    {uiText.wantSomethingLikeThis}
-                                  </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{uiText.tooltipText}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
-        </div>
-      </section>
+              {/* Separator between projects (except for the last one) */}
+              {index < filteredProjects.length - 1 && (
+                <div className="w-full py-20 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
+              )}
+            </motion.section>
+          ))}
+        </motion.div>
+      )}
 
       {/* Bottom CTA Section */}
-      <section className="px-4 mt-16">
-        <div className="container mx-auto text-center">
+      <section className="px-4 md:px-8 lg:px-12 mt-24">
+        <div className="w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -495,4 +543,4 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       </section>
     </div>
   );
-} 
+}

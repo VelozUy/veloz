@@ -899,6 +899,39 @@ async function fetchProjectMedia(db, projectId) {
 }
 
 /**
+ * Validate and fix media blocks to ensure they don't exceed grid bounds
+ */
+function validateMediaBlocks(mediaBlocks) {
+  if (!mediaBlocks || !Array.isArray(mediaBlocks)) {
+    return [];
+  }
+
+  const GRID_WIDTH = 6;
+  const GRID_HEIGHT = 4;
+  const GRID_CELL_SIZE = 80;
+  const maxWidth = GRID_WIDTH * GRID_CELL_SIZE; // 480px
+  const maxHeight = GRID_HEIGHT * GRID_CELL_SIZE; // 320px
+
+  return mediaBlocks.map(block => {
+    // Constrain width and height to grid bounds
+    const constrainedWidth = Math.min(block.width || 0, maxWidth);
+    const constrainedHeight = Math.min(block.height || 0, maxHeight);
+
+    // Constrain position to ensure block stays within grid
+    const maxX = maxWidth - constrainedWidth;
+    const maxY = maxHeight - constrainedHeight;
+
+    return {
+      ...block,
+      x: Math.max(0, Math.min(block.x || 0, maxX)),
+      y: Math.max(0, Math.min(block.y || 0, maxY)),
+      width: constrainedWidth,
+      height: constrainedHeight,
+    };
+  });
+}
+
+/**
  * Generate content for a specific locale
  */
 function generateLocaleContent(
@@ -1075,33 +1108,31 @@ function generateLocaleContent(
           order: faq.order,
         }))
         .filter(faq => faq.question && faq.answer),
-      projects: projects.map(project => ({
-        id: project.id,
-        title:
-          // Handle both localized objects and simple strings
-          typeof project.title === 'object' && project.title !== null
-            ? project.title[locale] ||
-              project.title.es ||
-              project.title.en ||
-              ''
-            : project.title || '',
-        description:
-          // Handle both localized objects and simple strings
-          typeof project.description === 'object' &&
-          project.description !== null
-            ? project.description[locale] ||
-              project.description.es ||
-              project.description.en ||
-              ''
-            : project.description || '',
-        coverImage: project.coverImage,
-        tags: project.tags || [],
-        eventType: project.eventType,
-        location: project.location,
-        eventDate: project.eventDate,
-        featured: project.featured || false,
-        media: project.media || [],
-      })),
+      projects: projects.map(project => {
+        // Transform project data for static content
+        const transformedProject = {
+          id: project.id,
+          title:
+            project.title?.[locale] ||
+            project.title?.es ||
+            project.title?.en ||
+            'Sin título',
+          description:
+            project.description?.[locale] ||
+            project.description?.es ||
+            project.description?.en ||
+            '',
+          tags: project.tags || [],
+          eventType: project.eventType || '',
+          location: project.location || '',
+          eventDate: project.eventDate || '',
+          featured: project.featured || false,
+          status: project.status || 'published',
+          mediaBlocks: validateMediaBlocks(project.mediaBlocks || []),
+          media: project.media || [],
+        };
+        return transformedProject;
+      }),
     },
     lastUpdated: new Date().toISOString(),
     buildTime: true,
@@ -1244,12 +1275,22 @@ export interface LocalizedContent {
       id: string;
       title: string;
       description: string;
-      coverImage?: string;
       tags: string[];
       eventType?: string;
       location?: string;
       eventDate: string;
       featured: boolean;
+      status?: string;
+      mediaBlocks?: Array<{
+        id: string;
+        mediaId: string;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        type: 'image' | 'video';
+        zIndex: number;
+      }>;
       media: Array<{
         id: string;
         projectId: string;

@@ -52,7 +52,7 @@ import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
-import { LayoutTemplate, HeroRatio } from '@/types';
+import { MediaBlock } from '@/types';
 
 interface Project {
   id: string;
@@ -78,11 +78,7 @@ interface Project {
     videos: number;
   };
   crewMembers?: string[]; // Array of crew member IDs
-  // New layout template fields
-  layoutTemplate?: LayoutTemplate;
-  heroRatio?: HeroRatio;
-  customHeroRatio?: { width: number; height: number };
-  selectedHeroMediaId?: string; // ID of the media item selected for hero
+  mediaBlocks?: MediaBlock[]; // Visual grid editor blocks
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
   media?: ProjectMedia[];
@@ -169,11 +165,7 @@ export default function UnifiedProjectEditPage({
             status: 'draft',
             mediaCount: { photos: 0, videos: 0 },
             crewMembers: [],
-            // Default layout template settings
-            layoutTemplate: 'hero',
-            heroRatio: '16:9',
-            customHeroRatio: { width: 16, height: 9 },
-            selectedHeroMediaId: undefined,
+            mediaBlocks: [], // Empty media blocks for new projects
             createdAt: null,
             updatedAt: null,
           };
@@ -185,6 +177,10 @@ export default function UnifiedProjectEditPage({
           setHasUnsavedChanges(true); // New projects always have "changes"
         } else {
           // Edit mode - load existing project
+          if (!db) {
+            setError('Database not initialized');
+            return;
+          }
           const projectDoc = await getDoc(doc(db, 'projects', projectId));
           if (!projectDoc.exists()) {
             setError('Project not found');
@@ -312,6 +308,11 @@ export default function UnifiedProjectEditPage({
     setError('');
 
     try {
+      if (!db) {
+        setError('Database not initialized');
+        return;
+      }
+
       if (isCreateMode) {
         // Create new project
         const docRef = await addDoc(collection(db, 'projects'), {
@@ -368,6 +369,7 @@ export default function UnifiedProjectEditPage({
           featured: draftProject.featured,
           status: draftProject.status,
           crewMembers: draftProject.crewMembers || [],
+          mediaBlocks: draftProject.mediaBlocks || [],
           updatedAt: serverTimestamp(),
         });
 
@@ -838,7 +840,7 @@ export default function UnifiedProjectEditPage({
                         </p>
                       </div>
                       <MediaUpload
-                        projectId={projectId!}
+                        projectId={projectId || ''}
                         onUploadSuccess={handleUploadSuccess}
                         onUploadError={handleUploadError}
                       />
@@ -846,7 +848,7 @@ export default function UnifiedProjectEditPage({
 
                     {projectMedia.length > 0 ? (
                       <MediaManager
-                        projectId={projectId!}
+                        projectId={projectId || ''}
                         media={projectMedia}
                         onMediaUpdate={handleMediaUpdate}
                         onMediaDelete={handleMediaDelete}
@@ -877,8 +879,11 @@ export default function UnifiedProjectEditPage({
               <TabsContent value="crew" className="space-y-6">
                 <CrewMemberAssignment
                   selectedCrewMemberIds={draftProject.crewMembers || []}
-                  onCrewMembersChange={(crewMemberIds) => {
-                    console.log('🔍 Project Edit - crew members changed:', crewMemberIds);
+                  onCrewMembersChange={crewMemberIds => {
+                    console.log(
+                      '🔍 Project Edit - crew members changed:',
+                      crewMemberIds
+                    );
                     updateDraftProject({ crewMembers: crewMemberIds });
                   }}
                   disabled={saving}
@@ -888,24 +893,10 @@ export default function UnifiedProjectEditPage({
               {/* Layout Tab */}
               <TabsContent value="layout" className="space-y-6">
                 <LayoutTemplateSelector
-                  layoutTemplate={draftProject.layoutTemplate || 'hero'}
-                  heroRatio={draftProject.heroRatio || '16:9'}
-                  customHeroRatio={draftProject.customHeroRatio || { width: 16, height: 9 }}
-                  projectTitle={draftProject.title?.es || draftProject.title?.en || 'Proyecto sin título'}
-                  projectDescription={draftProject.description?.es || draftProject.description?.en || 'Sin descripción'}
                   projectMedia={projectMedia}
-                  selectedHeroMedia={draftProject.selectedHeroMediaId ? projectMedia.find(m => m.id === draftProject.selectedHeroMediaId) : undefined}
-                  onLayoutTemplateChange={(template) => {
-                    updateDraftProject({ layoutTemplate: template });
-                  }}
-                  onHeroRatioChange={(ratio) => {
-                    updateDraftProject({ heroRatio: ratio });
-                  }}
-                  onCustomHeroRatioChange={(ratio) => {
-                    updateDraftProject({ customHeroRatio: ratio });
-                  }}
-                  onHeroMediaChange={(mediaId: string | null) => {
-                    updateDraftProject({ selectedHeroMediaId: mediaId });
+                  mediaBlocks={draftProject.mediaBlocks || []}
+                  onMediaBlocksChange={(blocks: MediaBlock[]) => {
+                    updateDraftProject({ mediaBlocks: blocks });
                   }}
                   disabled={saving}
                 />

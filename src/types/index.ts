@@ -11,23 +11,16 @@ export interface LocalizedContent {
   zh?: string;
 }
 
-// Project Layout Template Types
-export type LayoutTemplate = 
-  | 'hero' 
-  | '2-column' 
-  | 'vertical-story' 
-  | 'custom';
-
-export type HeroRatio = 
-  | '1:1' 
-  | '16:9' 
-  | '4:5' 
-  | '9:16' 
-  | 'custom';
-
-export interface CustomHeroRatio {
+// Visual Grid Editor Types - The only layout system
+export interface MediaBlock {
+  id: string;
+  mediaId: string;
+  x: number;
+  y: number;
   width: number;
   height: number;
+  type: 'image' | 'video';
+  zIndex: number;
 }
 
 // Social Feed Types
@@ -48,7 +41,9 @@ export interface CreateSocialPostData {
   order: number;
 }
 
-export type UpdateSocialPostData = Partial<Omit<SocialPost, 'id' | 'createdAt'>>;
+export type UpdateSocialPostData = Partial<
+  Omit<SocialPost, 'id' | 'createdAt'>
+>;
 
 // Gallery Types
 export interface Photo {
@@ -364,4 +359,6 @@ export interface CreateCrewMemberData {
 }
 
 // Crew Member Data for Updates - compatible with BaseFirebaseService
-export type UpdateCrewMemberData = Partial<Omit<CrewMember, 'id' | 'createdAt'>>;
+export type UpdateCrewMemberData = Partial<
+  Omit<CrewMember, 'id' | 'createdAt'>
+>;

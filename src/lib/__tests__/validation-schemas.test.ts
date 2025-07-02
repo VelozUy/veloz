@@ -67,7 +67,9 @@ describe('Validation Schemas', () => {
         consent: true,
       };
 
-      expect(() => contactFormSchema.parse(invalidData)).toThrow('Invalid email address');
+      expect(() => contactFormSchema.parse(invalidData)).toThrow(
+        'Invalid email address'
+      );
     });
 
     it('should reject missing required fields', () => {
@@ -87,7 +89,9 @@ describe('Validation Schemas', () => {
         consent: true,
       };
 
-      expect(() => contactFormSchema.parse(invalidData)).toThrow('Message must be at least 10 characters');
+      expect(() => contactFormSchema.parse(invalidData)).toThrow(
+        'Message must be at least 10 characters'
+      );
     });
 
     it('should reject long name', () => {
@@ -98,7 +102,9 @@ describe('Validation Schemas', () => {
         consent: true,
       };
 
-      expect(() => contactFormSchema.parse(invalidData)).toThrow('Name is too long');
+      expect(() => contactFormSchema.parse(invalidData)).toThrow(
+        'Name is too long'
+      );
     });
 
     it('should reject invalid event type', () => {
@@ -121,7 +127,9 @@ describe('Validation Schemas', () => {
         consent: false,
       };
 
-      expect(() => contactFormSchema.parse(invalidData)).toThrow('Consent is required');
+      expect(() => contactFormSchema.parse(invalidData)).toThrow(
+        'Consent is required'
+      );
     });
   });
 
@@ -282,6 +290,8 @@ describe('Validation Schemas', () => {
         location: 'Montevideo, Uruguay',
         eventDate: '2024-06-15',
         lastModifiedBy: 'admin@example.com',
+        crewMembers: [],
+        mediaBlocks: [],
       };
 
       expect(() => projectSchema.parse(validData)).not.toThrow();
@@ -688,7 +698,9 @@ describe('Validation Schemas', () => {
         ids: [],
       };
 
-      expect(() => bulkOperationSchema.parse(invalidData)).toThrow('At least one ID is required');
+      expect(() => bulkOperationSchema.parse(invalidData)).toThrow(
+        'At least one ID is required'
+      );
     });
 
     it('should reject invalid operation', () => {
@@ -950,4 +962,4 @@ describe('Validation Schemas', () => {
       expect(() => projectMediaSchema.parse(validData)).not.toThrow();
     });
   });
-}); 
+});

@@ -110,14 +110,22 @@ export const projectSchema = baseSchema.extend({
   location: z.string().optional(),
   eventDate: z.string().optional(), // Could be date but storing as string for flexibility
   lastModifiedBy: z.string().optional(),
-  // New layout template fields
-  layoutTemplate: z.enum(['hero', '2-column', 'vertical-story', 'custom']).default('hero'),
-  heroRatio: z.enum(['1:1', '16:9', '4:5', '9:16', 'custom']).default('16:9'),
-  customHeroRatio: z.object({
-    width: z.number().int().min(1),
-    height: z.number().int().min(1),
-  }).optional(),
   crewMembers: z.array(z.string()).default([]), // Array of crew member IDs
+  // Visual grid editor fields
+  mediaBlocks: z
+    .array(
+      z.object({
+        id: z.string(),
+        mediaId: z.string(),
+        x: z.number().int().min(0),
+        y: z.number().int().min(0),
+        width: z.number().int().min(1),
+        height: z.number().int().min(1),
+        type: z.enum(['image', 'video']),
+        zIndex: z.number().int().min(0),
+      })
+    )
+    .default([]), // Array of positioned media blocks
 });
 
 // Project Media Schema
@@ -534,16 +542,16 @@ export const crewMemberSchema = baseSchema.extend({
   bio: multiLanguageTextSchema,
   socialLinks: z
     .object({
-      instagram: z.string().optional().refine(
-        (val) => {
+      instagram: z
+        .string()
+        .optional()
+        .refine(val => {
           if (!val) return true; // Allow empty/undefined
           // Allow Instagram username (alphanumeric, dots, underscores) or full URL
           const usernameRegex = /^[a-zA-Z0-9._]+$/;
           const urlRegex = /^https?:\/\/.+/;
           return usernameRegex.test(val) || urlRegex.test(val);
-        },
-        'Instagram must be a valid username or URL'
-      ),
+        }, 'Instagram must be a valid username or URL'),
       website: z.string().url('Website must be a valid URL').optional(),
       email: z.string().email('Email must be a valid email address').optional(),
     })
@@ -612,7 +620,8 @@ export const validateFAQ = (data: unknown) => faqSchema.parse(data);
 export const validateProject = (data: unknown) => projectSchema.parse(data);
 export const validateProjectMedia = (data: unknown) =>
   projectMediaSchema.parse(data);
-export const validateSocialPost = (data: unknown) => socialPostSchema.parse(data);
+export const validateSocialPost = (data: unknown) =>
+  socialPostSchema.parse(data);
 export const validateHomepageContent = (data: unknown) =>
   homepageContentSchema.parse(data);
 export const validateAboutContent = (data: unknown) =>
@@ -629,7 +638,8 @@ export const safeValidateProject = (data: unknown) =>
   projectSchema.safeParse(data);
 export const safeValidateProjectMedia = (data: unknown) =>
   projectMediaSchema.safeParse(data);
-export const safeValidateSocialPost = (data: unknown) => socialPostSchema.safeParse(data);
+export const safeValidateSocialPost = (data: unknown) =>
+  socialPostSchema.safeParse(data);
 export const safeValidateHomepageContent = (data: unknown) =>
   homepageContentSchema.safeParse(data);
 export const safeValidateAboutContent = (data: unknown) =>

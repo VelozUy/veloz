@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-07-01T23:57:55.067Z
+// Generated on: 2025-07-02T10:13:20.365Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -80,12 +80,22 @@ export interface LocalizedContent {
       id: string;
       title: string;
       description: string;
-      coverImage?: string;
       tags: string[];
       eventType?: string;
       location?: string;
       eventDate: string;
       featured: boolean;
+      status?: string;
+      mediaBlocks?: Array<{
+        id: string;
+        mediaId: string;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        type: 'image' | 'video';
+        zIndex: number;
+      }>;
       media: Array<{
         id: string;
         projectId: string;
@@ -103,3666 +113,3916 @@ export interface LocalizedContent {
 }
 
 export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
-  "es": {
-    "locale": "es",
-    "translations": {
-      "navigation": {
-        "home": "Inicio",
-        "about": "Sobre Nosotros",
-        "gallery": "Nuestro Trabajo",
-        "contact": "Contacto"
+  es: {
+    locale: 'es',
+    translations: {
+      navigation: {
+        home: 'Inicio',
+        about: 'Sobre Nosotros',
+        gallery: 'Nuestro Trabajo',
+        contact: 'Contacto',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturamos lo irrepetible",
-          "cta": {
-            "about": "Sobre Nosotros",
-            "work": "Nuestro Trabajo",
-            "contact": "Trabaja con Nosotros"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturamos lo irrepetible',
+          cta: {
+            about: 'Sobre Nosotros',
+            work: 'Nuestro Trabajo',
+            contact: 'Trabaja con Nosotros',
+          },
+        },
       },
-      "contact": {
-        "title": "Cuéntanos sobre tu evento",
-        "subtitle": "Mientras más sepamos, mejor podremos hacer que tu día sea perfecto",
-        "form": {
-          "name": {
-            "label": "Tu nombre",
-            "placeholder": "¿Cómo deberíamos llamarte?"
+      contact: {
+        title: 'Cuéntanos sobre tu evento',
+        subtitle:
+          'Mientras más sepamos, mejor podremos hacer que tu día sea perfecto',
+        form: {
+          name: {
+            label: 'Tu nombre',
+            placeholder: '¿Cómo deberíamos llamarte?',
           },
-          "email": {
-            "label": "Correo electrónico",
-            "placeholder": "tu.email@ejemplo.com"
+          email: {
+            label: 'Correo electrónico',
+            placeholder: 'tu.email@ejemplo.com',
           },
-          "eventType": {
-            "label": "¿Qué estás celebrando?",
-            "placeholder": "Elige tu tipo de evento",
-            "options": {
-              "wedding": "Boda",
-              "quinceanera": "Fiesta de 15 Años",
-              "birthday": "Fiesta de Cumpleaños",
-              "corporate": "Evento Corporativo",
-              "other": "Otro (¡cuéntanos en el mensaje!)"
-            }
-          },
-          "eventDate": {
-            "label": "Fecha aproximada",
-            "optional": "(opcional)",
-            "help": "¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!"
-          },
-          "message": {
-            "label": "Cuéntanos sobre tu visión",
-            "optional": "(opcional)",
-            "placeholder": "Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento..."
-          },
-          "submit": {
-            "button": "Empezar la conversación",
-            "loading": "Enviando tu mensaje..."
-          },
-          "privacy": {
-            "line1": "No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.",
-            "line2": "Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo."
-          }
-        },
-        "success": {
-          "title": "¡Mensaje enviado!",
-          "message": "¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.",
-          "action": "Enviar otro mensaje"
-        },
-        "trust": {
-          "response": {
-            "title": "Respuesta Rápida",
-            "description": "Típicamente respondemos dentro de 24 horas con una cotización personalizada"
-          },
-          "commitment": {
-            "title": "Sin Compromiso",
-            "description": "Obtener una cotización es completamente gratis y sin ataduras"
-          },
-          "privacy": {
-            "title": "Privacidad Primero",
-            "description": "Nunca compartimos tu información y solo te contactamos sobre tu evento"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "¿En qué evento estás pensando?",
-          "mobile": "¿En qué evento estás pensando?"
-        },
-        "dialog": {
-          "title": "Cuéntanos sobre tu evento"
-        },
-        "eventTypes": {
-          "wedding": "Boda",
-          "corporate": "Evento Empresarial",
-          "other": "Otro tipo de evento"
-        },
-        "steps": {
-          "eventType": {
-            "title": "¿En qué evento estás pensando?",
-            "subtitle": "Cuéntanos qué quieres celebrar"
-          },
-          "date": {
-            "title": "¿Ya tienes fecha?",
-            "subtitle": "No te preocupes si aún no estás seguro",
-            "noDate": "Aún no tengo fecha definida"
-          },
-          "contact": {
-            "title": "¿Quieres contarnos más?",
-            "subtitle": "Elige cómo prefieres que nos contactemos",
-            "moreInfo": {
-              "title": "Sí, quiero contarte más detalles",
-              "subtitle": "Te llevamos al formulario completo"
+          eventType: {
+            label: '¿Qué estás celebrando?',
+            placeholder: 'Elige tu tipo de evento',
+            options: {
+              wedding: 'Boda',
+              quinceanera: 'Fiesta de 15 Años',
+              birthday: 'Fiesta de Cumpleaños',
+              corporate: 'Evento Corporativo',
+              other: 'Otro (¡cuéntanos en el mensaje!)',
             },
-            "callMe": {
-              "title": "Quiero que me llamen",
-              "subtitle": "Preferimos hablar por teléfono"
-            }
           },
-          "phone": {
-            "title": "¡Perfecto! Te llamamos",
-            "subtitle": "Déjanos tu número y te contactamos pronto",
-            "placeholder": "Tu número de teléfono",
-            "button": "Solicitar llamada",
-            "loading": "Enviando..."
+          eventDate: {
+            label: 'Fecha aproximada',
+            optional: '(opcional)',
+            help: '¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!',
           },
-          "complete": {
-            "title": "¡Listo!",
-            "message": "Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.",
-            "button": "Cerrar"
-          }
-        }
+          message: {
+            label: 'Cuéntanos sobre tu visión',
+            optional: '(opcional)',
+            placeholder:
+              'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
+          },
+          submit: {
+            button: 'Empezar la conversación',
+            loading: 'Enviando tu mensaje...',
+          },
+          privacy: {
+            line1:
+              'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
+            line2:
+              'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
+          },
+        },
+        success: {
+          title: '¡Mensaje enviado!',
+          message:
+            '¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+          action: 'Enviar otro mensaje',
+        },
+        trust: {
+          response: {
+            title: 'Respuesta Rápida',
+            description:
+              'Típicamente respondemos dentro de 24 horas con una cotización personalizada',
+          },
+          commitment: {
+            title: 'Sin Compromiso',
+            description:
+              'Obtener una cotización es completamente gratis y sin ataduras',
+          },
+          privacy: {
+            title: 'Privacidad Primero',
+            description:
+              'Nunca compartimos tu información y solo te contactamos sobre tu evento',
+          },
+        },
       },
-      "about": {
-        "title": "Sobre Nosotros",
-        "subtitle": "Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.",
-        "philosophy": {
-          "title": "Nuestra Filosofía",
-          "description": "Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones."
+      widget: {
+        button: {
+          desktop: '¿En qué evento estás pensando?',
+          mobile: '¿En qué evento estás pensando?',
         },
-        "methodology": {
-          "title": "Nuestra Metodología",
-          "planning": {
-            "title": "Planificación",
-            "description": "Estudiamos cada detalle del evento para anticipar los momentos clave."
-          },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nuestro equipo se distribuye estratégicamente para no perder ningún momento."
-          },
-          "capture": {
-            "title": "Captura Profesional",
-            "description": "Utilizamos técnicas avanzadas y equipos de última generación."
-          },
-          "postproduction": {
-            "title": "Post-Producción",
-            "description": "Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales."
-          }
+        dialog: {
+          title: 'Cuéntanos sobre tu evento',
         },
-        "values": {
-          "title": "Nuestros Valores",
-          "passion": {
-            "title": "Pasión",
-            "description": "Amamos lo que hacemos y se refleja en cada imagen que capturamos."
-          },
-          "teamwork": {
-            "title": "Trabajo en Equipo",
-            "description": "Nuestro modelo colaborativo nos permite cubrir cada momento importante."
-          },
-          "quality": {
-            "title": "Calidad Técnica",
-            "description": "Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales."
-          },
-          "agility": {
-            "title": "Agilidad",
-            "description": "Nos adaptamos rápidamente a cualquier situación para no perder ningún momento."
-          },
-          "excellence": {
-            "title": "Excelencia",
-            "description": "Buscamos la perfección en cada proyecto, superando las expectativas."
-          },
-          "trust": {
-            "title": "Confianza",
-            "description": "Construimos relaciones duraderas basadas en la transparencia y profesionalismo."
-          }
+        eventTypes: {
+          wedding: 'Boda',
+          corporate: 'Evento Empresarial',
+          other: 'Otro tipo de evento',
         },
-        "faq": {
-          "title": "Preguntas Frecuentes"
-        }
+        steps: {
+          eventType: {
+            title: '¿En qué evento estás pensando?',
+            subtitle: 'Cuéntanos qué quieres celebrar',
+          },
+          date: {
+            title: '¿Ya tienes fecha?',
+            subtitle: 'No te preocupes si aún no estás seguro',
+            noDate: 'Aún no tengo fecha definida',
+          },
+          contact: {
+            title: '¿Quieres contarnos más?',
+            subtitle: 'Elige cómo prefieres que nos contactemos',
+            moreInfo: {
+              title: 'Sí, quiero contarte más detalles',
+              subtitle: 'Te llevamos al formulario completo',
+            },
+            callMe: {
+              title: 'Quiero que me llamen',
+              subtitle: 'Preferimos hablar por teléfono',
+            },
+          },
+          phone: {
+            title: '¡Perfecto! Te llamamos',
+            subtitle: 'Déjanos tu número y te contactamos pronto',
+            placeholder: 'Tu número de teléfono',
+            button: 'Solicitar llamada',
+            loading: 'Enviando...',
+          },
+          complete: {
+            title: '¡Listo!',
+            message:
+              'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
+            button: 'Cerrar',
+          },
+        },
       },
-      "validation": {
-        "required": "Este campo es requerido",
-        "email": "Por favor ingresa un email válido para que podamos responderte",
-        "minLength": "Debe tener al menos {{count}} caracteres"
-      }
+      about: {
+        title: 'Sobre Nosotros',
+        subtitle:
+          'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.',
+        philosophy: {
+          title: 'Nuestra Filosofía',
+          description:
+            'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.',
+        },
+        methodology: {
+          title: 'Nuestra Metodología',
+          planning: {
+            title: 'Planificación',
+            description:
+              'Estudiamos cada detalle del evento para anticipar los momentos clave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
+          },
+          capture: {
+            title: 'Captura Profesional',
+            description:
+              'Utilizamos técnicas avanzadas y equipos de última generación.',
+          },
+          postproduction: {
+            title: 'Post-Producción',
+            description:
+              'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
+          },
+        },
+        values: {
+          title: 'Nuestros Valores',
+          passion: {
+            title: 'Pasión',
+            description:
+              'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabajo en Equipo',
+            description:
+              'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
+          },
+          quality: {
+            title: 'Calidad Técnica',
+            description:
+              'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
+          },
+          agility: {
+            title: 'Agilidad',
+            description:
+              'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
+          },
+          excellence: {
+            title: 'Excelencia',
+            description:
+              'Buscamos la perfección en cada proyecto, superando las expectativas.',
+          },
+          trust: {
+            title: 'Confianza',
+            description:
+              'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
+          },
+        },
+        faq: {
+          title: 'Preguntas Frecuentes',
+        },
+      },
+      validation: {
+        required: 'Este campo es requerido',
+        email: 'Por favor ingresa un email válido para que podamos responderte',
+        minLength: 'Debe tener al menos {{count}} caracteres',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturamos lo irrepetible",
-        "logo": {
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturamos lo irrepetible',
+        logo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
-        }
+        backgroundVideo: {
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+        },
       },
-      "about": {
-        "title": "Sobre Nosotros",
-        "subtitle": "Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.",
-        "philosophy": {
-          "title": "Nuestra Filosofía",
-          "description": "Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones."
+      about: {
+        title: 'Sobre Nosotros',
+        subtitle:
+          'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.',
+        philosophy: {
+          title: 'Nuestra Filosofía',
+          description:
+            'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.',
         },
-        "methodology": {
-          "title": "Nuestra Metodología",
-          "planning": {
-            "title": "Planificación",
-            "description": "Estudiamos cada detalle del evento para anticipar los momentos clave."
+        methodology: {
+          title: 'Nuestra Metodología',
+          planning: {
+            title: 'Planificación',
+            description:
+              'Estudiamos cada detalle del evento para anticipar los momentos clave.',
           },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nuestro equipo se distribuye estratégicamente para no perder ningún momento."
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
           },
-          "capture": {
-            "title": "Captura Profesional",
-            "description": "Utilizamos técnicas avanzadas y equipos de última generación."
+          capture: {
+            title: 'Captura Profesional',
+            description:
+              'Utilizamos técnicas avanzadas y equipos de última generación.',
           },
-          "postproduction": {
-            "title": "Post-Producción",
-            "description": "Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales."
-          }
+          postproduction: {
+            title: 'Post-Producción',
+            description:
+              'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
+          },
         },
-        "values": {
-          "title": "Nuestros Valores",
-          "passion": {
-            "title": "Pasión",
-            "description": "Amamos lo que hacemos y se refleja en cada imagen que capturamos."
+        values: {
+          title: 'Nuestros Valores',
+          passion: {
+            title: 'Pasión',
+            description:
+              'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
           },
-          "teamwork": {
-            "title": "Trabajo en Equipo",
-            "description": "Nuestro modelo colaborativo nos permite cubrir cada momento importante."
+          teamwork: {
+            title: 'Trabajo en Equipo',
+            description:
+              'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
           },
-          "quality": {
-            "title": "Calidad Técnica",
-            "description": "Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales."
+          quality: {
+            title: 'Calidad Técnica',
+            description:
+              'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
           },
-          "agility": {
-            "title": "Agilidad",
-            "description": "Nos adaptamos rápidamente a cualquier situación para no perder ningún momento."
+          agility: {
+            title: 'Agilidad',
+            description:
+              'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
           },
-          "excellence": {
-            "title": "Excelencia",
-            "description": "Buscamos la perfección en cada proyecto, superando las expectativas."
+          excellence: {
+            title: 'Excelencia',
+            description:
+              'Buscamos la perfección en cada proyecto, superando las expectativas.',
           },
-          "trust": {
-            "title": "Confianza",
-            "description": "Construimos relaciones duraderas basadas en la transparencia y profesionalismo."
-          }
+          trust: {
+            title: 'Confianza',
+            description:
+              'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
+          },
         },
-        "faq": {
-          "title": "Preguntas Frecuentes"
-        }
+        faq: {
+          title: 'Preguntas Frecuentes',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "POPFdVzSh5Tom6jILa7x",
-          "title": "Ciclismo",
-          "description": "",
-          "tags": [],
-          "eventType": "Photoshoot",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'POPFdVzSh5Tom6jILa7x',
+          title: 'Ciclismo',
+          description: '',
+          tags: [],
+          eventType: 'Photoshoot',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [
             {
-              "id": "WlnpFA11erD9UOmBm0KT",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              mediaId: 'WlnpFA11erD9UOmBm0KT',
+              id: 'block-1751450964545',
+              y: 0,
+              x: 0,
+              height: 160,
+              type: 'image',
+              zIndex: 1,
+              width: 160,
             },
             {
-              "id": "8HUSkVPzmq7qL7wzvEWX",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              zIndex: 2,
+              id: 'block-1751450965726',
+              type: 'image',
+              y: 0,
+              mediaId: 'Lzb0t6nElL0ZAWQsqBLS',
+              height: 160,
+              width: 160,
+              x: 320,
             },
             {
-              "id": "Lzb0t6nElL0ZAWQsqBLS",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              width: 160,
+              id: 'block-1751450968075',
+              type: 'image',
+              zIndex: 3,
+              x: 320,
+              y: 160,
+              mediaId: 'kn1K7gbSfxqw4dze5KJa',
+              height: 160,
             },
             {
-              "id": "FadSTZIEfDPweyIGgz7b",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              x: 0,
+              height: 160,
+              type: 'video',
+              zIndex: 4,
+              mediaId: '6h63m4y2XnApEjJBBl2D',
+              width: 480,
+              y: 160,
+              id: 'block-1751450971879',
+            },
+          ],
+          media: [
+            {
+              id: 'WlnpFA11erD9UOmBm0KT',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "kn1K7gbSfxqw4dze5KJa",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '8HUSkVPzmq7qL7wzvEWX',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "8HrzgDIJGqGdSO0PybiO",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'Lzb0t6nElL0ZAWQsqBLS',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "Vl3QqvF41XwFB7JTOLPx",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'FadSTZIEfDPweyIGgz7b',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "FSOslPFFgsgYZfvgbI64",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'kn1K7gbSfxqw4dze5KJa',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "yPHmTxUgbA8pPu9ProKb",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: '8HrzgDIJGqGdSO0PybiO',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '9:16',
+              order: 6,
             },
             {
-              "id": "dtsBBRanqbKQUVZEwh2k",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'Vl3QqvF41XwFB7JTOLPx',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "Y8CuJO9aiwQMtYziWzit",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'FSOslPFFgsgYZfvgbI64',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "alyLKMlcUn2Ava6OCvie",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yPHmTxUgbA8pPu9ProKb',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "foybyfLK0lkqA6j4HL4l",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'dtsBBRanqbKQUVZEwh2k',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 13
+              tags: [],
+              aspectRatio: '9:16',
+              order: 10,
             },
             {
-              "id": "vzIZoJBlyC6joJqfhJaE",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'Y8CuJO9aiwQMtYziWzit',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "BIcRnxLaEsa4egQBk4ZC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'alyLKMlcUn2Ava6OCvie',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 15
+              tags: [],
+              aspectRatio: '9:16',
+              order: 12,
             },
             {
-              "id": "O7IlGWX72PxKPNZfWc0M",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'foybyfLK0lkqA6j4HL4l',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 16
+              tags: [],
+              aspectRatio: '9:16',
+              order: 13,
             },
             {
-              "id": "YN67Uwe4AaCpBHBfKSOf",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'vzIZoJBlyC6joJqfhJaE',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 17
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "d3TJPwFR3qftEGy7Mf0c",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'BIcRnxLaEsa4egQBk4ZC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 18
+              tags: [],
+              aspectRatio: '9:16',
+              order: 15,
             },
             {
-              "id": "YbNkGpe2ZN1U7mjll4nU",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'O7IlGWX72PxKPNZfWc0M',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 19
+              tags: [],
+              aspectRatio: '1:1',
+              order: 16,
             },
             {
-              "id": "BqE0nJXEYPRjrMwHxjh5",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'YN67Uwe4AaCpBHBfKSOf',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 20
+              tags: [],
+              aspectRatio: '1:1',
+              order: 17,
             },
             {
-              "id": "ZXo05IpIGfgXYvanLgbC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'd3TJPwFR3qftEGy7Mf0c',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 21
+              tags: [],
+              aspectRatio: '1:1',
+              order: 18,
             },
             {
-              "id": "evM72UydC452ixuXMAVn",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'YbNkGpe2ZN1U7mjll4nU',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 22
+              tags: [],
+              aspectRatio: '1:1',
+              order: 19,
             },
             {
-              "id": "6h63m4y2XnApEjJBBl2D",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'BqE0nJXEYPRjrMwHxjh5',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 23
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 20,
+            },
+            {
+              id: 'ZXo05IpIGfgXYvanLgbC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 21,
+            },
+            {
+              id: 'evM72UydC452ixuXMAVn',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 22,
+            },
+            {
+              id: '6h63m4y2XnApEjJBBl2D',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 23,
+            },
+          ],
         },
         {
-          "id": "w3YKpgg5j1C86axTeoWB",
-          "title": "JONA l'oreal",
-          "description": "",
-          "tags": [],
-          "eventType": "",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'w3YKpgg5j1C86axTeoWB',
+          title: "JONA l'oreal",
+          description: '',
+          tags: [],
+          eventType: '',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "2ZpjegpMiUDzt9NqDvMJ",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '2ZpjegpMiUDzt9NqDvMJ',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "2u8GsCVp4JdWJB4HYMxd",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '2u8GsCVp4JdWJB4HYMxd',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 2
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
+            },
+          ],
         },
         {
-          "id": "8qdBOjw88pCNuxDIYW4z",
-          "title": "Jona - comida",
-          "description": "",
-          "tags": [],
-          "eventType": "Corporativos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: '8qdBOjw88pCNuxDIYW4z',
+          title: 'Jona - comida',
+          description: '',
+          tags: [],
+          eventType: 'Corporativos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "81WRYXl27qNvMuvM1Vt4",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '81WRYXl27qNvMuvM1Vt4',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "l0W75Vc9YhUyl5ZDqGzH",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'l0W75Vc9YhUyl5ZDqGzH',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "ExBXuO7mRiJtpVhrfHJf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'ExBXuO7mRiJtpVhrfHJf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "1SytnuCh59e1SVX8n1Zy",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '1SytnuCh59e1SVX8n1Zy',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Um1uQIf4sJblR5d3uVMf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'Um1uQIf4sJblR5d3uVMf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "b4XbfbFDfzLvuD8SKZY5",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'b4XbfbFDfzLvuD8SKZY5',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "5O5CxYKhuX3UYX7kirDY",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '5O5CxYKhuX3UYX7kirDY',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "6Y526tPM8qZPVlJbZM1m",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '6Y526tPM8qZPVlJbZM1m',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "QwvIDsSlsq5SBzvSKHso",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'QwvIDsSlsq5SBzvSKHso',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "uN5XPGKcvVaEbGXpvKI0",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'uN5XPGKcvVaEbGXpvKI0',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 10,
             },
             {
-              "id": "ydTAR7DIjE7Yn3rSSxV9",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'ydTAR7DIjE7Yn3rSSxV9',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "8M3qN2ML2Lp2lXoiGksJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '8M3qN2ML2Lp2lXoiGksJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "NUbBV111blENUSaUPTCZ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'NUbBV111blENUSaUPTCZ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "rT5Rdix7QbzYpNGYIzTX",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'rT5Rdix7QbzYpNGYIzTX',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "yl55eAzt2SDZnyzIdUAT",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yl55eAzt2SDZnyzIdUAT',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "fyMQxsZfBBR92YJMPNnR",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fyMQxsZfBBR92YJMPNnR',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "Bm9F3plOwaOx42hEY3PJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'Bm9F3plOwaOx42hEY3PJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 17
-            }
-          ]
+              tags: [],
+              aspectRatio: '16:9',
+              order: 17,
+            },
+          ],
         },
         {
-          "id": "UKBPYqxNZpR8Qapibkjz",
-          "title": "NO Veloz - música",
-          "description": "",
-          "tags": [],
-          "eventType": "Culturales y artísticos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'UKBPYqxNZpR8Qapibkjz',
+          title: 'NO Veloz - música',
+          description: '',
+          tags: [],
+          eventType: 'Culturales y artísticos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "pejhZ5vT4fDPoL9UgUdN",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
-              "description": {
-                "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
+              id: 'pejhZ5vT4fDPoL9UgUdN',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
+              description: {
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
+                pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
               },
-              "tags": [
-                "event photographer",
-                "concert photography",
-                "festival videography",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'concert photography',
+                'festival videography',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 1
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "CgSjT8SWSOIUGOCR2baB",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
-              "description": {
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+              id: 'CgSjT8SWSOIUGOCR2baB',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
+              description: {
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
+                en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
+                es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
               },
-              "tags": [
-                "event photographer",
-                "live music photography",
-                "professional lighting",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'live music photography',
+                'professional lighting',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 2
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "0c12GH3euEQMLOfpSLNm",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '0c12GH3euEQMLOfpSLNm',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 3
-            }
-          ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "brTuE0GdYD34q7WbSiFk",
-          "title": "NO Veloz - Casamiento",
-          "description": "",
-          "tags": [],
-          "eventType": "Casamiento",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'brTuE0GdYD34q7WbSiFk',
+          title: 'NO Veloz - Casamiento',
+          description: '',
+          tags: [],
+          eventType: 'Casamiento',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "edrQjkSUX2pOlyXleUXb",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'edrQjkSUX2pOlyXleUXb',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "8zJd9Ip6f5mcBcJ1lznq",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '8zJd9Ip6f5mcBcJ1lznq',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "f9qFLMkKrowonoJvyLaU",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'f9qFLMkKrowonoJvyLaU',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "pQ5yeKc0k0hZEaDgj0fV",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'pQ5yeKc0k0hZEaDgj0fV',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Pm3gGJJcoUc5uxxmjdss",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'Pm3gGJJcoUc5uxxmjdss',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "lP8MCk0xqg0uSkCnvpaN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'lP8MCk0xqg0uSkCnvpaN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "OodOx8NGStI3PD1KIO8E",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'OodOx8NGStI3PD1KIO8E',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 7
+              tags: [],
+              aspectRatio: '9:16',
+              order: 7,
             },
             {
-              "id": "dW52BSrrFYrUs6IztfUs",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'dW52BSrrFYrUs6IztfUs',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "gj9s56ogFiZXgZuXTiwQ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'gj9s56ogFiZXgZuXTiwQ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "4SCEUjX67DJ2jbmTRiaG",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '4SCEUjX67DJ2jbmTRiaG',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 10
+              tags: [],
+              aspectRatio: '1:1',
+              order: 10,
             },
             {
-              "id": "DjkGYSpAgl0fBpSYJtdJ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'DjkGYSpAgl0fBpSYJtdJ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "fq7VpJxz2h7X01o3Bv8D",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fq7VpJxz2h7X01o3Bv8D',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "LMPz9UuWrFXArz4Q5HJN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'LMPz9UuWrFXArz4Q5HJN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "zTBVfHCpXvFGTWU3jbUI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'zTBVfHCpXvFGTWU3jbUI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 14
+              tags: [],
+              aspectRatio: '9:16',
+              order: 14,
             },
             {
-              "id": "9pFVXpDET7jWxDq7RoNh",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: '9pFVXpDET7jWxDq7RoNh',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "48cCo1kJoAFeOM2iWWBI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '48cCo1kJoAFeOM2iWWBI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "NwBqAs7qwNWCet4AkPgi",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'NwBqAs7qwNWCet4AkPgi',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 17
-            }
-          ]
-        }
-      ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 17,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-07-01T23:57:55.063Z",
-    "buildTime": true
+    lastUpdated: '2025-07-02T10:13:20.359Z',
+    buildTime: true,
   },
-  "en": {
-    "locale": "en",
-    "translations": {
-      "navigation": {
-        "home": "Home",
-        "about": "About Us",
-        "gallery": "Our Work",
-        "contact": "Contact"
+  en: {
+    locale: 'en',
+    translations: {
+      navigation: {
+        home: 'Home',
+        about: 'About Us',
+        gallery: 'Our Work',
+        contact: 'Contact',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturing the Unrepeatable",
-          "cta": {
-            "about": "About Us",
-            "work": "Our Work",
-            "contact": "Work with Us"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturing the Unrepeatable',
+          cta: {
+            about: 'About Us',
+            work: 'Our Work',
+            contact: 'Work with Us',
+          },
+        },
       },
-      "contact": {
-        "title": "Tell us about your event",
-        "subtitle": "The more we know, the better we can help make your day perfect",
-        "form": {
-          "name": {
-            "label": "Your name",
-            "placeholder": "What should we call you?"
+      contact: {
+        title: 'Tell us about your event',
+        subtitle:
+          'The more we know, the better we can help make your day perfect',
+        form: {
+          name: {
+            label: 'Your name',
+            placeholder: 'What should we call you?',
           },
-          "email": {
-            "label": "Email address",
-            "placeholder": "your.email@example.com"
+          email: {
+            label: 'Email address',
+            placeholder: 'your.email@example.com',
           },
-          "eventType": {
-            "label": "What are you celebrating?",
-            "placeholder": "Choose your event type",
-            "options": {
-              "wedding": "Wedding",
-              "quinceanera": "15th Birthday (Quinceañera)",
-              "birthday": "Birthday Party",
-              "corporate": "Corporate Event",
-              "other": "Other (tell us in the message!)"
-            }
-          },
-          "eventDate": {
-            "label": "Approximate date",
-            "optional": "(optional)",
-            "help": "Don't worry if you're not sure yet – we can work with flexible dates!"
-          },
-          "message": {
-            "label": "Tell us about your vision",
-            "optional": "(optional)",
-            "placeholder": "Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better..."
-          },
-          "submit": {
-            "button": "Start the conversation",
-            "loading": "Sending your message..."
-          },
-          "privacy": {
-            "line1": "We don't share your info. We'll only reach out to help with your event.",
-            "line2": "No spam, no pressure – just great photography and videography when you're ready."
-          }
-        },
-        "success": {
-          "title": "Message sent!",
-          "message": "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
-          "action": "Send another message"
-        },
-        "trust": {
-          "response": {
-            "title": "Quick Response",
-            "description": "We typically respond within 24 hours with a personalized quote"
-          },
-          "commitment": {
-            "title": "No Commitment",
-            "description": "Getting a quote is completely free with no strings attached"
-          },
-          "privacy": {
-            "title": "Privacy First",
-            "description": "We never share your information and only contact you about your event"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "What event are you thinking about?",
-          "mobile": "Your event?"
-        },
-        "dialog": {
-          "title": "Tell us about your event"
-        },
-        "eventTypes": {
-          "wedding": "Wedding",
-          "corporate": "Corporate Event",
-          "other": "Other type of event"
-        },
-        "steps": {
-          "eventType": {
-            "title": "What event are you thinking about?",
-            "subtitle": "Tell us what you want to celebrate"
-          },
-          "date": {
-            "title": "Do you have a date already?",
-            "subtitle": "Don't worry if you're not sure yet",
-            "noDate": "I don't have a date set yet"
-          },
-          "contact": {
-            "title": "Want to tell us more?",
-            "subtitle": "Choose how you prefer us to contact you",
-            "moreInfo": {
-              "title": "Yes, I want to tell you more details",
-              "subtitle": "We take you to the complete form"
+          eventType: {
+            label: 'What are you celebrating?',
+            placeholder: 'Choose your event type',
+            options: {
+              wedding: 'Wedding',
+              quinceanera: '15th Birthday (Quinceañera)',
+              birthday: 'Birthday Party',
+              corporate: 'Corporate Event',
+              other: 'Other (tell us in the message!)',
             },
-            "callMe": {
-              "title": "I want you to call me",
-              "subtitle": "We prefer to talk by phone"
-            }
           },
-          "phone": {
-            "title": "Perfect! We call you",
-            "subtitle": "Leave us your number and we contact you soon",
-            "placeholder": "Your phone number",
-            "button": "Request call",
-            "loading": "Sending..."
+          eventDate: {
+            label: 'Approximate date',
+            optional: '(optional)',
+            help: "Don't worry if you're not sure yet – we can work with flexible dates!",
           },
-          "complete": {
-            "title": "Ready!",
-            "message": "We will contact you very soon to talk about your event.",
-            "button": "Close"
-          }
-        }
+          message: {
+            label: 'Tell us about your vision',
+            optional: '(optional)',
+            placeholder:
+              'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
+          },
+          submit: {
+            button: 'Start the conversation',
+            loading: 'Sending your message...',
+          },
+          privacy: {
+            line1:
+              "We don't share your info. We'll only reach out to help with your event.",
+            line2:
+              "No spam, no pressure – just great photography and videography when you're ready.",
+          },
+        },
+        success: {
+          title: 'Message sent!',
+          message:
+            "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+          action: 'Send another message',
+        },
+        trust: {
+          response: {
+            title: 'Quick Response',
+            description:
+              'We typically respond within 24 hours with a personalized quote',
+          },
+          commitment: {
+            title: 'No Commitment',
+            description:
+              'Getting a quote is completely free with no strings attached',
+          },
+          privacy: {
+            title: 'Privacy First',
+            description:
+              'We never share your information and only contact you about your event',
+          },
+        },
       },
-      "about": {
-        "title": "About Us",
-        "subtitle": "We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.",
-        "philosophy": {
-          "title": "Our Philosophy",
-          "description": "We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations."
+      widget: {
+        button: {
+          desktop: 'What event are you thinking about?',
+          mobile: 'Your event?',
         },
-        "methodology": {
-          "title": "Our Methodology",
-          "planning": {
-            "title": "Planning",
-            "description": "We study every detail of the event to anticipate key moments."
-          },
-          "coverage": {
-            "title": "Comprehensive Coverage",
-            "description": "Our team is strategically distributed to not miss any moment."
-          },
-          "capture": {
-            "title": "Professional Capture",
-            "description": "We use advanced techniques and state-of-the-art equipment."
-          },
-          "postproduction": {
-            "title": "Post-Production",
-            "description": "We carefully edit every image and video to achieve exceptional results."
-          }
+        dialog: {
+          title: 'Tell us about your event',
         },
-        "values": {
-          "title": "Our Values",
-          "passion": {
-            "title": "Passion",
-            "description": "We love what we do and it shows in every image we capture."
-          },
-          "teamwork": {
-            "title": "Teamwork",
-            "description": "Our collaborative model allows us to cover every important moment."
-          },
-          "quality": {
-            "title": "Technical Quality",
-            "description": "We use professional equipment and advanced techniques for exceptional results."
-          },
-          "agility": {
-            "title": "Agility",
-            "description": "We adapt quickly to any situation to never miss a moment."
-          },
-          "excellence": {
-            "title": "Excellence",
-            "description": "We strive for perfection in every project, exceeding expectations."
-          },
-          "trust": {
-            "title": "Trust",
-            "description": "We build lasting relationships based on transparency and professionalism."
-          }
+        eventTypes: {
+          wedding: 'Wedding',
+          corporate: 'Corporate Event',
+          other: 'Other type of event',
         },
-        "faq": {
-          "title": "Frequently Asked Questions"
-        }
+        steps: {
+          eventType: {
+            title: 'What event are you thinking about?',
+            subtitle: 'Tell us what you want to celebrate',
+          },
+          date: {
+            title: 'Do you have a date already?',
+            subtitle: "Don't worry if you're not sure yet",
+            noDate: "I don't have a date set yet",
+          },
+          contact: {
+            title: 'Want to tell us more?',
+            subtitle: 'Choose how you prefer us to contact you',
+            moreInfo: {
+              title: 'Yes, I want to tell you more details',
+              subtitle: 'We take you to the complete form',
+            },
+            callMe: {
+              title: 'I want you to call me',
+              subtitle: 'We prefer to talk by phone',
+            },
+          },
+          phone: {
+            title: 'Perfect! We call you',
+            subtitle: 'Leave us your number and we contact you soon',
+            placeholder: 'Your phone number',
+            button: 'Request call',
+            loading: 'Sending...',
+          },
+          complete: {
+            title: 'Ready!',
+            message: 'We will contact you very soon to talk about your event.',
+            button: 'Close',
+          },
+        },
       },
-      "validation": {
-        "required": "This field is required",
-        "email": "Please enter a valid email so we can get back to you",
-        "minLength": "Must be at least {{count}} characters"
-      }
+      about: {
+        title: 'About Us',
+        subtitle:
+          'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.',
+        philosophy: {
+          title: 'Our Philosophy',
+          description:
+            'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.',
+        },
+        methodology: {
+          title: 'Our Methodology',
+          planning: {
+            title: 'Planning',
+            description:
+              'We study every detail of the event to anticipate key moments.',
+          },
+          coverage: {
+            title: 'Comprehensive Coverage',
+            description:
+              'Our team is strategically distributed to not miss any moment.',
+          },
+          capture: {
+            title: 'Professional Capture',
+            description:
+              'We use advanced techniques and state-of-the-art equipment.',
+          },
+          postproduction: {
+            title: 'Post-Production',
+            description:
+              'We carefully edit every image and video to achieve exceptional results.',
+          },
+        },
+        values: {
+          title: 'Our Values',
+          passion: {
+            title: 'Passion',
+            description:
+              'We love what we do and it shows in every image we capture.',
+          },
+          teamwork: {
+            title: 'Teamwork',
+            description:
+              'Our collaborative model allows us to cover every important moment.',
+          },
+          quality: {
+            title: 'Technical Quality',
+            description:
+              'We use professional equipment and advanced techniques for exceptional results.',
+          },
+          agility: {
+            title: 'Agility',
+            description:
+              'We adapt quickly to any situation to never miss a moment.',
+          },
+          excellence: {
+            title: 'Excellence',
+            description:
+              'We strive for perfection in every project, exceeding expectations.',
+          },
+          trust: {
+            title: 'Trust',
+            description:
+              'We build lasting relationships based on transparency and professionalism.',
+          },
+        },
+        faq: {
+          title: 'Frequently Asked Questions',
+        },
+      },
+      validation: {
+        required: 'This field is required',
+        email: 'Please enter a valid email so we can get back to you',
+        minLength: 'Must be at least {{count}} characters',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturing the Unrepeatable",
-        "logo": {
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturing the Unrepeatable',
+        logo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
-        }
+        backgroundVideo: {
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+        },
       },
-      "about": {
-        "title": "About Us",
-        "subtitle": "We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.",
-        "philosophy": {
-          "title": "Our Philosophy",
-          "description": "We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations."
+      about: {
+        title: 'About Us',
+        subtitle:
+          'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.',
+        philosophy: {
+          title: 'Our Philosophy',
+          description:
+            'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.',
         },
-        "methodology": {
-          "title": "Our Methodology",
-          "planning": {
-            "title": "Planning",
-            "description": "We study every detail of the event to anticipate key moments."
+        methodology: {
+          title: 'Our Methodology',
+          planning: {
+            title: 'Planning',
+            description:
+              'We study every detail of the event to anticipate key moments.',
           },
-          "coverage": {
-            "title": "Comprehensive Coverage",
-            "description": "Our team is strategically distributed to not miss any moment."
+          coverage: {
+            title: 'Comprehensive Coverage',
+            description:
+              'Our team is strategically distributed to not miss any moment.',
           },
-          "capture": {
-            "title": "Professional Capture",
-            "description": "We use advanced techniques and state-of-the-art equipment."
+          capture: {
+            title: 'Professional Capture',
+            description:
+              'We use advanced techniques and state-of-the-art equipment.',
           },
-          "postproduction": {
-            "title": "Post-Production",
-            "description": "We carefully edit every image and video to achieve exceptional results."
-          }
+          postproduction: {
+            title: 'Post-Production',
+            description:
+              'We carefully edit every image and video to achieve exceptional results.',
+          },
         },
-        "values": {
-          "title": "Our Values",
-          "passion": {
-            "title": "Passion",
-            "description": "We love what we do and it shows in every image we capture."
+        values: {
+          title: 'Our Values',
+          passion: {
+            title: 'Passion',
+            description:
+              'We love what we do and it shows in every image we capture.',
           },
-          "teamwork": {
-            "title": "Teamwork",
-            "description": "Our collaborative model allows us to cover every important moment."
+          teamwork: {
+            title: 'Teamwork',
+            description:
+              'Our collaborative model allows us to cover every important moment.',
           },
-          "quality": {
-            "title": "Technical Quality",
-            "description": "We use professional equipment and advanced techniques for exceptional results."
+          quality: {
+            title: 'Technical Quality',
+            description:
+              'We use professional equipment and advanced techniques for exceptional results.',
           },
-          "agility": {
-            "title": "Agility",
-            "description": "We adapt quickly to any situation to never miss a moment."
+          agility: {
+            title: 'Agility',
+            description:
+              'We adapt quickly to any situation to never miss a moment.',
           },
-          "excellence": {
-            "title": "Excellence",
-            "description": "We strive for perfection in every project, exceeding expectations."
+          excellence: {
+            title: 'Excellence',
+            description:
+              'We strive for perfection in every project, exceeding expectations.',
           },
-          "trust": {
-            "title": "Trust",
-            "description": "We build lasting relationships based on transparency and professionalism."
-          }
+          trust: {
+            title: 'Trust',
+            description:
+              'We build lasting relationships based on transparency and professionalism.',
+          },
         },
-        "faq": {
-          "title": "Frequently Asked Questions"
-        }
+        faq: {
+          title: 'Frequently Asked Questions',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿hello?",
-          "answer": "yooooo",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿hello?',
+          answer: 'yooooo',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "POPFdVzSh5Tom6jILa7x",
-          "title": "Ciclismo",
-          "description": "",
-          "tags": [],
-          "eventType": "Photoshoot",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'POPFdVzSh5Tom6jILa7x',
+          title: 'Ciclismo',
+          description: '',
+          tags: [],
+          eventType: 'Photoshoot',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [
             {
-              "id": "WlnpFA11erD9UOmBm0KT",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              mediaId: 'WlnpFA11erD9UOmBm0KT',
+              id: 'block-1751450964545',
+              y: 0,
+              x: 0,
+              height: 160,
+              type: 'image',
+              zIndex: 1,
+              width: 160,
             },
             {
-              "id": "8HUSkVPzmq7qL7wzvEWX",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              zIndex: 2,
+              id: 'block-1751450965726',
+              type: 'image',
+              y: 0,
+              mediaId: 'Lzb0t6nElL0ZAWQsqBLS',
+              height: 160,
+              width: 160,
+              x: 320,
             },
             {
-              "id": "Lzb0t6nElL0ZAWQsqBLS",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              width: 160,
+              id: 'block-1751450968075',
+              type: 'image',
+              zIndex: 3,
+              x: 320,
+              y: 160,
+              mediaId: 'kn1K7gbSfxqw4dze5KJa',
+              height: 160,
             },
             {
-              "id": "FadSTZIEfDPweyIGgz7b",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              x: 0,
+              height: 160,
+              type: 'video',
+              zIndex: 4,
+              mediaId: '6h63m4y2XnApEjJBBl2D',
+              width: 480,
+              y: 160,
+              id: 'block-1751450971879',
+            },
+          ],
+          media: [
+            {
+              id: 'WlnpFA11erD9UOmBm0KT',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "kn1K7gbSfxqw4dze5KJa",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '8HUSkVPzmq7qL7wzvEWX',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "8HrzgDIJGqGdSO0PybiO",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'Lzb0t6nElL0ZAWQsqBLS',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "Vl3QqvF41XwFB7JTOLPx",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'FadSTZIEfDPweyIGgz7b',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "FSOslPFFgsgYZfvgbI64",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'kn1K7gbSfxqw4dze5KJa',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "yPHmTxUgbA8pPu9ProKb",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: '8HrzgDIJGqGdSO0PybiO',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '9:16',
+              order: 6,
             },
             {
-              "id": "dtsBBRanqbKQUVZEwh2k",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'Vl3QqvF41XwFB7JTOLPx',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "Y8CuJO9aiwQMtYziWzit",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'FSOslPFFgsgYZfvgbI64',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "alyLKMlcUn2Ava6OCvie",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yPHmTxUgbA8pPu9ProKb',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "foybyfLK0lkqA6j4HL4l",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'dtsBBRanqbKQUVZEwh2k',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 13
+              tags: [],
+              aspectRatio: '9:16',
+              order: 10,
             },
             {
-              "id": "vzIZoJBlyC6joJqfhJaE",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'Y8CuJO9aiwQMtYziWzit',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "BIcRnxLaEsa4egQBk4ZC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'alyLKMlcUn2Ava6OCvie',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 15
+              tags: [],
+              aspectRatio: '9:16',
+              order: 12,
             },
             {
-              "id": "O7IlGWX72PxKPNZfWc0M",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'foybyfLK0lkqA6j4HL4l',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 16
+              tags: [],
+              aspectRatio: '9:16',
+              order: 13,
             },
             {
-              "id": "YN67Uwe4AaCpBHBfKSOf",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'vzIZoJBlyC6joJqfhJaE',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 17
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "d3TJPwFR3qftEGy7Mf0c",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'BIcRnxLaEsa4egQBk4ZC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 18
+              tags: [],
+              aspectRatio: '9:16',
+              order: 15,
             },
             {
-              "id": "YbNkGpe2ZN1U7mjll4nU",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'O7IlGWX72PxKPNZfWc0M',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 19
+              tags: [],
+              aspectRatio: '1:1',
+              order: 16,
             },
             {
-              "id": "BqE0nJXEYPRjrMwHxjh5",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'YN67Uwe4AaCpBHBfKSOf',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 20
+              tags: [],
+              aspectRatio: '1:1',
+              order: 17,
             },
             {
-              "id": "ZXo05IpIGfgXYvanLgbC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'd3TJPwFR3qftEGy7Mf0c',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 21
+              tags: [],
+              aspectRatio: '1:1',
+              order: 18,
             },
             {
-              "id": "evM72UydC452ixuXMAVn",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'YbNkGpe2ZN1U7mjll4nU',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 22
+              tags: [],
+              aspectRatio: '1:1',
+              order: 19,
             },
             {
-              "id": "6h63m4y2XnApEjJBBl2D",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'BqE0nJXEYPRjrMwHxjh5',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 23
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 20,
+            },
+            {
+              id: 'ZXo05IpIGfgXYvanLgbC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 21,
+            },
+            {
+              id: 'evM72UydC452ixuXMAVn',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 22,
+            },
+            {
+              id: '6h63m4y2XnApEjJBBl2D',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 23,
+            },
+          ],
         },
         {
-          "id": "w3YKpgg5j1C86axTeoWB",
-          "title": "JONA l'oreal",
-          "description": "",
-          "tags": [],
-          "eventType": "",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'w3YKpgg5j1C86axTeoWB',
+          title: "JONA l'oreal",
+          description: '',
+          tags: [],
+          eventType: '',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "2ZpjegpMiUDzt9NqDvMJ",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '2ZpjegpMiUDzt9NqDvMJ',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "2u8GsCVp4JdWJB4HYMxd",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '2u8GsCVp4JdWJB4HYMxd',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 2
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
+            },
+          ],
         },
         {
-          "id": "8qdBOjw88pCNuxDIYW4z",
-          "title": "Jona - comida",
-          "description": "",
-          "tags": [],
-          "eventType": "Corporativos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: '8qdBOjw88pCNuxDIYW4z',
+          title: 'Jona - comida',
+          description: '',
+          tags: [],
+          eventType: 'Corporativos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "81WRYXl27qNvMuvM1Vt4",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '81WRYXl27qNvMuvM1Vt4',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "l0W75Vc9YhUyl5ZDqGzH",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'l0W75Vc9YhUyl5ZDqGzH',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "ExBXuO7mRiJtpVhrfHJf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'ExBXuO7mRiJtpVhrfHJf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "1SytnuCh59e1SVX8n1Zy",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '1SytnuCh59e1SVX8n1Zy',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Um1uQIf4sJblR5d3uVMf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'Um1uQIf4sJblR5d3uVMf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "b4XbfbFDfzLvuD8SKZY5",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'b4XbfbFDfzLvuD8SKZY5',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "5O5CxYKhuX3UYX7kirDY",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '5O5CxYKhuX3UYX7kirDY',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "6Y526tPM8qZPVlJbZM1m",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '6Y526tPM8qZPVlJbZM1m',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "QwvIDsSlsq5SBzvSKHso",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'QwvIDsSlsq5SBzvSKHso',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "uN5XPGKcvVaEbGXpvKI0",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'uN5XPGKcvVaEbGXpvKI0',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 10,
             },
             {
-              "id": "ydTAR7DIjE7Yn3rSSxV9",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'ydTAR7DIjE7Yn3rSSxV9',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "8M3qN2ML2Lp2lXoiGksJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '8M3qN2ML2Lp2lXoiGksJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "NUbBV111blENUSaUPTCZ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'NUbBV111blENUSaUPTCZ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "rT5Rdix7QbzYpNGYIzTX",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'rT5Rdix7QbzYpNGYIzTX',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "yl55eAzt2SDZnyzIdUAT",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yl55eAzt2SDZnyzIdUAT',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "fyMQxsZfBBR92YJMPNnR",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fyMQxsZfBBR92YJMPNnR',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "Bm9F3plOwaOx42hEY3PJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'Bm9F3plOwaOx42hEY3PJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 17
-            }
-          ]
+              tags: [],
+              aspectRatio: '16:9',
+              order: 17,
+            },
+          ],
         },
         {
-          "id": "UKBPYqxNZpR8Qapibkjz",
-          "title": "NO Veloz - música",
-          "description": "",
-          "tags": [],
-          "eventType": "Culturales y artísticos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'UKBPYqxNZpR8Qapibkjz',
+          title: 'NO Veloz - música',
+          description: '',
+          tags: [],
+          eventType: 'Culturales y artísticos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "pejhZ5vT4fDPoL9UgUdN",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
-              "description": {
-                "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
+              id: 'pejhZ5vT4fDPoL9UgUdN',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
+              description: {
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
+                pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
               },
-              "tags": [
-                "event photographer",
-                "concert photography",
-                "festival videography",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'concert photography',
+                'festival videography',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 1
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "CgSjT8SWSOIUGOCR2baB",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
-              "description": {
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+              id: 'CgSjT8SWSOIUGOCR2baB',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
+              description: {
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
+                en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
+                es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
               },
-              "tags": [
-                "event photographer",
-                "live music photography",
-                "professional lighting",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'live music photography',
+                'professional lighting',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 2
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "0c12GH3euEQMLOfpSLNm",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '0c12GH3euEQMLOfpSLNm',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 3
-            }
-          ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "brTuE0GdYD34q7WbSiFk",
-          "title": "NO Veloz - Casamiento",
-          "description": "",
-          "tags": [],
-          "eventType": "Casamiento",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'brTuE0GdYD34q7WbSiFk',
+          title: 'NO Veloz - Casamiento',
+          description: '',
+          tags: [],
+          eventType: 'Casamiento',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "edrQjkSUX2pOlyXleUXb",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'edrQjkSUX2pOlyXleUXb',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "8zJd9Ip6f5mcBcJ1lznq",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '8zJd9Ip6f5mcBcJ1lznq',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "f9qFLMkKrowonoJvyLaU",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'f9qFLMkKrowonoJvyLaU',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "pQ5yeKc0k0hZEaDgj0fV",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'pQ5yeKc0k0hZEaDgj0fV',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Pm3gGJJcoUc5uxxmjdss",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'Pm3gGJJcoUc5uxxmjdss',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "lP8MCk0xqg0uSkCnvpaN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'lP8MCk0xqg0uSkCnvpaN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "OodOx8NGStI3PD1KIO8E",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'OodOx8NGStI3PD1KIO8E',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 7
+              tags: [],
+              aspectRatio: '9:16',
+              order: 7,
             },
             {
-              "id": "dW52BSrrFYrUs6IztfUs",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'dW52BSrrFYrUs6IztfUs',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "gj9s56ogFiZXgZuXTiwQ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'gj9s56ogFiZXgZuXTiwQ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "4SCEUjX67DJ2jbmTRiaG",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '4SCEUjX67DJ2jbmTRiaG',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 10
+              tags: [],
+              aspectRatio: '1:1',
+              order: 10,
             },
             {
-              "id": "DjkGYSpAgl0fBpSYJtdJ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'DjkGYSpAgl0fBpSYJtdJ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "fq7VpJxz2h7X01o3Bv8D",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fq7VpJxz2h7X01o3Bv8D',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "LMPz9UuWrFXArz4Q5HJN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'LMPz9UuWrFXArz4Q5HJN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "zTBVfHCpXvFGTWU3jbUI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'zTBVfHCpXvFGTWU3jbUI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 14
+              tags: [],
+              aspectRatio: '9:16',
+              order: 14,
             },
             {
-              "id": "9pFVXpDET7jWxDq7RoNh",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: '9pFVXpDET7jWxDq7RoNh',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "48cCo1kJoAFeOM2iWWBI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '48cCo1kJoAFeOM2iWWBI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "NwBqAs7qwNWCet4AkPgi",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'NwBqAs7qwNWCet4AkPgi',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 17
-            }
-          ]
-        }
-      ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 17,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-07-01T23:57:55.065Z",
-    "buildTime": true
+    lastUpdated: '2025-07-02T10:13:20.361Z',
+    buildTime: true,
   },
-  "pt": {
-    "locale": "pt",
-    "translations": {
-      "navigation": {
-        "home": "Início",
-        "about": "Sobre Nós",
-        "gallery": "Nosso Trabalho",
-        "contact": "Contato"
+  pt: {
+    locale: 'pt',
+    translations: {
+      navigation: {
+        home: 'Início',
+        about: 'Sobre Nós',
+        gallery: 'Nosso Trabalho',
+        contact: 'Contato',
       },
-      "homepage": {
-        "hero": {
-          "headline": "Capturamos o que não se repete",
-          "cta": {
-            "about": "Sobre Nós",
-            "work": "Nosso Trabalho",
-            "contact": "Trabalhe Conosco"
-          }
-        }
+      homepage: {
+        hero: {
+          headline: 'Capturamos o que não se repete',
+          cta: {
+            about: 'Sobre Nós',
+            work: 'Nosso Trabalho',
+            contact: 'Trabalhe Conosco',
+          },
+        },
       },
-      "contact": {
-        "title": "Conte-nos sobre seu evento",
-        "subtitle": "Quanto mais soubermos, melhor poderemos tornar seu dia perfeito",
-        "form": {
-          "name": {
-            "label": "Seu nome",
-            "placeholder": "Como devemos chamá-lo?"
+      contact: {
+        title: 'Conte-nos sobre seu evento',
+        subtitle:
+          'Quanto mais soubermos, melhor poderemos tornar seu dia perfeito',
+        form: {
+          name: {
+            label: 'Seu nome',
+            placeholder: 'Como devemos chamá-lo?',
           },
-          "email": {
-            "label": "Endereço de email",
-            "placeholder": "seu.email@exemplo.com"
+          email: {
+            label: 'Endereço de email',
+            placeholder: 'seu.email@exemplo.com',
           },
-          "eventType": {
-            "label": "O que você está comemorando?",
-            "placeholder": "Escolha seu tipo de evento",
-            "options": {
-              "wedding": "Casamento",
-              "quinceanera": "Festa de 15 Anos",
-              "birthday": "Festa de Aniversário",
-              "corporate": "Evento Corporativo",
-              "other": "Outro (conte-nos na mensagem!)"
-            }
-          },
-          "eventDate": {
-            "label": "Data aproximada",
-            "optional": "(opcional)",
-            "help": "Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!"
-          },
-          "message": {
-            "label": "Conte-nos sobre sua visão",
-            "optional": "(opcional)",
-            "placeholder": "Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento..."
-          },
-          "submit": {
-            "button": "Iniciar a conversa",
-            "loading": "Enviando sua mensagem..."
-          },
-          "privacy": {
-            "line1": "Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.",
-            "line2": "Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto."
-          }
-        },
-        "success": {
-          "title": "Mensagem enviada!",
-          "message": "Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.",
-          "action": "Enviar outra mensagem"
-        },
-        "trust": {
-          "response": {
-            "title": "Resposta Rápida",
-            "description": "Normalmente respondemos dentro de 24 horas com uma cotação personalizada"
-          },
-          "commitment": {
-            "title": "Sem Compromisso",
-            "description": "Obter uma cotação é completamente grátis sem amarras"
-          },
-          "privacy": {
-            "title": "Privacidade em Primeiro Lugar",
-            "description": "Nunca compartilhamos suas informações e só entramos em contato sobre seu evento"
-          }
-        }
-      },
-      "widget": {
-        "button": {
-          "desktop": "Em que evento você está pensando?",
-          "mobile": "Seu evento?"
-        },
-        "dialog": {
-          "title": "Conte-nos sobre seu evento"
-        },
-        "eventTypes": {
-          "wedding": "Casamento",
-          "corporate": "Evento Corporativo",
-          "other": "Outro tipo de evento"
-        },
-        "steps": {
-          "eventType": {
-            "title": "Em que evento você está pensando?",
-            "subtitle": "Conte-nos o que quer comemorar"
-          },
-          "date": {
-            "title": "Já tem uma data?",
-            "subtitle": "Não se preocupe se ainda não tem certeza",
-            "noDate": "Ainda não tenho data definida"
-          },
-          "contact": {
-            "title": "Quer nos contar mais?",
-            "subtitle": "Escolha como prefere que entremos em contato",
-            "moreInfo": {
-              "title": "Sim, quero contar mais detalhes",
-              "subtitle": "Levamos você ao formulário completo"
+          eventType: {
+            label: 'O que você está comemorando?',
+            placeholder: 'Escolha seu tipo de evento',
+            options: {
+              wedding: 'Casamento',
+              quinceanera: 'Festa de 15 Anos',
+              birthday: 'Festa de Aniversário',
+              corporate: 'Evento Corporativo',
+              other: 'Outro (conte-nos na mensagem!)',
             },
-            "callMe": {
-              "title": "Quero que me liguem",
-              "subtitle": "Preferimos falar por telefone"
-            }
           },
-          "phone": {
-            "title": "Perfeito! Te ligamos",
-            "subtitle": "Deixe seu número e entraremos em contato em breve",
-            "placeholder": "Seu número de telefone",
-            "button": "Solicitar ligação",
-            "loading": "Enviando..."
+          eventDate: {
+            label: 'Data aproximada',
+            optional: '(opcional)',
+            help: 'Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!',
           },
-          "complete": {
-            "title": "Pronto!",
-            "message": "Entraremos em contato muito em breve para conversar sobre seu evento.",
-            "button": "Fechar"
-          }
-        }
+          message: {
+            label: 'Conte-nos sobre sua visão',
+            optional: '(opcional)',
+            placeholder:
+              'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+          },
+          submit: {
+            button: 'Iniciar a conversa',
+            loading: 'Enviando sua mensagem...',
+          },
+          privacy: {
+            line1:
+              'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
+            line2:
+              'Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto.',
+          },
+        },
+        success: {
+          title: 'Mensagem enviada!',
+          message:
+            'Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+          action: 'Enviar outra mensagem',
+        },
+        trust: {
+          response: {
+            title: 'Resposta Rápida',
+            description:
+              'Normalmente respondemos dentro de 24 horas com uma cotação personalizada',
+          },
+          commitment: {
+            title: 'Sem Compromisso',
+            description: 'Obter uma cotação é completamente grátis sem amarras',
+          },
+          privacy: {
+            title: 'Privacidade em Primeiro Lugar',
+            description:
+              'Nunca compartilhamos suas informações e só entramos em contato sobre seu evento',
+          },
+        },
       },
-      "about": {
-        "title": "Sobre Nós",
-        "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
-        "philosophy": {
-          "title": "Nossa Filosofia",
-          "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+      widget: {
+        button: {
+          desktop: 'Em que evento você está pensando?',
+          mobile: 'Seu evento?',
         },
-        "methodology": {
-          "title": "Nossa Metodologia",
-          "planning": {
-            "title": "Planejamento",
-            "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
-          },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
-          },
-          "capture": {
-            "title": "Captura Profissional",
-            "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
-          },
-          "postproduction": {
-            "title": "Pós-Produção",
-            "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
-          }
+        dialog: {
+          title: 'Conte-nos sobre seu evento',
         },
-        "values": {
-          "title": "Nossos Valores",
-          "passion": {
-            "title": "Paixão",
-            "description": "Amamos o que fazemos e isso se reflete em cada imagem que capturamos."
-          },
-          "teamwork": {
-            "title": "Trabalho em Equipe",
-            "description": "Nosso modelo colaborativo nos permite cobrir cada momento importante."
-          },
-          "quality": {
-            "title": "Qualidade Técnica",
-            "description": "Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais."
-          },
-          "agility": {
-            "title": "Agilidade",
-            "description": "Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento."
-          },
-          "excellence": {
-            "title": "Excelência",
-            "description": "Buscamos a perfeição em cada projeto, superando expectativas."
-          },
-          "trust": {
-            "title": "Confiança",
-            "description": "Construímos relacionamentos duradouros baseados na transparência e profissionalismo."
-          }
+        eventTypes: {
+          wedding: 'Casamento',
+          corporate: 'Evento Corporativo',
+          other: 'Outro tipo de evento',
         },
-        "faq": {
-          "title": "Perguntas Frequentes"
-        }
+        steps: {
+          eventType: {
+            title: 'Em que evento você está pensando?',
+            subtitle: 'Conte-nos o que quer comemorar',
+          },
+          date: {
+            title: 'Já tem uma data?',
+            subtitle: 'Não se preocupe se ainda não tem certeza',
+            noDate: 'Ainda não tenho data definida',
+          },
+          contact: {
+            title: 'Quer nos contar mais?',
+            subtitle: 'Escolha como prefere que entremos em contato',
+            moreInfo: {
+              title: 'Sim, quero contar mais detalhes',
+              subtitle: 'Levamos você ao formulário completo',
+            },
+            callMe: {
+              title: 'Quero que me liguem',
+              subtitle: 'Preferimos falar por telefone',
+            },
+          },
+          phone: {
+            title: 'Perfeito! Te ligamos',
+            subtitle: 'Deixe seu número e entraremos em contato em breve',
+            placeholder: 'Seu número de telefone',
+            button: 'Solicitar ligação',
+            loading: 'Enviando...',
+          },
+          complete: {
+            title: 'Pronto!',
+            message:
+              'Entraremos em contato muito em breve para conversar sobre seu evento.',
+            button: 'Fechar',
+          },
+        },
       },
-      "validation": {
-        "required": "Este campo é obrigatório",
-        "email": "Por favor insira um email válido para podermos responder",
-        "minLength": "Deve ter pelo menos {{count}} caracteres"
-      }
+      about: {
+        title: 'Sobre Nós',
+        subtitle:
+          'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.',
+        philosophy: {
+          title: 'Nossa Filosofia',
+          description:
+            'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.',
+        },
+        methodology: {
+          title: 'Nossa Metodologia',
+          planning: {
+            title: 'Planejamento',
+            description:
+              'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
+          },
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
+          },
+          capture: {
+            title: 'Captura Profissional',
+            description:
+              'Utilizamos técnicas avançadas e equipamentos de última geração.',
+          },
+          postproduction: {
+            title: 'Pós-Produção',
+            description:
+              'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
+          },
+        },
+        values: {
+          title: 'Nossos Valores',
+          passion: {
+            title: 'Paixão',
+            description:
+              'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
+          },
+          teamwork: {
+            title: 'Trabalho em Equipe',
+            description:
+              'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
+          },
+          quality: {
+            title: 'Qualidade Técnica',
+            description:
+              'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
+          },
+          agility: {
+            title: 'Agilidade',
+            description:
+              'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
+          },
+          excellence: {
+            title: 'Excelência',
+            description:
+              'Buscamos a perfeição em cada projeto, superando expectativas.',
+          },
+          trust: {
+            title: 'Confiança',
+            description:
+              'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
+          },
+        },
+        faq: {
+          title: 'Perguntas Frequentes',
+        },
+      },
+      validation: {
+        required: 'Este campo é obrigatório',
+        email: 'Por favor insira um email válido para podermos responder',
+        minLength: 'Deve ter pelo menos {{count}} caracteres',
+      },
     },
-    "content": {
-      "homepage": {
-        "headline": "Capturamos lo irrepetible",
-        "logo": {
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+    content: {
+      homepage: {
+        headline: 'Capturamos lo irrepetible',
+        logo: {
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073',
+          enabled: true,
+          filename: 'homepage/logos/1750775258524-veloz-logo-temp.png',
         },
-        "backgroundVideo": {
-          "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
-        }
+        backgroundVideo: {
+          filename: 'homepage/videos/1750775497979-veloz-landing-loop-temp.mp4',
+          enabled: true,
+          url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc',
+        },
       },
-      "about": {
-        "title": "Sobre Nós",
-        "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
-        "philosophy": {
-          "title": "Nossa Filosofia",
-          "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+      about: {
+        title: 'Sobre Nós',
+        subtitle:
+          'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.',
+        philosophy: {
+          title: 'Nossa Filosofia',
+          description:
+            'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.',
         },
-        "methodology": {
-          "title": "Nossa Metodologia",
-          "planning": {
-            "title": "Planejamento",
-            "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
+        methodology: {
+          title: 'Nossa Metodologia',
+          planning: {
+            title: 'Planejamento',
+            description:
+              'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
           },
-          "coverage": {
-            "title": "Cobertura Integral",
-            "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
+          coverage: {
+            title: 'Cobertura Integral',
+            description:
+              'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
           },
-          "capture": {
-            "title": "Captura Profissional",
-            "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
+          capture: {
+            title: 'Captura Profissional',
+            description:
+              'Utilizamos técnicas avançadas e equipamentos de última geração.',
           },
-          "postproduction": {
-            "title": "Pós-Produção",
-            "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
-          }
+          postproduction: {
+            title: 'Pós-Produção',
+            description:
+              'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
+          },
         },
-        "values": {
-          "title": "Nossos Valores",
-          "passion": {
-            "title": "Paixão",
-            "description": "Amamos o que fazemos e isso se reflete em cada imagem que capturamos."
+        values: {
+          title: 'Nossos Valores',
+          passion: {
+            title: 'Paixão',
+            description:
+              'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
           },
-          "teamwork": {
-            "title": "Trabalho em Equipe",
-            "description": "Nosso modelo colaborativo nos permite cobrir cada momento importante."
+          teamwork: {
+            title: 'Trabalho em Equipe',
+            description:
+              'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
           },
-          "quality": {
-            "title": "Qualidade Técnica",
-            "description": "Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais."
+          quality: {
+            title: 'Qualidade Técnica',
+            description:
+              'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
           },
-          "agility": {
-            "title": "Agilidade",
-            "description": "Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento."
+          agility: {
+            title: 'Agilidade',
+            description:
+              'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
           },
-          "excellence": {
-            "title": "Excelência",
-            "description": "Buscamos a perfeição em cada projeto, superando expectativas."
+          excellence: {
+            title: 'Excelência',
+            description:
+              'Buscamos a perfeição em cada projeto, superando expectativas.',
           },
-          "trust": {
-            "title": "Confiança",
-            "description": "Construímos relacionamentos duradouros baseados na transparência e profissionalismo."
-          }
+          trust: {
+            title: 'Confiança',
+            description:
+              'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
+          },
         },
-        "faq": {
-          "title": "Perguntas Frequentes"
-        }
+        faq: {
+          title: 'Perguntas Frequentes',
+        },
       },
-      "faqs": [
+      faqs: [
         {
-          "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
-          "category": "General",
-          "order": 1
-        }
+          id: 'r6TCNoH3rfDe5Z9ETTV5',
+          question: '¿quienes son?',
+          answer: 'lol, vos quien sos',
+          category: 'General',
+          order: 1,
+        },
       ],
-      "projects": [
+      projects: [
         {
-          "id": "POPFdVzSh5Tom6jILa7x",
-          "title": "Ciclismo",
-          "description": "",
-          "tags": [],
-          "eventType": "Photoshoot",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'POPFdVzSh5Tom6jILa7x',
+          title: 'Ciclismo',
+          description: '',
+          tags: [],
+          eventType: 'Photoshoot',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [
             {
-              "id": "WlnpFA11erD9UOmBm0KT",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              mediaId: 'WlnpFA11erD9UOmBm0KT',
+              id: 'block-1751450964545',
+              y: 0,
+              x: 0,
+              height: 160,
+              type: 'image',
+              zIndex: 1,
+              width: 160,
             },
             {
-              "id": "8HUSkVPzmq7qL7wzvEWX",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              zIndex: 2,
+              id: 'block-1751450965726',
+              type: 'image',
+              y: 0,
+              mediaId: 'Lzb0t6nElL0ZAWQsqBLS',
+              height: 160,
+              width: 160,
+              x: 320,
             },
             {
-              "id": "Lzb0t6nElL0ZAWQsqBLS",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
-              },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              width: 160,
+              id: 'block-1751450968075',
+              type: 'image',
+              zIndex: 3,
+              x: 320,
+              y: 160,
+              mediaId: 'kn1K7gbSfxqw4dze5KJa',
+              height: 160,
             },
             {
-              "id": "FadSTZIEfDPweyIGgz7b",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              x: 0,
+              height: 160,
+              type: 'video',
+              zIndex: 4,
+              mediaId: '6h63m4y2XnApEjJBBl2D',
+              width: 480,
+              y: 160,
+              id: 'block-1751450971879',
+            },
+          ],
+          media: [
+            {
+              id: 'WlnpFA11erD9UOmBm0KT',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "kn1K7gbSfxqw4dze5KJa",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '8HUSkVPzmq7qL7wzvEWX',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "8HrzgDIJGqGdSO0PybiO",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'Lzb0t6nElL0ZAWQsqBLS',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "Vl3QqvF41XwFB7JTOLPx",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'FadSTZIEfDPweyIGgz7b',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "FSOslPFFgsgYZfvgbI64",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'kn1K7gbSfxqw4dze5KJa',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "yPHmTxUgbA8pPu9ProKb",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: '8HrzgDIJGqGdSO0PybiO',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '9:16',
+              order: 6,
             },
             {
-              "id": "dtsBBRanqbKQUVZEwh2k",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'Vl3QqvF41XwFB7JTOLPx',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "Y8CuJO9aiwQMtYziWzit",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'FSOslPFFgsgYZfvgbI64',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "alyLKMlcUn2Ava6OCvie",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yPHmTxUgbA8pPu9ProKb',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "foybyfLK0lkqA6j4HL4l",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'dtsBBRanqbKQUVZEwh2k',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 13
+              tags: [],
+              aspectRatio: '9:16',
+              order: 10,
             },
             {
-              "id": "vzIZoJBlyC6joJqfhJaE",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'Y8CuJO9aiwQMtYziWzit',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "BIcRnxLaEsa4egQBk4ZC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'alyLKMlcUn2Ava6OCvie',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 15
+              tags: [],
+              aspectRatio: '9:16',
+              order: 12,
             },
             {
-              "id": "O7IlGWX72PxKPNZfWc0M",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'foybyfLK0lkqA6j4HL4l',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 16
+              tags: [],
+              aspectRatio: '9:16',
+              order: 13,
             },
             {
-              "id": "YN67Uwe4AaCpBHBfKSOf",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'vzIZoJBlyC6joJqfhJaE',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 17
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "d3TJPwFR3qftEGy7Mf0c",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'BIcRnxLaEsa4egQBk4ZC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 18
+              tags: [],
+              aspectRatio: '9:16',
+              order: 15,
             },
             {
-              "id": "YbNkGpe2ZN1U7mjll4nU",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'O7IlGWX72PxKPNZfWc0M',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 19
+              tags: [],
+              aspectRatio: '1:1',
+              order: 16,
             },
             {
-              "id": "BqE0nJXEYPRjrMwHxjh5",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'YN67Uwe4AaCpBHBfKSOf',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 20
+              tags: [],
+              aspectRatio: '1:1',
+              order: 17,
             },
             {
-              "id": "ZXo05IpIGfgXYvanLgbC",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'd3TJPwFR3qftEGy7Mf0c',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 21
+              tags: [],
+              aspectRatio: '1:1',
+              order: 18,
             },
             {
-              "id": "evM72UydC452ixuXMAVn",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'YbNkGpe2ZN1U7mjll4nU',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 22
+              tags: [],
+              aspectRatio: '1:1',
+              order: 19,
             },
             {
-              "id": "6h63m4y2XnApEjJBBl2D",
-              "projectId": "POPFdVzSh5Tom6jILa7x",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'BqE0nJXEYPRjrMwHxjh5',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 23
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 20,
+            },
+            {
+              id: 'ZXo05IpIGfgXYvanLgbC',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 21,
+            },
+            {
+              id: 'evM72UydC452ixuXMAVn',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
+              },
+              tags: [],
+              aspectRatio: '9:16',
+              order: 22,
+            },
+            {
+              id: '6h63m4y2XnApEjJBBl2D',
+              projectId: 'POPFdVzSh5Tom6jILa7x',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
+              },
+              tags: [],
+              aspectRatio: '16:9',
+              order: 23,
+            },
+          ],
         },
         {
-          "id": "w3YKpgg5j1C86axTeoWB",
-          "title": "JONA l'oreal",
-          "description": "",
-          "tags": [],
-          "eventType": "",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'w3YKpgg5j1C86axTeoWB',
+          title: "JONA l'oreal",
+          description: '',
+          tags: [],
+          eventType: '',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "2ZpjegpMiUDzt9NqDvMJ",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '2ZpjegpMiUDzt9NqDvMJ',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 1
+              tags: [],
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "2u8GsCVp4JdWJB4HYMxd",
-              "projectId": "w3YKpgg5j1C86axTeoWB",
-              "type": "video",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '2u8GsCVp4JdWJB4HYMxd',
+              projectId: 'w3YKpgg5j1C86axTeoWB',
+              type: 'video',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 2
-            }
-          ]
+              tags: [],
+              aspectRatio: '1:1',
+              order: 2,
+            },
+          ],
         },
         {
-          "id": "8qdBOjw88pCNuxDIYW4z",
-          "title": "Jona - comida",
-          "description": "",
-          "tags": [],
-          "eventType": "Corporativos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: '8qdBOjw88pCNuxDIYW4z',
+          title: 'Jona - comida',
+          description: '',
+          tags: [],
+          eventType: 'Corporativos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "81WRYXl27qNvMuvM1Vt4",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '81WRYXl27qNvMuvM1Vt4',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "l0W75Vc9YhUyl5ZDqGzH",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'l0W75Vc9YhUyl5ZDqGzH',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "ExBXuO7mRiJtpVhrfHJf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'ExBXuO7mRiJtpVhrfHJf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "1SytnuCh59e1SVX8n1Zy",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '1SytnuCh59e1SVX8n1Zy',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Um1uQIf4sJblR5d3uVMf",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'Um1uQIf4sJblR5d3uVMf',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "b4XbfbFDfzLvuD8SKZY5",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'b4XbfbFDfzLvuD8SKZY5',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "5O5CxYKhuX3UYX7kirDY",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '5O5CxYKhuX3UYX7kirDY',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 7
+              tags: [],
+              aspectRatio: '16:9',
+              order: 7,
             },
             {
-              "id": "6Y526tPM8qZPVlJbZM1m",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '6Y526tPM8qZPVlJbZM1m',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "QwvIDsSlsq5SBzvSKHso",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'QwvIDsSlsq5SBzvSKHso',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "uN5XPGKcvVaEbGXpvKI0",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'uN5XPGKcvVaEbGXpvKI0',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 10
+              tags: [],
+              aspectRatio: '16:9',
+              order: 10,
             },
             {
-              "id": "ydTAR7DIjE7Yn3rSSxV9",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'ydTAR7DIjE7Yn3rSSxV9',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "8M3qN2ML2Lp2lXoiGksJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: '8M3qN2ML2Lp2lXoiGksJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "NUbBV111blENUSaUPTCZ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'NUbBV111blENUSaUPTCZ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "rT5Rdix7QbzYpNGYIzTX",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'rT5Rdix7QbzYpNGYIzTX',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 14
+              tags: [],
+              aspectRatio: '16:9',
+              order: 14,
             },
             {
-              "id": "yl55eAzt2SDZnyzIdUAT",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'yl55eAzt2SDZnyzIdUAT',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "fyMQxsZfBBR92YJMPNnR",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fyMQxsZfBBR92YJMPNnR',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "Bm9F3plOwaOx42hEY3PJ",
-              "projectId": "8qdBOjw88pCNuxDIYW4z",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'Bm9F3plOwaOx42hEY3PJ',
+              projectId: '8qdBOjw88pCNuxDIYW4z',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 17
-            }
-          ]
+              tags: [],
+              aspectRatio: '16:9',
+              order: 17,
+            },
+          ],
         },
         {
-          "id": "UKBPYqxNZpR8Qapibkjz",
-          "title": "NO Veloz - música",
-          "description": "",
-          "tags": [],
-          "eventType": "Culturales y artísticos",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'UKBPYqxNZpR8Qapibkjz',
+          title: 'NO Veloz - música',
+          description: '',
+          tags: [],
+          eventType: 'Culturales y artísticos',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "pejhZ5vT4fDPoL9UgUdN",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
-              "description": {
-                "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
+              id: 'pejhZ5vT4fDPoL9UgUdN',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335',
+              description: {
+                es: 'Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.',
+                pt: 'Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.',
+                en: 'Hire an event photographer in Montevideo to capture the energy of your concert or festival.',
               },
-              "tags": [
-                "event photographer",
-                "concert photography",
-                "festival videography",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'concert photography',
+                'festival videography',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 1
+              aspectRatio: '9:16',
+              order: 1,
             },
             {
-              "id": "CgSjT8SWSOIUGOCR2baB",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
-              "description": {
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+              id: 'CgSjT8SWSOIUGOCR2baB',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92',
+              description: {
+                pt: 'Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.',
+                en: 'Event photographer in Montevideo capturing a live music performance with professional lighting.',
+                es: 'Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.',
               },
-              "tags": [
-                "event photographer",
-                "live music photography",
-                "professional lighting",
-                "Montevideo",
-                "Uruguay"
+              tags: [
+                'event photographer',
+                'live music photography',
+                'professional lighting',
+                'Montevideo',
+                'Uruguay',
               ],
-              "aspectRatio": "9:16",
-              "order": 2
+              aspectRatio: '9:16',
+              order: 2,
             },
             {
-              "id": "0c12GH3euEQMLOfpSLNm",
-              "projectId": "UKBPYqxNZpR8Qapibkjz",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: '0c12GH3euEQMLOfpSLNm',
+              projectId: 'UKBPYqxNZpR8Qapibkjz',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 3
-            }
-          ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 3,
+            },
+          ],
         },
         {
-          "id": "brTuE0GdYD34q7WbSiFk",
-          "title": "NO Veloz - Casamiento",
-          "description": "",
-          "tags": [],
-          "eventType": "Casamiento",
-          "location": "",
-          "eventDate": "",
-          "featured": false,
-          "media": [
+          id: 'brTuE0GdYD34q7WbSiFk',
+          title: 'NO Veloz - Casamiento',
+          description: '',
+          tags: [],
+          eventType: 'Casamiento',
+          location: '',
+          eventDate: '',
+          featured: false,
+          status: 'published',
+          mediaBlocks: [],
+          media: [
             {
-              "id": "edrQjkSUX2pOlyXleUXb",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'edrQjkSUX2pOlyXleUXb',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 1
+              tags: [],
+              aspectRatio: '16:9',
+              order: 1,
             },
             {
-              "id": "8zJd9Ip6f5mcBcJ1lznq",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '8zJd9Ip6f5mcBcJ1lznq',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 2
+              tags: [],
+              aspectRatio: '16:9',
+              order: 2,
             },
             {
-              "id": "f9qFLMkKrowonoJvyLaU",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'f9qFLMkKrowonoJvyLaU',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 3
+              tags: [],
+              aspectRatio: '16:9',
+              order: 3,
             },
             {
-              "id": "pQ5yeKc0k0hZEaDgj0fV",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: 'pQ5yeKc0k0hZEaDgj0fV',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 4
+              tags: [],
+              aspectRatio: '16:9',
+              order: 4,
             },
             {
-              "id": "Pm3gGJJcoUc5uxxmjdss",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: 'Pm3gGJJcoUc5uxxmjdss',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 5
+              tags: [],
+              aspectRatio: '16:9',
+              order: 5,
             },
             {
-              "id": "lP8MCk0xqg0uSkCnvpaN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'lP8MCk0xqg0uSkCnvpaN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 6
+              tags: [],
+              aspectRatio: '16:9',
+              order: 6,
             },
             {
-              "id": "OodOx8NGStI3PD1KIO8E",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'OodOx8NGStI3PD1KIO8E',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 7
+              tags: [],
+              aspectRatio: '9:16',
+              order: 7,
             },
             {
-              "id": "dW52BSrrFYrUs6IztfUs",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
-              "description": {
-                "en": "",
-                "pt": "",
-                "es": ""
+              id: 'dW52BSrrFYrUs6IztfUs',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb',
+              description: {
+                pt: '',
+                en: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 8
+              tags: [],
+              aspectRatio: '16:9',
+              order: 8,
             },
             {
-              "id": "gj9s56ogFiZXgZuXTiwQ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'gj9s56ogFiZXgZuXTiwQ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 9
+              tags: [],
+              aspectRatio: '16:9',
+              order: 9,
             },
             {
-              "id": "4SCEUjX67DJ2jbmTRiaG",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: '4SCEUjX67DJ2jbmTRiaG',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "1:1",
-              "order": 10
+              tags: [],
+              aspectRatio: '1:1',
+              order: 10,
             },
             {
-              "id": "DjkGYSpAgl0fBpSYJtdJ",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'DjkGYSpAgl0fBpSYJtdJ',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 11
+              tags: [],
+              aspectRatio: '16:9',
+              order: 11,
             },
             {
-              "id": "fq7VpJxz2h7X01o3Bv8D",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'fq7VpJxz2h7X01o3Bv8D',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 12
+              tags: [],
+              aspectRatio: '16:9',
+              order: 12,
             },
             {
-              "id": "LMPz9UuWrFXArz4Q5HJN",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
-              "description": {
-                "pt": "",
-                "es": "",
-                "en": ""
+              id: 'LMPz9UuWrFXArz4Q5HJN',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af',
+              description: {
+                es: '',
+                en: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 13
+              tags: [],
+              aspectRatio: '16:9',
+              order: 13,
             },
             {
-              "id": "zTBVfHCpXvFGTWU3jbUI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
-              "description": {
-                "es": "",
-                "en": "",
-                "pt": ""
+              id: 'zTBVfHCpXvFGTWU3jbUI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea',
+              description: {
+                en: '',
+                es: '',
+                pt: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 14
+              tags: [],
+              aspectRatio: '9:16',
+              order: 14,
             },
             {
-              "id": "9pFVXpDET7jWxDq7RoNh",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
-              "description": {
-                "en": "",
-                "es": "",
-                "pt": ""
+              id: '9pFVXpDET7jWxDq7RoNh',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f',
+              description: {
+                pt: '',
+                es: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 15
+              tags: [],
+              aspectRatio: '16:9',
+              order: 15,
             },
             {
-              "id": "48cCo1kJoAFeOM2iWWBI",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
-              "description": {
-                "pt": "",
-                "en": "",
-                "es": ""
+              id: '48cCo1kJoAFeOM2iWWBI',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e',
+              description: {
+                en: '',
+                pt: '',
+                es: '',
               },
-              "tags": [],
-              "aspectRatio": "16:9",
-              "order": 16
+              tags: [],
+              aspectRatio: '16:9',
+              order: 16,
             },
             {
-              "id": "NwBqAs7qwNWCet4AkPgi",
-              "projectId": "brTuE0GdYD34q7WbSiFk",
-              "type": "photo",
-              "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
-              "description": {
-                "es": "",
-                "pt": "",
-                "en": ""
+              id: 'NwBqAs7qwNWCet4AkPgi',
+              projectId: 'brTuE0GdYD34q7WbSiFk',
+              type: 'photo',
+              url: 'https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027',
+              description: {
+                es: '',
+                pt: '',
+                en: '',
               },
-              "tags": [],
-              "aspectRatio": "9:16",
-              "order": 17
-            }
-          ]
-        }
-      ]
+              tags: [],
+              aspectRatio: '9:16',
+              order: 17,
+            },
+          ],
+        },
+      ],
     },
-    "lastUpdated": "2025-07-01T23:57:55.065Z",
-    "buildTime": true
-  }
+    lastUpdated: '2025-07-02T10:13:20.362Z',
+    buildTime: true,
+  },
 };
 
-export const SUPPORTED_LOCALES: Locale[] = ["es","en","pt"];
+export const SUPPORTED_LOCALES: Locale[] = ['es', 'en', 'pt'];
 
 export function getContentForLocale(locale: Locale): LocalizedContent {
   return STATIC_CONTENT[locale] || STATIC_CONTENT.es;
