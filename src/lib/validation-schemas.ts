@@ -116,13 +116,20 @@ export const projectSchema = baseSchema.extend({
     .array(
       z.object({
         id: z.string(),
-        mediaId: z.string(),
+        mediaId: z.string().optional(), // Optional for title blocks
         x: z.number().int().min(0),
         y: z.number().int().min(0),
         width: z.number().int().min(1),
         height: z.number().int().min(1),
-        type: z.enum(['image', 'video']),
+        type: z.enum(['image', 'video', 'title']),
         zIndex: z.number().int().min(0),
+        // Title-specific properties
+        title: z.string().optional(),
+        font: z.string().optional(),
+        color: z.string().optional(),
+        // Media positioning within block (for image/video blocks)
+        mediaOffsetX: z.number().optional(),
+        mediaOffsetY: z.number().optional(),
       })
     )
     .default([]), // Array of positioned media blocks

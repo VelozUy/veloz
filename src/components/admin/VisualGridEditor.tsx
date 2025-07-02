@@ -74,7 +74,6 @@ export interface MediaBlock {
   // Title-specific properties
   title?: string;
   font?: string;
-  fontSize?: number;
   color?: string;
   // Media positioning within block (for image/video blocks)
   mediaOffsetX?: number; // Offset from center (0 = centered)
@@ -456,7 +455,6 @@ export default function VisualGridEditor({
       zIndex: mediaBlocks.length + 1,
       title: projectName || 'Título del Proyecto',
       font: 'inter',
-      fontSize: 24,
       color: '#000000',
     };
 
@@ -713,20 +711,6 @@ export default function VisualGridEditor({
                       </SelectContent>
                     </Select>
 
-                    <Input
-                      id="fontSize"
-                      type="number"
-                      min="12"
-                      max="72"
-                      value={editingTitleBlock.fontSize || 24}
-                      onChange={e =>
-                        updateTitleBlock(editingTitleBlock.id, {
-                          fontSize: parseInt(e.target.value) || 24,
-                        })
-                      }
-                      className="text-xs h-8 w-16 bg-gray-800 border-gray-600 text-gray-200"
-                    />
-
                     <div className="flex items-center gap-1">
                       <Input
                         id="color"
@@ -928,7 +912,7 @@ export default function VisualGridEditor({
                                       f => f.value === block.font
                                     )?.fontFamily
                                   : 'Inter, sans-serif',
-                                fontSize: `${block.fontSize || 24}px`,
+                                fontSize: `${Math.min(block.width, block.height) * 3}vw`,
                                 color: block.color || '#000000',
                               }}
                             >
@@ -983,23 +967,12 @@ export default function VisualGridEditor({
                             </div>
                           )}
 
-                          {/* Media Type Badge */}
-                          <div className="absolute top-1 right-1">
-                            <Badge variant="secondary" className="text-xs">
-                              {block.type === 'title'
-                                ? '📝'
-                                : media?.type === 'video'
-                                  ? '🎥'
-                                  : '📷'}
-                            </Badge>
-                          </div>
-
                           {/* Remove Button */}
                           {!disabled && (
                             <Button
                               variant="destructive"
                               size="sm"
-                              className="absolute bottom-1 right-1 w-6 h-6 p-0"
+                              className="absolute top-1 right-1 w-6 h-6 p-0"
                               onClick={e => {
                                 e.stopPropagation();
                                 removeMediaBlock(block.id);
@@ -1012,7 +985,7 @@ export default function VisualGridEditor({
                           {/* Resize Handle */}
                           {!disabled && (
                             <div
-                              className="absolute bottom-0 left-0 w-4 h-4 bg-primary cursor-se-resize"
+                              className="absolute bottom-0 right-0 w-4 h-4 bg-primary cursor-se-resize"
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 handleMouseDown(e, block.id, 'resize');

@@ -906,25 +906,25 @@ function validateMediaBlocks(mediaBlocks) {
     return [];
   }
 
-  const GRID_WIDTH = 6;
-  const GRID_HEIGHT = 4;
-  const GRID_CELL_SIZE = 80;
-  const maxWidth = GRID_WIDTH * GRID_CELL_SIZE; // 480px
-  const maxHeight = GRID_HEIGHT * GRID_CELL_SIZE; // 320px
+  const GRID_WIDTH = 18;
+  const GRID_HEIGHT = 12;
 
   return mediaBlocks.map(block => {
+    // Remove old fontSize property if it exists
+    const { fontSize, ...cleanBlock } = block;
+
     // Constrain width and height to grid bounds
-    const constrainedWidth = Math.min(block.width || 0, maxWidth);
-    const constrainedHeight = Math.min(block.height || 0, maxHeight);
+    const constrainedWidth = Math.min(cleanBlock.width || 1, GRID_WIDTH);
+    const constrainedHeight = Math.min(cleanBlock.height || 1, GRID_HEIGHT);
 
     // Constrain position to ensure block stays within grid
-    const maxX = maxWidth - constrainedWidth;
-    const maxY = maxHeight - constrainedHeight;
+    const maxX = GRID_WIDTH - constrainedWidth;
+    const maxY = GRID_HEIGHT - constrainedHeight;
 
     return {
-      ...block,
-      x: Math.max(0, Math.min(block.x || 0, maxX)),
-      y: Math.max(0, Math.min(block.y || 0, maxY)),
+      ...cleanBlock,
+      x: Math.max(0, Math.min(cleanBlock.x || 0, maxX)),
+      y: Math.max(0, Math.min(cleanBlock.y || 0, maxY)),
       width: constrainedWidth,
       height: constrainedHeight,
     };

@@ -51,7 +51,6 @@ interface Project {
     // Title-specific properties
     title?: string;
     font?: string;
-    fontSize?: number;
     color?: string;
     // Media positioning within block (for image/video blocks)
     mediaOffsetX?: number; // Offset from center (0 = centered)
@@ -361,7 +360,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                 <div
                   key={block.id}
                   style={blockStyle}
-                  className="overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-300"
+                  className="overflow-hidden flex items-center justify-center p-4"
                 >
                   <div
                     className="text-center font-bold break-words"
@@ -370,7 +369,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                         ? FONT_OPTIONS.find(f => f.value === block.font)
                             ?.fontFamily
                         : 'Inter, sans-serif',
-                      fontSize: `${block.fontSize || 24}px`,
+                      fontSize: `${Math.min(block.width, block.height) * 3}vw`,
                       color: block.color || '#000000',
                     }}
                   >

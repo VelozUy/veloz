@@ -24,7 +24,6 @@ export interface MediaBlock {
   // Title-specific properties
   title?: string;
   font?: string;
-  fontSize?: number;
   color?: string;
 }
 
