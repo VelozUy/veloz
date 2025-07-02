@@ -10,10 +10,7 @@ _All critical issues have been resolved - see Completed Tasks Summary_
 
 ## 🏗️ Phase 1: Project Setup & Infrastructure
 
-### Legacy i18n Setup (Replaced by Static Routes)
-
-- [ ] **[Low] Create translation files for French** - Future enhancement if needed
-- [ ] **[Low] Create translation files for Chinese** - Future enhancement if needed
+_All tasks resolved_
 
 ---
 
