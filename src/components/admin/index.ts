@@ -15,6 +15,9 @@ export { default as FormsManagement } from './FormsManagement';
 export { default as CrewMemberAssignment } from './CrewMemberAssignment';
 export { default as CrewMemberDisplay } from './CrewMemberDisplay';
 export { TranslationDropdown } from './TranslationDropdown';
+export { default as LayoutTemplateSelector } from './LayoutTemplateSelector';
+export { default as LayoutPreview } from './LayoutPreview';
+export { default as HeroMediaSelector } from './HeroMediaSelector';
 
 // To be created later:
 // export { default as DataTable } from './DataTable';

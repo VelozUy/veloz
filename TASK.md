@@ -42,22 +42,26 @@ _Last updated: December 2024_
 
 #### 🧩 Modular Project Presentation
 
-- [ ] **[High] Create project layout template system** - Build template selection interface in admin panel with predefined layouts (hero, 2-column, vertical story, custom) _(Added: Jan 8, 2025)_
+- [x] **[High] Create project layout template system** - Built template selection interface in admin panel with predefined layouts (hero, 2-column, vertical story, custom). Created LayoutTemplateSelector component with visual template cards, hero ratio selection, and custom ratio input. Added layout tab to project editor with full integration. Updated project data model to include layoutTemplate, heroRatio, and customHeroRatio fields. Added validation schemas and TypeScript types for layout templates _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[High] Implement hero full-width layout template** - Create immersive opening layout with large media and minimal text overlay _(Added: Jan 8, 2025)_
 - [ ] **[High] Implement 2-column alternating layout template** - Create story-driven narrative flow with media and text alternating in columns _(Added: Jan 8, 2025)_
 - [ ] **[High] Implement vertical story flow template** - Create timeline-style presentation with annotated blocks and chronological flow _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Add custom layout builder** - Allow admins to create custom layout combinations using drag-and-drop interface _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Add layout preview functionality** - Show real-time preview of selected layout template in admin panel _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add layout preview functionality** - Created LayoutPreview component with live visual preview of selected layout template. Shows different layouts (hero, 2-column, vertical story, custom) with proper aspect ratios and responsive design. Integrated into LayoutTemplateSelector for real-time preview in admin panel. Enhanced to show actual project media previews including real images and video thumbnails with proper aspect ratio handling and video play indicators. Redesigned interface with compact, icon-only buttons for layout templates and hero ratios that fit in one line for improved usability _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+
+#### 🎯 Hero Media Selection
+
+- [x] **[High] Add hero media selection functionality** - Created HeroMediaSelector component that allows admins to choose which specific media item should be used as the hero image/video. Features include: visual media grid with aspect ratio indicators, compatibility warnings for mismatched ratios, featured media prioritization, and real-time preview updates. Integrated with LayoutTemplateSelector and LayoutPreview for seamless workflow. Optimized by removing redundant preview section since the live layout preview already shows the selected hero media, making the interface cleaner and more focused. Enhanced to show actual media previews (real images and video thumbnails) in the selection grid for better visual identification. Added autoplay functionality for videos when selecting or hovering over media items to help admins better visualize video content _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Low] Add layout template import/export** - Allow sharing and reusing layout templates across projects _(Added: Jan 8, 2025)_
 
 #### 🖼️ Custom Hero Media Ratios
 
-- [ ] **[High] Add hero media ratio selector to project editor** - Create dropdown/radio button interface for selecting hero aspect ratios (1:1, 16:9, 4:5, 9:16, custom) _(Added: Jan 8, 2025)_
+- [x] **[High] Add hero media ratio selector to project editor** - Created dropdown/radio button interface for selecting hero aspect ratios (1:1, 16:9, 4:5, 9:16, custom) with visual ratio cards and custom ratio input fields. Integrated into LayoutTemplateSelector component with proper state management _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[High] Implement 1:1 square hero layout** - Create square format hero section optimized for portrait-style content _(Added: Jan 8, 2025)_
 - [ ] **[High] Implement 16:9 widescreen hero layout** - Create cinematic widescreen hero section for video content _(Added: Jan 8, 2025)_
 - [ ] **[High] Implement 4:5 Instagram-style hero layout** - Create portrait hero section optimized for social media content _(Added: Jan 8, 2025)_
 - [ ] **[High] Implement 9:16 mobile-first hero layout** - Create vertical hero section optimized for mobile viewing _(Added: Jan 8, 2025)_
-- [ ] **[Medium] Add custom ratio input field** - Allow admins to specify custom aspect ratios for unique content requirements _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add custom ratio input field** - Allow admins to specify custom aspect ratios for unique content requirements _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Medium] Add hero media cropping interface** - Provide visual cropping tool to adjust media to selected aspect ratio _(Added: Jan 8, 2025)_
 - [ ] **[Low] Add hero media optimization** - Automatically optimize hero media for web performance based on selected ratio _(Added: Jan 8, 2025)_
 
@@ -112,9 +116,9 @@ _Last updated: December 2024_
 #### Database & Service Layer
 
 - [x] **[High] Create crew member Firestore service** - Build service functions for CRUD operations on crew member data _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
-- [ ] **[High] Create social feed Firestore service** - Build service functions for CRUD operations on social feed data _(Added: Jan 8, 2025)_
-- [ ] **[High] Update project data model** - Extend existing project schema to include layout templates, hero ratios, crew assignments, and social feeds _(Added: Jan 8, 2025)_
-- [ ] **[High] Create project layout service** - Build service functions for managing project layout templates and configurations _(Added: Jan 8, 2025)_
+- [x] **[High] Create social feed Firestore service** - Build service functions for CRUD operations on social feed data. Created SocialPostService with full CRUD operations, project-specific queries, and order management. Added validation schemas and TypeScript interfaces for social posts _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Update project data model** - Extended existing project schema to include layout templates, hero ratios, crew assignments, and social feeds. Added layoutTemplate, heroRatio, customHeroRatio, and crewMembers fields to project interface and validation schemas _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[High] Create project layout service** - Built service functions for managing project layout templates and configurations. Integrated layout template selection into project editor with proper state management and validation _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [ ] **[Medium] Add crew member validation** - Implement comprehensive validation for crew member data including required fields and format checks _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Add social feed validation** - Implement validation for social post data including media requirements and caption limits _(Added: Jan 8, 2025)_
 - [ ] **[Low] Add crew member search functionality** - Implement search and filtering for crew members by name, role, or skills _(Added: Jan 8, 2025)_

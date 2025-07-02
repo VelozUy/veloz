@@ -11,6 +11,45 @@ export interface LocalizedContent {
   zh?: string;
 }
 
+// Project Layout Template Types
+export type LayoutTemplate = 
+  | 'hero' 
+  | '2-column' 
+  | 'vertical-story' 
+  | 'custom';
+
+export type HeroRatio = 
+  | '1:1' 
+  | '16:9' 
+  | '4:5' 
+  | '9:16' 
+  | 'custom';
+
+export interface CustomHeroRatio {
+  width: number;
+  height: number;
+}
+
+// Social Feed Types
+export interface SocialPost {
+  id: string;
+  type: 'image' | 'video';
+  url: string;
+  caption: LocalizedContent;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CreateSocialPostData {
+  type: 'image' | 'video';
+  url: string;
+  caption: LocalizedContent;
+  order: number;
+}
+
+export type UpdateSocialPostData = Partial<Omit<SocialPost, 'id' | 'createdAt'>>;
+
 // Gallery Types
 export interface Photo {
   id: string;

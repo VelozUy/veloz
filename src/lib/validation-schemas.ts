@@ -110,6 +110,14 @@ export const projectSchema = baseSchema.extend({
   location: z.string().optional(),
   eventDate: z.string().optional(), // Could be date but storing as string for flexibility
   lastModifiedBy: z.string().optional(),
+  // New layout template fields
+  layoutTemplate: z.enum(['hero', '2-column', 'vertical-story', 'custom']).default('hero'),
+  heroRatio: z.enum(['1:1', '16:9', '4:5', '9:16', 'custom']).default('16:9'),
+  customHeroRatio: z.object({
+    width: z.number().int().min(1),
+    height: z.number().int().min(1),
+  }).optional(),
+  crewMembers: z.array(z.string()).default([]), // Array of crew member IDs
 });
 
 // Project Media Schema
@@ -132,6 +140,16 @@ export const projectMediaSchema = baseSchema.extend({
   tags: z.array(z.string()).default([]),
   order: z.number().int().min(0).default(0),
   featured: z.boolean().default(false),
+  uploadedBy: z.string().optional(),
+});
+
+// Social Post Schema
+export const socialPostSchema = baseSchema.extend({
+  projectId: z.string(),
+  type: z.enum(['image', 'video']),
+  url: z.string().url(),
+  caption: optionalMultiLanguageTextSchema,
+  order: z.number().int().min(0).default(0),
   uploadedBy: z.string().optional(),
 });
 
@@ -562,6 +580,7 @@ export type ContactMessageData = z.infer<typeof contactMessageSchema>;
 export type FAQData = z.infer<typeof faqSchema>;
 export type ProjectData = z.infer<typeof projectSchema>;
 export type ProjectMediaData = z.infer<typeof projectMediaSchema>;
+export type SocialPostData = z.infer<typeof socialPostSchema>;
 export type HomepageContentData = z.infer<typeof homepageContentSchema>;
 export type AboutContentData = z.infer<typeof aboutContentSchema>;
 export type AboutPhilosophyPointData = z.infer<
@@ -593,6 +612,7 @@ export const validateFAQ = (data: unknown) => faqSchema.parse(data);
 export const validateProject = (data: unknown) => projectSchema.parse(data);
 export const validateProjectMedia = (data: unknown) =>
   projectMediaSchema.parse(data);
+export const validateSocialPost = (data: unknown) => socialPostSchema.parse(data);
 export const validateHomepageContent = (data: unknown) =>
   homepageContentSchema.parse(data);
 export const validateAboutContent = (data: unknown) =>
@@ -609,6 +629,7 @@ export const safeValidateProject = (data: unknown) =>
   projectSchema.safeParse(data);
 export const safeValidateProjectMedia = (data: unknown) =>
   projectMediaSchema.safeParse(data);
+export const safeValidateSocialPost = (data: unknown) => socialPostSchema.safeParse(data);
 export const safeValidateHomepageContent = (data: unknown) =>
   homepageContentSchema.safeParse(data);
 export const safeValidateAboutContent = (data: unknown) =>

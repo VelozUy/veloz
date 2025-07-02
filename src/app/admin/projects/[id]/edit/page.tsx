@@ -51,6 +51,8 @@ import { projectMediaService, ProjectMedia } from '@/services/firebase';
 import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
+import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
+import { LayoutTemplate, HeroRatio } from '@/types';
 
 interface Project {
   id: string;
@@ -76,8 +78,14 @@ interface Project {
     videos: number;
   };
   crewMembers?: string[]; // Array of crew member IDs
+  // New layout template fields
+  layoutTemplate?: LayoutTemplate;
+  heroRatio?: HeroRatio;
+  customHeroRatio?: { width: number; height: number };
+  selectedHeroMediaId?: string; // ID of the media item selected for hero
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
+  media?: ProjectMedia[];
 }
 
 const EVENT_TYPES = [
@@ -161,6 +169,11 @@ export default function UnifiedProjectEditPage({
             status: 'draft',
             mediaCount: { photos: 0, videos: 0 },
             crewMembers: [],
+            // Default layout template settings
+            layoutTemplate: 'hero',
+            heroRatio: '16:9',
+            customHeroRatio: { width: 16, height: 9 },
+            selectedHeroMediaId: undefined,
             createdAt: null,
             updatedAt: null,
           };
@@ -570,7 +583,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -587,6 +600,7 @@ export default function UnifiedProjectEditPage({
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="crew">Equipo</TabsTrigger>
+                <TabsTrigger value="layout">Diseño</TabsTrigger>
               </TabsList>
 
               {/* Project Details Tab */}
@@ -866,6 +880,32 @@ export default function UnifiedProjectEditPage({
                   onCrewMembersChange={(crewMemberIds) => {
                     console.log('🔍 Project Edit - crew members changed:', crewMemberIds);
                     updateDraftProject({ crewMembers: crewMemberIds });
+                  }}
+                  disabled={saving}
+                />
+              </TabsContent>
+
+              {/* Layout Tab */}
+              <TabsContent value="layout" className="space-y-6">
+                <LayoutTemplateSelector
+                  layoutTemplate={draftProject.layoutTemplate || 'hero'}
+                  heroRatio={draftProject.heroRatio || '16:9'}
+                  customHeroRatio={draftProject.customHeroRatio || { width: 16, height: 9 }}
+                  projectTitle={draftProject.title?.es || draftProject.title?.en || 'Proyecto sin título'}
+                  projectDescription={draftProject.description?.es || draftProject.description?.en || 'Sin descripción'}
+                  projectMedia={projectMedia}
+                  selectedHeroMedia={draftProject.selectedHeroMediaId ? projectMedia.find(m => m.id === draftProject.selectedHeroMediaId) : undefined}
+                  onLayoutTemplateChange={(template) => {
+                    updateDraftProject({ layoutTemplate: template });
+                  }}
+                  onHeroRatioChange={(ratio) => {
+                    updateDraftProject({ heroRatio: ratio });
+                  }}
+                  onCustomHeroRatioChange={(ratio) => {
+                    updateDraftProject({ customHeroRatio: ratio });
+                  }}
+                  onHeroMediaChange={(mediaId: string | null) => {
+                    updateDraftProject({ selectedHeroMediaId: mediaId });
                   }}
                   disabled={saving}
                 />

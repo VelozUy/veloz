@@ -12,6 +12,10 @@ import {
   orderBy,
   Timestamp,
   DocumentData,
+  writeBatch,
+  limit,
+  startAfter,
+  QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import {
   ref,
@@ -30,14 +34,37 @@ import type {
   ContactMessage,
   ContactMessageData,
   ApiResponse,
+  SocialPost,
 } from '@/types';
+import {
+  faqSchema,
+  projectSchema,
+  projectMediaSchema,
+  socialPostSchema,
+  homepageContentSchema,
+  aboutContentSchema,
+  formContentSchema,
+  crewMemberSchema,
+  validateFAQ,
+  validateProject,
+  validateProjectMedia,
+  validateSocialPost,
+  validateHomepageContent,
+  validateAboutContent,
+  validateFormContent,
+  validateCrewMember,
+} from '@/lib/validation-schemas';
 
 // Base service class for common operations
-class BaseFirebaseService {
+class BaseFirebaseService<T> {
   protected collectionName: string;
+  protected db: typeof db;
+  protected schema: any;
 
-  constructor(collectionName: string) {
+  constructor(collectionName: string, schema: any) {
     this.collectionName = collectionName;
+    this.db = db;
+    this.schema = schema;
   }
 
   protected getCollection() {
@@ -163,12 +190,20 @@ class BaseFirebaseService {
       };
     }
   }
+
+  protected async handleError(error: unknown, defaultMessage: string): Promise<ApiResponse<any>> {
+    console.error(defaultMessage, error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : defaultMessage,
+    };
+  }
 }
 
 // FAQ Service
-export class FAQService extends BaseFirebaseService {
+export class FAQService extends BaseFirebaseService<FAQ> {
   constructor() {
-    super(FIREBASE_COLLECTIONS.FAQS);
+    super(FIREBASE_COLLECTIONS.FAQS, faqSchema);
   }
 
   async getByCategory(category: string): Promise<ApiResponse<FAQ[]>> {
@@ -220,9 +255,9 @@ export class FAQService extends BaseFirebaseService {
   }
 }
 
-export class PhotoService extends BaseFirebaseService {
+export class PhotoService extends BaseFirebaseService<Photo> {
   constructor() {
-    super(FIREBASE_COLLECTIONS.PHOTOS);
+    super(FIREBASE_COLLECTIONS.PHOTOS, projectMediaSchema);
   }
 
   async getByEventType(eventType: string): Promise<ApiResponse<Photo[]>> {
@@ -250,9 +285,9 @@ export class PhotoService extends BaseFirebaseService {
   }
 }
 
-export class VideoService extends BaseFirebaseService {
+export class VideoService extends BaseFirebaseService<Video> {
   constructor() {
-    super(FIREBASE_COLLECTIONS.VIDEOS);
+    super(FIREBASE_COLLECTIONS.VIDEOS, projectMediaSchema);
   }
 
   async getByEventType(eventType: string): Promise<ApiResponse<Video[]>> {
@@ -281,9 +316,9 @@ export class VideoService extends BaseFirebaseService {
 }
 
 // Homepage Content Service
-export class HomepageService extends BaseFirebaseService {
+export class HomepageService extends BaseFirebaseService<HomepageContent> {
   constructor() {
-    super(FIREBASE_COLLECTIONS.HOMEPAGE);
+    super(FIREBASE_COLLECTIONS.HOMEPAGE, homepageContentSchema);
   }
 
   async getContent(): Promise<ApiResponse<HomepageContent | null>> {
@@ -333,9 +368,9 @@ export class HomepageService extends BaseFirebaseService {
 }
 
 // Contact Message Service
-export class ContactMessageService extends BaseFirebaseService {
+export class ContactMessageService extends BaseFirebaseService<ContactMessage> {
   constructor() {
-    super(FIREBASE_COLLECTIONS.CONTACT_MESSAGES);
+    super(FIREBASE_COLLECTIONS.CONTACT_MESSAGES, socialPostSchema);
   }
 
   async createMessage(formData: ContactFormData): Promise<ApiResponse<string>> {
@@ -530,9 +565,9 @@ async function detectAspectRatio(file: File): Promise<{
 }
 
 // Project Media Service
-export class ProjectMediaService extends BaseFirebaseService {
+export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
   constructor() {
-    super('projectMedia');
+    super('projectMedia', socialPostSchema);
   }
 
   async getByProjectId(
@@ -773,6 +808,53 @@ export class StorageService {
   }
 }
 
+// Social Post Service
+export class SocialPostService extends BaseFirebaseService<SocialPost> {
+  constructor() {
+    super('socialPosts', socialPostSchema);
+  }
+
+  async getByProjectId(projectId: string): Promise<ApiResponse<SocialPost[]>> {
+    try {
+      const q = query(
+        collection(this.db, this.collectionName),
+        where('projectId', '==', projectId),
+        orderBy('order', 'asc')
+      );
+      
+      const querySnapshot = await getDocs(q);
+      const socialPosts: SocialPost[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        socialPosts.push({
+          id: doc.id,
+          ...doc.data(),
+        } as SocialPost);
+      });
+      
+      return { success: true, data: socialPosts };
+    } catch (error) {
+      return this.handleError(error, 'Failed to fetch social posts');
+    }
+  }
+
+  async updateOrder(projectId: string, postIds: string[]): Promise<ApiResponse<void>> {
+    try {
+      const batch = writeBatch(this.db);
+      
+      postIds.forEach((postId, index) => {
+        const docRef = doc(this.db, this.collectionName, postId);
+        batch.update(docRef, { order: index });
+      });
+      
+      await batch.commit();
+      return { success: true };
+    } catch (error) {
+      return this.handleError(error, 'Failed to update social post order');
+    }
+  }
+}
+
 // Service instances
 export const faqService = new FAQService();
 export const photoService = new PhotoService();
@@ -783,3 +865,6 @@ export const projectMediaService = new ProjectMediaService();
 
 // Legacy support
 export const storageService = new StorageService();
+
+// Export service instance
+export const socialPostService = new SocialPostService();
