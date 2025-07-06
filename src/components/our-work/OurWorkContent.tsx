@@ -337,13 +337,13 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
         {/* Visual Grid Layout */}
         <div
           className="relative w-full bg-gray-100 overflow-hidden"
-          style={{ aspectRatio: '18/12' }}
+          style={{ aspectRatio: '16/9' }}
         >
           {sortedBlocks.map(block => {
             // Convert grid coordinates to percentages
-            // Grid is 18x12 cells
-            const GRID_WIDTH = 18;
-            const GRID_HEIGHT = 12;
+            // Grid is 16x9 cells
+            const GRID_WIDTH = 16;
+            const GRID_HEIGHT = 9;
 
             const blockStyle = {
               position: 'absolute' as const,
@@ -360,16 +360,16 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                 <div
                   key={block.id}
                   style={blockStyle}
-                  className="overflow-hidden flex items-center justify-center p-4"
+                  className="overflow-hidden flex items-center justify-center"
                 >
                   <div
-                    className="text-center font-bold break-words"
+                    className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
                     style={{
                       fontFamily: block.font
                         ? FONT_OPTIONS.find(f => f.value === block.font)
                             ?.fontFamily
                         : 'Inter, sans-serif',
-                      fontSize: `${Math.min(block.width, block.height) * 3}vw`,
+                      fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
                       color: block.color || '#000000',
                     }}
                   >

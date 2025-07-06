@@ -481,6 +481,335 @@ interface ContactMessage {
 
 ---
 
+## 🚀 Technical Architecture Deep Dive
+
+### Frontend Architecture
+
+**Next.js 15 App Router Structure:**
+
+```
+src/app/
+├── (public) - Public pages with static generation
+├── admin/ - Protected admin panel routes
+├── api/ - API routes for dynamic functionality
+└── globals.css - Global styles and theme variables
+```
+
+**Component Architecture:**
+
+- **Atomic Design**: Components organized by complexity (atoms → molecules → organisms)
+- **Composition Pattern**: Reusable components with flexible props
+- **Theme Integration**: All components use design system tokens
+- **Accessibility First**: ARIA labels, keyboard navigation, screen reader support
+
+### Backend Services Architecture
+
+**Firebase Services Integration:**
+
+- **Firestore**: Primary data store with real-time capabilities
+- **Firebase Auth**: User authentication and session management
+- **Firebase Storage**: Media file storage with CDN delivery
+- **Firebase Functions**: Serverless backend logic (email processing, webhooks)
+
+**Data Flow Patterns:**
+
+- **Build-time**: Static content generation for SEO
+- **Runtime**: Dynamic content updates via admin panel
+- **Hybrid**: Critical content at build-time, interactive features at runtime
+
+### API Design Principles
+
+**RESTful Endpoints:**
+
+- `/api/contact` - Contact form submissions
+- `/api/translate` - AI-powered translation service
+- `/api/analyze-media` - Media analysis and SEO optimization
+- `/api/webhook/n8n` - External workflow integration
+
+**Response Format Standardization:**
+
+```typescript
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+```
+
+---
+
+## 🎯 Performance & Optimization Strategy
+
+### Performance Targets
+
+**Page Load Performance:**
+
+- **First Contentful Paint (FCP)**: < 1.5 seconds
+- **Largest Contentful Paint (LCP)**: < 2.5 seconds
+- **Cumulative Layout Shift (CLS)**: < 0.1
+- **Time to Interactive (TTI)**: < 3.5 seconds
+
+**Image Optimization:**
+
+- **WebP/AVIF Format**: Automatic format selection based on browser support
+- **Responsive Images**: Multiple sizes for different screen densities
+- **Lazy Loading**: Images load only when needed
+- **Progressive Enhancement**: Low-quality placeholders with high-quality overlays
+
+**API Response Times:**
+
+- **Firestore Queries**: < 500ms for simple queries
+- **Image Upload**: < 2 seconds for 5MB files
+- **Translation API**: < 3 seconds for batch operations
+- **Media Analysis**: < 5 seconds for image analysis
+
+### Optimization Techniques
+
+**Build-time Optimizations:**
+
+- **Static Generation**: Pre-render all public pages
+- **Code Splitting**: Automatic route-based code splitting
+- **Tree Shaking**: Remove unused code from bundles
+- **Asset Optimization**: Minification and compression
+
+**Runtime Optimizations:**
+
+- **Caching Strategy**: Browser and CDN caching for static assets
+- **Database Indexing**: Optimized Firestore queries with proper indexes
+- **Image CDN**: Cloudinary for automatic image optimization
+- **Service Worker**: Offline support and caching for critical resources
+
+**Monitoring & Analytics:**
+
+- **Core Web Vitals**: Real-time performance monitoring
+- **Error Tracking**: Sentry integration for error monitoring
+- **User Analytics**: Privacy-compliant usage tracking
+- **Performance Budgets**: Automated performance regression detection
+
+---
+
+## 🧪 Testing Strategy & Quality Assurance
+
+### Testing Pyramid
+
+**Unit Tests (70% of test coverage):**
+
+- **Component Testing**: React Testing Library for UI components
+- **Utility Functions**: Jest for pure functions and helpers
+- **Validation Schemas**: Zod schema testing with edge cases
+- **Service Layer**: Firebase service mocking and testing
+
+**Integration Tests (20% of test coverage):**
+
+- **API Endpoints**: End-to-end API testing
+- **Database Operations**: Firestore integration testing
+- **Authentication Flow**: Login/logout and session management
+- **Form Submissions**: Contact form and admin form testing
+
+**E2E Tests (10% of test coverage):**
+
+- **Critical User Journeys**: Homepage → Contact → Admin workflow
+- **Cross-browser Testing**: Chrome, Firefox, Safari compatibility
+- **Mobile Testing**: Responsive design and touch interactions
+- **Accessibility Testing**: Screen reader and keyboard navigation
+
+### Test Implementation
+
+**Testing Framework Setup:**
+
+```typescript
+// Jest configuration with Next.js 15 support
+// React Testing Library for component testing
+// Firebase emulators for integration testing
+// Playwright for E2E testing
+```
+
+**Test Data Management:**
+
+- **Mock Data**: Consistent test data across all test types
+- **Database Seeding**: Automated test data setup and cleanup
+- **Environment Isolation**: Separate test environment from production
+- **Test Utilities**: Reusable test helpers and assertions
+
+**Quality Gates:**
+
+- **Code Coverage**: Minimum 80% coverage for critical paths
+- **Performance Regression**: Automated performance testing
+- **Accessibility Compliance**: WCAG 2.1 AA standards
+- **Security Scanning**: Automated vulnerability detection
+
+---
+
+## 🔒 Security & Compliance Requirements
+
+### Authentication & Authorization
+
+**Firebase Auth Implementation:**
+
+- **Multi-factor Authentication**: Optional 2FA for admin users
+- **Session Management**: Secure session tokens with expiration
+- **Role-based Access**: Admin vs Editor permissions
+- **Login Attempt Limiting**: Rate limiting for failed login attempts
+
+**Data Protection:**
+
+- **Input Validation**: Zod schemas for all user inputs
+- **XSS Prevention**: Content Security Policy (CSP) headers
+- **CSRF Protection**: Token-based CSRF protection
+- **SQL Injection Prevention**: Parameterized queries (Firestore)
+
+### Privacy & Compliance
+
+**Data Privacy:**
+
+- **GDPR Compliance**: User consent and data portability
+- **Data Minimization**: Only collect necessary user data
+- **Data Retention**: Automatic cleanup of old contact messages
+- **User Rights**: Right to access, modify, and delete personal data
+
+**Security Headers:**
+
+```http
+Content-Security-Policy: default-src 'self'
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+```
+
+### Infrastructure Security
+
+**Firebase Security Rules:**
+
+```javascript
+// Firestore security rules with role-based access
+// Storage rules for media upload protection
+// Auth rules for user management
+```
+
+**Environment Security:**
+
+- **Environment Variables**: Secure storage of API keys and secrets
+- **Secret Management**: No hardcoded credentials in code
+- **Network Security**: HTTPS-only communication
+- **Error Handling**: No sensitive data in error messages
+
+---
+
+## 🚀 Deployment & DevOps Procedures
+
+### CI/CD Pipeline
+
+**Netlify Deployment Process:**
+
+1. **Code Push**: Automatic deployment on main branch push
+2. **Build Process**: `npm run build` with environment variables
+3. **Static Generation**: Build-time data fetching from Firestore
+4. **Asset Optimization**: Automatic image and code optimization
+5. **Deployment**: Zero-downtime deployment with rollback capability
+
+**Environment Management:**
+
+```bash
+# Development
+npm run dev          # Local development server
+npm run build:dev    # Development build with mock data
+
+# Staging
+npm run build:staging # Staging build with staging Firebase
+npm run test:e2e     # E2E tests against staging
+
+# Production
+npm run build        # Production build with live data
+npm run test:all     # Full test suite before deployment
+```
+
+### Monitoring & Alerting
+
+**Performance Monitoring:**
+
+- **Core Web Vitals**: Real-time performance tracking
+- **Error Tracking**: Sentry integration for error monitoring
+- **Uptime Monitoring**: 99.9% uptime target with alerting
+- **Resource Usage**: Memory and CPU monitoring
+
+**Deployment Safety:**
+
+- **Pre-deployment Tests**: Automated testing before deployment
+- **Rollback Strategy**: Quick rollback to previous version
+- **Feature Flags**: Gradual feature rollout capability
+- **Health Checks**: Automated health check endpoints
+
+### Backup & Recovery Strategy
+
+**Data Backup Procedures:**
+
+- **Firestore Exports**: Daily automated backups to Google Cloud Storage
+- **Media Assets**: CDN backup with multiple geographic locations
+- **Configuration**: Version-controlled configuration files
+- **Documentation**: Comprehensive deployment and recovery documentation
+
+**Disaster Recovery:**
+
+- **Recovery Time Objective (RTO)**: 4 hours maximum downtime
+- **Recovery Point Objective (RPO)**: 24 hours maximum data loss
+- **Backup Testing**: Monthly backup restoration testing
+- **Incident Response**: Documented incident response procedures
+
+---
+
+## 📊 Monitoring & Analytics Strategy
+
+### Performance Monitoring
+
+**Real-time Metrics:**
+
+- **Page Load Times**: FCP, LCP, CLS, TTI tracking
+- **API Response Times**: Endpoint performance monitoring
+- **Error Rates**: 4xx and 5xx error tracking
+- **User Experience**: Core Web Vitals compliance
+
+**Infrastructure Monitoring:**
+
+- **Firebase Usage**: Firestore read/write operations
+- **Storage Usage**: Media file storage and CDN performance
+- **Function Performance**: Firebase Functions execution times
+- **Cost Monitoring**: API usage and cost tracking
+
+### User Analytics
+
+**Privacy-compliant Analytics:**
+
+- **Page Views**: Anonymous page view tracking
+- **User Journeys**: Conversion funnel analysis
+- **Feature Usage**: Admin panel usage analytics
+- **Performance Impact**: User experience correlation
+
+**Business Metrics:**
+
+- **Contact Form Conversions**: Lead generation tracking
+- **Content Engagement**: FAQ and gallery interaction rates
+- **Admin Productivity**: Content management efficiency
+- **SEO Performance**: Search engine ranking tracking
+
+### Alerting & Notifications
+
+**Critical Alerts:**
+
+- **Service Downtime**: Immediate notification for outages
+- **Error Spikes**: Unusual error rate increases
+- **Performance Degradation**: Core Web Vitals below thresholds
+- **Security Incidents**: Suspicious activity detection
+
+**Operational Alerts:**
+
+- **Backup Failures**: Automated backup process failures
+- **Storage Limits**: Approaching storage capacity limits
+- **Cost Thresholds**: API usage cost alerts
+- **Deployment Issues**: Failed deployment notifications
+
+---
+
 ## 📌 Next Steps
 
 1. Design low-fidelity wireframes (Landing, FAQ, Gallery, Contact, Admin)

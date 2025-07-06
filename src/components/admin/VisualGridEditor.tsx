@@ -29,36 +29,175 @@ import {
   Trash2,
   Monitor,
   Smartphone,
+  ChevronFirst,
+  ChevronLast,
+  SkipBack,
+  SkipForward,
 } from 'lucide-react';
 import Image from 'next/image';
 
 // Grid dimensions
-const GRID_WIDTH = 18;
-const GRID_HEIGHT = 12;
+const GRID_WIDTH = 16;
+const GRID_HEIGHT = 9;
 // We'll calculate cell size dynamically
 
-// Font options for title blocks
+// Font options for title blocks - categorized by project type
 export const FONT_OPTIONS = [
-  { value: 'inter', label: 'Inter', fontFamily: 'Inter, sans-serif' },
+  // Modern & Clean (Corporate, Tech, Business)
   {
-    value: 'playfair',
-    label: 'Playfair Display',
-    fontFamily: 'Playfair Display, serif',
+    value: 'inter',
+    label: 'Inter',
+    fontFamily: 'var(--font-inter)',
+    category: 'modern',
   },
-  { value: 'roboto', label: 'Roboto', fontFamily: 'Roboto, sans-serif' },
   {
-    value: 'montserrat',
-    label: 'Montserrat',
-    fontFamily: 'Montserrat, sans-serif',
+    value: 'roboto',
+    label: 'Roboto',
+    fontFamily: 'var(--font-roboto)',
+    category: 'modern',
   },
   {
     value: 'opensans',
     label: 'Open Sans',
-    fontFamily: 'Open Sans, sans-serif',
+    fontFamily: 'var(--font-open-sans)',
+    category: 'modern',
   },
-  { value: 'poppins', label: 'Poppins', fontFamily: 'Poppins, sans-serif' },
-  { value: 'raleway', label: 'Raleway', fontFamily: 'Raleway, sans-serif' },
-  { value: 'lato', label: 'Lato', fontFamily: 'Lato, sans-serif' },
+  {
+    value: 'poppins',
+    label: 'Poppins',
+    fontFamily: 'var(--font-poppins)',
+    category: 'modern',
+  },
+
+  // Elegant & Luxury (Fashion, Beauty, Premium)
+  {
+    value: 'playfair',
+    label: 'Playfair Display',
+    fontFamily: 'var(--font-playfair)',
+    category: 'elegant',
+  },
+  {
+    value: 'cormorant',
+    label: 'Cormorant Garamond',
+    fontFamily: 'var(--font-cormorant)',
+    category: 'elegant',
+  },
+  {
+    value: 'cinzel',
+    label: 'Cinzel',
+    fontFamily: 'var(--font-cinzel)',
+    category: 'elegant',
+  },
+  {
+    value: 'libre-baskerville',
+    label: 'Libre Baskerville',
+    fontFamily: 'var(--font-libre-baskerville)',
+    category: 'elegant',
+  },
+
+  // Creative & Artistic (Design, Art, Creative)
+  {
+    value: 'montserrat',
+    label: 'Montserrat',
+    fontFamily: 'var(--font-montserrat)',
+    category: 'creative',
+  },
+  {
+    value: 'raleway',
+    label: 'Raleway',
+    fontFamily: 'var(--font-raleway)',
+    category: 'creative',
+  },
+  {
+    value: 'quicksand',
+    label: 'Quicksand',
+    fontFamily: 'var(--font-quicksand)',
+    category: 'creative',
+  },
+  {
+    value: 'nunito',
+    label: 'Nunito',
+    fontFamily: 'var(--font-nunito)',
+    category: 'creative',
+  },
+
+  // Bold & Impact (Sports, Action, Dynamic)
+  {
+    value: 'oswald',
+    label: 'Oswald',
+    fontFamily: 'var(--font-oswald)',
+    category: 'bold',
+  },
+  {
+    value: 'anton',
+    label: 'Anton',
+    fontFamily: 'var(--font-anton)',
+    category: 'bold',
+  },
+  {
+    value: 'bebas-neue',
+    label: 'Bebas Neue',
+    fontFamily: 'var(--font-bebas-neue)',
+    category: 'bold',
+  },
+  {
+    value: 'impact',
+    label: 'Impact',
+    fontFamily: 'Impact, sans-serif',
+    category: 'bold',
+  },
+
+  // Friendly & Approachable (Food, Lifestyle, Family)
+  {
+    value: 'lato',
+    label: 'Lato',
+    fontFamily: 'var(--font-lato)',
+    category: 'friendly',
+  },
+  {
+    value: 'source-sans-pro',
+    label: 'Source Sans Pro',
+    fontFamily: 'var(--font-source-sans)',
+    category: 'friendly',
+  },
+  {
+    value: 'ubuntu',
+    label: 'Ubuntu',
+    fontFamily: 'var(--font-ubuntu)',
+    category: 'friendly',
+  },
+  {
+    value: 'work-sans',
+    label: 'Work Sans',
+    fontFamily: 'var(--font-work-sans)',
+    category: 'friendly',
+  },
+
+  // Minimalist & Clean (Architecture, Interior Design)
+  {
+    value: 'helvetica',
+    label: 'Helvetica',
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    category: 'minimalist',
+  },
+  {
+    value: 'arial',
+    label: 'Arial',
+    fontFamily: 'Arial, sans-serif',
+    category: 'minimalist',
+  },
+  {
+    value: 'georgia',
+    label: 'Georgia',
+    fontFamily: 'Georgia, serif',
+    category: 'minimalist',
+  },
+  {
+    value: 'times',
+    label: 'Times New Roman',
+    fontFamily: 'Times New Roman, serif',
+    category: 'minimalist',
+  },
 ] as const;
 
 // Media block interface
@@ -660,8 +799,11 @@ export default function VisualGridEditor({
             <CardContent className="p-6">
               {/* Title Block Toolbar */}
               {showTitleToolbar && editingTitleBlock && (
-                <div className="mb-3 p-3 bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
-                  <div className="flex items-center justify-end mb-2">
+                <div className="mb-3 p-4 bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-gray-200">
+                      Editar Título
+                    </h3>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -674,8 +816,37 @@ export default function VisualGridEditor({
                       ✕
                     </Button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1">
+
+                  {/* Live Preview */}
+                  <div className="mb-3 p-3 bg-gray-800 rounded border border-gray-600">
+                    <div className="text-xs text-gray-400 mb-1">
+                      Vista previa:
+                    </div>
+                    <div
+                      className="text-center font-bold break-words"
+                      style={{
+                        fontFamily:
+                          FONT_OPTIONS.find(
+                            f => f.value === editingTitleBlock.font
+                          )?.fontFamily || 'Inter, sans-serif',
+                        fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+                        color: editingTitleBlock.color || '#000000',
+                        minHeight: '2rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {editingTitleBlock.title || 'Título del Proyecto'}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Title Input */}
+                    <div>
+                      <label className="text-xs text-gray-400 mb-1 block">
+                        Texto del título:
+                      </label>
                       <Input
                         id="title"
                         value={editingTitleBlock.title || ''}
@@ -684,58 +855,99 @@ export default function VisualGridEditor({
                             title: e.target.value,
                           })
                         }
-                        placeholder="Título"
-                        className="text-xs h-7 bg-gray-800 border-gray-600 text-gray-200 placeholder-gray-500"
+                        placeholder="Título del proyecto"
+                        className="text-sm h-8 bg-gray-800 border-gray-600 text-gray-200 placeholder-gray-500"
                       />
                     </div>
 
-                    <Select
-                      value={editingTitleBlock.font || 'inter'}
-                      onValueChange={value =>
-                        updateTitleBlock(editingTitleBlock.id, { font: value })
-                      }
-                    >
-                      <SelectTrigger className="text-xs h-8 w-24 bg-gray-800 border-gray-600 text-gray-200">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-600">
-                        {FONT_OPTIONS.map(font => (
-                          <SelectItem
-                            key={font.value}
-                            value={font.value}
-                            className="text-gray-200 hover:bg-gray-700"
-                          >
-                            {font.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <div className="flex items-center gap-1">
-                      <Input
-                        id="color"
-                        type="color"
-                        value={editingTitleBlock.color || '#000000'}
-                        onChange={e =>
+                    {/* Font Selection */}
+                    <div>
+                      <label className="text-xs text-gray-400 mb-1 block">
+                        Fuente:
+                      </label>
+                      <Select
+                        value={editingTitleBlock.font || 'inter'}
+                        onValueChange={value =>
                           updateTitleBlock(editingTitleBlock.id, {
-                            color: e.target.value,
+                            font: value,
                           })
                         }
-                        className="w-8 h-8 p-1 bg-gray-800 border-gray-600"
-                      />
-                      <span className="text-xs text-gray-400 w-12">
-                        {editingTitleBlock.color || '#000000'}
-                      </span>
+                      >
+                        <SelectTrigger className="text-sm h-8 bg-gray-800 border-gray-600 text-gray-200">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-600 max-h-60">
+                          {Object.entries(
+                            FONT_OPTIONS.reduce(
+                              (acc, font) => {
+                                if (!acc[font.category])
+                                  acc[font.category] = [];
+                                acc[font.category].push(font);
+                                return acc;
+                              },
+                              {} as Record<
+                                string,
+                                Array<(typeof FONT_OPTIONS)[number]>
+                              >
+                            )
+                          ).map(([category, fonts]) => (
+                            <div key={category}>
+                              <div className="px-2 py-1 text-xs font-medium text-gray-400 bg-gray-700">
+                                {category === 'modern' && 'Moderno & Limpio'}
+                                {category === 'elegant' && 'Elegante & Lujoso'}
+                                {category === 'creative' &&
+                                  'Creativo & Artístico'}
+                                {category === 'bold' && 'Audaz & Impactante'}
+                                {category === 'friendly' &&
+                                  'Amigable & Accesible'}
+                                {category === 'minimalist' &&
+                                  'Minimalista & Limpio'}
+                              </div>
+                              {fonts.map(font => (
+                                <SelectItem
+                                  key={font.value}
+                                  value={font.value}
+                                  className="text-gray-200 hover:bg-gray-700"
+                                >
+                                  <span style={{ fontFamily: font.fontFamily }}>
+                                    {font.label}
+                                  </span>
+                                </SelectItem>
+                              ))}
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Color Selection */}
+                    <div>
+                      <label className="text-xs text-gray-400 mb-1 block">
+                        Color:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id="color"
+                          type="color"
+                          value={editingTitleBlock.color || '#000000'}
+                          onChange={e =>
+                            updateTitleBlock(editingTitleBlock.id, {
+                              color: e.target.value,
+                            })
+                          }
+                          className="w-10 h-8 p-1 bg-gray-800 border-gray-600"
+                        />
+                        <span className="text-xs text-gray-400 font-mono">
+                          {editingTitleBlock.color || '#000000'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
-              {/* Z-Index Toolbar */}
+              {/* Block Controls Toolbar */}
               {selectedBlock && (
                 <div className="mb-2 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 shadow-lg w-fit">
-                  <span className="text-xs text-gray-300 mr-2">
-                    Orden de superposición:
-                  </span>
                   <Button
                     size="icon"
                     variant="ghost"
@@ -778,7 +990,7 @@ export default function VisualGridEditor({
                       const block = mediaBlocks.find(
                         b => b.id === selectedBlock
                       );
-                      if (!block) return;
+                      if (!block) return true;
                       const minZ = Math.min(...mediaBlocks.map(b => b.zIndex));
                       if (block.zIndex === minZ) return;
                       const updatedBlocks = mediaBlocks.map(b => {
@@ -801,6 +1013,233 @@ export default function VisualGridEditor({
                     title="Bajar"
                   >
                     ▼
+                  </Button>
+
+                  <div className="w-px h-6 bg-gray-600 mx-2"></div>
+
+                  {/* Move Controls */}
+                  <div className="flex items-center gap-1">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.x <= 0) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock ? { ...b, x: b.x - 1 } : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.x <= 0;
+                      })()}
+                      title="Mover izquierda"
+                    >
+                      <span className="text-lg">←</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.x + block.width >= 16) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock ? { ...b, x: b.x + 1 } : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.x + block.width >= 16;
+                      })()}
+                      title="Mover derecha"
+                    >
+                      <span className="text-lg">→</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.y <= 0) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock ? { ...b, y: b.y - 1 } : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.y <= 0;
+                      })()}
+                      title="Mover arriba"
+                    >
+                      <span className="text-lg">↑</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.y + block.height >= 9) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock ? { ...b, y: b.y + 1 } : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.y + block.height >= 9;
+                      })()}
+                      title="Mover abajo"
+                    >
+                      <span className="text-lg">↓</span>
+                    </Button>
+                  </div>
+
+                  <div className="w-px h-6 bg-gray-600 mx-1"></div>
+
+                  {/* Resize Controls */}
+                  <div className="flex items-center gap-1">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.width <= 1) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock
+                            ? { ...b, width: b.width - 1 }
+                            : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.width <= 1;
+                      })()}
+                      title="Reducir ancho"
+                    >
+                      <span className="text-lg">↤</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.width >= 16) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock
+                            ? { ...b, width: b.width + 1 }
+                            : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.width >= 16;
+                      })()}
+                      title="Aumentar ancho"
+                    >
+                      <span className="text-lg">↦</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.height <= 1) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock
+                            ? { ...b, height: b.height - 1 }
+                            : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.height <= 1;
+                      })()}
+                      title="Reducir alto"
+                    >
+                      <span className="text-lg">↥</span>
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      onClick={() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        if (!block || block.height >= 9) return;
+                        const updatedBlocks = mediaBlocks.map(b =>
+                          b.id === selectedBlock
+                            ? { ...b, height: b.height + 1 }
+                            : b
+                        );
+                        onMediaBlocksChange(updatedBlocks);
+                      }}
+                      disabled={(() => {
+                        const block = mediaBlocks.find(
+                          b => b.id === selectedBlock
+                        );
+                        return !block || block.height >= 9;
+                      })()}
+                      title="Aumentar alto"
+                    >
+                      <span className="text-lg">↧</span>
+                    </Button>
+                  </div>
+
+                  <div className="w-px h-6 bg-gray-600 mx-2"></div>
+
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    className="h-7 px-3 text-xs"
+                    onClick={() => {
+                      removeMediaBlock(selectedBlock);
+                    }}
+                    title="Eliminar bloque"
+                  >
+                    <Trash2 className="w-3 h-3 mr-1" />
+                    Eliminar
                   </Button>
                 </div>
               )}
@@ -850,7 +1289,7 @@ export default function VisualGridEditor({
                         ref={isSelected ? selectedBlockRef : null}
                         className={`absolute cursor-move transition-all duration-200 ${
                           isSelected
-                            ? 'ring-2 ring-primary ring-offset-2'
+                            ? 'ring-3 ring-yellow-400 ring-offset-2'
                             : 'hover:ring-2 hover:ring-primary/50'
                         } ${disabled ? 'pointer-events-none' : ''}`}
                         style={{
@@ -905,18 +1344,18 @@ export default function VisualGridEditor({
                           {block.type === 'title' ? (
                             // Title block
                             <div
-                              className="w-full h-full flex items-center justify-center p-4"
+                              className="w-full h-full flex items-center justify-center"
                               style={{
                                 fontFamily: block.font
                                   ? FONT_OPTIONS.find(
                                       f => f.value === block.font
                                     )?.fontFamily
                                   : 'Inter, sans-serif',
-                                fontSize: `${Math.min(block.width, block.height) * 3}vw`,
+                                fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
                                 color: block.color || '#000000',
                               }}
                             >
-                              <div className="text-center font-bold break-words">
+                              <div className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2">
                                 {block.title || 'Título del Proyecto'}
                               </div>
                             </div>
@@ -965,21 +1404,6 @@ export default function VisualGridEditor({
                                 Media no encontrado
                               </span>
                             </div>
-                          )}
-
-                          {/* Remove Button */}
-                          {!disabled && (
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              className="absolute top-1 right-1 w-6 h-6 p-0"
-                              onClick={e => {
-                                e.stopPropagation();
-                                removeMediaBlock(block.id);
-                              }}
-                            >
-                              <Trash2 className="w-3 h-3" />
-                            </Button>
                           )}
 
                           {/* Resize Handle */}

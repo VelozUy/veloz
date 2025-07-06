@@ -906,8 +906,8 @@ function validateMediaBlocks(mediaBlocks) {
     return [];
   }
 
-  const GRID_WIDTH = 18;
-  const GRID_HEIGHT = 12;
+  const GRID_WIDTH = 16;
+  const GRID_HEIGHT = 9;
 
   return mediaBlocks.map(block => {
     // Remove old fontSize property if it exists
