@@ -321,19 +321,19 @@ export default function VisualGridEditor({
               : parseFloat(media.aspectRatio as string);
         }
 
-        // Calculate grid block dimensions to match media aspect ratio
-        // We want the grid block aspect ratio to match the media aspect ratio
+        // Calculate grid block dimensions to ensure media doesn't get clipped
+        // We want containers large enough so media can overflow if needed
         const baseSize = 7; // Base size for calculations
 
-        // Calculate the grid block dimensions to match media aspect ratio
+        // Calculate the grid block dimensions to prevent clipping
         if (aspectRatio > 1) {
-          // Wide media (landscape) - make block wider
+          // Wide media (landscape) - make block wider and taller to prevent clipping
           blockWidth = Math.min(GRID_WIDTH, Math.ceil(baseSize * aspectRatio));
-          blockHeight = Math.ceil(blockWidth / aspectRatio);
+          blockHeight = Math.ceil(blockWidth / aspectRatio) + 2; // Add extra height for overflow
         } else {
-          // Tall media (portrait) - make block taller
-          blockHeight = Math.ceil(baseSize / aspectRatio);
-          blockWidth = Math.ceil(blockHeight * aspectRatio);
+          // Tall media (portrait) - make block taller and wider to prevent clipping
+          blockHeight = Math.ceil(baseSize / aspectRatio) + 2; // Add extra height
+          blockWidth = Math.ceil(blockHeight * aspectRatio) + 2; // Add extra width for overflow
         }
       } else {
         // Default sizing if no aspect ratio
@@ -502,12 +502,10 @@ export default function VisualGridEditor({
       // Get block dimensions
       const blockWidth = block.width * GRID_CELL_SIZE;
       const blockHeight = block.height * GRID_CELL_SIZE;
-      const blockAspectRatio = blockWidth / blockHeight;
 
-      // Since we're scaling the image to 1.5x, we can allow more movement
-      // The image is 50% larger than the block, so we can move it up to 25% in each direction
-      // This ensures there's always image content visible in the block
-      const maxOffset = 25; // 25% of block size in each direction
+      // Since we removed the 1.5x scaling, the media now fits the container exactly
+      // Disable media dragging to prevent blank areas
+      const maxOffset = 0; // No movement allowed - media stays centered
 
       return {
         maxX: maxOffset,
@@ -1534,7 +1532,7 @@ export default function VisualGridEditor({
                                   playsInline
                                   autoPlay
                                   style={{
-                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%)`,
                                   }}
                                 />
                               ) : (
@@ -1545,7 +1543,7 @@ export default function VisualGridEditor({
                                   className="object-cover"
                                   sizes="(max-width: 768px) 100vw, 50vw"
                                   style={{
-                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%)`,
                                     objectPosition: 'center',
                                   }}
                                 />
