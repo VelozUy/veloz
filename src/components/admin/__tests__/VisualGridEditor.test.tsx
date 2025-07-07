@@ -6,7 +6,9 @@ import { ProjectMedia } from '@/services/firebase';
 // Mock Next.js Image component
 jest.mock('next/image', () => {
   return function MockImage({ src, alt, ...props }: any) {
-    return <img src={src} alt={alt} {...props} />;
+    return (
+      <div data-testid="mock-image" data-src={src} data-alt={alt} {...props} />
+    );
   };
 });
 

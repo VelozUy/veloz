@@ -1,4 +1,4 @@
-import { db } from '@/lib/firebase';
+import { getFirestoreService } from '@/lib/firebase';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export interface FAQ {
@@ -37,6 +37,8 @@ export class FAQService {
   async getPublishedFAQs(): Promise<FAQ[]> {
     try {
       // Use simple query without compound index requirement
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firebase Firestore not initialized');
       const faqsQuery = query(collection(db, 'faqs'), orderBy('order', 'asc'));
 
       const snapshot = await getDocs(faqsQuery);
@@ -56,6 +58,8 @@ export class FAQService {
 
       // Fallback: try getting all FAQs without ordering if order index fails
       try {
+        const db = await getFirestoreService();
+        if (!db) throw new Error('Firebase Firestore not initialized');
         const fallbackQuery = query(collection(db, 'faqs'));
         const fallbackSnapshot = await getDocs(fallbackQuery);
         const fallbackFaqs: FAQ[] = [];

@@ -27,10 +27,10 @@ export default function CrewMemberDisplay({
 
       try {
         // setLoading(true);
-        const result = await crewMemberService.getAll();
+        const result = await crewMemberService.getAllCrewMembers();
         if (result.success) {
           const allCrewMembers = (result.data as CrewMember[]) || [];
-          const projectCrewMembers = allCrewMembers.filter(crew => 
+          const projectCrewMembers = allCrewMembers.filter(crew =>
             crewMemberIds.includes(crew.id)
           );
           setCrewMembers(projectCrewMembers);
@@ -74,4 +74,4 @@ export default function CrewMemberDisplay({
       </div>
     </div>
   );
-} 
+}

@@ -3,6 +3,11 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import {
+  withFirestoreRecovery,
+  withTimeout,
+  cleanupAllListeners,
+} from '@/lib/firebase-error-handler';
 
 import MediaLightbox from './MediaLightbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -85,18 +90,30 @@ export default function GalleryContent() {
         setLoading(true);
         setError(null);
 
-        // Load published projects with timeout protection
+        if (!db) {
+          setError('Database not initialized');
+          setLoading(false);
+          return;
+        }
+
+        // Load published projects with enhanced error handling
         const projectsQuery = query(
-          collection(db, 'projects'),
+          collection(db!, 'projects'),
           where('status', '==', 'published')
         );
 
-        const projectsSnapshot = await withTimeout(
-          getDocs(projectsQuery),
-          10000 // 10 second timeout
+        const projectsSnapshot = await withFirestoreRecovery(
+          () => withTimeout(getDocs(projectsQuery), 10000),
+          null
         );
-        const projectsList: Project[] = [];
 
+        if (!projectsSnapshot) {
+          setError('Failed to load projects');
+          setLoading(false);
+          return;
+        }
+
+        const projectsList: Project[] = [];
         projectsSnapshot.forEach(doc => {
           projectsList.push({ id: doc.id, ...doc.data() } as Project);
         });
@@ -112,21 +129,26 @@ export default function GalleryContent() {
 
         setProjects(projectsList);
 
-        // Load media for all projects with timeout protection and better error handling
+        // Load media for all projects with enhanced error handling
         const mediaPromises = projectsList.map(async project => {
           try {
             const mediaQuery = query(
-              collection(db, 'projectMedia'),
+              collection(db!, 'projectMedia'),
               where('projectId', '==', project.id),
               orderBy('order', 'asc')
             );
 
-            const mediaSnapshot = await withTimeout(
-              getDocs(mediaQuery),
-              8000 // 8 second timeout per project
+            const mediaSnapshot = await withFirestoreRecovery(
+              () => withTimeout(getDocs(mediaQuery), 8000),
+              null
             );
-            const projectMedia: MediaItem[] = [];
 
+            if (!mediaSnapshot) {
+              console.warn(`No media found for project ${project.id}`);
+              return [];
+            }
+
+            const projectMedia: MediaItem[] = [];
             mediaSnapshot.forEach(mediaDoc => {
               projectMedia.push({
                 id: mediaDoc.id,
@@ -143,50 +165,42 @@ export default function GalleryContent() {
               error
             );
 
-            // If it's an index error, try without orderBy
-            if (error instanceof Error && error.message.includes('index')) {
-              try {
-                const fallbackQuery = query(
-                  collection(db, 'projectMedia'),
-                  where('projectId', '==', project.id)
-                );
-
-                const fallbackSnapshot = await withTimeout(
-                  getDocs(fallbackQuery),
-                  8000 // 8 second timeout for fallback
-                );
-                const fallbackMedia: MediaItem[] = [];
-
-                fallbackSnapshot.forEach(mediaDoc => {
-                  fallbackMedia.push({
-                    id: mediaDoc.id,
-                    projectId: project.id,
-                    ...mediaDoc.data(),
-                  } as MediaItem);
-                });
-
-                fallbackMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
-                return fallbackMedia;
-              } catch (fallbackError) {
-                console.error(
-                  `Fallback query failed for project ${project.id}:`,
-                  fallbackError
-                );
-                return [];
-              }
-            }
-
-            // For timeout or other errors, return empty array instead of failing
-            if (error instanceof Error && error.message.includes('timeout')) {
-              console.warn(
-                `Media query timed out for project ${project.id}, skipping`
+            // Try fallback query without orderBy
+            try {
+              const fallbackQuery = query(
+                collection(db!, 'projectMedia'),
+                where('projectId', '==', project.id)
               );
+
+              const fallbackSnapshot = await withFirestoreRecovery(
+                () => withTimeout(getDocs(fallbackQuery), 8000),
+                null
+              );
+
+              if (!fallbackSnapshot) return [];
+
+              const fallbackMedia: MediaItem[] = [];
+              fallbackSnapshot.forEach(mediaDoc => {
+                fallbackMedia.push({
+                  id: mediaDoc.id,
+                  projectId: project.id,
+                  ...mediaDoc.data(),
+                } as MediaItem);
+              });
+
+              fallbackMedia.sort((a, b) => (a.order || 0) - (b.order || 0));
+              return fallbackMedia;
+            } catch (fallbackError) {
+              console.error(
+                `Fallback query failed for project ${project.id}:`,
+                fallbackError
+              );
+              return [];
             }
-            return [];
           }
         });
 
-        // Use Promise.allSettled instead of Promise.all to handle partial failures
+        // Use Promise.allSettled to handle partial failures
         const mediaResults = await Promise.allSettled(mediaPromises);
         const allProjectMedia = mediaResults
           .filter(
@@ -236,20 +250,17 @@ export default function GalleryContent() {
         setLoading(false);
       } catch (error) {
         console.error('Error loading gallery data:', error);
-
-        // Provide more specific error messages
-        if (error instanceof Error && error.message.includes('timeout')) {
-          setError(
-            'Gallery is taking longer than expected to load. Please check your internet connection and try again.'
-          );
-        } else {
-          setError('Failed to load gallery. Please try again.');
-        }
+        setError('Failed to load gallery. Please try again.');
         setLoading(false);
       }
     };
 
     loadGalleryData();
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      cleanupAllListeners();
+    };
   }, []);
 
   // Video autoplay with intersection observer - improved promise handling

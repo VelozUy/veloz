@@ -6,6 +6,11 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 ## 🧱 Overall Architecture
 
+- **CRITICAL RULE: No Real-Time Listeners**
+  - Real-time listeners (e.g., `onSnapshot`, `addSnapshotListener`, or any persistent Firestore subscription) **MUST NOT** be used in the web app or admin app.
+  - All data access must use one-time queries only (`getDocs`, `getDoc`, etc.).
+  - This is to prevent Firestore internal assertion errors, reduce resource usage, and ensure predictable data loading.
+
 - **Frontend**: Next.js 15 (App Router)
 - **Hosting**: Netlify
 - **Backend** (Headless style):

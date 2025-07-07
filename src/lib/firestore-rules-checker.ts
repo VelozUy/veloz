@@ -1,7 +1,7 @@
 // Firestore Security Rules Checker
 // This tool specifically addresses the 400 Bad Request errors from Firestore
 
-import { db, auth } from './firebase';
+import { getFirestoreService, getAuthService } from './firebase';
 import {
   doc,
   getDoc,
@@ -50,6 +50,8 @@ export class FirestoreSecurityRulesChecker {
 
   private async testBasicRead() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       console.log('🔄 Testing basic read access...');
       const testDoc = doc(db, 'test', 'read-test');
 
@@ -95,11 +97,14 @@ export class FirestoreSecurityRulesChecker {
 
   private async testBasicWrite() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
+      const auth = await getAuthService();
       const testDoc = doc(db, 'test', 'write-test');
       await setDoc(testDoc, {
         test: true,
         timestamp: new Date(),
-        user: auth.currentUser?.email || 'anonymous',
+        user: auth?.currentUser?.email || 'anonymous',
       });
 
       // Clean up
@@ -129,6 +134,8 @@ export class FirestoreSecurityRulesChecker {
 
   private async testCollectionRead() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       const testCollection = collection(db, 'test');
       const q = query(testCollection, limit(1));
       await getDocs(q);
@@ -159,7 +166,8 @@ export class FirestoreSecurityRulesChecker {
   }
 
   private async testAuthenticatedAccess() {
-    const user = auth.currentUser;
+    const auth = await getAuthService();
+    const user = auth?.currentUser;
 
     if (!user) {
       this.addResult(
@@ -172,6 +180,8 @@ export class FirestoreSecurityRulesChecker {
     }
 
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       // Test access to a user-specific document
       const userDoc = doc(db, 'users', user.uid);
       await getDoc(userDoc);

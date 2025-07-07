@@ -6,17 +6,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Plus, Search, Edit, Trash2, User, Eye } from 'lucide-react';
 import { crewMemberService } from '@/services/crew-member';
 import type { CrewMember } from '@/types';
 import CrewMemberForm from './CrewMemberForm';
+import Image from 'next/image';
 
 export default function CrewManagementPage() {
   const [crewMembers, setCrewMembers] = useState<CrewMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCrewMember, setSelectedCrewMember] = useState<CrewMember | null>(null);
+  const [selectedCrewMember, setSelectedCrewMember] =
+    useState<CrewMember | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
 
@@ -28,7 +36,7 @@ export default function CrewManagementPage() {
     try {
       setLoading(true);
       console.log('🔍 Crew page - loading crew members...');
-      const result = await crewMemberService.getAll();
+      const result = await crewMemberService.getAllCrewMembers();
       console.log('🔍 Crew page - getAll result:', result);
       if (result.success) {
         const crewData = (result.data as CrewMember[]) || [];
@@ -66,12 +74,14 @@ export default function CrewManagementPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este miembro del equipo?')) {
+    if (
+      !confirm('¿Estás seguro de que quieres eliminar este miembro del equipo?')
+    ) {
       return;
     }
 
     try {
-      const result = await crewMemberService.delete(id);
+      const result = await crewMemberService.deleteCrewMember(id);
       if (result.success) {
         await loadCrewMembers();
       } else {
@@ -102,14 +112,13 @@ export default function CrewManagementPage() {
     loadCrewMembers();
   };
 
-  const filteredCrewMembers = crewMembers.filter(member =>
-    (member.name.es || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (member.name.en || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (member.role.es || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (member.role.en || '').toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCrewMembers = crewMembers.filter(
+    member =>
+      (member.name.es || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.name.en || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.role.es || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (member.role.en || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-
 
   return (
     <AdminLayout title="Gestión de Equipo">
@@ -117,7 +126,9 @@ export default function CrewManagementPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Gestión de Equipo</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              Gestión de Equipo
+            </h1>
             <p className="text-muted-foreground">
               Administra los miembros del equipo y sus perfiles profesionales
             </p>
@@ -132,7 +143,9 @@ export default function CrewManagementPage() {
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>
-                  {selectedCrewMember ? 'Editar Miembro del Equipo' : 'Agregar Miembro del Equipo'}
+                  {selectedCrewMember
+                    ? 'Editar Miembro del Equipo'
+                    : 'Agregar Miembro del Equipo'}
                 </DialogTitle>
               </DialogHeader>
               <CrewMemberForm
@@ -152,8 +165,8 @@ export default function CrewManagementPage() {
                 <Input
                   placeholder="Buscar por nombre, rol o habilidades..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  onKeyPress={e => e.key === 'Enter' && handleSearch()}
                 />
               </div>
               <Button onClick={handleSearch} variant="outline">
@@ -170,7 +183,9 @@ export default function CrewManagementPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="ml-2 text-muted-foreground">Cargando miembros del equipo...</span>
+                <span className="ml-2 text-muted-foreground">
+                  Cargando miembros del equipo...
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -180,7 +195,9 @@ export default function CrewManagementPage() {
               <div className="text-center py-8">
                 <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-2">
-                  {searchTerm ? 'No se encontraron resultados' : 'No hay miembros del equipo'}
+                  {searchTerm
+                    ? 'No se encontraron resultados'
+                    : 'No hay miembros del equipo'}
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   {searchTerm
@@ -211,25 +228,34 @@ export default function CrewManagementPage() {
           </Card>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCrewMembers.map((member) => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow">
+            {filteredCrewMembers.map(member => (
+              <Card
+                key={member.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                         {member.portrait ? (
-                          <img
-                            src={member.portrait}
-                            alt={member.name.es}
+                          <Image
+                            src={member.portrait || '/default-avatar.png'}
+                            alt={member.name.es || 'Miembro del equipo'}
                             className="w-12 h-12 rounded-full object-cover"
+                            width={48}
+                            height={48}
                           />
                         ) : (
                           <User className="w-6 h-6 text-primary" />
                         )}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">{member.name.es}</h3>
-                        <p className="text-sm text-muted-foreground">{member.role.es}</p>
+                        <h3 className="font-semibold text-foreground">
+                          {member.name.es}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {member.role.es}
+                        </p>
                       </div>
                     </div>
                     <div className="flex space-x-1">
@@ -268,20 +294,22 @@ export default function CrewManagementPage() {
                         {member.bio.es}
                       </p>
                     )}
-                    {member.socialLinks && (member.socialLinks.instagram || member.socialLinks.linkedin) && (
-                      <div className="flex space-x-2">
-                        {member.socialLinks.instagram && (
-                          <Badge variant="outline" className="text-xs">
-                            Instagram
-                          </Badge>
-                        )}
-                        {member.socialLinks.linkedin && (
-                          <Badge variant="outline" className="text-xs">
-                            LinkedIn
-                          </Badge>
-                        )}
-                      </div>
-                    )}
+                    {member.socialLinks &&
+                      (member.socialLinks.instagram ||
+                        member.socialLinks.linkedin) && (
+                        <div className="flex space-x-2">
+                          {member.socialLinks.instagram && (
+                            <Badge variant="outline" className="text-xs">
+                              Instagram
+                            </Badge>
+                          )}
+                          {member.socialLinks.linkedin && (
+                            <Badge variant="outline" className="text-xs">
+                              LinkedIn
+                            </Badge>
+                          )}
+                        </div>
+                      )}
                   </div>
                 </CardContent>
               </Card>
@@ -300,18 +328,26 @@ export default function CrewManagementPage() {
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
                     {selectedCrewMember.portrait ? (
-                      <img
-                        src={selectedCrewMember.portrait}
-                        alt={selectedCrewMember.name.es}
+                      <Image
+                        src={
+                          selectedCrewMember.portrait || '/default-avatar.png'
+                        }
+                        alt={selectedCrewMember.name.es || 'Miembro del equipo'}
                         className="w-20 h-20 rounded-full object-cover"
+                        width={80}
+                        height={80}
                       />
                     ) : (
                       <User className="w-10 h-10 text-primary" />
                     )}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold">{selectedCrewMember.name.es}</h3>
-                    <p className="text-muted-foreground">{selectedCrewMember.role.es}</p>
+                    <h3 className="text-xl font-semibold">
+                      {selectedCrewMember.name.es}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {selectedCrewMember.role.es}
+                    </p>
                   </div>
                 </div>
 
@@ -320,27 +356,41 @@ export default function CrewManagementPage() {
                     <h4 className="font-medium mb-2">Biografía</h4>
                     <div className="space-y-2">
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">Español</p>
-                        <p className="text-sm">{selectedCrewMember.bio.es || 'No disponible'}</p>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          Español
+                        </p>
+                        <p className="text-sm">
+                          {selectedCrewMember.bio.es || 'No disponible'}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">English</p>
-                        <p className="text-sm">{selectedCrewMember.bio.en || 'Not available'}</p>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          English
+                        </p>
+                        <p className="text-sm">
+                          {selectedCrewMember.bio.en || 'Not available'}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">Português</p>
-                        <p className="text-sm">{selectedCrewMember.bio.pt || 'Não disponível'}</p>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          Português
+                        </p>
+                        <p className="text-sm">
+                          {selectedCrewMember.bio.pt || 'Não disponível'}
+                        </p>
                       </div>
                     </div>
                   </div>
 
-                  {(selectedCrewMember.socialLinks?.instagram || selectedCrewMember.socialLinks?.linkedin) && (
+                  {(selectedCrewMember.socialLinks?.instagram ||
+                    selectedCrewMember.socialLinks?.linkedin) && (
                     <div>
                       <h4 className="font-medium mb-2">Enlaces Sociales</h4>
                       <div className="flex space-x-2">
                         {selectedCrewMember.socialLinks?.instagram && (
                           <Badge variant="outline">
-                            Instagram: {selectedCrewMember.socialLinks.instagram}
+                            Instagram:{' '}
+                            {selectedCrewMember.socialLinks.instagram}
                           </Badge>
                         )}
                         {selectedCrewMember.socialLinks?.linkedin && (
@@ -353,12 +403,20 @@ export default function CrewManagementPage() {
                   )}
 
                   <div>
-                    <h4 className="font-medium mb-2">Información del Sistema</h4>
-                                         <div className="text-sm text-muted-foreground space-y-1">
-                       <p>ID: {selectedCrewMember.id}</p>
-                       <p>Creado: {selectedCrewMember.createdAt?.toLocaleDateString()}</p>
-                       <p>Actualizado: {selectedCrewMember.updatedAt?.toLocaleDateString()}</p>
-                     </div>
+                    <h4 className="font-medium mb-2">
+                      Información del Sistema
+                    </h4>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p>ID: {selectedCrewMember.id}</p>
+                      <p>
+                        Creado:{' '}
+                        {selectedCrewMember.createdAt?.toLocaleDateString()}
+                      </p>
+                      <p>
+                        Actualizado:{' '}
+                        {selectedCrewMember.updatedAt?.toLocaleDateString()}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -368,4 +426,4 @@ export default function CrewManagementPage() {
       </div>
     </AdminLayout>
   );
-} 
+}

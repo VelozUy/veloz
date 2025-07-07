@@ -1,4 +1,4 @@
-import { getStaticContent, normalizeLocale, getContent } from '@/lib/utils';
+import { getStaticContent, getContent } from '@/lib/utils';
 import Hero from '@/components/layout/hero';
 import type { Metadata } from 'next';
 
@@ -11,7 +11,6 @@ function getCurrentLocale(): string {
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
   const locale = getCurrentLocale();
-  const content = getStaticContent(locale);
 
   return {
     title: `Veloz - Capturamos lo irrepetible`,

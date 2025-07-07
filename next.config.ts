@@ -36,7 +36,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
-    esmExternals: 'loose', // Handle Firebase ESM modules
   },
   eslint: {
     // Only run ESLint on these directories during build

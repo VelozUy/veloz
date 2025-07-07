@@ -58,12 +58,10 @@ import {
 // Base service class for common operations
 class BaseFirebaseService<T> {
   protected collectionName: string;
-  protected db: typeof db;
-  protected schema: any;
+  protected schema: unknown;
 
-  constructor(collectionName: string, schema: any) {
+  constructor(collectionName: string, schema: unknown) {
     this.collectionName = collectionName;
-    this.db = db;
     this.schema = schema;
   }
 
@@ -191,7 +189,10 @@ class BaseFirebaseService<T> {
     }
   }
 
-  protected async handleError(error: unknown, defaultMessage: string): Promise<ApiResponse<any>> {
+  protected handleError<T>(
+    error: unknown,
+    defaultMessage: string
+  ): ApiResponse<T> {
     console.error(defaultMessage, error);
     return {
       success: false,
@@ -324,7 +325,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
   async getContent(): Promise<ApiResponse<HomepageContent | null>> {
     try {
       // Get the default homepage document
-      const docRef = doc(db, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(db!, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -349,7 +350,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
     data: Partial<Omit<HomepageContent, 'id'>>
   ): Promise<ApiResponse<void>> {
     try {
-      const docRef = doc(db, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(db!, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
       const updateData = {
         ...data,
         updatedAt: new Date(),
@@ -603,7 +604,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
     onProgress?: (progress: number) => void
   ): Promise<ApiResponse<ProjectMedia>> {
     try {
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,
@@ -628,7 +629,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
       const filePath = `projects/${projectId}/${timestamp}-${sanitizedFileName}`;
 
       // Upload to Firebase Storage with progress tracking
-      const storageRef = ref(storageService, filePath);
+      const storageRef = ref(storageService!, filePath);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       return new Promise(resolve => {
@@ -722,7 +723,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
         const media = mediaResult.data;
 
         // Delete from Storage
-        const storageService = getStorageService();
+        const storageService = await getStorageService();
         if (storageService) {
           try {
             const storageRef = ref(storageService, media.filePath);
@@ -775,7 +776,7 @@ export class StorageService {
   async getFileUrl(filePath: string): Promise<ApiResponse<string>> {
     try {
       // Check if storage is initialized
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         console.error('Firebase Storage not initialized');
         return {
@@ -817,36 +818,39 @@ export class SocialPostService extends BaseFirebaseService<SocialPost> {
   async getByProjectId(projectId: string): Promise<ApiResponse<SocialPost[]>> {
     try {
       const q = query(
-        collection(this.db, this.collectionName),
+        this.getCollection(),
         where('projectId', '==', projectId),
         orderBy('order', 'asc')
       );
-      
+
       const querySnapshot = await getDocs(q);
       const socialPosts: SocialPost[] = [];
-      
-      querySnapshot.forEach((doc) => {
+
+      querySnapshot.forEach(doc => {
         socialPosts.push({
           id: doc.id,
           ...doc.data(),
         } as SocialPost);
       });
-      
+
       return { success: true, data: socialPosts };
     } catch (error) {
       return this.handleError(error, 'Failed to fetch social posts');
     }
   }
 
-  async updateOrder(projectId: string, postIds: string[]): Promise<ApiResponse<void>> {
+  async updateOrder(
+    projectId: string,
+    postIds: string[]
+  ): Promise<ApiResponse<void>> {
     try {
-      const batch = writeBatch(this.db);
-      
+      const batch = writeBatch(db!);
+
       postIds.forEach((postId, index) => {
-        const docRef = doc(this.db, this.collectionName, postId);
+        const docRef = doc(db!, this.collectionName, postId);
         batch.update(docRef, { order: index });
       });
-      
+
       await batch.commit();
       return { success: true };
     } catch (error) {

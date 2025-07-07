@@ -46,7 +46,7 @@ export default function CrewMemberAssignment({
     const loadCrewMembers = async () => {
       try {
         setLoading(true);
-        const result = await crewMemberService.getAll();
+        const result = await crewMemberService.getAllCrewMembers();
         console.log('🔍 CrewMemberAssignment - getAll result:', result);
         if (result.success) {
           const crewData = (result.data as CrewMember[]) || [];
@@ -66,7 +66,7 @@ export default function CrewMemberAssignment({
   }, []);
 
   // Get selected crew members
-  const selectedCrewMembers = crewMembers.filter(crew => 
+  const selectedCrewMembers = crewMembers.filter(crew =>
     selectedCrewMemberIds.includes(crew.id)
   );
 
@@ -74,7 +74,9 @@ export default function CrewMemberAssignment({
   const handleCrewMemberSelect = (crewMemberId: string) => {
     if (selectedCrewMemberIds.includes(crewMemberId)) {
       // Remove crew member
-      onCrewMembersChange(selectedCrewMemberIds.filter(id => id !== crewMemberId));
+      onCrewMembersChange(
+        selectedCrewMemberIds.filter(id => id !== crewMemberId)
+      );
     } else {
       // Add crew member
       onCrewMembersChange([...selectedCrewMemberIds, crewMemberId]);
@@ -83,24 +85,26 @@ export default function CrewMemberAssignment({
 
   // Handle crew member removal
   const handleRemoveCrewMember = (crewMemberId: string) => {
-    onCrewMembersChange(selectedCrewMemberIds.filter(id => id !== crewMemberId));
+    onCrewMembersChange(
+      selectedCrewMemberIds.filter(id => id !== crewMemberId)
+    );
   };
 
   // Filter crew members based on search
   const filteredCrewMembers = crewMembers.filter(crew => {
     if (!searchTerm) return true;
-    
+
     const searchLower = searchTerm.toLowerCase();
-    const nameMatch = Object.values(crew.name).some(name => 
+    const nameMatch = Object.values(crew.name).some(name =>
       name.toLowerCase().includes(searchLower)
     );
-    const roleMatch = Object.values(crew.role).some(role => 
+    const roleMatch = Object.values(crew.role).some(role =>
       role.toLowerCase().includes(searchLower)
     );
-    const skillMatch = crew.skills.some(skill => 
+    const skillMatch = crew.skills.some(skill =>
       skill.toLowerCase().includes(searchLower)
     );
-    
+
     return nameMatch || roleMatch || skillMatch;
   });
 
@@ -170,7 +174,7 @@ export default function CrewMemberAssignment({
                 Choose crew members to assign to this project
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="space-y-4">
               {/* Search */}
               <div className="space-y-2">
@@ -179,7 +183,7 @@ export default function CrewMemberAssignment({
                   id="search"
                   placeholder="Search by name, role, or skills..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                 />
               </div>
 
@@ -202,7 +206,9 @@ export default function CrewMemberAssignment({
                       onClick={() => handleCrewMemberSelect(crew.id)}
                     >
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                        {crew.name.es?.charAt(0) || crew.name.en?.charAt(0) || '?'}
+                        {crew.name.es?.charAt(0) ||
+                          crew.name.en?.charAt(0) ||
+                          '?'}
                       </div>
                       <div className="flex-1">
                         <div className="font-medium">
@@ -213,7 +219,11 @@ export default function CrewMemberAssignment({
                         </div>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {crew.skills.slice(0, 3).map(skill => (
-                            <Badge key={skill} variant="secondary" className="text-xs">
+                            <Badge
+                              key={skill}
+                              variant="secondary"
+                              className="text-xs"
+                            >
                               {skill}
                             </Badge>
                           ))}
@@ -245,4 +255,4 @@ export default function CrewMemberAssignment({
       </CardContent>
     </Card>
   );
-} 
+}

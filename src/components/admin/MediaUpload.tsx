@@ -384,7 +384,7 @@ export default function MediaUpload({
 
       setUploadFiles(prev => [...prev, ...newFiles]);
     },
-    [onUploadError, validateFile]
+    [onUploadError]
   );
 
   const removeFile = useCallback((id: string) => {

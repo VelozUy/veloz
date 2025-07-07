@@ -184,16 +184,14 @@ export default function HomepageAdminPage() {
 
         // Test Firebase connection
         const connectionTest = await testFirebaseConnection();
-        if (!connectionTest.canReadFirestore) {
-          throw new Error(
-            connectionTest.error || 'Firebase connection test failed'
-          );
+        if (!connectionTest) {
+          throw new Error('Firebase connection test failed');
         }
 
         // Note: Removed enableNetwork call to prevent assertion errors
         // Firebase should be online by default
 
-        const docRef = doc(db, 'homepage', 'content');
+        const docRef = doc(db!, 'homepage', 'content');
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -257,8 +255,8 @@ export default function HomepageAdminPage() {
       // Note: Removed enableNetwork call to prevent assertion errors
       // Firebase should be online by default
 
-      const docRef = doc(db, 'homepage', 'content');
-      const { id: _, ...contentData } = content;
+      const docRef = doc(db!, 'homepage', 'content');
+      const contentData = (({ id, ...rest }) => rest)(content);
 
       await setDoc(docRef, {
         ...contentData,
@@ -314,9 +312,11 @@ export default function HomepageAdminPage() {
       }
 
       // Upload to Firebase Storage
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
-        throw new Error('Firebase Storage not initialized');
+        throw new Error(
+          'Firebase Storage not available. Please check your environment variables and ensure NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is set.'
+        );
       }
       const filename = `homepage/${type}s/${Date.now()}-${file.name}`;
       const storageRef = ref(storageService, filename);
@@ -391,7 +391,7 @@ export default function HomepageAdminPage() {
       // Delete from storage
       if (imageToDelete) {
         try {
-          const storageService = getStorageService();
+          const storageService = await getStorageService();
           if (storageService) {
             const storageRef = ref(storageService, imageToDelete);
             await deleteObject(storageRef);

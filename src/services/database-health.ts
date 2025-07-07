@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { getFirestoreService } from '@/lib/firebase';
 import { withRetry, createErrorResponse } from '@/lib/firebase-error-handler';
 import type { ApiResponse } from '@/types';
 
@@ -174,10 +174,10 @@ export class DatabaseHealthService {
   private async testConnectivity(): Promise<ApiResponse<boolean>> {
     return withRetry(
       async () => {
+        const db = await getFirestoreService();
         if (!db) {
           throw new Error('Firebase Firestore not initialized');
         }
-
         // Simple connectivity test - try to access a system document
         const testDoc = doc(db, '_system', '_test');
         await getDoc(testDoc);
@@ -204,6 +204,10 @@ export class DatabaseHealthService {
   private async testRead(): Promise<ApiResponse<boolean>> {
     return withRetry(
       async () => {
+        const db = await getFirestoreService();
+        if (!db) {
+          throw new Error('Firebase Firestore not initialized');
+        }
         const testDocRef = doc(
           db,
           this.config.testCollection,
@@ -231,6 +235,10 @@ export class DatabaseHealthService {
   private async testWrite(): Promise<ApiResponse<boolean>> {
     return withRetry(
       async () => {
+        const db = await getFirestoreService();
+        if (!db) {
+          throw new Error('Firebase Firestore not initialized');
+        }
         const testDocRef = doc(
           db,
           this.config.testCollection,

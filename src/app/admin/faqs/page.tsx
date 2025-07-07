@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { MultiLanguageTranslationButtons, BatchTranslationButton } from '@/components/admin/TranslationButton';
+import { MultiLanguageTranslationButtons } from '@/components/admin/TranslationButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -100,16 +100,32 @@ export default function FAQsAdminPage() {
 
   // Create form state
   const [createForm, setCreateForm] = useState({
-    question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
-    answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+    question: { en: '', es: '', pt: '' } as {
+      en?: string;
+      es?: string;
+      pt?: string;
+    },
+    answer: { en: '', es: '', pt: '' } as {
+      en?: string;
+      es?: string;
+      pt?: string;
+    },
     category: 'General',
     published: true,
   });
 
   // Edit form state
   const [editForm, setEditForm] = useState({
-    question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
-    answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+    question: { en: '', es: '', pt: '' } as {
+      en?: string;
+      es?: string;
+      pt?: string;
+    },
+    answer: { en: '', es: '', pt: '' } as {
+      en?: string;
+      es?: string;
+      pt?: string;
+    },
     category: 'General',
     published: true,
   });
@@ -130,7 +146,7 @@ export default function FAQsAdminPage() {
   const loadFAQs = async () => {
     try {
       setLoading(true);
-      const faqsQuery = query(collection(db, 'faqs'), orderBy('order', 'asc'));
+      const faqsQuery = query(collection(db!, 'faqs'), orderBy('order', 'asc'));
       const snapshot = await getDocs(faqsQuery);
       const faqList: FAQ[] = [];
 
@@ -178,7 +194,7 @@ export default function FAQsAdminPage() {
     try {
       const maxOrder = Math.max(...faqs.map(faq => faq.order), 0);
 
-      await addDoc(collection(db, 'faqs'), {
+      await addDoc(collection(db!, 'faqs'), {
         question: createForm.question,
         answer: createForm.answer,
         category: createForm.category,
@@ -190,8 +206,16 @@ export default function FAQsAdminPage() {
 
       setSuccess('Pregunta frecuente creada exitosamente!');
       setCreateForm({
-        question: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
-        answer: { en: '', es: '', pt: '' } as { en?: string; es?: string; pt?: string },
+        question: { en: '', es: '', pt: '' } as {
+          en?: string;
+          es?: string;
+          pt?: string;
+        },
+        answer: { en: '', es: '', pt: '' } as {
+          en?: string;
+          es?: string;
+          pt?: string;
+        },
         category: 'General',
         published: true,
       });
@@ -217,7 +241,7 @@ export default function FAQsAdminPage() {
     setError('');
 
     try {
-      await updateDoc(doc(db, 'faqs', editFAQ.id), {
+      await updateDoc(doc(db!, 'faqs', editFAQ.id), {
         question: editForm.question,
         answer: editForm.answer,
         category: editForm.category,
@@ -251,7 +275,7 @@ export default function FAQsAdminPage() {
     }
 
     try {
-      await deleteDoc(doc(db, 'faqs', faq.id));
+      await deleteDoc(doc(db!, 'faqs', faq.id));
       setSuccess('Pregunta frecuente eliminada exitosamente');
       setTimeout(() => setSuccess(''), 3000);
       loadFAQs();

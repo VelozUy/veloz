@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
@@ -71,12 +71,12 @@ export default function UsersPage() {
   const [inviteSuccess, setInviteSuccess] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     if (!user) return;
 
     setLoading(true);
     try {
-      const snapshot = await getDocs(collection(db, 'adminUsers'));
+      const snapshot = await getDocs(collection(db!, 'adminUsers'));
       const userList: AdminUser[] = [];
       snapshot.forEach(doc => {
         userList.push({ email: doc.id, ...doc.data() } as AdminUser);
@@ -87,11 +87,11 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchUsers();
-  }, [user]);
+  }, [fetchUsers]);
 
   const handleInviteUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,7 +117,7 @@ export default function UsersPage() {
       }
 
       // Add user to Firestore
-      await setDoc(doc(db, 'adminUsers', inviteEmail), {
+      await setDoc(doc(db!, 'adminUsers', inviteEmail), {
         status: 'active',
         invitedBy: user.email,
         invitedAt: serverTimestamp(),
@@ -153,7 +153,7 @@ export default function UsersPage() {
 
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-      await updateDoc(doc(db, 'adminUsers', email), {
+      await updateDoc(doc(db!, 'adminUsers', email), {
         status: newStatus,
       });
 
@@ -178,7 +178,7 @@ export default function UsersPage() {
     }
 
     try {
-      await deleteDoc(doc(db, 'adminUsers', email));
+      await deleteDoc(doc(db!, 'adminUsers', email));
 
       // Refresh the user list
       await fetchUsers();

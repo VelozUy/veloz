@@ -1,5 +1,5 @@
 // Database Reset Tool - Development Only
-import { db } from './firebase';
+import { getFirestoreService } from './firebase';
 import {
   collection,
   getDocs,
@@ -61,6 +61,8 @@ export class DatabaseReset {
 
   private async disableFirestoreNetwork() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await disableNetwork(db);
       this.addResult('Disable Firestore Network', true);
     } catch (error) {
@@ -70,6 +72,8 @@ export class DatabaseReset {
 
   private async clearAllCollections() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       // Common collection names to clear
       const collectionsToCheck = [
         'users',
@@ -145,6 +149,8 @@ export class DatabaseReset {
 
   private async terminateFirestore() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await terminate(db);
       this.addResult('Terminate Firestore Instance', true);
     } catch (error) {
@@ -191,6 +197,8 @@ export class DatabaseReset {
 
   private async clearIndexedDB() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await clearIndexedDbPersistence(db);
       this.addResult('Clear IndexedDB Persistence', true);
     } catch (error) {

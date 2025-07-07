@@ -21,7 +21,7 @@ import {
   Star,
 } from 'lucide-react';
 import CrewMemberDisplay from '@/components/admin/CrewMemberDisplay';
-import { db } from '@/lib/firebase';
+import { getFirestoreService } from '@/lib/firebase';
 import {
   collection,
   doc,
@@ -99,6 +99,13 @@ export default function ProjectsPage() {
     const loadProjects = async () => {
       try {
         setLoading(true);
+        const db = await getFirestoreService();
+        if (!db) {
+          setError('Firestore not available');
+          setLoading(false);
+          return;
+        }
+
         const projectsQuery = query(
           collection(db, 'projects'),
           orderBy('updatedAt', 'desc'),
@@ -158,6 +165,12 @@ export default function ProjectsPage() {
     }
 
     try {
+      const db = await getFirestoreService();
+      if (!db) {
+        setError('Firestore not available');
+        return;
+      }
+
       // TODO: Delete all associated media files and documents
       await deleteDoc(doc(db, 'projects', project.id));
       setSuccess('¡Proyecto eliminado exitosamente!');

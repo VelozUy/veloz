@@ -8,16 +8,15 @@ import {
 } from '@/lib/validation-schemas';
 import type { ApiResponse } from '@/types';
 
-export class AboutContentService extends BaseFirebaseService {
+export class AboutContentService extends BaseFirebaseService<AboutContentData> {
+  validationSchema = aboutContentSchema;
   constructor() {
-    super('aboutContent', {
-      validationSchema: aboutContentSchema,
-      cacheConfig: {
-        enabled: true,
-        ttl: 10 * 60 * 1000, // 10 minutes for about content
-        maxSize: 50,
-      },
-    });
+    super('aboutContent');
+    this.cacheConfig = {
+      enabled: true,
+      ttl: 10 * 60 * 1000, // 10 minutes for about content
+      maxSize: 50,
+    };
   }
 
   /**
@@ -25,7 +24,7 @@ export class AboutContentService extends BaseFirebaseService {
    */
   async getAboutContent(): Promise<ApiResponse<AboutContentData | null>> {
     try {
-      const response = await this.getAll<AboutContentData>({ useCache: true });
+      const response: ApiResponse<AboutContentData[]> = await this.getAll();
 
       if (response.success && response.data && response.data.length > 0) {
         return { success: true, data: response.data[0] };
@@ -50,7 +49,7 @@ export class AboutContentService extends BaseFirebaseService {
   ): Promise<ApiResponse<AboutContentData>> {
     try {
       // Check if content already exists
-      const existingResponse = await this.getAll<AboutContentData>();
+      const existingResponse = await this.getAll();
 
       if (
         existingResponse.success &&
@@ -59,38 +58,77 @@ export class AboutContentService extends BaseFirebaseService {
       ) {
         // Update existing content
         const existingContent = existingResponse.data[0];
-        const updateResponse = await this.update<AboutContentData>(
-          existingContent.id!,
-          data as Partial<Omit<AboutContentData, 'id' | 'createdAt'>>
-        );
-
-        if (updateResponse.success) {
-          // Invalidate cache and return updated content
-          this.invalidateCache();
-          const updatedResponse = await this.getById<AboutContentData>(
-            existingContent.id!
+        if (
+          existingContent &&
+          typeof existingContent === 'object' &&
+          'id' in existingContent &&
+          typeof existingContent.id === 'string'
+        ) {
+          const updateResponse = await this.update(
+            existingContent.id,
+            data as Partial<Omit<AboutContentData, 'id' | 'createdAt'>>
           );
-          if (updatedResponse.success && updatedResponse.data) {
-            return { success: true, data: updatedResponse.data };
+
+          if (updateResponse.success) {
+            // Invalidate cache and return updated content
+            this.invalidateCache();
+            const updatedResponse = await this.getById(existingContent.id);
+            if (updatedResponse.success && updatedResponse.data) {
+              const parsed = aboutContentSchema.safeParse(updatedResponse.data);
+              if (parsed.success) {
+                return { success: true, data: parsed.data };
+              } else {
+                return {
+                  success: false,
+                  error: 'Fetched about content after update is invalid',
+                };
+              }
+            } else {
+              return {
+                success: false,
+                error: 'Failed to fetch about content after update',
+              };
+            }
           }
         }
-
         return {
           success: false,
           error: 'Failed to update about content',
         };
       } else {
         // Create new content
-        const createResponse = await this.create<AboutContentData>(data);
+        const createResponse = await this.create(
+          data as Omit<AboutContentData, 'id'>
+        );
 
-        if (createResponse.success && createResponse.data) {
+        if (
+          createResponse.success &&
+          createResponse.data &&
+          typeof createResponse.data === 'object' &&
+          'id' in createResponse.data &&
+          typeof (createResponse.data as AboutContentData).id === 'string'
+        ) {
           // Invalidate cache and return new content
           this.invalidateCache();
-          const newResponse = await this.getById<AboutContentData>(
-            createResponse.data
-          );
-          if (newResponse.success && newResponse.data) {
-            return { success: true, data: newResponse.data };
+          const newId = (createResponse.data as AboutContentData).id;
+          if (typeof newId === 'string') {
+            const newResponse = await this.getById(newId);
+            if (newResponse.success && newResponse.data) {
+              const parsed = aboutContentSchema.safeParse(newResponse.data);
+              if (parsed.success) {
+                return { success: true, data: parsed.data };
+              } else {
+                return {
+                  success: false,
+                  error: 'Fetched about content after create is invalid',
+                };
+              }
+            } else {
+              return {
+                success: false,
+                error: 'Failed to fetch about content after create',
+              };
+            }
           }
         }
 
@@ -132,16 +170,20 @@ export class AboutContentService extends BaseFirebaseService {
         },
       };
 
-      const updateResponse = await this.update<AboutContentData>(
+      const updateResponse = await this.update(
         existingResponse.data.id!,
         updateData as Partial<Omit<AboutContentData, 'id' | 'createdAt'>>
       );
 
       if (updateResponse.success) {
         this.invalidateCache();
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          error: updateResponse.error || 'Failed to update section',
+        };
       }
-
-      return updateResponse;
     } catch (error) {
       console.error(`Error updating ${section} section:`, error);
       return {
@@ -168,18 +210,20 @@ export class AboutContentService extends BaseFirebaseService {
         };
       }
 
-      const updateResponse = await this.update<AboutContentData>(
-        existingResponse.data.id!,
-        { title, subtitle } as Partial<
-          Omit<AboutContentData, 'id' | 'createdAt'>
-        >
-      );
+      const updateResponse = await this.update(existingResponse.data.id!, {
+        title,
+        subtitle,
+      } as Partial<Omit<AboutContentData, 'id' | 'createdAt'>>);
 
       if (updateResponse.success) {
         this.invalidateCache();
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          error: updateResponse.error || 'Failed to update main content',
+        };
       }
-
-      return updateResponse;
     } catch (error) {
       console.error('Error updating main content:', error);
       return {
@@ -212,16 +256,20 @@ export class AboutContentService extends BaseFirebaseService {
       if (seoDescription !== undefined)
         updateData.seoDescription = seoDescription;
 
-      const updateResponse = await this.update<AboutContentData>(
+      const updateResponse = await this.update(
         existingResponse.data.id!,
         updateData
       );
 
       if (updateResponse.success) {
         this.invalidateCache();
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          error: updateResponse.error || 'Failed to update SEO content',
+        };
       }
-
-      return updateResponse;
     } catch (error) {
       console.error('Error updating SEO content:', error);
       return {

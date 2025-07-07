@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { FONT_OPTIONS } from '@/components/admin/VisualGridEditor';
+import HeroLayout from '@/components/layout/HeroLayout';
 
 // Project interface for the our-work page
 interface Project {
@@ -56,6 +57,17 @@ interface Project {
     mediaOffsetX?: number; // Offset from center (0 = centered)
     mediaOffsetY?: number; // Offset from center (0 = centered)
   }>;
+  heroMediaConfig?: {
+    mediaId?: string;
+    aspectRatio: '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
+    customRatio?: {
+      width: number;
+      height: number;
+    };
+    autoplay?: boolean;
+    muted?: boolean;
+    loop?: boolean;
+  };
   media: Array<{
     id: string;
     type: 'photo' | 'video';
@@ -267,6 +279,149 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
   // Render Custom Layout using Visual Grid Editor blocks
   const renderCustomLayout = (project: Project) => {
+    // If hero media is configured, render hero layout first
+    if (project.heroMediaConfig && project.heroMediaConfig.mediaId) {
+      return (
+        <div className="space-y-8">
+          {/* Hero Section */}
+          <HeroLayout
+            heroConfig={project.heroMediaConfig}
+            projectMedia={project.media}
+            projectTitle={project.title}
+            className="mb-8"
+          />
+
+          {/* Project Description */}
+          {project.description && (
+            <div className="text-center space-y-6">
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                {project.description}
+              </p>
+            </div>
+          )}
+
+          {/* Visual Grid Layout (if media blocks exist) */}
+          {project.mediaBlocks && project.mediaBlocks.length > 0 ? (
+            <div
+              className="relative w-full bg-gray-100 overflow-hidden"
+              style={{ aspectRatio: '16/9' }}
+            >
+              {/* Render media blocks */}
+              {project.mediaBlocks
+                .sort((a, b) => a.zIndex - b.zIndex)
+                .map(block => {
+                  // Convert grid coordinates to percentages
+                  // Grid is 16x9 cells
+                  const GRID_WIDTH = 16;
+                  const GRID_HEIGHT = 9;
+
+                  const blockStyle = {
+                    position: 'absolute' as const,
+                    left: `${(block.x / GRID_WIDTH) * 100}%`,
+                    top: `${(block.y / GRID_HEIGHT) * 100}%`,
+                    width: `${(block.width / GRID_WIDTH) * 100}%`,
+                    height: `${(block.height / GRID_HEIGHT) * 100}%`,
+                    zIndex: block.zIndex,
+                  };
+
+                  // Handle title blocks first
+                  if (block.type === 'title') {
+                    return (
+                      <div
+                        key={block.id}
+                        style={blockStyle}
+                        className="overflow-hidden flex items-center justify-center"
+                      >
+                        <div
+                          className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
+                          style={{
+                            fontFamily: block.font
+                              ? FONT_OPTIONS.find(f => f.value === block.font)
+                                  ?.fontFamily
+                              : 'Inter, sans-serif',
+                            fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
+                            color: block.color || '#000000',
+                          }}
+                        >
+                          {block.title || project.title}
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Only look up media for image/video blocks
+                  const media = project.media.find(m => m.id === block.mediaId);
+                  if (!media) return null;
+
+                  return (
+                    <div
+                      key={block.id}
+                      style={blockStyle}
+                      className="overflow-hidden"
+                    >
+                      {media.type === 'video' ? (
+                        <video
+                          src={media.url}
+                          className="w-full h-full object-cover"
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                          style={{
+                            transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          src={media.url}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          style={{
+                            transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                            objectPosition: 'center',
+                          }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          ) : (
+            // Fallback grid if no media blocks
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {project.media.slice(0, 6).map((media, index) => (
+                <div
+                  key={media.id || index}
+                  className="aspect-square relative overflow-hidden"
+                >
+                  {media.type === 'video' ? (
+                    <video
+                      src={media.url}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                    />
+                  ) : (
+                    <Image
+                      src={media.url}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     // If no media blocks defined, show a simple grid
     if (!project.mediaBlocks || project.mediaBlocks.length === 0) {
       return (

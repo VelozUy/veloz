@@ -25,6 +25,24 @@ export interface MediaBlock {
   title?: string;
   font?: string;
   color?: string;
+  // Media positioning within block (for image/video blocks)
+  mediaOffsetX?: number;
+  mediaOffsetY?: number;
+}
+
+// Hero Media Configuration Types
+export type HeroAspectRatio = '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
+
+export interface HeroMediaConfig {
+  mediaId?: string;
+  aspectRatio: HeroAspectRatio;
+  customRatio?: {
+    width: number;
+    height: number;
+  };
+  autoplay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
 }
 
 // Social Feed Types

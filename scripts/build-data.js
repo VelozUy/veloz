@@ -1283,13 +1283,19 @@ export interface LocalizedContent {
       status?: string;
       mediaBlocks?: Array<{
         id: string;
-        mediaId: string;
+        mediaId?: string;
         x: number;
         y: number;
         width: number;
         height: number;
-        type: 'image' | 'video';
+        type: 'image' | 'video' | 'title';
         zIndex: number;
+        mediaOffsetX?: number;
+        mediaOffsetY?: number;
+        // Title-specific properties
+        title?: string;
+        font?: string;
+        color?: string;
       }>;
       media: Array<{
         id: string;

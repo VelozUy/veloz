@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth, db } from '@/lib/firebase';
+import { getAuthService, getFirestoreService } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,6 +32,11 @@ export default function AdminLoginPage() {
 
     // Check if user is in the invited users collection
     try {
+      const db = await getFirestoreService();
+      if (!db) {
+        console.error('Firestore not available');
+        return false;
+      }
       const userDoc = await getDoc(doc(db, 'adminUsers', email));
       return userDoc.exists() && userDoc.data()?.status === 'active';
     } catch (error) {
@@ -45,6 +50,12 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
+      const auth = await getAuthService();
+      if (!auth) {
+        setError('Firebase Auth not available');
+        return;
+      }
+
       const provider = new GoogleAuthProvider();
       provider.addScope('email');
       provider.addScope('profile');

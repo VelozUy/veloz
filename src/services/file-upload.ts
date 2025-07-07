@@ -233,7 +233,7 @@ export class FileUploadService {
       // Sanitize file name and create full path
       const sanitizedFileName = this.sanitizeFileName(file.name);
       const fullPath = `${path}/${sanitizedFileName}`;
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,
@@ -424,7 +424,7 @@ export class FileUploadService {
    */
   async deleteFile(filePath: string): Promise<ApiResponse<boolean>> {
     try {
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,
@@ -498,7 +498,7 @@ export class FileUploadService {
    */
   async getFileMetadata(filePath: string): Promise<ApiResponse<any>> {
     try {
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,
@@ -529,7 +529,7 @@ export class FileUploadService {
     metadata: Record<string, any>
   ): Promise<ApiResponse<any>> {
     try {
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,
@@ -559,7 +559,7 @@ export class FileUploadService {
    */
   async listFiles(path: string): Promise<ApiResponse<string[]>> {
     try {
-      const storageService = getStorageService();
+      const storageService = await getStorageService();
       if (!storageService) {
         return {
           success: false,

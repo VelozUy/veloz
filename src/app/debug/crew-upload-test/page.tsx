@@ -5,7 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { testFirebaseStorage, testFileUploadService } from '@/lib/firebase-test';
+import {
+  testFirebaseStorage,
+  testFileUploadService,
+} from '@/lib/firebase-test';
 import { FileUploadService } from '@/services/file-upload';
 
 export default function CrewUploadTestPage() {
@@ -25,21 +28,21 @@ export default function CrewUploadTestPage() {
 
   const runTests = async () => {
     console.log('🧪 Running Firebase tests...');
-    
+
     // Test Firebase Storage
     const storageOk = await testFirebaseStorage();
     setTestResults(prev => ({ ...prev, storage: storageOk }));
-    
+
     // Test File Upload Service
     const uploadServiceOk = await testFileUploadService();
     setTestResults(prev => ({ ...prev, uploadService: uploadServiceOk }));
-    
+
     // Test Firebase Storage directly
     try {
       const { getStorageService } = await import('@/lib/firebase');
-      const storage = getStorageService();
+      const storage = await getStorageService();
       console.log('🔍 Direct storage test:', storage);
-      
+
       if (storage) {
         console.log('✅ Firebase Storage is available directly');
       } else {
@@ -54,7 +57,7 @@ export default function CrewUploadTestPage() {
     console.log('🎯 testFileUpload called');
     console.log('Event:', event);
     console.log('Files:', event.target.files);
-    
+
     const file = event.target.files?.[0];
     if (!file) {
       console.log('❌ No file selected');
@@ -73,11 +76,14 @@ export default function CrewUploadTestPage() {
 
     try {
       const fileUploadService = new FileUploadService();
-      
+
       // Validate file
-      const validation = fileUploadService.validateFile(file, fileUploadService.getConfigForFileType('image'));
+      const validation = fileUploadService.validateFile(
+        file,
+        fileUploadService.getConfigForFileType('image')
+      );
       console.log('Validation result:', validation);
-      
+
       if (!validation.isValid) {
         setUploadError(validation.errors.join(', '));
         return;
@@ -86,12 +92,12 @@ export default function CrewUploadTestPage() {
       // Upload to Firebase Storage
       const fileName = `test-uploads/${Date.now()}-${file.name}`;
       console.log('Uploading to:', fileName);
-      
+
       const result = await fileUploadService.uploadFile(
         file,
         fileName,
         fileUploadService.getConfigForFileType('image'),
-        (progress) => {
+        progress => {
           console.log('Progress:', progress.percentage + '%');
           setUploadProgress(progress.percentage);
         }
@@ -120,7 +126,7 @@ export default function CrewUploadTestPage() {
     console.log('🔍 Simple file test called');
     console.log('Event:', event);
     console.log('Files:', event.target.files);
-    
+
     const file = event.target.files?.[0];
     if (file) {
       console.log('✅ File selected in simple test:', file.name);
@@ -133,7 +139,7 @@ export default function CrewUploadTestPage() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold">Crew Member Photo Upload Test</h1>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Firebase Tests</CardTitle>
@@ -142,27 +148,45 @@ export default function CrewUploadTestPage() {
           <Button onClick={runTests} className="w-full">
             Run Firebase Tests
           </Button>
-          
+
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span>Firebase Storage:</span>
-              {testResults.storage === null && <span className="text-muted-foreground">Not tested</span>}
-              {testResults.storage === true && <span className="text-green-600">✅ Available</span>}
-              {testResults.storage === false && <span className="text-red-600">❌ Not available</span>}
+              {testResults.storage === null && (
+                <span className="text-muted-foreground">Not tested</span>
+              )}
+              {testResults.storage === true && (
+                <span className="text-green-600">✅ Available</span>
+              )}
+              {testResults.storage === false && (
+                <span className="text-red-600">❌ Not available</span>
+              )}
             </div>
-            
+
             <div className="flex items-center gap-2">
               <span>File Upload Service:</span>
-              {testResults.uploadService === null && <span className="text-muted-foreground">Not tested</span>}
-              {testResults.uploadService === true && <span className="text-green-600">✅ Available</span>}
-              {testResults.uploadService === false && <span className="text-red-600">❌ Not available</span>}
+              {testResults.uploadService === null && (
+                <span className="text-muted-foreground">Not tested</span>
+              )}
+              {testResults.uploadService === true && (
+                <span className="text-green-600">✅ Available</span>
+              )}
+              {testResults.uploadService === false && (
+                <span className="text-red-600">❌ Not available</span>
+              )}
             </div>
-            
+
             <div className="flex items-center gap-2">
               <span>File Upload Test:</span>
-              {testResults.uploadTest === null && <span className="text-muted-foreground">Not tested</span>}
-              {testResults.uploadTest === true && <span className="text-green-600">✅ Success</span>}
-              {testResults.uploadTest === false && <span className="text-red-600">❌ Failed</span>}
+              {testResults.uploadTest === null && (
+                <span className="text-muted-foreground">Not tested</span>
+              )}
+              {testResults.uploadTest === true && (
+                <span className="text-green-600">✅ Success</span>
+              )}
+              {testResults.uploadTest === false && (
+                <span className="text-red-600">❌ Failed</span>
+              )}
             </div>
           </div>
         </CardContent>
@@ -241,4 +265,4 @@ export default function CrewUploadTestPage() {
       </Card>
     </div>
   );
-} 
+}

@@ -4,26 +4,26 @@ import { getStorageService } from './firebase';
 
 export const testFirebaseConnection = async () => {
   console.log('🧪 Testing Firebase connection...');
-  
+
   try {
-    const db = getFirestoreService();
-    
+    const db = await getFirestoreService();
+
     if (!db) {
       console.error('❌ Firebase Firestore is not available');
       return false;
     }
-    
+
     console.log('✅ Firebase Firestore is available');
-    
+
     // Test network connectivity
     await enableNetwork(db);
     console.log('✅ Firebase network enabled');
-    
+
     // Test a simple document read
     // const testDoc = doc(db, 'test', 'connection');
     // const docSnap = await getDoc(testDoc);
     console.log('✅ Firebase document read successful');
-    
+
     return true;
   } catch (error) {
     console.error('❌ Firebase connection test failed:', error);
@@ -43,18 +43,18 @@ export const debugFirebaseState = () => {
 // Test script to verify Firebase Storage functionality
 export async function testFirebaseStorage() {
   console.log('🧪 Testing Firebase Storage...');
-  
+
   try {
-    const storage = getStorageService();
-    
+    const storage = await getStorageService();
+
     if (!storage) {
       console.error('❌ Firebase Storage is not available');
       return false;
     }
-    
+
     console.log('✅ Firebase Storage is available');
     console.log('Storage instance:', storage);
-    
+
     return true;
   } catch (error) {
     console.error('❌ Firebase Storage test failed:', error);
@@ -65,18 +65,18 @@ export async function testFirebaseStorage() {
 // Test file upload service
 export async function testFileUploadService() {
   console.log('🧪 Testing File Upload Service...');
-  
+
   try {
     const { FileUploadService } = await import('../services/file-upload');
     const service = new FileUploadService();
-    
+
     console.log('✅ File Upload Service created successfully');
     console.log('Service instance:', service);
-    
+
     // Test configuration
     const imageConfig = service.getConfigForFileType('image');
     console.log('✅ Image upload config:', imageConfig);
-    
+
     return true;
   } catch (error) {
     console.error('❌ File Upload Service test failed:', error);
@@ -87,7 +87,7 @@ export async function testFileUploadService() {
 // Run tests if called directly
 if (typeof window !== 'undefined') {
   // Only run in browser
-  testFirebaseStorage().then((storageOk) => {
+  testFirebaseStorage().then(storageOk => {
     if (storageOk) {
       testFileUploadService();
     }

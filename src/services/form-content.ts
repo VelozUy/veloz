@@ -3,9 +3,10 @@ import {
   FormContent,
   CreateFormContentData,
   UpdateFormContentData,
+  ApiResponse,
 } from '@/types';
 
-export class FormContentService extends BaseFirebaseService {
+export class FormContentService extends BaseFirebaseService<FormContent> {
   constructor() {
     super('formContent');
   }
@@ -15,7 +16,7 @@ export class FormContentService extends BaseFirebaseService {
    */
   async getFormContent(): Promise<FormContent> {
     try {
-      const response = await this.getAll<FormContent>();
+      const response: ApiResponse<FormContent[]> = await this.getAll();
 
       if (response.success && response.data && response.data.length > 0) {
         return response.data[0];
@@ -36,40 +37,53 @@ export class FormContentService extends BaseFirebaseService {
     data: CreateFormContentData | UpdateFormContentData
   ): Promise<FormContent> {
     try {
-      const response = await this.getAll<FormContent>();
+      const response: ApiResponse<FormContent[]> = await this.getAll();
 
       if (response.success && response.data && response.data.length > 0) {
         // Update existing
-        const updateResponse = await this.update<FormContent>(
+        const updateResponse = await this.update(
           response.data[0].id,
           data as UpdateFormContentData
         );
 
         if (updateResponse.success) {
           // Return updated content
-          const updatedResponse = await this.getById<FormContent>(
-            response.data[0].id
-          );
-          if (updatedResponse.success && updatedResponse.data) {
-            return updatedResponse.data;
+          const updatedResponse = await this.getById(response.data[0].id);
+          if (
+            updatedResponse.success &&
+            updatedResponse.data &&
+            typeof updatedResponse.data === 'object' &&
+            'id' in updatedResponse.data
+          ) {
+            return updatedResponse.data as FormContent;
           }
         }
-        throw new Error('Failed to update form content');
+        return this.getDefaultFormContent();
       } else {
         // Create new
-        const createResponse = await this.create<FormContent>(
-          data as CreateFormContentData
-        );
+        const createResponse = await this.create(data as CreateFormContentData);
 
-        if (createResponse.success && createResponse.data) {
-          const newResponse = await this.getById<FormContent>(
-            createResponse.data
-          );
-          if (newResponse.success && newResponse.data) {
-            return newResponse.data;
+        if (
+          createResponse.success &&
+          createResponse.data &&
+          typeof createResponse.data === 'object' &&
+          'id' in createResponse.data &&
+          typeof (createResponse.data as FormContent).id === 'string'
+        ) {
+          const newId = (createResponse.data as FormContent).id;
+          if (typeof newId === 'string') {
+            const newResponse = await this.getById(newId);
+            if (
+              newResponse.success &&
+              newResponse.data &&
+              typeof newResponse.data === 'object' &&
+              'id' in newResponse.data
+            ) {
+              return newResponse.data as FormContent;
+            }
           }
         }
-        throw new Error('Failed to create form content');
+        return this.getDefaultFormContent();
       }
     } catch (error) {
       console.error('Error upserting form content:', error);

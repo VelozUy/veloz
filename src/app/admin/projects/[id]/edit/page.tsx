@@ -52,7 +52,10 @@ import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
-import { MediaBlock } from '@/types';
+import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
+import { MediaBlock, HeroMediaConfig } from '@/types';
+import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
+import { withFirestoreRecovery } from '@/lib/firebase-reinit';
 
 interface Project {
   id: string;
@@ -79,6 +82,7 @@ interface Project {
   };
   crewMembers?: string[]; // Array of crew member IDs
   mediaBlocks?: MediaBlock[]; // Visual grid editor blocks
+  heroMediaConfig?: HeroMediaConfig; // Hero media configuration
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
   media?: ProjectMedia[];
@@ -166,6 +170,12 @@ export default function UnifiedProjectEditPage({
             mediaCount: { photos: 0, videos: 0 },
             crewMembers: [],
             mediaBlocks: [], // Empty media blocks for new projects
+            heroMediaConfig: {
+              aspectRatio: '16:9',
+              autoplay: true,
+              muted: true,
+              loop: true,
+            },
             createdAt: null,
             updatedAt: null,
           };
@@ -181,19 +191,28 @@ export default function UnifiedProjectEditPage({
             setError('Database not initialized');
             return;
           }
-          const projectDoc = await getDoc(doc(db, 'projects', projectId));
+          const projectDoc = await withFirestoreRecovery(() =>
+            withRetry(() => getDoc(doc(db!, 'projects', projectId)), {
+              maxAttempts: 3,
+              baseDelay: 1000,
+            })
+          );
+
           if (!projectDoc.exists()) {
             setError('Project not found');
             return;
           }
 
-          const projectData = {
-            id: projectDoc.id,
-            ...projectDoc.data(),
-          } as Project;
+          const rawProjectData = projectDoc.data();
 
-          setOriginalProject(projectData);
-          setDraftProject({ ...projectData }); // Create draft copy
+          // Migrate project data to ensure all required fields exist
+          const migratedProjectData = migrateProjectData({
+            id: projectDoc.id,
+            ...rawProjectData,
+          }) as Project;
+
+          setOriginalProject(migratedProjectData);
+          setDraftProject({ ...migratedProjectData }); // Create draft copy
 
           // Load media
           const mediaResult =
@@ -314,21 +333,39 @@ export default function UnifiedProjectEditPage({
       }
 
       if (isCreateMode) {
-        // Create new project
-        const docRef = await addDoc(collection(db, 'projects'), {
-          title: draftProject.title,
-          description: draftProject.description,
-          eventType: draftProject.eventType,
-          location: draftProject.location,
-          eventDate: draftProject.eventDate,
-          tags: draftProject.tags,
-          featured: draftProject.featured,
-          status: draftProject.status,
-          crewMembers: draftProject.crewMembers || [],
-          mediaCount: { photos: 0, videos: 0 },
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
+        // Create new project with retry mechanism
+        if (!db) {
+          setError('Database not initialized');
+          return;
+        }
+
+        const docRef = await withFirestoreRecovery(() =>
+          withRetry(
+            () =>
+              addDoc(collection(db!, 'projects'), {
+                title: draftProject.title,
+                description: draftProject.description,
+                eventType: draftProject.eventType,
+                location: draftProject.location,
+                eventDate: draftProject.eventDate,
+                tags: draftProject.tags,
+                featured: draftProject.featured,
+                status: draftProject.status,
+                crewMembers: draftProject.crewMembers || [],
+                mediaBlocks: draftProject.mediaBlocks || [],
+                heroMediaConfig: draftProject.heroMediaConfig || {
+                  aspectRatio: '16:9',
+                  autoplay: true,
+                  muted: true,
+                  loop: true,
+                },
+                mediaCount: { photos: 0, videos: 0 },
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+              }),
+            { maxAttempts: 3, baseDelay: 1000 }
+          )
+        );
 
         // Update to edit mode without navigation
         const newProjectId = docRef.id;
@@ -359,19 +396,31 @@ export default function UnifiedProjectEditPage({
         // Update existing project
         if (!projectId) return;
 
-        await updateDoc(doc(db, 'projects', projectId), {
-          title: draftProject.title,
-          description: draftProject.description,
-          eventType: draftProject.eventType,
-          location: draftProject.location,
-          eventDate: draftProject.eventDate,
-          tags: draftProject.tags,
-          featured: draftProject.featured,
-          status: draftProject.status,
-          crewMembers: draftProject.crewMembers || [],
-          mediaBlocks: draftProject.mediaBlocks || [],
-          updatedAt: serverTimestamp(),
-        });
+        await withFirestoreRecovery(() =>
+          withRetry(
+            () =>
+              updateDoc(doc(db!, 'projects', projectId), {
+                title: draftProject.title,
+                description: draftProject.description,
+                eventType: draftProject.eventType,
+                location: draftProject.location,
+                eventDate: draftProject.eventDate,
+                tags: draftProject.tags,
+                featured: draftProject.featured,
+                status: draftProject.status,
+                crewMembers: draftProject.crewMembers || [],
+                mediaBlocks: draftProject.mediaBlocks || [],
+                heroMediaConfig: draftProject.heroMediaConfig || {
+                  aspectRatio: '16:9',
+                  autoplay: true,
+                  muted: true,
+                  loop: true,
+                },
+                updatedAt: serverTimestamp(),
+              }),
+            { maxAttempts: 3, baseDelay: 1000 }
+          )
+        );
 
         // Update original data (so we can detect new changes)
         setOriginalProject({ ...draftProject });
@@ -892,6 +941,17 @@ export default function UnifiedProjectEditPage({
 
               {/* Layout Tab */}
               <TabsContent value="layout" className="space-y-6">
+                {/* Hero Media Selection */}
+                <HeroMediaSelector
+                  projectMedia={projectMedia}
+                  heroConfig={draftProject.heroMediaConfig}
+                  onHeroConfigChange={(config: HeroMediaConfig) => {
+                    updateDraftProject({ heroMediaConfig: config });
+                  }}
+                  disabled={saving}
+                />
+
+                {/* Visual Grid Editor */}
                 <LayoutTemplateSelector
                   projectMedia={projectMedia}
                   mediaBlocks={draftProject.mediaBlocks || []}

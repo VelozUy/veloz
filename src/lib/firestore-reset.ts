@@ -1,7 +1,7 @@
 // Firestore Reset Utility
 // This fixes internal assertion errors and corrupted Firestore state
 
-import { db } from './firebase';
+import { getFirestoreService } from './firebase';
 import {
   disableNetwork,
   enableNetwork,
@@ -54,6 +54,8 @@ export class FirestoreReset {
 
   private async step1_DisableNetwork() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await disableNetwork(db);
       this.addResult('Disable Firestore Network', true);
     } catch (error) {
@@ -95,6 +97,8 @@ export class FirestoreReset {
 
   private async step3_ClearIndexedDB() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await clearIndexedDbPersistence(db);
       this.addResult('Clear IndexedDB Persistence', true);
     } catch (error) {
@@ -105,6 +109,8 @@ export class FirestoreReset {
 
   private async step4_TerminateFirestore() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await terminate(db);
       this.addResult('Terminate Firestore Instance', true);
     } catch (error) {
@@ -130,6 +136,8 @@ export class FirestoreReset {
     try {
       // Wait a bit before re-enabling
       await new Promise(resolve => setTimeout(resolve, 2000));
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await enableNetwork(db);
       this.addResult('Re-enable Firestore Network', true);
     } catch (error) {
@@ -140,6 +148,8 @@ export class FirestoreReset {
   private async step6_TestConnection() {
     try {
       // Import here to avoid circular dependency
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       const { doc, getDoc } = await import('firebase/firestore');
       const testDoc = doc(db, 'test', 'reset-test');
 

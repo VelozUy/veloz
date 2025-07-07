@@ -2,6 +2,16 @@ import { FirebaseError } from 'firebase/app';
 import { FirestoreError } from 'firebase/firestore';
 import { StorageError } from 'firebase/storage';
 import type { ApiResponse } from '@/types';
+import { db } from './firebase';
+import {
+  enableNetwork,
+  disableNetwork,
+  connectFirestoreEmulator,
+  terminate,
+  initializeFirestore,
+} from 'firebase/firestore';
+import { reinitializeFirebase } from './firebase-reinit';
+import { getFirestoreService } from './firebase';
 
 // Error types and categories
 export type ErrorCategory =
@@ -160,6 +170,25 @@ const ERROR_MESSAGES: Record<string, { es: string; en: string; pt: string }> = {
     pt: 'Ocorreu um erro inesperado. Tente novamente.',
   },
 };
+
+// Global state tracking
+let isRecovering = false;
+let recoveryAttempts = 0;
+const MAX_RECOVERY_ATTEMPTS = 3;
+const RECOVERY_COOLDOWN = 5000; // 5 seconds between recovery attempts
+
+// Error tracking and monitoring
+interface ErrorEvent {
+  timestamp: Date;
+  error: string;
+  errorType: 'internal' | 'network' | 'permission' | 'other';
+  recoveryAttempted: boolean;
+  recoverySuccessful: boolean;
+  operation?: string;
+}
+
+const errorHistory: ErrorEvent[] = [];
+const MAX_ERROR_HISTORY = 100;
 
 /**
  * Firebase Error Handler
@@ -543,4 +572,386 @@ export const withRetry = <T>(
 export const createErrorResponse = <T>(error: unknown, context?: string) =>
   firebaseErrorHandler.createErrorResponse<T>(error, context);
 
-// Types are already exported above as interface/type declarations
+// Data migration helpers for project schema updates
+export const migrateProjectData = (data: any): any => {
+  if (!data) return data;
+
+  // Ensure heroMediaConfig exists
+  if (!data.heroMediaConfig) {
+    data.heroMediaConfig = {
+      aspectRatio: '16:9',
+      autoplay: true,
+      muted: true,
+      loop: true,
+    };
+  }
+
+  // Ensure mediaBlocks exists
+  if (!data.mediaBlocks) {
+    data.mediaBlocks = [];
+  }
+
+  // Ensure crewMembers exists
+  if (data.crewMembers === undefined) {
+    data.crewMembers = [];
+  }
+
+  // Ensure mediaCount exists
+  if (!data.mediaCount) {
+    data.mediaCount = { photos: 0, videos: 0 };
+  }
+
+  return data;
+};
+
+// Validate project data structure
+export const validateProjectData = (data: any): boolean => {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  // Check for required fields
+  const requiredFields = ['title', 'description', 'eventType', 'status'];
+  for (const field of requiredFields) {
+    if (!data[field]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+// Track active listeners to prevent conflicts
+const activeListeners = new Set<() => void>();
+
+// Add listener to tracking
+export const trackListener = (unsubscribe: () => void) => {
+  activeListeners.add(unsubscribe);
+  return () => {
+    activeListeners.delete(unsubscribe);
+    unsubscribe();
+  };
+};
+
+// Cleanup all active listeners
+export const cleanupAllListeners = () => {
+  console.log(`🧹 Cleaning up ${activeListeners.size} active listeners`);
+  activeListeners.forEach(unsubscribe => {
+    try {
+      unsubscribe();
+    } catch (error) {
+      console.warn('Error during listener cleanup:', error);
+    }
+  });
+  activeListeners.clear();
+};
+
+// Enhanced error detection for Firestore internal errors
+export const isFirestoreInternalError = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false;
+
+  const errorMessage = (error as { message?: string }).message || '';
+  const errorCode = (error as { code?: string }).code || '';
+
+  return (
+    errorMessage.includes('INTERNAL ASSERTION FAILED') ||
+    errorMessage.includes('Unexpected state') ||
+    errorMessage.includes('Target ID') ||
+    errorMessage.includes('WatchChangeAggregator') ||
+    errorMessage.includes('onWatchStreamChange') ||
+    errorCode === 'internal' ||
+    (errorMessage.includes('FIRESTORE') && errorMessage.includes('INTERNAL')) ||
+    errorMessage.includes('ID: ca9') ||
+    errorMessage.includes('ID: b815') ||
+    errorMessage.includes('CONTEXT: {"Fe":-1}')
+  );
+};
+
+// Error tracking and logging
+export const trackError = (error: unknown, operation?: string): void => {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  const errorType = isFirestoreInternalError(error)
+    ? 'internal'
+    : errorMessage.includes('network')
+      ? 'network'
+      : errorMessage.includes('permission')
+        ? 'permission'
+        : 'other';
+
+  const errorEvent: ErrorEvent = {
+    timestamp: new Date(),
+    error: errorMessage,
+    errorType,
+    recoveryAttempted: false,
+    recoverySuccessful: false,
+    operation,
+  };
+
+  errorHistory.push(errorEvent);
+
+  // Keep history size manageable
+  if (errorHistory.length > MAX_ERROR_HISTORY) {
+    errorHistory.shift();
+  }
+
+  console.warn(`🔥 Firebase error tracked: ${errorType} - ${errorMessage}`);
+};
+
+// Get error statistics
+export const getErrorStatistics = () => {
+  const now = Date.now();
+  const oneHourAgo = now - 60 * 60 * 1000;
+  const oneDayAgo = now - 24 * 60 * 60 * 1000;
+
+  const recentErrors = errorHistory.filter(
+    e => e.timestamp.getTime() > oneHourAgo
+  );
+  const dailyErrors = errorHistory.filter(
+    e => e.timestamp.getTime() > oneDayAgo
+  );
+
+  const errorTypes = {
+    internal: 0,
+    network: 0,
+    permission: 0,
+    other: 0,
+  };
+
+  recentErrors.forEach(error => {
+    errorTypes[error.errorType]++;
+  });
+
+  return {
+    totalErrors: errorHistory.length,
+    recentErrors: recentErrors.length,
+    dailyErrors: dailyErrors.length,
+    errorTypes,
+    lastError: errorHistory[errorHistory.length - 1],
+  };
+};
+
+// Automatic recovery trigger
+export const triggerAutomaticRecovery = async (): Promise<boolean> => {
+  if (isRecovering || recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
+    console.warn(
+      '🔥 Automatic recovery skipped - already in progress or max attempts reached'
+    );
+    return false;
+  }
+
+  try {
+    isRecovering = true;
+    recoveryAttempts++;
+
+    console.log(
+      `🔥 Triggering automatic Firestore recovery (attempt ${recoveryAttempts}/${MAX_RECOVERY_ATTEMPTS})`
+    );
+
+    // Track recovery attempt
+    const recoveryStartTime = Date.now();
+
+    // 1. Cleanup all active listeners
+    cleanupAllListeners();
+
+    // 2. Disable network to stop all operations
+    const db = await getFirestoreService();
+    if (db) {
+      try {
+        await disableNetwork(db);
+        console.log('✅ Network disabled for recovery');
+      } catch (error) {
+        console.warn('⚠️ Could not disable network during recovery:', error);
+      }
+    }
+
+    // 3. Reinitialize Firebase completely
+    const reinitSuccess = await reinitializeFirebase();
+    if (!reinitSuccess) {
+      console.error(
+        '❌ Firebase reinitialization failed during automatic recovery'
+      );
+
+      // Track failed recovery
+      const lastError = errorHistory[errorHistory.length - 1];
+      if (lastError) {
+        lastError.recoveryAttempted = true;
+        lastError.recoverySuccessful = false;
+      }
+
+      return false;
+    }
+
+    // 4. Re-enable network
+    const newDb = await getFirestoreService();
+    if (newDb) {
+      try {
+        await enableNetwork(newDb);
+        console.log('✅ Network re-enabled after recovery');
+      } catch (error) {
+        console.warn('⚠️ Could not re-enable network after recovery:', error);
+      }
+    }
+
+    const recoveryDuration = Date.now() - recoveryStartTime;
+    console.log(
+      `✅ Automatic Firestore recovery completed successfully in ${recoveryDuration}ms`
+    );
+
+    // Track successful recovery
+    const lastError = errorHistory[errorHistory.length - 1];
+    if (lastError) {
+      lastError.recoveryAttempted = true;
+      lastError.recoverySuccessful = true;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('❌ Automatic Firestore recovery failed:', error);
+
+    // Track failed recovery
+    const lastError = errorHistory[errorHistory.length - 1];
+    if (lastError) {
+      lastError.recoveryAttempted = true;
+      lastError.recoverySuccessful = false;
+    }
+
+    return false;
+  } finally {
+    isRecovering = false;
+
+    // Reset recovery attempts after cooldown
+    setTimeout(() => {
+      recoveryAttempts = 0;
+      console.log('🔄 Recovery attempts reset after cooldown');
+    }, RECOVERY_COOLDOWN);
+  }
+};
+
+// Comprehensive Firestore recovery
+export const recoverFirestore = async (): Promise<boolean> => {
+  return triggerAutomaticRecovery();
+};
+
+// Enhanced safe operation wrapper with automatic recovery
+export const withFirestoreRecovery = async <T>(
+  operation: () => Promise<T>,
+  fallback?: T
+): Promise<T> => {
+  try {
+    return await operation();
+  } catch (error) {
+    // Track the error
+    trackError(error);
+
+    if (isFirestoreInternalError(error)) {
+      console.warn(
+        '🔥 Detected Firestore internal error, attempting automatic recovery...'
+      );
+
+      const recoverySuccess = await triggerAutomaticRecovery();
+      if (recoverySuccess) {
+        try {
+          console.log('🔥 Retrying operation after automatic recovery...');
+          return await operation();
+        } catch (retryError) {
+          console.error(
+            '🔥 Operation failed after automatic recovery:',
+            retryError
+          );
+          trackError(retryError);
+          if (fallback !== undefined) {
+            console.warn('🔥 Using fallback value');
+            return fallback;
+          }
+          throw retryError;
+        }
+      } else {
+        console.error('🔥 Automatic Firestore recovery failed, cannot recover');
+        if (fallback !== undefined) {
+          console.warn('🔥 Using fallback value');
+          return fallback;
+        }
+        throw error;
+      }
+    } else {
+      // Not a Firestore internal error, rethrow
+      throw error;
+    }
+  }
+};
+
+// Global error handler for unhandled Firebase errors
+export const setupGlobalFirebaseErrorHandler = () => {
+  if (typeof window === 'undefined') return;
+
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    const errorMessage = args.join(' ');
+
+    // Check if this is a Firestore internal error
+    if (isFirestoreInternalError({ message: errorMessage })) {
+      console.warn('🔥 Global error handler detected Firestore internal error');
+      trackError(new Error(errorMessage), 'global-error-handler');
+
+      // Trigger automatic recovery in the background
+      triggerAutomaticRecovery().then(success => {
+        if (success) {
+          console.log('🔥 Global error handler: Automatic recovery completed');
+        } else {
+          console.error('🔥 Global error handler: Automatic recovery failed');
+        }
+      });
+    }
+
+    // Call original console.error
+    originalConsoleError.apply(console, args);
+  };
+
+  console.log('✅ Global Firebase error handler installed');
+};
+
+// Initialize global error handler
+if (typeof window !== 'undefined') {
+  setupGlobalFirebaseErrorHandler();
+}
+
+// Enhanced timeout wrapper
+export const withTimeout = <T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  errorMessage?: string
+): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        reject(
+          new Error(errorMessage || `Operation timed out after ${timeoutMs}ms`)
+        );
+      }, timeoutMs);
+    }),
+  ]);
+};
+
+// Cleanup function to be called on app unmount
+export const cleanupFirebase = async () => {
+  console.log('🧹 Cleaning up Firebase resources...');
+  cleanupAllListeners();
+
+  const db = await getFirestoreService();
+  if (db) {
+    try {
+      await disableNetwork(db);
+      console.log('✅ Network disabled during cleanup');
+    } catch (error) {
+      console.warn('⚠️ Could not disable network during cleanup:', error);
+    }
+  }
+};
+
+// Auto-cleanup on page unload
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    cleanupAllListeners();
+  });
+}

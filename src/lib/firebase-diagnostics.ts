@@ -1,5 +1,5 @@
 // Firebase Diagnostics Tool
-import { db, auth } from './firebase';
+import { auth } from './firebase';
 import {
   doc,
   getDoc,
@@ -8,6 +8,7 @@ import {
   disableNetwork,
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getFirestoreService, getAuthService } from './firebase';
 
 export interface DiagnosticResult {
   test: string;
@@ -140,6 +141,8 @@ export class FirebaseDiagnostics {
       }
 
       // Try to enable network
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       await enableNetwork(db);
       this.addResult(
         'Network Connection',
@@ -157,7 +160,17 @@ export class FirebaseDiagnostics {
   }
 
   private async testAuthentication() {
-    return new Promise<void>(resolve => {
+    return new Promise<void>(async resolve => {
+      const auth = await getAuthService();
+      if (!auth) {
+        this.addResult(
+          'Authentication',
+          'warning',
+          'Firebase Auth not available'
+        );
+        resolve();
+        return;
+      }
       const unsubscribe = onAuthStateChanged(auth, user => {
         if (user) {
           this.addResult(
@@ -199,6 +212,8 @@ export class FirebaseDiagnostics {
 
   private async testFirestoreRules() {
     try {
+      const db = await getFirestoreService();
+      if (!db) throw new Error('Firestore not available');
       // Try to write a test document
       const testDocRef = doc(db, 'diagnostics', 'rules-test');
       await setDoc(testDocRef, {
@@ -254,6 +269,8 @@ export const attemptAutoFix = async (): Promise<void> => {
 
   try {
     // Try to re-enable network with multiple attempts
+    const db = await getFirestoreService();
+    if (!db) throw new Error('Firestore not available');
     console.log('🔄 Step 1: Disabling Firestore network...');
     await disableNetwork(db);
 

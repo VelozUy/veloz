@@ -632,9 +632,7 @@ function SortableValueCard({
 
 export default function AboutAdminPage() {
   const { user } = useAuth();
-  const [aboutContent, setAboutContent] = useState<AboutContentData | null>(
-    null
-  );
+  const [, setAboutContent] = useState<AboutContentData | null>(null);
 
   // Drag and drop sensors
   const sensors = useSensors(
@@ -687,7 +685,9 @@ export default function AboutAdminPage() {
         if (response.data) {
           setAboutContent(response.data);
           // Create form data without id, createdAt, updatedAt
-          const { id, createdAt, updatedAt, ...contentData } = response.data;
+          const contentData = (({ id, createdAt, updatedAt, ...rest }) => rest)(
+            response.data
+          );
           setFormData(contentData);
         } else {
           // No content exists, use default
