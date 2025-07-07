@@ -303,7 +303,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           {/* Visual Grid Layout (if media blocks exist) */}
           {project.mediaBlocks && project.mediaBlocks.length > 0 ? (
             <div
-              className="relative w-full bg-gray-100 overflow-hidden"
+              className="relative w-full bg-background overflow-hidden"
               style={{ aspectRatio: '16/9' }}
             >
               {/* Render media blocks */}
@@ -340,7 +340,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                                   ?.fontFamily
                               : 'Inter, sans-serif',
                             fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                            color: block.color || '#000000',
+                            color: block.color || '#fff',
                           }}
                         >
                           {block.title || project.title}
@@ -491,7 +491,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
         {/* Visual Grid Layout */}
         <div
-          className="relative w-full bg-gray-100 overflow-hidden"
+          className="relative w-full bg-background overflow-hidden"
           style={{ aspectRatio: '16/9' }}
         >
           {sortedBlocks.map(block => {
@@ -525,7 +525,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                             ?.fontFamily
                         : 'Inter, sans-serif',
                       fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                      color: block.color || '#000000',
+                      color: block.color || '#fff',
                     }}
                   >
                     {block.title || project.title}
