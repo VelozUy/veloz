@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
 } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -281,105 +282,265 @@ export default function VisualGridEditor({
   const handleAutoPopulate = () => {
     if (projectMedia.length === 0) return;
 
-    const newBlocks: MediaBlock[] = [];
-    let currentY = 0;
-    let currentX = 0;
-    let maxY = 0;
-    let blocksInCurrentRow = 0;
-
-    // Sort media: horizontal videos first, then others
+    // Use stable ordering based on media ID to prevent constant reordering
     const sortedMedia = [...projectMedia].sort((a, b) => {
-      const aAspectRatio = a.aspectRatio
-        ? typeof a.aspectRatio === 'string'
-          ? parseFloat(a.aspectRatio)
-          : a.aspectRatio
-        : 1;
-      const bAspectRatio = b.aspectRatio
-        ? typeof b.aspectRatio === 'string'
-          ? parseFloat(b.aspectRatio)
-          : b.aspectRatio
-        : 1;
-      const aIsHorizontalVideo = a.type === 'video' && aAspectRatio > 1.2;
-      const bIsHorizontalVideo = b.type === 'video' && bAspectRatio > 1.2;
-
-      if (aIsHorizontalVideo && !bIsHorizontalVideo) return -1;
-      if (!aIsHorizontalVideo && bIsHorizontalVideo) return 1;
-      return 0;
+      // Sort by media ID for consistent ordering
+      return (a.id || '').localeCompare(b.id || '');
     });
 
-    sortedMedia.forEach((media, index) => {
-      // Calculate block dimensions based on actual media aspect ratio
-      let blockWidth = 1;
-      let blockHeight = 1;
+    // Calculate block dimensions based on media aspect ratio
+    const calculateBlockSize = (media: ProjectMedia) => {
+      let blockWidth = 4; // Default size doubled
+      let blockHeight = 4;
 
       if (media.aspectRatio) {
-        // Convert string aspect ratio to number
         let aspectRatio: number;
         if (typeof media.aspectRatio === 'string') {
-          // Handle string format like '16:9', '9:16', '1:1'
           const parts = media.aspectRatio.split(':');
           const width = Number(parts[0]);
           const height = Number(parts[1]);
           aspectRatio = width / height;
         } else {
-          // Handle numeric format
           aspectRatio = media.aspectRatio as number;
         }
 
-        // Calculate grid block dimensions to ensure media doesn't get clipped
-        // We want containers large enough so media can overflow if needed
-        const baseSize = 7; // Base size for calculations
+        // Base size doubled for larger layout
+        const baseSize = 6;
 
-        // Calculate the grid block dimensions to prevent clipping
         if (aspectRatio > 1) {
-          // Wide media (landscape) - make block wider and taller to prevent clipping
-          blockWidth = Math.min(GRID_WIDTH, Math.ceil(baseSize * aspectRatio));
-          blockHeight = Math.ceil(blockWidth / aspectRatio) + 2; // Add extra height for overflow
+          // Wide media (landscape)
+          blockWidth = Math.min(8, Math.ceil(baseSize * aspectRatio));
+          blockHeight = Math.max(4, Math.ceil(blockWidth / aspectRatio));
         } else {
-          // Tall media (portrait) - make block taller and wider to prevent clipping
-          blockHeight = Math.ceil(baseSize / aspectRatio) + 2; // Add extra height
-          blockWidth = Math.ceil(blockHeight * aspectRatio) + 2; // Add extra width for overflow
+          // Tall media (portrait)
+          blockHeight = Math.min(8, Math.ceil(baseSize / aspectRatio));
+          blockWidth = Math.max(4, Math.ceil(blockHeight * aspectRatio));
         }
       } else {
-        // Default sizing if no aspect ratio
-        blockWidth = Math.min(GRID_WIDTH, 8);
-        blockHeight = 8;
+        // Default sizing doubled
+        blockWidth = 6;
+        blockHeight = 6;
       }
 
-      // Check if we need to wrap to next row
-      // For wide blocks, they might take the full row
-      if (currentX + blockWidth > GRID_WIDTH) {
-        currentX = 0;
-        currentY = maxY;
-        blocksInCurrentRow = 0;
+      return { width: blockWidth, height: blockHeight };
+    };
+
+    // Two-pass algorithm: first pass places all media, second pass fills gaps
+    const newBlocks: MediaBlock[] = [];
+    let x = 0;
+    let y = 0;
+    let maxY = 0;
+
+    // Track occupied positions to avoid overlaps
+    const occupied = new Set<string>();
+
+    const isOccupied = (
+      startX: number,
+      startY: number,
+      width: number,
+      height: number
+    ) => {
+      for (let dy = 0; dy < height; dy++) {
+        for (let dx = 0; dx < width; dx++) {
+          const key = `${startX + dx},${startY + dy}`;
+          if (occupied.has(key)) return true;
+        }
+      }
+      return false;
+    };
+
+    const markOccupied = (
+      startX: number,
+      startY: number,
+      width: number,
+      height: number
+    ) => {
+      for (let dy = 0; dy < height; dy++) {
+        for (let dx = 0; dx < width; dx++) {
+          const key = `${startX + dx},${startY + dy}`;
+          occupied.add(key);
+        }
+      }
+    };
+
+    // FIRST PASS: Place all media sequentially
+    sortedMedia.forEach((media: ProjectMedia, index: number) => {
+      const { width: blockWidth, height: blockHeight } =
+        calculateBlockSize(media);
+
+      // Check if current position fits
+      if (x + blockWidth > GRID_WIDTH) {
+        const remainingSpace = GRID_WIDTH - x;
+
+        // Try to fit in remaining space with different sizes
+        if (remainingSpace >= 2) {
+          let finalWidth = remainingSpace;
+          const finalHeight = Math.min(remainingSpace, blockHeight);
+          if (finalWidth >= 6) finalWidth = 6;
+          else if (finalWidth >= 4) finalWidth = 4;
+          else if (finalWidth >= 3) finalWidth = 3;
+          else finalWidth = 2;
+
+          const block: MediaBlock = {
+            id: `auto-${index}`,
+            mediaId: media.id,
+            x: x,
+            y: y,
+            width: finalWidth,
+            height: finalHeight,
+            type: media.type === 'video' ? 'video' : 'image',
+            zIndex: index,
+          };
+          newBlocks.push(block);
+          markOccupied(x, y, finalWidth, finalHeight);
+          x += finalWidth;
+        } else {
+          // Move to next row
+          x = 0;
+          y = maxY;
+          const block: MediaBlock = {
+            id: `auto-${index}`,
+            mediaId: media.id,
+            x: x,
+            y: y,
+            width: blockWidth,
+            height: blockHeight,
+            type: media.type === 'video' ? 'video' : 'image',
+            zIndex: index,
+          };
+          newBlocks.push(block);
+          markOccupied(x, y, blockWidth, blockHeight);
+          x += blockWidth;
+        }
+      } else {
+        const block: MediaBlock = {
+          id: `auto-${index}`,
+          mediaId: media.id,
+          x: x,
+          y: y,
+          width: blockWidth,
+          height: blockHeight,
+          type: media.type === 'video' ? 'video' : 'image',
+          zIndex: index,
+        };
+        newBlocks.push(block);
+        markOccupied(x, y, blockWidth, blockHeight);
+        x += blockWidth;
       }
 
-      // Create the block
-      const block: MediaBlock = {
-        id: `auto-${index}`,
-        mediaId: media.id,
-        x: currentX,
-        y: currentY,
-        width: blockWidth,
-        height: blockHeight,
-        type: media.type === 'video' ? 'video' : 'image',
-        zIndex: index,
-      };
-
-      newBlocks.push(block);
-
-      // Update position for next block
-      currentX += blockWidth;
-      blocksInCurrentRow++;
-      maxY = Math.max(maxY, currentY + blockHeight);
+      maxY = Math.max(maxY, y + blockHeight);
     });
 
-    // Update additional rows if needed
-    const totalRowsNeeded = maxY;
-    const additionalRowsNeeded = Math.max(0, totalRowsNeeded - GRID_HEIGHT);
+    // SECOND PASS: Find gaps and fill them with appropriate media
+    const findGaps = () => {
+      const gaps: Array<{
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        ratio: number;
+      }> = [];
+
+      for (let row = 0; row < maxY; row++) {
+        for (let col = 0; col < GRID_WIDTH; col++) {
+          if (!isOccupied(col, row, 1, 1)) {
+            // Find the size of this gap
+            let gapWidth = 0;
+            let gapHeight = 0;
+
+            // Find width
+            for (
+              let dx = 0;
+              col + dx < GRID_WIDTH && !isOccupied(col + dx, row, 1, 1);
+              dx++
+            ) {
+              gapWidth++;
+            }
+
+            // Find height
+            for (
+              let dy = 0;
+              row + dy < maxY && !isOccupied(col, row + dy, gapWidth, 1);
+              dy++
+            ) {
+              gapHeight++;
+            }
+
+            if (gapWidth >= 2 && gapHeight >= 2) {
+              const ratio = gapWidth / gapHeight;
+              gaps.push({
+                x: col,
+                y: row,
+                width: gapWidth,
+                height: gapHeight,
+                ratio,
+              });
+            }
+          }
+        }
+      }
+
+      return gaps;
+    };
+
+    const findMediaForGap = (gapRatio: number, usedMediaIds: Set<string>) => {
+      // Find media that hasn't been used yet and has a similar aspect ratio
+      for (let i = sortedMedia.length - 1; i >= 0; i--) {
+        const media = sortedMedia[i];
+        if (usedMediaIds.has(media.id || '')) continue;
+
+        let mediaRatio = 1;
+        if (media.aspectRatio) {
+          if (typeof media.aspectRatio === 'string') {
+            const parts = media.aspectRatio.split(':');
+            const width = Number(parts[0]);
+            const height = Number(parts[1]);
+            mediaRatio = width / height;
+          } else {
+            mediaRatio = media.aspectRatio as number;
+          }
+        }
+
+        // Check if aspect ratios are similar (within 50% difference)
+        const ratioDiff =
+          Math.abs(mediaRatio - gapRatio) / Math.max(mediaRatio, gapRatio);
+        if (ratioDiff < 0.5) {
+          return media;
+        }
+      }
+      return null;
+    };
+
+    // Fill gaps with appropriate media
+    const usedMediaIds = new Set<string>();
+    newBlocks.forEach(block => {
+      if (block.mediaId) usedMediaIds.add(block.mediaId);
+    });
+
+    const gaps = findGaps();
+    gaps.forEach(gap => {
+      const media = findMediaForGap(gap.ratio, usedMediaIds);
+      if (media) {
+        const block: MediaBlock = {
+          id: `gap-${Date.now()}-${Math.random()}`,
+          mediaId: media.id,
+          x: gap.x,
+          y: gap.y,
+          width: gap.width,
+          height: gap.height,
+          type: media.type === 'video' ? 'video' : 'image',
+          zIndex: 1000, // High z-index to ensure it's on top
+        };
+        newBlocks.push(block);
+        usedMediaIds.add(media.id || '');
+      }
+    });
+
+    // Calculate additional rows needed
+    const additionalRowsNeeded = Math.max(0, maxY - GRID_HEIGHT);
     setAdditionalRows(additionalRowsNeeded);
 
-    // Update media blocks
+    // Update media blocks with ALL media
     onMediaBlocksChange(newBlocks);
   };
 
@@ -500,25 +661,62 @@ export default function VisualGridEditor({
   );
 
   // Calculate maximum allowed offset for media positioning
-  const calculateMaxOffset = useCallback(
-    (block: MediaBlock, media: ProjectMedia) => {
+  const calculateMaxOffset = useMemo(() => {
+    return (block: MediaBlock, media: ProjectMedia) => {
       if (block.type === 'title') return { maxX: 0, maxY: 0 };
 
       // Get block dimensions
       const blockWidth = block.width * GRID_CELL_SIZE;
       const blockHeight = block.height * GRID_CELL_SIZE;
 
-      // Since we removed the 1.5x scaling, the media now fits the container exactly
-      // Disable media dragging to prevent blank areas
-      const maxOffset = 0; // No movement allowed - media stays centered
+      // Media aspect ratio
+      let aspectRatio = 1;
+      if (media.aspectRatio) {
+        if (typeof media.aspectRatio === 'string') {
+          const parts = media.aspectRatio.split(':');
+          const width = Number(parts[0]);
+          const height = Number(parts[1]);
+          aspectRatio = width / height;
+        } else {
+          aspectRatio = media.aspectRatio as number;
+        }
+      }
 
-      return {
-        maxX: maxOffset,
-        maxY: maxOffset,
-      };
-    },
-    [GRID_CELL_SIZE]
-  );
+      // Calculate scaled media dimensions (object-cover)
+      const containerAspectRatio = blockWidth / blockHeight;
+      let mediaDisplayWidth = blockWidth;
+      let mediaDisplayHeight = blockHeight;
+      if (aspectRatio > containerAspectRatio) {
+        // Media is wider: fit height
+        mediaDisplayHeight = blockHeight;
+        mediaDisplayWidth = blockHeight * aspectRatio;
+      } else {
+        // Media is taller or equal: fit width
+        mediaDisplayWidth = blockWidth;
+        mediaDisplayHeight = blockWidth / aspectRatio;
+      }
+
+      // Calculate the scale needed to ensure the full media content is available for repositioning
+      // The scale should be the ratio of the larger dimension to ensure no content is lost
+      const scaleX = mediaDisplayWidth / blockWidth;
+      const scaleY = mediaDisplayHeight / blockHeight;
+      const scale = Math.max(scaleX, scaleY, 1); // At least 1x scale
+
+      // The max offset is the distance from center to the edge, in percent of container size
+      // You can move the media so that its edge is flush with the container edge, but not beyond
+      // This prevents showing blank space when dragging
+      const maxOffsetX = Math.max(
+        0,
+        ((mediaDisplayWidth - blockWidth) / 2 / blockWidth) * 100
+      );
+      const maxOffsetY = Math.max(
+        0,
+        ((mediaDisplayHeight - blockHeight) / 2 / blockHeight) * 100
+      );
+
+      return { maxX: maxOffsetX, maxY: maxOffsetY, scale };
+    };
+  }, [GRID_CELL_SIZE]);
 
   // Enhanced handle mouse move with better resize constraints
   const handleMouseMove = useCallback(
@@ -550,7 +748,7 @@ export default function VisualGridEditor({
         const media = block.mediaId ? getMediaById(block.mediaId) : null;
         const { maxX, maxY } = media
           ? calculateMaxOffset(block, media)
-          : { maxX: 15, maxY: 15 };
+          : { maxX: 0, maxY: 0 };
 
         // Constrain offset to calculated bounds
         const constrainedOffsetX = Math.max(-maxX, Math.min(maxX, newOffsetX));
@@ -1537,7 +1735,7 @@ export default function VisualGridEditor({
                                   playsInline
                                   autoPlay
                                   style={{
-                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%)`,
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(${media ? calculateMaxOffset(block, media).scale : 1})`,
                                   }}
                                 />
                               ) : (
@@ -1548,7 +1746,7 @@ export default function VisualGridEditor({
                                   className="object-cover"
                                   sizes="(max-width: 768px) 100vw, 50vw"
                                   style={{
-                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%)`,
+                                    transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(${media ? calculateMaxOffset(block, media).scale : 1})`,
                                     objectPosition: 'center',
                                   }}
                                 />
