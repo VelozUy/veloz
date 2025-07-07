@@ -13,7 +13,7 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   zh: '中文',
 };
 
-// Event Types
+// Event Types (Legacy - for backward compatibility)
 export const EVENT_TYPES: EventType[] = [
   'casamiento',
   'corporativos',
@@ -51,6 +51,9 @@ export const EVENT_TYPE_LABELS_PT: Record<EventType, string> = {
   prensa: 'Imprensa',
   otros: 'Outros',
 };
+
+// Export category system
+export * from './categories';
 
 // Service Types
 export const SERVICE_TYPES = [

@@ -466,7 +466,7 @@ export interface ProjectMedia {
   mimeType: string;
   url: string;
   thumbnail?: string;
-  aspectRatio: '1:1' | '16:9' | '9:16'; // Detected during upload
+  aspectRatio: '1:1' | '16:9' | '9:16' | string | number; // Detected during upload
   width?: number; // Original dimensions
   height?: number; // Original dimensions
   description?: {

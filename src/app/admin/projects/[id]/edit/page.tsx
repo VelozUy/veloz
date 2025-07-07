@@ -81,7 +81,8 @@ interface Project {
     videos: number;
   };
   crewMembers?: string[]; // Array of crew member IDs
-  mediaBlocks?: MediaBlock[]; // Visual grid editor blocks
+  mediaBlocks?: MediaBlock[]; // Visual grid editor blocks for our-work page
+  detailPageBlocks?: MediaBlock[]; // Visual grid editor blocks for project detail page
   heroMediaConfig?: HeroMediaConfig; // Hero media configuration
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
@@ -634,7 +635,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -651,7 +652,11 @@ export default function UnifiedProjectEditPage({
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="crew">Equipo</TabsTrigger>
-                <TabsTrigger value="layout">Diseño</TabsTrigger>
+                <TabsTrigger value="project-design">
+                  Diseño de Página
+                </TabsTrigger>
+                <TabsTrigger value="our-work">Bloque Our-Work</TabsTrigger>
+                <TabsTrigger value="detail-page">Página de Detalle</TabsTrigger>
               </TabsList>
 
               {/* Project Details Tab */}
@@ -939,32 +944,92 @@ export default function UnifiedProjectEditPage({
                 />
               </TabsContent>
 
-              {/* Layout Tab */}
-              <TabsContent value="layout" className="space-y-6">
-                {/* Hero Media Selection */}
-                <HeroMediaSelector
-                  projectMedia={projectMedia}
-                  heroConfig={draftProject.heroMediaConfig}
-                  onHeroConfigChange={(config: HeroMediaConfig) => {
-                    updateDraftProject({ heroMediaConfig: config });
-                  }}
-                  disabled={saving}
-                />
+              {/* Project Design Tab - Hero Media for Project Page */}
+              <TabsContent value="project-design" className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Diseño de la Página del Proyecto
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Configura el media hero que se mostrará en la página
+                      individual del proyecto.
+                    </p>
+                  </div>
 
-                {/* Visual Grid Editor */}
-                <LayoutTemplateSelector
-                  projectMedia={projectMedia}
-                  mediaBlocks={draftProject.mediaBlocks || []}
-                  onMediaBlocksChange={(blocks: MediaBlock[]) => {
-                    updateDraftProject({ mediaBlocks: blocks });
-                  }}
-                  disabled={saving}
-                  projectName={
-                    draftProject.title.en ||
-                    draftProject.title.es ||
-                    draftProject.title.pt
-                  }
-                />
+                  {/* Hero Media Selection */}
+                  <HeroMediaSelector
+                    projectMedia={projectMedia}
+                    heroConfig={draftProject.heroMediaConfig}
+                    onHeroConfigChange={(config: HeroMediaConfig) => {
+                      updateDraftProject({ heroMediaConfig: config });
+                    }}
+                    disabled={saving}
+                  />
+                </div>
+              </TabsContent>
+
+              {/* Our-Work Block Tab - Visual Grid for Our-Work Page */}
+              <TabsContent value="our-work" className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Bloque para Página Our-Work
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Configura cómo se mostrará este proyecto en la página de
+                      nuestros trabajos.
+                    </p>
+                  </div>
+
+                  {/* Visual Grid Editor */}
+                  <LayoutTemplateSelector
+                    projectMedia={projectMedia}
+                    mediaBlocks={draftProject.mediaBlocks || []}
+                    onMediaBlocksChange={(blocks: MediaBlock[]) => {
+                      updateDraftProject({ mediaBlocks: blocks });
+                    }}
+                    disabled={saving}
+                    projectName={
+                      draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt
+                    }
+                  />
+                </div>
+              </TabsContent>
+
+              {/* Project Detail Page Tab - Visual Grid for Project Detail Page */}
+              <TabsContent value="detail-page" className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Página de Detalle del Proyecto
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Configura el diseño completo de la página individual del
+                      proyecto. El grid se cargará automáticamente con todo el
+                      contenido subido, intentando coincidir con las
+                      proporciones de los medios.
+                    </p>
+                  </div>
+
+                  {/* Visual Grid Editor for Detail Page */}
+                  <LayoutTemplateSelector
+                    projectMedia={projectMedia}
+                    mediaBlocks={draftProject.detailPageBlocks || []}
+                    onMediaBlocksChange={(blocks: MediaBlock[]) => {
+                      updateDraftProject({ detailPageBlocks: blocks });
+                    }}
+                    disabled={saving}
+                    projectName={
+                      draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt
+                    }
+                    expandable={true}
+                  />
+                </div>
               </TabsContent>
             </Tabs>
           </CardContent>

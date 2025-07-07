@@ -225,6 +225,7 @@ interface VisualGridEditorProps {
   onMediaBlocksChange: (blocks: MediaBlock[]) => void;
   disabled?: boolean;
   projectName?: string;
+  expandable?: boolean;
 }
 
 export default function VisualGridEditor({
@@ -233,6 +234,7 @@ export default function VisualGridEditor({
   onMediaBlocksChange,
   disabled = false,
   projectName,
+  expandable = false,
 }: VisualGridEditorProps) {
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -256,10 +258,125 @@ export default function VisualGridEditor({
     null
   );
   const [showTitleToolbar, setShowTitleToolbar] = useState(false);
+  const [additionalRows, setAdditionalRows] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const selectedBlockRef = useRef<HTMLDivElement>(null);
+
+  // Expansion handlers
+  const handleAddRow = () => {
+    setAdditionalRows(prev => prev + 1);
+  };
+
+  const handleAddNineRows = () => {
+    setAdditionalRows(prev => prev + 9);
+  };
+
+  const handleRemoveRow = () => {
+    setAdditionalRows(prev => Math.max(0, prev - 1));
+  };
+
+  // Auto-populate grid with all media
+  const handleAutoPopulate = () => {
+    if (projectMedia.length === 0) return;
+
+    const newBlocks: MediaBlock[] = [];
+    let currentY = 0;
+    let currentX = 0;
+    let maxY = 0;
+    let blocksInCurrentRow = 0;
+
+    // Sort media: horizontal videos first, then others
+    const sortedMedia = [...projectMedia].sort((a, b) => {
+      const aAspectRatio = a.aspectRatio ? parseFloat(a.aspectRatio) : 1;
+      const bAspectRatio = b.aspectRatio ? parseFloat(b.aspectRatio) : 1;
+      const aIsHorizontalVideo = a.type === 'video' && aAspectRatio > 1.2;
+      const bIsHorizontalVideo = b.type === 'video' && bAspectRatio > 1.2;
+
+      if (aIsHorizontalVideo && !bIsHorizontalVideo) return -1;
+      if (!aIsHorizontalVideo && bIsHorizontalVideo) return 1;
+      return 0;
+    });
+
+    sortedMedia.forEach((media, index) => {
+      // Calculate block dimensions based on actual media aspect ratio
+      let blockWidth = 1;
+      let blockHeight = 1;
+
+      if (media.aspectRatio) {
+        // Convert string aspect ratio to number
+        let aspectRatio: number;
+        if (typeof media.aspectRatio === 'string') {
+          // Handle string format like '16:9', '9:16', '1:1'
+          const parts = (media.aspectRatio as string).split(':');
+          const width = Number(parts[0]);
+          const height = Number(parts[1]);
+          aspectRatio = width / height;
+        } else {
+          // Handle numeric format
+          aspectRatio =
+            typeof media.aspectRatio === 'number'
+              ? media.aspectRatio
+              : parseFloat(media.aspectRatio as string);
+        }
+
+        // Calculate grid block dimensions to match media aspect ratio
+        // We want the grid block aspect ratio to match the media aspect ratio
+        const baseSize = 7; // Base size for calculations
+
+        // Calculate the grid block dimensions to match media aspect ratio
+        if (aspectRatio > 1) {
+          // Wide media (landscape) - make block wider
+          blockWidth = Math.min(GRID_WIDTH, Math.ceil(baseSize * aspectRatio));
+          blockHeight = Math.ceil(blockWidth / aspectRatio);
+        } else {
+          // Tall media (portrait) - make block taller
+          blockHeight = Math.ceil(baseSize / aspectRatio);
+          blockWidth = Math.ceil(blockHeight * aspectRatio);
+        }
+      } else {
+        // Default sizing if no aspect ratio
+        blockWidth = Math.min(GRID_WIDTH, 8);
+        blockHeight = 8;
+      }
+
+      // Check if we need to wrap to next row
+      // For wide blocks, they might take the full row
+      if (currentX + blockWidth > GRID_WIDTH) {
+        currentX = 0;
+        currentY = maxY;
+        blocksInCurrentRow = 0;
+      }
+
+      // Create the block
+      const block: MediaBlock = {
+        id: `auto-${index}`,
+        mediaId: media.id,
+        x: currentX,
+        y: currentY,
+        width: blockWidth,
+        height: blockHeight,
+        type: media.type === 'video' ? 'video' : 'image',
+        zIndex: index,
+      };
+
+      newBlocks.push(block);
+
+      // Update position for next block
+      currentX += blockWidth;
+      blocksInCurrentRow++;
+      maxY = Math.max(maxY, currentY + blockHeight);
+    });
+
+    // Update additional rows if needed
+    const totalRowsNeeded = maxY;
+    const additionalRowsNeeded = Math.max(0, totalRowsNeeded - GRID_HEIGHT);
+    setAdditionalRows(additionalRowsNeeded);
+
+    // Update media blocks
+    onMediaBlocksChange(newBlocks);
+  };
 
   // Dynamically calculate cell size to fit the grid in the container
   const cellWidth = containerSize.width / GRID_WIDTH;
@@ -278,7 +395,7 @@ export default function VisualGridEditor({
   const constrainToGrid = useCallback(
     (x: number, y: number, width: number, height: number) => {
       const maxWidth = GRID_WIDTH;
-      const maxHeight = GRID_HEIGHT;
+      const maxHeight = GRID_HEIGHT + additionalRows;
 
       // Ensure minimum size of 1 grid cell
       const minSize = 1;
@@ -307,7 +424,7 @@ export default function VisualGridEditor({
         height: constrainedHeight,
       };
     },
-    [GRID_CELL_SIZE]
+    [GRID_CELL_SIZE, additionalRows]
   );
 
   // Handle mouse down on media block
@@ -1243,17 +1360,23 @@ export default function VisualGridEditor({
                   </Button>
                 </div>
               )}
+
               {/* Responsive Grid Container */}
               <div
                 ref={containerRef}
-                className="w-full h-[70vh] border border-gray-200 rounded-lg bg-white flex items-center justify-center"
+                className="w-full border border-gray-200 rounded-lg bg-white flex flex-col items-center justify-center"
+                style={{
+                  minHeight: expandable
+                    ? `${(GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE + 80}px`
+                    : '70vh',
+                }}
               >
                 <div
                   ref={gridRef}
                   className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden"
                   style={{
                     width: GRID_WIDTH * GRID_CELL_SIZE,
-                    height: GRID_HEIGHT * GRID_CELL_SIZE,
+                    height: (GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE,
                     maxWidth: '100%',
                     maxHeight: '100%',
                   }}
@@ -1267,7 +1390,9 @@ export default function VisualGridEditor({
                         style={{ left: i * GRID_CELL_SIZE }}
                       />
                     ))}
-                    {Array.from({ length: GRID_HEIGHT + 1 }).map((_, i) => (
+                    {Array.from({
+                      length: GRID_HEIGHT + additionalRows + 1,
+                    }).map((_, i) => (
                       <div
                         key={`h-${i}`}
                         className="absolute left-0 right-0 border-t border-gray-200"
@@ -1308,34 +1433,62 @@ export default function VisualGridEditor({
                           }
                         }}
                       >
-                        {/* Drag Handle */}
+                        {/* Drag Handle and Delete Button */}
                         {!disabled && (
-                          <div
-                            className="absolute top-1 left-1 w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-sm flex items-center justify-center z-10"
-                            onMouseDown={e => {
-                              e.stopPropagation();
-                              handleMouseDown(e, block.id, 'drag');
-                            }}
-                            title="Mover bloque"
-                          >
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="text-white"
+                          <div className="absolute top-1 left-1 flex gap-1 z-10">
+                            <div
+                              className="w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-sm flex items-center justify-center"
+                              onMouseDown={e => {
+                                e.stopPropagation();
+                                handleMouseDown(e, block.id, 'drag');
+                              }}
+                              title="Mover bloque"
                             >
-                              <circle cx="9" cy="5" r="1" />
-                              <circle cx="9" cy="12" r="1" />
-                              <circle cx="9" cy="19" r="1" />
-                              <circle cx="15" cy="5" r="1" />
-                              <circle cx="15" cy="12" r="1" />
-                              <circle cx="15" cy="19" r="1" />
-                            </svg>
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="text-white"
+                              >
+                                <circle cx="9" cy="5" r="1" />
+                                <circle cx="9" cy="12" r="1" />
+                                <circle cx="9" cy="19" r="1" />
+                                <circle cx="15" cy="5" r="1" />
+                                <circle cx="15" cy="12" r="1" />
+                                <circle cx="15" cy="19" r="1" />
+                              </svg>
+                            </div>
+                            <button
+                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-sm flex items-center justify-center transition-colors"
+                              onClick={e => {
+                                e.stopPropagation();
+                                const updatedBlocks = mediaBlocks.filter(
+                                  b => b.id !== block.id
+                                );
+                                onMediaBlocksChange(updatedBlocks);
+                              }}
+                              title="Eliminar bloque"
+                            >
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="text-white"
+                              >
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                              </svg>
+                            </button>
                           </div>
                         )}
 
@@ -1423,10 +1576,51 @@ export default function VisualGridEditor({
 
                   {/* Grid Info */}
                   <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                    {GRID_WIDTH}×{GRID_HEIGHT} Grid • {mediaBlocks.length}{' '}
-                    bloques
+                    {GRID_WIDTH}×{GRID_HEIGHT + additionalRows} Grid •{' '}
+                    {mediaBlocks.length} bloques
                   </div>
                 </div>
+
+                {/* Expansion Controls - Bottom */}
+                {expandable && (
+                  <div className="flex items-center justify-center gap-2 mt-4 p-4 bg-gray-50 rounded-lg border">
+                    <button
+                      onClick={handleRemoveRow}
+                      disabled={additionalRows === 0}
+                      className="px-3 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      -1 Fila
+                    </button>
+                    <button
+                      onClick={handleAddRow}
+                      className="px-3 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    >
+                      +1 Fila
+                    </button>
+                    <button
+                      onClick={handleAddNineRows}
+                      className="px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                    >
+                      +9 Filas
+                    </button>
+                    <span className="text-sm text-muted-foreground ml-4 px-3 py-2 bg-white rounded border">
+                      Filas adicionales: {additionalRows}
+                    </span>
+                  </div>
+                )}
+
+                {/* Auto-populate Button */}
+                {expandable && projectMedia.length > 0 && (
+                  <div className="flex items-center justify-center mt-4">
+                    <button
+                      onClick={handleAutoPopulate}
+                      disabled={disabled}
+                      className="px-6 py-3 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    >
+                      🎯 Auto-popular Grid con Todo el Media
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Instructions */}

@@ -10,6 +10,7 @@ interface LayoutTemplateSelectorProps {
   onMediaBlocksChange: (blocks: MediaBlock[]) => void;
   disabled?: boolean;
   projectName?: string;
+  expandable?: boolean;
 }
 
 export default function LayoutTemplateSelector({
@@ -18,6 +19,7 @@ export default function LayoutTemplateSelector({
   onMediaBlocksChange,
   disabled,
   projectName,
+  expandable = false,
 }: LayoutTemplateSelectorProps) {
   return (
     <div className="space-y-6">
@@ -37,6 +39,7 @@ export default function LayoutTemplateSelector({
         onMediaBlocksChange={onMediaBlocksChange}
         disabled={disabled}
         projectName={projectName}
+        expandable={expandable}
       />
     </div>
   );

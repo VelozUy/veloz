@@ -26,6 +26,7 @@ import {
   Filter,
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FONT_OPTIONS } from '@/components/admin/VisualGridEditor';
 import HeroLayout from '@/components/layout/HeroLayout';
 
@@ -159,7 +160,6 @@ const projectVariants = {
 };
 
 export function OurWorkContent({ content }: OurWorkContentProps) {
-  const [selectedEventType, setSelectedEventType] = useState<string>('all');
   const [carouselIndices, setCarouselIndices] = useState<
     Record<string, number>
   >({});
@@ -191,22 +191,9 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       });
   }, [content]);
 
-  // Filter projects by event type
+  // Use all projects since filters are removed
   const filteredProjects = useMemo(() => {
-    if (selectedEventType === 'all') {
-      return projects;
-    }
-    return projects.filter(project => project.eventType === selectedEventType);
-  }, [projects, selectedEventType]);
-
-  // Get unique event types from projects
-  const availableEventTypes = useMemo(() => {
-    const types = new Set(
-      projects
-        .map(p => p.eventType)
-        .filter((type): type is string => Boolean(type))
-    );
-    return Array.from(types);
+    return projects;
   }, [projects]);
 
   // Get event type label based on current locale (defaulting to Spanish)
@@ -426,17 +413,14 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     if (!project.mediaBlocks || project.mediaBlocks.length === 0) {
       return (
         <div className="space-y-8">
-          {/* Project Title and Description */}
-          <div className="text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground">
-              {project.title}
-            </h1>
-            {project.description && (
+          {/* Project Description */}
+          {project.description && (
+            <div className="text-center space-y-6">
               <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
                 {project.description}
               </p>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Simple Grid Fallback */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -477,17 +461,14 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
     return (
       <div className="space-y-8">
-        {/* Project Title and Description */}
-        <div className="text-center space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground">
-            {project.title}
-          </h1>
-          {project.description && (
+        {/* Project Description */}
+        {project.description && (
+          <div className="text-center space-y-6">
             <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               {project.description}
             </p>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Visual Grid Layout */}
         <div
@@ -588,27 +569,6 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             </Badge>
           )}
         </div>
-
-        {/* CTA Section */}
-        <div className="text-center pt-8">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  onClick={() => handleCTAClick(project.eventType || '')}
-                  size="lg"
-                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold text-lg px-8 py-4"
-                >
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  {uiText.wantSomethingLikeThis}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{uiText.tooltipText}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
       </div>
     );
   };
@@ -620,58 +580,6 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
   return (
     <div className="min-h-screen pt-20 pb-16">
-      {/* Hero Section */}
-      <section className="relative py-16 px-4 md:px-8 lg:px-12">
-        <div className="w-full text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              {uiText.title}
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              {uiText.subtitle}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Filter Section */}
-      <section className="px-4 md:px-8 lg:px-12 mb-12">
-        <div className="w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap items-center justify-center gap-4"
-          >
-            <Button
-              variant={selectedEventType === 'all' ? 'default' : 'outline'}
-              onClick={() => setSelectedEventType('all')}
-              className="flex items-center gap-2"
-            >
-              <Filter className="w-4 h-4" />
-              {uiText.allProjects}
-            </Button>
-
-            {availableEventTypes.map(eventType => (
-              <Button
-                key={eventType}
-                variant={
-                  selectedEventType === eventType ? 'default' : 'outline'
-                }
-                onClick={() => setSelectedEventType(eventType)}
-                className="flex items-center gap-2"
-              >
-                {getEventTypeLabel(eventType)}
-              </Button>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* Projects Full-Width Wall-to-Wall Layout */}
       {filteredProjects.length === 0 ? (
         <section className="px-4 md:px-8 lg:px-12">
@@ -701,12 +609,14 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
               className="w-full"
             >
               {/* Project Container - Full Width */}
-              <div className="w-full bg-background">
-                {/* Project Content - Full Width */}
-                <div className="w-full px-4 md:px-8 lg:px-12">
-                  {renderProject(project)}
+              <Link href={`/our-work/${project.id}`} className="block">
+                <div className="w-full bg-background hover:bg-muted/50 transition-colors duration-300 cursor-pointer">
+                  {/* Project Content - Full Width */}
+                  <div className="w-full px-4 md:px-8 lg:px-12">
+                    {renderProject(project)}
+                  </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Separator between projects (except for the last one) */}
               {index < filteredProjects.length - 1 && (
@@ -717,7 +627,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
         </motion.div>
       )}
 
-      {/* Bottom CTA Section */}
+      {/* Title and Subtitle Section */}
       <section className="px-4 md:px-8 lg:px-12 mt-24">
         <div className="w-full text-center">
           <motion.div
@@ -726,19 +636,12 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 md:p-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {uiText.readyTitle}
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {uiText.readySubtitle}
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+              {uiText.title}
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+              {uiText.subtitle}
             </p>
-            <Button
-              onClick={() => handleCTAClick('')}
-              size="lg"
-              className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold text-lg px-8 py-4"
-            >
-              {uiText.startConversation}
-            </Button>
           </motion.div>
         </div>
       </section>

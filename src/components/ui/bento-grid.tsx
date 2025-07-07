@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -12,6 +14,8 @@ interface BentoGridProps {
     [key: string]: unknown;
   }>;
   enableRandomLayout?: boolean;
+  expandable?: boolean;
+  onExpand?: (rows: number) => void;
 }
 
 interface BentoItemProps {
@@ -265,11 +269,14 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   className,
   items,
   enableRandomLayout = false,
+  expandable = false,
+  onExpand,
 }) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(
     'desktop'
   );
   const [isHydrated, setIsHydrated] = useState(false);
+  const [additionalRows, setAdditionalRows] = useState(0);
 
   // Prevent hydration mismatch by only enabling random layout after hydration
   useEffect(() => {
@@ -326,54 +333,110 @@ const BentoGrid: React.FC<BentoGridProps> = ({
     }));
   }, [items, enableRandomLayout, screenSize, isHydrated]);
 
+  const handleAddRow = () => {
+    const newRows = additionalRows + 1;
+    setAdditionalRows(newRows);
+    onExpand?.(newRows);
+  };
+
+  const handleAddNineRows = () => {
+    const newRows = additionalRows + 9;
+    setAdditionalRows(newRows);
+    onExpand?.(newRows);
+  };
+
+  const handleRemoveRow = () => {
+    if (additionalRows > 0) {
+      const newRows = additionalRows - 1;
+      setAdditionalRows(newRows);
+      onExpand?.(newRows);
+    }
+  };
+
   return (
-    <div
-      className={cn(
-        'grid gap-1 p-1 w-full max-w-full overflow-hidden', // Added width constraints and overflow hidden
-        useAspectRatioMode
-          ? `${getGridCols()} auto-rows-[minmax(100px,auto)]` // Smaller minimum height for full screen
-          : `auto-rows-[100px] ${getGridCols()}`, // Smaller row height for full screen
-        className
+    <div className="space-y-4">
+      {/* Expansion Controls */}
+      {expandable && (
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={handleRemoveRow}
+            disabled={additionalRows === 0}
+            className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            -1 Fila
+          </button>
+          <button
+            onClick={handleAddRow}
+            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          >
+            +1 Fila
+          </button>
+          <button
+            onClick={handleAddNineRows}
+            className="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+          >
+            +9 Filas
+          </button>
+          <span className="text-sm text-muted-foreground ml-2">
+            Filas adicionales: {additionalRows}
+          </span>
+        </div>
       )}
-    >
-      <AnimatePresence mode="popLayout">
-        {React.Children.map(children, (child, index) => {
-          if (!React.isValidElement(child)) return null;
 
-          let size: BentoItemProps['size'] = 'small';
-          let aspectRatio: string | undefined;
+      {/* Grid Container */}
+      <div
+        className={cn(
+          'grid gap-1 p-1 w-full max-w-full overflow-hidden', // Added width constraints and overflow hidden
+          useAspectRatioMode
+            ? `${getGridCols()} auto-rows-[minmax(100px,auto)]` // Smaller minimum height for full screen
+            : `auto-rows-[100px] ${getGridCols()}`, // Smaller row height for full screen
+          className
+        )}
+        style={{
+          gridTemplateRows: expandable
+            ? `repeat(${Math.max(1, additionalRows)}, minmax(100px, auto))`
+            : undefined,
+        }}
+      >
+        <AnimatePresence mode="popLayout">
+          {React.Children.map(children, (child, index) => {
+            if (!React.isValidElement(child)) return null;
 
-          if (optimizedItems && enableRandomLayout && isHydrated) {
-            // Use optimized random layout only after hydration
-            const optimizedItem = optimizedItems.find(
-              item => item.originalIndex === index
-            );
-            if (optimizedItem) {
-              size = optimizedItem.size;
-              aspectRatio = optimizedItem.aspectRatio;
+            let size: BentoItemProps['size'] = 'small';
+            let aspectRatio: string | undefined;
+
+            if (optimizedItems && enableRandomLayout && isHydrated) {
+              // Use optimized random layout only after hydration
+              const optimizedItem = optimizedItems.find(
+                item => item.originalIndex === index
+              );
+              if (optimizedItem) {
+                size = optimizedItem.size;
+                aspectRatio = optimizedItem.aspectRatio;
+              }
+            } else if (items && items[index]) {
+              // Use provided items array
+              size = items[index].size;
+              aspectRatio = items[index].aspectRatio as string;
             }
-          } else if (items && items[index]) {
-            // Use provided items array
-            size = items[index].size;
-            aspectRatio = items[index].aspectRatio as string;
-          }
 
-          const childProps = child.props as BentoChildProps;
+            const childProps = child.props as BentoChildProps;
 
-          return (
-            <BentoItem
-              key={`bento-item-${index}`}
-              size={size}
-              aspectRatio={aspectRatio}
-              index={index}
-              onClick={childProps.onClick}
-              className={childProps.className}
-            >
-              {childProps.children}
-            </BentoItem>
-          );
-        })}
-      </AnimatePresence>
+            return (
+              <BentoItem
+                key={`bento-item-${index}`}
+                size={size}
+                aspectRatio={aspectRatio}
+                index={index}
+                onClick={childProps.onClick}
+                className={childProps.className}
+              >
+                {childProps.children}
+              </BentoItem>
+            );
+          })}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

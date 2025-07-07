@@ -73,9 +73,9 @@ _All tasks resolved_
 #### 🎯 Hero Media Selection
 
 - [x] **[High] Implement 1:1 square hero layout** - Create square format hero section optimized for portrait-style content _(Added: Jan 8, 2025)_
-- [ ] **[High] Implement 16:9 widescreen hero layout** - Create cinematic widescreen hero section for video content _(Added: Jan 8, 2025)_
-- [ ] **[High] Implement 4:5 Instagram-style hero layout** - Create portrait hero section optimized for social media content _(Added: Jan 8, 2025)_
-- [ ] **[High] Implement 9:16 mobile-first hero layout** - Create vertical hero section optimized for mobile viewing _(Added: Jan 8, 2025)_
+- [x] **[High] Implement 16:9 widescreen hero layout** - Create cinematic widescreen hero section for video content _(Added: Jan 8, 2025)_
+- [x] **[High] Implement 4:5 Instagram-style hero layout** - Create portrait hero section optimized for social media content _(Added: Jan 8, 2025)_
+- [x] **[High] Implement 9:16 mobile-first hero layout** - Create vertical hero section optimized for mobile viewing _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Add hero media cropping interface** - Provide visual cropping tool to adjust media to selected aspect ratio _(Added: Jan 8, 2025)_
 - [ ] **[Low] Add hero media optimization** - Automatically optimize hero media for web performance based on selected ratio _(Added: Jan 8, 2025)_
 
