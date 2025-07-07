@@ -289,8 +289,16 @@ export default function VisualGridEditor({
 
     // Sort media: horizontal videos first, then others
     const sortedMedia = [...projectMedia].sort((a, b) => {
-      const aAspectRatio = a.aspectRatio ? parseFloat(a.aspectRatio) : 1;
-      const bAspectRatio = b.aspectRatio ? parseFloat(b.aspectRatio) : 1;
+      const aAspectRatio = a.aspectRatio
+        ? typeof a.aspectRatio === 'string'
+          ? parseFloat(a.aspectRatio)
+          : a.aspectRatio
+        : 1;
+      const bAspectRatio = b.aspectRatio
+        ? typeof b.aspectRatio === 'string'
+          ? parseFloat(b.aspectRatio)
+          : b.aspectRatio
+        : 1;
       const aIsHorizontalVideo = a.type === 'video' && aAspectRatio > 1.2;
       const bIsHorizontalVideo = b.type === 'video' && bAspectRatio > 1.2;
 
@@ -309,16 +317,13 @@ export default function VisualGridEditor({
         let aspectRatio: number;
         if (typeof media.aspectRatio === 'string') {
           // Handle string format like '16:9', '9:16', '1:1'
-          const parts = (media.aspectRatio as string).split(':');
+          const parts = media.aspectRatio.split(':');
           const width = Number(parts[0]);
           const height = Number(parts[1]);
           aspectRatio = width / height;
         } else {
           // Handle numeric format
-          aspectRatio =
-            typeof media.aspectRatio === 'number'
-              ? media.aspectRatio
-              : parseFloat(media.aspectRatio as string);
+          aspectRatio = media.aspectRatio as number;
         }
 
         // Calculate grid block dimensions to ensure media doesn't get clipped
@@ -581,9 +586,9 @@ export default function VisualGridEditor({
         const proposedWidth = Math.max(1, Math.round(mouseXInGrid - block.x));
         const proposedHeight = Math.max(1, Math.round(mouseYInGrid - block.y));
 
-        // Apply constraints to resize operation
+        // Apply constraints to resize operation - use the expanded grid height
         const maxWidth = GRID_WIDTH - block.x;
-        const maxHeight = GRID_HEIGHT - block.y;
+        const maxHeight = GRID_HEIGHT + additionalRows - block.y;
 
         newWidth = Math.min(proposedWidth, maxWidth);
         newHeight = Math.min(proposedHeight, maxHeight);
