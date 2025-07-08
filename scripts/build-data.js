@@ -1315,6 +1315,7 @@ export interface LocalizedContent {
         font?: string;
         color?: string;
       }>;
+      detailPageGridHeight?: number;
       media: Array<{
         id: string;
         projectId: string;
