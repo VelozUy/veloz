@@ -7,10 +7,14 @@ import { ProjectMedia } from '@/services/firebase';
 interface LayoutTemplateSelectorProps {
   projectMedia: ProjectMedia[];
   mediaBlocks?: MediaBlock[];
-  onMediaBlocksChange: (blocks: MediaBlock[]) => void;
+  onMediaBlocksChange: (
+    blocks: MediaBlock[],
+    gridConfig?: { width: number; height: number }
+  ) => void;
   disabled?: boolean;
   projectName?: string;
   expandable?: boolean;
+  initialGridConfig?: { width: number; height: number };
 }
 
 export default function LayoutTemplateSelector({
@@ -20,6 +24,7 @@ export default function LayoutTemplateSelector({
   disabled,
   projectName,
   expandable = false,
+  initialGridConfig,
 }: LayoutTemplateSelectorProps) {
   return (
     <div className="space-y-6">
@@ -36,10 +41,22 @@ export default function LayoutTemplateSelector({
       <VisualGridEditor
         projectMedia={projectMedia}
         mediaBlocks={mediaBlocks}
-        onMediaBlocksChange={onMediaBlocksChange}
+        onMediaBlocksChange={(blocks, gridConfig) => {
+          console.log(
+            '🔍 LayoutTemplateSelector - onMediaBlocksChange called:',
+            {
+              blocksCount: blocks.length,
+              gridConfig,
+              gridHeight: gridConfig?.height,
+              gridWidth: gridConfig?.width,
+            }
+          );
+          onMediaBlocksChange(blocks, gridConfig);
+        }}
         disabled={disabled}
         projectName={projectName}
         expandable={expandable}
+        initialGridConfig={initialGridConfig}
       />
     </div>
   );

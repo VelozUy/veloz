@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
-import ExpandableProjectGrid from '@/components/our-work/ExpandableProjectGrid';
+import ProjectVisualGrid from '@/components/our-work/ProjectVisualGrid';
 import Image from 'next/image';
 
 interface ProjectDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // Generate static params at build time
@@ -24,13 +24,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
+  const resolvedParams = await params;
   const content = getStaticContent('es');
-
-  const project = content.content.projects?.find(p => p.id === params.id);
+  const project = content.content.projects?.find(
+    p => p.id === resolvedParams.id
+  );
 
   if (!project) {
     return {
       title: 'Proyecto no encontrado | Veloz Fotografía y Videografía',
+      description: 'El proyecto que buscas no existe.',
     };
   }
 
@@ -38,29 +41,30 @@ export async function generateMetadata({
     title: `${project.title} | Veloz Fotografía y Videografía`,
     description:
       project.description ||
-      'Explora este proyecto de Veloz Fotografía y Videografía.',
+      `Explora el proyecto ${project.title} de Veloz Fotografía y Videografía.`,
     openGraph: {
       title: `${project.title} | Veloz Fotografía y Videografía`,
       description:
         project.description ||
-        'Explora este proyecto de Veloz Fotografía y Videografía.',
-      images: project.media?.[0]
-        ? [
-            {
-              url: project.media[0].url,
-              width: 1200,
-              height: 630,
-              alt: project.title,
-            },
-          ]
-        : [],
+        `Explora el proyecto ${project.title} de Veloz Fotografía y Videografía.`,
+      images:
+        project.media && project.media.length > 0
+          ? [
+              {
+                url: project.media[0].url,
+                width: 1200,
+                height: 630,
+                alt: project.title,
+              },
+            ]
+          : [],
     },
     alternates: {
-      canonical: `/our-work/${params.id}`,
+      canonical: `/our-work/${resolvedParams.id}`,
       languages: {
-        es: `/our-work/${params.id}`,
-        en: `/en/our-work/${params.id}`,
-        pt: `/pt/our-work/${params.id}`,
+        es: `/our-work/${resolvedParams.id}`,
+        en: `/en/our-work/${resolvedParams.id}`,
+        pt: `/pt/our-work/${resolvedParams.id}`,
       },
     },
   };
@@ -69,115 +73,102 @@ export async function generateMetadata({
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
+  const resolvedParams = await params;
   const content = getStaticContent('es');
-
-  const project = content.content.projects?.find(p => p.id === params.id);
+  const project = content.content.projects?.find(
+    p => p.id === resolvedParams.id
+  );
 
   if (!project) {
     notFound();
   }
 
-  // Get the first media item for hero
-  const heroMedia = project.media?.[0];
-
   return (
-    <div className="relative min-h-screen w-full bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      {heroMedia && (
-        <div className="w-full">
-          <div className="relative w-full aspect-video overflow-hidden">
-            {heroMedia.type === 'video' ? (
-              <video
-                src={heroMedia.url}
-                className="w-full h-full object-cover"
-                muted
-                loop
-                playsInline
-                autoPlay
-              />
-            ) : (
-              <Image
-                src={heroMedia.url}
-                alt={project.title}
-                fill
-                className="object-cover"
-                sizes="100vw"
-                priority
-              />
-            )}
-
-            {/* Overlay for text readability */}
-            <div className="absolute inset-0 bg-black/20" />
-
-            {/* Project Title Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-white px-4">
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
-                  {project.title}
-                </h1>
-              </div>
-            </div>
+      <div className="relative w-full h-[60vh] min-h-[400px] overflow-hidden">
+        {project.media && project.media.length > 0 ? (
+          <Image
+            src={project.media[0].url}
+            alt={project.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+        ) : (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <div className="text-muted-foreground text-lg">Sin imagen</div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Project Content */}
-      <div className="min-h-screen pt-20 pb-16">
-        <div className="w-full px-4 md:px-8 lg:px-12">
-          {/* Project Title (if no hero) */}
-          {!heroMedia && (
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-                {project.title}
-              </h1>
-              {project.description && (
-                <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto">
-                  {project.description}
-                </p>
-              )}
-            </div>
-          )}
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/30" />
 
-          {/* Project Description (if hero exists) */}
-          {heroMedia && project.description && (
-            <div className="text-center mb-12">
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto">
+        {/* Project Info */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl mx-auto px-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              {project.title}
+            </h1>
+            {project.description && (
+              <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
                 {project.description}
               </p>
-            </div>
-          )}
-
-          {/* Project Media in Expandable Grid */}
-          {project.media && project.media.length > 0 && (
-            <div className="mb-12">
-              <ExpandableProjectGrid
-                media={project.media}
-                projectTitle={project.title}
-              />
-            </div>
-          )}
-
-          {/* Project Details */}
-          <div className="text-center">
-            <div className="inline-flex items-center gap-4 text-muted-foreground">
-              {project.eventType && (
-                <span className="text-sm">{project.eventType}</span>
-              )}
-              {project.location && (
-                <span className="text-sm">{project.location}</span>
-              )}
-              {project.eventDate && (
-                <span className="text-sm">
-                  {new Date(project.eventDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </span>
-              )}
-            </div>
+            )}
           </div>
         </div>
+      </div>
+
+      {/* Project Content */}
+      <div className="container mx-auto px-6 py-12">
+        {/* Project Details */}
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            {project.eventType && (
+              <span className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium">
+                {project.eventType}
+              </span>
+            )}
+            {project.location && (
+              <span className="px-4 py-2 bg-secondary text-secondary-foreground rounded-full text-sm">
+                📍 {project.location}
+              </span>
+            )}
+            {project.eventDate && (
+              <span className="px-4 py-2 bg-secondary text-secondary-foreground rounded-full text-sm">
+                📅{' '}
+                {new Date(project.eventDate).toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Visual Grid */}
+        <div className="mb-12">
+          <ProjectVisualGrid
+            mediaBlocks={project.detailPageBlocks || []}
+            projectMedia={project.media || []}
+            projectTitle={project.title}
+            gridHeight={project.detailPageGridHeight}
+          />
+        </div>
+
+        {/* Project Description */}
+        {project.description && (
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-6">
+              Sobre este proyecto
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1129,6 +1129,8 @@ function generateLocaleContent(
           featured: project.featured || false,
           status: project.status || 'published',
           mediaBlocks: validateMediaBlocks(project.mediaBlocks || []),
+          detailPageBlocks: validateMediaBlocks(project.detailPageBlocks || []),
+          detailPageGridHeight: project.detailPageGridHeight || 9,
           media: project.media || [],
         };
         return transformedProject;
@@ -1282,6 +1284,22 @@ export interface LocalizedContent {
       featured: boolean;
       status?: string;
       mediaBlocks?: Array<{
+        id: string;
+        mediaId?: string;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        type: 'image' | 'video' | 'title';
+        zIndex: number;
+        mediaOffsetX?: number;
+        mediaOffsetY?: number;
+        // Title-specific properties
+        title?: string;
+        font?: string;
+        color?: string;
+      }>;
+      detailPageBlocks?: Array<{
         id: string;
         mediaId?: string;
         x: number;

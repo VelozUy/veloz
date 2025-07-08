@@ -30,6 +30,12 @@ export interface MediaBlock {
   mediaOffsetY?: number;
 }
 
+// Grid configuration for visual grid editor
+export interface GridConfig {
+  width: number; // Total grid width (default: 16)
+  height: number; // Total grid height (final number of rows)
+}
+
 // Hero Media Configuration Types
 export type HeroAspectRatio = '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
 

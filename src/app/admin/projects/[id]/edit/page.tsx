@@ -53,7 +53,7 @@ import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
 import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
-import { MediaBlock, HeroMediaConfig } from '@/types';
+import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
 
@@ -87,6 +87,7 @@ interface Project {
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
   media?: ProjectMedia[];
+  detailPageGridHeight?: number;
 }
 
 const EVENT_TYPES = [
@@ -135,6 +136,9 @@ export default function UnifiedProjectEditPage({
 
   // Refs
   const isNavigatingRef = useRef(false);
+
+  // New state for gridHeight
+  const [detailPageGridHeight, setDetailPageGridHeight] = useState<number>(9);
 
   // Handle async params
   useEffect(() => {
@@ -222,6 +226,11 @@ export default function UnifiedProjectEditPage({
             const mediaData = mediaResult.data || [];
             setProjectMedia([...mediaData]);
             setOriginalMedia([...mediaData]);
+          }
+
+          // Set detailPageGridHeight from the loaded data
+          if (migratedProjectData.detailPageGridHeight) {
+            setDetailPageGridHeight(migratedProjectData.detailPageGridHeight);
           }
         }
       } catch (error) {
@@ -333,6 +342,16 @@ export default function UnifiedProjectEditPage({
         return;
       }
 
+      // Add debug logging
+      console.log('🔍 Saving project:', {
+        detailPageBlocks: draftProject.detailPageBlocks,
+        mediaBlocks: draftProject.mediaBlocks,
+        detailPageGridHeight: draftProject.detailPageGridHeight,
+        detailPageGridHeightState: detailPageGridHeight,
+        finalHeight:
+          draftProject.detailPageGridHeight || detailPageGridHeight || 9,
+      });
+
       if (isCreateMode) {
         // Create new project with retry mechanism
         if (!db) {
@@ -354,6 +373,7 @@ export default function UnifiedProjectEditPage({
                 status: draftProject.status,
                 crewMembers: draftProject.crewMembers || [],
                 mediaBlocks: draftProject.mediaBlocks || [],
+                detailPageBlocks: draftProject.detailPageBlocks || [],
                 heroMediaConfig: draftProject.heroMediaConfig || {
                   aspectRatio: '16:9',
                   autoplay: true,
@@ -361,6 +381,10 @@ export default function UnifiedProjectEditPage({
                   loop: true,
                 },
                 mediaCount: { photos: 0, videos: 0 },
+                detailPageGridHeight:
+                  draftProject.detailPageGridHeight ||
+                  detailPageGridHeight ||
+                  9,
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
               }),
@@ -411,12 +435,17 @@ export default function UnifiedProjectEditPage({
                 status: draftProject.status,
                 crewMembers: draftProject.crewMembers || [],
                 mediaBlocks: draftProject.mediaBlocks || [],
+                detailPageBlocks: draftProject.detailPageBlocks || [],
                 heroMediaConfig: draftProject.heroMediaConfig || {
                   aspectRatio: '16:9',
                   autoplay: true,
                   muted: true,
                   loop: true,
                 },
+                detailPageGridHeight:
+                  draftProject.detailPageGridHeight ||
+                  detailPageGridHeight ||
+                  9,
                 updatedAt: serverTimestamp(),
               }),
             { maxAttempts: 3, baseDelay: 1000 }
@@ -479,6 +508,34 @@ export default function UnifiedProjectEditPage({
       setError('Failed to delete media');
     }
   }, []);
+
+  // New function to handle detailPageBlocks change
+  const handleDetailPageBlocksChange = (
+    blocks: MediaBlock[],
+    gridConfig?: GridConfig
+  ) => {
+    console.log('🔍 Detail page blocks changed:', {
+      blocksCount: blocks.length,
+      gridConfig,
+      gridConfigHeight: gridConfig?.height,
+      calculatedHeight: gridConfig?.height || 9,
+      currentDraftHeight: draftProject?.detailPageGridHeight,
+    });
+
+    const newHeight = gridConfig?.height || 9;
+    console.log('🔍 Setting detailPageGridHeight to:', newHeight);
+
+    updateDraftProject({
+      detailPageBlocks: blocks,
+      detailPageGridHeight: newHeight,
+    });
+    setDetailPageGridHeight(newHeight);
+
+    console.log('🔍 After updateDraftProject - new draft state:', {
+      detailPageBlocks: blocks.length,
+      detailPageGridHeight: newHeight,
+    });
+  };
 
   if (loading) {
     return (
@@ -1018,8 +1075,11 @@ export default function UnifiedProjectEditPage({
                   <LayoutTemplateSelector
                     projectMedia={projectMedia}
                     mediaBlocks={draftProject.detailPageBlocks || []}
-                    onMediaBlocksChange={(blocks: MediaBlock[]) => {
-                      updateDraftProject({ detailPageBlocks: blocks });
+                    onMediaBlocksChange={(
+                      blocks: MediaBlock[],
+                      gridConfig?: { width: number; height: number }
+                    ) => {
+                      handleDetailPageBlocksChange(blocks, gridConfig);
                     }}
                     disabled={saving}
                     projectName={
@@ -1028,6 +1088,14 @@ export default function UnifiedProjectEditPage({
                       draftProject.title.pt
                     }
                     expandable={true}
+                    initialGridConfig={
+                      draftProject.detailPageGridHeight
+                        ? {
+                            width: 16,
+                            height: draftProject.detailPageGridHeight,
+                          }
+                        : undefined
+                    }
                   />
                 </div>
               </TabsContent>

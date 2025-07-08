@@ -220,13 +220,19 @@ export interface MediaBlock {
   mediaOffsetY?: number; // Offset from center (0 = centered)
 }
 
+interface GridConfig {
+  width: number;
+  height: number;
+}
+
 interface VisualGridEditorProps {
   projectMedia: ProjectMedia[];
   mediaBlocks: MediaBlock[];
-  onMediaBlocksChange: (blocks: MediaBlock[]) => void;
+  onMediaBlocksChange: (blocks: MediaBlock[], gridConfig?: GridConfig) => void;
   disabled?: boolean;
   projectName?: string;
   expandable?: boolean;
+  initialGridConfig?: GridConfig;
 }
 
 export default function VisualGridEditor({
@@ -236,6 +242,7 @@ export default function VisualGridEditor({
   disabled = false,
   projectName,
   expandable = false,
+  initialGridConfig,
 }: VisualGridEditorProps) {
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -259,23 +266,110 @@ export default function VisualGridEditor({
     null
   );
   const [showTitleToolbar, setShowTitleToolbar] = useState(false);
-  const [additionalRows, setAdditionalRows] = useState(0);
+  const [additionalRows, setAdditionalRows] = useState(() => {
+    // Initialize additionalRows based on initialGridConfig
+    if (initialGridConfig) {
+      const calculated = Math.max(0, initialGridConfig.height - GRID_HEIGHT);
+      console.log('🔍 VisualGridEditor - Initializing additionalRows:', {
+        initialGridConfig,
+        GRID_HEIGHT,
+        calculated,
+      });
+      return calculated;
+    }
+    console.log(
+      '🔍 VisualGridEditor - No initialGridConfig, using 0 additionalRows'
+    );
+    return 0;
+  });
   const containerRef = useRef<HTMLDivElement>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const selectedBlockRef = useRef<HTMLDivElement>(null);
 
+  // Update additionalRows when initialGridConfig changes
+  useEffect(() => {
+    if (initialGridConfig) {
+      const calculated = Math.max(0, initialGridConfig.height - GRID_HEIGHT);
+      console.log('🔍 VisualGridEditor - useEffect updating additionalRows:', {
+        initialGridConfig,
+        currentAdditionalRows: additionalRows,
+        calculated,
+        willUpdate: calculated !== additionalRows,
+      });
+      setAdditionalRows(calculated);
+    }
+  }, [initialGridConfig]);
+
+  // Helper function to get current grid configuration
+  const getCurrentGridConfig = useCallback((): GridConfig => {
+    const config = {
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT + additionalRows,
+    };
+    console.log('🔍 VisualGridEditor - getCurrentGridConfig:', {
+      GRID_WIDTH,
+      GRID_HEIGHT,
+      additionalRows,
+      config,
+    });
+    return config;
+  }, [additionalRows]);
+
+  // Helper function to call onMediaBlocksChange with grid config
+  const updateMediaBlocks = useCallback(
+    (blocks: MediaBlock[]) => {
+      const gridConfig = getCurrentGridConfig();
+      console.log('🔍 VisualGridEditor - updateMediaBlocks called:', {
+        blocks,
+        gridConfig,
+      });
+      onMediaBlocksChange(blocks, gridConfig);
+    },
+    [onMediaBlocksChange, getCurrentGridConfig]
+  );
+
   // Expansion handlers
   const handleAddRow = () => {
-    setAdditionalRows(prev => prev + 1);
+    const newAdditionalRows = additionalRows + 1;
+    setAdditionalRows(newAdditionalRows);
+    const gridConfig: GridConfig = {
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT + newAdditionalRows,
+    };
+    console.log('🔍 VisualGridEditor - handleAddRow called:', {
+      additionalRows,
+      newAdditionalRows,
+      gridConfig,
+      mediaBlocks: mediaBlocks.length,
+    });
+    onMediaBlocksChange(mediaBlocks, gridConfig);
   };
 
   const handleAddNineRows = () => {
-    setAdditionalRows(prev => prev + 9);
+    const newAdditionalRows = additionalRows + 9;
+    setAdditionalRows(newAdditionalRows);
+    const gridConfig: GridConfig = {
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT + newAdditionalRows,
+    };
+    console.log('🔍 VisualGridEditor - handleAddNineRows called:', {
+      additionalRows,
+      newAdditionalRows,
+      gridConfig,
+      mediaBlocks: mediaBlocks.length,
+    });
+    onMediaBlocksChange(mediaBlocks, gridConfig);
   };
 
   const handleRemoveRow = () => {
-    setAdditionalRows(prev => Math.max(0, prev - 1));
+    const newAdditionalRows = Math.max(0, additionalRows - 1);
+    setAdditionalRows(newAdditionalRows);
+    const gridConfig: GridConfig = {
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT + newAdditionalRows,
+    };
+    onMediaBlocksChange(mediaBlocks, gridConfig);
   };
 
   // Auto-populate grid with all media
@@ -536,12 +630,36 @@ export default function VisualGridEditor({
       }
     });
 
-    // Calculate additional rows needed
+    // Calculate additional rows needed, but respect existing grid height if it's larger
     const additionalRowsNeeded = Math.max(0, maxY - GRID_HEIGHT);
-    setAdditionalRows(additionalRowsNeeded);
+    const currentTotalRows = GRID_HEIGHT + additionalRows;
+    const newTotalRows = Math.max(
+      currentTotalRows,
+      GRID_HEIGHT + additionalRowsNeeded
+    );
+    const newAdditionalRows = newTotalRows - GRID_HEIGHT;
 
-    // Update media blocks with ALL media
-    onMediaBlocksChange(newBlocks);
+    console.log('🔍 VisualGridEditor - handleAutoPopulate grid calculation:', {
+      maxY,
+      additionalRowsNeeded,
+      currentTotalRows,
+      newTotalRows,
+      newAdditionalRows,
+      existingAdditionalRows: additionalRows,
+    });
+
+    setAdditionalRows(newAdditionalRows);
+
+    // Update media blocks with ALL media and the correct grid config
+    const gridConfig: GridConfig = {
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT + newAdditionalRows,
+    };
+    console.log(
+      '🔍 VisualGridEditor - handleAutoPopulate calling onMediaBlocksChange with gridConfig:',
+      gridConfig
+    );
+    onMediaBlocksChange(newBlocks, gridConfig);
   };
 
   // Dynamically calculate cell size to fit the grid in the container
@@ -764,7 +882,7 @@ export default function VisualGridEditor({
             : b
         );
 
-        onMediaBlocksChange(updatedBlocks);
+        updateMediaBlocks(updatedBlocks);
         return;
       }
 
@@ -822,7 +940,7 @@ export default function VisualGridEditor({
           : b
       );
 
-      onMediaBlocksChange(updatedBlocks);
+      updateMediaBlocks(updatedBlocks);
     },
     [
       isDragging,
@@ -923,7 +1041,7 @@ export default function VisualGridEditor({
       newBlock.height
     );
 
-    onMediaBlocksChange([...mediaBlocks, { ...newBlock, ...constrained }]);
+    updateMediaBlocks([...mediaBlocks, { ...newBlock, ...constrained }]);
   }, [mediaBlocks, onMediaBlocksChange, disabled, constrainToGrid]);
 
   // Add media block with proper grid constraints
@@ -986,7 +1104,7 @@ export default function VisualGridEditor({
         newBlock.height
       );
 
-      onMediaBlocksChange([...mediaBlocks, { ...newBlock, ...constrained }]);
+      updateMediaBlocks([...mediaBlocks, { ...newBlock, ...constrained }]);
     },
     [mediaBlocks, onMediaBlocksChange, disabled, constrainToGrid]
   );
@@ -997,19 +1115,19 @@ export default function VisualGridEditor({
       if (disabled) return;
 
       const updatedBlocks = mediaBlocks.filter(b => b.id !== blockId);
-      onMediaBlocksChange(updatedBlocks);
+      updateMediaBlocks(updatedBlocks);
       setSelectedBlock(null);
     },
-    [mediaBlocks, onMediaBlocksChange, disabled]
+    [mediaBlocks, updateMediaBlocks, disabled]
   );
 
   // Clear all blocks
   const clearAllBlocks = useCallback(() => {
     if (disabled) return;
 
-    onMediaBlocksChange([]);
+    updateMediaBlocks([]);
     setSelectedBlock(null);
-  }, [onMediaBlocksChange, disabled]);
+  }, [updateMediaBlocks, disabled]);
 
   // Get media by ID
   const getMediaById = useCallback(
@@ -1030,14 +1148,14 @@ export default function VisualGridEditor({
       const updatedBlocks = mediaBlocks.map(block =>
         block.id === blockId ? { ...block, ...updates } : block
       );
-      onMediaBlocksChange(updatedBlocks);
+      updateMediaBlocks(updatedBlocks);
 
       // Update the editingTitleBlock state to reflect changes
       if (editingTitleBlock && editingTitleBlock.id === blockId) {
         setEditingTitleBlock({ ...editingTitleBlock, ...updates });
       }
     },
-    [mediaBlocks, onMediaBlocksChange, editingTitleBlock]
+    [mediaBlocks, updateMediaBlocks, editingTitleBlock]
   );
 
   // Validate and fix existing blocks on mount
@@ -1065,7 +1183,7 @@ export default function VisualGridEditor({
         );
         return { ...block, ...constrained };
       });
-      onMediaBlocksChange(fixedBlocks);
+      updateMediaBlocks(fixedBlocks);
     }
   }, []); // Only run on mount
 
@@ -1285,7 +1403,7 @@ export default function VisualGridEditor({
                           return { ...b, zIndex: b.zIndex - 1 };
                         return b;
                       });
-                      onMediaBlocksChange(updatedBlocks);
+                      updateMediaBlocks(updatedBlocks);
                     }}
                     disabled={(() => {
                       const block = mediaBlocks.find(
@@ -1318,7 +1436,7 @@ export default function VisualGridEditor({
                           return { ...b, zIndex: b.zIndex + 1 };
                         return b;
                       });
-                      onMediaBlocksChange(updatedBlocks);
+                      updateMediaBlocks(updatedBlocks);
                     }}
                     disabled={(() => {
                       const block = mediaBlocks.find(
@@ -1349,7 +1467,7 @@ export default function VisualGridEditor({
                         const updatedBlocks = mediaBlocks.map(b =>
                           b.id === selectedBlock ? { ...b, x: b.x - 1 } : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1373,7 +1491,7 @@ export default function VisualGridEditor({
                         const updatedBlocks = mediaBlocks.map(b =>
                           b.id === selectedBlock ? { ...b, x: b.x + 1 } : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1397,7 +1515,7 @@ export default function VisualGridEditor({
                         const updatedBlocks = mediaBlocks.map(b =>
                           b.id === selectedBlock ? { ...b, y: b.y - 1 } : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1421,7 +1539,7 @@ export default function VisualGridEditor({
                         const updatedBlocks = mediaBlocks.map(b =>
                           b.id === selectedBlock ? { ...b, y: b.y + 1 } : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1453,7 +1571,7 @@ export default function VisualGridEditor({
                             ? { ...b, width: b.width - 1 }
                             : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1479,7 +1597,7 @@ export default function VisualGridEditor({
                             ? { ...b, width: b.width + 1 }
                             : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1505,7 +1623,7 @@ export default function VisualGridEditor({
                             ? { ...b, height: b.height - 1 }
                             : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1531,7 +1649,7 @@ export default function VisualGridEditor({
                             ? { ...b, height: b.height + 1 }
                             : b
                         );
-                        onMediaBlocksChange(updatedBlocks);
+                        updateMediaBlocks(updatedBlocks);
                       }}
                       disabled={(() => {
                         const block = mediaBlocks.find(
@@ -1574,12 +1692,11 @@ export default function VisualGridEditor({
               >
                 <div
                   ref={gridRef}
-                  className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden"
+                  className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg"
                   style={{
                     width: GRID_WIDTH * GRID_CELL_SIZE,
                     height: (GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE,
                     maxWidth: '100%',
-                    maxHeight: '100%',
                   }}
                 >
                   {/* Grid Lines */}
@@ -1671,7 +1788,7 @@ export default function VisualGridEditor({
                                 const updatedBlocks = mediaBlocks.filter(
                                   b => b.id !== block.id
                                 );
-                                onMediaBlocksChange(updatedBlocks);
+                                updateMediaBlocks(updatedBlocks);
                               }}
                               title="Eliminar bloque"
                             >

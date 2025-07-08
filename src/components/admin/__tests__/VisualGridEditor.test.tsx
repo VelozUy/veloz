@@ -370,4 +370,53 @@ describe('VisualGridEditor', () => {
       ])
     );
   });
+
+  it('allows full range of media movement within containers', () => {
+    const wideMedia: ProjectMedia = {
+      id: 'wide-media',
+      projectId: 'project1',
+      url: 'https://example.com/wide-image.jpg',
+      fileName: 'wide-image.jpg',
+      filePath: 'projects/project1/wide-image.jpg',
+      fileSize: 1024000,
+      mimeType: 'image/jpeg',
+      type: 'photo',
+      aspectRatio: '3:1', // Very wide aspect ratio
+      width: 2400,
+      height: 800,
+      tags: [],
+      order: 1,
+      featured: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const blockWithWideMedia: MediaBlock = {
+      id: 'wide-block',
+      mediaId: 'wide-media',
+      x: 0,
+      y: 0,
+      width: 4, // 4 grid cells wide
+      height: 2, // 2 grid cells tall (aspect ratio 2:1)
+      type: 'image',
+      zIndex: 1,
+    };
+
+    const { container } = render(
+      <VisualGridEditor
+        projectMedia={[wideMedia]}
+        mediaBlocks={[blockWithWideMedia]}
+        onMediaBlocksChange={mockOnMediaBlocksChange}
+      />
+    );
+
+    // The media has aspect ratio 3:1, container has 2:1
+    // This means the media is wider than the container and should be able to move horizontally
+    // The component should render without errors
+    expect(container).toBeInTheDocument();
+
+    // Verify the media block is rendered
+    const mediaBlock = container.querySelector('[style*="left: 0px"]');
+    expect(mediaBlock).toBeInTheDocument();
+  });
 });

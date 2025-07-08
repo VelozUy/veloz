@@ -3,9 +3,11 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import MediaLightbox from './MediaLightbox';
 import GalleryContent from './GalleryContent';
-import { BentoGrid } from '@/components/ui/bento-grid';
 import { LocalizedContent } from '@/lib/static-content.generated';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Heart, Calendar, MapPin } from 'lucide-react';
 
 // Media interface compatible with existing lightbox
 interface MediaItem {
@@ -44,6 +46,21 @@ interface Project {
   location?: string;
   eventDate: string;
   featured: boolean;
+  mediaBlocks?: Array<{
+    id: string;
+    mediaId?: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    type: 'image' | 'video' | 'title';
+    zIndex: number;
+    title?: string;
+    font?: string;
+    color?: string;
+    mediaOffsetX?: number;
+    mediaOffsetY?: number;
+  }>;
   media: Array<{
     id: string;
     type: 'photo' | 'video';
@@ -59,6 +76,31 @@ interface StaticGalleryContentProps {
   content: LocalizedContent;
 }
 
+// UI text translations
+const UI_TEXT = {
+  es: {
+    title: 'Nuestro Trabajo',
+    subtitle:
+      'Explora nuestra colección de proyectos pasados. Cada imagen y video cuenta una historia única de momentos especiales capturados con pasión y profesionalismo.',
+    featured: 'Destacado',
+    viewProject: 'Ver Proyecto',
+  },
+  en: {
+    title: 'Our Work',
+    subtitle:
+      'Explore our collection of past projects. Each image and video tells a unique story of special moments captured with passion and professionalism.',
+    featured: 'Featured',
+    viewProject: 'View Project',
+  },
+  pt: {
+    title: 'Nosso Trabalho',
+    subtitle:
+      'Explore nossa coleção de projetos passados. Cada imagem e vídeo conta uma história única de momentos especiais capturados com paixão e profissionalismo.',
+    featured: 'Destacado',
+    viewProject: 'Ver Projeto',
+  },
+};
+
 export default function StaticGalleryContent({
   content,
 }: StaticGalleryContentProps) {
@@ -68,19 +110,33 @@ export default function StaticGalleryContent({
   // Video refs for intersection observer
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
+  // Determine current locale from content
+  const currentLocale = content.locale || 'es';
+  const uiText = UI_TEXT[currentLocale as keyof typeof UI_TEXT] || UI_TEXT.es;
+
   // Transform static content into component format
   const projects: Project[] = useMemo(() => {
     if (!content.content.projects || content.content.projects.length === 0) {
       return [];
     }
-    return content.content.projects.map(project => ({
-      ...project,
-      title: project.title,
-      description: project.description,
-    }));
+    return content.content.projects
+      .map(project => ({
+        ...project,
+        title: project.title,
+        description: project.description,
+      }))
+      .sort((a, b) => {
+        // Featured projects first, then by date
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return (
+          new Date(b.eventDate || 0).getTime() -
+          new Date(a.eventDate || 0).getTime()
+        );
+      });
   }, [content]);
 
-  // Flatten all media from all projects and transform to lightbox format
+  // Flatten all media from all projects for lightbox
   const allMedia: MediaItem[] = useMemo(() => {
     return projects.flatMap(project =>
       project.media.map(media => ({
@@ -93,7 +149,6 @@ export default function StaticGalleryContent({
           pt: media.description?.pt || '',
         },
         tags: media.tags || [],
-        // Use the aspect ratio detected during upload, fallback to 16:9
         aspectRatio: media.aspectRatio || ('16:9' as const),
       }))
     );
@@ -118,7 +173,7 @@ export default function StaticGalleryContent({
     return lookup;
   }, [projects]);
 
-  // Video autoplay intersection observer with proper promise handling
+  // Video autoplay intersection observer
   useEffect(() => {
     const playingVideos = new Set<HTMLVideoElement>();
 
@@ -128,7 +183,6 @@ export default function StaticGalleryContent({
           const video = entry.target as HTMLVideoElement;
 
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            // Video is more than 50% visible, play it
             if (!playingVideos.has(video) && video.paused) {
               playingVideos.add(video);
               const playPromise = video.play();
@@ -139,17 +193,14 @@ export default function StaticGalleryContent({
                     // Video started playing successfully
                   })
                   .catch(error => {
-                    // Auto-play was prevented or interrupted
                     playingVideos.delete(video);
                     console.debug('Video autoplay prevented:', error);
                   });
               }
             }
           } else {
-            // Video is not visible enough, pause it
             if (playingVideos.has(video) && !video.paused) {
               playingVideos.delete(video);
-              // Add small delay to prevent interrupting play() promise
               setTimeout(() => {
                 if (!entry.isIntersecting) {
                   video.pause();
@@ -161,11 +212,10 @@ export default function StaticGalleryContent({
       },
       {
         threshold: 0.5,
-        rootMargin: '50px', // Add some margin to reduce rapid triggering
+        rootMargin: '50px',
       }
     );
 
-    // Observe all videos
     videoRefs.current.forEach(video => {
       if (video) observer.observe(video);
     });
@@ -174,16 +224,6 @@ export default function StaticGalleryContent({
       observer.disconnect();
       playingVideos.clear();
     };
-  }, [allMedia]); // Re-run when media changes
-
-  // Prepare media for bento grid with randomization and optimal space utilization
-  const bentoMedia = useMemo(() => {
-    // Return media with aspect ratios for the BentoGrid's random layout algorithm
-    return allMedia.map(media => ({
-      ...media,
-      aspectRatio: media.aspectRatio || '16:9',
-      size: 'medium' as const, // Will be overridden by random layout algorithm
-    }));
   }, [allMedia]);
 
   const openLightbox = useCallback((mediaIndex: number) => {
@@ -199,106 +239,210 @@ export default function StaticGalleryContent({
     setCurrentMediaIndex(index);
   }, []);
 
+  // Render project with custom grid layout
+  const renderProjectGrid = (project: Project) => {
+    // If project has custom mediaBlocks, render custom grid
+    if (project.mediaBlocks && project.mediaBlocks.length > 0) {
+      return (
+        <div
+          className="relative w-full bg-background overflow-hidden rounded-lg"
+          style={{ aspectRatio: '16/9' }}
+        >
+          {project.mediaBlocks
+            .sort((a, b) => a.zIndex - b.zIndex)
+            .map(block => {
+              const GRID_WIDTH = 16;
+              const GRID_HEIGHT = 9;
+
+              const blockStyle = {
+                position: 'absolute' as const,
+                left: `${(block.x / GRID_WIDTH) * 100}%`,
+                top: `${(block.y / GRID_HEIGHT) * 100}%`,
+                width: `${(block.width / GRID_WIDTH) * 100}%`,
+                height: `${(block.height / GRID_HEIGHT) * 100}%`,
+                zIndex: block.zIndex,
+              };
+
+              if (block.type === 'title') {
+                return (
+                  <div
+                    key={block.id}
+                    style={blockStyle}
+                    className="overflow-hidden flex items-center justify-center"
+                  >
+                    <div
+                      className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
+                      style={{
+                        fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
+                        color: block.color || '#fff',
+                      }}
+                    >
+                      {block.title || project.title}
+                    </div>
+                  </div>
+                );
+              }
+
+              const media = project.media.find(m => m.id === block.mediaId);
+              if (!media) return null;
+
+              return (
+                <div
+                  key={block.id}
+                  style={blockStyle}
+                  className="overflow-hidden"
+                >
+                  {media.type === 'video' ? (
+                    <video
+                      ref={el => {
+                        if (el) videoRefs.current.set(media.id, el);
+                      }}
+                      src={media.url}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      style={{
+                        transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      src={media.url}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{
+                        transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
+                        objectPosition: 'center',
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+        </div>
+      );
+    }
+
+    // Fallback to simple grid
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {project.media.slice(0, 6).map((media, index) => (
+          <div
+            key={media.id || index}
+            className="aspect-square relative overflow-hidden rounded-lg"
+          >
+            {media.type === 'video' ? (
+              <video
+                ref={el => {
+                  if (el) videoRefs.current.set(media.id, el);
+                }}
+                src={media.url}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                autoPlay
+              />
+            ) : (
+              <Image
+                src={media.url}
+                alt={project.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   // If no static content is available, fall back to dynamic gallery
   if (!content.content.projects || content.content.projects.length === 0) {
     console.log('No static projects found, falling back to dynamic gallery');
     return <GalleryContent />;
   }
 
-  // Generate structured data for SEO
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ImageGallery',
-    name: 'Veloz Photography Gallery',
-    description:
-      'Professional event photography and videography portfolio showcasing weddings, corporate events, and special celebrations',
-    url: 'https://veloz.com.uy/gallery',
-    image: allMedia
-      .filter(media => media.type === 'photo')
-      .map(media => ({
-        '@type': 'ImageObject',
-        url: media.url,
-        name:
-          media.description?.es ||
-          media.description?.en ||
-          media.description?.pt ||
-          `Gallery Image ${media.id}`,
-        description:
-          media.description?.es ||
-          media.description?.en ||
-          media.description?.pt ||
-          'Professional event photography by Veloz',
-        keywords: media.tags?.join(', ') || 'photography, events, professional',
-        contentUrl: media.url,
-        thumbnailUrl: media.url,
-        encodingFormat: 'image/jpeg',
-        creator: {
-          '@type': 'Organization',
-          name: 'Veloz Photography',
-          url: 'https://veloz.com.uy',
-        },
-      })),
-  };
-
   return (
     <div className="gallery-container w-full">
-      {/* SEO Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+          {uiText.title}
+        </h1>
+        <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          {uiText.subtitle}
+        </p>
+      </div>
 
-      {/* Random Layout Bento Grid Gallery with optimal space filling */}
-      <BentoGrid
-        items={bentoMedia}
-        enableRandomLayout={true}
-        className="w-full h-full"
-      >
-        {bentoMedia.map((media, index) => (
-          <div
-            key={media.id}
-            className="group relative overflow-hidden rounded-sm bg-card/50 hover:bg-card/80 transition-all duration-300 cursor-pointer h-full w-full"
-            onClick={() => openLightbox(index)}
-          >
-            {media.type === 'photo' ? (
-              <Image
-                src={media.url}
-                alt={
-                  media.description?.es ||
-                  media.description?.en ||
-                  media.description?.pt ||
-                  `Gallery image ${index + 1}`
-                }
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                priority={index < 6} // Prioritize loading first 6 images
-              />
-            ) : (
-              <video
-                ref={el => {
-                  if (el) {
-                    videoRefs.current.set(media.id, el);
-                  } else {
-                    videoRefs.current.delete(media.id);
-                  }
-                }}
-                src={media.url}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-            )}
+      {/* Projects Grid */}
+      <div className="space-y-16">
+        {projects.map(project => (
+          <div key={project.id} className="space-y-6">
+            {/* Project Header */}
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                {project.featured && (
+                  <Badge className="bg-primary text-primary-foreground">
+                    <Heart className="w-3 h-3 mr-1" />
+                    {uiText.featured}
+                  </Badge>
+                )}
+                {project.eventType && (
+                  <Badge variant="secondary">{project.eventType}</Badge>
+                )}
+              </div>
 
-            {/* Enhanced hover effect */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+              <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
+                {project.title}
+              </h2>
+
+              {project.description && (
+                <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
+                  {project.description}
+                </p>
+              )}
+
+              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+                {project.location && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4" />
+                    {project.location}
+                  </span>
+                )}
+                {project.eventDate && (
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    {new Date(project.eventDate).toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Project Grid */}
+            <div className="relative">{renderProjectGrid(project)}</div>
+
+            {/* View Project Link */}
+            <div className="text-center">
+              <Link
+                href={`/our-work/${project.id}`}
+                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                {uiText.viewProject}
+              </Link>
+            </div>
           </div>
         ))}
-      </BentoGrid>
+      </div>
 
       <MediaLightbox
         isOpen={lightboxOpen}

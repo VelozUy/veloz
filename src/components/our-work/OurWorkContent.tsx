@@ -287,147 +287,12 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             </div>
           )}
 
-          {/* Visual Grid Layout (if media blocks exist) */}
-          {project.mediaBlocks && project.mediaBlocks.length > 0 ? (
-            <div
-              className="relative w-full bg-background overflow-hidden"
-              style={{ aspectRatio: '16/9' }}
-            >
-              {/* Render media blocks */}
-              {project.mediaBlocks
-                .sort((a, b) => a.zIndex - b.zIndex)
-                .map(block => {
-                  // Convert grid coordinates to percentages
-                  // Grid is 16x9 cells
-                  const GRID_WIDTH = 16;
-                  const GRID_HEIGHT = 9;
-
-                  const blockStyle = {
-                    position: 'absolute' as const,
-                    left: `${(block.x / GRID_WIDTH) * 100}%`,
-                    top: `${(block.y / GRID_HEIGHT) * 100}%`,
-                    width: `${(block.width / GRID_WIDTH) * 100}%`,
-                    height: `${(block.height / GRID_HEIGHT) * 100}%`,
-                    zIndex: block.zIndex,
-                  };
-
-                  // Handle title blocks first
-                  if (block.type === 'title') {
-                    return (
-                      <div
-                        key={block.id}
-                        style={blockStyle}
-                        className="overflow-hidden flex items-center justify-center"
-                      >
-                        <div
-                          className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
-                          style={{
-                            fontFamily: block.font
-                              ? FONT_OPTIONS.find(f => f.value === block.font)
-                                  ?.fontFamily
-                              : 'Inter, sans-serif',
-                            fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                            color: block.color || '#fff',
-                          }}
-                        >
-                          {block.title || project.title}
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  // Only look up media for image/video blocks
-                  const media = project.media.find(m => m.id === block.mediaId);
-                  if (!media) return null;
-
-                  return (
-                    <div
-                      key={block.id}
-                      style={blockStyle}
-                      className="overflow-hidden"
-                    >
-                      {media.type === 'video' ? (
-                        <video
-                          src={media.url}
-                          className="w-full h-full object-cover"
-                          muted
-                          loop
-                          playsInline
-                          autoPlay
-                          style={{
-                            transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                          }}
-                        />
-                      ) : (
-                        <Image
-                          src={media.url}
-                          alt={project.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          style={{
-                            transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                            objectPosition: 'center',
-                          }}
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
-          ) : (
-            // Fallback grid if no media blocks
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {project.media.slice(0, 6).map((media, index) => (
-                <div
-                  key={media.id || index}
-                  className="aspect-square relative overflow-hidden"
-                >
-                  {media.type === 'video' ? (
-                    <video
-                      src={media.url}
-                      className="w-full h-full object-cover"
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                    />
-                  ) : (
-                    <Image
-                      src={media.url}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    // If no media blocks defined, show a simple grid
-    if (!project.mediaBlocks || project.mediaBlocks.length === 0) {
-      return (
-        <div className="space-y-8">
-          {/* Project Description */}
-          {project.description && (
-            <div className="text-center space-y-6">
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-          )}
-
-          {/* Simple Grid Fallback */}
+          {/* Simple Grid for Our-Work List Page */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {project.media.slice(0, 6).map((media, index) => (
               <div
                 key={media.id || index}
-                className="aspect-square relative overflow-hidden"
+                className="aspect-square relative overflow-hidden rounded-lg"
               >
                 {media.type === 'video' ? (
                   <video
@@ -454,11 +319,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       );
     }
 
-    // Sort media blocks by z-index and position
-    const sortedBlocks = [...project.mediaBlocks].sort(
-      (a, b) => a.zIndex - b.zIndex
-    );
-
+    // For our-work list page, always use simple grid layout
     return (
       <div className="space-y-8">
         {/* Project Description */}
@@ -470,104 +331,33 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           </div>
         )}
 
-        {/* Visual Grid Layout */}
-        <div
-          className="relative w-full bg-background overflow-hidden"
-          style={{ aspectRatio: '16/9' }}
-        >
-          {sortedBlocks.map(block => {
-            // Convert grid coordinates to percentages
-            // Grid is 16x9 cells
-            const GRID_WIDTH = 16;
-            const GRID_HEIGHT = 9;
-
-            const blockStyle = {
-              position: 'absolute' as const,
-              left: `${(block.x / GRID_WIDTH) * 100}%`,
-              top: `${(block.y / GRID_HEIGHT) * 100}%`,
-              width: `${(block.width / GRID_WIDTH) * 100}%`,
-              height: `${(block.height / GRID_HEIGHT) * 100}%`,
-              zIndex: block.zIndex,
-            };
-
-            // Handle title blocks first
-            if (block.type === 'title') {
-              return (
-                <div
-                  key={block.id}
-                  style={blockStyle}
-                  className="overflow-hidden flex items-center justify-center"
-                >
-                  <div
-                    className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
-                    style={{
-                      fontFamily: block.font
-                        ? FONT_OPTIONS.find(f => f.value === block.font)
-                            ?.fontFamily
-                        : 'Inter, sans-serif',
-                      fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                      color: block.color || '#fff',
-                    }}
-                  >
-                    {block.title || project.title}
-                  </div>
-                </div>
-              );
-            }
-            // Only look up media for image/video blocks
-            const media = project.media.find(m => m.id === block.mediaId);
-            if (!media) return null;
-
-            // Handle media blocks
-            return (
-              <div
-                key={block.id}
-                style={blockStyle}
-                className="overflow-hidden"
-              >
-                {media.type === 'video' ? (
-                  <video
-                    src={media.url}
-                    className="w-full h-full object-cover"
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                    style={{
-                      transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                    }}
-                  />
-                ) : (
-                  <Image
-                    src={media.url}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{
-                      transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                      objectPosition: 'center',
-                    }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Badges */}
-        <div className="flex justify-center gap-3">
-          {project.featured && (
-            <Badge className="bg-primary text-primary-foreground">
-              <Heart className="w-3 h-3 mr-1" />
-              {uiText.featured}
-            </Badge>
-          )}
-          {project.eventType && (
-            <Badge variant="secondary">
-              {getEventTypeLabel(project.eventType)}
-            </Badge>
-          )}
+        {/* Simple Grid for Our-Work List Page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {project.media.slice(0, 6).map((media, index) => (
+            <div
+              key={media.id || index}
+              className="aspect-square relative overflow-hidden rounded-lg"
+            >
+              {media.type === 'video' ? (
+                <video
+                  src={media.url}
+                  className="w-full h-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                />
+              ) : (
+                <Image
+                  src={media.url}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     );
