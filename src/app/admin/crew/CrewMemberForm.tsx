@@ -58,13 +58,21 @@ export default function CrewMemberForm({
   const [uploadError, setUploadError] = useState<string | null>(null);
   // const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [optimizationInfo, setOptimizationInfo] = useState<{
+    originalSize: number;
+    optimizedSize: number;
+    compressionRatio: number;
+  } | null>(null);
 
   const fileUploadService = new FileUploadService();
 
   // Debug FileUploadService initialization
   console.log('🔧 CrewMemberForm initialized');
   console.log('FileUploadService instance:', fileUploadService);
-  console.log('Image config:', fileUploadService.getConfigForFileType('image'));
+  console.log(
+    'Portrait config:',
+    fileUploadService.getConfigForFileType('portrait')
+  );
 
   const {
     register,
@@ -206,7 +214,7 @@ export default function CrewMemberForm({
     console.log('🔍 Validating file...');
     const validation = fileUploadService.validateFile(
       file,
-      fileUploadService.getConfigForFileType('image')
+      fileUploadService.getConfigForFileType('portrait')
     );
     console.log('Validation result:', validation);
 
@@ -237,7 +245,7 @@ export default function CrewMemberForm({
       const result = await fileUploadService.uploadFile(
         file,
         fileName,
-        fileUploadService.getConfigForFileType('image'),
+        fileUploadService.getConfigForFileType('portrait'),
         progress => {
           console.log('📊 Upload progress:', progress.percentage + '%');
           setUploadProgress(progress.percentage);
@@ -251,6 +259,22 @@ export default function CrewMemberForm({
         setPortraitUrl(result.data.url);
         setValue('portrait', result.data.url, { shouldDirty: true });
         setUploadError(null);
+
+        // Extract optimization info from metadata
+        if (result.data.metadata) {
+          const metadata = result.data.metadata as Record<string, unknown>;
+          const originalSize = metadata.originalSize as number;
+          const optimizedSize = metadata.optimizedSize as number;
+          const compressionRatio = metadata.compressionRatio as number;
+
+          if (originalSize && optimizedSize) {
+            setOptimizationInfo({
+              originalSize,
+              optimizedSize,
+              compressionRatio: compressionRatio || 1,
+            });
+          }
+        }
       } else {
         console.log('❌ Upload failed:', result.error);
         setUploadError(result.error || 'Error al subir la imagen');
@@ -276,6 +300,7 @@ export default function CrewMemberForm({
     // setSelectedFile(null);
     setPreviewUrl(null);
     setUploadError(null);
+    setOptimizationInfo(null);
   };
 
   const displayImage = previewUrl || portraitUrl;
@@ -454,26 +479,52 @@ export default function CrewMemberForm({
             )}
 
             {displayImage ? (
-              <div className="flex items-center space-x-4">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
-                  <Image
-                    src={displayImage}
-                    alt="Portrait preview"
-                    className="w-20 h-20 object-cover"
-                    width={80}
-                    height={80}
-                  />
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
+                    <Image
+                      src={displayImage}
+                      alt="Portrait preview"
+                      className="w-20 h-20 object-cover"
+                      width={80}
+                      height={80}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={removePortrait}
+                    disabled={uploading}
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Remover
+                  </Button>
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={removePortrait}
-                  disabled={uploading}
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Remover
-                </Button>
+
+                {optimizationInfo && (
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <div className="flex justify-between">
+                      <span>Optimización:</span>
+                      <span className="font-medium text-green-600">
+                        {optimizationInfo.compressionRatio.toFixed(1)}x más
+                        pequeño
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tamaño original:</span>
+                      <span>
+                        {(optimizationInfo.originalSize / 1024).toFixed(1)} KB
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tamaño optimizado:</span>
+                      <span>
+                        {(optimizationInfo.optimizedSize / 1024).toFixed(1)} KB
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
@@ -501,7 +552,7 @@ export default function CrewMemberForm({
                       Subir Foto
                     </Button>
                     <p className="text-sm text-muted-foreground">
-                      PNG, JPG hasta 5MB
+                      PNG, JPG hasta 10MB - Se optimizará automáticamente
                     </p>
                   </div>
                 </Label>

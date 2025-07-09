@@ -94,7 +94,7 @@ _All tasks resolved_
 
 - [x] **[High] Add crew assignment to project editor** - Create interface for assigning crew members to projects in admin panel _(Added: Jan 8, 2025)_
 - [x] **[High] Create "Meet the Team" section component** - Build React component to display crew members on project pages _(Added: Jan 8, 2025)_
-- [ ] **[High] Add crew member portrait upload** - Implement portrait upload functionality with image optimization _(Added: Jan 8, 2025)_
+- [x] **[High] Add crew member portrait upload** - Implement portrait upload functionality with image optimization _(Added: Jan 8, 2025)_
 - [ ] **[High] Add multilingual crew bio support** - Support Spanish, English, and Portuguese bios for each crew member _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Add crew member role templates** - Provide predefined role templates (photographer, videographer, editor, etc.) _(Added: Jan 8, 2025)_
 - [ ] **[Medium] Add crew member social links** - Allow adding social media profiles for each crew member _(Added: Jan 8, 2025)_
@@ -535,6 +535,7 @@ _Tasks discovered during development will be added here_
 - ✅ **Testing Infrastructure** - Comprehensive test structure for Firebase services including BaseFirebaseService and specific implementations
 - ✅ **Crew Assignment System** - Built CrewMemberAssignment component for assigning crew members to projects in admin panel with search, selection, and removal functionality
 - ✅ **Meet the Team Component** - Created MeetTheTeam component for displaying crew members on project pages with portraits, bios, skills, and social links
+- ✅ **Crew Member Portrait Upload with Image Optimization** - Implemented comprehensive portrait upload system with client-side image optimization, automatic resizing to 800x800px, JPEG compression (85% quality), and real-time optimization feedback showing compression ratios and file size reductions
 - ✅ **Visual Category Cues System** - Implemented comprehensive category-specific styling system with typography, colors, and visual indicators for all event types (wedding, corporate, cultural, photoshoot, press, others)
 - ✅ **Category Typography Components** - Created CategoryTypography, CategoryBadge, and related components with multilingual support and responsive design
 - ✅ **Project Listing Category Integration** - Updated `/our-work` page to display category badges, apply category-specific typography to titles and descriptions, and use category background colors

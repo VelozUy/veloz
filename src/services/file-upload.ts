@@ -19,6 +19,11 @@ export interface FileUploadConfig {
   allowedExtensions?: string[];
   generateThumbnails?: boolean;
   compressionQuality?: number;
+  // Image optimization options
+  maxWidth?: number;
+  maxHeight?: number;
+  maintainAspectRatio?: boolean;
+  targetFormat?: 'jpeg' | 'png' | 'webp';
 }
 
 // File upload result
@@ -49,6 +54,16 @@ export interface FileValidationResult {
   warnings: string[];
 }
 
+// Image optimization result
+export interface ImageOptimizationResult {
+  blob: Blob;
+  originalSize: number;
+  optimizedSize: number;
+  compressionRatio: number;
+  width: number;
+  height: number;
+}
+
 // Default configurations for different file types
 const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
   image: {
@@ -75,6 +90,17 @@ const DEFAULT_CONFIGS: Record<string, FileUploadConfig> = {
     ],
     generateThumbnails: true,
     compressionQuality: 0.8,
+  },
+  portrait: {
+    maxFileSizeBytes: 10 * 1024 * 1024, // 10MB
+    allowedMimeTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+    allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    generateThumbnails: false,
+    compressionQuality: 0.85,
+    maxWidth: 800,
+    maxHeight: 800,
+    maintainAspectRatio: true,
+    targetFormat: 'jpeg',
   },
   video: {
     maxFileSizeBytes: 500 * 1024 * 1024, // 500MB
@@ -133,6 +159,123 @@ export class FileUploadService {
     string,
     (progress: FileUploadProgress) => void
   > = new Map();
+
+  /**
+   * Optimize image before upload
+   */
+  private async optimizeImage(
+    file: File,
+    config: FileUploadConfig = {}
+  ): Promise<ImageOptimizationResult> {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      img.onload = () => {
+        try {
+          const originalWidth = img.width;
+          const originalHeight = img.height;
+          const originalSize = file.size;
+
+          // Calculate new dimensions
+          const { width, height } = this.calculateDimensions(
+            originalWidth,
+            originalHeight,
+            config.maxWidth,
+            config.maxHeight,
+            config.maintainAspectRatio !== false
+          );
+
+          // Set canvas dimensions
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw and resize image
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          // Determine output format and quality
+          const format = config.targetFormat || 'jpeg';
+          const quality = config.compressionQuality || 0.8;
+          const mimeType =
+            format === 'jpeg'
+              ? 'image/jpeg'
+              : format === 'png'
+                ? 'image/png'
+                : 'image/webp';
+
+          // Convert to blob
+          canvas.toBlob(
+            blob => {
+              if (blob) {
+                const optimizedSize = blob.size;
+                const compressionRatio = originalSize / optimizedSize;
+
+                resolve({
+                  blob,
+                  originalSize,
+                  optimizedSize,
+                  compressionRatio,
+                  width,
+                  height,
+                });
+              } else {
+                reject(new Error('Failed to optimize image'));
+              }
+            },
+            mimeType,
+            quality
+          );
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      img.onerror = () => {
+        reject(new Error('Failed to load image for optimization'));
+      };
+
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  /**
+   * Calculate optimal dimensions for image resizing
+   */
+  private calculateDimensions(
+    originalWidth: number,
+    originalHeight: number,
+    maxWidth?: number,
+    maxHeight?: number,
+    maintainAspectRatio: boolean = true
+  ): { width: number; height: number } {
+    let width = originalWidth;
+    let height = originalHeight;
+
+    if (maxWidth && width > maxWidth) {
+      width = maxWidth;
+      if (maintainAspectRatio) {
+        height = (originalHeight * maxWidth) / originalWidth;
+      }
+    }
+
+    if (maxHeight && height > maxHeight) {
+      height = maxHeight;
+      if (maintainAspectRatio) {
+        width = (originalWidth * maxHeight) / originalHeight;
+      }
+    }
+
+    return { width: Math.round(width), height: Math.round(height) };
+  }
+
+  /**
+   * Check if file is an image that can be optimized
+   */
+  private isOptimizableImage(file: File): boolean {
+    const imageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    return imageTypes.includes(file.type);
+  }
 
   /**
    * Validate a file against upload configuration
@@ -230,8 +373,42 @@ export class FileUploadService {
         };
       }
 
+      // Optimize image if it's an image file and optimization is enabled
+      let uploadFile = file;
+      let optimizedMetadata: Record<string, any> = {};
+
+      if (
+        this.isOptimizableImage(file) &&
+        (config.maxWidth || config.maxHeight || config.compressionQuality)
+      ) {
+        try {
+          const optimization = await this.optimizeImage(file, config);
+          uploadFile = new File([optimization.blob], file.name, {
+            type: optimization.blob.type,
+          });
+
+          optimizedMetadata = {
+            originalSize: optimization.originalSize,
+            optimizedSize: optimization.optimizedSize,
+            compressionRatio: optimization.compressionRatio,
+            optimizedWidth: optimization.width,
+            optimizedHeight: optimization.height,
+          };
+
+          console.log(
+            `Image optimized: ${optimization.originalSize} -> ${optimization.optimizedSize} bytes (${optimization.compressionRatio.toFixed(2)}x compression)`
+          );
+        } catch (error) {
+          console.warn(
+            'Image optimization failed, uploading original file:',
+            error
+          );
+          // Continue with original file if optimization fails
+        }
+      }
+
       // Sanitize file name and create full path
-      const sanitizedFileName = this.sanitizeFileName(file.name);
+      const sanitizedFileName = this.sanitizeFileName(uploadFile.name);
       const fullPath = `${path}/${sanitizedFileName}`;
       const storageService = await getStorageService();
       if (!storageService) {
@@ -245,18 +422,19 @@ export class FileUploadService {
 
       // Set up upload metadata
       const metadata = {
-        contentType: file.type,
+        contentType: uploadFile.type,
         customMetadata: {
           originalName: file.name,
           uploadedAt: new Date().toISOString(),
           uploadedBy: 'admin', // TODO: Replace with actual user ID
-          fileSize: file.size.toString(),
+          fileSize: uploadFile.size.toString(),
           taskId,
+          ...optimizedMetadata,
         },
       };
 
       // Create upload task
-      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+      const uploadTask = uploadBytesResumable(storageRef, uploadFile, metadata);
       this.uploadTasks.set(taskId, uploadTask);
 
       if (onProgress) {
@@ -626,7 +804,7 @@ export class FileUploadService {
    * Get upload configuration for file type
    */
   getConfigForFileType(
-    fileType: 'image' | 'video' | 'document'
+    fileType: 'image' | 'video' | 'document' | 'portrait'
   ): FileUploadConfig {
     return { ...DEFAULT_CONFIGS[fileType] };
   }
