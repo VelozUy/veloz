@@ -101,9 +101,9 @@ export default function CrewMemberAssignment({
     const roleMatch = Object.values(crew.role).some(role =>
       role.toLowerCase().includes(searchLower)
     );
-    const skillMatch = crew.skills.some(skill =>
-      skill.toLowerCase().includes(searchLower)
-    );
+    const skillMatch =
+      Array.isArray(crew.skills) &&
+      crew.skills.some(skill => skill.toLowerCase().includes(searchLower));
 
     return nameMatch || roleMatch || skillMatch;
   });
@@ -218,20 +218,22 @@ export default function CrewMemberAssignment({
                           {crew.role.es || crew.role.en}
                         </div>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {crew.skills.slice(0, 3).map(skill => (
-                            <Badge
-                              key={skill}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {skill}
-                            </Badge>
-                          ))}
-                          {crew.skills.length > 3 && (
-                            <Badge variant="secondary" className="text-xs">
-                              +{crew.skills.length - 3} more
-                            </Badge>
-                          )}
+                          {Array.isArray(crew.skills) &&
+                            crew.skills.slice(0, 3).map(skill => (
+                              <Badge
+                                key={skill}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          {Array.isArray(crew.skills) &&
+                            crew.skills.length > 3 && (
+                              <Badge variant="secondary" className="text-xs">
+                                +{crew.skills.length - 3} more
+                              </Badge>
+                            )}
                         </div>
                       </div>
                       {selectedCrewMemberIds.includes(crew.id) && (

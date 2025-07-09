@@ -29,6 +29,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FONT_OPTIONS } from '@/components/admin/VisualGridEditor';
 import HeroLayout from '@/components/layout/HeroLayout';
+import {
+  CategoryBadge,
+  CategoryTypography,
+} from '@/components/ui/category-typography';
+import { EventCategory, getCategoryStyle } from '@/constants/categories';
 
 // Project interface for the our-work page
 interface Project {
@@ -84,21 +89,20 @@ interface OurWorkContentProps {
   content: LocalizedContent;
 }
 
-// UI text translations
 const UI_TEXT = {
   es: {
     title: 'Nuestro Trabajo',
     subtitle:
       'Explora nuestra colección de proyectos pasados. Cada imagen y video cuenta una historia única de momentos especiales capturados con pasión y profesionalismo.',
     allProjects: 'Todos los Proyectos',
-    noProjects: 'No se encontraron proyectos para esta categoría.',
+    noProjects: 'Ningún proyecto encontrado para esta categoría.',
     featured: 'Destacado',
     wantSomethingLikeThis: 'Quiero algo así',
     tooltipText: 'Contactar para un proyecto similar',
     readyTitle: '¿Listo para crear algo increíble?',
     readySubtitle:
       'Cada proyecto es único. Cuéntanos sobre tu evento y crearemos algo extraordinario juntos.',
-    startConversation: 'Comenzar Conversación',
+    startConversation: 'Iniciar Conversa',
     noImage: 'Sin imagen',
   },
   en: {
@@ -264,8 +268,26 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     return carouselIndices[projectId] || 0;
   };
 
+  // Get category from event type
+  const getCategoryFromEventType = (eventType: string): EventCategory => {
+    const eventTypeMap: Record<string, EventCategory> = {
+      casamiento: 'Casamiento',
+      corporativos: 'Corporativos',
+      'culturales-artisticos': 'Culturales y artísticos',
+      photoshoot: 'Photoshoot',
+      prensa: 'Prensa',
+      otros: 'Otros',
+    };
+    return eventTypeMap[eventType] || 'Otros';
+  };
+
   // Render Custom Layout using Visual Grid Editor blocks
   const renderCustomLayout = (project: Project) => {
+    const category = project.eventType
+      ? getCategoryFromEventType(project.eventType)
+      : 'Otros';
+    const categoryStyle = getCategoryStyle(category);
+
     // If hero media is configured, render hero layout first
     if (project.heroMediaConfig && project.heroMediaConfig.mediaId) {
       return (
@@ -278,12 +300,18 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             className="mb-8"
           />
 
-          {/* Project Description */}
+          {/* Project Description with Category Typography */}
           {project.description && (
             <div className="text-center space-y-6">
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              <CategoryTypography
+                category={category}
+                variant="body"
+                size="lg"
+                language={currentLocale as 'es' | 'en' | 'pt'}
+                className="max-w-4xl mx-auto leading-relaxed"
+              >
                 {project.description}
-              </p>
+              </CategoryTypography>
             </div>
           )}
 
@@ -322,12 +350,18 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     // For our-work list page, always use simple grid layout
     return (
       <div className="space-y-8">
-        {/* Project Description */}
+        {/* Project Description with Category Typography */}
         {project.description && (
           <div className="text-center space-y-6">
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            <CategoryTypography
+              category={category}
+              variant="body"
+              size="lg"
+              language={currentLocale as 'es' | 'en' | 'pt'}
+              className="max-w-4xl mx-auto leading-relaxed"
+            >
               {project.description}
-            </p>
+            </CategoryTypography>
           </div>
         )}
 
@@ -392,46 +426,104 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           animate="visible"
           className="space-y-0"
         >
-          {filteredProjects.map((project, index) => (
-            <motion.section
-              key={project.id}
-              variants={projectVariants}
-              className="w-full"
-            >
-              {/* Project Container - Full Width */}
-              <Link href={`/our-work/${project.id}`} className="block">
-                <div className="w-full bg-background hover:bg-muted/50 transition-colors duration-300 cursor-pointer">
-                  {/* Project Content - Full Width */}
-                  <div className="w-full px-4 md:px-8 lg:px-12">
-                    {renderProject(project)}
-                  </div>
-                </div>
-              </Link>
+          {filteredProjects.map((project, index) => {
+            const category = project.eventType
+              ? getCategoryFromEventType(project.eventType)
+              : 'Otros';
+            const categoryStyle = getCategoryStyle(category);
 
-              {/* Separator between projects (except for the last one) */}
-              {index < filteredProjects.length - 1 && (
-                <div className="w-full py-20 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
-              )}
-            </motion.section>
-          ))}
+            return (
+              <motion.section
+                key={project.id}
+                variants={projectVariants}
+                className="w-full"
+              >
+                {/* Project Container - Full Width with Category Styling */}
+                <Link href={`/our-work/${project.id}`} className="block">
+                  <div
+                    className={`w-full hover:bg-muted/50 transition-colors duration-300 cursor-pointer ${categoryStyle.colors.background}`}
+                  >
+                    {/* Project Content - Full Width */}
+                    <div className="w-full px-4 md:px-8 lg:px-12 py-8">
+                      {/* Category Badge */}
+                      <div className="flex justify-center mb-6">
+                        <CategoryBadge
+                          category={category}
+                          language={currentLocale as 'es' | 'en' | 'pt'}
+                          showIcon={true}
+                          showDescription={false}
+                        />
+                      </div>
+
+                      {/* Project Title with Category Typography */}
+                      <div className="text-center mb-6">
+                        <CategoryTypography
+                          category={category}
+                          variant="title"
+                          size="xl"
+                          language={currentLocale as 'es' | 'en' | 'pt'}
+                          className="mb-4"
+                        >
+                          {project.title}
+                        </CategoryTypography>
+                      </div>
+
+                      {renderProject(project)}
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Separator between projects (except for the last one) */}
+                {index < filteredProjects.length - 1 && (
+                  <div className="w-full py-20 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
+                )}
+              </motion.section>
+            );
+          })}
         </motion.div>
       )}
 
       {/* Title and Subtitle Section */}
-      <section className="px-4 md:px-8 lg:px-12 mt-24">
-        <div className="w-full text-center">
+      <section className="px-4 md:px-8 lg:px-12">
+        <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 md:p-12"
+            transition={{ delay: 0.3 }}
+            className="text-center py-16"
           >
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
               {uiText.title}
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               {uiText.subtitle}
             </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="px-4 md:px-8 lg:px-12">
+        <div className="w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-center py-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+              {uiText.readyTitle}
+            </h2>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              {uiText.readySubtitle}
+            </p>
+            <Button
+              size="lg"
+              onClick={() => handleCTAClick('general')}
+              className="text-lg px-8 py-4"
+            >
+              {uiText.startConversation}
+            </Button>
           </motion.div>
         </div>
       </section>
