@@ -86,6 +86,13 @@ export const faqSchema = baseSchema.extend({
 // Project Schema
 export const projectSchema = baseSchema.extend({
   title: multiLanguageTextSchema,
+  slug: z
+    .string()
+    .min(1)
+    .max(60)
+    .regex(/^[a-z0-9-]+$/, {
+      message: 'Slug must contain only lowercase letters, numbers, and hyphens',
+    }),
   description: optionalMultiLanguageTextSchema,
   eventType: z.enum([
     'casamiento',

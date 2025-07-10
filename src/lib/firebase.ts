@@ -174,5 +174,8 @@ export const getAuthService = async (): Promise<Auth | null> => {
 // Synchronous getter for storage (for backward compatibility)
 export const getStorageSync = (): FirebaseStorage | null => storage;
 
+// Synchronous getter for firestore (for backward compatibility)
+export const getFirestoreSync = (): Firestore | null => db;
+
 export default app;
 export { db, auth, storage };

@@ -57,9 +57,11 @@ import ProjectHeroPreview from '@/components/admin/ProjectHeroPreview';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
+import { generateUniqueSlug } from '@/lib/utils';
 
 interface Project {
   id: string;
+  slug?: string;
   title: {
     en: string;
     es: string;
@@ -360,11 +362,17 @@ export default function UnifiedProjectEditPage({
           return;
         }
 
+        // Generate slug from Spanish title
+        const spanishTitle =
+          draftProject.title?.es || draftProject.title?.en || 'Project';
+        const slug = generateUniqueSlug(spanishTitle, [], undefined);
+
         const docRef = await withFirestoreRecovery(() =>
           withRetry(
             () =>
               addDoc(collection(db!, 'projects'), {
                 title: draftProject.title,
+                slug: slug,
                 description: draftProject.description,
                 eventType: draftProject.eventType,
                 location: draftProject.location,
@@ -422,11 +430,20 @@ export default function UnifiedProjectEditPage({
         // Update existing project
         if (!projectId) return;
 
+        // Generate or update slug if title has changed
+        let slug = draftProject.slug;
+        if (!slug || originalProject?.title?.es !== draftProject.title?.es) {
+          const spanishTitle =
+            draftProject.title?.es || draftProject.title?.en || 'Project';
+          slug = generateUniqueSlug(spanishTitle, [], projectId);
+        }
+
         await withFirestoreRecovery(() =>
           withRetry(
             () =>
               updateDoc(doc(db!, 'projects', projectId), {
                 title: draftProject.title,
+                slug: slug,
                 description: draftProject.description,
                 eventType: draftProject.eventType,
                 location: draftProject.location,
@@ -764,6 +781,27 @@ export default function UnifiedProjectEditPage({
                     required
                   />
                 </div>
+
+                {/* Slug Preview */}
+                {draftProject.title.es && (
+                  <div className="space-y-2">
+                    <Label>URL del Proyecto (Generada Automáticamente)</Label>
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        value={`/our-work/${draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}`}
+                        readOnly
+                        className="bg-muted"
+                      />
+                      <Badge variant="outline" className="whitespace-nowrap">
+                        SEO-friendly
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      La URL se genera automáticamente desde el título en
+                      español. Se actualizará al guardar el proyecto.
+                    </p>
+                  </div>
+                )}
 
                 {/* Description */}
                 <div className="space-y-2">

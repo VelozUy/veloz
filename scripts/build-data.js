@@ -801,6 +801,54 @@ async function fetchAboutContent(db) {
 /**
  * Fetch projects/gallery content from Firestore
  */
+// Slug generation utility function
+function createSlug(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove accents
+    .replace(/[^a-z0-9 -]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .trim();
+}
+
+function generateUniqueSlug(title, existingSlugs = [], projectId) {
+  // Generate base slug from title
+  let baseSlug = createSlug(title);
+
+  // If title is empty or generates invalid slug, use fallback
+  if (!baseSlug) {
+    baseSlug = projectId || 'project';
+  }
+
+  // Limit to 60 characters
+  baseSlug = baseSlug.substring(0, 60);
+
+  // Remove trailing hyphens
+  baseSlug = baseSlug.replace(/-+$/, '');
+
+  // If slug is empty after processing, use fallback
+  if (!baseSlug) {
+    baseSlug = projectId || 'project';
+  }
+
+  // Check if slug is unique
+  let uniqueSlug = baseSlug;
+  let counter = 1;
+
+  while (existingSlugs.includes(uniqueSlug)) {
+    const suffix = `-${counter}`;
+    // Ensure total length doesn't exceed 60 characters
+    const availableLength = 60 - suffix.length;
+    const truncatedBase = baseSlug.substring(0, availableLength);
+    uniqueSlug = `${truncatedBase}${suffix}`;
+    counter++;
+  }
+
+  return uniqueSlug;
+}
+
 async function fetchProjects(db) {
   try {
     console.log('🖼️ Fetching projects...');
@@ -810,6 +858,7 @@ async function fetchProjects(db) {
     );
     const snapshot = await getDocs(projectsQuery);
     const projects = [];
+    const existingSlugs = [];
 
     for (const doc of snapshot.docs) {
       const data = doc.data();
@@ -824,6 +873,21 @@ async function fetchProjects(db) {
             ? data.updatedAt.toDate().toISOString()
             : null,
         };
+
+        // Generate slug if not present
+        if (!project.slug) {
+          const spanishTitle = data.title?.es || data.title || 'Project';
+          project.slug = generateUniqueSlug(
+            spanishTitle,
+            existingSlugs,
+            doc.id
+          );
+          console.log(
+            `🔗 Generated slug for project ${doc.id}: ${project.slug}`
+          );
+        }
+
+        existingSlugs.push(project.slug);
 
         // Fetch media for this project
         project.media = await fetchProjectMedia(db, doc.id);
@@ -1112,6 +1176,7 @@ function generateLocaleContent(
         // Transform project data for static content
         const transformedProject = {
           id: project.id,
+          slug: project.slug, // Include slug field
           title:
             project.title?.[locale] ||
             project.title?.es ||
@@ -1275,6 +1340,7 @@ export interface LocalizedContent {
     }>;
     projects: Array<{
       id: string;
+      slug?: string;
       title: string;
       description: string;
       tags: string[];

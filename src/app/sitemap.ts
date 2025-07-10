@@ -3,11 +3,11 @@ import { getStaticContent } from '@/lib/utils';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
-  
+
   // Get static content to generate project URLs
   const content = getStaticContent('es');
   const projects = content.content.projects || [];
-  
+
   // Base pages
   const basePages = [
     {
@@ -43,8 +43,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Generate project detail pages
-  const projectPages = projects.map((project) => ({
-    url: `${baseUrl}/our-work/${project.id}`,
+  const projectPages = projects.map(project => ({
+    url: `${baseUrl}/our-work/${project.slug || project.id}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.8,
@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Generate language-specific pages
   const languages = ['en', 'pt'];
-  const languagePages = languages.flatMap((lang) => [
+  const languagePages = languages.flatMap(lang => [
     {
       url: `${baseUrl}/${lang}`,
       lastModified: new Date(),
@@ -86,4 +86,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   return [...basePages, ...projectPages, ...languagePages];
-} 
+}

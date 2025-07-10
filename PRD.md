@@ -142,6 +142,50 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 ### 3.5. **Enhanced Project & Crew Features** 🆕
 
+#### 🔗 SEO-Optimized Project URLs with Slugs
+
+**CRITICAL FEATURE**: All project URLs now use SEO-friendly slugs instead of database IDs for better user experience and search engine optimization.
+
+**Benefits**:
+
+- **SEO Improvement**: Descriptive URLs help search engines understand content and improve rankings
+- **User Experience**: Human-readable URLs are easier to remember and share
+- **Professional Appearance**: Clean, branded URLs enhance credibility
+- **Social Sharing**: Better previews when shared on social media platforms
+- **Analytics**: More meaningful URL data in analytics reports
+
+**Slug Generation & Management**:
+
+- **Automatic slug generation** from project title using the existing `createSlug()` utility
+- **Unique slug validation** - ensures no duplicate slugs when creating or updating projects
+- **Slug-based routing** - URLs like `/our-work/boda-maria-y-juan` instead of `/our-work/proj123`
+- **Fallback handling** - maintains backward compatibility with existing ID-based URLs
+- **Slug updates** - when project title changes, slug updates automatically with uniqueness validation
+
+**Technical Implementation**:
+
+- **Database schema update** - add `slug` field to project documents
+- **URL routing** - support both `/our-work/[slug]` and `/our-work/[id]` routes
+- **Admin interface** - display and allow manual editing of slugs in project editor
+- **Migration strategy** - generate slugs for existing projects during build process
+- **SEO benefits** - descriptive URLs improve search rankings and user experience
+
+**Slug Generation Rules**:
+
+- **Base slug**: Generated from Spanish title using `createSlug()` utility
+- **Uniqueness**: Append incremental number if slug already exists (e.g., `boda-maria-y-juan-2`)
+- **Length limit**: Maximum 60 characters for URL readability
+- **Character set**: Lowercase letters, numbers, and hyphens only
+- **Accent handling**: Remove diacritics and convert to ASCII equivalents
+- **Fallback**: Use project ID if title is empty or generates invalid slug
+
+**URL Structure**:
+
+- **Primary**: `/our-work/[slug]` (e.g., `/our-work/boda-maria-y-juan`)
+- **Fallback**: `/our-work/[id]` (e.g., `/our-work/proj123`) for backward compatibility
+- **Redirects**: Old ID-based URLs redirect to slug-based URLs
+- **404 handling**: Proper 404 page for non-existent slugs
+
 #### 🧩 Modular Project Presentation
 
 Each project now supports multiple layout templates that can be selected via the CMS. This allows Veloz to present each event with its own editorial structure — no two project pages need to look the same. Layouts can include combinations like:
@@ -472,6 +516,7 @@ interface AnalyticsEvent {
 
 /projects:
   - id: "proj123"
+    slug: "boda-maria-y-juan"  # SEO-friendly URL slug
     title: { es: "Boda María & Juan", en: "María & Juan Wedding" }
     description: { es: "...", en: "..." }
     status: "published" | "draft"
@@ -655,7 +700,6 @@ src/app/
 - `/api/contact` - Contact form submissions
 - `/api/translate` - AI-powered translation service
 - `/api/analyze-media` - Media analysis and SEO optimization
-
 
 **Response Format Standardization:**
 

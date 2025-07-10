@@ -271,6 +271,7 @@ describe('Validation Schemas', () => {
           es: 'Boda Hermosa',
           pt: 'Casamento Lindo',
         },
+        slug: 'boda-hermosa',
         description: {
           en: 'A lovely wedding celebration',
           es: 'Una hermosa celebración de boda',

@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
 import ProjectDetailClient from '@/components/our-work/ProjectDetailClient';
 
 interface ProjectDetailPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 // Generate static params at build time
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
   }
 
   return content.content.projects.map(project => ({
-    id: project.id,
+    slug: project.slug || project.id, // Use slug if available, fallback to ID
   }));
 }
 
@@ -24,10 +24,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const content = getStaticContent('es');
 
-  const project = content.content.projects?.find(p => p.id === id);
+  // Try to find project by slug first, then by ID
+  const project = content.content.projects?.find(
+    p => p.slug === slug || p.id === slug
+  );
 
   if (!project) {
     return {
@@ -49,13 +52,21 @@ export async function generateMetadata({
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const content = getStaticContent('es');
 
-  const project = content.content.projects?.find(p => p.id === id);
+  // Try to find project by slug first, then by ID
+  const project = content.content.projects?.find(
+    p => p.slug === slug || p.id === slug
+  );
 
   if (!project) {
     notFound();
+  }
+
+  // If we found the project by ID but it has a slug, redirect to the slug URL
+  if (project.slug && project.slug !== slug) {
+    redirect(`/our-work/${project.slug}`);
   }
 
   return <ProjectDetailClient project={project} />;

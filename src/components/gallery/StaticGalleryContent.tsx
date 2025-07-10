@@ -39,6 +39,7 @@ interface LightboxProject {
 // Project interface for the gallery data
 interface Project {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   tags: string[];
@@ -434,7 +435,7 @@ export default function StaticGalleryContent({
             {/* View Project Link */}
             <div className="text-center">
               <Link
-                href={`/our-work/${project.id}`}
+                href={`/our-work/${project.slug || project.id}`}
                 className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 {uiText.viewProject}

@@ -89,6 +89,21 @@ _All tasks resolved_
 
 ### Enhanced Project & Crew Features 🆕
 
+#### 🔗 SEO-Optimized Project URLs with Slugs
+
+- [ ] **[High] Add slug field to project schema** - Add `slug` field to project data structure and validation schemas _(Added: Jan 9, 2025)_
+- [ ] **[High] Implement automatic slug generation** - Generate SEO-friendly slugs from project titles using existing `createSlug()` utility _(Added: Jan 9, 2025)_
+- [ ] **[High] Add unique slug validation** - Ensure no duplicate slugs when creating or updating projects in admin panel _(Added: Jan 9, 2025)_
+- [ ] **[High] Update project routing** - Support both `/our-work/[slug]` and `/our-work/[id]` routes for backward compatibility _(Added: Jan 9, 2025)_
+- [ ] **[High] Add slug field to admin interface** - Display and allow manual editing of slugs in project editor _(Added: Jan 9, 2025)_
+- [ ] **[Medium] Implement slug migration** - Generate slugs for existing projects during build process _(Added: Jan 9, 2025)_
+- [ ] **[Medium] Update sitemap generation** - Include slug-based URLs in sitemap for better SEO _(Added: Jan 9, 2025)_
+- [ ] **[Medium] Update project links** - Update all internal links to use slug-based URLs _(Added: Jan 9, 2025)_
+- [ ] **[Low] Add slug preview in admin** - Show how the final URL will look when editing project slug _(Added: Jan 9, 2025)_
+- [ ] **[Medium] Test slug functionality** - Create comprehensive tests for slug generation, validation, and routing _(Added: Jan 9, 2025)_
+- [ ] **[Medium] Test backward compatibility** - Ensure existing ID-based URLs still work and redirect properly _(Added: Jan 9, 2025)_
+- [ ] **[Low] Add slug analytics** - Track slug-based URL performance in analytics dashboard _(Added: Jan 9, 2025)_
+
 #### 🧩 Modular Project Presentation
 
 - [ ] **[Low] Add layout template import/export** - Allow sharing and reusing layout templates across projects _(Added: Jan 8, 2025)_
@@ -388,8 +403,6 @@ _All homepage content management functionality completed - see Completed Tasks S
 - [ ] **[Low] Generate social media captions** - Create platform-specific captions for Instagram, Facebook, etc. _(Added: Jan 6, 2025)_
 - [ ] **[Low] Identify people count and composition** - Detect number of people, group dynamics, and composition for better tagging _(Added: Jan 6, 2025)_
 
-
-
 ---
 
 ## 🧪 Phase 5: Testing
@@ -672,6 +685,7 @@ _Tasks discovered during development will be added here_
 - ✅ **GDPR Compliance** - Added data retention policies and anonymized IP addresses for GDPR compliance
 
 **Key Features Implemented:**
+
 - Comprehensive event tracking for all user interactions
 - Real-time analytics dashboard with live data updates
 - Project-specific analytics with detailed metrics
@@ -682,6 +696,7 @@ _Tasks discovered during development will be added here_
 - GDPR-compliant data handling
 
 **Files Created/Modified:**
+
 - `src/services/analytics.ts` - Enhanced analytics service with comprehensive tracking
 - `src/hooks/useAnalytics.ts` - Analytics hook for component integration
 - `src/services/analytics-data.ts` - Analytics data processing and aggregation
@@ -869,6 +884,7 @@ _Tasks discovered during development will be added here_
 - **Testing**: Verified changes work correctly in the application
 
 **Key Findings**:
+
 - Most content was already gender-neutral using inclusive pronouns
 - Main updates were needed for crew member roles to use inclusive language
 - Spanish and Portuguese now use "Fotógrafo/a" and "Videógrafo/a" format

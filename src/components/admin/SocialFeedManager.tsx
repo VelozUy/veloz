@@ -4,11 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -18,7 +14,23 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Trash2, Edit, GripVertical, Loader2, Upload, Instagram, Image as ImageIcon, Video as VideoIcon } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Trash2,
+  Edit,
+  GripVertical,
+  Loader2,
+  Upload,
+  Instagram,
+  Image as ImageIcon,
+  Video as VideoIcon,
+} from 'lucide-react';
 import { SocialPostService } from '@/services/social-post';
 import { FileUploadService } from '@/services/file-upload';
 import type { SocialPost } from '@/types';
@@ -57,7 +69,11 @@ interface SortableSocialPostProps {
   onDelete: (id: string) => void;
 }
 
-function SortableSocialPost({ post, onEdit, onDelete }: SortableSocialPostProps) {
+function SortableSocialPost({
+  post,
+  onEdit,
+  onDelete,
+}: SortableSocialPostProps) {
   const {
     attributes,
     listeners,
@@ -126,11 +142,7 @@ function SortableSocialPost({ post, onEdit, onDelete }: SortableSocialPostProps)
           </div>
 
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onEdit(post)}
-            >
+            <Button variant="outline" size="sm" onClick={() => onEdit(post)}>
               <Edit className="w-4 h-4" />
             </Button>
             <Button
@@ -258,9 +270,13 @@ export default function SocialFeedManager({
       setUploadProgress(0);
 
       const config = fileUploadService.getConfigForFileType('social');
-      const result = await fileUploadService.uploadFile(file, config, progress => {
-        setUploadProgress(progress);
-      });
+      const result = await fileUploadService.uploadFile(
+        file,
+        config,
+        progress => {
+          setUploadProgress(progress);
+        }
+      );
 
       if (result.success) {
         // Create social post with uploaded file
@@ -517,7 +533,8 @@ function SocialPostForm({
             ? 'Español'
             : selectedLang === 'en'
               ? 'English'
-              : 'Português'})
+              : 'Português'}
+          )
         </Label>
         <div className="space-y-2">
           <Textarea
@@ -561,12 +578,10 @@ function SocialPostForm({
           Cancelar
         </Button>
         <Button type="submit" disabled={loading}>
-          {loading ? (
-            <Loader2 className="w-4 h-4 animate-spin mr-2" />
-          ) : null}
+          {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
           Guardar
         </Button>
       </div>
     </form>
   );
-} 
+}

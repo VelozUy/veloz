@@ -15,14 +15,37 @@ import {
   DocumentData,
   Timestamp,
 } from 'firebase/firestore';
-import { getFirestoreService } from '@/lib/firebase';
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+import { getFirestoreSync, getStorageSync } from '@/lib/firebase';
 import {
   withFirestoreRecovery,
   withRetry,
   createErrorResponse,
 } from '@/lib/firebase-error-handler';
-import type { ApiResponse } from '@/types';
+import type {
+  ApiResponse,
+  FAQ,
+  Photo,
+  Video,
+  HomepageContent,
+  ContactMessage,
+  ContactFormData,
+  ContactMessageData,
+  SocialPost,
+} from '@/types';
 import { z } from 'zod';
+import { FIREBASE_COLLECTIONS } from '@/constants';
+import {
+  faqSchema,
+  projectMediaSchema,
+  homepageContentSchema,
+  socialPostSchema,
+} from '@/lib/validation-schemas';
 
 // Cache configuration
 interface CacheConfig {
@@ -37,7 +60,7 @@ interface CacheEntry<T> {
   ttl: number;
 }
 
-export abstract class BaseFirebaseService<T = any> {
+export abstract class BaseFirebaseService<T = unknown> {
   protected collectionName: string;
   protected schema: unknown;
 
@@ -47,21 +70,21 @@ export abstract class BaseFirebaseService<T = any> {
   }
 
   protected getCollection() {
-    if (!getFirestoreService()) {
+    if (!getFirestoreSync()) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
     }
-    return collection(getFirestoreService(), this.collectionName);
+    return collection(getFirestoreSync()!, this.collectionName);
   }
 
   protected getDocRef(id: string) {
-    if (!getFirestoreService()) {
+    if (!getFirestoreSync()) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
     }
-    return doc(getFirestoreService(), this.collectionName, id);
+    return doc(getFirestoreSync()!, this.collectionName, id);
   }
 
   protected convertTimestamp(data: DocumentData): DocumentData {
@@ -306,7 +329,11 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
   async getContent(): Promise<ApiResponse<HomepageContent | null>> {
     try {
       // Get the default homepage document
-      const docRef = doc(getFirestoreService(), FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(
+        getFirestoreSync()!,
+        FIREBASE_COLLECTIONS.HOMEPAGE,
+        'default'
+      );
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -331,7 +358,11 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
     data: Partial<Omit<HomepageContent, 'id'>>
   ): Promise<ApiResponse<void>> {
     try {
-      const docRef = doc(getFirestoreService(), FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(
+        getFirestoreSync()!,
+        FIREBASE_COLLECTIONS.HOMEPAGE,
+        'default'
+      );
       const updateData = {
         ...data,
         updatedAt: new Date(),
@@ -585,7 +616,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
     onProgress?: (progress: number) => void
   ): Promise<ApiResponse<ProjectMedia>> {
     try {
-      const storageService = await getStorageService();
+      const storageService = getStorageSync();
       if (!storageService) {
         return {
           success: false,
@@ -704,7 +735,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
         const media = mediaResult.data;
 
         // Delete from Storage
-        const storageService = await getStorageService();
+        const storageService = getStorageSync();
         if (storageService) {
           try {
             const storageRef = ref(storageService, media.filePath);
@@ -757,7 +788,7 @@ export class StorageService {
   async getFileUrl(filePath: string): Promise<ApiResponse<string>> {
     try {
       // Check if storage is initialized
-      const storageService = await getStorageService();
+      const storageService = getStorageSync();
       if (!storageService) {
         console.error('Firebase Storage not initialized');
         return {
@@ -825,10 +856,10 @@ export class SocialPostService extends BaseFirebaseService<SocialPost> {
     postIds: string[]
   ): Promise<ApiResponse<void>> {
     try {
-      const batch = writeBatch(getFirestoreService());
+      const batch = writeBatch(getFirestoreSync()!);
 
       postIds.forEach((postId, index) => {
-        const docRef = doc(getFirestoreService(), this.collectionName, postId);
+        const docRef = doc(getFirestoreSync()!, this.collectionName, postId);
         batch.update(docRef, { order: index });
       });
 

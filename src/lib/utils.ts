@@ -52,6 +52,53 @@ export function createSlug(text: string): string {
     .trim();
 }
 
+/**
+ * Generate a unique slug from project title
+ * @param title - The project title (preferably in Spanish)
+ * @param existingSlugs - Array of existing slugs to check against
+ * @param projectId - Optional project ID to exclude from uniqueness check
+ * @returns A unique slug
+ */
+export function generateUniqueSlug(
+  title: string,
+  existingSlugs: string[] = [],
+  projectId?: string
+): string {
+  // Generate base slug from title
+  let baseSlug = createSlug(title);
+
+  // If title is empty or generates invalid slug, use fallback
+  if (!baseSlug) {
+    baseSlug = projectId || 'project';
+  }
+
+  // Limit to 60 characters
+  baseSlug = baseSlug.substring(0, 60);
+
+  // Remove trailing hyphens
+  baseSlug = baseSlug.replace(/-+$/, '');
+
+  // If slug is empty after processing, use fallback
+  if (!baseSlug) {
+    baseSlug = projectId || 'project';
+  }
+
+  // Check if slug is unique
+  let uniqueSlug = baseSlug;
+  let counter = 1;
+
+  while (existingSlugs.includes(uniqueSlug)) {
+    const suffix = `-${counter}`;
+    // Ensure total length doesn't exceed 60 characters
+    const availableLength = 60 - suffix.length;
+    const truncatedBase = baseSlug.substring(0, availableLength);
+    uniqueSlug = `${truncatedBase}${suffix}`;
+    counter++;
+  }
+
+  return uniqueSlug;
+}
+
 // Validation utilities
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

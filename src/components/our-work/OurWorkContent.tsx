@@ -38,6 +38,7 @@ import { EventCategory, getCategoryStyle } from '@/constants/categories';
 // Project interface for the our-work page
 interface Project {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   tags: string[];
@@ -439,7 +440,10 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                 className="w-full"
               >
                 {/* Project Container - Full Width with Category Styling */}
-                <Link href={`/our-work/${project.id}`} className="block">
+                <Link
+                  href={`/our-work/${project.slug || project.id}`}
+                  className="block"
+                >
                   <div
                     className={`w-full hover:bg-muted/50 transition-colors duration-300 cursor-pointer ${categoryStyle.colors.background}`}
                   >
