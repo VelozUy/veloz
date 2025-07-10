@@ -318,6 +318,132 @@ This component improves user interaction and encourages conversions through a co
 - ✅ Route protection via Firebase Auth context
 - ✅ Firestore security rules for role-based access
 
+### 📊 Admin Analytics Dashboard 🆕
+
+A comprehensive analytics dashboard to help evaluate project performance in terms of visibility, engagement, and conversion metrics.
+
+#### 🎯 Goals
+
+- Help identify which projects attract attention
+- Track what media drives interaction
+- Understand which projects lead to contact
+- Provide insights for content optimization
+
+#### 🧱 Data Sources
+
+- **Google Analytics Integration**: Track page views, time on page, scroll depth
+- **Firestore Analytics**: Store derived metrics and custom events
+- **Contact Form Tracking**: Link form submissions to specific projects
+- **CTA Interaction Tracking**: Monitor "I want something like this" button clicks
+- **Media Interaction Events**: Track image zooms, video plays, and social feed engagement
+
+#### 📊 Dashboard Sections & Metrics
+
+**🧲 Engagement Metrics**
+
+- **Total visits per project**: Page view counts with date range filtering
+- **Average time on project page**: Session duration analytics
+- **Scroll depth per project**: Percentage of page viewed with heatmap overlay
+- **Media interactions**:
+  - Image zooms / fullscreens
+  - Video plays and completion rates
+  - Social feed post engagement
+
+**💬 Conversion Metrics**
+
+- **CTA clicks ("I want something like this")**: Grouped by project with conversion rates
+- **CTA clicks on AI assistant**: Total and per-project interaction tracking
+- **Contact form submissions**: Form completion rates and project references
+- **Submissions referencing specific projects**: Track which projects generate leads
+
+**👥 Team Visibility**
+
+- **Crew appearances per project**: Count of crew member views and interactions
+- **Views of "Meet the Team" section**: Per-project team section engagement
+- **Crew member profile clicks**: Individual crew member interaction tracking
+
+**🧠 Optional Insights**
+
+- **Heatmap overlay**: Per project page interaction visualization
+- **Device breakdown**: Mobile, desktop, tablet usage patterns
+- **Preferred language per session**: Language preference analytics
+- **Geographic distribution**: Visitor location data for regional insights
+
+#### 🛠️ UI Components
+
+- **Dashboard Layout**: Responsive grid layout with shadcn/ui components
+- **Metric Cards**: Display key performance indicators with trend indicators
+- **Interactive Charts**: Bar charts, line charts, and pie charts using Recharts
+- **Data Tables**: Sortable and filterable project performance tables
+- **Date Range Selector**: Flexible time period filtering
+- **Export Functionality**: CSV/Excel export for detailed analysis
+- **Real-time Updates**: Live data refresh with loading states
+
+#### 🔧 Technical Implementation
+
+**Data Collection Strategy**
+
+```typescript
+interface AnalyticsEvent {
+  eventType:
+    | 'page_view'
+    | 'media_interaction'
+    | 'cta_click'
+    | 'form_submission';
+  projectId?: string;
+  mediaId?: string;
+  crewMemberId?: string;
+  sessionId: string;
+  timestamp: Timestamp;
+  metadata: {
+    deviceType: 'mobile' | 'desktop' | 'tablet';
+    language: string;
+    referrer?: string;
+    scrollDepth?: number;
+    timeOnPage?: number;
+  };
+}
+```
+
+**Firestore Collections**
+
+```
+/analytics:
+  - eventId: { eventType, projectId, metadata, timestamp }
+  - sessionId: { startTime, endTime, deviceInfo, language }
+
+/analyticsSummary:
+  - projectId: {
+      totalViews: number,
+      avgTimeOnPage: number,
+      avgScrollDepth: number,
+      ctaClicks: number,
+      formSubmissions: number,
+      lastUpdated: Timestamp
+    }
+```
+
+**Google Analytics Integration**
+
+- **gtag.js Setup**: Configure Google Analytics 4 tracking
+- **Custom Events**: Track project-specific interactions
+- **Enhanced Ecommerce**: Track project view and interaction events
+- **Conversion Tracking**: Monitor CTA clicks and form submissions
+
+#### 📈 Performance Monitoring
+
+- **Real-time Metrics**: Live dashboard updates with WebSocket or polling
+- **Historical Data**: Store and analyze trends over time
+- **Performance Alerts**: Notify when metrics fall below thresholds
+- **Export Capabilities**: Generate reports for external analysis
+
+#### 🔒 Privacy & Compliance
+
+- **GDPR Compliance**: Anonymize user data and respect privacy preferences
+- **Data Retention**: Automatic cleanup of old analytics data
+- **Consent Management**: User consent for analytics tracking
+- **Data Security**: Secure storage and transmission of analytics data
+
 # wireframes
 
 [ Sidebar Navigation ]
