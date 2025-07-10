@@ -17,6 +17,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
   - Firebase Firestore → for content data (texts, images, videos)
   - Firebase Auth → to manage admin login
   - Firebase Storage → optional for image/video uploads
+  - Netlify API → for build triggering and deployment management
 
 ## 🎨 Aesthetic Guidelines
 
@@ -362,6 +363,56 @@ This component improves user interaction and encourages conversions through a co
 - ✅ Route protection via Firebase Auth context
 - ✅ Firestore security rules for role-based access
 
+### 🔄 Build Trigger System ✅ COMPLETED
+
+**CRITICAL FEATURE**: Admin-controlled build triggering for content deployment workflow.
+
+**Purpose**: After updating project content, admins can trigger new builds to regenerate static pages with the latest data, ensuring content changes are immediately reflected on the live site.
+
+**Key Features**:
+
+- **Secure API Endpoint**: `/api/trigger-build` with Firebase authentication
+- **Netlify Integration**: Triggers builds via Netlify API with cache clearing
+- **Admin UI Component**: Button in admin header with real-time status feedback
+- **Error Handling**: Comprehensive error handling and user notifications
+- **Build Tracking**: Returns build ID and deployment URL for monitoring
+
+**Technical Implementation**:
+
+- **Authentication**: Firebase ID token verification for secure access
+- **Netlify API**: Direct integration with Netlify build API
+- **Cache Management**: Automatic cache clearing for fresh builds
+- **Status Feedback**: Real-time loading states and success/error notifications
+- **Audit Logging**: All build triggers logged with user information
+
+**Environment Requirements**:
+
+```bash
+# Firebase Admin SDK (for API authentication)
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_CLIENT_EMAIL=your-firebase-client-email
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+
+# Netlify API (for build triggering)
+NETLIFY_SITE_ID=your-netlify-site-id
+NETLIFY_ACCESS_TOKEN=your-netlify-access-token
+```
+
+**Usage Workflow**:
+
+1. Admin makes changes to projects or content in the admin panel
+2. Admin clicks "Trigger New Build" button in the admin header
+3. System verifies authentication and triggers Netlify build
+4. Real-time feedback shows build status and progress
+5. Build completes with fresh static content deployment
+
+**Security & Monitoring**:
+
+- **Authentication**: Only authenticated admins can trigger builds
+- **Rate Limiting**: Built-in protection against excessive build requests
+- **Audit Trail**: All build triggers logged with user and timestamp
+- **Error Recovery**: Comprehensive error handling and user feedback
+
 ### 📊 Admin Analytics Dashboard 🆕
 
 A comprehensive analytics dashboard to help evaluate project performance in terms of visibility, engagement, and conversion metrics.
@@ -576,6 +627,28 @@ interface AnalyticsEvent {
 npm run build        # Runs build:data then next build
 npm run build:data   # Fetches all content from Firestore and generates static files
 ```
+
+### Manual Build Trigger System
+
+**Admin-Controlled Builds**: After content updates, admins can trigger new builds via the admin interface.
+
+**Build Trigger Workflow**:
+
+1. **Content Update**: Admin modifies projects, FAQs, or other content
+2. **Build Trigger**: Admin clicks "Trigger New Build" in admin header
+3. **Authentication**: System verifies admin permissions via Firebase Auth
+4. **Netlify API Call**: Secure API endpoint triggers Netlify build
+5. **Cache Clearing**: Build includes cache clearing for fresh content
+6. **Status Feedback**: Real-time updates on build progress
+7. **Deployment**: New static pages deployed with updated content
+
+**Technical Implementation**:
+
+- **API Endpoint**: `/api/trigger-build` with Firebase authentication
+- **Netlify Integration**: Direct API calls to Netlify build service
+- **Security**: Firebase ID token verification for all requests
+- **Monitoring**: Build ID tracking and deployment URL access
+- **Error Handling**: Comprehensive error recovery and user feedback
 
 ### Static Content Structure
 
@@ -882,6 +955,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 3. **Static Generation**: Build-time data fetching from Firestore
 4. **Asset Optimization**: Automatic image and code optimization
 5. **Deployment**: Zero-downtime deployment with rollback capability
+6. **Manual Build Trigger**: Admin-controlled builds via `/api/trigger-build` endpoint
 
 **Environment Management:**
 

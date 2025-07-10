@@ -136,13 +136,18 @@ export default function HeroMediaSelector({
       const newConfig: HeroMediaConfig = {
         mediaId: selectedMediaId,
         aspectRatio,
-        customRatio: aspectRatio === 'custom' ? customRatio : undefined,
         autoplay,
         muted,
         loop,
         cropConfig,
         ...updates,
       };
+
+      // Only include customRatio if aspectRatio is 'custom' and customRatio exists
+      if (aspectRatio === 'custom' && customRatio) {
+        newConfig.customRatio = customRatio;
+      }
+
       onHeroConfigChange(newConfig);
     },
     [
@@ -517,7 +522,9 @@ export default function HeroMediaSelector({
                 {selectedMedia.type === 'photo' ? (
                   <Image
                     src={selectedMedia.url}
-                    alt={selectedMedia.description?.es || selectedMedia.fileName}
+                    alt={
+                      selectedMedia.description?.es || selectedMedia.fileName
+                    }
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

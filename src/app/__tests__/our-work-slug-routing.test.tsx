@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import {
   generateStaticParams,
   generateMetadata,
@@ -47,6 +47,8 @@ describe('Project Detail Page Slug Routing', () => {
   const mockGetStaticContent = getStaticContent as jest.MockedFunction<
     typeof getStaticContent
   >;
+  const mockRedirect = redirect as jest.MockedFunction<typeof redirect>;
+  const mockNotFound = notFound as jest.MockedFunction<typeof notFound>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -82,6 +84,22 @@ describe('Project Detail Page Slug Routing', () => {
             eventType: 'Corporativos',
             location: 'Montevideo',
             eventDate: '2024-02-20',
+            featured: false,
+            status: 'published',
+            media: [],
+            mediaBlocks: [],
+            detailPageBlocks: [],
+            detailPageGridHeight: 9,
+          },
+          {
+            id: 'proj3',
+            slug: 'evento-empresarial-2024',
+            title: 'Evento Empresarial 2024',
+            description: 'Evento corporativo importante',
+            tags: [],
+            eventType: 'Corporativos',
+            location: 'Montevideo',
+            eventDate: '2024-03-15',
             featured: false,
             status: 'published',
             media: [],
@@ -127,6 +145,7 @@ describe('Project Detail Page Slug Routing', () => {
       expect(params).toEqual([
         { slug: 'boda-maria-y-juan' },
         { slug: 'proj2' }, // Fallback to ID when no slug
+        { slug: 'evento-empresarial-2024' },
       ]);
     });
   });
@@ -202,6 +221,235 @@ describe('Project Detail Page Slug Routing', () => {
       );
 
       expect(project).toBeUndefined();
+    });
+  });
+
+  describe('Backward Compatibility Tests', () => {
+    it('should redirect ID-based URL to slug-based URL when project has slug', async () => {
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing project by ID when it has a slug
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'proj1' }),
+      });
+
+      // Should redirect to slug-based URL
+      expect(mockRedirect).toHaveBeenCalledWith('/our-work/boda-maria-y-juan');
+    });
+
+    it('should not redirect when accessing project by ID and it has no slug', async () => {
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing project by ID when it has no slug
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'proj2' }),
+      });
+
+      // Should not redirect since proj2 has no slug
+      expect(mockRedirect).not.toHaveBeenCalled();
+    });
+
+    it('should not redirect when accessing project by its own slug', async () => {
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing project by its own slug
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'boda-maria-y-juan' }),
+      });
+
+      // Should not redirect since we're already using the correct slug
+      expect(mockRedirect).not.toHaveBeenCalled();
+    });
+
+    it('should handle non-existent projects gracefully', async () => {
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing non-existent project
+      try {
+        await ProjectDetailPage({
+          params: Promise.resolve({ slug: 'non-existent-project' }),
+        });
+      } catch {
+        // Expected to throw due to notFound() call
+      }
+
+      // Should call notFound() for non-existent projects
+      expect(mockNotFound).toHaveBeenCalled();
+    });
+
+    it('should handle projects with matching ID and slug', async () => {
+      // Add a test project where ID matches slug
+      mockGetStaticContent.mockReturnValue({
+        locale: 'es',
+        translations: {},
+        content: {
+          projects: [
+            {
+              id: 'boda-maria-y-juan',
+              slug: 'boda-maria-y-juan', // Same as ID
+              title: 'Boda de María y Juan',
+              description: 'Una boda hermosa',
+              tags: [],
+              eventType: 'Casamiento',
+              location: 'Montevideo',
+              eventDate: '2024-01-15',
+              featured: false,
+              status: 'published',
+              media: [],
+              mediaBlocks: [],
+              detailPageBlocks: [],
+              detailPageGridHeight: 9,
+            },
+          ],
+          homepage: { headline: '', logo: {}, backgroundVideo: {} },
+          about: {
+            title: '',
+            subtitle: '',
+            philosophy: { title: '', description: '' },
+            methodology: {
+              title: '',
+              planning: { title: '', description: '' },
+              coverage: { title: '', description: '' },
+              capture: { title: '', description: '' },
+              postproduction: { title: '', description: '' },
+            },
+            values: {
+              title: '',
+              passion: { title: '', description: '' },
+              teamwork: { title: '', description: '' },
+              quality: { title: '', description: '' },
+              agility: { title: '', description: '' },
+              excellence: { title: '', description: '' },
+              trust: { title: '', description: '' },
+            },
+            faq: { title: '' },
+          },
+          faqs: [],
+        },
+        lastUpdated: '',
+        buildTime: true,
+      });
+
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing project by ID when ID equals slug
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'boda-maria-y-juan' }),
+      });
+
+      // Should not redirect since ID equals slug
+      expect(mockRedirect).not.toHaveBeenCalled();
+    });
+
+    it('should handle multiple projects with similar slugs', async () => {
+      // Add test projects with similar slugs
+      mockGetStaticContent.mockReturnValue({
+        locale: 'es',
+        translations: {},
+        content: {
+          projects: [
+            {
+              id: 'proj1',
+              slug: 'evento-empresarial',
+              title: 'Evento Empresarial',
+              description: 'Primer evento empresarial',
+              tags: [],
+              eventType: 'Corporativos',
+              location: 'Montevideo',
+              eventDate: '2024-01-15',
+              featured: false,
+              status: 'published',
+              media: [],
+              mediaBlocks: [],
+              detailPageBlocks: [],
+              detailPageGridHeight: 9,
+            },
+            {
+              id: 'proj2',
+              slug: 'evento-empresarial-2',
+              title: 'Evento Empresarial 2',
+              description: 'Segundo evento empresarial',
+              tags: [],
+              eventType: 'Corporativos',
+              location: 'Montevideo',
+              eventDate: '2024-02-20',
+              featured: false,
+              status: 'published',
+              media: [],
+              mediaBlocks: [],
+              detailPageBlocks: [],
+              detailPageGridHeight: 9,
+            },
+          ],
+          homepage: { headline: '', logo: {}, backgroundVideo: {} },
+          about: {
+            title: '',
+            subtitle: '',
+            philosophy: { title: '', description: '' },
+            methodology: {
+              title: '',
+              planning: { title: '', description: '' },
+              coverage: { title: '', description: '' },
+              capture: { title: '', description: '' },
+              postproduction: { title: '', description: '' },
+            },
+            values: {
+              title: '',
+              passion: { title: '', description: '' },
+              teamwork: { title: '', description: '' },
+              quality: { title: '', description: '' },
+              agility: { title: '', description: '' },
+              excellence: { title: '', description: '' },
+              trust: { title: '', description: '' },
+            },
+            faq: { title: '' },
+          },
+          faqs: [],
+        },
+        lastUpdated: '',
+        buildTime: true,
+      });
+
+      // Import the page component dynamically to test the redirect logic
+      const { default: ProjectDetailPage } = await import(
+        '../our-work/[slug]/page'
+      );
+
+      // Test accessing first project by ID
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'proj1' }),
+      });
+
+      // Should redirect to slug-based URL
+      expect(mockRedirect).toHaveBeenCalledWith('/our-work/evento-empresarial');
+
+      // Reset mock
+      jest.clearAllMocks();
+
+      // Test accessing second project by ID
+      await ProjectDetailPage({
+        params: Promise.resolve({ slug: 'proj2' }),
+      });
+
+      // Should redirect to slug-based URL
+      expect(mockRedirect).toHaveBeenCalledWith(
+        '/our-work/evento-empresarial-2'
+      );
     });
   });
 });

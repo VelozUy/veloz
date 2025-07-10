@@ -2,11 +2,8 @@ import { FirebaseError } from 'firebase/app';
 import { FirestoreError } from 'firebase/firestore';
 import { StorageError } from 'firebase/storage';
 import type { ApiResponse } from '@/types';
-import { db } from './firebase';
-import {
-  enableNetwork,
-  disableNetwork,
-} from 'firebase/firestore';
+import { getFirestoreSync } from './firebase';
+import { enableNetwork, disableNetwork } from 'firebase/firestore';
 import { reinitializeFirebase } from './firebase-reinit';
 import { getFirestoreService } from './firebase';
 
@@ -573,8 +570,25 @@ export const createErrorResponse = <T>(error: unknown, context?: string) =>
 export const migrateProjectData = (data: any): any => {
   if (!data) return data;
 
-  // Ensure heroMediaConfig exists
-  if (!data.heroMediaConfig) {
+  // Clean heroMediaConfig to remove undefined values
+  if (data.heroMediaConfig) {
+    const cleaned = { ...data.heroMediaConfig };
+
+    // Remove customRatio if aspectRatio is not 'custom' or if customRatio is undefined
+    if (cleaned.aspectRatio !== 'custom' || !cleaned.customRatio) {
+      delete cleaned.customRatio;
+    }
+
+    // Remove undefined values that Firestore doesn't allow
+    Object.keys(cleaned).forEach(key => {
+      if (cleaned[key] === undefined) {
+        delete cleaned[key];
+      }
+    });
+
+    data.heroMediaConfig = cleaned;
+  } else {
+    // Ensure heroMediaConfig exists
     data.heroMediaConfig = {
       aspectRatio: '16:9',
       autoplay: true,

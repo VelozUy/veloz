@@ -11,7 +11,6 @@ import {
   where,
   orderBy,
   writeBatch,
-  QueryConstraint,
   DocumentData,
   Timestamp,
 } from 'firebase/firestore';
@@ -22,11 +21,7 @@ import {
   deleteObject,
 } from 'firebase/storage';
 import { getFirestoreSync, getStorageSync } from '@/lib/firebase';
-import {
-  withFirestoreRecovery,
-  withRetry,
-  createErrorResponse,
-} from '@/lib/firebase-error-handler';
+
 import type {
   ApiResponse,
   FAQ,
@@ -38,7 +33,7 @@ import type {
   ContactMessageData,
   SocialPost,
 } from '@/types';
-import { z } from 'zod';
+
 import { FIREBASE_COLLECTIONS } from '@/constants';
 import {
   faqSchema,
@@ -47,18 +42,28 @@ import {
   socialPostSchema,
 } from '@/lib/validation-schemas';
 
-// Cache configuration
-interface CacheConfig {
-  enabled: boolean;
-  ttl: number; // Time to live in milliseconds
-  maxSize: number; // Maximum number of cached items
-}
+// Utility function to clean heroMediaConfig for Firestore
+export const cleanHeroMediaConfig = (
+  config?: Record<string, unknown>
+): Record<string, unknown> | undefined => {
+  if (!config) return undefined;
 
-interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-  ttl: number;
-}
+  const cleaned = { ...config };
+
+  // Remove customRatio if aspectRatio is not 'custom' or if customRatio is undefined
+  if (cleaned.aspectRatio !== 'custom' || !cleaned.customRatio) {
+    delete cleaned.customRatio;
+  }
+
+  // Remove undefined values that Firestore doesn't allow
+  Object.keys(cleaned).forEach(key => {
+    if (cleaned[key] === undefined) {
+      delete cleaned[key];
+    }
+  });
+
+  return cleaned;
+};
 
 export abstract class BaseFirebaseService<T = unknown> {
   protected collectionName: string;

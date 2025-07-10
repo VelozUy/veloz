@@ -18,6 +18,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useState } from 'react';
+import BuildTrigger from './BuildTrigger';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -175,6 +176,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
               </h2>
             </div>
             <div className="hidden lg:flex items-center space-x-3">
+              <BuildTrigger variant="outline" size="sm" className="text-xs" />
               <div className="flex items-center text-xs text-muted-foreground">
                 <User className="w-3 h-3 mr-1.5" />
                 {user.email}
