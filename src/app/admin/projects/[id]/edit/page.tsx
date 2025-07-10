@@ -50,7 +50,11 @@ import {
   where,
   getDocs,
 } from 'firebase/firestore';
-import { projectMediaService, ProjectMedia } from '@/services/firebase';
+import {
+  projectMediaService,
+  ProjectMedia,
+  cleanHeroMediaConfig,
+} from '@/services/firebase';
 import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
@@ -513,7 +517,9 @@ export default function UnifiedProjectEditPage({
                 crewMembers: draftProject.crewMembers || [],
                 mediaBlocks: draftProject.mediaBlocks || [],
                 detailPageBlocks: draftProject.detailPageBlocks || [],
-                heroMediaConfig: draftProject.heroMediaConfig || {
+                heroMediaConfig: cleanHeroMediaConfig(
+                  draftProject.heroMediaConfig
+                ) || {
                   aspectRatio: '16:9',
                   autoplay: true,
                   muted: true,
@@ -874,31 +880,73 @@ export default function UnifiedProjectEditPage({
                       </Badge>
                     </div>
                     <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                        <span>URL completa:</span>
-                        <code className="bg-muted px-2 py-1 rounded text-xs">
-                          /our-work/
-                          {draftProject.slug ||
-                            generateUniqueSlug(
-                              draftProject.title.es,
-                              [],
-                              draftProject.id
-                            )}
-                        </code>
-                      </div>
-                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                        <span>URL de respaldo:</span>
-                        <code className="bg-muted px-2 py-1 rounded text-xs">
-                          /our-work/{draftProject.id}
-                        </code>
+                      <div className="space-y-3">
+                        <div>
+                          <Label className="text-sm font-medium">
+                            Vista Previa de URL
+                          </Label>
+                          <div className="mt-2 p-3 bg-muted rounded-lg border">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm text-muted-foreground mb-1">
+                                  URL Principal:
+                                </div>
+                                <div className="font-mono text-sm break-all">
+                                  {process.env.NEXT_PUBLIC_BASE_URL ||
+                                    'https://veloz.com.uy'}
+                                  /our-work/
+                                  <span className="text-primary font-semibold">
+                                    {draftProject.slug ||
+                                      generateUniqueSlug(
+                                        draftProject.title.es,
+                                        [],
+                                        draftProject.id
+                                      )}
+                                  </span>
+                                </div>
+                              </div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'}/our-work/${draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}`;
+                                  navigator.clipboard.writeText(url);
+                                }}
+                                className="ml-2 flex-shrink-0"
+                              >
+                                Copiar
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="text-sm text-muted-foreground mb-1">
+                            URL de Respaldo:
+                          </div>
+                          <div className="font-mono text-sm bg-muted/50 p-2 rounded border">
+                            {process.env.NEXT_PUBLIC_BASE_URL ||
+                              'https://veloz.com.uy'}
+                            /our-work/{draftProject.id}
+                          </div>
+                        </div>
+
+                        {!draftProject.slug && draftProject.title.es && (
+                          <div className="text-amber-600 text-sm bg-amber-50 p-2 rounded border border-amber-200">
+                            ⚠️ La URL se generará automáticamente desde el
+                            título en español cuando guardes el proyecto.
+                          </div>
+                        )}
+
+                        {draftProject.slug &&
+                          !/^[a-z0-9-]+$/.test(draftProject.slug) && (
+                            <div className="text-red-600 text-sm bg-red-50 p-2 rounded border border-red-200">
+                              ❌ La URL contiene caracteres no válidos. Solo se
+                              permiten letras minúsculas, números y guiones.
+                            </div>
+                          )}
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      La URL se genera automáticamente desde el título en
-                      español, pero puedes editarla manualmente. Solo se
-                      permiten letras minúsculas, números y guiones. La URL de
-                      respaldo siempre funcionará.
-                    </p>
                   </div>
                 )}
 
