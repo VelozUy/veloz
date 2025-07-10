@@ -4,9 +4,33 @@ import { getStaticContent } from '@/lib/utils';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
 
-  // Get static content to generate project URLs
-  const content = getStaticContent('es');
-  const projects = content.content.projects || [];
+  // Supported languages
+  const languages = ['es', 'en', 'pt'];
+
+  // Collect all project pages for all languages
+  const projectPages: Array<MetadataRoute.Sitemap[number]> = [];
+  const seenUrls = new Set<string>();
+
+  for (const lang of languages) {
+    const content = getStaticContent(lang);
+    const projects = content.content.projects || [];
+    for (const project of projects) {
+      const url =
+        `${baseUrl}/${lang === 'es' ? '' : lang + '/'}our-work/${project.slug || project.id}`.replace(
+          /\/our-work\//,
+          '/our-work/'
+        );
+      if (!seenUrls.has(url)) {
+        projectPages.push({
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'monthly' as const,
+          priority: 0.8,
+        });
+        seenUrls.add(url);
+      }
+    }
+  }
 
   // Base pages
   const basePages = [
@@ -42,48 +66,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Generate project detail pages
-  const projectPages = projects.map(project => ({
-    url: `${baseUrl}/our-work/${project.slug || project.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  // Generate language-specific pages
-  const languages = ['en', 'pt'];
-  const languagePages = languages.flatMap(lang => [
-    {
-      url: `${baseUrl}/${lang}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/${lang}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/${lang}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/${lang}/our-work`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/${lang}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-  ]);
+  // Language-specific base pages
+  const languagePages = languages
+    .filter(lang => lang !== 'es')
+    .flatMap(lang => [
+      {
+        url: `${baseUrl}/${lang}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/${lang}/about`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/${lang}/gallery`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/${lang}/our-work`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/${lang}/contact`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      },
+    ]);
 
   return [...basePages, ...projectPages, ...languagePages];
 }
