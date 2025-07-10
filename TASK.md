@@ -97,10 +97,10 @@ _All tasks resolved_
 - [x] **[High] Update project routing** - Support both `/our-work/[slug]` and `/our-work/[id]` routes for backward compatibility _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
 - [x] **[High] Add slug field to admin interface** - Display and allow manual editing of slugs in project editor _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
 - [x] **[Medium] Implement slug migration** - Generate slugs for existing projects during build process _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
-- [ ] **[Medium] Update sitemap generation** - Include slug-based URLs in sitemap for better SEO _(Added: Jan 9, 2025)_
-- [ ] **[Medium] Update project links** - Update all internal links to use slug-based URLs _(Added: Jan 9, 2025)_
-- [ ] **[Low] Add slug preview in admin** - Show how the final URL will look when editing project slug _(Added: Jan 9, 2025)_
-- [ ] **[Medium] Test slug functionality** - Create comprehensive tests for slug generation, validation, and routing _(Added: Jan 9, 2025)_
+- [x] **[Medium] Update sitemap generation** - Include slug-based URLs in sitemap for better SEO _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
+- [x] **[Medium] Update project links** - Update all internal links to use slug-based URLs _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
+- [x] **[Low] Add slug preview in admin** - Show how the final URL will look when editing project slug _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
+- [x] **[Medium] Test slug functionality** - Create comprehensive tests for slug generation, validation, and routing _(Added: Jan 9, 2025)_ _(Completed: Jan 9, 2025)_
 - [ ] **[Medium] Test backward compatibility** - Ensure existing ID-based URLs still work and redirect properly _(Added: Jan 9, 2025)_
 - [ ] **[Low] Add slug analytics** - Track slug-based URL performance in analytics dashboard _(Added: Jan 9, 2025)_
 
