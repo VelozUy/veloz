@@ -46,6 +46,9 @@ import {
   addDoc,
   collection,
   serverTimestamp,
+  query,
+  where,
+  getDocs,
 } from 'firebase/firestore';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
 import MediaUpload from '@/components/admin/MediaUpload';
@@ -332,6 +335,37 @@ export default function UnifiedProjectEditPage({
     }
   }, [pendingNavigation, router, originalProject, originalMedia]);
 
+  // Auto-generate slug when Spanish title changes
+  useEffect(() => {
+    if (draftProject && draftProject.title.es && !draftProject.slug) {
+      const newSlug = generateUniqueSlug(draftProject.title.es, [], draftProject.id);
+      updateDraftProject({ slug: newSlug });
+    }
+  }, [draftProject?.title.es, draftProject?.id]);
+
+  // Check for duplicate slugs
+  const checkSlugUniqueness = async (slug: string, excludeProjectId?: string): Promise<boolean> => {
+    if (!db) return true;
+    
+    try {
+      const projectsQuery = query(
+        collection(db, 'projects'),
+        where('slug', '==', slug)
+      );
+      const snapshot = await getDocs(projectsQuery);
+      
+      // Check if any project with this slug exists (excluding current project)
+      const duplicateProject = snapshot.docs.find(doc => 
+        doc.id !== excludeProjectId
+      );
+      
+      return !duplicateProject;
+    } catch (error) {
+      console.error('Error checking slug uniqueness:', error);
+      return true; // Assume unique if error occurs
+    }
+  };
+
   // Save changes
   const handleSaveChanges = async () => {
     if (!draftProject) return;
@@ -345,8 +379,25 @@ export default function UnifiedProjectEditPage({
         return;
       }
 
+      // Validate slug
+      const currentSlug = draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id);
+      if (!currentSlug) {
+        setError('El slug no puede estar vacío');
+        setSaving(false);
+        return;
+      }
+
+      // Check slug uniqueness
+      const isSlugUnique = await checkSlugUniqueness(currentSlug, projectId || undefined);
+      if (!isSlugUnique) {
+        setError(`El slug "${currentSlug}" ya está en uso. Por favor elige otro.`);
+        setSaving(false);
+        return;
+      }
+
       // Add debug logging
       console.log('🔍 Saving project:', {
+        slug: currentSlug,
         detailPageBlocks: draftProject.detailPageBlocks,
         mediaBlocks: draftProject.mediaBlocks,
         detailPageGridHeight: draftProject.detailPageGridHeight,
@@ -362,17 +413,13 @@ export default function UnifiedProjectEditPage({
           return;
         }
 
-        // Generate slug from Spanish title
-        const spanishTitle =
-          draftProject.title?.es || draftProject.title?.en || 'Project';
-        const slug = generateUniqueSlug(spanishTitle, [], undefined);
-
+        // Use the validated slug
         const docRef = await withFirestoreRecovery(() =>
           withRetry(
             () =>
               addDoc(collection(db!, 'projects'), {
                 title: draftProject.title,
-                slug: slug,
+                slug: currentSlug,
                 description: draftProject.description,
                 eventType: draftProject.eventType,
                 location: draftProject.location,
@@ -430,20 +477,13 @@ export default function UnifiedProjectEditPage({
         // Update existing project
         if (!projectId) return;
 
-        // Generate or update slug if title has changed
-        let slug = draftProject.slug;
-        if (!slug || originalProject?.title?.es !== draftProject.title?.es) {
-          const spanishTitle =
-            draftProject.title?.es || draftProject.title?.en || 'Project';
-          slug = generateUniqueSlug(spanishTitle, [], projectId);
-        }
-
+        // Use the validated slug from earlier validation
         await withFirestoreRecovery(() =>
           withRetry(
             () =>
               updateDoc(doc(db!, 'projects', projectId), {
                 title: draftProject.title,
-                slug: slug,
+                slug: currentSlug,
                 description: draftProject.description,
                 eventType: draftProject.eventType,
                 location: draftProject.location,
@@ -782,23 +822,48 @@ export default function UnifiedProjectEditPage({
                   />
                 </div>
 
-                {/* Slug Preview */}
+                {/* Slug Field */}
                 {draftProject.title.es && (
                   <div className="space-y-2">
-                    <Label>URL del Proyecto (Generada Automáticamente)</Label>
+                    <Label htmlFor="slug">URL del Proyecto (Slug)</Label>
                     <div className="flex items-center space-x-2">
-                      <Input
-                        value={`/our-work/${draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}`}
-                        readOnly
-                        className="bg-muted"
-                      />
+                      <div className="flex-1">
+                        <Input
+                          id="slug"
+                          value={draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}
+                          onChange={e => {
+                            const newSlug = e.target.value
+                              .toLowerCase()
+                              .replace(/[^a-z0-9-]/g, '-')
+                              .replace(/-+/g, '-')
+                              .replace(/^-|-$/g, '');
+                            updateDraftProject({ slug: newSlug });
+                          }}
+                          placeholder="boda-maria-y-juan"
+                          className="font-mono"
+                        />
+                      </div>
                       <Badge variant="outline" className="whitespace-nowrap">
                         SEO-friendly
                       </Badge>
                     </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                        <span>URL completa:</span>
+                        <code className="bg-muted px-2 py-1 rounded text-xs">
+                          /our-work/{draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}
+                        </code>
+                      </div>
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                        <span>URL de respaldo:</span>
+                        <code className="bg-muted px-2 py-1 rounded text-xs">
+                          /our-work/{draftProject.id}
+                        </code>
+                      </div>
+                    </div>
                     <p className="text-sm text-muted-foreground">
-                      La URL se genera automáticamente desde el título en
-                      español. Se actualizará al guardar el proyecto.
+                      La URL se genera automáticamente desde el título en español, pero puedes editarla manualmente.
+                      Solo se permiten letras minúsculas, números y guiones. La URL de respaldo siempre funcionará.
                     </p>
                   </div>
                 )}

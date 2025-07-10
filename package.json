@@ -17,6 +17,7 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
     "seed:about": "node scripts/seed-about-content.js",
+    "migrate:slugs": "node scripts/migrate-slugs.js",
     "prepare": "husky"
   },
   "dependencies": {

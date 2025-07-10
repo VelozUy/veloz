@@ -120,7 +120,7 @@ export default function AnalyticsDashboardPage() {
 
   useEffect(() => {
     loadAnalyticsData();
-  }, [loadAnalyticsData]);
+  }, [dateRange]);
 
   const handleRefresh = () => {
     loadAnalyticsData();
@@ -198,62 +198,52 @@ export default function AnalyticsDashboardPage() {
       </div>
 
       {/* Metrics Cards */}
-      <MetricCardGrid className="mb-8">
+      <div className="mb-8">
+        <MetricCardGrid>
         <ViewsMetricCard
-          value={metrics.totalViews}
-          isLoading={isLoading}
-          trend={{
-            value: 20.1,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            totalViews: metrics.totalViews,
+            viewsChange: 20.1,
+            viewsProgress: 75,
           }}
         />
         <VisitorsMetricCard
-          value={metrics.uniqueVisitors}
-          isLoading={isLoading}
-          trend={{
-            value: 15.3,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            uniqueVisitors: metrics.uniqueVisitors,
+            visitorsChange: 15.3,
+            visitorsProgress: 80,
           }}
         />
         <TimeOnPageMetricCard
-          value={metrics.averageTimeOnPage}
-          isLoading={isLoading}
-          trend={{
-            value: 5.2,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            avgTimeOnPage: metrics.averageTimeOnPage,
+            timeChange: 5.2,
+            timeTrend: 5.2,
           }}
         />
         <CtaClicksMetricCard
-          value={metrics.ctaClicks}
-          isLoading={isLoading}
-          trend={{
-            value: 12.7,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            ctaClicks: metrics.ctaClicks,
+            ctaChange: 12.7,
+            ctaProgress: 65,
           }}
         />
         <MediaInteractionsMetricCard
-          value={metrics.mediaInteractions}
-          isLoading={isLoading}
-          trend={{
-            value: 8.9,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            mediaInteractions: metrics.mediaInteractions,
+            mediaChange: 8.9,
+            mediaTrend: 8.9,
           }}
         />
         <CrewInteractionsMetricCard
-          value={metrics.crewInteractions}
-          isLoading={isLoading}
-          trend={{
-            value: 3.4,
-            isPositive: true,
-            period: 'desde el mes pasado',
+          data={{
+            crewInteractions: metrics.crewInteractions,
+            crewChange: 3.4,
+            crewTrend: 3.4,
           }}
         />
-      </MetricCardGrid>
+        </MetricCardGrid>
+      </div>
 
       {/* Detailed Analytics Tabs */}
       <Tabs defaultValue="overview" className="w-full">
