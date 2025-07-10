@@ -16,6 +16,7 @@ import {
   Mail,
   FileText,
   Users,
+  BarChart3,
 } from 'lucide-react';
 import { useState } from 'react';
 
