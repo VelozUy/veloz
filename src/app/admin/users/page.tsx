@@ -39,6 +39,7 @@ import {
   UserX,
   Shield,
   Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import {
@@ -50,14 +51,34 @@ import {
   getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
+import {
+  validateAdminUser,
+  safeValidateAdminUser,
+} from '@/lib/validation-schemas';
+import type { AdminUserData } from '@/lib/validation-schemas';
 
-interface AdminUser {
+// Interface for Firestore data with timestamps
+interface AdminUserFirestore {
   email: string;
   status: 'active' | 'inactive';
   invitedBy: string;
   invitedAt: { toDate: () => Date } | null;
-  lastLogin?: { toDate: () => Date } | null | undefined;
+  lastLoginAt?: { toDate: () => Date } | null | undefined;
+  role?: 'owner' | 'admin' | 'editor';
+  permissions?: string[];
+  emailNotifications?: {
+    contactMessages: boolean;
+    projectUpdates: boolean;
+    userManagement: boolean;
+    systemAlerts: boolean;
+  };
+  displayName?: string;
+  photoURL?: string;
+  notes?: string;
 }
+
+// Type for the component state
+type AdminUser = AdminUserFirestore;
 
 const OWNER_EMAIL = process.env.NEXT_PUBLIC_OWNER_EMAIL || '';
 
@@ -70,20 +91,29 @@ export default function UsersPage() {
   const [inviteError, setInviteError] = useState('');
   const [inviteSuccess, setInviteSuccess] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [error, setError] = useState('');
 
   const fetchUsers = useCallback(async () => {
     if (!user) return;
 
     setLoading(true);
+    setError('');
     try {
       const snapshot = await getDocs(collection(db!, 'adminUsers'));
       const userList: AdminUser[] = [];
       snapshot.forEach(doc => {
-        userList.push({ email: doc.id, ...doc.data() } as AdminUser);
+        const userData = { email: doc.id, ...doc.data() } as AdminUser;
+        const validation = safeValidateAdminUser(userData);
+        if (validation.success) {
+          userList.push(userData);
+        } else {
+          console.warn('Invalid user data:', doc.id, validation.error);
+        }
       });
       setUsers(userList);
     } catch (error) {
       console.error('Error fetching users:', error);
+      setError('Error al cargar usuarios. Por favor intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -116,10 +146,28 @@ export default function UsersPage() {
         return;
       }
 
+      // Create user data with validation
+      const userData: AdminUserData = {
+        email: inviteEmail,
+        status: 'active',
+        role: 'editor',
+        permissions: [],
+        emailNotifications: {
+          contactMessages: true,
+          projectUpdates: false,
+          userManagement: false,
+          systemAlerts: true,
+        },
+        invitedBy: user.email || '',
+        invitedAt: new Date(),
+      };
+
+      // Validate user data before saving
+      validateAdminUser(userData);
+
       // Add user to Firestore
       await setDoc(doc(db!, 'adminUsers', inviteEmail), {
-        status: 'active',
-        invitedBy: user.email,
+        ...userData,
         invitedAt: serverTimestamp(),
       });
 
@@ -136,7 +184,11 @@ export default function UsersPage() {
       }, 2000);
     } catch (error) {
       console.error('Error inviting user:', error);
-      setInviteError('Error al invitar usuario. Por favor intenta de nuevo.');
+      if (error instanceof Error) {
+        setInviteError(`Error al invitar usuario: ${error.message}`);
+      } else {
+        setInviteError('Error al invitar usuario. Por favor intenta de nuevo.');
+      }
     } finally {
       setInviteLoading(false);
     }
@@ -191,7 +243,11 @@ export default function UsersPage() {
   const formatDate = (timestamp: { toDate: () => Date } | null | undefined) => {
     if (!timestamp) return 'Nunca';
     try {
-      return timestamp.toDate().toLocaleDateString();
+      return timestamp.toDate().toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
     } catch {
       return 'Desconocido';
     }
@@ -201,7 +257,10 @@ export default function UsersPage() {
     return (
       <AdminLayout title="Gestión de Usuarios">
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div role="status" className="flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <span className="sr-only">Cargando...</span>
+          </div>
         </div>
       </AdminLayout>
     );
@@ -241,6 +300,7 @@ export default function UsersPage() {
               <form onSubmit={handleInviteUser} className="space-y-4">
                 {inviteError && (
                   <Alert variant="destructive">
+                    <AlertCircle className="w-4 h-4" />
                     <AlertDescription>{inviteError}</AlertDescription>
                   </Alert>
                 )}
@@ -294,6 +354,14 @@ export default function UsersPage() {
             </DialogContent>
           </Dialog>
         </div>
+
+        {/* Error Display */}
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="w-4 h-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         {/* Owner Info */}
         <Card>
@@ -351,6 +419,7 @@ export default function UsersPage() {
                   <TableRow>
                     <TableHead>Email</TableHead>
                     <TableHead>Estado</TableHead>
+                    <TableHead>Rol</TableHead>
                     <TableHead>Invitado Por</TableHead>
                     <TableHead>Fecha de Invitación</TableHead>
                     <TableHead>Último Acceso</TableHead>
@@ -376,6 +445,11 @@ export default function UsersPage() {
                             : 'inactivo'}
                         </Badge>
                       </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">
+                          {adminUser.role || 'editor'}
+                        </Badge>
+                      </TableCell>
                       <TableCell className="text-muted-foreground">
                         {adminUser.invitedBy}
                       </TableCell>
@@ -383,7 +457,7 @@ export default function UsersPage() {
                         {formatDate(adminUser.invitedAt)}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {formatDate(adminUser.lastLogin)}
+                        {formatDate(adminUser.lastLoginAt)}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
@@ -396,6 +470,11 @@ export default function UsersPage() {
                                 adminUser.status
                               )
                             }
+                            title={
+                              adminUser.status === 'active'
+                                ? 'Desactivar usuario'
+                                : 'Activar usuario'
+                            }
                           >
                             {adminUser.status === 'active' ? (
                               <UserX className="w-4 h-4" />
@@ -407,6 +486,7 @@ export default function UsersPage() {
                             size="sm"
                             variant="outline"
                             onClick={() => handleDeleteUser(adminUser.email)}
+                            title="Eliminar usuario"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>

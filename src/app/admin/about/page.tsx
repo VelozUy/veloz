@@ -49,6 +49,7 @@ import {
   AboutMethodologyStepData,
   AboutValueData,
 } from '@/lib/validation-schemas';
+import AboutContentPreview from '@/components/admin/AboutContentPreview';
 
 const LANGUAGES = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
@@ -685,9 +686,12 @@ export default function AboutAdminPage() {
         if (response.data) {
           setAboutContent(response.data);
           // Create form data without id, createdAt, updatedAt
-          const contentData = (({ id, createdAt, updatedAt, ...rest }) => rest)(
-            response.data
-          );
+          const contentData = (({
+            id: _id,
+            createdAt: _createdAt,
+            updatedAt: _updatedAt,
+            ...rest
+          }) => rest)(response.data);
           setFormData(contentData);
         } else {
           // No content exists, use default
@@ -866,7 +870,9 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: formData.values.items.length,
+      order: Array.isArray(formData.values.items)
+        ? formData.values.items.length
+        : 0,
     };
 
     setFormData(prev => {
@@ -956,7 +962,9 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: formData.philosophy.items.length,
+      order: Array.isArray(formData.philosophy.items)
+        ? formData.philosophy.items.length
+        : 0,
     };
 
     setFormData(prev => {
@@ -1046,7 +1054,9 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: formData.methodology.items.length,
+      order: Array.isArray(formData.methodology.items)
+        ? formData.methodology.items.length
+        : 0,
     };
 
     setFormData(prev => {
@@ -1099,26 +1109,32 @@ export default function AboutAdminPage() {
 
     // Philosophy section
     translationData['philosophy.title'] = formData.philosophy.title;
-    formData.philosophy.items.forEach((point, index) => {
-      translationData[`philosophy.item.${index}.title`] = point.title;
-      translationData[`philosophy.item.${index}.description`] =
-        point.description;
-    });
+    if (Array.isArray(formData.philosophy.items)) {
+      formData.philosophy.items.forEach((point, index) => {
+        translationData[`philosophy.item.${index}.title`] = point.title;
+        translationData[`philosophy.item.${index}.description`] =
+          point.description;
+      });
+    }
 
     // Methodology section
     translationData['methodology.title'] = formData.methodology.title;
-    formData.methodology.items.forEach((step, index) => {
-      translationData[`methodology.item.${index}.title`] = step.title;
-      translationData[`methodology.item.${index}.description`] =
-        step.description;
-    });
+    if (Array.isArray(formData.methodology.items)) {
+      formData.methodology.items.forEach((step, index) => {
+        translationData[`methodology.item.${index}.title`] = step.title;
+        translationData[`methodology.item.${index}.description`] =
+          step.description;
+      });
+    }
 
     // Values section
     translationData['values.title'] = formData.values.title;
-    formData.values.items.forEach((value, index) => {
-      translationData[`values.item.${index}.title`] = value.title;
-      translationData[`values.item.${index}.description`] = value.description;
-    });
+    if (Array.isArray(formData.values.items)) {
+      formData.values.items.forEach((value, index) => {
+        translationData[`values.item.${index}.title`] = value.title;
+        translationData[`values.item.${index}.description`] = value.description;
+      });
+    }
 
     return translationData;
   };
@@ -1139,6 +1155,7 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
+        if (!Array.isArray(prev.values.items)) return prev;
 
         const oldIndex = prev.values.items.findIndex(
           item => item.id === active.id
@@ -1174,6 +1191,7 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
+        if (!Array.isArray(prev.philosophy.items)) return prev;
 
         const oldIndex = prev.philosophy.items.findIndex(
           item => item.id === active.id
@@ -1209,6 +1227,7 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
+        if (!Array.isArray(prev.methodology.items)) return prev;
 
         const oldIndex = prev.methodology.items.findIndex(
           item => item.id === active.id
@@ -1251,6 +1270,7 @@ export default function AboutAdminPage() {
       setTranslatingValues(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the value by ID
+      if (!Array.isArray(formData.values.items)) return;
       const valueIndex = formData.values.items.findIndex(
         item => item.id === valueId
       );
@@ -1312,6 +1332,7 @@ export default function AboutAdminPage() {
       setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the philosophy point by ID
+      if (!Array.isArray(formData.philosophy.items)) return;
       const pointIndex = formData.philosophy.items.findIndex(
         item => item.id === pointId
       );
@@ -1375,6 +1396,7 @@ export default function AboutAdminPage() {
       setTranslatingMethodology(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the methodology step by ID
+      if (!Array.isArray(formData.methodology.items)) return;
       const stepIndex = formData.methodology.items.findIndex(
         item => item.id === stepId
       );
@@ -1698,11 +1720,12 @@ export default function AboutAdminPage() {
 
         {/* Content Sections */}
         <Tabs defaultValue="main" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="main">Contenido Principal</TabsTrigger>
             <TabsTrigger value="philosophy">Filosofía</TabsTrigger>
             <TabsTrigger value="methodology">Metodología</TabsTrigger>
             <TabsTrigger value="values">Valores</TabsTrigger>
+            <TabsTrigger value="preview">Vista Previa</TabsTrigger>
           </TabsList>
 
           <TabsContent value="main" className="space-y-6">
@@ -1795,7 +1818,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Philosophy Points */}
-                {formData.philosophy.items.length === 0 ? (
+                {!Array.isArray(formData.philosophy.items) ||
+                formData.philosophy.items.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -1812,7 +1836,11 @@ export default function AboutAdminPage() {
                     onDragEnd={handlePhilosophyDragEnd}
                   >
                     <SortableContext
-                      items={formData.philosophy.items.map(item => item.id)}
+                      items={
+                        Array.isArray(formData.philosophy.items)
+                          ? formData.philosophy.items.map(item => item.id)
+                          : []
+                      }
                       strategy={verticalListSortingStrategy}
                     >
                       {formData.philosophy.items
@@ -1882,7 +1910,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Methodology Steps */}
-                {formData.methodology.items.length === 0 ? (
+                {!Array.isArray(formData.methodology.items) ||
+                formData.methodology.items.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -1899,7 +1928,11 @@ export default function AboutAdminPage() {
                     onDragEnd={handleMethodologyDragEnd}
                   >
                     <SortableContext
-                      items={formData.methodology.items.map(item => item.id)}
+                      items={
+                        Array.isArray(formData.methodology.items)
+                          ? formData.methodology.items.map(item => item.id)
+                          : []
+                      }
                       strategy={verticalListSortingStrategy}
                     >
                       {formData.methodology.items
@@ -1967,7 +2000,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Values */}
-                {formData.values.items.length === 0 ? (
+                {!Array.isArray(formData.values.items) ||
+                formData.values.items.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -1984,7 +2018,11 @@ export default function AboutAdminPage() {
                     onDragEnd={handleValuesDragEnd}
                   >
                     <SortableContext
-                      items={formData.values.items.map(item => item.id)}
+                      items={
+                        Array.isArray(formData.values.items)
+                          ? formData.values.items.map(item => item.id)
+                          : []
+                      }
                       strategy={verticalListSortingStrategy}
                     >
                       {formData.values.items
@@ -2004,6 +2042,23 @@ export default function AboutAdminPage() {
                     </SortableContext>
                   </DndContext>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="preview" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Vista Previa del Contenido</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Visualiza cómo se verá el contenido en la página pública
+                </p>
+              </CardHeader>
+              <CardContent>
+                <AboutContentPreview
+                  content={formData}
+                  currentLanguage={currentLanguage}
+                />
               </CardContent>
             </Card>
           </TabsContent>

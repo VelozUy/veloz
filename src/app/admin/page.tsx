@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 import {
   HelpCircle,
@@ -24,7 +26,15 @@ import {
   FolderOpen,
   FileText,
   ArrowLeft,
+  Loader2,
+  AlertCircle,
+  Users,
+  Camera,
 } from 'lucide-react';
+import {
+  dashboardStatsService,
+  DashboardStats,
+} from '@/services/dashboard-stats';
 
 export default function AdminDashboardPage() {
   const { user, loading } = useAuth();
@@ -32,12 +42,35 @@ export default function AdminDashboardPage() {
   const [currentView, setCurrentView] = useState<'dashboard' | 'forms'>(
     'dashboard'
   );
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState('');
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/admin/login');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    if (user) {
+      loadDashboardStats();
+    }
+  }, [user]);
+
+  const loadDashboardStats = async () => {
+    try {
+      setStatsLoading(true);
+      setStatsError('');
+      const dashboardStats = await dashboardStatsService.getDashboardStats();
+      setStats(dashboardStats);
+    } catch (error) {
+      console.error('Error loading dashboard stats:', error);
+      setStatsError('Error al cargar estadísticas del dashboard');
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -106,32 +139,52 @@ export default function AdminDashboardPage() {
     },
   ];
 
-  const stats = [
-    {
-      title: 'Proyectos Totales',
-      value: '0',
-      description: 'Proyectos activos',
-      icon: FolderOpen,
-    },
-    {
-      title: 'Publicados',
-      value: '0',
-      description: 'Proyectos en vivo',
-      icon: BarChart3,
-    },
-    {
-      title: 'Preguntas Frecuentes',
-      value: '0',
-      description: 'Preguntas activas',
-      icon: HelpCircle,
-    },
-    {
-      title: 'Última Actualización',
-      value: 'Hoy',
-      description: 'Contenido modificado',
-      icon: Calendar,
-    },
-  ];
+  const formatLastUpdated = (date: Date | null) => {
+    if (!date) return 'Nunca';
+
+    const now = new Date();
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
+
+    if (diffInHours < 1) return 'Hace menos de 1 hora';
+    if (diffInHours < 24) return `Hace ${diffInHours} horas`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `Hace ${diffInDays} días`;
+
+    return date.toLocaleDateString('es-ES');
+  };
+
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'project':
+        return <FolderOpen className="w-4 h-4" />;
+      case 'faq':
+        return <HelpCircle className="w-4 h-4" />;
+      case 'crew':
+        return <Camera className="w-4 h-4" />;
+      case 'user':
+        return <Users className="w-4 h-4" />;
+      default:
+        return <BarChart3 className="w-4 h-4" />;
+    }
+  };
+
+  const getActivityColor = (type: string) => {
+    switch (type) {
+      case 'project':
+        return 'text-green-600';
+      case 'faq':
+        return 'text-blue-600';
+      case 'crew':
+        return 'text-purple-600';
+      case 'user':
+        return 'text-orange-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
 
   return (
     <AdminLayout title="Panel Principal">
@@ -169,27 +222,100 @@ export default function AdminDashboardPage() {
           <>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {stats.map(stat => {
-                const Icon = stat.icon;
-                return (
-                  <Card key={stat.title}>
+              {statsLoading ? (
+                // Loading state for stats
+                Array.from({ length: 4 }).map((_, index) => (
+                  <Card key={index}>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <div className="h-4 w-20 bg-muted animate-pulse rounded"></div>
+                      <div className="h-4 w-4 bg-muted animate-pulse rounded"></div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-8 w-12 bg-muted animate-pulse rounded mb-2"></div>
+                      <div className="h-3 w-24 bg-muted animate-pulse rounded"></div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : statsError ? (
+                // Error state
+                <div className="col-span-full">
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{statsError}</AlertDescription>
+                  </Alert>
+                </div>
+              ) : stats ? (
+                // Real stats
+                <>
+                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium text-muted-foreground">
-                        {stat.title}
+                        Proyectos Totales
                       </CardTitle>
-                      <Icon className="w-4 h-4 text-muted-foreground" />
+                      <FolderOpen className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold text-foreground">
-                        {stat.value}
+                        {stats.totalProjects}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {stat.description}
+                        {stats.publishedProjects} publicados
                       </p>
                     </CardContent>
                   </Card>
-                );
-              })}
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium text-muted-foreground">
+                        Preguntas Frecuentes
+                      </CardTitle>
+                      <HelpCircle className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-foreground">
+                        {stats.totalFAQs}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {stats.publishedFAQs} publicadas
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium text-muted-foreground">
+                        Miembros del Equipo
+                      </CardTitle>
+                      <Camera className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-foreground">
+                        {stats.totalCrewMembers}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Miembros activos
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium text-muted-foreground">
+                        Última Actualización
+                      </CardTitle>
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-foreground">
+                        {formatLastUpdated(stats.lastUpdated)}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Contenido modificado
+                      </p>
+                    </CardContent>
+                  </Card>
+                </>
+              ) : null}
             </div>
 
             {/* Quick Actions */}
@@ -248,18 +374,73 @@ export default function AdminDashboardPage() {
               </h2>
               <Card>
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-center py-12">
-                    <div className="text-center">
-                      <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-foreground mb-2">
-                        Sin actividad reciente
-                      </h3>
-                      <p className="text-muted-foreground">
-                        Cuando comiences a usar el sistema, verás la actividad
-                        reciente aquí.
-                      </p>
+                  {statsLoading ? (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="h-6 w-6 animate-spin" />
+                        <span>Cargando actividad...</span>
+                      </div>
                     </div>
-                  </div>
+                  ) : statsError ? (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="text-center">
+                        <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-foreground mb-2">
+                          Error al cargar actividad
+                        </h3>
+                        <p className="text-muted-foreground">{statsError}</p>
+                      </div>
+                    </div>
+                  ) : stats?.recentActivity &&
+                    stats.recentActivity.length > 0 ? (
+                    <div className="space-y-4">
+                      {stats.recentActivity.map((activity, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50"
+                        >
+                          <div
+                            className={`p-2 rounded-full bg-background ${getActivityColor(activity.type)}`}
+                          >
+                            {getActivityIcon(activity.type)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2">
+                              <span className="font-medium">
+                                {activity.title}
+                              </span>
+                              <Badge variant="secondary" className="text-xs">
+                                {activity.action === 'published'
+                                  ? 'Publicado'
+                                  : 'Actualizado'}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {activity.timestamp.toLocaleDateString('es-ES', {
+                                day: 'numeric',
+                                month: 'short',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="text-center">
+                        <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-foreground mb-2">
+                          Sin actividad reciente
+                        </h3>
+                        <p className="text-muted-foreground">
+                          Cuando comiences a usar el sistema, verás la actividad
+                          reciente aquí.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
