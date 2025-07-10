@@ -792,8 +792,8 @@ async function fetchAboutContent(db) {
       console.log('ℹ️ No about content found, using defaults');
       return null;
     }
-  } catch (error) {
-    console.warn('⚠️ Error fetching about content:', error.message);
+  } catch {
+    console.warn('⚠️ Error fetching about content');
     return null;
   }
 }
@@ -848,7 +848,6 @@ function generateUniqueSlug(title, existingSlugs = [], projectId) {
 
   return uniqueSlug;
 }
-
 
 async function fetchProjects(db) {
   try {
@@ -921,7 +920,7 @@ async function fetchProjectMedia(db, projectId) {
         orderBy('order', 'asc')
       );
       snapshot = await getDocs(mediaQuery);
-    } catch (error) {
+    } catch {
       // If index doesn't exist, query without orderBy
       console.log(
         `⚠️ Index not found for projectMedia orderBy, querying without order...`

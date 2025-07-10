@@ -1,5 +1,5 @@
-const { initializeApp } = require('firebase/app');
-const {
+import { initializeApp } from 'firebase/app';
+import {
   getFirestore,
   collection,
   query,
@@ -8,7 +8,7 @@ const {
   updateDoc,
   serverTimestamp,
   orderBy,
-} = require('firebase/firestore');
+} from 'firebase/firestore';
 // Firebase configuration (copied from firebase-config.ts)
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -172,7 +172,7 @@ async function migrateProjectSlugs() {
 }
 
 // Run the script if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   migrateProjectSlugs()
     .then(() => {
       console.log('✅ Migration script completed successfully');
@@ -184,4 +184,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { migrateProjectSlugs }; 
+export { migrateProjectSlugs }; 

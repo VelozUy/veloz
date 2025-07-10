@@ -16,7 +16,6 @@ import {
   Mail,
   FileText,
   Users,
-  BarChart3,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -55,8 +54,8 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Cargando...</p>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-muted-foreground text-sm">Cargando...</p>
         </div>
       </div>
     );
@@ -74,29 +73,29 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-card border-r transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-56 bg-card border-r transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between p-6 border-b">
+          <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center">
-              <LayoutDashboard className="w-8 h-8 text-primary mr-2" />
-              <h1 className="text-xl font-bold text-primary">Veloz Admin</h1>
+              <LayoutDashboard className="w-6 h-6 text-primary mr-2" />
+              <h1 className="text-lg font-bold text-primary">Veloz Admin</h1>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="lg:hidden p-1.5 rounded-lg hover:bg-muted transition-colors"
               aria-label="Close sidebar"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4">
-            <ul className="space-y-2">
+          <nav className="flex-1 p-3">
+            <ul className="space-y-1">
               {navigation.map(item => {
                 const Icon = item.icon;
                 const isActive =
@@ -107,7 +106,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className={`flex items-center px-4 py-3 rounded-lg transition-colors group ${
+                      className={`flex items-center px-3 py-2 rounded-md transition-colors group text-sm ${
                         isActive
                           ? 'bg-primary text-primary-foreground'
                           : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -117,7 +116,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                       aria-current={isActive ? 'page' : undefined}
                     >
                       <Icon
-                        className={`w-5 h-5 mr-3 ${
+                        className={`w-4 h-4 mr-2.5 ${
                           isActive
                             ? 'text-primary-foreground'
                             : 'text-muted-foreground group-hover:text-foreground'
@@ -132,13 +131,13 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
           </nav>
 
           {/* User Section */}
-          <div className="p-4 border-t">
-            <div className="flex items-center mb-4 p-3 rounded-lg bg-muted/50">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-3">
-                <User className="w-4 h-4 text-primary-foreground" />
+          <div className="p-3 border-t">
+            <div className="flex items-center mb-3 p-2 rounded-md bg-muted/50">
+              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center mr-2">
+                <User className="w-3 h-3 text-primary-foreground" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">
+                <p className="text-xs font-medium text-foreground truncate">
                   {user.email}
                 </p>
                 <p className="text-xs text-muted-foreground">Administrador</p>
@@ -148,10 +147,10 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
               variant="outline"
               size="sm"
               onClick={handleSignOut}
-              className="w-full"
+              className="w-full text-xs"
               aria-label="Sign out of admin panel"
             >
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="w-3 h-3 mr-1.5" />
               Cerrar Sesión
             </Button>
           </div>
@@ -159,25 +158,25 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-56">
         {/* Header */}
-        <header className="bg-card border-b px-6 py-4">
+        <header className="bg-card border-b px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors mr-4"
+                className="lg:hidden p-1.5 rounded-lg hover:bg-muted transition-colors mr-3"
                 aria-label="Open sidebar"
               >
-                <Menu className="w-5 h-5" />
+                <Menu className="w-4 h-4" />
               </button>
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-xl font-bold text-foreground">
                 {title || 'Panel de Administración'}
               </h2>
             </div>
-            <div className="hidden lg:flex items-center space-x-4">
-              <div className="flex items-center text-sm text-muted-foreground">
-                <User className="w-4 h-4 mr-2" />
+            <div className="hidden lg:flex items-center space-x-3">
+              <div className="flex items-center text-xs text-muted-foreground">
+                <User className="w-3 h-3 mr-1.5" />
                 {user.email}
               </div>
             </div>
@@ -185,7 +184,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="p-6">{children}</main>
+        <main className="p-4">{children}</main>
       </div>
     </div>
   );

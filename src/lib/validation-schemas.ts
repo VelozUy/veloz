@@ -1,11 +1,23 @@
 // Zod Validation Schemas for all data models
 import { z } from 'zod';
 
+// Custom schema for Firestore timestamps
+const firestoreTimestampSchema = z.union([
+  z.date(),
+  z.object({
+    toDate: z.function().returns(z.date()),
+    seconds: z.number(),
+    nanoseconds: z.number(),
+  }),
+  z.null(),
+  z.undefined(),
+]);
+
 // Base schemas for common fields
 const baseSchema = z.object({
   id: z.string().optional(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  createdAt: firestoreTimestampSchema.optional(),
+  updatedAt: firestoreTimestampSchema.optional(),
 });
 
 // Multi-language text schema
@@ -68,7 +80,7 @@ export const contactMessageSchema = baseSchema.extend({
     .enum(['new', 'in_progress', 'completed', 'archived'])
     .default('new'),
   adminNotes: z.string().optional(),
-  respondedAt: z.date().optional(),
+  respondedAt: firestoreTimestampSchema.optional(),
   respondedBy: z.string().optional(),
 });
 
@@ -199,214 +211,120 @@ export const homepageContentSchema = baseSchema.extend({
     .array(
       z.object({
         name: z.string(),
-        text: multiLanguageTextSchema,
-        rating: z.number().min(1).max(5).optional(),
+        role: z.string(),
+        content: multiLanguageTextSchema,
         avatar: z.string().url().optional(),
-        eventType: z.string().optional(),
+        rating: z.number().min(1).max(5).optional(),
+        featured: z.boolean().default(false),
       })
     )
     .default([]),
-  backgroundImages: z
-    .array(
-      z.object({
-        url: z.string().url(),
-        alt: z.string(),
-      })
-    )
-    .default([]),
-  backgroundVideos: z
-    .array(
-      z.object({
-        url: z.string().url(),
-        thumbnail: z.string().url().optional(),
-        type: z.string().default('video/mp4'),
-      })
-    )
-    .default([]),
-  socialLinks: z
+  contactInfo: z
     .object({
-      instagram: z.string().url().optional(),
-      facebook: z.string().url().optional(),
-      whatsapp: z.string().optional(),
       email: z.string().email().optional(),
       phone: z.string().optional(),
+      address: z.string().optional(),
+      socialMedia: z
+        .object({
+          instagram: z.string().url().optional(),
+          facebook: z.string().url().optional(),
+          twitter: z.string().url().optional(),
+        })
+        .optional(),
     })
     .optional(),
-  seoTitle: multiLanguageTextSchema.optional(),
-  seoDescription: multiLanguageTextSchema.optional(),
+  seo: z
+    .object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      keywords: z.array(z.string()).default([]),
+    })
+    .optional(),
   lastModifiedBy: z.string().optional(),
-});
-
-// About Content Philosophy Point Schema
-export const aboutPhilosophyPointSchema = z.object({
-  id: z.string(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  order: z.number().int().min(0).default(0),
-});
-
-// About Content Methodology Step Schema
-export const aboutMethodologyStepSchema = z.object({
-  id: z.string(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  order: z.number().int().min(0).default(0),
-});
-
-// About Content Value Schema
-export const aboutValueSchema = z.object({
-  id: z.string(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  order: z.number().int().min(0).default(0),
 });
 
 // About Content Schema
 export const aboutContentSchema = baseSchema.extend({
+  heroTitle: multiLanguageTextSchema,
+  heroSubtitle: optionalMultiLanguageTextSchema,
+  heroDescription: multiLanguageTextSchema,
+  heroImage: z.string().url().optional(),
+  storyTitle: multiLanguageTextSchema,
+  storyContent: multiLanguageTextSchema,
+  storyImage: z.string().url().optional(),
+  philosophyTitle: multiLanguageTextSchema,
+  philosophyDescription: multiLanguageTextSchema,
+  philosophyPoints: z
+    .array(
+      z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+        icon: z.string().optional(),
+      })
+    )
+    .default([]),
+  methodologyTitle: multiLanguageTextSchema,
+  methodologyDescription: multiLanguageTextSchema,
+  methodologySteps: z
+    .array(
+      z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+        stepNumber: z.number().int().min(1),
+        image: z.string().url().optional(),
+      })
+    )
+    .default([]),
+  valuesTitle: multiLanguageTextSchema,
+  valuesDescription: multiLanguageTextSchema,
+  values: z
+    .array(
+      z.object({
+        title: multiLanguageTextSchema,
+        description: multiLanguageTextSchema,
+        icon: z.string().optional(),
+      })
+    )
+    .default([]),
+  teamTitle: multiLanguageTextSchema,
+  teamDescription: multiLanguageTextSchema,
+  ctaTitle: multiLanguageTextSchema,
+  ctaDescription: multiLanguageTextSchema,
+  ctaButtonText: multiLanguageTextSchema,
+  ctaButtonUrl: z.string().optional(),
+  seo: z
+    .object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      keywords: z.array(z.string()).default([]),
+    })
+    .optional(),
+  lastModifiedBy: z.string().optional(),
+});
+
+// About Philosophy Point Schema
+export const aboutPhilosophyPointSchema = z.object({
   title: multiLanguageTextSchema,
-  subtitle: multiLanguageTextSchema,
-  philosophy: z.object({
-    title: multiLanguageTextSchema,
-    items: z.array(aboutPhilosophyPointSchema).default([]),
-  }),
-  methodology: z.object({
-    title: multiLanguageTextSchema,
-    items: z.array(aboutMethodologyStepSchema).default([]),
-  }),
-  values: z.object({
-    title: multiLanguageTextSchema,
-    items: z.array(aboutValueSchema).default([]),
-  }),
-  faq: z.object({
-    title: multiLanguageTextSchema,
-  }),
-  seoTitle: multiLanguageTextSchema.optional(),
-  seoDescription: multiLanguageTextSchema.optional(),
-  lastModifiedBy: z.string().optional(),
+  description: multiLanguageTextSchema,
+  icon: z.string().optional(),
 });
 
-// Form Content Schema
-export const formContentSchema = baseSchema.extend({
-  contact: z.object({
-    title: multiLanguageTextSchema,
-    subtitle: multiLanguageTextSchema,
-    form: z.object({
-      name: z.object({
-        label: multiLanguageTextSchema,
-        placeholder: multiLanguageTextSchema,
-      }),
-      email: z.object({
-        label: multiLanguageTextSchema,
-        placeholder: multiLanguageTextSchema,
-      }),
-      eventType: z.object({
-        label: multiLanguageTextSchema,
-        placeholder: multiLanguageTextSchema,
-        options: z.object({
-          wedding: multiLanguageTextSchema,
-          quinceanera: multiLanguageTextSchema,
-          birthday: multiLanguageTextSchema,
-          corporate: multiLanguageTextSchema,
-          other: multiLanguageTextSchema,
-        }),
-      }),
-      eventDate: z.object({
-        label: multiLanguageTextSchema,
-        optional: multiLanguageTextSchema,
-        help: multiLanguageTextSchema,
-      }),
-      message: z.object({
-        label: multiLanguageTextSchema,
-        optional: multiLanguageTextSchema,
-        placeholder: multiLanguageTextSchema,
-      }),
-      submit: z.object({
-        button: multiLanguageTextSchema,
-        loading: multiLanguageTextSchema,
-      }),
-      privacy: z.object({
-        line1: multiLanguageTextSchema,
-        line2: multiLanguageTextSchema,
-      }),
-    }),
-    success: z.object({
-      title: multiLanguageTextSchema,
-      message: multiLanguageTextSchema,
-      action: multiLanguageTextSchema,
-    }),
-    trust: z.object({
-      response: z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-      }),
-      commitment: z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-      }),
-      privacy: z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-      }),
-    }),
-  }),
-  widget: z.object({
-    button: z.object({
-      desktop: multiLanguageTextSchema,
-      mobile: multiLanguageTextSchema,
-    }),
-    dialog: z.object({
-      title: multiLanguageTextSchema,
-    }),
-    eventTypes: z.object({
-      wedding: multiLanguageTextSchema,
-      corporate: multiLanguageTextSchema,
-      other: multiLanguageTextSchema,
-    }),
-    steps: z.object({
-      eventType: z.object({
-        title: multiLanguageTextSchema,
-        subtitle: multiLanguageTextSchema,
-      }),
-      date: z.object({
-        title: multiLanguageTextSchema,
-        subtitle: multiLanguageTextSchema,
-        noDate: multiLanguageTextSchema,
-      }),
-      contact: z.object({
-        title: multiLanguageTextSchema,
-        subtitle: multiLanguageTextSchema,
-        moreInfo: z.object({
-          title: multiLanguageTextSchema,
-          subtitle: multiLanguageTextSchema,
-        }),
-        callMe: z.object({
-          title: multiLanguageTextSchema,
-          subtitle: multiLanguageTextSchema,
-        }),
-      }),
-      phone: z.object({
-        title: multiLanguageTextSchema,
-        subtitle: multiLanguageTextSchema,
-        placeholder: multiLanguageTextSchema,
-        button: multiLanguageTextSchema,
-        loading: multiLanguageTextSchema,
-      }),
-      complete: z.object({
-        title: multiLanguageTextSchema,
-        message: multiLanguageTextSchema,
-        button: multiLanguageTextSchema,
-      }),
-    }),
-  }),
-  validation: z.object({
-    required: multiLanguageTextSchema,
-    email: multiLanguageTextSchema,
-    minLength: multiLanguageTextSchema,
-  }),
-  lastModifiedBy: z.string().optional(),
+// About Methodology Step Schema
+export const aboutMethodologyStepSchema = z.object({
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  stepNumber: z.number().int().min(1),
+  image: z.string().url().optional(),
 });
 
-// Email notification preferences schema
+// About Value Schema
+export const aboutValueSchema = z.object({
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  icon: z.string().optional(),
+});
+
+// Email Notification Preferences Schema
 export const emailNotificationPreferencesSchema = z.object({
   contactMessages: z.boolean().default(true),
   projectUpdates: z.boolean().default(false),
@@ -435,8 +353,8 @@ export const adminUserSchema = baseSchema.extend({
     .default([]),
   emailNotifications: emailNotificationPreferencesSchema.default({}),
   invitedBy: z.string().optional(),
-  invitedAt: z.date().optional(),
-  lastLoginAt: z.date().optional(),
+  invitedAt: firestoreTimestampSchema.optional(),
+  lastLoginAt: firestoreTimestampSchema.optional(),
   notes: z.string().optional(),
 });
 
@@ -575,6 +493,43 @@ export const crewMemberSchema = baseSchema.extend({
   lastModifiedBy: z.string().optional(),
 });
 
+// Form Content Schema
+export const formContentSchema = baseSchema.extend({
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  fields: z
+    .array(
+      z.object({
+        name: z.string(),
+        label: multiLanguageTextSchema,
+        type: z.enum([
+          'text',
+          'email',
+          'tel',
+          'textarea',
+          'select',
+          'checkbox',
+        ]),
+        required: z.boolean().default(false),
+        placeholder: multiLanguageTextSchema.optional(),
+        options: z.array(z.string()).optional(), // For select fields
+        validation: z
+          .object({
+            minLength: z.number().int().min(0).optional(),
+            maxLength: z.number().int().min(0).optional(),
+            pattern: z.string().optional(),
+          })
+          .optional(),
+      })
+    )
+    .default([]),
+  submitButtonText: multiLanguageTextSchema,
+  successMessage: multiLanguageTextSchema,
+  errorMessage: multiLanguageTextSchema,
+  isActive: z.boolean().default(true),
+  lastModifiedBy: z.string().optional(),
+});
+
 // Export commonly used schemas
 export const schemas = {
   contactForm: contactFormSchema,
@@ -625,39 +580,52 @@ export type EmailTemplateData = z.infer<typeof emailTemplateSchema>;
 export type FormContentData = z.infer<typeof formContentSchema>;
 export type CrewMemberData = z.infer<typeof crewMemberSchema>;
 
-// Validation helper functions
+// Validation functions
 export const validateContactForm = (data: unknown) =>
   contactFormSchema.parse(data);
+
 export const validateContactMessage = (data: unknown) =>
   contactMessageSchema.parse(data);
+
 export const validateFAQ = (data: unknown) => faqSchema.parse(data);
 export const validateProject = (data: unknown) => projectSchema.parse(data);
 export const validateProjectMedia = (data: unknown) =>
   projectMediaSchema.parse(data);
+
 export const validateSocialPost = (data: unknown) =>
   socialPostSchema.parse(data);
+
 export const validateHomepageContent = (data: unknown) =>
   homepageContentSchema.parse(data);
+
 export const validateAboutContent = (data: unknown) =>
   aboutContentSchema.parse(data);
+
 export const validateAdminUser = (data: unknown) => adminUserSchema.parse(data);
 
-// Safe parsing functions (returns success/error objects)
+// Safe validation functions (return result instead of throwing)
 export const safeValidateContactForm = (data: unknown) =>
   contactFormSchema.safeParse(data);
+
 export const safeValidateContactMessage = (data: unknown) =>
   contactMessageSchema.safeParse(data);
+
 export const safeValidateFAQ = (data: unknown) => faqSchema.safeParse(data);
 export const safeValidateProject = (data: unknown) =>
   projectSchema.safeParse(data);
+
 export const safeValidateProjectMedia = (data: unknown) =>
   projectMediaSchema.safeParse(data);
+
 export const safeValidateSocialPost = (data: unknown) =>
   socialPostSchema.safeParse(data);
+
 export const safeValidateHomepageContent = (data: unknown) =>
   homepageContentSchema.safeParse(data);
+
 export const safeValidateAboutContent = (data: unknown) =>
   aboutContentSchema.safeParse(data);
+
 export const safeValidateAdminUser = (data: unknown) =>
   adminUserSchema.safeParse(data);
 

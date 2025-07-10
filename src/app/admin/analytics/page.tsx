@@ -120,7 +120,7 @@ export default function AnalyticsDashboardPage() {
 
   useEffect(() => {
     loadAnalyticsData();
-  }, [dateRange]);
+  }, [loadAnalyticsData]);
 
   const handleRefresh = () => {
     loadAnalyticsData();
@@ -128,13 +128,15 @@ export default function AnalyticsDashboardPage() {
 
   if (error) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
+      <div className="container mx-auto p-4">
+        <div className="flex items-center justify-center h-48">
           <Card className="w-full max-w-md">
-            <CardContent className="pt-6">
+            <CardContent className="pt-4">
               <div className="text-center">
-                <p className="text-red-600 mb-4">{error}</p>
-                <Button onClick={loadAnalyticsData}>Reintentar</Button>
+                <p className="text-red-600 mb-3 text-sm">{error}</p>
+                <Button onClick={loadAnalyticsData} size="sm">
+                  Reintentar
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -144,12 +146,12 @@ export default function AnalyticsDashboardPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8">
+    <div className="container mx-auto p-4">
+      <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Analytics Dashboard</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl font-bold mb-1">Analytics Dashboard</h1>
+            <p className="text-muted-foreground text-sm">
               Monitorea el rendimiento de tus proyectos y la engagement de los
               usuarios
             </p>
@@ -161,23 +163,23 @@ export default function AnalyticsDashboardPage() {
             disabled={isLoading}
           >
             <RefreshCw
-              className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`}
+              className={`h-3 w-3 mr-1.5 ${isLoading ? 'animate-spin' : ''}`}
             />
             Actualizar
           </Button>
         </div>
         {lastUpdated && (
-          <p className="text-xs text-muted-foreground mt-2">
+          <p className="text-xs text-muted-foreground mt-1">
             Última actualización: {lastUpdated.toLocaleString('es-ES')}
           </p>
         )}
       </div>
 
       {/* Date Range Selector */}
-      <div className="mb-6">
-        <div className="flex items-center gap-4">
-          <Calendar className="h-5 w-5 text-muted-foreground" />
-          <div className="flex gap-2">
+      <div className="mb-4">
+        <div className="flex items-center gap-3">
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <div className="flex gap-1.5">
             {['7d', '30d', '90d'].map(range => (
               <Button
                 key={range}
@@ -185,6 +187,7 @@ export default function AnalyticsDashboardPage() {
                 size="sm"
                 onClick={() => setDateRange(range)}
                 disabled={isLoading}
+                className="text-xs"
               >
                 {range === '7d'
                   ? '7 días'
@@ -198,79 +201,87 @@ export default function AnalyticsDashboardPage() {
       </div>
 
       {/* Metrics Cards */}
-      <div className="mb-8">
+      <div className="mb-6">
         <MetricCardGrid>
-        <ViewsMetricCard
-          data={{
-            totalViews: metrics.totalViews,
-            viewsChange: 20.1,
-            viewsProgress: 75,
-          }}
-        />
-        <VisitorsMetricCard
-          data={{
-            uniqueVisitors: metrics.uniqueVisitors,
-            visitorsChange: 15.3,
-            visitorsProgress: 80,
-          }}
-        />
-        <TimeOnPageMetricCard
-          data={{
-            avgTimeOnPage: metrics.averageTimeOnPage,
-            timeChange: 5.2,
-            timeTrend: 5.2,
-          }}
-        />
-        <CtaClicksMetricCard
-          data={{
-            ctaClicks: metrics.ctaClicks,
-            ctaChange: 12.7,
-            ctaProgress: 65,
-          }}
-        />
-        <MediaInteractionsMetricCard
-          data={{
-            mediaInteractions: metrics.mediaInteractions,
-            mediaChange: 8.9,
-            mediaTrend: 8.9,
-          }}
-        />
-        <CrewInteractionsMetricCard
-          data={{
-            crewInteractions: metrics.crewInteractions,
-            crewChange: 3.4,
-            crewTrend: 3.4,
-          }}
-        />
+          <ViewsMetricCard
+            data={{
+              totalViews: metrics.totalViews,
+              viewsChange: 20.1,
+              viewsProgress: 75,
+            }}
+          />
+          <VisitorsMetricCard
+            data={{
+              uniqueVisitors: metrics.uniqueVisitors,
+              visitorsChange: 15.3,
+              visitorsProgress: 80,
+            }}
+          />
+          <TimeOnPageMetricCard
+            data={{
+              avgTimeOnPage: metrics.averageTimeOnPage,
+              timeChange: 5.2,
+              timeTrend: 5.2,
+            }}
+          />
+          <CtaClicksMetricCard
+            data={{
+              ctaClicks: metrics.ctaClicks,
+              ctaChange: 12.7,
+              ctaProgress: 65,
+            }}
+          />
+          <MediaInteractionsMetricCard
+            data={{
+              mediaInteractions: metrics.mediaInteractions,
+              mediaChange: 8.9,
+              mediaTrend: 8.9,
+            }}
+          />
+          <CrewInteractionsMetricCard
+            data={{
+              crewInteractions: metrics.crewInteractions,
+              crewChange: 3.4,
+              crewTrend: 3.4,
+            }}
+          />
         </MetricCardGrid>
       </div>
 
       {/* Detailed Analytics Tabs */}
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Resumen</TabsTrigger>
-          <TabsTrigger value="projects">Proyectos</TabsTrigger>
-          <TabsTrigger value="engagement">Engagement</TabsTrigger>
-          <TabsTrigger value="conversions">Conversiones</TabsTrigger>
+          <TabsTrigger value="overview" className="text-xs">
+            Resumen
+          </TabsTrigger>
+          <TabsTrigger value="projects" className="text-xs">
+            Proyectos
+          </TabsTrigger>
+          <TabsTrigger value="engagement" className="text-xs">
+            Engagement
+          </TabsTrigger>
+          <TabsTrigger value="conversions" className="text-xs">
+            Conversiones
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">
+        <TabsContent value="overview" className="space-y-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Resumen General</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Resumen General</CardTitle>
+              <CardDescription className="text-sm">
                 Vista general del rendimiento de analytics
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               {summaries.length === 0 ? (
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   No hay datos de analytics disponibles para el período
                   seleccionado.
                 </p>
               ) : (
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">
+                <div className="space-y-3">
+                  <p className="text-muted-foreground text-sm">
                     Los gráficos detallados y análisis se implementarán
                     próximamente.
                   </p>
@@ -286,11 +297,11 @@ export default function AnalyticsDashboardPage() {
                       )
                     ) {
                       return (
-                        <div className="mt-4">
-                          <h4 className="font-semibold mb-2">
+                        <div className="mt-3">
+                          <h4 className="font-semibold mb-1.5 text-sm">
                             Distribución por idioma
                           </h4>
-                          <ul className="text-sm text-muted-foreground">
+                          <ul className="text-xs text-muted-foreground">
                             {Object.entries(summaries[0].languageBreakdown).map(
                               ([lang, count]) => (
                                 <li key={lang}>
@@ -312,7 +323,7 @@ export default function AnalyticsDashboardPage() {
                         );
                       }
                       return (
-                        <div className="mt-4 text-red-600 text-xs">
+                        <div className="mt-3 text-red-600 text-xs">
                           <strong>Advertencia:</strong> Datos de idioma
                           malformados, no se puede mostrar la distribución.
                         </div>
@@ -326,16 +337,18 @@ export default function AnalyticsDashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="projects" className="space-y-4">
+        <TabsContent value="projects" className="space-y-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Rendimiento por Proyecto</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">
+                Rendimiento por Proyecto
+              </CardTitle>
+              <CardDescription className="text-sm">
                 Análisis detallado del rendimiento de cada proyecto
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground text-sm">
                 La tabla de proyectos con métricas detalladas se implementará
                 próximamente.
               </p>
@@ -343,32 +356,34 @@ export default function AnalyticsDashboardPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="engagement" className="space-y-4">
+        <TabsContent value="engagement" className="space-y-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Métricas de Engagement</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Métricas de Engagement</CardTitle>
+              <CardDescription className="text-sm">
                 Profundidad de scroll, tiempo en página, y interacciones
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground text-sm">
                 Los gráficos de engagement se implementarán próximamente.
               </p>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="conversions" className="space-y-4">
+        <TabsContent value="conversions" className="space-y-3">
           <Card>
-            <CardHeader>
-              <CardTitle>Análisis de Conversiones</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">
+                Análisis de Conversiones
+              </CardTitle>
+              <CardDescription className="text-sm">
                 Tasa de conversión y análisis de leads
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
+            <CardContent className="pt-0">
+              <p className="text-muted-foreground text-sm">
                 Los análisis de conversión se implementarán próximamente.
               </p>
             </CardContent>

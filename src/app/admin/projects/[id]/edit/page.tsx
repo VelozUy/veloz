@@ -338,27 +338,39 @@ export default function UnifiedProjectEditPage({
   // Auto-generate slug when Spanish title changes
   useEffect(() => {
     if (draftProject && draftProject.title.es && !draftProject.slug) {
-      const newSlug = generateUniqueSlug(draftProject.title.es, [], draftProject.id);
+      const newSlug = generateUniqueSlug(
+        draftProject.title.es,
+        [],
+        draftProject.id
+      );
       updateDraftProject({ slug: newSlug });
     }
-  }, [draftProject?.title.es, draftProject?.id]);
+  }, [
+    draftProject?.title.es,
+    draftProject?.id,
+    updateDraftProject,
+    draftProject,
+  ]);
 
   // Check for duplicate slugs
-  const checkSlugUniqueness = async (slug: string, excludeProjectId?: string): Promise<boolean> => {
+  const checkSlugUniqueness = async (
+    slug: string,
+    excludeProjectId?: string
+  ): Promise<boolean> => {
     if (!db) return true;
-    
+
     try {
       const projectsQuery = query(
         collection(db, 'projects'),
         where('slug', '==', slug)
       );
       const snapshot = await getDocs(projectsQuery);
-      
+
       // Check if any project with this slug exists (excluding current project)
-      const duplicateProject = snapshot.docs.find(doc => 
-        doc.id !== excludeProjectId
+      const duplicateProject = snapshot.docs.find(
+        doc => doc.id !== excludeProjectId
       );
-      
+
       return !duplicateProject;
     } catch (error) {
       console.error('Error checking slug uniqueness:', error);
@@ -380,7 +392,9 @@ export default function UnifiedProjectEditPage({
       }
 
       // Validate slug
-      const currentSlug = draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id);
+      const currentSlug =
+        draftProject.slug ||
+        generateUniqueSlug(draftProject.title.es, [], draftProject.id);
       if (!currentSlug) {
         setError('El slug no puede estar vacío');
         setSaving(false);
@@ -388,9 +402,14 @@ export default function UnifiedProjectEditPage({
       }
 
       // Check slug uniqueness
-      const isSlugUnique = await checkSlugUniqueness(currentSlug, projectId || undefined);
+      const isSlugUnique = await checkSlugUniqueness(
+        currentSlug,
+        projectId || undefined
+      );
       if (!isSlugUnique) {
-        setError(`El slug "${currentSlug}" ya está en uso. Por favor elige otro.`);
+        setError(
+          `El slug "${currentSlug}" ya está en uso. Por favor elige otro.`
+        );
         setSaving(false);
         return;
       }
@@ -830,7 +849,14 @@ export default function UnifiedProjectEditPage({
                       <div className="flex-1">
                         <Input
                           id="slug"
-                          value={draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}
+                          value={
+                            draftProject.slug ||
+                            generateUniqueSlug(
+                              draftProject.title.es,
+                              [],
+                              draftProject.id
+                            )
+                          }
                           onChange={e => {
                             const newSlug = e.target.value
                               .toLowerCase()
@@ -851,7 +877,13 @@ export default function UnifiedProjectEditPage({
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <span>URL completa:</span>
                         <code className="bg-muted px-2 py-1 rounded text-xs">
-                          /our-work/{draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}
+                          /our-work/
+                          {draftProject.slug ||
+                            generateUniqueSlug(
+                              draftProject.title.es,
+                              [],
+                              draftProject.id
+                            )}
                         </code>
                       </div>
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -862,8 +894,10 @@ export default function UnifiedProjectEditPage({
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      La URL se genera automáticamente desde el título en español, pero puedes editarla manualmente.
-                      Solo se permiten letras minúsculas, números y guiones. La URL de respaldo siempre funcionará.
+                      La URL se genera automáticamente desde el título en
+                      español, pero puedes editarla manualmente. Solo se
+                      permiten letras minúsculas, números y guiones. La URL de
+                      respaldo siempre funcionará.
                     </p>
                   </div>
                 )}

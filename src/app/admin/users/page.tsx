@@ -198,10 +198,7 @@ export default function UsersPage() {
     email: string,
     currentStatus: string
   ) => {
-    if (email === OWNER_EMAIL) {
-      alert('No se puede modificar la cuenta del propietario.');
-      return;
-    }
+    if (!user) return;
 
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
@@ -209,34 +206,35 @@ export default function UsersPage() {
         status: newStatus,
       });
 
-      // Refresh the user list
-      await fetchUsers();
+      // Update local state
+      setUsers(prevUsers =>
+        prevUsers.map(u =>
+          u.email === email ? { ...u, status: newStatus } : u
+        )
+      );
     } catch (error) {
-      console.error('Error updating user status:', error);
-      alert('Error al actualizar estado del usuario.');
+      console.error('Error toggling user status:', error);
+      setError('Error al cambiar el estado del usuario.');
     }
   };
 
   const handleDeleteUser = async (email: string) => {
-    if (email === OWNER_EMAIL) {
-      alert('No se puede eliminar la cuenta del propietario.');
-      return;
-    }
+    if (!user) return;
 
     if (
-      !confirm(`¿Estás seguro de que quieres eliminar a ${email} del sistema?`)
+      !confirm(
+        `¿Estás seguro de que quieres eliminar al usuario ${email}? Esta acción no se puede deshacer.`
+      )
     ) {
       return;
     }
 
     try {
       await deleteDoc(doc(db!, 'adminUsers', email));
-
-      // Refresh the user list
-      await fetchUsers();
+      setUsers(prevUsers => prevUsers.filter(u => u.email !== email));
     } catch (error) {
       console.error('Error deleting user:', error);
-      alert('Error al eliminar usuario.');
+      setError('Error al eliminar usuario.');
     }
   };
 
@@ -247,6 +245,8 @@ export default function UsersPage() {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
       });
     } catch {
       return 'Desconocido';
@@ -256,9 +256,9 @@ export default function UsersPage() {
   if (loading) {
     return (
       <AdminLayout title="Gestión de Usuarios">
-        <div className="flex items-center justify-center py-12">
+        <div className="flex items-center justify-center py-8">
           <div role="status" className="flex items-center space-x-2">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
             <span className="sr-only">Cargando...</span>
           </div>
         </div>
@@ -268,51 +268,57 @@ export default function UsersPage() {
 
   return (
     <AdminLayout title="Gestión de Usuarios">
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-xl font-bold text-foreground">
               Gestión de Usuarios
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Gestionar acceso de administradores al CMS de Veloz
             </p>
           </div>
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
+              <Button size="sm">
+                <Plus className="w-3 h-3 mr-1.5" />
                 Invitar Usuario
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Invitar Nuevo Administrador</DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-sm">
                   Agregar un nuevo usuario que pueda acceder al panel de
                   administración. Necesitarán iniciar sesión con Google usando
                   la dirección de email invitada.
                 </DialogDescription>
               </DialogHeader>
 
-              <form onSubmit={handleInviteUser} className="space-y-4">
+              <form onSubmit={handleInviteUser} className="space-y-3">
                 {inviteError && (
                   <Alert variant="destructive">
-                    <AlertCircle className="w-4 h-4" />
-                    <AlertDescription>{inviteError}</AlertDescription>
+                    <AlertCircle className="w-3 h-3" />
+                    <AlertDescription className="text-sm">
+                      {inviteError}
+                    </AlertDescription>
                   </Alert>
                 )}
 
                 {inviteSuccess && (
                   <Alert>
-                    <AlertDescription>{inviteSuccess}</AlertDescription>
+                    <AlertDescription className="text-sm">
+                      {inviteSuccess}
+                    </AlertDescription>
                   </Alert>
                 )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="invite-email">Dirección de Email</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="invite-email" className="text-sm">
+                    Dirección de Email
+                  </Label>
                   <Input
                     id="invite-email"
                     type="email"
@@ -328,15 +334,16 @@ export default function UsersPage() {
                   <Button
                     type="submit"
                     disabled={inviteLoading || !inviteEmail}
+                    size="sm"
                   >
                     {inviteLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
                         Invitando...
                       </>
                     ) : (
                       <>
-                        <Mail className="w-4 h-4 mr-2" />
+                        <Mail className="w-3 h-3 mr-1.5" />
                         Enviar Invitación
                       </>
                     )}
@@ -346,6 +353,7 @@ export default function UsersPage() {
                     variant="outline"
                     onClick={() => setDialogOpen(false)}
                     disabled={inviteLoading}
+                    size="sm"
                   >
                     Cancelar
                   </Button>
@@ -358,58 +366,60 @@ export default function UsersPage() {
         {/* Error Display */}
         {error && (
           <Alert variant="destructive">
-            <AlertCircle className="w-4 h-4" />
-            <AlertDescription>{error}</AlertDescription>
+            <AlertCircle className="w-3 h-3" />
+            <AlertDescription className="text-sm">{error}</AlertDescription>
           </Alert>
         )}
 
         {/* Owner Info */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Shield className="w-5 h-5 mr-2 text-primary" />
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center text-lg">
+              <Shield className="w-4 h-4 mr-1.5 text-primary" />
               Propietario del Sistema
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               El propietario del sistema tiene acceso permanente y no puede ser
               modificado.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-primary-foreground" />
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                  <Shield className="w-3 h-3 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm">
                     {OWNER_EMAIL || 'No configurado'}
                   </p>
-                  <p className="text-sm text-muted-foreground">Propietario</p>
+                  <p className="text-xs text-muted-foreground">Propietario</p>
                 </div>
               </div>
-              <Badge variant="default">Siempre Activo</Badge>
+              <Badge variant="default" className="text-xs">
+                Siempre Activo
+              </Badge>
             </div>
           </CardContent>
         </Card>
 
         {/* Users Table */}
         <Card>
-          <CardHeader>
-            <CardTitle>Administradores Invitados</CardTitle>
-            <CardDescription>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Administradores Invitados</CardTitle>
+            <CardDescription className="text-sm">
               Usuarios que han sido invitados para acceder al panel de
               administración
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             {users.length === 0 ? (
-              <div className="text-center py-8">
-                <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">
+              <div className="text-center py-6">
+                <Mail className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+                <h3 className="text-base font-medium text-foreground mb-1">
                   Aún no se han invitado usuarios
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Comienza invitando administradores para acceder al sistema.
                 </p>
               </div>
@@ -417,19 +427,21 @@ export default function UsersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead>Rol</TableHead>
-                    <TableHead>Invitado Por</TableHead>
-                    <TableHead>Fecha de Invitación</TableHead>
-                    <TableHead>Último Acceso</TableHead>
-                    <TableHead>Acciones</TableHead>
+                    <TableHead className="text-xs">Email</TableHead>
+                    <TableHead className="text-xs">Estado</TableHead>
+                    <TableHead className="text-xs">Rol</TableHead>
+                    <TableHead className="text-xs">Invitado Por</TableHead>
+                    <TableHead className="text-xs">
+                      Fecha de Invitación
+                    </TableHead>
+                    <TableHead className="text-xs">Último Acceso</TableHead>
+                    <TableHead className="text-xs">Acciones</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {users.map(adminUser => (
                     <TableRow key={adminUser.email}>
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium text-sm">
                         {adminUser.email}
                       </TableCell>
                       <TableCell>
@@ -439,6 +451,7 @@ export default function UsersPage() {
                               ? 'default'
                               : 'secondary'
                           }
+                          className="text-xs"
                         >
                           {adminUser.status === 'active'
                             ? 'activo'
@@ -446,21 +459,21 @@ export default function UsersPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">
+                        <Badge variant="outline" className="text-xs">
                           {adminUser.role || 'editor'}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-xs">
                         {adminUser.invitedBy}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDate(adminUser.invitedAt)}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDate(adminUser.lastLoginAt)}
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1.5">
                           <Button
                             size="sm"
                             variant="outline"
@@ -475,11 +488,12 @@ export default function UsersPage() {
                                 ? 'Desactivar usuario'
                                 : 'Activar usuario'
                             }
+                            className="text-xs"
                           >
                             {adminUser.status === 'active' ? (
-                              <UserX className="w-4 h-4" />
+                              <UserX className="w-3 h-3" />
                             ) : (
-                              <UserCheck className="w-4 h-4" />
+                              <UserCheck className="w-3 h-3" />
                             )}
                           </Button>
                           <Button
@@ -487,8 +501,9 @@ export default function UsersPage() {
                             variant="outline"
                             onClick={() => handleDeleteUser(adminUser.email)}
                             title="Eliminar usuario"
+                            className="text-xs"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3 h-3" />
                           </Button>
                         </div>
                       </TableCell>

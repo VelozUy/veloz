@@ -200,8 +200,8 @@ export default function ProjectsPage() {
   if (loading) {
     return (
       <AdminLayout title="Projects">
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
         </div>
       </AdminLayout>
     );
@@ -209,56 +209,59 @@ export default function ProjectsPage() {
 
   return (
     <AdminLayout title="Projects">
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Projects</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-xl font-bold text-foreground">Projects</h1>
+            <p className="text-muted-foreground text-sm">
               Manage your photography and videography projects
             </p>
           </div>
 
-          <Button onClick={() => router.push('/admin/projects/new/edit')}>
-            <Plus className="w-4 h-4 mr-2" />
+          <Button
+            onClick={() => router.push('/admin/projects/new/edit')}
+            size="sm"
+          >
+            <Plus className="w-3 h-3 mr-1.5" />
             New Project
           </Button>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
+            <CardHeader className="pb-2 px-4 py-3">
+              <CardTitle className="text-xs font-medium">
                 Total Projects
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
+            <CardContent className="px-4 pb-3">
+              <div className="text-xl font-bold">{stats.total}</div>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Published</CardTitle>
+            <CardHeader className="pb-2 px-4 py-3">
+              <CardTitle className="text-xs font-medium">Published</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.published}</div>
+            <CardContent className="px-4 pb-3">
+              <div className="text-xl font-bold">{stats.published}</div>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Featured</CardTitle>
+            <CardHeader className="pb-2 px-4 py-3">
+              <CardTitle className="text-xs font-medium">Featured</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.featured}</div>
+            <CardContent className="px-4 pb-3">
+              <div className="text-xl font-bold">{stats.featured}</div>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">This Month</CardTitle>
+            <CardHeader className="pb-2 px-4 py-3">
+              <CardTitle className="text-xs font-medium">This Month</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.thisMonth}</div>
+            <CardContent className="px-4 pb-3">
+              <div className="text-xl font-bold">{stats.thisMonth}</div>
             </CardContent>
           </Card>
         </div>
@@ -266,29 +269,29 @@ export default function ProjectsPage() {
         {/* Success/Error Messages */}
         {success && (
           <Alert>
-            <AlertDescription>{success}</AlertDescription>
+            <AlertDescription className="text-sm">{success}</AlertDescription>
           </Alert>
         )}
 
         {error && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription className="text-sm">{error}</AlertDescription>
           </Alert>
         )}
 
         {/* Projects List */}
         <Card>
-          <CardHeader>
-            <CardTitle>Projects</CardTitle>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Projects</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {projects.length === 0 ? (
-              <div className="text-center py-12">
-                <FolderOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">
+              <div className="text-center py-8">
+                <FolderOpen className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+                <h3 className="text-base font-medium text-foreground mb-1">
                   No projects yet
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Create your first project to start organizing your work
                 </p>
               </div>
@@ -297,22 +300,22 @@ export default function ProjectsPage() {
                 <table className="w-full">
                   <thead className="border-b">
                     <tr className="text-left">
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Project Name
                       </th>
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Location
                       </th>
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Event Date
                       </th>
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Crew
                       </th>
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Status
                       </th>
-                      <th className="p-4 font-medium text-muted-foreground">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Actions
                       </th>
                     </tr>
@@ -323,36 +326,36 @@ export default function ProjectsPage() {
                         key={project.id}
                         className="border-b hover:bg-muted/50"
                       >
-                        <td className="p-4">
+                        <td className="p-3">
                           <div className="flex items-center space-x-3">
                             <div>
-                              <div className="font-medium text-foreground">
+                              <div className="font-medium text-foreground text-sm">
                                 {project.title.en ||
                                   project.title.es ||
                                   project.title.pt}
                               </div>
-                              <div className="text-sm text-muted-foreground">
+                              <div className="text-xs text-muted-foreground">
                                 {project.eventType}
                               </div>
-                              <div className="flex items-center space-x-2 mt-1">
+                              <div className="flex items-center space-x-1.5 mt-1">
                                 {project.featured && (
                                   <Badge
                                     variant="secondary"
                                     className="text-xs"
                                   >
-                                    <Star className="w-3 h-3 mr-1" />
+                                    <Star className="w-2.5 h-2.5 mr-0.5" />
                                     Featured
                                   </Badge>
                                 )}
                                 {project.mediaCount.photos > 0 && (
                                   <Badge variant="outline" className="text-xs">
-                                    <ImageIcon className="w-3 h-3 mr-1" />
+                                    <ImageIcon className="w-2.5 h-2.5 mr-0.5" />
                                     {project.mediaCount.photos}
                                   </Badge>
                                 )}
                                 {project.mediaCount.videos > 0 && (
                                   <Badge variant="outline" className="text-xs">
-                                    <VideoIcon className="w-3 h-3 mr-1" />
+                                    <VideoIcon className="w-2.5 h-2.5 mr-0.5" />
                                     {project.mediaCount.videos}
                                   </Badge>
                                 )}
@@ -360,11 +363,11 @@ export default function ProjectsPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center text-sm text-muted-foreground">
+                        <td className="p-3">
+                          <div className="flex items-center text-xs text-muted-foreground">
                             {project.location ? (
                               <>
-                                <MapPin className="w-4 h-4 mr-1" />
+                                <MapPin className="w-3 h-3 mr-1" />
                                 {project.location}
                               </>
                             ) : (
@@ -374,11 +377,11 @@ export default function ProjectsPage() {
                             )}
                           </div>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center text-sm text-muted-foreground">
+                        <td className="p-3">
+                          <div className="flex items-center text-xs text-muted-foreground">
                             {project.eventDate ? (
                               <>
-                                <Calendar className="w-4 h-4 mr-1" />
+                                <Calendar className="w-3 h-3 mr-1" />
                                 {new Date(
                                   project.eventDate
                                 ).toLocaleDateString()}
@@ -390,22 +393,22 @@ export default function ProjectsPage() {
                             )}
                           </div>
                         </td>
-                        <td className="p-4">
+                        <td className="p-3">
                           <CrewMemberDisplay
                             crewMemberIds={project.crewMembers || []}
                             maxDisplay={2}
                             showCount={true}
                           />
                         </td>
-                        <td className="p-4">
+                        <td className="p-3">
                           <Badge
-                            className={`text-white ${getStatusColor(project.status)}`}
+                            className={`text-white text-xs ${getStatusColor(project.status)}`}
                           >
                             {project.status}
                           </Badge>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center space-x-2">
+                        <td className="p-3">
+                          <div className="flex items-center space-x-1.5">
                             <Button
                               size="sm"
                               onClick={() =>
@@ -413,16 +416,18 @@ export default function ProjectsPage() {
                                   `/admin/projects/${project.id}/edit`
                                 )
                               }
+                              className="text-xs"
                             >
-                              <Edit className="w-4 h-4 mr-1" />
-                              Edit Project
+                              <Edit className="w-3 h-3 mr-1" />
+                              Edit
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => handleDeleteProject(project)}
+                              className="text-xs"
                             >
-                              <Trash2 className="w-4 h-4 mr-1" />
+                              <Trash2 className="w-3 h-3 mr-1" />
                               Delete
                             </Button>
                           </div>
