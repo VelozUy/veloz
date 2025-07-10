@@ -30,6 +30,8 @@ jest.mock('lucide-react', () => ({
   Share2: () => <div data-testid="share-icon" />,
 }));
 
+
+
 describe('MediaLightbox Component', () => {
   const mockMedia = [
     {
@@ -573,4 +575,6 @@ describe('MediaLightbox Component', () => {
       });
     });
   });
+
+
 });

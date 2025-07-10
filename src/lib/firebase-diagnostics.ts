@@ -1,5 +1,4 @@
 // Firebase Diagnostics Tool
-import { auth } from './firebase';
 import {
   doc,
   getDoc,

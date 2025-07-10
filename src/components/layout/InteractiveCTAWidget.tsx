@@ -22,6 +22,7 @@ import {
 import { emailService, type ContactFormData } from '@/services/email';
 import { contactMessageService } from '@/services/firebase';
 import type { ContactMessageData } from '@/types';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 type SurveyStep =
   | 'event-type'
@@ -196,6 +197,7 @@ const InlineCalendar = ({
 export function InteractiveCTAWidget() {
   const pathname = usePathname();
   const router = useRouter();
+  const { trackCTAInteraction } = useAnalytics();
 
   // Detect current language from pathname
   const currentLanguage = useMemo(() => {
@@ -706,7 +708,14 @@ export function InteractiveCTAWidget() {
         )}
 
         <Button
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            trackCTAInteraction({
+              projectId: 'widget',
+              ctaType: 'contact_form',
+              ctaLocation: 'sticky_button',
+            });
+            setIsOpen(true);
+          }}
           className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1"
           size="lg"
         >

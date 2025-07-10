@@ -13,6 +13,7 @@ import {
   Play,
   Share2,
 } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 interface MediaItem {
   id: string;
@@ -55,6 +56,7 @@ export default function MediaLightbox({
   currentIndex,
   onNavigate,
 }: MediaLightboxProps) {
+  const { trackMediaInteraction } = useAnalytics();
   const [imageLoading, setImageLoading] = useState(true);
 
   const currentMedia = media[currentIndex];
@@ -100,6 +102,23 @@ export default function MediaLightbox({
   useEffect(() => {
     setImageLoading(true);
   }, [currentIndex]);
+
+  useEffect(() => {
+    if (isOpen && media[currentIndex] && projects) {
+      const item = media[currentIndex];
+      const project = projects[item.id.split('_')[0]];
+      if (item && project) {
+        trackMediaInteraction({
+          projectId: project.id,
+          mediaId: item.id,
+          mediaType: item.type === 'photo' ? 'image' : 'video',
+          interactionType: 'view',
+          mediaTitle: getMediaCaption(),
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, currentIndex]);
 
   const getProjectTitle = () => {
     if (!currentProject) return 'Untitled Project';

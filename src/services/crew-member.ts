@@ -64,12 +64,12 @@ export class CrewMemberService extends BaseFirebaseService<CrewMember> {
   async createCrewMember(
     data: CreateCrewMemberData
   ): Promise<ApiResponse<CrewMember>> {
-    const result = await this.create(data as Omit<CrewMember, 'id'>);
+    const _result = await this.create(data as Omit<CrewMember, 'id'>);
 
     // Invalidate crew-related caches
     this.invalidateCache();
 
-    return result;
+    return _result;
   }
 
   // Update a crew member

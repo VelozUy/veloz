@@ -113,11 +113,11 @@ export class DatabaseReset {
             // Try to commit batch, but don't fail if it doesn't work
             try {
               await batch.commit();
-            } catch (batchError) {
+            } catch (_batchError) {
               // Ignore batch errors since we're doing a full reset anyway
             }
           }
-        } catch (collectionError) {
+        } catch (_collectionError) {
           // Collection might not exist or be accessible, that's fine
         }
       }

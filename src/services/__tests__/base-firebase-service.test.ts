@@ -15,6 +15,7 @@ jest.mock('@/lib/firebase', () => ({
   storage: {},
 }));
 
+// Mock firebase/firestore
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   doc: jest.fn(),
@@ -35,10 +36,9 @@ jest.mock('firebase/firestore', () => ({
 }));
 
 import { BaseFirebaseService } from '../base-firebase-service';
-import type { ApiResponse } from '@/types';
 
 // Mock implementation of BaseFirebaseService since it's abstract
-class TestFirebaseService extends BaseFirebaseService {
+class TestFirebaseService extends BaseFirebaseService<any> {
   constructor(
     collectionName = 'test-collection',
     options: {
@@ -53,38 +53,9 @@ class TestFirebaseService extends BaseFirebaseService {
 
 describe('BaseFirebaseService', () => {
   let service: TestFirebaseService;
-  let mockFirestore: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
-    // Setup mock Firestore
-    mockFirestore = {
-      collection: jest.fn(),
-      doc: jest.fn(),
-      getDocs: jest.fn(),
-      getDoc: jest.fn(),
-      addDoc: jest.fn(),
-      updateDoc: jest.fn(),
-      deleteDoc: jest.fn(),
-      query: jest.fn(),
-    };
-
-    // Mock Firebase modules
-    const {
-      collection,
-      doc,
-      getDocs,
-      getDoc,
-      addDoc,
-      updateDoc,
-      deleteDoc,
-      query,
-      Timestamp,
-    } = require('firebase/firestore');
-
-    collection.mockReturnValue({ path: 'test-collection' });
-    doc.mockReturnValue({ path: 'test-collection/test-id' });
     
     service = new TestFirebaseService();
   });
@@ -97,8 +68,8 @@ describe('BaseFirebaseService', () => {
     it('should initialize with default configurations', () => {
       const testService = new TestFirebaseService('test-collection');
       expect(testService).toBeDefined();
-      expect(testService['collectionName']).toBe('test-collection');
-      expect(testService['cache']).toBeInstanceOf(Map);
+      expect((testService as any)['collectionName']).toBe('test-collection');
+      expect((testService as any)['cache']).toBeInstanceOf(Map);
     });
 
     it('should initialize with custom cache configuration', () => {
@@ -112,9 +83,9 @@ describe('BaseFirebaseService', () => {
         cacheConfig: customCacheConfig,
       });
       
-      expect(testService['cacheConfig'].enabled).toBe(false);
-      expect(testService['cacheConfig'].ttl).toBe(10000);
-      expect(testService['cacheConfig'].maxSize).toBe(50);
+      expect((testService as any)['cacheConfig'].enabled).toBe(false);
+      expect((testService as any)['cacheConfig'].ttl).toBe(10000);
+      expect((testService as any)['cacheConfig'].maxSize).toBe(50);
     });
 
     it('should initialize with validation schema', () => {
@@ -127,7 +98,7 @@ describe('BaseFirebaseService', () => {
         validationSchema: schema,
       });
       
-      expect(testService['validationSchema']).toBe(schema);
+      expect((testService as any)['validationSchema']).toBe(schema);
     });
   });
 
@@ -136,7 +107,7 @@ describe('BaseFirebaseService', () => {
       const { collection } = require('firebase/firestore');
       const { db } = require('@/lib/firebase');
       
-      service['getCollection']();
+      (service as any)['getCollection']();
       
       expect(collection).toHaveBeenCalledWith(db, 'test-collection');
     });
@@ -145,7 +116,7 @@ describe('BaseFirebaseService', () => {
       const { doc } = require('firebase/firestore');
       const { db } = require('@/lib/firebase');
       
-      service['getDocRef']('test-id');
+      (service as any)['getDocRef']('test-id');
       
       expect(doc).toHaveBeenCalledWith(db, 'test-collection', 'test-id');
     });
@@ -159,7 +130,7 @@ describe('BaseFirebaseService', () => {
         configurable: true,
       });
 
-      expect(() => service['getCollection']()).toThrow(
+      expect(() => (service as any)['getCollection']()).toThrow(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
 

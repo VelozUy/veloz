@@ -39,6 +39,13 @@ export interface GridConfig {
 // Hero Media Configuration Types
 export type HeroAspectRatio = '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
 
+export interface CropConfig {
+  x: number; // Horizontal position (-100 to 100)
+  y: number; // Vertical position (-100 to 100)
+  scale: number; // Zoom level (0.5 to 3)
+  rotation: number; // Rotation in degrees (-180 to 180)
+}
+
 export interface HeroMediaConfig {
   mediaId?: string;
   aspectRatio: HeroAspectRatio;
@@ -49,6 +56,7 @@ export interface HeroMediaConfig {
   autoplay?: boolean;
   muted?: boolean;
   loop?: boolean;
+  cropConfig?: CropConfig;
 }
 
 // Social Feed Types

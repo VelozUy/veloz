@@ -53,6 +53,7 @@ import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
 import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
+import ProjectHeroPreview from '@/components/admin/ProjectHeroPreview';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
@@ -1013,6 +1014,17 @@ export default function UnifiedProjectEditPage({
                       individual del proyecto.
                     </p>
                   </div>
+
+                  {/* Unified Preview */}
+                  <ProjectHeroPreview
+                    projectTitle={
+                      draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt
+                    }
+                    projectMedia={projectMedia}
+                    heroConfig={draftProject.heroMediaConfig}
+                  />
 
                   {/* Hero Media Selection */}
                   <HeroMediaSelector

@@ -10,53 +10,34 @@ import {
   query,
   where,
   orderBy,
-  Timestamp,
-  DocumentData,
   writeBatch,
-  limit,
-  startAfter,
-  QueryDocumentSnapshot,
+  QueryConstraint,
+  DocumentData,
+  Timestamp,
 } from 'firebase/firestore';
+import { getFirestoreService } from '@/lib/firebase';
 import {
-  ref,
-  getDownloadURL,
-  deleteObject,
-  uploadBytesResumable,
-} from 'firebase/storage';
-import { db, getStorageService } from '@/lib/firebase';
-import { FIREBASE_COLLECTIONS } from '@/constants';
-import type {
-  FAQ,
-  Photo,
-  Video,
-  HomepageContent,
-  ContactFormData,
-  ContactMessage,
-  ContactMessageData,
-  ApiResponse,
-  SocialPost,
-} from '@/types';
-import {
-  faqSchema,
-  projectSchema,
-  projectMediaSchema,
-  socialPostSchema,
-  homepageContentSchema,
-  aboutContentSchema,
-  formContentSchema,
-  crewMemberSchema,
-  validateFAQ,
-  validateProject,
-  validateProjectMedia,
-  validateSocialPost,
-  validateHomepageContent,
-  validateAboutContent,
-  validateFormContent,
-  validateCrewMember,
-} from '@/lib/validation-schemas';
+  withFirestoreRecovery,
+  withRetry,
+  createErrorResponse,
+} from '@/lib/firebase-error-handler';
+import type { ApiResponse } from '@/types';
+import { z } from 'zod';
 
-// Base service class for common operations
-class BaseFirebaseService<T> {
+// Cache configuration
+interface CacheConfig {
+  enabled: boolean;
+  ttl: number; // Time to live in milliseconds
+  maxSize: number; // Maximum number of cached items
+}
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+  ttl: number;
+}
+
+export abstract class BaseFirebaseService<T = any> {
   protected collectionName: string;
   protected schema: unknown;
 
@@ -66,21 +47,21 @@ class BaseFirebaseService<T> {
   }
 
   protected getCollection() {
-    if (!db) {
+    if (!getFirestoreService()) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
     }
-    return collection(db, this.collectionName);
+    return collection(getFirestoreService(), this.collectionName);
   }
 
   protected getDocRef(id: string) {
-    if (!db) {
+    if (!getFirestoreService()) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
     }
-    return doc(db, this.collectionName, id);
+    return doc(getFirestoreService(), this.collectionName, id);
   }
 
   protected convertTimestamp(data: DocumentData): DocumentData {
@@ -325,7 +306,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
   async getContent(): Promise<ApiResponse<HomepageContent | null>> {
     try {
       // Get the default homepage document
-      const docRef = doc(db!, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(getFirestoreService(), FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -350,7 +331,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
     data: Partial<Omit<HomepageContent, 'id'>>
   ): Promise<ApiResponse<void>> {
     try {
-      const docRef = doc(db!, FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
+      const docRef = doc(getFirestoreService(), FIREBASE_COLLECTIONS.HOMEPAGE, 'default');
       const updateData = {
         ...data,
         updatedAt: new Date(),
@@ -844,10 +825,10 @@ export class SocialPostService extends BaseFirebaseService<SocialPost> {
     postIds: string[]
   ): Promise<ApiResponse<void>> {
     try {
-      const batch = writeBatch(db!);
+      const batch = writeBatch(getFirestoreService());
 
       postIds.forEach((postId, index) => {
-        const docRef = doc(db!, this.collectionName, postId);
+        const docRef = doc(getFirestoreService(), this.collectionName, postId);
         batch.update(docRef, { order: index });
       });
 

@@ -1,0 +1,225 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Eye, 
+  Users, 
+  Clock, 
+  MousePointer, 
+  Image, 
+  Video, 
+  UserCheck,
+  TrendingUp,
+  TrendingDown,
+  Minus
+} from 'lucide-react';
+
+interface MetricCardProps {
+  title: string;
+  value: number;
+  description?: string;
+  change?: number;
+  changeType?: 'increase' | 'decrease' | 'neutral';
+  icon?: React.ReactNode;
+  progress?: number;
+  trend?: {
+    value: number;
+    label: string;
+    direction: 'up' | 'down' | 'neutral';
+  };
+}
+
+export function MetricCard({
+  title,
+  value,
+  description,
+  change,
+  changeType = 'neutral',
+  icon,
+  progress,
+  trend,
+}: MetricCardProps) {
+  const formatValue = (val: number) => {
+    if (val >= 1000000) {
+      return `${(val / 1000000).toFixed(1)}M`;
+    }
+    if (val >= 1000) {
+      return `${(val / 1000).toFixed(1)}K`;
+    }
+    return val.toString();
+  };
+
+  const getChangeIcon = () => {
+    switch (changeType) {
+      case 'increase':
+        return <TrendingUp className="h-4 w-4 text-green-600" />;
+      case 'decrease':
+        return <TrendingDown className="h-4 w-4 text-red-600" />;
+      default:
+        return <Minus className="h-4 w-4 text-gray-400" />;
+    }
+  };
+
+  const getChangeColor = () => {
+    switch (changeType) {
+      case 'increase':
+        return 'text-green-600';
+      case 'decrease':
+        return 'text-red-600';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        {icon && <div className="text-muted-foreground">{icon}</div>}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{formatValue(value)}</div>
+        {description && (
+          <p className="text-xs text-muted-foreground mt-1">{description}</p>
+        )}
+        
+        {(change !== undefined || trend) && (
+          <div className="flex items-center gap-2 mt-2">
+            {change !== undefined && (
+              <div className="flex items-center gap-1">
+                {getChangeIcon()}
+                <span className={`text-xs font-medium ${getChangeColor()}`}>
+                  {change > 0 ? '+' : ''}{change}%
+                </span>
+              </div>
+            )}
+            {trend && (
+              <div className="flex items-center gap-1">
+                {trend.direction === 'up' ? (
+                  <TrendingUp className="h-3 w-3 text-green-600" />
+                ) : trend.direction === 'down' ? (
+                  <TrendingDown className="h-3 w-3 text-red-600" />
+                ) : (
+                  <Minus className="h-3 w-3 text-gray-400" />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {trend.label}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {progress !== undefined && (
+          <div className="mt-3">
+            <Progress value={progress} className="h-2" />
+            <p className="text-xs text-muted-foreground mt-1">
+              {progress}% of target
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// Specialized metric cards for different analytics data
+export function ViewsMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="Total Views"
+      value={data?.totalViews || 0}
+      description="Total project page views"
+      change={data?.viewsChange}
+      changeType={data?.viewsChange > 0 ? 'increase' : 'decrease'}
+      icon={<Eye className="h-4 w-4" />}
+      progress={data?.viewsProgress}
+    />
+  );
+}
+
+export function VisitorsMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="Unique Visitors"
+      value={data?.uniqueVisitors || 0}
+      description="Unique visitors to project pages"
+      change={data?.visitorsChange}
+      changeType={data?.visitorsChange > 0 ? 'increase' : 'decrease'}
+      icon={<Users className="h-4 w-4" />}
+      progress={data?.visitorsProgress}
+    />
+  );
+}
+
+export function TimeOnPageMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="Avg. Time on Page"
+      value={data?.avgTimeOnPage || 0}
+      description="Average time spent on project pages (seconds)"
+      change={data?.timeChange}
+      changeType={data?.timeChange > 0 ? 'increase' : 'decrease'}
+      icon={<Clock className="h-4 w-4" />}
+      trend={{
+        value: data?.timeTrend || 0,
+        label: "vs last period",
+        direction: data?.timeTrend > 0 ? 'up' : 'down'
+      }}
+    />
+  );
+}
+
+export function CtaClicksMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="CTA Clicks"
+      value={data?.ctaClicks || 0}
+      description="Contact form submissions and CTA interactions"
+      change={data?.ctaChange}
+      changeType={data?.ctaChange > 0 ? 'increase' : 'decrease'}
+      icon={<MousePointer className="h-4 w-4" />}
+      progress={data?.ctaProgress}
+    />
+  );
+}
+
+export function MediaInteractionsMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="Media Interactions"
+      value={data?.mediaInteractions || 0}
+      description="Photo and video interactions"
+      change={data?.mediaChange}
+      changeType={data?.mediaChange > 0 ? 'increase' : 'decrease'}
+      icon={<Image className="h-4 w-4" />}
+      trend={{
+        value: data?.mediaTrend || 0,
+        label: "vs last period",
+        direction: data?.mediaTrend > 0 ? 'up' : 'down'
+      }}
+    />
+  );
+}
+
+export function CrewInteractionsMetricCard({ data }: { data: any }) {
+  return (
+    <MetricCard
+      title="Crew Interactions"
+      value={data?.crewInteractions || 0}
+      description="Crew member profile views and contact clicks"
+      change={data?.crewChange}
+      changeType={data?.crewChange > 0 ? 'increase' : 'decrease'}
+      icon={<UserCheck className="h-4 w-4" />}
+      progress={data?.crewProgress}
+    />
+  );
+}
+
+export function MetricCardGrid({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {children}
+    </div>
+  );
+} 

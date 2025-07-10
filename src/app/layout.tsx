@@ -25,6 +25,9 @@ import {
 import './globals.css';
 import '@/lib/emergency-console-fix';
 import { ConditionalNavigation, PageLayout } from '@/components/layout';
+import { AnalyticsWrapper } from '@/components/analytics';
+import { StructuredData, organizationSchema } from '@/components/seo/StructuredData';
+import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -134,9 +137,81 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Veloz - Professional Event Photography & Videography',
+  title: {
+    default: 'Veloz - Professional Event Photography & Videography',
+    template: '%s | Veloz'
+  },
   description:
     'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+  keywords: [
+    'event photography',
+    'event videography',
+    'wedding photography',
+    'corporate events',
+    'professional photography',
+    'Uruguay photography',
+    'Montevideo events',
+    'team photography',
+    'event coverage',
+    'professional videography'
+  ],
+  authors: [{ name: 'Veloz Team' }],
+  creator: 'Veloz',
+  publisher: 'Veloz',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en': '/en',
+      'es': '/',
+      'pt': '/pt',
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_UY',
+    url: '/',
+    siteName: 'Veloz',
+    title: 'Veloz - Professional Event Photography & Videography',
+    description: 'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Veloz - Professional Event Photography & Videography',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Veloz - Professional Event Photography & Videography',
+    description: 'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+    images: ['/twitter-image.jpg'],
+    creator: '@veloz_uy',
+    site: '@veloz_uy',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.YANDEX_VERIFICATION,
+    yahoo: process.env.YAHOO_VERIFICATION,
+  },
 };
 
 export default function RootLayout({
@@ -149,8 +224,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable} ${cinzel.variable} ${libreBaskerville.variable} ${montserrat.variable} ${raleway.variable} ${quicksand.variable} ${nunito.variable} ${oswald.variable} ${anton.variable} ${bebasNeue.variable} ${lato.variable} ${sourceSansPro.variable} ${ubuntu.variable} ${workSans.variable} antialiased`}
       >
-        <ConditionalNavigation />
-        <PageLayout>{children}</PageLayout>
+        <StructuredData type="organization" data={organizationSchema} />
+        <PerformanceMonitor />
+        <AnalyticsWrapper>
+          <ConditionalNavigation />
+          <PageLayout>{children}</PageLayout>
+        </AnalyticsWrapper>
       </body>
     </html>
   );

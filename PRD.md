@@ -655,7 +655,7 @@ src/app/
 - `/api/contact` - Contact form submissions
 - `/api/translate` - AI-powered translation service
 - `/api/analyze-media` - Media analysis and SEO optimization
-- `/api/webhook/n8n` - External workflow integration
+
 
 **Response Format Standardization:**
 

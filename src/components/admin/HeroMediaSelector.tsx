@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { ProjectMedia } from '@/services/firebase';
+import HeroMediaCropper, { CropConfig } from './HeroMediaCropper';
 
 export type HeroAspectRatio = '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
 
@@ -32,6 +33,7 @@ export interface HeroMediaConfig {
   autoplay?: boolean;
   muted?: boolean;
   loop?: boolean;
+  cropConfig?: CropConfig;
 }
 
 interface HeroMediaSelectorProps {
@@ -91,6 +93,14 @@ export default function HeroMediaSelector({
   const [autoplay, setAutoplay] = useState(heroConfig?.autoplay ?? true);
   const [muted, setMuted] = useState(heroConfig?.muted ?? true);
   const [loop, setLoop] = useState(heroConfig?.loop ?? true);
+  const [cropConfig, setCropConfig] = useState<CropConfig>(
+    heroConfig?.cropConfig || {
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotation: 0,
+    }
+  );
 
   // Get selected media
   const selectedMedia = projectMedia.find(
@@ -130,6 +140,7 @@ export default function HeroMediaSelector({
         autoplay,
         muted,
         loop,
+        cropConfig,
         ...updates,
       };
       onHeroConfigChange(newConfig);
@@ -141,6 +152,7 @@ export default function HeroMediaSelector({
       autoplay,
       muted,
       loop,
+      cropConfig,
       onHeroConfigChange,
     ]
   );
@@ -189,6 +201,12 @@ export default function HeroMediaSelector({
         updateHeroConfig({ loop: value });
         break;
     }
+  };
+
+  // Handle crop configuration change
+  const handleCropConfigChange = (newCropConfig: CropConfig) => {
+    setCropConfig(newCropConfig);
+    updateHeroConfig({ cropConfig: newCropConfig });
   };
 
   const getCompatibilityIcon = (compatibility: string) => {
@@ -465,6 +483,18 @@ export default function HeroMediaSelector({
         </Card>
       )}
 
+      {/* Crop Configuration */}
+      {selectedMedia && (
+        <HeroMediaCropper
+          media={selectedMedia}
+          aspectRatio={aspectRatio}
+          customRatio={aspectRatio === 'custom' ? customRatio : undefined}
+          cropConfig={cropConfig}
+          onCropConfigChange={handleCropConfigChange}
+          disabled={disabled}
+        />
+      )}
+
       {/* Preview */}
       {selectedMedia && (
         <Card>
@@ -478,24 +508,31 @@ export default function HeroMediaSelector({
                   ?.preview || 'aspect-video'
               }`}
             >
-              {selectedMedia.type === 'photo' ? (
-                <Image
-                  src={selectedMedia.url}
-                  alt={selectedMedia.description?.es || selectedMedia.fileName}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              ) : (
-                <video
-                  src={selectedMedia.url}
-                  className="w-full h-full object-cover"
-                  autoPlay={autoplay}
-                  muted={muted}
-                  loop={loop}
-                  playsInline={true}
-                />
-              )}
+              <div
+                className="w-full h-full relative"
+                style={{
+                  transform: `translate(${cropConfig.x}%, ${cropConfig.y}%) scale(${cropConfig.scale}) rotate(${cropConfig.rotation}deg)`,
+                }}
+              >
+                {selectedMedia.type === 'photo' ? (
+                  <Image
+                    src={selectedMedia.url}
+                    alt={selectedMedia.description?.es || selectedMedia.fileName}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <video
+                    src={selectedMedia.url}
+                    className="w-full h-full object-cover"
+                    autoPlay={autoplay}
+                    muted={muted}
+                    loop={loop}
+                    playsInline={true}
+                  />
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

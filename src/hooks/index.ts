@@ -11,3 +11,6 @@
 
 // Firebase hooks
 export { useFirebaseVideo } from './useFirebaseVideo';
+
+// Analytics hooks
+export { useAnalytics, useScrollDepthTracking } from './useAnalytics';

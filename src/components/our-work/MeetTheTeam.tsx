@@ -8,21 +8,25 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Users, Instagram, Linkedin, Globe, Mail } from 'lucide-react';
 import { crewMemberService } from '@/services/crew-member';
 import type { CrewMember, LocalizedContent } from '@/types';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import Image from 'next/image';
 
 interface MeetTheTeamProps {
   crewMemberIds: string[];
   language?: 'es' | 'en' | 'pt';
   className?: string;
+  projectId?: string; // Add projectId for analytics tracking
 }
 
 export default function MeetTheTeam({
   crewMemberIds,
   language = 'es',
   className = '',
+  projectId,
 }: MeetTheTeamProps) {
   const [crewMembers, setCrewMembers] = useState<CrewMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const { trackCrewInteraction } = useAnalytics();
 
   // Load crew member details
   useEffect(() => {
@@ -51,6 +55,45 @@ export default function MeetTheTeam({
 
     loadCrewMembers();
   }, [crewMemberIds]);
+
+  // Track crew section view
+  useEffect(() => {
+    if (crewMembers.length > 0 && projectId) {
+      crewMembers.forEach(member => {
+        trackCrewInteraction({
+          projectId,
+          crewMemberId: member.id,
+          crewMemberName: getLocalizedText(member.name, language),
+          interactionType: 'view',
+          crewMemberRole: getLocalizedText(member.role, language),
+        });
+      });
+    }
+  }, [crewMembers, projectId, language, trackCrewInteraction]);
+
+  const handleCrewMemberClick = (member: CrewMember) => {
+    if (projectId) {
+      trackCrewInteraction({
+        projectId,
+        crewMemberId: member.id,
+        crewMemberName: getLocalizedText(member.name, language),
+        interactionType: 'click',
+        crewMemberRole: getLocalizedText(member.role, language),
+      });
+    }
+  };
+
+  const handleSocialLinkClick = (member: CrewMember, platform: string) => {
+    if (projectId) {
+      trackCrewInteraction({
+        projectId,
+        crewMemberId: member.id,
+        crewMemberName: getLocalizedText(member.name, language),
+        interactionType: 'contact',
+        crewMemberRole: getLocalizedText(member.role, language),
+      });
+    }
+  };
 
   if (loading) {
     return (

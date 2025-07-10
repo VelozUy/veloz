@@ -106,40 +106,49 @@ export default function HeroLayout({
       className={`relative w-full overflow-hidden ${getAspectRatioClass(heroConfig.aspectRatio)} ${className}`}
       style={getCustomAspectRatioStyle()}
     >
-      {/* Media Content */}
-      {selectedMedia.type === 'photo' ? (
-        <Image
-          src={selectedMedia.url}
-          alt={selectedMedia.description?.es || projectTitle || 'Hero media'}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority
-        />
-      ) : (
-        <>
-          {/* Video element */}
-          <video
+      {/* Media Content with Crop Transform */}
+      <div
+        className="w-full h-full relative"
+        style={{
+          transform: heroConfig.cropConfig
+            ? `translate(${heroConfig.cropConfig.x}%, ${heroConfig.cropConfig.y}%) scale(${heroConfig.cropConfig.scale}) rotate(${heroConfig.cropConfig.rotation}deg)`
+            : undefined,
+        }}
+      >
+        {selectedMedia.type === 'photo' ? (
+          <Image
             src={selectedMedia.url}
-            className={`w-full h-full object-cover transition-opacity duration-1000 ${
-              videoCanPlay ? 'opacity-100' : 'opacity-0'
-            }`}
-            autoPlay={heroConfig.autoplay}
-            muted={heroConfig.muted}
-            loop={heroConfig.loop}
-            playsInline
-            onCanPlay={handleVideoCanPlay}
-            onError={handleVideoError}
+            alt={selectedMedia.description?.es || projectTitle || 'Hero media'}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority
           />
+        ) : (
+          <>
+            {/* Video element */}
+            <video
+              src={selectedMedia.url}
+              className={`w-full h-full object-cover transition-opacity duration-1000 ${
+                videoCanPlay ? 'opacity-100' : 'opacity-0'
+              }`}
+              autoPlay={heroConfig.autoplay}
+              muted={heroConfig.muted}
+              loop={heroConfig.loop}
+              playsInline
+              onCanPlay={handleVideoCanPlay}
+              onError={handleVideoError}
+            />
 
-          {/* Fallback background - shown until video is ready or on error */}
-          <div
-            className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-opacity duration-1000 ${
-              videoCanPlay && !videoError ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
-        </>
-      )}
+            {/* Fallback background - shown until video is ready or on error */}
+            <div
+              className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-opacity duration-1000 ${
+                videoCanPlay && !videoError ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+          </>
+        )}
+      </div>
 
       {/* Overlay for text readability */}
       <div className="absolute inset-0 bg-black/20" />

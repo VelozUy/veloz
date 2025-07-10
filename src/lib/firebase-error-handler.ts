@@ -6,9 +6,6 @@ import { db } from './firebase';
 import {
   enableNetwork,
   disableNetwork,
-  connectFirestoreEmulator,
-  terminate,
-  initializeFirestore,
 } from 'firebase/firestore';
 import { reinitializeFirebase } from './firebase-reinit';
 import { getFirestoreService } from './firebase';

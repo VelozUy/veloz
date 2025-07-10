@@ -11,9 +11,9 @@ const mockCrewMembers = [
   {
     id: '1',
     name: { es: 'Juan Pérez', en: 'Juan Perez', pt: 'Juan Perez' },
-    role: { es: 'Fotógrafo', en: 'Photographer', pt: 'Fotógrafo' },
+    role: { es: 'Fotógrafo/a', en: 'Photographer', pt: 'Fotógrafo/a' },
     portrait: 'https://example.com/juan.jpg',
-    bio: { es: 'Fotógrafo profesional', en: 'Professional photographer', pt: 'Fotógrafo profissional' },
+    bio: { es: 'Fotógrafo/a profesional', en: 'Professional Photographer', pt: 'Fotógrafo/a profissional' },
     skills: ['Fotografía', 'Edición', 'Iluminación'],
     order: 1,
     createdAt: new Date(),
@@ -22,9 +22,9 @@ const mockCrewMembers = [
   {
     id: '2',
     name: { es: 'María García', en: 'Maria Garcia', pt: 'Maria Garcia' },
-    role: { es: 'Videógrafa', en: 'Videographer', pt: 'Videógrafa' },
+    role: { es: 'Videógrafo/a', en: 'Videographer', pt: 'Videógrafo/a' },
     portrait: 'https://example.com/maria.jpg',
-    bio: { es: 'Videógrafa profesional', en: 'Professional videographer', pt: 'Videógrafa profissional' },
+    bio: { es: 'Videógrafo/a profesional', en: 'Professional Videographer', pt: 'Videógrafo/a profissional' },
     skills: ['Video', 'Edición', 'Sonido'],
     order: 2,
     createdAt: new Date(),
@@ -82,7 +82,7 @@ describe('CrewMemberAssignment', () => {
     // Check if selected crew member is displayed
     expect(screen.getByText('Assigned Crew Members (1)')).toBeInTheDocument();
     expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
-    expect(screen.getByText('Fotógrafo')).toBeInTheDocument();
+    expect(screen.getByText('Fotógrafo/a')).toBeInTheDocument();
   });
 
   it('allows adding crew members', async () => {

@@ -1,16 +1,21 @@
-import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import { z } from 'zod';
 
 // Mock Firebase before any imports
 jest.mock('@/lib/firebase', () => ({
   db: {
     collection: jest.fn(),
     doc: jest.fn(),
+    enableNetwork: jest.fn(),
+    disableNetwork: jest.fn(),
+    runTransaction: jest.fn(),
+    writeBatch: jest.fn(),
   },
-  storage: {
-    ref: jest.fn(),
-  },
+  auth: {},
+  storage: {},
 }));
 
+// Mock firebase/firestore
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   doc: jest.fn(),
@@ -23,39 +28,19 @@ jest.mock('firebase/firestore', () => ({
   where: jest.fn(),
   orderBy: jest.fn(),
   limit: jest.fn(),
+  startAfter: jest.fn(),
   Timestamp: {
     now: jest.fn(() => ({ toDate: () => new Date('2024-01-01') })),
     fromDate: jest.fn(),
   },
 }));
 
-jest.mock('firebase/storage', () => ({
-  ref: jest.fn(),
-  getDownloadURL: jest.fn(),
-  deleteObject: jest.fn(),
-  uploadBytesResumable: jest.fn(),
-}));
-
-jest.mock('@/lib/firebase', () => ({
-  db: {
-    collection: jest.fn(),
-    doc: jest.fn(),
-  },
-  storage: {
-    ref: jest.fn(),
-  },
-}));
-
-jest.mock('@/constants', () => ({
-  FIREBASE_COLLECTIONS: {
-    FAQS: 'faqs',
-    PHOTOS: 'photos',
-    VIDEOS: 'videos',
-    HOMEPAGE: 'homepage',
-    CONTACT_MESSAGES: 'contact-messages',
-    PROJECT_MEDIA: 'project-media',
-  },
-}));
+import { 
+  FAQ, 
+  Photo, 
+  Video, 
+  HomepageContent 
+} from '@/types';
 
 import {
   FAQService,
@@ -66,7 +51,6 @@ import {
   ProjectMediaService,
   StorageService,
 } from '../firebase';
-import type { FAQ, Photo, Video, HomepageContent, ContactFormData } from '@/types';
 
 describe('Firebase Services', () => {
   beforeEach(() => {
@@ -483,7 +467,7 @@ describe('Firebase Services', () => {
         const { addDoc } = require('firebase/firestore');
         addDoc.mockResolvedValue({ id: 'new-message-id' });
 
-        const formData: ContactFormData = {
+        const formData: any = { // Changed to any to avoid zod schema import
           name: 'John Doe',
           email: 'john@example.com',
           message: 'I need photography services for my wedding.',
@@ -521,7 +505,7 @@ describe('Firebase Services', () => {
         const { addDoc } = require('firebase/firestore');
         addDoc.mockRejectedValue(new Error('Failed to create message'));
 
-        const formData: ContactFormData = {
+        const formData: any = { // Changed to any to avoid zod schema import
           name: 'John Doe',
           email: 'john@example.com',
           message: 'Test message',
@@ -862,7 +846,7 @@ describe('Firebase Services', () => {
       
       addDoc.mockRejectedValue(new Error('Invalid document structure'));
 
-      const invalidFormData = {} as ContactFormData;
+      const invalidFormData: any = {}; // Changed to any to avoid zod schema import
       const result = await contactService.createMessage(invalidFormData);
 
       expect(result.success).toBe(false);

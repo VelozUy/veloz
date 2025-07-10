@@ -111,9 +111,9 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
         form: {
           name: {
             label: {
-              es: 'Tu nombre',
-              en: 'Your name',
-              pt: 'Seu nome',
+              es: 'tu nombre',
+              en: 'your name',
+              pt: 'seu nome',
             },
             placeholder: {
               es: '¿Cómo deberíamos llamarte?',
@@ -238,9 +238,9 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
             pt: 'Mensagem enviada!',
           },
           message: {
-            es: '¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+            es: '¡Gracias por contactarnos! te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
             en: "Thank you for contacting us! We'll get back to you within 24 hours with all the details to make your event amazing.",
-            pt: 'Obrigado por entrar em contato! Responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+            pt: 'Obrigado por entrar em contato! responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
           },
           action: {
             es: 'Enviar otro mensaje',
@@ -295,9 +295,9 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
             pt: 'Que evento você está pensando?',
           },
           mobile: {
-            es: '¿Tu evento?',
-            en: 'Your event?',
-            pt: 'Seu evento?',
+            es: '¿tu evento?',
+            en: 'your event?',
+            pt: 'seu evento?',
           },
         },
         dialog: {
@@ -372,7 +372,7 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
                 pt: 'Sim, quero contar mais detalhes',
               },
               subtitle: {
-                es: 'Te llevamos al formulario completo',
+                es: 'te llevamos al formulario completo',
                 en: 'We take you to the complete form',
                 pt: 'Te levamos ao formulário completo',
               },
@@ -392,7 +392,7 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           phone: {
             title: {
-              es: '¡Perfecto! Te llamamos',
+              es: '¡Perfecto! te llamamos',
               en: 'Perfect! We call you',
               pt: 'Perfeito! Te ligamos',
             },
@@ -402,9 +402,9 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               pt: 'Deixe seu número e entraremos em contato em breve',
             },
             placeholder: {
-              es: 'Tu número de teléfono',
+              es: 'tu número de teléfono',
               en: 'Your phone number',
-              pt: 'Seu número de telefone',
+              pt: 'seu número de telefone',
             },
             button: {
               es: 'Solicitar llamada',
@@ -426,7 +426,7 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
             message: {
               es: 'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
               en: 'We will contact you very soon to talk about your event.',
-              pt: 'Entraremos em contato muito em breve para conversar sobre seu evento.',
+              pt: 'entraremos em contato muito em breve para conversar sobre seu evento.',
             },
             button: {
               es: 'Cerrar',

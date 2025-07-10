@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory } from '@/constants/categories';
 import {
   CategoryBadge,
@@ -50,6 +52,20 @@ interface ProjectDetailClientProps {
 export default function ProjectDetailClient({
   project,
 }: ProjectDetailClientProps) {
+  const { trackProjectView } = useAnalytics();
+
+  useEffect(() => {
+    if (project?.id && project?.title) {
+      trackProjectView({
+        projectId: project.id,
+        projectTitle: project.title,
+        projectCategory: project.eventType || 'otros',
+        projectLanguage: 'es', // Adjust if multi-language
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project?.id]);
+
   // Get category from event type
   const getCategoryFromEventType = (eventType: string): EventCategory => {
     const eventTypeMap: Record<string, EventCategory> = {
@@ -168,7 +184,11 @@ export default function ProjectDetailClient({
 
       {/* Meet the Team Section */}
       {project.crewMembers && project.crewMembers.length > 0 && (
-        <MeetTheTeam crewMemberIds={project.crewMembers} language="es" />
+        <MeetTheTeam 
+          crewMemberIds={project.crewMembers} 
+          language="es" 
+          projectId={project.id}
+        />
       )}
     </div>
   );

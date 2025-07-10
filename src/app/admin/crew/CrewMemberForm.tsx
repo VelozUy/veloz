@@ -387,10 +387,10 @@ export default function CrewMemberForm({
                 {...register(`role.${selectedLang}`)}
                 placeholder={
                   selectedLang === 'es'
-                    ? 'Fotógrafo, Editor, etc.'
+                    ? 'Fotógrafo/a, Editor/a, etc.'
                     : selectedLang === 'en'
                       ? 'Photographer, Editor, etc.'
-                      : 'Fotógrafo, Editor, etc.'
+                      : 'Fotógrafo/a, Editor/a, etc.'
                 }
               />
               <TranslationDropdown
