@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { z } from 'zod';
 
@@ -16,11 +16,9 @@ export const AnalyticsEventFirestoreSchema = z.object({
   ipAddress: z.string().optional(), // Anonymized for GDPR compliance
 });
 
-export type AnalyticsEventFirestore = z.infer<typeof AnalyticsEventFirestoreSchema>;
-
-// Analytics Summary Schema
+// Enhanced Analytics Summary Schema with detailed media metrics
 export const AnalyticsSummarySchema = z.object({
-  period: z.string(), // 'daily', 'weekly', 'monthly'
+  period: z.enum(['daily', 'weekly', 'monthly']),
   startDate: z.instanceof(Timestamp),
   endDate: z.instanceof(Timestamp),
   totalViews: z.number(),
@@ -29,6 +27,14 @@ export const AnalyticsSummarySchema = z.object({
   ctaClicks: z.number(),
   mediaInteractions: z.number(),
   crewInteractions: z.number(),
+  // Enhanced media interaction metrics
+  mediaInteractionBreakdown: z.object({
+    views: z.number(),
+    plays: z.number(),
+    pauses: z.number(),
+    completes: z.number(),
+    zooms: z.number(),
+  }),
   topProjects: z.array(z.object({
     projectId: z.string(),
     projectTitle: z.string(),
@@ -41,6 +47,7 @@ export const AnalyticsSummarySchema = z.object({
   bounceRate: z.number(),
 });
 
+export type AnalyticsEventFirestore = z.infer<typeof AnalyticsEventFirestoreSchema>;
 export type AnalyticsSummary = z.infer<typeof AnalyticsSummarySchema>;
 
 // Enhanced analytics data processing functions
@@ -63,20 +70,34 @@ export async function processAnalyticsData(
   }
 }
 
+// Get analytics events from Firestore
 export async function getAnalyticsEvents(startDate: Date, endDate: Date) {
-  const eventsRef = collection(db, 'analytics');
-  const q = query(
-    eventsRef,
-    where('timestamp', '>=', Timestamp.fromDate(startDate)),
-    where('timestamp', '<=', Timestamp.fromDate(endDate)),
-    orderBy('timestamp', 'desc')
-  );
-  
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  })) as AnalyticsEventFirestore[];
+  try {
+    if (!db) {
+      console.error('Firebase db is not initialized');
+      return [];
+    }
+    
+    const eventsRef = collection(db, 'analytics');
+    const q = query(
+      eventsRef,
+      where('timestamp', '>=', Timestamp.fromDate(startDate)),
+      where('timestamp', '<=', Timestamp.fromDate(endDate)),
+      orderBy('timestamp', 'desc')
+    );
+    
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data
+      } as unknown as AnalyticsEventFirestore;
+    });
+  } catch (error) {
+    console.error('Error fetching analytics events:', error);
+    return [];
+  }
 }
 
 export async function aggregateAnalyticsEvents(
@@ -100,9 +121,18 @@ export async function aggregateAnalyticsEvents(
   const sessions = new Set<string>();
   const sessionDurations: number[] = [];
   const pageViews: number[] = [];
-  const ctaClicks = 0;
-  const mediaInteractions = 0;
-  const crewInteractions = 0;
+  let ctaClicks = 0;
+  let mediaInteractions = 0;
+  let crewInteractions = 0;
+  
+  // Enhanced media interaction tracking
+  const mediaInteractionBreakdown = {
+    views: 0,
+    plays: 0,
+    pauses: 0,
+    completes: 0,
+    zooms: 0,
+  };
   
   events.forEach(event => {
     // Track sessions
@@ -119,7 +149,7 @@ export async function aggregateAnalyticsEvents(
           const projectData = projectStats.get(event.projectId) || {
             views: 0,
             interactions: 0,
-            title: (event.eventData as any).projectTitle || 'Unknown Project'
+            title: (event.eventData as { projectTitle: string }).projectTitle || 'Unknown Project'
           };
           projectData.views++;
           projectStats.set(event.projectId, projectData);
@@ -136,6 +166,32 @@ export async function aggregateAnalyticsEvents(
           };
           projectData.interactions++;
           projectStats.set(event.projectId, projectData);
+        }
+        
+        // Track specific media interaction types
+        const interactionType = (event.eventData as { interaction_type: string }).interaction_type;
+        if (interactionType) {
+          switch (interactionType) {
+            case 'view':
+              mediaInteractionBreakdown.views++;
+              break;
+            case 'play':
+              mediaInteractionBreakdown.plays++;
+              break;
+            case 'pause':
+              mediaInteractionBreakdown.pauses++;
+              break;
+            case 'complete':
+              mediaInteractionBreakdown.completes++;
+              break;
+            default:
+              // For backward compatibility, treat unknown types as views
+              mediaInteractionBreakdown.views++;
+              break;
+          }
+        } else {
+          // Default to view if no interaction type specified
+          mediaInteractionBreakdown.views++;
         }
         break;
         
@@ -185,6 +241,7 @@ export async function aggregateAnalyticsEvents(
     ctaClicks,
     mediaInteractions,
     crewInteractions,
+    mediaInteractionBreakdown,
     topProjects,
     deviceBreakdown,
     languageBreakdown,
@@ -243,7 +300,7 @@ export async function getRealTimeAnalytics(): Promise<{
   }
 }
 
-// Get project-specific analytics
+// Get project-specific analytics with enhanced media metrics
 export async function getProjectAnalytics(projectId: string): Promise<{
   totalViews: number;
   uniqueVisitors: number;
@@ -251,9 +308,36 @@ export async function getProjectAnalytics(projectId: string): Promise<{
   mediaInteractions: number;
   crewInteractions: number;
   conversionRate: number;
-  topMedia: Array<{ mediaId: string; interactions: number }>;
+  mediaInteractionBreakdown: {
+    views: number;
+    plays: number;
+    pauses: number;
+    completes: number;
+    zooms: number;
+  };
+  topMedia: Array<{ mediaId: string; interactions: number; interactionType: string }>;
 }> {
   try {
+    if (!db) {
+      console.error('Firebase db is not initialized');
+      return {
+        totalViews: 0,
+        uniqueVisitors: 0,
+        avgTimeOnPage: 0,
+        mediaInteractions: 0,
+        crewInteractions: 0,
+        conversionRate: 0,
+        mediaInteractionBreakdown: {
+          views: 0,
+          plays: 0,
+          pauses: 0,
+          completes: 0,
+          zooms: 0,
+        },
+        topMedia: [],
+      };
+    }
+    
     const eventsRef = collection(db, 'analytics');
     const q = query(
       eventsRef,
@@ -262,10 +346,13 @@ export async function getProjectAnalytics(projectId: string): Promise<{
     );
     
     const snapshot = await getDocs(q);
-    const events = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as AnalyticsEventFirestore[];
+    const events = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data
+      } as unknown as AnalyticsEventFirestore;
+    });
     
     // Process project-specific data
     const totalViews = events.filter(e => e.eventType === 'project_view').length;
@@ -280,19 +367,56 @@ export async function getProjectAnalytics(projectId: string): Promise<{
     const ctaClicks = events.filter(e => e.eventType === 'cta_interaction').length;
     const conversionRate = totalViews > 0 ? (ctaClicks / totalViews) * 100 : 0;
     
-    // Get top media interactions
-    const mediaStats = new Map<string, number>();
+    // Enhanced media interaction breakdown
+    const mediaInteractionBreakdown = {
+      views: 0,
+      plays: 0,
+      pauses: 0,
+      completes: 0,
+      zooms: 0,
+    };
+    
+    // Get top media interactions with interaction types
+    const mediaStats = new Map<string, { interactions: number; types: Set<string> }>();
     events
       .filter(e => e.eventType === 'media_interaction')
       .forEach(event => {
-        const mediaId = (event.eventData as any).mediaId;
+        const mediaId = (event.eventData as { mediaId: string }).mediaId;
+        const interactionType = (event.eventData as { interaction_type: string }).interaction_type || 'view';
+        
         if (mediaId) {
-          mediaStats.set(mediaId, (mediaStats.get(mediaId) || 0) + 1);
+          const stats = mediaStats.get(mediaId) || { interactions: 0, types: new Set() };
+          stats.interactions++;
+          stats.types.add(interactionType);
+          mediaStats.set(mediaId, stats);
+        }
+        
+        // Update breakdown
+        switch (interactionType) {
+          case 'view':
+            mediaInteractionBreakdown.views++;
+            break;
+          case 'play':
+            mediaInteractionBreakdown.plays++;
+            break;
+          case 'pause':
+            mediaInteractionBreakdown.pauses++;
+            break;
+          case 'complete':
+            mediaInteractionBreakdown.completes++;
+            break;
+          default:
+            mediaInteractionBreakdown.views++;
+            break;
         }
       });
     
     const topMedia = Array.from(mediaStats.entries())
-      .map(([mediaId, interactions]) => ({ mediaId, interactions }))
+      .map(([mediaId, stats]) => ({ 
+        mediaId, 
+        interactions: stats.interactions,
+        interactionType: Array.from(stats.types).join(', ')
+      }))
       .sort((a, b) => b.interactions - a.interactions)
       .slice(0, 5);
     
@@ -303,6 +427,7 @@ export async function getProjectAnalytics(projectId: string): Promise<{
       mediaInteractions,
       crewInteractions,
       conversionRate,
+      mediaInteractionBreakdown,
       topMedia,
     };
   } catch (error) {
@@ -314,7 +439,65 @@ export async function getProjectAnalytics(projectId: string): Promise<{
       mediaInteractions: 0,
       crewInteractions: 0,
       conversionRate: 0,
+      mediaInteractionBreakdown: {
+        views: 0,
+        plays: 0,
+        pauses: 0,
+        completes: 0,
+        zooms: 0,
+      },
       topMedia: [],
     };
+  }
+}
+
+// Export analytics data for download
+export async function exportAnalyticsData(
+  startDate: Date,
+  endDate: Date,
+  format: 'csv' | 'json' = 'csv'
+): Promise<string> {
+  try {
+    const events = await getAnalyticsEvents(startDate, endDate);
+    
+    if (format === 'json') {
+      return JSON.stringify(events, null, 2);
+    }
+    
+    // CSV format
+    const headers = [
+      'Event Type',
+      'Project ID',
+      'Session ID',
+      'Device Type',
+      'Language',
+      'Timestamp',
+      'Interaction Type',
+      'Media ID',
+      'Media Type',
+    ];
+    
+    const csvRows = [headers.join(',')];
+    
+    events.forEach(event => {
+      const row = [
+        event.eventType,
+        event.projectId || '',
+        event.sessionId,
+        event.deviceType,
+        event.userLanguage,
+        event.timestamp.toDate().toISOString(),
+        (event.eventData as { interaction_type: string }).interaction_type || '',
+        (event.eventData as { media_id: string }).media_id || '',
+        (event.eventData as { media_type: string }).media_type || '',
+      ].map(field => `"${field}"`).join(',');
+      
+      csvRows.push(row);
+    });
+    
+    return csvRows.join('\n');
+  } catch (error) {
+    console.error('Error exporting analytics data:', error);
+    throw new Error('Failed to export analytics data');
   }
 } 

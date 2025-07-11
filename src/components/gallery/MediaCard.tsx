@@ -79,7 +79,7 @@ export default function MediaCard({ media, project, onClick }: MediaCardProps) {
 
   if (imageError) {
     return (
-      <Card className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-200">
+      <Card className="overflow-hidden cursor-pointer">
         <div
           className={`${getAspectRatioClass(media.aspectRatio)} bg-muted flex items-center justify-center`}
         >
@@ -94,7 +94,7 @@ export default function MediaCard({ media, project, onClick }: MediaCardProps) {
 
   return (
     <Card
-      className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-200 bg-card"
+      className="overflow-hidden cursor-pointer bg-card"
       onClick={onClick}
     >
       <div className="relative">
@@ -113,7 +113,7 @@ export default function MediaCard({ media, project, onClick }: MediaCardProps) {
               src={media.url}
               alt={getMediaCaption() || getProjectTitle()}
               fill
-              className="object-cover transition-transform duration-200 group-hover:scale-105"
+              className="object-cover"
               onLoad={() => setIsLoading(false)}
               onError={() => {
                 setImageError(true);
@@ -142,13 +142,10 @@ export default function MediaCard({ media, project, onClick }: MediaCardProps) {
             </div>
           )}
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
-
           {/* Video Play Button Overlay */}
           {media.type === 'video' && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black/50 rounded-full p-3 group-hover:bg-black/70 transition-colors duration-200">
+              <div className="bg-black/50 rounded-full p-3">
                 <Play className="w-6 h-6 text-white fill-white" />
               </div>
             </div>

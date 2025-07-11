@@ -27,9 +27,9 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
     const trackCLS = () => {
       observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const layoutShiftEntry = entry as any;
+          const layoutShiftEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
           if (!layoutShiftEntry.hadRecentInput) {
-            clsValue += layoutShiftEntry.value;
+            clsValue += layoutShiftEntry.value || 0;
             clsEntries.push(entry);
           }
         }
@@ -56,8 +56,8 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
     const trackFID = () => {
       observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const firstInputEntry = entry as any;
-          const fid = firstInputEntry.processingStart - entry.startTime;
+          const firstInputEntry = entry as PerformanceEntry & { processingStart?: number };
+          const fid = (firstInputEntry.processingStart || 0) - entry.startTime;
           sendMetric('fid', fid);
         }
       });
@@ -89,8 +89,9 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
     // Send metric to analytics
     const sendMetric = (metricName: string, value: number) => {
       // Send to analytics service
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'web_vitals', {
+      if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).gtag) {
+        const gtag = (window as unknown as Record<string, unknown>).gtag as (command: string, eventName: string, params: Record<string, unknown>) => void;
+        gtag('event', 'web_vitals', {
           event_category: 'Web Vitals',
           event_label: metricName,
           value: Math.round(value),
@@ -155,8 +156,9 @@ export function usePerformanceMonitoring(enabled = true) {
     const trackPageLoad = () => {
       const loadTime = performance.now();
       
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'timing_complete', {
+      if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).gtag) {
+        const gtag = (window as unknown as Record<string, unknown>).gtag as (command: string, eventName: string, params: Record<string, unknown>) => void;
+        gtag('event', 'timing_complete', {
           name: 'load',
           value: Math.round(loadTime),
         });

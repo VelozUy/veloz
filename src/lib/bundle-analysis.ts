@@ -64,7 +64,7 @@ export class BundleAnalyzer {
 
     const bundleInfos: BundleInfo[] = scripts.map(script => ({
       name: this.getBundleName(script.name),
-      size: (script as any).transferSize || 0,
+      size: (script as PerformanceEntry & { transferSize?: number }).transferSize || 0,
       type: this.getBundleType(script.name),
       url: script.name,
       loadTime: script.duration,
@@ -303,7 +303,7 @@ export class BundleAnalyzer {
       name: this.getBundleName(script.name),
       startTime: script.startTime,
       duration: script.duration,
-      size: (script as any).transferSize || 0,
+      size: (script as PerformanceEntry & { transferSize?: number }).transferSize || 0,
     })).sort((a, b) => a.startTime - b.startTime);
   }
 }

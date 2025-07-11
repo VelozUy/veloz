@@ -304,6 +304,8 @@ export const aboutContentSchema = baseSchema.extend({
 
 // About Philosophy Point Schema
 export const aboutPhilosophyPointSchema = z.object({
+  id: z.string().optional(),
+  order: z.number().int().min(0).optional(),
   title: multiLanguageTextSchema,
   description: multiLanguageTextSchema,
   icon: z.string().optional(),
@@ -311,6 +313,7 @@ export const aboutPhilosophyPointSchema = z.object({
 
 // About Methodology Step Schema
 export const aboutMethodologyStepSchema = z.object({
+  id: z.string().optional(),
   title: multiLanguageTextSchema,
   description: multiLanguageTextSchema,
   stepNumber: z.number().int().min(1),
@@ -319,6 +322,7 @@ export const aboutMethodologyStepSchema = z.object({
 
 // About Value Schema
 export const aboutValueSchema = z.object({
+  id: z.string().optional(),
   title: multiLanguageTextSchema,
   description: multiLanguageTextSchema,
   icon: z.string().optional(),

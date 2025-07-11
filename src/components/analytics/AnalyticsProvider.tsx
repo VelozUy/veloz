@@ -3,12 +3,19 @@
 import { createContext, useContext, useEffect, ReactNode } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
+import type { 
+  ProjectViewEvent,
+  MediaInteractionEvent,
+  CTAInteractionEvent,
+  CrewInteractionEvent,
+} from '@/services/analytics';
+
 interface AnalyticsContextType {
-  trackProjectView: (data: any) => void;
+  trackProjectView: (data: ProjectViewEvent) => void;
   trackProjectViewEnd: () => void;
-  trackMediaInteraction: (data: any) => void;
-  trackCTAInteraction: (data: any) => void;
-  trackCrewInteraction: (data: any) => void;
+  trackMediaInteraction: (data: MediaInteractionEvent) => void;
+  trackCTAInteraction: (data: CTAInteractionEvent) => void;
+  trackCrewInteraction: (data: CrewInteractionEvent) => void;
   trackError: (error: Error, context?: Record<string, unknown>) => void;
   trackScrollDepth: (scrollDepth: number) => void;
   currentProjectId: string | null;

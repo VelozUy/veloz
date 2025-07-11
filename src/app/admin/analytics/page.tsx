@@ -21,6 +21,7 @@ import {
   CtaClicksMetricCard,
   MediaInteractionsMetricCard,
   CrewInteractionsMetricCard,
+  MediaInteractionBreakdownCard,
 } from '@/components/admin/MetricCard';
 
 interface DashboardMetrics {
@@ -30,6 +31,13 @@ interface DashboardMetrics {
   ctaClicks: number;
   mediaInteractions: number;
   crewInteractions: number;
+  mediaInteractionBreakdown: {
+    views: number;
+    plays: number;
+    pauses: number;
+    completes: number;
+    zooms: number;
+  };
 }
 
 export default function AnalyticsDashboardPage() {
@@ -42,6 +50,13 @@ export default function AnalyticsDashboardPage() {
     ctaClicks: 0,
     mediaInteractions: 0,
     crewInteractions: 0,
+    mediaInteractionBreakdown: {
+      views: 0,
+      plays: 0,
+      pauses: 0,
+      completes: 0,
+      zooms: 0,
+    },
   });
   const [dateRange, setDateRange] = useState('7d'); // 7d, 30d, 90d, custom
   const [summaries, setSummaries] = useState<AnalyticsSummary[]>([]);
@@ -84,6 +99,13 @@ export default function AnalyticsDashboardPage() {
         ctaClicks: 0,
         mediaInteractions: 0,
         crewInteractions: 0,
+        mediaInteractionBreakdown: {
+          views: 0,
+          plays: 0,
+          pauses: 0,
+          completes: 0,
+          zooms: 0,
+        },
       };
 
       let totalTime = 0;
@@ -95,6 +117,15 @@ export default function AnalyticsDashboardPage() {
         aggregatedMetrics.ctaClicks += summary.ctaClicks;
         aggregatedMetrics.mediaInteractions += summary.mediaInteractions;
         aggregatedMetrics.crewInteractions += summary.crewInteractions;
+
+        // Aggregate media interaction breakdown
+        if (summary.mediaInteractionBreakdown) {
+          aggregatedMetrics.mediaInteractionBreakdown.views += summary.mediaInteractionBreakdown.views;
+          aggregatedMetrics.mediaInteractionBreakdown.plays += summary.mediaInteractionBreakdown.plays;
+          aggregatedMetrics.mediaInteractionBreakdown.pauses += summary.mediaInteractionBreakdown.pauses;
+          aggregatedMetrics.mediaInteractionBreakdown.completes += summary.mediaInteractionBreakdown.completes;
+          aggregatedMetrics.mediaInteractionBreakdown.zooms += summary.mediaInteractionBreakdown.zooms;
+        }
 
         totalTime += summary.avgTimeOnPage;
         summaryCount++;
@@ -243,6 +274,11 @@ export default function AnalyticsDashboardPage() {
               crewInteractions: metrics.crewInteractions,
               crewChange: 3.4,
               crewTrend: 3.4,
+            }}
+          />
+          <MediaInteractionBreakdownCard
+            data={{
+              mediaInteractionBreakdown: metrics.mediaInteractionBreakdown,
             }}
           />
         </MetricCardGrid>

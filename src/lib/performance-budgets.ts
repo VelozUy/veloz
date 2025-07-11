@@ -193,7 +193,7 @@ export class PerformanceBudgets {
 
     return jsResources.reduce((total, resource) => {
       // Estimate size based on transfer size or duration
-      const size = (resource as any).transferSize || (resource.duration * 1000);
+      const size = (resource as unknown as PerformanceResourceTiming).transferSize || (resource.duration * 1000);
       return total + size;
     }, 0) / 1024; // Convert to KB
   }
@@ -210,7 +210,7 @@ export class PerformanceBudgets {
     );
 
     return imageResources.reduce((total, resource) => {
-      const size = (resource as any).transferSize || (resource.duration * 1000);
+      const size = (resource as unknown as PerformanceResourceTiming).transferSize || (resource.duration * 1000);
       return total + size;
     }, 0) / 1024; // Convert to KB
   }

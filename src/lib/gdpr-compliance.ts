@@ -110,7 +110,7 @@ export class GDPRCompliance {
     if (typeof window === 'undefined') return;
     
     const preferences = this.getConsentPreferences();
-    (preferences as any)[type] = false;
+    (preferences as unknown as Record<string, boolean>)[type] = false;
     preferences.timestamp = Date.now();
     
     localStorage.setItem('gdpr-consent', JSON.stringify(preferences));
@@ -119,7 +119,7 @@ export class GDPRCompliance {
   /**
    * Anonymize user data for GDPR compliance
    */
-  static anonymizeData(data: any): any {
+  static anonymizeData(data: unknown): unknown {
     if (typeof data !== 'object' || data === null) {
       return data;
     }
@@ -128,7 +128,7 @@ export class GDPRCompliance {
       return data.map(item => this.anonymizeData(item));
     }
     
-    const anonymized: any = {};
+    const anonymized: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
       // Skip sensitive fields
       if (['email', 'phone', 'ipAddress', 'userAgent', 'sessionId'].includes(key)) {
@@ -216,7 +216,7 @@ export class GDPRCompliance {
   /**
    * Generate data export for portability
    */
-  static generateDataExport(userData: any): string {
+  static generateDataExport(userData: unknown): string {
     const exportData = {
       exportDate: new Date().toISOString(),
       data: this.anonymizeData(userData),

@@ -88,6 +88,9 @@ function SortablePhilosophyCard({
     language: 'en' | 'pt'
   ) => boolean;
 }) {
+  // Ensure point has an ID for drag and drop functionality
+  const pointId = point.id || `philosophy-${index}`;
+  
   const {
     attributes,
     listeners,
@@ -95,7 +98,7 @@ function SortablePhilosophyCard({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: point.id });
+  } = useSortable({ id: pointId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -123,7 +126,7 @@ function SortablePhilosophyCard({
               </CardTitle>
             </div>
             <Button
-              onClick={() => onRemovePhilosophyPoint(point.id)}
+              onClick={() => onRemovePhilosophyPoint(pointId)}
               size="sm"
               variant="destructive"
               className="flex items-center gap-2"
@@ -137,19 +140,19 @@ function SortablePhilosophyCard({
         <CardContent className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${point.id}-title`}>Título</Label>
+              <Label htmlFor={`${pointId}-title`}>Título</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslatePhilosophyPoint(point.id, 'title', 'en')
+                    onTranslatePhilosophyPoint(pointId, 'title', 'en')
                   }
-                  disabled={isTranslating(point.id, 'title', 'en')}
+                  disabled={isTranslating(pointId, 'title', 'en')}
                   className="text-xs h-7 px-2"
                   aria-label="Translate title to English"
                 >
-                  {isTranslating(point.id, 'title', 'en') ? (
+                  {isTranslating(pointId, 'title', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -159,13 +162,13 @@ function SortablePhilosophyCard({
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslatePhilosophyPoint(point.id, 'title', 'pt')
+                    onTranslatePhilosophyPoint(pointId, 'title', 'pt')
                   }
-                  disabled={isTranslating(point.id, 'title', 'pt')}
+                  disabled={isTranslating(pointId, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                   aria-label="Translate title to Portuguese"
                 >
-                  {isTranslating(point.id, 'title', 'pt') ? (
+                  {isTranslating(pointId, 'title', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -174,13 +177,13 @@ function SortablePhilosophyCard({
               </div>
             </div>
             <Input
-              id={`${point.id}-title`}
+              id={`${pointId}-title`}
               value={
                 point.title[currentLanguage as keyof typeof point.title] || ''
               }
               onChange={e =>
                 onPhilosophyPointChange(
-                  point.id,
+                  pointId,
                   'title',
                   currentLanguage,
                   e.target.value
@@ -192,18 +195,18 @@ function SortablePhilosophyCard({
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${point.id}-description`}>Descripción</Label>
+              <Label htmlFor={`${pointId}-description`}>Descripción</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslatePhilosophyPoint(point.id, 'description', 'en')
+                    onTranslatePhilosophyPoint(pointId, 'description', 'en')
                   }
-                  disabled={isTranslating(point.id, 'description', 'en')}
+                  disabled={isTranslating(pointId, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(point.id, 'description', 'en') ? (
+                  {isTranslating(pointId, 'description', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -213,12 +216,12 @@ function SortablePhilosophyCard({
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslatePhilosophyPoint(point.id, 'description', 'pt')
+                    onTranslatePhilosophyPoint(pointId, 'description', 'pt')
                   }
-                  disabled={isTranslating(point.id, 'description', 'pt')}
+                  disabled={isTranslating(pointId, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(point.id, 'description', 'pt') ? (
+                  {isTranslating(pointId, 'description', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -227,7 +230,7 @@ function SortablePhilosophyCard({
               </div>
             </div>
             <Textarea
-              id={`${point.id}-description`}
+              id={`${pointId}-description`}
               value={
                 point.description[
                   currentLanguage as keyof typeof point.description
@@ -235,7 +238,7 @@ function SortablePhilosophyCard({
               }
               onChange={e =>
                 onPhilosophyPointChange(
-                  point.id,
+                  pointId,
                   'description',
                   currentLanguage,
                   e.target.value
@@ -282,6 +285,9 @@ function SortableMethodologyCard({
     language: 'en' | 'pt'
   ) => boolean;
 }) {
+  // Ensure step has an ID for drag and drop functionality
+  const stepId = step.id || `methodology-${index}`;
+  
   const {
     attributes,
     listeners,
@@ -289,7 +295,7 @@ function SortableMethodologyCard({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: step.id });
+  } = useSortable({ id: stepId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -318,7 +324,7 @@ function SortableMethodologyCard({
               </CardTitle>
             </div>
             <Button
-              onClick={() => onRemoveMethodologyStep(step.id)}
+              onClick={() => onRemoveMethodologyStep(stepId)}
               size="sm"
               variant="destructive"
               className="flex items-center gap-2"
@@ -332,18 +338,18 @@ function SortableMethodologyCard({
         <CardContent className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${step.id}-title`}>Título</Label>
+              <Label htmlFor={`${stepId}-title`}>Título</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateMethodologyStep(step.id, 'title', 'en')
+                    onTranslateMethodologyStep(stepId, 'title', 'en')
                   }
-                  disabled={isTranslating(step.id, 'title', 'en')}
+                  disabled={isTranslating(stepId, 'title', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(step.id, 'title', 'en') ? (
+                  {isTranslating(stepId, 'title', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -353,12 +359,12 @@ function SortableMethodologyCard({
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateMethodologyStep(step.id, 'title', 'pt')
+                    onTranslateMethodologyStep(stepId, 'title', 'pt')
                   }
-                  disabled={isTranslating(step.id, 'title', 'pt')}
+                  disabled={isTranslating(stepId, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(step.id, 'title', 'pt') ? (
+                  {isTranslating(stepId, 'title', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -367,13 +373,13 @@ function SortableMethodologyCard({
               </div>
             </div>
             <Input
-              id={`${step.id}-title`}
+              id={`${stepId}-title`}
               value={
                 step.title[currentLanguage as keyof typeof step.title] || ''
               }
               onChange={e =>
                 onMethodologyStepChange(
-                  step.id,
+                  stepId,
                   'title',
                   currentLanguage,
                   e.target.value
@@ -385,18 +391,18 @@ function SortableMethodologyCard({
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${step.id}-description`}>Descripción</Label>
+              <Label htmlFor={`${stepId}-description`}>Descripción</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateMethodologyStep(step.id, 'description', 'en')
+                    onTranslateMethodologyStep(stepId, 'description', 'en')
                   }
-                  disabled={isTranslating(step.id, 'description', 'en')}
+                  disabled={isTranslating(stepId, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(step.id, 'description', 'en') ? (
+                  {isTranslating(stepId, 'description', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -406,12 +412,12 @@ function SortableMethodologyCard({
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateMethodologyStep(step.id, 'description', 'pt')
+                    onTranslateMethodologyStep(stepId, 'description', 'pt')
                   }
-                  disabled={isTranslating(step.id, 'description', 'pt')}
+                  disabled={isTranslating(stepId, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(step.id, 'description', 'pt') ? (
+                  {isTranslating(stepId, 'description', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -420,7 +426,7 @@ function SortableMethodologyCard({
               </div>
             </div>
             <Textarea
-              id={`${step.id}-description`}
+              id={`${stepId}-description`}
               value={
                 step.description[
                   currentLanguage as keyof typeof step.description
@@ -428,7 +434,7 @@ function SortableMethodologyCard({
               }
               onChange={e =>
                 onMethodologyStepChange(
-                  step.id,
+                  stepId,
                   'description',
                   currentLanguage,
                   e.target.value
@@ -475,6 +481,9 @@ function SortableValueCard({
     language: 'en' | 'pt'
   ) => boolean;
 }) {
+  // Ensure value has an ID for drag and drop functionality
+  const valueId = value.id || `value-${index}`;
+
   const {
     attributes,
     listeners,
@@ -482,7 +491,7 @@ function SortableValueCard({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: value.id });
+  } = useSortable({ id: valueId });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -510,7 +519,7 @@ function SortableValueCard({
               </CardTitle>
             </div>
             <Button
-              onClick={() => onRemoveValue(value.id)}
+              onClick={() => onRemoveValue(valueId)}
               size="sm"
               variant="destructive"
               className="flex items-center gap-2"
@@ -523,16 +532,16 @@ function SortableValueCard({
         <CardContent className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${value.id}-title`}>Título</Label>
+              <Label htmlFor={`${valueId}-title`}>Título</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onTranslateValue(value.id, 'title', 'en')}
-                  disabled={isTranslating(value.id, 'title', 'en')}
+                  onClick={() => onTranslateValue(valueId, 'title', 'en')}
+                  disabled={isTranslating(valueId, 'title', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(value.id, 'title', 'en') ? (
+                  {isTranslating(valueId, 'title', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -541,11 +550,11 @@ function SortableValueCard({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onTranslateValue(value.id, 'title', 'pt')}
-                  disabled={isTranslating(value.id, 'title', 'pt')}
+                  onClick={() => onTranslateValue(valueId, 'title', 'pt')}
+                  disabled={isTranslating(valueId, 'title', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(value.id, 'title', 'pt') ? (
+                  {isTranslating(valueId, 'title', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -554,13 +563,13 @@ function SortableValueCard({
               </div>
             </div>
             <Input
-              id={`${value.id}-title`}
+              id={`${valueId}-title`}
               value={
                 value.title[currentLanguage as keyof typeof value.title] || ''
               }
               onChange={e =>
                 onValueChange(
-                  value.id,
+                  valueId,
                   'title',
                   currentLanguage,
                   e.target.value
@@ -572,18 +581,18 @@ function SortableValueCard({
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${value.id}-description`}>Descripción</Label>
+              <Label htmlFor={`${valueId}-description`}>Descripción</Label>
               <div className="flex gap-1">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateValue(value.id, 'description', 'en')
+                    onTranslateValue(valueId, 'description', 'en')
                   }
-                  disabled={isTranslating(value.id, 'description', 'en')}
+                  disabled={isTranslating(valueId, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(value.id, 'description', 'en') ? (
+                  {isTranslating(valueId, 'description', 'en') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇺🇸 EN'
@@ -593,12 +602,12 @@ function SortableValueCard({
                   size="sm"
                   variant="outline"
                   onClick={() =>
-                    onTranslateValue(value.id, 'description', 'pt')
+                    onTranslateValue(valueId, 'description', 'pt')
                   }
-                  disabled={isTranslating(value.id, 'description', 'pt')}
+                  disabled={isTranslating(valueId, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
-                  {isTranslating(value.id, 'description', 'pt') ? (
+                  {isTranslating(valueId, 'description', 'pt') ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
                   ) : (
                     '🇧🇷 PT'
@@ -607,7 +616,7 @@ function SortableValueCard({
               </div>
             </div>
             <Textarea
-              id={`${value.id}-description`}
+              id={`${valueId}-description`}
               value={
                 value.description[
                   currentLanguage as keyof typeof value.description
@@ -615,7 +624,7 @@ function SortableValueCard({
               }
               onChange={e =>
                 onValueChange(
-                  value.id,
+                  valueId,
                   'description',
                   currentLanguage,
                   e.target.value
@@ -665,10 +674,7 @@ export default function AboutAdminPage() {
   >({});
 
   // Form state
-  const [formData, setFormData] = useState<Omit<
-    AboutContentData,
-    'id' | 'createdAt' | 'updatedAt'
-  > | null>(null);
+  const [formData, setFormData] = useState<AboutContentData | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -692,7 +698,25 @@ export default function AboutAdminPage() {
             updatedAt: _updatedAt,
             ...rest
           }) => rest)(response.data);
-          setFormData(contentData);
+          
+          // Ensure all array items have IDs
+          const processedData = {
+            ...contentData,
+            values: contentData.values?.map((item: AboutValueData, index) => ({
+              ...item,
+              id: item.id || `value-${Date.now()}-${index}`
+            })) || [],
+            philosophyPoints: contentData.philosophyPoints?.map((item: AboutPhilosophyPointData, index) => ({
+              ...item,
+              id: item.id || `philosophy-${Date.now()}-${index}`
+            })) || [],
+            methodologySteps: contentData.methodologySteps?.map((item: AboutMethodologyStepData, index) => ({
+              ...item,
+              id: item.id || `methodology-${Date.now()}-${index}`
+            })) || [],
+          };
+          
+          setFormData(processedData);
         } else {
           // No content exists, use default
           const defaultContent = aboutContentService.getDefaultAboutContent();
@@ -746,13 +770,11 @@ export default function AboutAdminPage() {
 
   const handleInputChange = (
     section:
-      | 'title'
-      | 'subtitle'
-      | 'philosophy'
-      | 'methodology'
-      | 'values'
-      | 'faq',
-    field: string,
+      | 'heroTitle'
+      | 'heroSubtitle'
+      | 'philosophyTitle'
+      | 'methodologyTitle'
+      | 'valuesTitle',
     language: string,
     value: string
   ) => {
@@ -763,55 +785,13 @@ export default function AboutAdminPage() {
 
       const updated = { ...prev };
 
-      if (section === 'title' || section === 'subtitle') {
-        // Handle top-level multilingual fields
-        updated[section] = {
-          ...updated[section],
-          [language]: value,
-        };
-      } else if (section === 'philosophy') {
-        // Handle philosophy section title only
-        if (field === 'title') {
-          updated.philosophy = {
-            ...updated.philosophy,
-            title: {
-              ...updated.philosophy.title,
-              [language]: value,
-            },
-          };
-        }
-      } else if (section === 'methodology') {
-        // Handle methodology section title only
-        if (field === 'title') {
-          updated.methodology = {
-            ...updated.methodology,
-            title: {
-              ...updated.methodology.title,
-              [language]: value,
-            },
-          };
-        }
-      } else if (section === 'values') {
-        // Handle values section title only
-        if (field === 'title') {
-          updated.values = {
-            ...updated.values,
-            title: {
-              ...updated.values.title,
-              [language]: value,
-            },
-          };
-        }
-      } else if (section === 'faq') {
-        // Handle FAQ section
-        updated.faq = {
-          ...updated.faq,
-          [field]: {
-            ...updated.faq[field as keyof typeof updated.faq],
-            [language]: value,
-          },
-        };
-      }
+      // Handle top-level multilingual fields
+      updated[section] = {
+        es: updated[section]?.es ?? '',
+        en: updated[section]?.en ?? '',
+        pt: updated[section]?.pt ?? '',
+        [language]: value,
+      };
 
       return updated;
     });
@@ -832,20 +812,17 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.values = {
-        ...updated.values,
-        items: updated.values.items.map(item =>
-          item.id === valueId
-            ? {
-                ...item,
-                [field]: {
-                  ...item[field],
-                  [language]: value,
-                },
-              }
-            : item
-        ),
-      };
+      updated.values = (updated.values as AboutValueData[]).map((item: AboutValueData) =>
+        (item.id || `value-${Date.now()}-${Math.random()}`) === valueId
+          ? {
+              ...item,
+              [field]: {
+                ...item[field],
+                [language]: value,
+              },
+            }
+          : item
+      );
 
       return updated;
     });
@@ -870,20 +847,14 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: Array.isArray(formData.values.items)
-        ? formData.values.items.length
-        : 0,
+      icon: '',
     };
 
     setFormData(prev => {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.values = {
-        ...updated.values,
-        items: [...updated.values.items, newValue],
-      };
-
+      updated.values = [...updated.values, newValue];
       return updated;
     });
 
@@ -898,11 +869,7 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.values = {
-        ...updated.values,
-        items: updated.values.items.filter(item => item.id !== valueId),
-      };
-
+      updated.values = (updated.values as AboutValueData[]).filter((item: AboutValueData) => (item.id || `value-${Date.now()}-${Math.random()}`) !== valueId);
       return updated;
     });
 
@@ -924,20 +891,17 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.philosophy = {
-        ...updated.philosophy,
-        items: updated.philosophy.items.map(item =>
-          item.id === pointId
-            ? {
-                ...item,
-                [field]: {
-                  ...item[field],
-                  [language]: value,
-                },
-              }
-            : item
-        ),
-      };
+      updated.philosophyPoints = (updated.philosophyPoints as AboutPhilosophyPointData[]).map((item: AboutPhilosophyPointData) =>
+        (item.id || `philosophy-${Date.now()}-${Math.random()}`) === pointId
+          ? {
+              ...item,
+              [field]: {
+                ...item[field],
+                [language]: value,
+              },
+            }
+          : item
+      );
 
       return updated;
     });
@@ -962,20 +926,14 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: Array.isArray(formData.philosophy.items)
-        ? formData.philosophy.items.length
-        : 0,
+      icon: '',
     };
 
     setFormData(prev => {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.philosophy = {
-        ...updated.philosophy,
-        items: [...updated.philosophy.items, newPoint],
-      };
-
+      updated.philosophyPoints = [...updated.philosophyPoints, newPoint];
       return updated;
     });
 
@@ -990,11 +948,7 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.philosophy = {
-        ...updated.philosophy,
-        items: updated.philosophy.items.filter(item => item.id !== pointId),
-      };
-
+      updated.philosophyPoints = (updated.philosophyPoints as AboutPhilosophyPointData[]).filter((item: AboutPhilosophyPointData) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) !== pointId);
       return updated;
     });
 
@@ -1016,20 +970,17 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.methodology = {
-        ...updated.methodology,
-        items: updated.methodology.items.map(item =>
-          item.id === stepId
-            ? {
-                ...item,
-                [field]: {
-                  ...item[field],
-                  [language]: value,
-                },
-              }
-            : item
-        ),
-      };
+      updated.methodologySteps = (updated.methodologySteps as AboutMethodologyStepData[]).map((item: AboutMethodologyStepData) =>
+        (item.id || `methodology-${Date.now()}-${Math.random()}`) === stepId
+          ? {
+              ...item,
+              [field]: {
+                ...item[field],
+                [language]: value,
+              },
+            }
+          : item
+      );
 
       return updated;
     });
@@ -1054,20 +1005,14 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      order: Array.isArray(formData.methodology.items)
-        ? formData.methodology.items.length
-        : 0,
+      stepNumber: formData.methodologySteps.length + 1,
     };
 
     setFormData(prev => {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.methodology = {
-        ...updated.methodology,
-        items: [...updated.methodology.items, newStep],
-      };
-
+      updated.methodologySteps = [...updated.methodologySteps, newStep];
       return updated;
     });
 
@@ -1082,11 +1027,7 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.methodology = {
-        ...updated.methodology,
-        items: updated.methodology.items.filter(item => item.id !== stepId),
-      };
-
+      updated.methodologySteps = (updated.methodologySteps as AboutMethodologyStepData[]).filter((item: AboutMethodologyStepData) => (item.id || `methodology-${Date.now()}-${Math.random()}`) !== stepId);
       return updated;
     });
 
@@ -1108,9 +1049,9 @@ export default function AboutAdminPage() {
     translationData['subtitle'] = formData.subtitle;
 
     // Philosophy section
-    translationData['philosophy.title'] = formData.philosophy.title;
-    if (Array.isArray(formData.philosophy.items)) {
-      formData.philosophy.items.forEach((point, index) => {
+    translationData['philosophy.title'] = formData.philosophyTitle;
+    if (Array.isArray(formData.philosophyPoints)) {
+      formData.philosophyPoints.forEach((point, index) => {
         translationData[`philosophy.item.${index}.title`] = point.title;
         translationData[`philosophy.item.${index}.description`] =
           point.description;
@@ -1118,9 +1059,9 @@ export default function AboutAdminPage() {
     }
 
     // Methodology section
-    translationData['methodology.title'] = formData.methodology.title;
-    if (Array.isArray(formData.methodology.items)) {
-      formData.methodology.items.forEach((step, index) => {
+    translationData['methodology.title'] = formData.methodologyTitle;
+    if (Array.isArray(formData.methodologySteps)) {
+      formData.methodologySteps.forEach((step, index) => {
         translationData[`methodology.item.${index}.title`] = step.title;
         translationData[`methodology.item.${index}.description`] =
           step.description;
@@ -1128,9 +1069,9 @@ export default function AboutAdminPage() {
     }
 
     // Values section
-    translationData['values.title'] = formData.values.title;
-    if (Array.isArray(formData.values.items)) {
-      formData.values.items.forEach((value, index) => {
+    translationData['values.title'] = formData.valuesTitle;
+    if (Array.isArray(formData.values)) {
+      formData.values.forEach((value, index) => {
         translationData[`values.item.${index}.title`] = value.title;
         translationData[`values.item.${index}.description`] = value.description;
       });
@@ -1155,16 +1096,16 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
-        if (!Array.isArray(prev.values.items)) return prev;
+        if (!Array.isArray(prev.values)) return prev;
 
-        const oldIndex = prev.values.items.findIndex(
+        const oldIndex = prev.values.findIndex(
           item => item.id === active.id
         );
-        const newIndex = prev.values.items.findIndex(
+        const newIndex = prev.values.findIndex(
           item => item.id === over?.id
         );
 
-        const newItems = arrayMove(prev.values.items, oldIndex, newIndex);
+        const newItems = arrayMove(prev.values, oldIndex, newIndex);
 
         // Update order values
         const updatedItems = newItems.map((item, index) => ({
@@ -1174,10 +1115,7 @@ export default function AboutAdminPage() {
 
         return {
           ...prev,
-          values: {
-            ...prev.values,
-            items: updatedItems,
-          },
+          values: updatedItems,
         };
       });
 
@@ -1191,16 +1129,16 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
-        if (!Array.isArray(prev.philosophy.items)) return prev;
+        if (!Array.isArray(prev.philosophyPoints)) return prev;
 
-        const oldIndex = prev.philosophy.items.findIndex(
+        const oldIndex = prev.philosophyPoints.findIndex(
           item => item.id === active.id
         );
-        const newIndex = prev.philosophy.items.findIndex(
+        const newIndex = prev.philosophyPoints.findIndex(
           item => item.id === over?.id
         );
 
-        const newItems = arrayMove(prev.philosophy.items, oldIndex, newIndex);
+        const newItems = arrayMove(prev.philosophyPoints, oldIndex, newIndex);
 
         // Update order values
         const updatedItems = newItems.map((item, index) => ({
@@ -1210,10 +1148,7 @@ export default function AboutAdminPage() {
 
         return {
           ...prev,
-          philosophy: {
-            ...prev.philosophy,
-            items: updatedItems,
-          },
+          philosophyPoints: updatedItems,
         };
       });
 
@@ -1227,16 +1162,16 @@ export default function AboutAdminPage() {
     if (active.id !== over?.id && formData) {
       setFormData(prev => {
         if (!prev) return prev;
-        if (!Array.isArray(prev.methodology.items)) return prev;
+        if (!Array.isArray(prev.methodologySteps)) return prev;
 
-        const oldIndex = prev.methodology.items.findIndex(
+        const oldIndex = prev.methodologySteps.findIndex(
           item => item.id === active.id
         );
-        const newIndex = prev.methodology.items.findIndex(
+        const newIndex = prev.methodologySteps.findIndex(
           item => item.id === over?.id
         );
 
-        const newItems = arrayMove(prev.methodology.items, oldIndex, newIndex);
+        const newItems = arrayMove(prev.methodologySteps, oldIndex, newIndex);
 
         // Update order values
         const updatedItems = newItems.map((item, index) => ({
@@ -1246,10 +1181,7 @@ export default function AboutAdminPage() {
 
         return {
           ...prev,
-          methodology: {
-            ...prev.methodology,
-            items: updatedItems,
-          },
+          methodologySteps: updatedItems,
         };
       });
 
@@ -1270,13 +1202,13 @@ export default function AboutAdminPage() {
       setTranslatingValues(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the value by ID
-      if (!Array.isArray(formData.values.items)) return;
-      const valueIndex = formData.values.items.findIndex(
+      if (!Array.isArray(formData.values)) return;
+      const valueIndex = formData.values.findIndex(
         item => item.id === valueId
       );
       if (valueIndex === -1) return;
 
-      const value = formData.values.items[valueIndex];
+      const value = formData.values[valueIndex];
       const sourceText = value[field].es;
 
       if (!sourceText) {
@@ -1300,10 +1232,10 @@ export default function AboutAdminPage() {
         if (!prev) return prev;
 
         const updated = { ...prev };
-        updated.values.items[valueIndex] = {
-          ...updated.values.items[valueIndex],
+        updated.values[valueIndex] = {
+          ...updated.values[valueIndex],
           [field]: {
-            ...updated.values.items[valueIndex][field],
+            ...updated.values[valueIndex][field],
             [language]: response.translatedText,
           },
         };
@@ -1332,13 +1264,13 @@ export default function AboutAdminPage() {
       setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the philosophy point by ID
-      if (!Array.isArray(formData.philosophy.items)) return;
-      const pointIndex = formData.philosophy.items.findIndex(
+      if (!Array.isArray(formData.philosophyPoints)) return;
+      const pointIndex = formData.philosophyPoints.findIndex(
         item => item.id === pointId
       );
       if (pointIndex === -1) return;
 
-      const point = formData.philosophy.items[pointIndex];
+      const point = formData.philosophyPoints[pointIndex];
       const sourceText = point[field].es;
 
       if (!sourceText) {
@@ -1364,10 +1296,10 @@ export default function AboutAdminPage() {
         if (!prev) return prev;
 
         const updated = { ...prev };
-        updated.philosophy.items[pointIndex] = {
-          ...updated.philosophy.items[pointIndex],
+        updated.philosophyPoints[pointIndex] = {
+          ...updated.philosophyPoints[pointIndex],
           [field]: {
-            ...updated.philosophy.items[pointIndex][field],
+            ...updated.philosophyPoints[pointIndex][field],
             [language]: response.translatedText,
           },
         };
@@ -1396,13 +1328,13 @@ export default function AboutAdminPage() {
       setTranslatingMethodology(prev => ({ ...prev, [translationKey]: true }));
 
       // Find the methodology step by ID
-      if (!Array.isArray(formData.methodology.items)) return;
-      const stepIndex = formData.methodology.items.findIndex(
+      if (!Array.isArray(formData.methodologySteps)) return;
+      const stepIndex = formData.methodologySteps.findIndex(
         item => item.id === stepId
       );
       if (stepIndex === -1) return;
 
-      const step = formData.methodology.items[stepIndex];
+      const step = formData.methodologySteps[stepIndex];
       const sourceText = step[field].es;
 
       if (!sourceText) {
@@ -1428,10 +1360,10 @@ export default function AboutAdminPage() {
         if (!prev) return prev;
 
         const updated = { ...prev };
-        updated.methodology.items[stepIndex] = {
-          ...updated.methodology.items[stepIndex],
+        updated.methodologySteps[stepIndex] = {
+          ...updated.methodologySteps[stepIndex],
           [field]: {
-            ...updated.methodology.items[stepIndex][field],
+            ...updated.methodologySteps[stepIndex][field],
             [language]: response.translatedText,
           },
         };
@@ -1495,10 +1427,7 @@ export default function AboutAdminPage() {
         } else if (fieldKey === 'subtitle') {
           updated.subtitle = { ...updated.subtitle, [language]: targetText };
         } else if (fieldKey === 'philosophy.title') {
-          updated.philosophy = {
-            ...updated.philosophy,
-            title: { ...updated.philosophy.title, [language]: targetText },
-          };
+          updated.philosophyTitle = { ...updated.philosophyTitle, [language]: targetText };
         } else if (fieldKey.startsWith('philosophy.item.')) {
           const match = fieldKey.match(
             /philosophy\.item\.(\d+)\.(title|description)/
@@ -1506,11 +1435,11 @@ export default function AboutAdminPage() {
           if (match) {
             const [, indexStr, field] = match;
             const index = parseInt(indexStr, 10);
-            if (updated.philosophy.items[index]) {
-              updated.philosophy.items[index] = {
-                ...updated.philosophy.items[index],
+            if (updated.philosophyPoints[index]) {
+              updated.philosophyPoints[index] = {
+                ...updated.philosophyPoints[index],
                 [field]: {
-                  ...updated.philosophy.items[index][
+                  ...updated.philosophyPoints[index][
                     field as 'title' | 'description'
                   ],
                   [language]: targetText,
@@ -1519,10 +1448,7 @@ export default function AboutAdminPage() {
             }
           }
         } else if (fieldKey === 'methodology.title') {
-          updated.methodology = {
-            ...updated.methodology,
-            title: { ...updated.methodology.title, [language]: targetText },
-          };
+          updated.methodologyTitle = { ...updated.methodologyTitle, [language]: targetText };
         } else if (fieldKey.startsWith('methodology.item.')) {
           const match = fieldKey.match(
             /methodology\.item\.(\d+)\.(title|description)/
@@ -1530,11 +1456,11 @@ export default function AboutAdminPage() {
           if (match) {
             const [, indexStr, field] = match;
             const index = parseInt(indexStr, 10);
-            if (updated.methodology.items[index]) {
-              updated.methodology.items[index] = {
-                ...updated.methodology.items[index],
+            if (updated.methodologySteps[index]) {
+              updated.methodologySteps[index] = {
+                ...updated.methodologySteps[index],
                 [field]: {
-                  ...updated.methodology.items[index][
+                  ...updated.methodologySteps[index][
                     field as 'title' | 'description'
                   ],
                   [language]: targetText,
@@ -1543,10 +1469,7 @@ export default function AboutAdminPage() {
             }
           }
         } else if (fieldKey === 'values.title') {
-          updated.values = {
-            ...updated.values,
-            title: { ...updated.values.title, [language]: targetText },
-          };
+          updated.valuesTitle = { ...updated.valuesTitle, [language]: targetText };
         } else if (fieldKey.startsWith('values.item.')) {
           const match = fieldKey.match(
             /values\.item\.(\d+)\.(title|description)/
@@ -1554,11 +1477,11 @@ export default function AboutAdminPage() {
           if (match) {
             const [, indexStr, field] = match;
             const index = parseInt(indexStr, 10);
-            if (updated.values.items[index]) {
-              updated.values.items[index] = {
-                ...updated.values.items[index],
+            if (updated.values[index]) {
+              updated.values[index] = {
+                ...updated.values[index],
                 [field]: {
-                  ...updated.values.items[index][
+                  ...updated.values[index][
                     field as 'title' | 'description'
                   ],
                   [language]: targetText,
@@ -1602,6 +1525,14 @@ export default function AboutAdminPage() {
       </AdminLayout>
     );
   }
+
+  // Patch philosophy points to ensure each has an id
+  const philosophyPointsWithId = Array.isArray(formData.philosophyPoints)
+    ? formData.philosophyPoints.map((point, index) => ({
+        ...point,
+        id: point.id || `philosophy-${index}-${Date.now()}`,
+      }))
+    : [];
 
   return (
     <AdminLayout title="Página Sobre Nosotros">
@@ -1745,8 +1676,7 @@ export default function AboutAdminPage() {
                     }
                     onChange={e =>
                       handleInputChange(
-                        'title',
-                        'title',
+                        'heroTitle',
                         currentLanguage,
                         e.target.value
                       )
@@ -1766,8 +1696,7 @@ export default function AboutAdminPage() {
                     }
                     onChange={e =>
                       handleInputChange(
-                        'subtitle',
-                        'subtitle',
+                        'heroSubtitle',
                         currentLanguage,
                         e.target.value
                       )
@@ -1801,14 +1730,13 @@ export default function AboutAdminPage() {
                   <Input
                     id="philosophy-title"
                     value={
-                      formData.philosophy.title[
-                        currentLanguage as keyof typeof formData.philosophy.title
+                      formData.philosophyTitle[
+                        currentLanguage as keyof typeof formData.philosophyTitle
                       ] || ''
                     }
                     onChange={e =>
                       handleInputChange(
-                        'philosophy',
-                        'title',
+                        'philosophyTitle',
                         currentLanguage,
                         e.target.value
                       )
@@ -1818,8 +1746,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Philosophy Points */}
-                {!Array.isArray(formData.philosophy.items) ||
-                formData.philosophy.items.length === 0 ? (
+                {!Array.isArray(formData.philosophyPoints) ||
+                formData.philosophyPoints.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -1836,14 +1764,10 @@ export default function AboutAdminPage() {
                     onDragEnd={handlePhilosophyDragEnd}
                   >
                     <SortableContext
-                      items={
-                        Array.isArray(formData.philosophy.items)
-                          ? formData.philosophy.items.map(item => item.id)
-                          : []
-                      }
+                      items={philosophyPointsWithId.map(item => item.id)}
                       strategy={verticalListSortingStrategy}
                     >
-                      {formData.philosophy.items
+                      {philosophyPointsWithId
                         .sort((a, b) => a.order - b.order)
                         .map((point, index) => (
                           <SortablePhilosophyCard
@@ -1893,14 +1817,13 @@ export default function AboutAdminPage() {
                   <Input
                     id="methodology-title"
                     value={
-                      formData.methodology.title[
-                        currentLanguage as keyof typeof formData.methodology.title
+                      formData.methodologyTitle[
+                        currentLanguage as keyof typeof formData.methodologyTitle
                       ] || ''
                     }
                     onChange={e =>
                       handleInputChange(
-                        'methodology',
-                        'title',
+                        'methodologyTitle',
                         currentLanguage,
                         e.target.value
                       )
@@ -1910,8 +1833,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Methodology Steps */}
-                {!Array.isArray(formData.methodology.items) ||
-                formData.methodology.items.length === 0 ? (
+                {!Array.isArray(formData.methodologySteps) ||
+                formData.methodologySteps.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -1929,13 +1852,13 @@ export default function AboutAdminPage() {
                   >
                     <SortableContext
                       items={
-                        Array.isArray(formData.methodology.items)
-                          ? formData.methodology.items.map(item => item.id)
+                        Array.isArray(formData.methodologySteps)
+                          ? formData.methodologySteps.map(item => item.id)
                           : []
                       }
                       strategy={verticalListSortingStrategy}
                     >
-                      {formData.methodology.items
+                      {formData.methodologySteps
                         .sort((a, b) => a.order - b.order)
                         .map((step, index) => (
                           <SortableMethodologyCard
@@ -1983,14 +1906,13 @@ export default function AboutAdminPage() {
                   <Input
                     id="values-title"
                     value={
-                      formData.values.title[
-                        currentLanguage as keyof typeof formData.values.title
+                      formData.valuesTitle[
+                        currentLanguage as keyof typeof formData.valuesTitle
                       ] || ''
                     }
                     onChange={e =>
                       handleInputChange(
-                        'values',
-                        'title',
+                        'valuesTitle',
                         currentLanguage,
                         e.target.value
                       )
@@ -2000,8 +1922,8 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Values */}
-                {!Array.isArray(formData.values.items) ||
-                formData.values.items.length === 0 ? (
+                {!Array.isArray(formData.values) ||
+                formData.values.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <div className="mb-4">
                       <Heart className="h-12 w-12 mx-auto opacity-20" />
@@ -2019,13 +1941,13 @@ export default function AboutAdminPage() {
                   >
                     <SortableContext
                       items={
-                        Array.isArray(formData.values.items)
-                          ? formData.values.items.map(item => item.id)
+                        Array.isArray(formData.values)
+                          ? formData.values.map(item => item.id)
                           : []
                       }
                       strategy={verticalListSortingStrategy}
                     >
-                      {formData.values.items
+                      {formData.values
                         .sort((a, b) => a.order - b.order)
                         .map((value, index) => (
                           <SortableValueCard

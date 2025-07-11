@@ -1,26 +1,25 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import MediaLightbox from '../MediaLightbox';
 
-// Mock Next.js Image component
-jest.mock('next/image', () => {
-  return function MockImage({
-    src,
-    alt,
-    ...props
-  }: {
-    src: string;
-    alt: string;
-    [key: string]: unknown;
-  }) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} {...props} />;
-  };
-});
+// Mock the useAnalytics hook
+const mockTrackMediaInteraction = jest.fn();
 
-// Mock Dialog components from shadcn/ui
+jest.mock('@/hooks/useAnalytics', () => ({
+  useAnalytics: () => ({
+    trackMediaInteraction: mockTrackMediaInteraction,
+  }),
+}));
+
+// Mock Next.js Image component
+jest.mock('next/image', () => ({
+  default: ({ src, alt, ...props }: any) => (
+    <img src={src} alt={alt} {...props} />
+  ),
+}));
+
+// Mock Dialog components
 jest.mock('@/components/ui/dialog', () => ({
-  Dialog: ({ children, open, onOpenChange }: any) => 
+  Dialog: ({ children, open }: any) => 
     open ? <div data-testid="dialog">{children}</div> : null,
   DialogContent: ({ children, className }: any) => (
     <div data-testid="dialog-content" className={className}>
@@ -46,15 +45,10 @@ jest.mock('lucide-react', () => ({
   Calendar: () => <div data-testid="calendar-icon" />,
   MapPin: () => <div data-testid="map-pin-icon" />,
   Play: () => <div data-testid="play-icon" />,
+  Pause: () => <div data-testid="pause-icon" />,
   Share2: () => <div data-testid="share-icon" />,
-}));
-
-// Mock useAnalytics hook
-const mockTrackMediaInteraction = jest.fn();
-jest.mock('@/hooks/useAnalytics', () => ({
-  useAnalytics: () => ({
-    trackMediaInteraction: mockTrackMediaInteraction,
-  }),
+  ZoomIn: () => <div data-testid="zoom-in-icon" />,
+  ZoomOut: () => <div data-testid="zoom-out-icon" />,
 }));
 
 describe('MediaLightbox Analytics', () => {
@@ -166,5 +160,45 @@ describe('MediaLightbox Analytics', () => {
     );
 
     expect(mockTrackMediaInteraction).not.toHaveBeenCalled();
+  });
+
+  it('tracks media interaction with correct project and media data', () => {
+    const testMedia = [
+      { 
+        id: 'test-media-123', 
+        type: 'photo' as const, 
+        url: 'test-url', 
+        caption: { en: 'Test Caption', es: 'Test Caption', he: 'Test Caption' },
+        aspectRatio: '16:9' as const
+      },
+    ];
+
+    const testProjects = {
+      'test-media-123': { 
+        id: 'test-project-456', 
+        title: { en: 'Test Project', es: 'Test Project', he: 'Test Project' }, 
+        eventType: 'wedding', 
+        eventDate: '2024-03-01' 
+      } 
+    };
+
+    render(
+      <MediaLightbox
+        isOpen={true}
+        onClose={() => {}}
+        media={testMedia}
+        projects={testProjects}
+        currentIndex={0}
+        onNavigate={() => {}}
+      />
+    );
+
+    expect(mockTrackMediaInteraction).toHaveBeenCalledWith({
+      projectId: 'test-project-456',
+      mediaId: 'test-media-123',
+      mediaType: 'image',
+      interactionType: 'view',
+      mediaTitle: 'Test Caption',
+    });
   });
 }); 

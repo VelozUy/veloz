@@ -10,6 +10,10 @@ import {
   TrendingUp,
   TrendingDown,
   Minus,
+  Play,
+  Pause,
+  CheckCircle,
+  ZoomIn,
 } from 'lucide-react';
 
 interface MetricCardProps {
@@ -46,6 +50,13 @@ interface MetricData {
   timeTrend?: number;
   mediaTrend?: number;
   crewTrend?: number;
+  mediaInteractionBreakdown?: {
+    views: number;
+    plays: number;
+    pauses: number;
+    completes: number;
+    zooms: number;
+  };
 }
 
 export function MetricCard({
@@ -251,6 +262,91 @@ export function CrewInteractionsMetricCard({ data }: { data: MetricData }) {
         direction: data?.crewTrend && data.crewTrend > 0 ? 'up' : 'down',
       }}
     />
+  );
+}
+
+// New detailed media interaction breakdown card
+export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
+  const breakdown = data?.mediaInteractionBreakdown;
+  
+  if (!breakdown) {
+    return (
+      <Card className="h-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
+          <CardTitle className="text-xs font-medium">Media Breakdown</CardTitle>
+          <div className="text-muted-foreground">
+            <Image className="h-3 w-3" />
+          </div>
+        </CardHeader>
+        <CardContent className="px-4 pb-3">
+          <div className="text-xl font-bold">0</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            No media interaction data available
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const totalInteractions = breakdown.views + breakdown.plays + breakdown.pauses + breakdown.completes + breakdown.zooms;
+
+  return (
+    <Card className="h-full">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
+        <CardTitle className="text-xs font-medium">Media Breakdown</CardTitle>
+        <div className="text-muted-foreground">
+          <Image className="h-3 w-3" />
+        </div>
+      </CardHeader>
+      <CardContent className="px-4 pb-3">
+        <div className="text-xl font-bold">{totalInteractions}</div>
+        <p className="text-xs text-muted-foreground mt-1">
+          Detailed media interaction metrics
+        </p>
+        
+        <div className="mt-3 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <Eye className="h-3 w-3 text-blue-500" />
+              <span>Views</span>
+            </div>
+            <span className="font-medium">{breakdown.views}</span>
+          </div>
+          
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <Play className="h-3 w-3 text-green-500" />
+              <span>Plays</span>
+            </div>
+            <span className="font-medium">{breakdown.plays}</span>
+          </div>
+          
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <Pause className="h-3 w-3 text-yellow-500" />
+              <span>Pauses</span>
+            </div>
+            <span className="font-medium">{breakdown.pauses}</span>
+          </div>
+          
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <CheckCircle className="h-3 w-3 text-purple-500" />
+              <span>Completes</span>
+            </div>
+            <span className="font-medium">{breakdown.completes}</span>
+          </div>
+          
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1">
+              <ZoomIn className="h-3 w-3 text-orange-500" />
+              <span>Zooms</span>
+            </div>
+            <span className="font-medium">{breakdown.zooms}</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

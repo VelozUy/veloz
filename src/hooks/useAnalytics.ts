@@ -1,16 +1,6 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
-// Only import analytics functions on client side
-let analyticsService: any = null;
-let trackProjectView: any = null;
-let trackMediaInteraction: any = null;
-let trackCTAInteraction: any = null;
-let trackCrewInteraction: any = null;
-let trackPageView: any = null;
-let trackScrollDepth: any = null;
-let trackError: any = null;
-
 // Import types
 import type { 
   ProjectViewEvent,
@@ -19,10 +9,20 @@ import type {
   CrewInteractionEvent,
 } from '@/services/analytics';
 
+// Only import analytics functions on client side
+let analyticsService: Record<string, unknown> | null = null;
+let trackProjectView: ((data: ProjectViewEvent) => void) | null = null;
+let trackMediaInteraction: ((data: MediaInteractionEvent) => void) | null = null;
+let trackCTAInteraction: ((data: CTAInteractionEvent) => void) | null = null;
+let trackCrewInteraction: ((data: CrewInteractionEvent) => void) | null = null;
+let trackPageView: ((pathname: string, title: string) => void) | null = null;
+let trackScrollDepth: ((pathname: string, depth: number) => void) | null = null;
+let trackError: ((error: Error, context?: Record<string, unknown>) => void) | null = null;
+
 // Dynamically import analytics service on client side
 if (typeof window !== 'undefined') {
   import('@/services/analytics').then((analytics) => {
-    analyticsService = analytics.analyticsService;
+    analyticsService = analytics.analyticsService as unknown as Record<string, unknown>;
     trackProjectView = analytics.trackProjectView;
     trackMediaInteraction = analytics.trackMediaInteraction;
     trackCTAInteraction = analytics.trackCTAInteraction;
@@ -57,14 +57,14 @@ export const useAnalytics = () => {
   // Track session start
   useEffect(() => {
     if (analyticsService) {
-      analyticsService.trackSessionStart();
+      (analyticsService as { trackSessionStart: () => void }).trackSessionStart();
     }
     
     // Track session end on page unload
     const handleBeforeUnload = () => {
       if (analyticsService) {
         const sessionDuration = Date.now() - sessionStartTime.current;
-        analyticsService.trackSessionEnd(sessionDuration);
+        (analyticsService as { trackSessionEnd: (duration: number) => void }).trackSessionEnd(sessionDuration);
       }
     };
 

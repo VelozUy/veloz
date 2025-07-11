@@ -244,21 +244,12 @@ const BentoItem: React.FC<BentoItemProps> = ({
     >
       <motion.div
         className={cn(
-          'relative w-full h-full group cursor-pointer overflow-hidden rounded-sm bg-card',
-          'hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300',
-          'hover:scale-[1.01] hover:-translate-y-0.5',
-          'border border-border/30 hover:border-primary/20'
+          'relative w-full h-full cursor-pointer overflow-hidden rounded-sm bg-card',
+          'border border-border/30'
         )}
         onClick={onClick}
-        whileHover={{
-          scale: 1.02,
-          transition: { type: 'spring', stiffness: 400, damping: 25 },
-        }}
-        whileTap={{ scale: 0.98 }}
       >
         {children}
-        {/* Subtle overlay for better hover effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </motion.div>
     </BlurFade>
   );

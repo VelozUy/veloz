@@ -413,7 +413,7 @@ export default function GalleryContent() {
                 <div
                   key={media.id}
                   onClick={() => handleMediaClick(index)}
-                  className="relative group overflow-hidden cursor-pointer h-full w-full rounded-lg bg-card/50 hover:bg-card/80 transition-all duration-300"
+                  className="relative overflow-hidden cursor-pointer h-full w-full rounded-lg bg-card/50"
                 >
                   {/* Media Content */}
                   <div className="relative w-full h-full">
@@ -422,7 +422,7 @@ export default function GalleryContent() {
                         src={media.url}
                         alt="Gallery media"
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover"
                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         priority={index < 6} // Prioritize loading first 6 images
                       />
@@ -430,7 +430,7 @@ export default function GalleryContent() {
                       <video
                         ref={video => setVideoRef(media.id, video)}
                         src={media.url}
-                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover w-full h-full"
                         muted
                         loop
                         playsInline
@@ -438,9 +438,6 @@ export default function GalleryContent() {
                       />
                     )}
                   </div>
-
-                  {/* Enhanced hover effect */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                 </div>
               );
             })}

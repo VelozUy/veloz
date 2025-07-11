@@ -77,7 +77,7 @@ export default function ProjectHeroPreview({
           </div>
           <div className="flex items-center space-x-2">
             <span className="text-sm text-muted-foreground">Vista:</span>
-            <Tabs value={activeView} onValueChange={(value) => setActiveView(value as any)}>
+            <Tabs value={activeView} onValueChange={(value) => setActiveView(value as 'desktop' | 'tablet' | 'mobile')}>
               <TabsList className="grid w-auto grid-cols-3">
                 <TabsTrigger value="desktop" className="flex items-center space-x-1">
                   <Monitor className="w-3 h-3" />

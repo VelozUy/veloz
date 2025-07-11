@@ -941,7 +941,10 @@ async function fetchProjectMedia(db, projectId) {
           description: data.description || {},
           tags: data.tags || [],
           aspectRatio: data.aspectRatio,
+          width: data.width,
+          height: data.height,
           order: data.order || 0,
+          featured: data.featured || false,
         });
       }
     });
@@ -1390,7 +1393,10 @@ export interface LocalizedContent {
         description?: Record<string, string>;
         tags?: string[];
         aspectRatio?: '1:1' | '16:9' | '9:16';
+        width?: number;
+        height?: number;
         order: number;
+        featured?: boolean;
       }>;
     }>;
   };

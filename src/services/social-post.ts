@@ -1,18 +1,7 @@
-import { collection, addDoc, getDocs, query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { ApiResponse } from '@/types';
-import type { SocialPost } from '@/types';
-
-// Social post interface for Firestore
-interface SocialPostFirestore {
-  title: string;
-  content: string;
-  platform: string;
-  scheduledDate: Timestamp;
-  isPublished: boolean;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-}
+import { validateSocialPost } from '@/lib/validation-schemas';
 
 export interface SocialPostData {
   id: string;
@@ -52,7 +41,6 @@ export class SocialPostService {
   private collectionName = 'socialPosts';
 
   private async getDb() {
-    const db = await db;
     if (!db) {
       throw new Error('Firebase Firestore not initialized');
     }

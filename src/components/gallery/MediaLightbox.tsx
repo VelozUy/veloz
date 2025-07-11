@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -11,7 +11,10 @@ import {
   Calendar,
   MapPin,
   Play,
+  Pause,
   Share2,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -58,6 +61,11 @@ export default function MediaLightbox({
 }: MediaLightboxProps) {
   const { trackMediaInteraction } = useAnalytics();
   const [imageLoading, setImageLoading] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
+  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   const currentMedia = media[currentIndex];
   const currentProject = currentMedia
@@ -76,6 +84,50 @@ export default function MediaLightbox({
     }
   }, [currentIndex, media.length, onNavigate]);
 
+  // Track media interaction
+  const trackInteraction = useCallback((interactionType: 'view' | 'play' | 'pause' | 'complete', viewDuration?: number) => {
+    if (!currentMedia || !currentProject) return;
+    
+    trackMediaInteraction({
+      projectId: currentProject.id,
+      mediaId: currentMedia.id,
+      mediaType: currentMedia.type === 'photo' ? 'image' : 'video',
+      interactionType,
+      mediaTitle: getMediaCaption(),
+      viewDuration,
+    });
+  }, [currentMedia, currentProject, trackMediaInteraction]);
+
+  // Video interaction handlers
+  const handleVideoPlay = useCallback(() => {
+    setIsVideoPlaying(true);
+    setVideoStartTime(Date.now());
+    trackInteraction('play');
+  }, [trackInteraction]);
+
+  const handleVideoPause = useCallback(() => {
+    setIsVideoPlaying(false);
+    const duration = videoStartTime ? Date.now() - videoStartTime : 0;
+    trackInteraction('pause', duration);
+  }, [videoStartTime, trackInteraction]);
+
+  const handleVideoEnded = useCallback(() => {
+    setIsVideoPlaying(false);
+    const duration = videoStartTime ? Date.now() - videoStartTime : 0;
+    trackInteraction('complete', duration);
+    setVideoStartTime(null);
+  }, [videoStartTime, trackInteraction]);
+
+  // Image zoom handlers
+  const handleImageZoom = useCallback(() => {
+    if (!isImageZoomed) {
+      setIsImageZoomed(true);
+      trackInteraction('view'); // Track zoom as a view interaction
+    } else {
+      setIsImageZoomed(false);
+    }
+  }, [isImageZoomed, trackInteraction]);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -91,30 +143,44 @@ export default function MediaLightbox({
         case 'ArrowRight':
           handleNext();
           break;
+        case ' ': // Spacebar for video play/pause
+          if (currentMedia?.type === 'video' && videoRef.current) {
+            event.preventDefault();
+            if (isVideoPlaying) {
+              videoRef.current.pause();
+            } else {
+              videoRef.current.play();
+            }
+          }
+          break;
+        case 'z': // Z key for image zoom
+          if (currentMedia?.type === 'photo') {
+            event.preventDefault();
+            handleImageZoom();
+          }
+          break;
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose, handlePrevious, handleNext]);
+  }, [isOpen, onClose, handlePrevious, handleNext, currentMedia, isVideoPlaying, handleImageZoom]);
 
-  // Reset loading state when media changes
+  // Reset states when media changes
   useEffect(() => {
     setImageLoading(true);
+    setIsVideoPlaying(false);
+    setIsImageZoomed(false);
+    setVideoStartTime(null);
   }, [currentIndex]);
 
+  // Track initial view when lightbox opens
   useEffect(() => {
     if (isOpen && media[currentIndex] && projects) {
       const item = media[currentIndex];
       const project = projects[item.id.split('_')[0]];
       if (item && project) {
-        trackMediaInteraction({
-          projectId: project.id,
-          mediaId: item.id,
-          mediaType: item.type === 'photo' ? 'image' : 'video',
-          interactionType: 'view',
-          mediaTitle: getMediaCaption(),
-        });
+        trackInteraction('view');
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -199,6 +265,18 @@ export default function MediaLightbox({
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                {/* Media interaction controls */}
+                {currentMedia.type === 'photo' && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleImageZoom}
+                    className="text-white hover:bg-white/20"
+                    aria-label={isImageZoomed ? "Zoom out" : "Zoom in"}
+                  >
+                    {isImageZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -257,38 +335,52 @@ export default function MediaLightbox({
               )}
 
               {currentMedia.type === 'photo' ? (
-                <Image
-                  src={currentMedia.url}
-                  alt={getMediaCaption() || getProjectTitle()}
-                  fill
-                  className="object-contain"
-                  onLoad={() => setImageLoading(false)}
-                  onError={() => setImageLoading(false)}
-                  sizes="100vw"
-                  priority
-                />
+                <div 
+                  ref={imageRef}
+                  className={`relative w-full h-full flex items-center justify-center transition-transform duration-300 ${
+                    isImageZoomed ? 'scale-150' : 'scale-100'
+                  }`}
+                >
+                  <Image
+                    src={currentMedia.url}
+                    alt={getMediaCaption() || getProjectTitle()}
+                    fill
+                    className="object-contain cursor-pointer"
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                    onClick={handleImageZoom}
+                    sizes="100vw"
+                    priority
+                  />
+                </div>
               ) : (
                 <div className="relative w-full h-full flex items-center justify-center">
-                  {/* Video player would go here */}
                   <div className="relative w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden">
-                    <Image
+                    <video
+                      ref={videoRef}
                       src={currentMedia.url}
-                      alt={getMediaCaption() || getProjectTitle()}
-                      fill
-                      className="object-cover"
-                      onLoad={() => setImageLoading(false)}
+                      className="w-full h-full object-cover"
+                      onPlay={handleVideoPlay}
+                      onPause={handleVideoPause}
+                      onEnded={handleVideoEnded}
+                      onLoadedData={() => setImageLoading(false)}
                       onError={() => setImageLoading(false)}
+                      controls
+                      preload="metadata"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Button
-                        size="lg"
-                        className="bg-white/20 hover:bg-white/30 text-white border-white/20"
-                        aria-label="Play video"
-                      >
-                        <Play className="w-8 h-8 mr-2 fill-white" />
-                        Play Video
-                      </Button>
-                    </div>
+                    {!isVideoPlaying && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <Button
+                          size="lg"
+                          onClick={() => videoRef.current?.play()}
+                          className="bg-white/20 hover:bg-white/30 text-white border-white/20"
+                          aria-label="Play video"
+                        >
+                          <Play className="w-8 h-8 mr-2 fill-white" />
+                          Play Video
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -303,6 +395,16 @@ export default function MediaLightbox({
               </p>
             </div>
           )}
+
+          {/* Keyboard shortcuts hint */}
+          <div className="absolute bottom-4 left-4 text-white/60 text-xs">
+            <div className="flex gap-4">
+              <span>← → Navigate</span>
+              <span>ESC Close</span>
+              {currentMedia.type === 'video' && <span>Space Play/Pause</span>}
+              {currentMedia.type === 'photo' && <span>Z Zoom</span>}
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

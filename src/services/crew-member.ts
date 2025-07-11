@@ -77,7 +77,7 @@ export class CrewMemberService extends BaseFirebaseService<CrewMember> {
     id: string,
     data: UpdateCrewMemberData
   ): Promise<ApiResponse<void>> {
-    const result = await this.update(
+    await this.update(
       id,
       data as Partial<Omit<CrewMember, 'id' | 'createdAt'>>
     );

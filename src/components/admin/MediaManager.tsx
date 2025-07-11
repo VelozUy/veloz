@@ -91,6 +91,7 @@ function SortableMediaItem({
   onDelete,
   onEdit,
   onAnalyze,
+  onToggleFeatured,
   isAnalyzing,
 }: {
   media: ProjectMedia;
@@ -100,6 +101,7 @@ function SortableMediaItem({
   onDelete: (id: string) => void;
   onEdit: (media: ProjectMedia) => void;
   onAnalyze: (media: ProjectMedia) => void;
+  onToggleFeatured: (mediaId: string, featured: boolean) => void;
   isAnalyzing: boolean;
 }) {
   const {
@@ -207,6 +209,16 @@ function SortableMediaItem({
             </Button>
             <Button variant="ghost" size="sm" onClick={() => onEdit(media)}>
               <Edit className="w-4 h-4" />
+            </Button>
+            {/* Featured Toggle Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onToggleFeatured(media.id!, !media.featured)}
+              className={media.featured ? 'text-yellow-600 hover:text-yellow-700' : 'text-gray-400 hover:text-yellow-600'}
+              title={media.featured ? 'Quitar de destacados' : 'Marcar como destacado'}
+            >
+              <Star className={`w-4 h-4 ${media.featured ? 'fill-current' : ''}`} />
             </Button>
             {/* SEO Analysis Button - for both photos and videos */}
             <Button
@@ -675,6 +687,24 @@ export default function MediaManager({
     }
   };
 
+  const handleToggleFeatured = async (mediaId: string, featured: boolean) => {
+    try {
+      const result = await projectMediaService.update(mediaId, { featured });
+      if (result.success) {
+        const updatedMedia = media.map(m =>
+          m.id === mediaId ? { ...m, featured } : m
+        );
+        onMediaUpdate(updatedMedia);
+        onSuccess?.(`Media marcada como ${featured ? 'destacada' : 'no destacada'} exitosamente`);
+      } else {
+        onError?.(result.error || 'Error al marcar media como destacada');
+      }
+    } catch (error) {
+      console.error('Error toggling featured:', error);
+      onError?.('Error al marcar media como destacada');
+    }
+  };
+
   if (media.length === 0) {
     return null;
   }
@@ -774,6 +804,7 @@ export default function MediaManager({
                   onDelete={onMediaDelete}
                   onEdit={handleEditMedia}
                   onAnalyze={handleAnalyzeMedia}
+                  onToggleFeatured={handleToggleFeatured}
                   isAnalyzing={analyzingMedia.has(mediaItem.id!)}
                 />
               ))}

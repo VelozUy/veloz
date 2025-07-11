@@ -258,7 +258,6 @@ _All user management functionality completed - see Completed Tasks Summary_
 - [ ] **[Medium] Add project cover image selection** - Choose cover image from uploaded photos
 - [ ] **[Medium] Add drag-and-drop media upload** - Direct file upload to project pages
 - [ ] **[Medium] Add media bulk operations** - Select and manage multiple media items
-- [ ] **[Low] Add project templates** - Pre-configured project types
 
 ### Homepage Content Management
 
@@ -282,13 +281,6 @@ _All homepage content management functionality completed - see Completed Tasks S
 
 - [ ] **[Low] Add character count indicators** - Show character count for philosophy description to help with content length management _(Added: Jan 8, 2025)_
 
-#### Methodology Section Management
-
-- [ ] **[Low] Add methodology step icons** - Allow admin to select or upload custom icons for each methodology step _(Added: Jan 8, 2025)_
-
-#### Values Section Management
-
-- [ ] **[Medium] Create value icon selector** - Build icon picker component allowing admin to choose from Lucide React icons for each value _(Added: Jan 8, 2025)_
 
 #### Content Validation & Quality Control
 
@@ -348,7 +340,7 @@ _All homepage content management functionality completed - see Completed Tasks S
 - [x] **[High] Track project page views** - Implement page view tracking for individual project pages with project ID association _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Calculate average time on page** - Track session duration and calculate average time spent on project pages _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
 - [x] **[High] Implement scroll depth tracking** - Track percentage of page viewed and store scroll depth data per project _(Added: Jan 8, 2025)_ _(Completed: Jan 8, 2025)_
-- [ ] **[Medium] Add media interaction metrics** - Track image zooms, video plays, and completion rates for project media _(Added: Jan 8, 2025)_
+- [x] **[Medium] Add media interaction metrics** - Track image zooms, video plays, and completion rates for project media _(Added: Jan 8, 2025)_ _(Completed: Jan 9, 2025)_
 - [ ] **[Medium] Track social feed engagement** - Monitor interactions with social feed posts on project pages _(Added: Jan 8, 2025)_
 - [ ] **[Low] Add device breakdown metrics** - Track mobile, desktop, and tablet usage patterns per project _(Added: Jan 8, 2025)_
 

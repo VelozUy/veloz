@@ -8,6 +8,7 @@ import {
   CategoryTypography,
 } from '@/components/ui/category-typography';
 import ProjectVisualGrid from '@/components/our-work/ProjectVisualGrid';
+import MasonryGallery from '@/components/our-work/MasonryGallery';
 import MeetTheTeam from '@/components/our-work/MeetTheTeam';
 import Image from 'next/image';
 
@@ -27,6 +28,8 @@ interface ProjectDetailClientProps {
       description?: Record<string, string>;
       tags?: string[];
       aspectRatio?: '1:1' | '16:9' | '9:16';
+      width?: number;
+      height?: number;
       order: number;
     }>;
     detailPageBlocks?: Array<{
@@ -139,48 +142,15 @@ export default function ProjectDetailClient({
         </div>
       </section>
 
-      {/* Project Media Grid */}
-      {project.detailPageBlocks && project.detailPageBlocks.length > 0 ? (
-        <ProjectVisualGrid
-          mediaBlocks={project.detailPageBlocks}
-          projectMedia={project.media || []}
+      {/* Project Media Gallery */}
+      <section className="py-12">
+        {/* Masonry Gallery - Responsive masonry layout favoring horizontal media */}
+        <MasonryGallery
+          media={project.media || []}
           projectTitle={project.title}
-          className="py-12"
-          gridHeight={project.detailPageGridHeight}
+          className="mb-8"
         />
-      ) : (
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {project.media?.map((media, index) => (
-                <div
-                  key={media.id || index}
-                  className="aspect-square relative overflow-hidden rounded-lg"
-                >
-                  {media.type === 'video' ? (
-                    <video
-                      src={media.url}
-                      className="w-full h-full object-cover"
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                    />
-                  ) : (
-                    <Image
-                      src={media.url}
-                      alt={media.description?.es || project.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      </section>
 
       {/* Meet the Team Section */}
       {project.crewMembers && project.crewMembers.length > 0 && (

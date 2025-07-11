@@ -37,9 +37,18 @@ export function sanitizeHTML(
 
   const config = { ...defaultOptions, ...options };
 
+  // Flatten allowedAttributes to a string[]
+  const allowedAttr = config.allowedAttributes
+    ? Array.from(new Set(Object.values(config.allowedAttributes).flat()))
+    : [
+        'href', 'title', 'target',
+        'src', 'alt', 'width', 'height',
+        'class'
+      ];
+
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: config.allowedTags,
-    ALLOWED_ATTR: config.allowedAttributes as any,
+    ALLOWED_ATTR: allowedAttr,
     KEEP_CONTENT: true,
   });
 }
@@ -149,7 +158,7 @@ export function sanitizeQueryInput(input: string): string {
 /**
  * Sanitize object properties recursively
  */
-export function sanitizeObject<T extends Record<string, any>>(
+export function sanitizeObject<T extends Record<string, unknown>>(
   obj: T,
   options: SanitizationOptions = {}
 ): T {
@@ -157,9 +166,9 @@ export function sanitizeObject<T extends Record<string, any>>(
   
   for (const [key, value] of Object.entries(sanitized)) {
     if (typeof value === 'string') {
-      (sanitized as any)[key] = sanitizeText(value);
+      (sanitized as Record<string, unknown>)[key] = sanitizeText(value);
     } else if (typeof value === 'object' && value !== null) {
-      (sanitized as any)[key] = sanitizeObject(value, options);
+      (sanitized as Record<string, unknown>)[key] = sanitizeObject(value as Record<string, unknown>, options);
     }
   }
   
@@ -169,8 +178,8 @@ export function sanitizeObject<T extends Record<string, any>>(
 /**
  * Validate and sanitize form data
  */
-export function sanitizeFormData(data: Record<string, any>): Record<string, any> {
-  const sanitized: Record<string, any> = {};
+export function sanitizeFormData(data: Record<string, unknown>): Record<string, unknown> {
+  const sanitized: Record<string, unknown> = {};
   
   for (const [key, value] of Object.entries(data)) {
     if (typeof value === 'string') {
@@ -195,7 +204,7 @@ export function sanitizeFormData(data: Record<string, any>): Record<string, any>
           sanitized[key] = sanitizeText(value);
       }
     } else if (typeof value === 'object' && value !== null) {
-      sanitized[key] = sanitizeObject(value);
+      sanitized[key] = sanitizeObject(value as Record<string, unknown>);
     } else {
       sanitized[key] = value;
     }
@@ -213,11 +222,11 @@ export function createSafeHTML(content: string): string {
       'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
       'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'span', 'div'
     ],
-    ALLOWED_ATTR: {
-      'span': ['class'],
-      'div': ['class'],
-      'p': ['class'],
-    } as any,
+    ALLOWED_ATTR: [
+      'href', 'title', 'target',
+      'src', 'alt', 'width', 'height',
+      'class'
+    ],
     KEEP_CONTENT: true,
   });
 } 

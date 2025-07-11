@@ -70,6 +70,7 @@ interface Project {
     tags?: string[];
     aspectRatio?: '1:1' | '16:9' | '9:16';
     order?: number;
+    featured?: boolean;
   }>;
 }
 
@@ -242,99 +243,24 @@ export default function StaticGalleryContent({
 
   // Render project with custom grid layout
   const renderProjectGrid = (project: Project) => {
-    // If project has custom mediaBlocks, render custom grid
-    if (project.mediaBlocks && project.mediaBlocks.length > 0) {
+    // Only use featured media for the all-projects page
+    const featuredMedia = (project.media || []).filter(m => m.featured);
+
+    if (featuredMedia.length === 0) {
       return (
-        <div
-          className="relative w-full bg-background overflow-hidden rounded-lg"
-          style={{ aspectRatio: '16/9' }}
-        >
-          {project.mediaBlocks
-            .sort((a, b) => a.zIndex - b.zIndex)
-            .map(block => {
-              const GRID_WIDTH = 16;
-              const GRID_HEIGHT = 9;
-
-              const blockStyle = {
-                position: 'absolute' as const,
-                left: `${(block.x / GRID_WIDTH) * 100}%`,
-                top: `${(block.y / GRID_HEIGHT) * 100}%`,
-                width: `${(block.width / GRID_WIDTH) * 100}%`,
-                height: `${(block.height / GRID_HEIGHT) * 100}%`,
-                zIndex: block.zIndex,
-              };
-
-              if (block.type === 'title') {
-                return (
-                  <div
-                    key={block.id}
-                    style={blockStyle}
-                    className="overflow-hidden flex items-center justify-center"
-                  >
-                    <div
-                      className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2"
-                      style={{
-                        fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                        color: block.color || '#fff',
-                      }}
-                    >
-                      {block.title || project.title}
-                    </div>
-                  </div>
-                );
-              }
-
-              const media = project.media.find(m => m.id === block.mediaId);
-              if (!media) return null;
-
-              return (
-                <div
-                  key={block.id}
-                  style={blockStyle}
-                  className="overflow-hidden"
-                >
-                  {media.type === 'video' ? (
-                    <video
-                      ref={el => {
-                        if (el) videoRefs.current.set(media.id, el);
-                      }}
-                      src={media.url}
-                      className="w-full h-full object-cover"
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                      style={{
-                        transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      src={media.url}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{
-                        transform: `translate(${block.mediaOffsetX || 0}%, ${block.mediaOffsetY || 0}%) scale(1.5)`,
-                        objectPosition: 'center',
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
+        <div className="flex items-center justify-center h-48 text-muted-foreground">
+          No featured media for this project
         </div>
       );
     }
 
-    // Fallback to simple grid
+    // Fallback to simple grid for featured media
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {project.media.slice(0, 6).map((media, index) => (
+      <div className="grid grid-cols-3 gap-1 max-w-2xl mx-auto">
+        {featuredMedia.slice(0, 3).map((media, index) => (
           <div
             key={media.id || index}
-            className="aspect-square relative overflow-hidden rounded-lg"
+            className="aspect-square relative overflow-hidden rounded-sm"
           >
             {media.type === 'video' ? (
               <video
@@ -382,43 +308,43 @@ export default function StaticGalleryContent({
       </div>
 
       {/* Projects Grid */}
-      <div className="space-y-16">
+      <div className="space-y-6">
         {projects.map(project => (
-          <div key={project.id} className="space-y-6">
+          <div key={project.id} className="space-y-3">
             {/* Project Header */}
             <div className="text-center">
-              <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="flex items-center justify-center gap-3 mb-2">
                 {project.featured && (
-                  <Badge className="bg-primary text-primary-foreground">
+                  <Badge className="bg-primary text-primary-foreground text-xs">
                     <Heart className="w-3 h-3 mr-1" />
                     {uiText.featured}
                   </Badge>
                 )}
                 {project.eventType && (
-                  <Badge variant="secondary">{project.eventType}</Badge>
+                  <Badge variant="secondary" className="text-xs">{project.eventType}</Badge>
                 )}
               </div>
 
-              <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
                 {project.title}
               </h2>
 
               {project.description && (
-                <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
+                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-3">
                   {project.description}
                 </p>
               )}
 
-              <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
                 {project.location && (
                   <span className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
+                    <MapPin className="w-3 h-3" />
                     {project.location}
                   </span>
                 )}
                 {project.eventDate && (
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-3 h-3" />
                     {new Date(project.eventDate).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
@@ -436,7 +362,7 @@ export default function StaticGalleryContent({
             <div className="text-center">
               <Link
                 href={`/our-work/${project.slug ? project.slug : project.id}`}
-                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
               >
                 {uiText.viewProject}
               </Link>

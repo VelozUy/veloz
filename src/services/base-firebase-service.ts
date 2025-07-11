@@ -40,7 +40,7 @@ interface CacheEntry<T> {
   timestamp: number;
 }
 
-export abstract class BaseFirebaseService<T = any> {
+export abstract class BaseFirebaseService<T = unknown> {
   protected collectionName: string;
   protected cache: Map<string, CacheEntry<unknown>> = new Map();
   protected cacheConfig: CacheConfig = {
