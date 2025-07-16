@@ -161,6 +161,12 @@ _All tasks resolved_
 ### Our Work (Gallery)
 
 - [x] **[Low] Re-implement gallery filtering** - Add back project type navigation with improved design _(Added: Jan 6, 2025)_ _(Completed: Jan 8, 2025)_
+- [x] **[Medium] Fix gallery filter language localization** - Ensure category filters display in correct language based on current locale _(Added: Jan 16, 2025)_ _(Completed: Jan 16, 2025)_
+  - File: src/components/gallery/GalleryFilter.tsx, src/components/gallery/StaticGalleryContent.tsx
+  - Notes: Updated GalleryFilter to use localized category names from EVENT_CATEGORIES constant, passed language prop from StaticGalleryContent based on current locale
+- [x] **[Medium] Filter gallery categories by project availability** - Only show categories that have existing projects _(Added: Jan 16, 2025)_ _(Completed: Jan 16, 2025)_
+  - File: src/components/gallery/GalleryFilter.tsx
+  - Notes: Modified filter logic to only display categories with project count > 0, hiding empty categories completely
 - [ ] **[Medium] Add lightbox touch gestures** - Swipe navigation on mobile
 - [ ] **[Low] Add gallery pagination** - Handle large image collections
 

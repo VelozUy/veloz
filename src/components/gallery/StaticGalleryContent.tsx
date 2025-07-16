@@ -381,6 +381,7 @@ export default function StaticGalleryContent({
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
         projectCounts={projectCounts}
+        language={currentLocale as 'es' | 'en' | 'pt'}
       />
 
       {/* Projects Grid */}
