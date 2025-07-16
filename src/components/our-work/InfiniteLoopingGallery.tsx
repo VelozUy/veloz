@@ -19,16 +19,12 @@ interface InfiniteLoopingGalleryProps {
   media: ProjectMedia[];
   projectTitle: string;
   className?: string;
-  columns?: number;
-  gap?: number;
-  autoPlay?: boolean;
-  loopDelay?: number;
 }
 
 // Helper function to convert aspect ratio string to width/height
 const parseAspectRatio = (aspectRatio?: string) => {
   if (!aspectRatio) return { width: 1, height: 1 }; // Default square
-  
+
   const parts = aspectRatio.split(':');
   if (parts.length === 2) {
     const width = parseInt(parts[0]);
@@ -37,7 +33,7 @@ const parseAspectRatio = (aspectRatio?: string) => {
       return { width, height };
     }
   }
-  
+
   // Fallback to square if parsing fails
   return { width: 1, height: 1 };
 };
@@ -60,10 +56,6 @@ export default function InfiniteLoopingGallery({
   media,
   projectTitle,
   className,
-  columns = 3,
-  gap = 16,
-  autoPlay = true,
-  loopDelay = 3000,
 }: InfiniteLoopingGalleryProps) {
   const [scrollY, setScrollY] = useState(0);
   const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
@@ -77,13 +69,24 @@ export default function InfiniteLoopingGallery({
   const [jitter, setJitter] = useState(0.3); // fraction
 
   // Move getStaggeredGridPosition here so it can access state
-  function getStaggeredGridPosition(index: number, total: number, viewportWidth: number, viewportHeight: number, itemWidth: number, itemHeight: number, offsetSeed: number) {
+  function getStaggeredGridPosition(
+    index: number,
+    total: number,
+    viewportWidth: number,
+    viewportHeight: number,
+    itemWidth: number,
+    itemHeight: number,
+    offsetSeed: number
+  ) {
     // Calculate cell size to fit item + max jitter
     const jitterPadX = itemWidth * jitter;
     const jitterPadY = itemHeight * jitter;
     const cellWidth = itemWidth + jitterPadX;
     const cellHeight = itemHeight + jitterPadY;
-    const colCount = Math.max(2, Math.floor(viewportWidth / (cellWidth * hGapFactor)));
+    const colCount = Math.max(
+      2,
+      Math.floor(viewportWidth / (cellWidth * hGapFactor))
+    );
     const rowCount = Math.ceil(total / colCount);
     const col = index % colCount;
     const row = Math.floor(index / colCount);
@@ -91,13 +94,17 @@ export default function InfiniteLoopingGallery({
     const hGap = baseHGap * hGapFactor;
     const vGap = vGapConst;
     const maxStagger = Math.max(0, (hGap + cellWidth) / 2 - itemWidth / 2);
-    const stagger = (row % 2 === 1) ? Math.min((cellWidth + hGap) / 2, maxStagger) : 0;
+    const stagger =
+      row % 2 === 1 ? Math.min((cellWidth + hGap) / 2, maxStagger) : 0;
     // Clamp jitter so it cannot push item outside its cell
     const maxJitterX = (cellWidth - itemWidth) / 2;
     const maxJitterY = (cellHeight - itemHeight) / 2;
-    const jitterX = (offsetSeed - 0.5) * 2 * Math.min(jitterPadX / 2, maxJitterX);
-    const jitterY = (offsetSeed - 0.5) * 2 * Math.min(jitterPadY / 2, maxJitterY);
-    const x = hGap + col * (cellWidth + hGap) + cellWidth / 2 + stagger + jitterX;
+    const jitterX =
+      (offsetSeed - 0.5) * 2 * Math.min(jitterPadX / 2, maxJitterX);
+    const jitterY =
+      (offsetSeed - 0.5) * 2 * Math.min(jitterPadY / 2, maxJitterY);
+    const x =
+      hGap + col * (cellWidth + hGap) + cellWidth / 2 + stagger + jitterX;
     const y = vGap + row * (cellHeight + vGap) + cellHeight / 2 + jitterY;
     const clampedX = clamp(x, itemWidth / 2, viewportWidth - itemWidth / 2);
     const clampedY = clamp(y, itemHeight / 2, containerHeight - itemHeight / 2);
@@ -107,7 +114,7 @@ export default function InfiniteLoopingGallery({
   // Handle scroll events for parallax with throttling
   useEffect(() => {
     let ticking = false;
-    
+
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -138,23 +145,28 @@ export default function InfiniteLoopingGallery({
 
   // Create masonry layout with varying sizes and stable random offsets
   // Not memoized so it always uses latest toolbar state
-  let masonryItems: Array<ProjectMedia & {
-    uniqueId: string;
-    size: { width: number; height: number };
-    setIndex: number;
-    offsetSeed: number;
-  }> = [];
+  let masonryItems: Array<
+    ProjectMedia & {
+      uniqueId: string;
+      size: { width: number; height: number };
+      setIndex: number;
+      offsetSeed: number;
+    }
+  > = [];
   if (media.length) {
     const items = [];
     const mediaSets = 4; // Fewer sets for less density
     const totalItems = media.length * mediaSets;
     // Precompute a stable random offset for each item (0..1)
-    const stableOffsets: number[] = Array.from({ length: totalItems }, (_, i) => {
-      const mediaId = media[i % media.length].id;
-      let hash = 0;
-      for (let c = 0; c < mediaId.length; c++) hash += mediaId.charCodeAt(c);
-      return Math.abs(Math.sin(i * 999 + hash)) % 1;
-    });
+    const stableOffsets: number[] = Array.from(
+      { length: totalItems },
+      (_, i) => {
+        const mediaId = media[i % media.length].id;
+        let hash = 0;
+        for (let c = 0; c < mediaId.length; c++) hash += mediaId.charCodeAt(c);
+        return Math.abs(Math.sin(i * 999 + hash)) % 1;
+      }
+    );
     for (let i = 0; i < totalItems; i++) {
       const mediaIndex = i % media.length;
       const mediaItem = media[mediaIndex];
@@ -193,7 +205,12 @@ export default function InfiniteLoopingGallery({
     }
     const jitterPadY = itemHeight * jitter;
     const cellHeight = itemHeight + jitterPadY;
-    const colCount = Math.max(2, Math.floor(viewportSize.width / ((itemWidth + itemWidth * jitter) * hGapFactor)));
+    const colCount = Math.max(
+      2,
+      Math.floor(
+        viewportSize.width / ((itemWidth + itemWidth * jitter) * hGapFactor)
+      )
+    );
     const rowCount = Math.ceil(masonryItems.length / colCount);
     const vGap = vGapConst;
     containerHeight = (cellHeight + vGap) * rowCount + vGap;
@@ -204,36 +221,80 @@ export default function InfiniteLoopingGallery({
   return (
     <div className={cn('w-full relative', className)} ref={containerRef}>
       {/* Floating Toolbar for Live Tuning */}
-      <div style={{
-        position: 'fixed',
-        top: 24,
-        right: 24,
-        zIndex: 10000,
-        background: 'rgba(30,30,30,0.95)',
-        color: '#fff',
-        borderRadius: 12,
-        padding: 16,
-        boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
-        minWidth: 260,
-        fontSize: 14,
-      }}>
-        <div style={{fontWeight: 600, marginBottom: 8}}>Gallery Controls</div>
-        <label>Max Width: {maxWidth}px
-          <input type="range" min={100} max={viewportSize.width} value={maxWidth} onChange={e => setMaxWidth(Number(e.target.value))} style={{width: '100%'}} />
+      <div
+        style={{
+          position: 'fixed',
+          top: 24,
+          right: 24,
+          zIndex: 10000,
+          background: 'rgba(30,30,30,0.95)',
+          color: '#fff',
+          borderRadius: 12,
+          padding: 16,
+          boxShadow: '0 2px 16px rgba(0,0,0,0.25)',
+          minWidth: 260,
+          fontSize: 14,
+        }}
+      >
+        <div style={{ fontWeight: 600, marginBottom: 8 }}>Gallery Controls</div>
+        <label>
+          Max Width: {maxWidth}px
+          <input
+            type="range"
+            min={100}
+            max={viewportSize.width}
+            value={maxWidth}
+            onChange={e => setMaxWidth(Number(e.target.value))}
+            style={{ width: '100%' }}
+          />
         </label>
-        <label>Max Height: {maxHeight}px
-          <input type="range" min={60} max={viewportSize.height} value={maxHeight} onChange={e => setMaxHeight(Number(e.target.value))} style={{width: '100%'}} />
+        <label>
+          Max Height: {maxHeight}px
+          <input
+            type="range"
+            min={60}
+            max={viewportSize.height}
+            value={maxHeight}
+            onChange={e => setMaxHeight(Number(e.target.value))}
+            style={{ width: '100%' }}
+          />
         </label>
-        <label>Horizontal Gap Factor: {hGapFactor.toFixed(2)}
-          <input type="range" min={0.8} max={10.0} step={0.01} value={hGapFactor} onChange={e => setHGapFactor(Number(e.target.value))} style={{width: '100%'}} />
+        <label>
+          Horizontal Gap Factor: {hGapFactor.toFixed(2)}
+          <input
+            type="range"
+            min={0.8}
+            max={10.0}
+            step={0.01}
+            value={hGapFactor}
+            onChange={e => setHGapFactor(Number(e.target.value))}
+            style={{ width: '100%' }}
+          />
         </label>
-        <label>Vertical Gap: {vGapConst}px
-          <input type="range" min={0} max={1000} value={vGapConst} onChange={e => setVGapConst(Number(e.target.value))} style={{width: '100%'}} />
+        <label>
+          Vertical Gap: {vGapConst}px
+          <input
+            type="range"
+            min={0}
+            max={1000}
+            value={vGapConst}
+            onChange={e => setVGapConst(Number(e.target.value))}
+            style={{ width: '100%' }}
+          />
         </label>
-        <label>Jitter: {jitter.toFixed(2)}
-          <input type="range" min={0} max={0.3} step={0.01} value={jitter} onChange={e => setJitter(Number(e.target.value))} style={{width: '100%'}} />
+        <label>
+          Jitter: {jitter.toFixed(2)}
+          <input
+            type="range"
+            min={0}
+            max={0.3}
+            step={0.01}
+            value={jitter}
+            onChange={e => setJitter(Number(e.target.value))}
+            style={{ width: '100%' }}
+          />
         </label>
-        <div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
+        <div style={{ marginTop: 8, fontSize: 12, opacity: 0.7 }}>
           <div>maxWidth: {maxWidth}</div>
           <div>maxHeight: {maxHeight}</div>
           <div>hGapFactor: {hGapFactor}</div>
@@ -262,7 +323,15 @@ export default function InfiniteLoopingGallery({
           }
 
           // Use staggered grid for denser, organic layout
-          const { x, y } = getStaggeredGridPosition(index, masonryItems.length, viewportSize.width, viewportSize.height, itemWidth, itemHeight, item.offsetSeed);
+          const { x, y } = getStaggeredGridPosition(
+            index,
+            masonryItems.length,
+            viewportSize.width,
+            viewportSize.height,
+            itemWidth,
+            itemHeight,
+            item.offsetSeed
+          );
           const parallax = getParallaxLevel(index);
           const translateY = scrollY * parallax.speed;
 
@@ -304,4 +373,4 @@ export default function InfiniteLoopingGallery({
       </div>
     </div>
   );
-} 
+}

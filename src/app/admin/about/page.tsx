@@ -90,7 +90,7 @@ function SortablePhilosophyCard({
 }) {
   // Ensure point has an ID for drag and drop functionality
   const pointId = point.id || `philosophy-${index}`;
-  
+
   const {
     attributes,
     listeners,
@@ -287,7 +287,7 @@ function SortableMethodologyCard({
 }) {
   // Ensure step has an ID for drag and drop functionality
   const stepId = step.id || `methodology-${index}`;
-  
+
   const {
     attributes,
     listeners,
@@ -568,12 +568,7 @@ function SortableValueCard({
                 value.title[currentLanguage as keyof typeof value.title] || ''
               }
               onChange={e =>
-                onValueChange(
-                  valueId,
-                  'title',
-                  currentLanguage,
-                  e.target.value
-                )
+                onValueChange(valueId, 'title', currentLanguage, e.target.value)
               }
               placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
             />
@@ -586,9 +581,7 @@ function SortableValueCard({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() =>
-                    onTranslateValue(valueId, 'description', 'en')
-                  }
+                  onClick={() => onTranslateValue(valueId, 'description', 'en')}
                   disabled={isTranslating(valueId, 'description', 'en')}
                   className="text-xs h-7 px-2"
                 >
@@ -601,9 +594,7 @@ function SortableValueCard({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() =>
-                    onTranslateValue(valueId, 'description', 'pt')
-                  }
+                  onClick={() => onTranslateValue(valueId, 'description', 'pt')}
                   disabled={isTranslating(valueId, 'description', 'pt')}
                   className="text-xs h-7 px-2"
                 >
@@ -698,24 +689,31 @@ export default function AboutAdminPage() {
             updatedAt: _updatedAt,
             ...rest
           }) => rest)(response.data);
-          
+
           // Ensure all array items have IDs
           const processedData = {
             ...contentData,
-            values: contentData.values?.map((item: AboutValueData, index) => ({
-              ...item,
-              id: item.id || `value-${Date.now()}-${index}`
-            })) || [],
-            philosophyPoints: contentData.philosophyPoints?.map((item: AboutPhilosophyPointData, index) => ({
-              ...item,
-              id: item.id || `philosophy-${Date.now()}-${index}`
-            })) || [],
-            methodologySteps: contentData.methodologySteps?.map((item: AboutMethodologyStepData, index) => ({
-              ...item,
-              id: item.id || `methodology-${Date.now()}-${index}`
-            })) || [],
+            values:
+              contentData.values?.map((item: AboutValueData, index) => ({
+                ...item,
+                id: item.id || `value-${Date.now()}-${index}`,
+              })) || [],
+            philosophyPoints:
+              contentData.philosophyPoints?.map(
+                (item: AboutPhilosophyPointData, index) => ({
+                  ...item,
+                  id: item.id || `philosophy-${Date.now()}-${index}`,
+                })
+              ) || [],
+            methodologySteps:
+              contentData.methodologySteps?.map(
+                (item: AboutMethodologyStepData, index) => ({
+                  ...item,
+                  id: item.id || `methodology-${Date.now()}-${index}`,
+                })
+              ) || [],
           };
-          
+
           setFormData(processedData);
         } else {
           // No content exists, use default
@@ -812,16 +810,17 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.values = (updated.values as AboutValueData[]).map((item: AboutValueData) =>
-        (item.id || `value-${Date.now()}-${Math.random()}`) === valueId
-          ? {
-              ...item,
-              [field]: {
-                ...item[field],
-                [language]: value,
-              },
-            }
-          : item
+      updated.values = (updated.values as AboutValueData[]).map(
+        (item: AboutValueData) =>
+          (item.id || `value-${Date.now()}-${Math.random()}`) === valueId
+            ? {
+                ...item,
+                [field]: {
+                  ...item[field],
+                  [language]: value,
+                },
+              }
+            : item
       );
 
       return updated;
@@ -869,7 +868,10 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.values = (updated.values as AboutValueData[]).filter((item: AboutValueData) => (item.id || `value-${Date.now()}-${Math.random()}`) !== valueId);
+      updated.values = (updated.values as AboutValueData[]).filter(
+        (item: AboutValueData) =>
+          (item.id || `value-${Date.now()}-${Math.random()}`) !== valueId
+      );
       return updated;
     });
 
@@ -891,7 +893,9 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.philosophyPoints = (updated.philosophyPoints as AboutPhilosophyPointData[]).map((item: AboutPhilosophyPointData) =>
+      updated.philosophyPoints = (
+        updated.philosophyPoints as AboutPhilosophyPointData[]
+      ).map((item: AboutPhilosophyPointData) =>
         (item.id || `philosophy-${Date.now()}-${Math.random()}`) === pointId
           ? {
               ...item,
@@ -948,7 +952,12 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.philosophyPoints = (updated.philosophyPoints as AboutPhilosophyPointData[]).filter((item: AboutPhilosophyPointData) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) !== pointId);
+      updated.philosophyPoints = (
+        updated.philosophyPoints as AboutPhilosophyPointData[]
+      ).filter(
+        (item: AboutPhilosophyPointData) =>
+          (item.id || `philosophy-${Date.now()}-${Math.random()}`) !== pointId
+      );
       return updated;
     });
 
@@ -970,7 +979,9 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.methodologySteps = (updated.methodologySteps as AboutMethodologyStepData[]).map((item: AboutMethodologyStepData) =>
+      updated.methodologySteps = (
+        updated.methodologySteps as AboutMethodologyStepData[]
+      ).map((item: AboutMethodologyStepData) =>
         (item.id || `methodology-${Date.now()}-${Math.random()}`) === stepId
           ? {
               ...item,
@@ -1027,7 +1038,12 @@ export default function AboutAdminPage() {
       if (!prev) return prev;
 
       const updated = { ...prev };
-      updated.methodologySteps = (updated.methodologySteps as AboutMethodologyStepData[]).filter((item: AboutMethodologyStepData) => (item.id || `methodology-${Date.now()}-${Math.random()}`) !== stepId);
+      updated.methodologySteps = (
+        updated.methodologySteps as AboutMethodologyStepData[]
+      ).filter(
+        (item: AboutMethodologyStepData) =>
+          (item.id || `methodology-${Date.now()}-${Math.random()}`) !== stepId
+      );
       return updated;
     });
 
@@ -1099,10 +1115,12 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.values)) return prev;
 
         const oldIndex = prev.values.findIndex(
-          (item: any) => (item.id || `value-${Date.now()}-${Math.random()}`) === active.id
+          (item: { id?: string }) =>
+            (item.id || `value-${Date.now()}-${Math.random()}`) === active.id
         );
         const newIndex = prev.values.findIndex(
-          (item: any) => (item.id || `value-${Date.now()}-${Math.random()}`) === over?.id
+          (item: { id?: string }) =>
+            (item.id || `value-${Date.now()}-${Math.random()}`) === over?.id
         );
 
         const newItems = arrayMove(prev.values, oldIndex, newIndex);
@@ -1132,10 +1150,14 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.philosophyPoints)) return prev;
 
         const oldIndex = prev.philosophyPoints.findIndex(
-          (item: any) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) === active.id
+          (item: { id?: string }) =>
+            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
+            active.id
         );
         const newIndex = prev.philosophyPoints.findIndex(
-          (item: any) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) === over?.id
+          (item: { id?: string }) =>
+            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
+            over?.id
         );
 
         const newItems = arrayMove(prev.philosophyPoints, oldIndex, newIndex);
@@ -1165,10 +1187,14 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.methodologySteps)) return prev;
 
         const oldIndex = prev.methodologySteps.findIndex(
-          (item: any) => (item.id || `methodology-${Date.now()}-${Math.random()}`) === active.id
+          (item: { id?: string }) =>
+            (item.id || `methodology-${Date.now()}-${Math.random()}`) ===
+            active.id
         );
         const newIndex = prev.methodologySteps.findIndex(
-          (item: any) => (item.id || `methodology-${Date.now()}-${Math.random()}`) === over?.id
+          (item: { id?: string }) =>
+            (item.id || `methodology-${Date.now()}-${Math.random()}`) ===
+            over?.id
         );
 
         const newItems = arrayMove(prev.methodologySteps, oldIndex, newIndex);
@@ -1203,9 +1229,7 @@ export default function AboutAdminPage() {
 
       // Find the value by ID
       if (!Array.isArray(formData.values)) return;
-      const valueIndex = formData.values.findIndex(
-        item => item.id === valueId
-      );
+      const valueIndex = formData.values.findIndex(item => item.id === valueId);
       if (valueIndex === -1) return;
 
       const value = formData.values[valueIndex];
@@ -1427,7 +1451,10 @@ export default function AboutAdminPage() {
         } else if (fieldKey === 'subtitle') {
           updated.subtitle = { ...updated.subtitle, [language]: targetText };
         } else if (fieldKey === 'philosophy.title') {
-          updated.philosophyTitle = { ...updated.philosophyTitle, [language]: targetText };
+          updated.philosophyTitle = {
+            ...updated.philosophyTitle,
+            [language]: targetText,
+          };
         } else if (fieldKey.startsWith('philosophy.item.')) {
           const match = fieldKey.match(
             /philosophy\.item\.(\d+)\.(title|description)/
@@ -1448,7 +1475,10 @@ export default function AboutAdminPage() {
             }
           }
         } else if (fieldKey === 'methodology.title') {
-          updated.methodologyTitle = { ...updated.methodologyTitle, [language]: targetText };
+          updated.methodologyTitle = {
+            ...updated.methodologyTitle,
+            [language]: targetText,
+          };
         } else if (fieldKey.startsWith('methodology.item.')) {
           const match = fieldKey.match(
             /methodology\.item\.(\d+)\.(title|description)/
@@ -1469,7 +1499,10 @@ export default function AboutAdminPage() {
             }
           }
         } else if (fieldKey === 'values.title') {
-          updated.valuesTitle = { ...updated.valuesTitle, [language]: targetText };
+          updated.valuesTitle = {
+            ...updated.valuesTitle,
+            [language]: targetText,
+          };
         } else if (fieldKey.startsWith('values.item.')) {
           const match = fieldKey.match(
             /values\.item\.(\d+)\.(title|description)/
@@ -1481,9 +1514,7 @@ export default function AboutAdminPage() {
               updated.values[index] = {
                 ...updated.values[index],
                 [field]: {
-                  ...updated.values[index][
-                    field as 'title' | 'description'
-                  ],
+                  ...updated.values[index][field as 'title' | 'description'],
                   [language]: targetText,
                 },
               };

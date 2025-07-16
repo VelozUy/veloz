@@ -256,11 +256,6 @@ export default function StaticGalleryContent({
     };
   }, [allMedia]);
 
-  const openLightbox = useCallback((mediaIndex: number) => {
-    setCurrentMediaIndex(mediaIndex);
-    setLightboxOpen(true);
-  }, []);
-
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
   }, []);
@@ -356,7 +351,9 @@ export default function StaticGalleryContent({
                   </Badge>
                 )}
                 {project.eventType && (
-                  <Badge variant="secondary" className="text-xs">{project.eventType}</Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    {project.eventType}
+                  </Badge>
                 )}
               </div>
 
