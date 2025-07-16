@@ -144,25 +144,27 @@ if (typeof window !== 'undefined') {
 export const getAuthSync = (): Auth | null => auth;
 
 // Function to get Firestore service only when needed
-export const getFirestoreService = async () => {
+export const getFirestoreService = async (retries = 5, delay = 300) => {
   if (typeof window === 'undefined') {
     return null;
   }
-
-  // If Firebase hasn't been initialized yet, initialize it
-  if (!app) {
-    try {
-      await initializeFirebase();
-    } catch (error) {
-      console.error(
-        '❌ Firebase initialization failed in getFirestoreService:',
-        error
-      );
-      return null;
+  for (let i = 0; i < retries; i++) {
+    if (!app) {
+      try {
+        await initializeFirebase();
+      } catch (error) {
+        console.error(
+          '❌ Firebase initialization failed in getFirestoreService:',
+          error
+        );
+        return null;
+      }
     }
+    if (db) return db;
+    await new Promise(res => setTimeout(res, delay));
   }
-
-  return db;
+  console.error('❌ Firestore not available after retries');
+  return null;
 };
 
 // Function to get Storage service only when needed

@@ -40,7 +40,6 @@ export default function CrewManagementPage() {
       console.log('🔍 Crew page - getAll result:', result);
       if (result.success) {
         const crewData = (result.data as CrewMember[]) || [];
-        console.log('🔍 Crew page - crew data:', crewData);
         setCrewMembers(crewData);
       } else {
         console.error('Failed to load crew members:', result.error);
