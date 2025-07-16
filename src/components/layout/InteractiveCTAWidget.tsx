@@ -243,6 +243,7 @@ export function InteractiveCTAWidget() {
   const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(true); // Default to mobile to avoid hydration issues
+  const [widgetClicked, setWidgetClicked] = useState(false); // Track if widget has been clicked
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
@@ -284,13 +285,14 @@ export function InteractiveCTAWidget() {
       ? 'translateX(0) translateY(0)'
       : 'translateX(0) translateY(0)';
 
-    const entranceAnimation = isVisible
-      ? 'translateX(0) translateY(0)'
-      : 'translateX(100%) translateY(0)';
+    const entranceAnimation =
+      isVisible && !widgetClicked
+        ? 'translateX(0) translateY(0)'
+        : 'translateX(100%) translateY(0)';
 
     return {
       transform: `${baseTransform} ${entranceAnimation}`,
-      opacity: isVisible ? 1 : 0,
+      opacity: isVisible && !widgetClicked ? 1 : 0,
       transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
     };
   };
@@ -649,6 +651,7 @@ export function InteractiveCTAWidget() {
               ctaType: 'contact_form',
               ctaLocation: 'sticky_button',
             });
+            setWidgetClicked(true); // Hide the widget
             setIsOpen(true);
           }}
           className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1 bg-primary text-primary-foreground"
