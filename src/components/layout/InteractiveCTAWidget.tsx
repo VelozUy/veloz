@@ -355,7 +355,7 @@ export function InteractiveCTAWidget() {
 
   // Calculate widget base position classes
   const getWidgetBaseClasses = () => {
-    return 'fixed right-4 top-20 z-50 bg-primary text-primary-foreground p-4 rounded-lg shadow-lg border border-border';
+    return 'fixed right-4 top-20 z-50 p-2';
   };
 
   // Add smooth transform animation styles with positioning and entrance animation
