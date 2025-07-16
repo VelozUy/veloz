@@ -224,6 +224,48 @@ export interface FormContent {
         subtitle: LocalizedContent;
         noDate: LocalizedContent;
       };
+      location: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+        placeholder: LocalizedContent;
+        noLocation: LocalizedContent;
+      };
+      services: {
+        title: LocalizedContent;
+        subtitle: LocalizedContent;
+        ceremony: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        photography: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        videography: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        dj: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        decor: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        catering: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        transport: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+        other: {
+          title: LocalizedContent;
+          subtitle: LocalizedContent;
+        };
+      };
       contact: {
         title: LocalizedContent;
         subtitle: LocalizedContent;
@@ -314,6 +356,8 @@ export interface ContactMessageData {
   phone?: string;
   eventType: string;
   eventDate?: string;
+  location?: string;
+  services?: string[];
   message?: string;
   source: 'contact_form' | 'widget';
   isRead: boolean;

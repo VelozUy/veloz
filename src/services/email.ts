@@ -15,6 +15,8 @@ export interface ContactFormData {
   email: string;
   eventType: string;
   eventDate?: string;
+  location?: string;
+  services?: string[];
   message?: string;
   phone?: string;
   source?: 'contact_form' | 'widget';
@@ -35,6 +37,8 @@ export const emailService = {
         from_email: data.email,
         event_type: data.eventType,
         event_date: data.eventDate || 'No especificada',
+        location: data.location || 'No especificada',
+        services: data.services?.join(', ') || 'No especificados',
         message: data.message || 'Sin mensaje adicional',
         phone: data.phone || 'No proporcionado',
         source: data.source || 'contact_form',

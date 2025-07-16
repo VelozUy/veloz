@@ -37,6 +37,7 @@ import {
   Calendar,
   MapPin,
   Upload,
+  Instagram,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import {
@@ -61,6 +62,7 @@ import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
 import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
 import ProjectHeroPreview from '@/components/admin/ProjectHeroPreview';
+import SocialFeedManager from '@/components/admin/SocialFeedManager';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
@@ -775,7 +777,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-6">
+              <TabsList className="grid w-full grid-cols-7">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -792,6 +794,7 @@ export default function UnifiedProjectEditPage({
                   )}
                 </TabsTrigger>
                 <TabsTrigger value="crew">Equipo</TabsTrigger>
+                <TabsTrigger value="social-feed">Feed Social</TabsTrigger>
                 <TabsTrigger value="project-design">
                   Diseño de Página
                 </TabsTrigger>
@@ -1185,6 +1188,74 @@ export default function UnifiedProjectEditPage({
                   }}
                   disabled={saving}
                 />
+              </TabsContent>
+
+              {/* Social Feed Tab */}
+              <TabsContent value="social-feed" className="space-y-6">
+                {isCreateMode ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Instagram className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">
+                        Feed Social del Proyecto
+                      </h3>
+                      <p className="text-muted-foreground mb-4">
+                        {draftProject.title.en ||
+                        draftProject.title.es ||
+                        draftProject.title.pt
+                          ? 'Guarda el proyecto primero, luego podrás gestionar el feed social.'
+                          : 'Por favor agrega un título al proyecto en la pestaña Detalles primero.'}
+                      </p>
+                      {draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt ? (
+                        <Button onClick={handleSaveChanges} disabled={saving}>
+                          {saving ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Guardando Proyecto...
+                            </>
+                          ) : (
+                            <>
+                              <Save className="w-4 h-4 mr-2" />
+                              Guardar Proyecto y Habilitar Feed Social
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          onClick={() => setActiveTab('details')}
+                        >
+                          Ir a Detalles del Proyecto
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Feed Social del Proyecto
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Gestiona las publicaciones sociales que aparecerán en la
+                        página del proyecto.
+                      </p>
+                    </div>
+
+                    <SocialFeedManager
+                      projectId={projectId || ''}
+                      onSuccess={message => {
+                        setSuccess(message);
+                        setTimeout(() => setSuccess(''), 3000);
+                      }}
+                      onError={setError}
+                    />
+                  </div>
+                )}
               </TabsContent>
 
               {/* Project Design Tab - Hero Media for Project Page */}

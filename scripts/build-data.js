@@ -18,6 +18,7 @@ const {
   getDocs,
   query,
   orderBy,
+  where,
   doc,
   getDoc,
 } = require('firebase/firestore');
@@ -165,6 +166,48 @@ const STATIC_TRANSLATIONS = {
           title: '¿Ya tienes fecha?',
           subtitle: 'No te preocupes si aún no estás seguro',
           noDate: 'Aún no tengo fecha definida',
+        },
+        location: {
+          title: '¿Dónde será tu evento?',
+          subtitle: 'Ayúdanos a entender mejor tu ubicación',
+          placeholder: 'Ciudad, barrio o lugar específico',
+          noLocation: 'Aún no tengo ubicación definida',
+        },
+        services: {
+          title: '¿Qué servicios necesitas?',
+          subtitle: 'Selecciona los servicios que te interesan',
+          ceremony: {
+            title: 'Ceremonia',
+            subtitle: 'Fotografía y video de la ceremonia',
+          },
+          photography: {
+            title: 'Fotografía',
+            subtitle: 'Solo fotografía profesional',
+          },
+          videography: {
+            title: 'Videografía',
+            subtitle: 'Solo video profesional',
+          },
+          dj: {
+            title: 'DJ y Música',
+            subtitle: 'Ambientación musical para tu evento',
+          },
+          decor: {
+            title: 'Decoración',
+            subtitle: 'Ambientación y decoración del evento',
+          },
+          catering: {
+            title: 'Catering',
+            subtitle: 'Servicio de comida y bebidas',
+          },
+          transport: {
+            title: 'Transporte',
+            subtitle: 'Servicio de transporte para invitados',
+          },
+          other: {
+            title: 'Otros servicios',
+            subtitle: 'Cuéntanos qué más necesitas',
+          },
         },
         contact: {
           title: '¿Quieres contarnos más?',
@@ -378,6 +421,48 @@ const STATIC_TRANSLATIONS = {
           subtitle: "Don't worry if you're not sure yet",
           noDate: "I don't have a date set yet",
         },
+        location: {
+          title: 'Where will your event be?',
+          subtitle: 'Help us understand your location better',
+          placeholder: 'City, neighborhood or specific venue',
+          noLocation: "I don't have a location set yet",
+        },
+        services: {
+          title: 'What services do you need?',
+          subtitle: 'Select the services you are interested in',
+          ceremony: {
+            title: 'Ceremony',
+            subtitle: 'Photography and video of the ceremony',
+          },
+          photography: {
+            title: 'Photography',
+            subtitle: 'Professional photography only',
+          },
+          videography: {
+            title: 'Videography',
+            subtitle: 'Professional video only',
+          },
+          dj: {
+            title: 'DJ & Music',
+            subtitle: 'Musical ambiance for your event',
+          },
+          decor: {
+            title: 'Decoration',
+            subtitle: 'Event decoration and ambiance',
+          },
+          catering: {
+            title: 'Catering',
+            subtitle: 'Food and beverage service',
+          },
+          transport: {
+            title: 'Transportation',
+            subtitle: 'Transportation service for guests',
+          },
+          other: {
+            title: 'Other services',
+            subtitle: 'Tell us what else you need',
+          },
+        },
         contact: {
           title: 'Want to tell us more?',
           subtitle: 'Choose how you prefer us to contact you',
@@ -587,6 +672,48 @@ const STATIC_TRANSLATIONS = {
           title: 'Já tem uma data?',
           subtitle: 'Não se preocupe se ainda não tem certeza',
           noDate: 'Ainda não tenho data definida',
+        },
+        location: {
+          title: 'Onde será seu evento?',
+          subtitle: 'Ajude-nos a entender melhor sua localização',
+          placeholder: 'Cidade, bairro ou local específico',
+          noLocation: 'Ainda não tenho uma localização definida',
+        },
+        services: {
+          title: 'Que serviços você precisa?',
+          subtitle: 'Selecione os serviços que te interessam',
+          ceremony: {
+            title: 'Cerimônia',
+            subtitle: 'Fotografia e vídeo da cerimônia',
+          },
+          photography: {
+            title: 'Fotografia',
+            subtitle: 'Apenas fotografia profissional',
+          },
+          videography: {
+            title: 'Videografia',
+            subtitle: 'Apenas vídeo profissional',
+          },
+          dj: {
+            title: 'DJ e Música',
+            subtitle: 'Ambiente musical para seu evento',
+          },
+          decor: {
+            title: 'Decoração',
+            subtitle: 'Decoração e ambiente do evento',
+          },
+          catering: {
+            title: 'Catering',
+            subtitle: 'Serviço de comida e bebidas',
+          },
+          transport: {
+            title: 'Transporte',
+            subtitle: 'Serviço de transporte para convidados',
+          },
+          other: {
+            title: 'Outros serviços',
+            subtitle: 'Conte-nos o que mais você precisa',
+          },
         },
         contact: {
           title: 'Quer nos contar mais?',
@@ -910,13 +1037,14 @@ async function fetchProjectMedia(db, projectId) {
   try {
     console.log(`📸 Fetching media for project ${projectId}...`);
 
-    // Try with orderBy first
+    // Query the projectMedia collection with where clause
     let mediaQuery;
     let snapshot;
 
     try {
       mediaQuery = query(
         collection(db, 'projectMedia'),
+        where('projectId', '==', projectId),
         orderBy('order', 'asc')
       );
       snapshot = await getDocs(mediaQuery);
@@ -925,28 +1053,29 @@ async function fetchProjectMedia(db, projectId) {
       console.log(
         `⚠️ Index not found for projectMedia orderBy, querying without order...`
       );
-      mediaQuery = query(collection(db, 'projectMedia'));
+      mediaQuery = query(
+        collection(db, 'projectMedia'),
+        where('projectId', '==', projectId)
+      );
       snapshot = await getDocs(mediaQuery);
     }
 
     const media = [];
     snapshot.forEach(doc => {
       const data = doc.data();
-      if (data.projectId === projectId) {
-        media.push({
-          id: doc.id,
-          projectId: data.projectId,
-          type: data.type,
-          url: data.url,
-          description: data.description || {},
-          tags: data.tags || [],
-          aspectRatio: data.aspectRatio,
-          width: data.width,
-          height: data.height,
-          order: data.order || 0,
-          featured: data.featured || false,
-        });
-      }
+      media.push({
+        id: doc.id,
+        projectId: projectId,
+        type: data.type,
+        url: data.url,
+        description: data.description || {},
+        tags: data.tags || [],
+        aspectRatio: data.aspectRatio,
+        width: data.width,
+        height: data.height,
+        order: data.order || 0,
+        featured: data.featured || false,
+      });
     });
 
     // Sort by order in memory

@@ -150,7 +150,7 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
    * Update specific section of about content
    */
   async updateSection(
-    section: 'philosophy' | 'methodology' | 'values',
+    section: 'philosophyPoints' | 'methodologySteps' | 'values',
     sectionData: Partial<AboutContentData[typeof section]>
   ): Promise<ApiResponse<void>> {
     try {
@@ -197,8 +197,8 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
    * Update main content (title and subtitle)
    */
   async updateMainContent(
-    title: AboutContentData['title'],
-    subtitle: AboutContentData['subtitle']
+    title: AboutContentData['heroTitle'],
+    subtitle: AboutContentData['heroSubtitle']
   ): Promise<ApiResponse<void>> {
     try {
       const existingResponse = await this.getAboutContent();
@@ -237,8 +237,8 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
    * Update SEO content
    */
   async updateSEOContent(
-    seoTitle?: AboutContentData['seoTitle'],
-    seoDescription?: AboutContentData['seoDescription']
+    seoTitle?: string,
+    seoDescription?: string
   ): Promise<ApiResponse<void>> {
     try {
       const existingResponse = await this.getAboutContent();
@@ -252,9 +252,13 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
 
       const updateData: Partial<Omit<AboutContentData, 'id' | 'createdAt'>> =
         {};
-      if (seoTitle !== undefined) updateData.seoTitle = seoTitle;
-      if (seoDescription !== undefined)
-        updateData.seoDescription = seoDescription;
+      if (seoTitle !== undefined || seoDescription !== undefined) {
+        updateData.seo = {
+          keywords: existingResponse.data.seo?.keywords || [],
+          ...(seoTitle !== undefined && { title: seoTitle }),
+          ...(seoDescription !== undefined && { description: seoDescription }),
+        };
+      }
 
       const updateResponse = await this.update(
         existingResponse.data.id!,
@@ -314,18 +318,15 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentValues = existingResponse.data.values.items || [];
-      const maxOrder = Math.max(...currentValues.map(v => v.order), -1);
+      const currentValues = existingResponse.data.values || [];
+      const maxOrder = Math.max(...currentValues.map(v => v.order || 0), -1);
 
       const valueWithOrder: AboutValueData = {
         ...newValue,
         order: maxOrder + 1,
       };
 
-      const updatedValues = {
-        ...existingResponse.data.values,
-        items: [...currentValues, valueWithOrder],
-      };
+      const updatedValues = [...currentValues, valueWithOrder];
 
       const updateResponse = await this.updateSection('values', updatedValues);
       return updateResponse;
@@ -355,8 +356,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentValues = existingResponse.data.values.items || [];
-      const valueIndex = currentValues.findIndex(v => v.id === id);
+      const currentValues = existingResponse.data.values || [];
+      const valueIndex = currentValues.findIndex(
+        (v: AboutValueData) => v.id === id
+      );
 
       if (valueIndex === -1) {
         return {
@@ -365,12 +368,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedValues = {
-        ...existingResponse.data.values,
-        items: currentValues.map((value, index) =>
+      const updatedValues = currentValues.map(
+        (value: AboutValueData, index: number) =>
           index === valueIndex ? { ...value, ...updatedValue } : value
-        ),
-      };
+      );
 
       const updateResponse = await this.updateSection('values', updatedValues);
       return updateResponse;
@@ -397,8 +398,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentValues = existingResponse.data.values.items || [];
-      const filteredValues = currentValues.filter(v => v.id !== id);
+      const currentValues = existingResponse.data.values || [];
+      const filteredValues = currentValues.filter(
+        (v: AboutValueData) => v.id !== id
+      );
 
       if (filteredValues.length === currentValues.length) {
         return {
@@ -407,12 +410,7 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedValues = {
-        ...existingResponse.data.values,
-        items: filteredValues,
-      };
-
-      const updateResponse = await this.updateSection('values', updatedValues);
+      const updateResponse = await this.updateSection('values', filteredValues);
       return updateResponse;
     } catch (error) {
       console.error('Error deleting value:', error);
@@ -437,23 +435,26 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentValues = existingResponse.data.values.items || [];
+      const currentValues = existingResponse.data.values || [];
 
       // Create a map for quick lookup
-      const valueMap = new Map(currentValues.map(v => [v.id, v]));
+      const valueMap = new Map(
+        currentValues.map((v: AboutValueData) => [v.id, v])
+      );
 
       // Reorder values and update order numbers
       const reorderedValues = valueIds
         .map(id => valueMap.get(id))
         .filter((value): value is AboutValueData => value !== undefined)
-        .map((value, index) => ({ ...value, order: index }));
+        .map((value: AboutValueData, index: number) => ({
+          ...value,
+          order: index,
+        }));
 
-      const updatedValues = {
-        ...existingResponse.data.values,
-        items: reorderedValues,
-      };
-
-      const updateResponse = await this.updateSection('values', updatedValues);
+      const updateResponse = await this.updateSection(
+        'values',
+        reorderedValues
+      );
       return updateResponse;
     } catch (error) {
       console.error('Error reordering values:', error);
@@ -482,21 +483,21 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentPoints = existingResponse.data.philosophy.items || [];
-      const maxOrder = Math.max(...currentPoints.map(p => p.order), -1);
+      const currentPoints = existingResponse.data.philosophyPoints || [];
+      const maxOrder = Math.max(
+        ...currentPoints.map((p: AboutPhilosophyPointData) => p.order || 0),
+        -1
+      );
 
       const pointWithOrder: AboutPhilosophyPointData = {
         ...newPoint,
         order: maxOrder + 1,
       };
 
-      const updatedPhilosophy = {
-        ...existingResponse.data.philosophy,
-        items: [...currentPoints, pointWithOrder],
-      };
+      const updatedPhilosophy = [...currentPoints, pointWithOrder];
 
       const updateResponse = await this.updateSection(
-        'philosophy',
+        'philosophyPoints',
         updatedPhilosophy
       );
       return updateResponse;
@@ -526,8 +527,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentPoints = existingResponse.data.philosophy.items || [];
-      const pointIndex = currentPoints.findIndex(p => p.id === id);
+      const currentPoints = existingResponse.data.philosophyPoints || [];
+      const pointIndex = currentPoints.findIndex(
+        (p: AboutPhilosophyPointData) => p.id === id
+      );
 
       if (pointIndex === -1) {
         return {
@@ -536,15 +539,13 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedPhilosophy = {
-        ...existingResponse.data.philosophy,
-        items: currentPoints.map((point, index) =>
+      const updatedPhilosophy = currentPoints.map(
+        (point: AboutPhilosophyPointData, index: number) =>
           index === pointIndex ? { ...point, ...updatedPoint } : point
-        ),
-      };
+      );
 
       const updateResponse = await this.updateSection(
-        'philosophy',
+        'philosophyPoints',
         updatedPhilosophy
       );
       return updateResponse;
@@ -571,8 +572,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentPoints = existingResponse.data.philosophy.items || [];
-      const filteredPoints = currentPoints.filter(p => p.id !== id);
+      const currentPoints = existingResponse.data.philosophyPoints || [];
+      const filteredPoints = currentPoints.filter(
+        (p: AboutPhilosophyPointData) => p.id !== id
+      );
 
       if (filteredPoints.length === currentPoints.length) {
         return {
@@ -581,14 +584,9 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedPhilosophy = {
-        ...existingResponse.data.philosophy,
-        items: filteredPoints,
-      };
-
       const updateResponse = await this.updateSection(
-        'philosophy',
-        updatedPhilosophy
+        'philosophyPoints',
+        filteredPoints
       );
       return updateResponse;
     } catch (error) {
@@ -616,10 +614,12 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentPoints = existingResponse.data.philosophy.items || [];
+      const currentPoints = existingResponse.data.philosophyPoints || [];
 
       // Create a map for quick lookup
-      const pointMap = new Map(currentPoints.map(p => [p.id, p]));
+      const pointMap = new Map(
+        currentPoints.map((p: AboutPhilosophyPointData) => [p.id, p])
+      );
 
       // Reorder points and update order numbers
       const reorderedPoints = pointIds
@@ -627,16 +627,14 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         .filter(
           (point): point is AboutPhilosophyPointData => point !== undefined
         )
-        .map((point, index) => ({ ...point, order: index }));
-
-      const updatedPhilosophy = {
-        ...existingResponse.data.philosophy,
-        items: reorderedPoints,
-      };
+        .map((point: AboutPhilosophyPointData, index: number) => ({
+          ...point,
+          order: index,
+        }));
 
       const updateResponse = await this.updateSection(
-        'philosophy',
-        updatedPhilosophy
+        'philosophyPoints',
+        reorderedPoints
       );
       return updateResponse;
     } catch (error) {
@@ -666,21 +664,21 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentSteps = existingResponse.data.methodology.items || [];
-      const maxOrder = Math.max(...currentSteps.map(s => s.order), -1);
+      const currentSteps = existingResponse.data.methodologySteps || [];
+      const maxOrder = Math.max(
+        ...currentSteps.map((s: AboutMethodologyStepData) => s.order || 0),
+        -1
+      );
 
       const stepWithOrder: AboutMethodologyStepData = {
         ...newStep,
         order: maxOrder + 1,
       };
 
-      const updatedMethodology = {
-        ...existingResponse.data.methodology,
-        items: [...currentSteps, stepWithOrder],
-      };
+      const updatedMethodology = [...currentSteps, stepWithOrder];
 
       const updateResponse = await this.updateSection(
-        'methodology',
+        'methodologySteps',
         updatedMethodology
       );
       return updateResponse;
@@ -710,8 +708,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentSteps = existingResponse.data.methodology.items || [];
-      const stepIndex = currentSteps.findIndex(s => s.id === id);
+      const currentSteps = existingResponse.data.methodologySteps || [];
+      const stepIndex = currentSteps.findIndex(
+        (s: AboutMethodologyStepData) => s.id === id
+      );
 
       if (stepIndex === -1) {
         return {
@@ -720,15 +720,13 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedMethodology = {
-        ...existingResponse.data.methodology,
-        items: currentSteps.map((step, index) =>
+      const updatedMethodology = currentSteps.map(
+        (step: AboutMethodologyStepData, index: number) =>
           index === stepIndex ? { ...step, ...updatedStep } : step
-        ),
-      };
+      );
 
       const updateResponse = await this.updateSection(
-        'methodology',
+        'methodologySteps',
         updatedMethodology
       );
       return updateResponse;
@@ -755,8 +753,10 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentSteps = existingResponse.data.methodology.items || [];
-      const filteredSteps = currentSteps.filter(s => s.id !== id);
+      const currentSteps = existingResponse.data.methodologySteps || [];
+      const filteredSteps = currentSteps.filter(
+        (s: AboutMethodologyStepData) => s.id !== id
+      );
 
       if (filteredSteps.length === currentSteps.length) {
         return {
@@ -765,14 +765,9 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const updatedMethodology = {
-        ...existingResponse.data.methodology,
-        items: filteredSteps,
-      };
-
       const updateResponse = await this.updateSection(
-        'methodology',
-        updatedMethodology
+        'methodologySteps',
+        filteredSteps
       );
       return updateResponse;
     } catch (error) {
@@ -798,25 +793,25 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
 
-      const currentSteps = existingResponse.data.methodology.items || [];
+      const currentSteps = existingResponse.data.methodologySteps || [];
 
       // Create a map for quick lookup
-      const stepMap = new Map(currentSteps.map(s => [s.id, s]));
+      const stepMap = new Map(
+        currentSteps.map((s: AboutMethodologyStepData) => [s.id, s])
+      );
 
       // Reorder steps and update order numbers
       const reorderedSteps = stepIds
         .map(id => stepMap.get(id))
         .filter((step): step is AboutMethodologyStepData => step !== undefined)
-        .map((step, index) => ({ ...step, order: index }));
-
-      const updatedMethodology = {
-        ...existingResponse.data.methodology,
-        items: reorderedSteps,
-      };
+        .map((step: AboutMethodologyStepData, index: number) => ({
+          ...step,
+          order: index,
+        }));
 
       const updateResponse = await this.updateSection(
-        'methodology',
-        updatedMethodology
+        'methodologySteps',
+        reorderedSteps
       );
       return updateResponse;
     } catch (error) {
@@ -836,218 +831,205 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
     'id' | 'createdAt' | 'updatedAt'
   > {
     return {
-      title: {
-        es: 'Sobre Nosotros',
-        en: 'About Us',
-        pt: 'Sobre Nós',
-      },
-      subtitle: {
-        es: 'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.',
-        en: 'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.',
-        pt: 'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.',
-      },
-      philosophy: {
-        title: {
-          es: 'Nuestra Filosofía',
-          en: 'Our Philosophy',
-          pt: 'Nossa Filosofia',
+      heroTitle: { es: 'Veloz', en: 'Veloz', pt: 'Veloz' },
+      heroSubtitle: { es: '', en: '', pt: '' },
+      heroDescription: { es: '', en: '', pt: '' },
+      heroImage: '',
+      storyTitle: { es: '', en: '', pt: '' },
+      storyContent: { es: '', en: '', pt: '' },
+      storyImage: '',
+      philosophyTitle: { es: '', en: '', pt: '' },
+      philosophyDescription: { es: '', en: '', pt: '' },
+      philosophyPoints: [
+        {
+          id: 'unique-events',
+          title: {
+            es: 'Eventos Únicos',
+            en: 'Unique Events',
+            pt: 'Eventos Únicos',
+          },
+          description: {
+            es: 'Creemos que cada evento es único y merece ser documentado con la máxima dedicación.',
+            en: 'We believe that every event is unique and deserves to be documented with maximum dedication.',
+            pt: 'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação.',
+          },
+          order: 0,
         },
-        items: [
-          {
-            id: 'unique-events',
-            title: {
-              es: 'Eventos Únicos',
-              en: 'Unique Events',
-              pt: 'Eventos Únicos',
-            },
-            description: {
-              es: 'Creemos que cada evento es único y merece ser documentado con la máxima dedicación.',
-              en: 'We believe that every event is unique and deserves to be documented with maximum dedication.',
-              pt: 'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação.',
-            },
-            order: 0,
+        {
+          id: 'storytelling',
+          title: {
+            es: 'Narración Visual',
+            en: 'Visual Storytelling',
+            pt: 'Narrativa Visual',
           },
-          {
-            id: 'storytelling',
-            title: {
-              es: 'Narración Visual',
-              en: 'Visual Storytelling',
-              pt: 'Narrativa Visual',
-            },
-            description: {
-              es: 'Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo.',
-              en: 'Our approach is not just to capture images, but to tell stories that endure over time.',
-              pt: 'Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo.',
-            },
-            order: 1,
+          description: {
+            es: 'Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo.',
+            en: 'Our approach is not just to capture images, but to tell stories that endure over time.',
+            pt: 'Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo.',
           },
-        ],
-      },
-      methodology: {
-        title: {
-          es: 'Nuestra Metodología',
-          en: 'Our Methodology',
-          pt: 'Nossa Metodologia',
+          order: 1,
         },
-        items: [
-          {
-            id: 'planning',
-            title: {
-              es: 'Planificación',
-              en: 'Planning',
-              pt: 'Planejamento',
-            },
-            description: {
-              es: 'Estudiamos cada detalle del evento para anticipar los momentos clave.',
-              en: 'We study every detail of the event to anticipate key moments.',
-              pt: 'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
-            },
-            order: 0,
+      ],
+      methodologyTitle: { es: '', en: '', pt: '' },
+      methodologyDescription: { es: '', en: '', pt: '' },
+      methodologySteps: [
+        {
+          id: 'planning',
+          title: {
+            es: 'Planificación',
+            en: 'Planning',
+            pt: 'Planejamento',
           },
-          {
-            id: 'coverage',
-            title: {
-              es: 'Cobertura Integral',
-              en: 'Comprehensive Coverage',
-              pt: 'Cobertura Integral',
-            },
-            description: {
-              es: 'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
-              en: 'Our team is strategically distributed to not miss any moment.',
-              pt: 'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
-            },
-            order: 1,
+          description: {
+            es: 'Estudiamos cada detalle del evento para anticipar los momentos clave.',
+            en: 'We study every detail of the event to anticipate key moments.',
+            pt: 'Estudamos cada detalhe do evento para antecipar os momentos-chave.',
           },
-          {
-            id: 'capture',
-            title: {
-              es: 'Captura Profesional',
-              en: 'Professional Capture',
-              pt: 'Captura Profissional',
-            },
-            description: {
-              es: 'Utilizamos técnicas avanzadas y equipos de última generación.',
-              en: 'We use advanced techniques and state-of-the-art equipment.',
-              pt: 'Utilizamos técnicas avançadas e equipamentos de última geração.',
-            },
-            order: 2,
-          },
-          {
-            id: 'postproduction',
-            title: {
-              es: 'Post-Producción',
-              en: 'Post-Production',
-              pt: 'Pós-Produção',
-            },
-            description: {
-              es: 'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
-              en: 'We carefully edit every image and video to achieve exceptional results.',
-              pt: 'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
-            },
-            order: 3,
-          },
-        ],
-      },
-      values: {
-        title: {
-          es: 'Nuestros Valores',
-          en: 'Our Values',
-          pt: 'Nossos Valores',
+          order: 0,
+          stepNumber: 0,
         },
-        items: [
-          {
-            id: 'passion',
-            title: {
-              es: 'Pasión',
-              en: 'Passion',
-              pt: 'Paixão',
-            },
-            description: {
-              es: 'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
-              en: 'We love what we do and it shows in every image we capture.',
-              pt: 'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
-            },
-            order: 0,
+        {
+          id: 'coverage',
+          title: {
+            es: 'Cobertura Integral',
+            en: 'Comprehensive Coverage',
+            pt: 'Cobertura Integral',
           },
-          {
-            id: 'teamwork',
-            title: {
-              es: 'Trabajo en Equipo',
-              en: 'Teamwork',
-              pt: 'Trabalho em Equipe',
-            },
-            description: {
-              es: 'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
-              en: 'Our collaborative model allows us to cover every important moment.',
-              pt: 'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
-            },
-            order: 1,
+          description: {
+            es: 'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.',
+            en: 'Our team is strategically distributed to not miss any moment.',
+            pt: 'Nossa equipe se distribui estrategicamente para não perder nenhum momento.',
           },
-          {
-            id: 'quality',
-            title: {
-              es: 'Calidad Técnica',
-              en: 'Technical Quality',
-              pt: 'Qualidade Técnica',
-            },
-            description: {
-              es: 'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
-              en: 'We use professional equipment and advanced techniques for exceptional results.',
-              pt: 'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
-            },
-            order: 2,
-          },
-          {
-            id: 'agility',
-            title: {
-              es: 'Agilidad',
-              en: 'Agility',
-              pt: 'Agilidade',
-            },
-            description: {
-              es: 'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
-              en: 'We adapt quickly to any situation to never miss a moment.',
-              pt: 'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
-            },
-            order: 3,
-          },
-          {
-            id: 'excellence',
-            title: {
-              es: 'Excelencia',
-              en: 'Excellence',
-              pt: 'Excelência',
-            },
-            description: {
-              es: 'Buscamos la perfección en cada proyecto, superando las expectativas.',
-              en: 'We strive for perfection in every project, exceeding expectations.',
-              pt: 'Buscamos a perfeição em cada projeto, superando expectativas.',
-            },
-            order: 4,
-          },
-          {
-            id: 'trust',
-            title: {
-              es: 'Confianza',
-              en: 'Trust',
-              pt: 'Confiança',
-            },
-            description: {
-              es: 'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
-              en: 'We build lasting relationships based on transparency and professionalism.',
-              pt: 'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
-            },
-            order: 5,
-          },
-        ],
-      },
-      faq: {
-        title: {
-          es: 'Preguntas Frecuentes',
-          en: 'Frequently Asked Questions',
-          pt: 'Perguntas Frequentes',
+          order: 1,
+          stepNumber: 1,
         },
-      },
+        {
+          id: 'capture',
+          title: {
+            es: 'Captura Profesional',
+            en: 'Professional Capture',
+            pt: 'Captura Profissional',
+          },
+          description: {
+            es: 'Utilizamos técnicas avanzadas y equipos de última generación.',
+            en: 'We use advanced techniques and state-of-the-art equipment.',
+            pt: 'Utilizamos técnicas avançadas e equipamentos de última geração.',
+          },
+          order: 2,
+          stepNumber: 2,
+        },
+        {
+          id: 'postproduction',
+          title: {
+            es: 'Post-Producción',
+            en: 'Post-Production',
+            pt: 'Pós-Produção',
+          },
+          description: {
+            es: 'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.',
+            en: 'We carefully edit every image and video to achieve exceptional results.',
+            pt: 'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.',
+          },
+          order: 3,
+          stepNumber: 3,
+        },
+      ],
+      valuesTitle: { es: '', en: '', pt: '' },
+      valuesDescription: { es: '', en: '', pt: '' },
+      values: [
+        {
+          id: 'passion',
+          title: {
+            es: 'Pasión',
+            en: 'Passion',
+            pt: 'Paixão',
+          },
+          description: {
+            es: 'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
+            en: 'We love what we do and it shows in every image we capture.',
+            pt: 'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
+          },
+          order: 0,
+        },
+        {
+          id: 'teamwork',
+          title: {
+            es: 'Trabajo en Equipo',
+            en: 'Teamwork',
+            pt: 'Trabalho em Equipe',
+          },
+          description: {
+            es: 'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
+            en: 'Our collaborative model allows us to cover every important moment.',
+            pt: 'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
+          },
+          order: 1,
+        },
+        {
+          id: 'quality',
+          title: {
+            es: 'Calidad Técnica',
+            en: 'Technical Quality',
+            pt: 'Qualidade Técnica',
+          },
+          description: {
+            es: 'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
+            en: 'We use professional equipment and advanced techniques for exceptional results.',
+            pt: 'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
+          },
+          order: 2,
+        },
+        {
+          id: 'agility',
+          title: {
+            es: 'Agilidad',
+            en: 'Agility',
+            pt: 'Agilidade',
+          },
+          description: {
+            es: 'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
+            en: 'We adapt quickly to any situation to never miss a moment.',
+            pt: 'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
+          },
+          order: 3,
+        },
+        {
+          id: 'excellence',
+          title: {
+            es: 'Excelencia',
+            en: 'Excellence',
+            pt: 'Excelência',
+          },
+          description: {
+            es: 'Buscamos la perfección en cada proyecto, superando las expectativas.',
+            en: 'We strive for perfection in every project, exceeding expectations.',
+            pt: 'Buscamos a perfeição em cada projeto, superando expectativas.',
+          },
+          order: 4,
+        },
+        {
+          id: 'trust',
+          title: {
+            es: 'Confianza',
+            en: 'Trust',
+            pt: 'Confiança',
+          },
+          description: {
+            es: 'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
+            en: 'We build lasting relationships based on transparency and professionalism.',
+            pt: 'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
+          },
+          order: 5,
+        },
+      ],
+      teamTitle: { es: '', en: '', pt: '' },
+      teamDescription: { es: '', en: '', pt: '' },
+      ctaTitle: { es: '', en: '', pt: '' },
+      ctaDescription: { es: '', en: '', pt: '' },
+      ctaButtonText: { es: '', en: '', pt: '' },
+      ctaButtonUrl: '',
+      seo: { title: '', description: '', keywords: [] },
+      lastModifiedBy: '',
     };
   }
 }

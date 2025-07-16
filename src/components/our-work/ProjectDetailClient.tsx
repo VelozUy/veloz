@@ -10,6 +10,7 @@ import {
 import ProjectVisualGrid from '@/components/our-work/ProjectVisualGrid';
 import MasonryGallery from '@/components/our-work/MasonryGallery';
 import MeetTheTeam from '@/components/our-work/MeetTheTeam';
+import SocialFeed from '@/components/our-work/SocialFeed';
 import Image from 'next/image';
 
 interface ProjectDetailClientProps {
@@ -154,12 +155,15 @@ export default function ProjectDetailClient({
 
       {/* Meet the Team Section */}
       {project.crewMembers && project.crewMembers.length > 0 && (
-        <MeetTheTeam 
-          crewMemberIds={project.crewMembers} 
-          language="es" 
+        <MeetTheTeam
+          crewMemberIds={project.crewMembers}
+          language="es"
           projectId={project.id}
         />
       )}
+
+      {/* Social Feed Section */}
+      <SocialFeed projectId={project.id} language="es" />
     </div>
   );
 }
