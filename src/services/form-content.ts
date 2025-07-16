@@ -354,6 +354,28 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               pt: 'Ainda não tenho uma data definida',
             },
           },
+          location: {
+            title: {
+              es: '¿Dónde será tu evento?',
+              en: 'Where will your event be?',
+              pt: 'Onde será seu evento?',
+            },
+            subtitle: {
+              es: 'Ayúdanos a entender mejor tu ubicación',
+              en: 'Help us understand your location better',
+              pt: 'Ajude-nos a entender melhor sua localização',
+            },
+            placeholder: {
+              es: 'Ciudad, barrio o lugar específico',
+              en: 'City, neighborhood or specific venue',
+              pt: 'Cidade, bairro ou local específico',
+            },
+            noLocation: {
+              es: 'Aún no tengo ubicación definida',
+              en: "I don't have a location set yet",
+              pt: 'Ainda não tenho uma localização definida',
+            },
+          },
           contact: {
             title: {
               es: '¿Quieres contarnos más?',

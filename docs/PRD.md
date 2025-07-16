@@ -675,6 +675,7 @@ Each content file includes:
 - ✅ **EmailJS Integration** - Client-side email sending for immediate functionality
 - ✅ **Interactive CTA Widget** - Conversational micro-survey for lead capture
 - ✅ **Contact Form** - Friendly, non-intrusive form with validation
+- ✅ **Interactive CTA Widget** - Conversational micro-survey for lead capture with EmailJS integration
 
 ### Enhanced Backend System (Phase 2)
 
@@ -713,6 +714,37 @@ interface ContactMessage {
 - **Message Actions**: Archive/Unarchive, view details, export data
 - **Email Integration**: Direct reply-to functionality
 - **Analytics**: Contact conversion tracking and response metrics
+
+### Interactive CTA Widget System
+
+**Widget Features**:
+
+- **Smart Visibility Logic**: Appears based on user engagement (dwell time, scroll depth, mouse movement)
+- **Multi-step Survey Flow**: Progressive disclosure with step-by-step form completion
+- **Event Type Selection**: Wedding, corporate, birthday, other with visual icons
+- **Date Preference Capture**: Calendar interface with past date prevention
+- **Location Input**: Text input with validation and optional skip
+- **Contact Preference**: Choose between "more info" or "call me" options
+- **Phone Number Capture**: International format support with validation
+- **Success Confirmation**: Clear next steps and confirmation message
+
+**Technical Implementation**:
+
+- **EmailJS Integration**: Dual-template system for admin notifications and user auto-replies
+- **Firestore Storage**: Contact data storage with proper error handling and undefined value filtering
+- **Analytics Tracking**: CTA interaction tracking with project-specific metrics
+- **Responsive Design**: Mobile-optimized interface with touch-friendly interactions
+- **Accessibility**: ARIA labels, keyboard navigation, and screen reader support
+- **Content Security Policy**: EmailJS domain whitelisting for secure API calls
+- **Error Handling**: User-friendly error messages with fallback mechanisms
+
+**Widget Behavior**:
+
+- **Engagement Detection**: Tracks dwell time, scroll behavior, and mouse movement
+- **Progressive Disclosure**: Shows widget after user demonstrates engagement
+- **Non-intrusive Design**: Floating button that doesn't interfere with content
+- **Smooth Animations**: Entrance and exit animations with proper timing
+- **Mobile Optimization**: Touch-friendly interface with appropriate sizing
 
 ---
 

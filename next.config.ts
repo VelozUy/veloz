@@ -125,7 +125,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https: blob:",
               "media-src 'self' https: blob:",
-              "connect-src 'self' https://www.google-analytics.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://apis.google.com https://veloz-6efe6.firebaseapp.com https://accounts.google.com https://www.googleapis.com",
+              "connect-src 'self' https://www.google-analytics.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://firebase.googleapis.com https://apis.google.com https://veloz-6efe6.firebaseapp.com https://accounts.google.com https://www.googleapis.com https://api.emailjs.com",
               "frame-src 'self' https://accounts.google.com https://veloz-6efe6.firebaseapp.com https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",

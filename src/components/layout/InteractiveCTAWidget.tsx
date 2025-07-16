@@ -28,7 +28,6 @@ type SurveyStep =
   | 'event-type'
   | 'date'
   | 'location'
-  | 'services'
   | 'contact-preference'
   | 'phone-capture'
   | 'complete';
@@ -38,7 +37,6 @@ interface SurveyData {
   hasDate?: boolean;
   eventDate?: string;
   location?: string;
-  services?: string[];
   wantsMoreInfo?: boolean;
   phone?: string;
 }
@@ -357,58 +355,23 @@ export function InteractiveCTAWidget() {
 
   // Calculate widget base position classes
   const getWidgetBaseClasses = () => {
-    return 'fixed right-4 z-40';
+    return 'fixed right-4 top-20 z-50 bg-green-500 text-white p-4 rounded-lg';
   };
 
   // Add smooth transform animation styles with positioning and entrance animation
   const getWidgetTransformStyle = (): React.CSSProperties => {
-    if (!mounted || !isVisible || !isUserEngaged) {
-      return {
-        transform: 'translateY(30px) scale(0.85) rotate(-2deg)',
-        opacity: 0,
-        filter: 'blur(2px)',
-        transition:
-          'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out, filter 0.3s ease-out',
-        // Default positioning during load
-        top: 'auto',
-        bottom: '80px', // Above bottom nav on mobile
-      };
-    }
+    const baseTransform = isMobile
+      ? 'translateX(0) translateY(0)'
+      : 'translateX(0) translateY(0)';
 
-    // Determine position based on screen size and scroll direction
-    let positioning: React.CSSProperties = {};
-
-    if (isMobile) {
-      // Mobile: Dynamic positioning based on scroll direction
-      if (scrollDirection === 'down') {
-        positioning = {
-          top: '96px', // Below top nav (96px = 6rem = top-24)
-          bottom: 'auto',
-        };
-      } else {
-        positioning = {
-          top: 'auto',
-          bottom: '80px', // Above bottom nav (80px = 5rem = bottom-20)
-        };
-      }
-    } else {
-      // Desktop: Always at top
-      positioning = {
-        top: '96px', // Below top nav
-        bottom: 'auto',
-      };
-    }
+    const entranceAnimation = isVisible
+      ? 'translateX(0) translateY(0)'
+      : 'translateX(100%) translateY(0)';
 
     return {
-      transform: 'translateY(0) scale(1.02) rotate(0deg)',
-      opacity: 1,
-      filter: 'blur(0px)',
-      transition:
-        'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease-out, filter 0.4s ease-out, box-shadow 0.5s ease-out',
-      boxShadow:
-        '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
-      animation: 'breathe 4s ease-in-out infinite',
-      ...positioning,
+      transform: `${baseTransform} ${entranceAnimation}`,
+      opacity: isVisible ? 1 : 0,
+      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
     };
   };
 
@@ -442,16 +405,11 @@ export function InteractiveCTAWidget() {
 
   const handleLocationResponse = (location: string) => {
     setSurveyData({ ...surveyData, location });
-    setCurrentStep('services');
+    setCurrentStep('contact-preference');
   };
 
   const handleLocationInput = (value: string) => {
     setSurveyData({ ...surveyData, location: value });
-  };
-
-  const handleServicesResponse = (services: string[]) => {
-    setSurveyData({ ...surveyData, services });
-    setCurrentStep('contact-preference');
   };
 
   const handleContactPreference = (preference: 'more-info' | 'call-me') => {
@@ -461,9 +419,8 @@ export function InteractiveCTAWidget() {
       if (surveyData.eventType) params.set('evento', surveyData.eventType);
       if (surveyData.eventDate) params.set('fecha', surveyData.eventDate);
       if (surveyData.location) params.set('ubicacion', surveyData.location);
-      if (surveyData.services && surveyData.services.length > 0) {
-        params.set('servicios', surveyData.services.join(','));
-      }
+      // Veloz only provides video and photography services
+      params.set('servicios', 'photography,videography');
 
       // Navigate to the appropriate contact page based on current language
       const contactPath =
@@ -489,20 +446,21 @@ export function InteractiveCTAWidget() {
         eventType: surveyData.eventType || 'otro',
         eventDate: surveyData.eventDate,
         location: surveyData.location,
-        services: surveyData.services,
+        services: ['photography', 'videography'], // Veloz only provides video and photography
         phone: phoneInput,
-        message: `Solicitud de contacto telefónico desde el widget interactivo.\nTipo de evento: ${surveyData.eventType}\nFecha: ${surveyData.eventDate || 'No especificada'}\nUbicación: ${surveyData.location || 'No especificada'}\nServicios: ${surveyData.services?.join(', ') || 'No especificados'}`,
+        message: `Solicitud de contacto telefónico desde el widget interactivo.\nTipo de evento: ${surveyData.eventType}\nFecha: ${surveyData.eventDate || 'No especificada'}\nUbicación: ${surveyData.location || 'No especificada'}\nServicios: Fotografía y Video`,
         source: 'widget',
       };
 
+      // Filter out undefined values for Firestore
       const firestoreData: ContactMessageData = {
         name: 'Prospecto desde Widget',
         phone: phoneInput,
         eventType: surveyData.eventType || 'otro',
-        eventDate: surveyData.eventDate,
-        location: surveyData.location,
-        services: surveyData.services,
-        message: `Solicitud de contacto telefónico desde el widget interactivo.\nTipo de evento: ${surveyData.eventType}\nFecha: ${surveyData.eventDate || 'No especificada'}\nUbicación: ${surveyData.location || 'No especificada'}\nServicios: ${surveyData.services?.join(', ') || 'No especificados'}`,
+        ...(surveyData.eventDate && { eventDate: surveyData.eventDate }),
+        ...(surveyData.location && { location: surveyData.location }),
+        services: ['photography', 'videography'], // Veloz only provides video and photography
+        message: `Solicitud de contacto telefónico desde el widget interactivo.\nTipo de evento: ${surveyData.eventType}\nFecha: ${surveyData.eventDate || 'No especificada'}\nUbicación: ${surveyData.location || 'No especificada'}\nServicios: Fotografía y Video`,
         source: 'widget',
         isRead: false,
         status: 'new',
@@ -650,154 +608,6 @@ export function InteractiveCTAWidget() {
           </div>
         );
 
-      case 'services':
-        return (
-          <div className="space-y-4">
-            <div className="text-center space-y-2">
-              <MessageCircle className="w-8 h-8 text-primary mx-auto" />
-              <h3 className="text-xl font-semibold text-foreground">
-                {getTranslation('widget.steps.services.title')}
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                {getTranslation('widget.steps.services.subtitle')}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <Button
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['ceremony'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.ceremony.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.ceremony.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['photography'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.photography.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation(
-                      'widget.steps.services.photography.subtitle'
-                    )}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['videography'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.videography.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation(
-                      'widget.steps.services.videography.subtitle'
-                    )}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['dj'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.dj.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.dj.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['decor'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.decor.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.decor.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['catering'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.catering.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.catering.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['transport'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.transport.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.transport.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start h-auto p-4"
-                onClick={() => handleServicesResponse(['other'])}
-              >
-                <MessageCircle className="w-5 h-5 mr-3 text-primary" />
-                <div className="text-left">
-                  <div className="font-medium">
-                    {getTranslation('widget.steps.services.other.title')}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {getTranslation('widget.steps.services.other.subtitle')}
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 ml-auto" />
-              </Button>
-            </div>
-          </div>
-        );
-
       case 'contact-preference':
         return (
           <div className="space-y-4">
@@ -934,7 +744,7 @@ export function InteractiveCTAWidget() {
             });
             setIsOpen(true);
           }}
-          className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1"
+          className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1 bg-yellow-500 text-black"
           size="lg"
         >
           <MessageCircle className="w-5 h-5 mr-2" />

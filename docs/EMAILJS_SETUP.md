@@ -15,13 +15,18 @@ This guide explains how to set up EmailJS to handle contact form submissions for
 4. Follow the setup instructions for your provider
 5. Note down the **Service ID** (e.g., `service_abc123`)
 
-## 3. Create Email Template
+## 3. Create Email Templates
+
+You'll need to create **two templates**: one for admin notifications and one for auto-replies to users.
+
+### Admin Template (for your team)
 
 1. Go to **Email Templates** in the dashboard
 2. Click **Create New Template**
-3. Use this template structure:
+3. Name it "Admin Notification" or similar
+4. Use this template structure:
 
-### Template Variables (these come from our forms):
+#### Admin Template Variables:
 
 - `{{from_name}}` - Contact's name
 - `{{from_email}}` - Contact's email
@@ -30,11 +35,27 @@ This guide explains how to set up EmailJS to handle contact form submissions for
 - `{{message}}` - Contact message
 - `{{phone}}` - Phone number (if provided)
 - `{{source}}` - Form source (contact_form or widget)
-- `{{preferred_contact}}` - Contact preference (email or phone)
 - `{{to_name}}` - Your team name (Equipo Veloz)
 - `{{reply_to}}` - Reply email (same as from_email)
 
-### Suggested Email Template:
+### Auto-Reply Template (for users)
+
+1. Create another template named "Auto-Reply" or similar
+2. Use this template structure:
+
+#### Auto-Reply Template Variables:
+
+- `{{to_name}}` - Contact's name
+- `{{to_email}}` - Contact's email
+- `{{event_type}}` - Type of event
+- `{{event_date}}` - Event date
+- `{{message}}` - Contact message
+- `{{phone}}` - Phone number (if provided)
+- `{{source}}` - Form source (contact_form or widget)
+- `{{from_name}}` - Your team name (Equipo Veloz)
+- `{{reply_to}}` - Your admin email for replies
+
+### Suggested Admin Email Template:
 
 **Subject:** Nuevo contacto desde Veloz - {{event_type}}
 
@@ -49,7 +70,6 @@ Has recibido un nuevo contacto desde el sitio web de Veloz:
 • Nombre: {{from_name}}
 • Email: {{from_email}}
 • Teléfono: {{phone}}
-• Preferencia de contacto: {{preferred_contact}}
 
 🎉 Información del Evento:
 • Tipo de evento: {{event_type}}
@@ -65,7 +85,37 @@ Este mensaje fue enviado automáticamente desde el formulario de contacto de Vel
 Para responder al cliente, usa: {{reply_to}}
 ```
 
-4. Save the template and note the **Template ID** (e.g., `template_xyz789`)
+### Suggested Auto-Reply Email Template:
+
+**Subject:** ¡Gracias por contactarnos, {{to_name}}!
+
+**Body:**
+
+```
+Hola {{to_name}},
+
+¡Gracias por contactarnos! Hemos recibido tu solicitud para {{event_type}}.
+
+📋 Resumen de tu solicitud:
+• Tipo de evento: {{event_type}}
+• Fecha aproximada: {{event_date}}
+• Ubicación: {{message}}
+
+📞 Próximos pasos:
+Te contactaremos dentro de las próximas 24 horas para discutir los detalles de tu evento y proporcionarte una cotización personalizada.
+
+Si tienes alguna pregunta urgente, no dudes en responder a este email o llamarnos directamente.
+
+¡Esperamos trabajar contigo para hacer de tu evento algo extraordinario!
+
+Saludos,
+{{from_name}}
+{{reply_to}}
+```
+
+4. Save the admin template and note the **Admin Template ID** (e.g., `template_admin_xyz789`)
+
+5. Create the auto-reply template and note the **Auto-Reply Template ID** (e.g., `template_auto_reply_abc123`)
 
 ## 4. Get Public Key
 
@@ -79,7 +129,8 @@ Add these variables to your `.env.local` file:
 ```bash
 # EmailJS Configuration
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id_here
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id_here
+NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=your_admin_template_id_here
+NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID=your_auto_reply_template_id_here
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key_here
 ```
 

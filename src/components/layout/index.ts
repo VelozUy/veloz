@@ -14,3 +14,4 @@ export { default as Navigation } from './navigation';
 export { default as ConditionalNavigation } from './ConditionalNavigation';
 export { default as PageLayout } from './PageLayout';
 export { InteractiveCTAWidget } from './InteractiveCTAWidget';
+export { WidgetWrapper } from './WidgetWrapper';
