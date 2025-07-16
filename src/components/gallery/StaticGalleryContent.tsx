@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import MediaLightbox from './MediaLightbox';
 import GalleryContent from './GalleryContent';
+import GalleryFilter from './GalleryFilter';
 import { LocalizedContent } from '@/lib/static-content.generated';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -108,6 +109,7 @@ export default function StaticGalleryContent({
 }: StaticGalleryContentProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   // Video refs for intersection observer
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
@@ -138,9 +140,27 @@ export default function StaticGalleryContent({
       });
   }, [content]);
 
-  // Flatten all media from all projects for lightbox
+  // Filter projects based on active filter
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'all') {
+      return projects;
+    }
+    return projects.filter(project => project.eventType === activeFilter);
+  }, [projects, activeFilter]);
+
+  // Calculate project counts for filter buttons
+  const projectCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    projects.forEach(project => {
+      const eventType = project.eventType || 'Otros';
+      counts[eventType] = (counts[eventType] || 0) + 1;
+    });
+    return counts;
+  }, [projects]);
+
+  // Flatten all media from filtered projects for lightbox
   const allMedia: MediaItem[] = useMemo(() => {
-    return projects.flatMap(project =>
+    return filteredProjects.flatMap(project =>
       project.media.map(media => ({
         id: media.id,
         type: media.type,
@@ -154,12 +174,12 @@ export default function StaticGalleryContent({
         aspectRatio: media.aspectRatio || ('16:9' as const),
       }))
     );
-  }, [projects]);
+  }, [filteredProjects]);
 
   // Create projects lookup for lightbox
   const projectsLookup: Record<string, LightboxProject> = useMemo(() => {
     const lookup: Record<string, LightboxProject> = {};
-    projects.forEach(project => {
+    filteredProjects.forEach(project => {
       lookup[project.id] = {
         id: project.id,
         title: {
@@ -173,7 +193,15 @@ export default function StaticGalleryContent({
       };
     });
     return lookup;
-  }, [projects]);
+  }, [filteredProjects]);
+
+  // Handle filter change
+  const handleFilterChange = useCallback((filter: string) => {
+    setActiveFilter(filter);
+    // Reset lightbox when filter changes
+    setLightboxOpen(false);
+    setCurrentMediaIndex(0);
+  }, []);
 
   // Video autoplay intersection observer
   useEffect(() => {
@@ -307,9 +335,16 @@ export default function StaticGalleryContent({
         </p>
       </div>
 
+      {/* Gallery Filter */}
+      <GalleryFilter
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+        projectCounts={projectCounts}
+      />
+
       {/* Projects Grid */}
       <div className="space-y-6">
-        {projects.map(project => (
+        {filteredProjects.map(project => (
           <div key={project.id} className="space-y-3">
             {/* Project Header */}
             <div className="text-center">

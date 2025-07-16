@@ -1,6 +1,7 @@
 import { FirebaseError } from 'firebase/app';
 import { FirestoreError } from 'firebase/firestore';
 import { StorageError } from 'firebase/storage';
+import { AuthError } from 'firebase/auth';
 import type { ApiResponse } from '@/types';
 import { getFirestoreSync } from './firebase';
 import { enableNetwork, disableNetwork } from 'firebase/firestore';
@@ -891,40 +892,7 @@ export const withFirestoreRecovery = async <T>(
   }
 };
 
-// Global error handler for unhandled Firebase errors
-export const setupGlobalFirebaseErrorHandler = () => {
-  if (typeof window === 'undefined') return;
 
-  const originalConsoleError = console.error;
-  console.error = (...args) => {
-    const errorMessage = args.join(' ');
-
-    // Check if this is a Firestore internal error
-    if (isFirestoreInternalError({ message: errorMessage })) {
-      console.warn('🔥 Global error handler detected Firestore internal error');
-      trackError(new Error(errorMessage), 'global-error-handler');
-
-      // Trigger automatic recovery in the background
-      triggerAutomaticRecovery().then(success => {
-        if (success) {
-          console.log('🔥 Global error handler: Automatic recovery completed');
-        } else {
-          console.error('🔥 Global error handler: Automatic recovery failed');
-        }
-      });
-    }
-
-    // Call original console.error
-    originalConsoleError.apply(console, args);
-  };
-
-  console.log('✅ Global Firebase error handler installed');
-};
-
-// Initialize global error handler
-if (typeof window !== 'undefined') {
-  setupGlobalFirebaseErrorHandler();
-}
 
 // Enhanced timeout wrapper
 export const withTimeout = <T>(
@@ -964,5 +932,19 @@ export const cleanupFirebase = async () => {
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
     cleanupAllListeners();
+  });
+}
+
+// Global error handler for unhandled Firebase errors
+if (typeof window !== 'undefined') {
+  window.addEventListener('unhandledrejection', (event) => {
+    if (event.reason && (
+      event.reason.message?.includes('firebase') ||
+      event.reason.message?.includes('Failed to fetch') ||
+      event.reason.message?.includes('installations')
+    )) {
+      console.warn('⚠️ Unhandled Firebase error caught:', event.reason);
+      event.preventDefault(); // Prevent the error from crashing the app
+    }
   });
 }

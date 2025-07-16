@@ -10,6 +10,7 @@ import {
 } from '@/lib/firebase-error-handler';
 
 import MediaLightbox from './MediaLightbox';
+import GalleryFilter from './GalleryFilter';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, AlertCircle } from 'lucide-react';
@@ -60,6 +61,7 @@ export default function GalleryContent() {
   const [allMedia, setAllMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -323,14 +325,46 @@ export default function GalleryContent() {
     };
   }, [allMedia]); // Re-run when media changes
 
+  // Filter projects based on active filter
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'all') {
+      return projects;
+    }
+    return projects.filter(project => project.eventType === activeFilter);
+  }, [projects, activeFilter]);
+
+  // Filter media based on filtered projects
+  const filteredMedia = useMemo(() => {
+    const filteredProjectIds = new Set(filteredProjects.map(p => p.id));
+    return allMedia.filter(media => filteredProjectIds.has(media.projectId));
+  }, [allMedia, filteredProjects]);
+
+  // Calculate project counts for filter buttons
+  const projectCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    projects.forEach(project => {
+      const eventType = project.eventType || 'Otros';
+      counts[eventType] = (counts[eventType] || 0) + 1;
+    });
+    return counts;
+  }, [projects]);
+
+  // Handle filter change
+  const handleFilterChange = useCallback((filter: string) => {
+    setActiveFilter(filter);
+    // Reset lightbox when filter changes
+    setLightboxOpen(false);
+    setCurrentMediaIndex(0);
+  }, []);
+
   // Create projects lookup for lightbox
   const projectsLookup = useMemo(() => {
     const lookup: Record<string, Project> = {};
-    projects.forEach(project => {
+    filteredProjects.forEach(project => {
       lookup[project.id] = project;
     });
     return lookup;
-  }, [projects]);
+  }, [filteredProjects]);
 
   const handleMediaClick = (mediaIndex: number) => {
     setCurrentMediaIndex(mediaIndex);
@@ -394,18 +428,25 @@ export default function GalleryContent() {
 
   return (
     <>
+      {/* Gallery Filter */}
+      <GalleryFilter
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+        projectCounts={projectCounts}
+      />
+
       {/* Bento Grid Gallery */}
-      {allMedia.length > 0 ? (
+      {filteredMedia.length > 0 ? (
         <div className="w-full pt-4 pb-8">
           <BentoGrid
             className="max-w-7xl mx-auto"
-            items={allMedia.map(media => ({
+            items={filteredMedia.map(media => ({
               aspectRatio: media.aspectRatio || '16:9',
               size: 'medium' as const, // Will be overridden by random layout algorithm
             }))}
             enableRandomLayout={true}
           >
-            {allMedia.map((media, index) => {
+            {filteredMedia.map((media, index) => {
               const project = projects.find(p => p.id === media.projectId);
               if (!project) return null;
 
@@ -461,7 +502,7 @@ export default function GalleryContent() {
       <MediaLightbox
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
-        media={allMedia}
+        media={filteredMedia}
         currentIndex={currentMediaIndex}
         onNavigate={setCurrentMediaIndex}
         projects={projectsLookup}

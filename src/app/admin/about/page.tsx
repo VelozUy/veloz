@@ -1045,8 +1045,8 @@ export default function AboutAdminPage() {
     > = {};
 
     // Main content
-    translationData['title'] = formData.title;
-    translationData['subtitle'] = formData.subtitle;
+    translationData['title'] = formData.heroTitle;
+    translationData['subtitle'] = formData.heroSubtitle;
 
     // Philosophy section
     translationData['philosophy.title'] = formData.philosophyTitle;
@@ -1099,10 +1099,10 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.values)) return prev;
 
         const oldIndex = prev.values.findIndex(
-          item => item.id === active.id
+          (item: any) => (item.id || `value-${Date.now()}-${Math.random()}`) === active.id
         );
         const newIndex = prev.values.findIndex(
-          item => item.id === over?.id
+          (item: any) => (item.id || `value-${Date.now()}-${Math.random()}`) === over?.id
         );
 
         const newItems = arrayMove(prev.values, oldIndex, newIndex);
@@ -1132,10 +1132,10 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.philosophyPoints)) return prev;
 
         const oldIndex = prev.philosophyPoints.findIndex(
-          item => item.id === active.id
+          (item: any) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) === active.id
         );
         const newIndex = prev.philosophyPoints.findIndex(
-          item => item.id === over?.id
+          (item: any) => (item.id || `philosophy-${Date.now()}-${Math.random()}`) === over?.id
         );
 
         const newItems = arrayMove(prev.philosophyPoints, oldIndex, newIndex);
@@ -1165,10 +1165,10 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.methodologySteps)) return prev;
 
         const oldIndex = prev.methodologySteps.findIndex(
-          item => item.id === active.id
+          (item: any) => (item.id || `methodology-${Date.now()}-${Math.random()}`) === active.id
         );
         const newIndex = prev.methodologySteps.findIndex(
-          item => item.id === over?.id
+          (item: any) => (item.id || `methodology-${Date.now()}-${Math.random()}`) === over?.id
         );
 
         const newItems = arrayMove(prev.methodologySteps, oldIndex, newIndex);

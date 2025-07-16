@@ -138,7 +138,12 @@ export default function InfiniteLoopingGallery({
 
   // Create masonry layout with varying sizes and stable random offsets
   // Not memoized so it always uses latest toolbar state
-  let masonryItems: any[] = [];
+  let masonryItems: Array<ProjectMedia & {
+    uniqueId: string;
+    size: { width: number; height: number };
+    setIndex: number;
+    offsetSeed: number;
+  }> = [];
   if (media.length) {
     const items = [];
     const mediaSets = 4; // Fewer sets for less density
