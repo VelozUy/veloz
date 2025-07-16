@@ -27,12 +27,6 @@ export interface ContactFormData {
 
 export const emailService = {
   async sendContactForm(data: ContactFormData): Promise<void> {
-    console.log('🔧 EmailJS Debug Info:');
-    console.log('  Service ID:', EMAILJS_SERVICE_ID);
-    console.log('  Admin Template ID:', EMAILJS_ADMIN_TEMPLATE_ID);
-    console.log('  Auto-Reply Template ID:', EMAILJS_AUTO_REPLY_TEMPLATE_ID);
-    console.log('  Public Key:', EMAILJS_PUBLIC_KEY ? 'Present' : 'Missing');
-
     if (
       !EMAILJS_SERVICE_ID ||
       !EMAILJS_ADMIN_TEMPLATE_ID ||
@@ -59,16 +53,12 @@ export const emailService = {
         reply_to: data.email,
       };
 
-      console.log('Sending admin email with params:', adminTemplateParams);
-
       // Send admin notification
       const adminResponse = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_ADMIN_TEMPLATE_ID,
         adminTemplateParams
       );
-
-      console.log('Admin email sent successfully:', adminResponse);
 
       // Send auto-reply to user if they provided an email
       if (
@@ -90,15 +80,11 @@ export const emailService = {
           reply_to: 'admin@veloz.com.uy', // Your admin email for replies
         };
 
-        console.log('Sending auto-reply email with params:', autoReplyParams);
-
         const autoReplyResponse = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_AUTO_REPLY_TEMPLATE_ID,
           autoReplyParams
         );
-
-        console.log('Auto-reply email sent successfully:', autoReplyResponse);
       }
 
       if (adminResponse.status !== 200) {
@@ -148,18 +134,11 @@ export const emailService = {
   // Test EmailJS configuration
   async testConfiguration(): Promise<boolean> {
     try {
-      console.log('🧪 Testing EmailJS Configuration...');
-      console.log('  Service ID:', EMAILJS_SERVICE_ID);
-      console.log('  Admin Template ID:', EMAILJS_ADMIN_TEMPLATE_ID);
-      console.log('  Auto-Reply Template ID:', EMAILJS_AUTO_REPLY_TEMPLATE_ID);
-      console.log('  Public Key:', EMAILJS_PUBLIC_KEY ? 'Present' : 'Missing');
-
       if (
         !EMAILJS_SERVICE_ID ||
         !EMAILJS_ADMIN_TEMPLATE_ID ||
         !EMAILJS_PUBLIC_KEY
       ) {
-        console.log('❌ Missing required EmailJS configuration');
         return false;
       }
 
@@ -178,14 +157,12 @@ export const emailService = {
         reply_to: 'test@example.com',
       };
 
-      console.log('📧 Sending test email...');
       const response = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_ADMIN_TEMPLATE_ID,
         testParams
       );
 
-      console.log('✅ EmailJS test successful:', response);
       return true;
     } catch (error) {
       console.error('❌ EmailJS configuration test failed:', error);
