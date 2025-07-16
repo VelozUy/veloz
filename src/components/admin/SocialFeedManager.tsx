@@ -269,20 +269,24 @@ export default function SocialFeedManager({
       setUploading(true);
       setUploadProgress(0);
 
-      const config = fileUploadService.getConfigForFileType('social');
+      const fileType = file.type.startsWith('image/') ? 'image' : 'video';
+      const config = fileUploadService.getConfigForFileType(fileType);
       const result = await fileUploadService.uploadFile(
         file,
+        `social-posts/${projectId}`,
         config,
-        progress => {
-          setUploadProgress(progress);
+        (progress: { percentage: number }) => {
+          setUploadProgress(progress.percentage);
         }
       );
 
-      if (result.success) {
+      if (result.success && result.data) {
         // Create social post with uploaded file
         const postData = {
           projectId,
-          type: file.type.startsWith('image/') ? 'image' : 'video',
+          type: (file.type.startsWith('image/') ? 'image' : 'video') as
+            | 'image'
+            | 'video',
           url: result.data.url,
           caption: { es: '', en: '', pt: '' },
           order: socialPosts.length,
@@ -519,7 +523,7 @@ function SocialPostForm({
           contentData={getContentDataForTranslation()}
           sourceLanguage="es"
           onBatchTranslated={handleBatchTranslate}
-          contentType="social"
+          contentType="marketing"
           disabled={!hasSpanishContent()}
           className="h-8 text-xs"
         />
@@ -565,7 +569,7 @@ function SocialPostForm({
                   },
                 }));
               }}
-              contentType="social"
+              contentType="marketing"
               context="social post caption"
             />
           </div>

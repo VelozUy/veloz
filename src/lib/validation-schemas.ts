@@ -243,6 +243,34 @@ export const homepageContentSchema = baseSchema.extend({
   lastModifiedBy: z.string().optional(),
 });
 
+// About Philosophy Point Schema
+export const aboutPhilosophyPointSchema = z.object({
+  id: z.string().optional(),
+  order: z.number().int().min(0).optional(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  icon: z.string().optional(),
+});
+
+// About Methodology Step Schema
+export const aboutMethodologyStepSchema = z.object({
+  id: z.string().optional(),
+  order: z.number().int().min(0).optional(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  stepNumber: z.number().int().min(1),
+  image: z.string().url().optional(),
+});
+
+// About Value Schema
+export const aboutValueSchema = z.object({
+  id: z.string().optional(),
+  order: z.number().int().min(0).optional(),
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  icon: z.string().optional(),
+});
+
 // About Content Schema
 export const aboutContentSchema = baseSchema.extend({
   heroTitle: multiLanguageTextSchema,
@@ -254,38 +282,13 @@ export const aboutContentSchema = baseSchema.extend({
   storyImage: z.string().url().optional(),
   philosophyTitle: multiLanguageTextSchema,
   philosophyDescription: multiLanguageTextSchema,
-  philosophyPoints: z
-    .array(
-      z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-        icon: z.string().optional(),
-      })
-    )
-    .default([]),
+  philosophyPoints: z.array(aboutPhilosophyPointSchema).default([]),
   methodologyTitle: multiLanguageTextSchema,
   methodologyDescription: multiLanguageTextSchema,
-  methodologySteps: z
-    .array(
-      z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-        stepNumber: z.number().int().min(1),
-        image: z.string().url().optional(),
-      })
-    )
-    .default([]),
+  methodologySteps: z.array(aboutMethodologyStepSchema).default([]),
   valuesTitle: multiLanguageTextSchema,
   valuesDescription: multiLanguageTextSchema,
-  values: z
-    .array(
-      z.object({
-        title: multiLanguageTextSchema,
-        description: multiLanguageTextSchema,
-        icon: z.string().optional(),
-      })
-    )
-    .default([]),
+  values: z.array(aboutValueSchema).default([]),
   teamTitle: multiLanguageTextSchema,
   teamDescription: multiLanguageTextSchema,
   ctaTitle: multiLanguageTextSchema,
@@ -300,32 +303,6 @@ export const aboutContentSchema = baseSchema.extend({
     })
     .optional(),
   lastModifiedBy: z.string().optional(),
-});
-
-// About Philosophy Point Schema
-export const aboutPhilosophyPointSchema = z.object({
-  id: z.string().optional(),
-  order: z.number().int().min(0).optional(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  icon: z.string().optional(),
-});
-
-// About Methodology Step Schema
-export const aboutMethodologyStepSchema = z.object({
-  id: z.string().optional(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  stepNumber: z.number().int().min(1),
-  image: z.string().url().optional(),
-});
-
-// About Value Schema
-export const aboutValueSchema = z.object({
-  id: z.string().optional(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  icon: z.string().optional(),
 });
 
 // Email Notification Preferences Schema

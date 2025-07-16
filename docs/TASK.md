@@ -4,6 +4,12 @@ _Last updated: January 2025_
 
 ## 🚨 Critical Issues & Fixes
 
+- [x] **[Critical] Fix Google OAuth sign-in error** - Resolve Firebase internal error preventing Google authentication _(Added: Jan 16, 2025)_ _(Completed: Jan 16, 2025)_
+  - File: src/app/admin/login/page.tsx, src/app/debug/google-oauth/page.tsx, next.config.ts
+  - Notes: Fixed CSP to allow Google APIs (apis.google.com and accounts.google.com), added detailed error handling and debug tools
+- [x] **[Critical] Fix admin page loading issues** - Resolve Firebase auth initialization and CSP violations preventing admin access _(Added: Jan 16, 2025)_ _(Completed: Jan 16, 2025)_
+  - File: src/lib/firebase.ts, src/contexts/AuthContext.tsx, src/components/admin/AdminLayout.tsx, src/app/admin/login/page.tsx, next.config.ts
+  - Notes: Fixed CSP to allow Firebase Analytics, improved auth initialization with sync/async fallback, added proper auth flow with redirects
 - [x] **[Critical] Fix Firebase Firestore internal assertion errors** - Implement comprehensive error handling and recovery system _(Added: Jan 7, 2025)_
 - [x] **[Critical] Fix framer-motion server-side import error** - Resolve build-time error preventing static generation of project detail pages _(Added: Jan 8, 2025)_
 - [x] **[Critical] Fix Firebase installation registration error** - Resolve "Failed to fetch" error during Firebase initialization _(Added: Jan 8, 2025)_

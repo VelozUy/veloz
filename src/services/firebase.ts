@@ -32,6 +32,7 @@ import type {
   ContactFormData,
   ContactMessageData,
   SocialPost,
+  HeroMediaConfig,
 } from '@/types';
 
 import { FIREBASE_COLLECTIONS } from '@/constants';
@@ -44,11 +45,11 @@ import {
 
 // Utility function to clean heroMediaConfig for Firestore
 export const cleanHeroMediaConfig = (
-  config?: Record<string, unknown>
+  config?: HeroMediaConfig
 ): Record<string, unknown> | undefined => {
   if (!config) return undefined;
 
-  const cleaned = { ...config };
+  const cleaned = { ...config } as Record<string, unknown>;
 
   // Remove customRatio if aspectRatio is not 'custom' or if customRatio is undefined
   if (cleaned.aspectRatio !== 'custom' || !cleaned.customRatio) {

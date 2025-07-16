@@ -84,6 +84,34 @@ export async function testFileUploadService() {
   }
 }
 
+// Test Firebase auth initialization
+import { getAuthSync, getAuthService } from './firebase';
+
+export async function testFirebaseAuth() {
+  console.log('🧪 Testing Firebase Auth initialization...');
+
+  try {
+    // Test synchronous auth
+    const syncAuth = getAuthSync();
+    console.log('✅ Sync auth available:', !!syncAuth);
+
+    // Test async auth
+    const asyncAuth = await getAuthService();
+    console.log('✅ Async auth available:', !!asyncAuth);
+
+    if (syncAuth && typeof syncAuth.onAuthStateChanged === 'function') {
+      console.log('✅ Auth has onAuthStateChanged method');
+    } else {
+      console.log('❌ Auth missing onAuthStateChanged method');
+    }
+
+    return { syncAuth, asyncAuth };
+  } catch (error) {
+    console.error('❌ Firebase auth test failed:', error);
+    return { syncAuth: null, asyncAuth: null };
+  }
+}
+
 // Run tests if called directly
 if (typeof window !== 'undefined') {
   // Only run in browser

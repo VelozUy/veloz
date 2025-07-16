@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { getAuthService, getFirestoreService } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,6 +24,33 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { user, loading } = useAuth();
+
+  // Redirect to admin dashboard if already authenticated
+  useEffect(() => {
+    if (user && !loading) {
+      router.push('/admin');
+    }
+  }, [user, loading, router]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-muted-foreground text-sm">
+            Verificando autenticación...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't show login form if already authenticated
+  if (user) {
+    return null; // Will redirect to admin
+  }
 
   const checkUserAccess = async (email: string) => {
     // Owner is always allowed
@@ -50,9 +78,29 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const auth = await getAuthService();
+      // Try to get auth synchronously first
+      const { getAuthSync } = await import('@/lib/firebase');
+      let auth = getAuthSync();
+
+      // If auth is not available synchronously, try async initialization
+      if (!auth) {
+        auth = await getAuthService();
+      }
+
       if (!auth) {
         setError('Firebase Auth not available');
+        return;
+      }
+
+      // Debug Firebase configuration
+      const { debugFirebaseConfig } = await import('@/lib/firebase-config');
+      const configDebug = debugFirebaseConfig();
+
+      if (!configDebug.isValid) {
+        console.error('Firebase config validation failed:', configDebug);
+        setError(
+          'Error de configuración de Firebase. Contacta al administrador.'
+        );
         return;
       }
 
@@ -60,8 +108,14 @@ export default function AdminLoginPage() {
       provider.addScope('email');
       provider.addScope('profile');
 
+      console.log('🔐 Attempting Google sign-in...');
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
+      console.log('✅ Google sign-in successful:', {
+        email: user.email,
+        uid: user.uid,
+      });
 
       if (!user.email) {
         setError('No se pudo obtener el email de la cuenta de Google.');
@@ -83,10 +137,23 @@ export default function AdminLoginPage() {
       // User has access, redirect to admin dashboard
       router.push('/admin');
     } catch (error: unknown) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
 
       const firebaseError = error as { code?: string; message?: string };
+
+      // Log detailed error information for debugging
+      console.error('Firebase error details:', {
+        code: firebaseError.code,
+        message: firebaseError.message,
+        error: firebaseError,
+      });
+
       switch (firebaseError.code) {
+        case 'auth/internal-error':
+          setError(
+            'Error interno de Firebase. Esto puede deberse a una configuración incorrecta de Google OAuth. Contacta al administrador.'
+          );
+          break;
         case 'auth/popup-closed-by-user':
           setError('El inicio de sesión fue cancelado.');
           break;
@@ -103,8 +170,20 @@ export default function AdminLoginPage() {
         case 'auth/cancelled-popup-request':
           setError('El inicio de sesión fue cancelado.');
           break;
+        case 'auth/operation-not-allowed':
+          setError(
+            'El inicio de sesión con Google no está habilitado. Contacta al administrador.'
+          );
+          break;
+        case 'auth/network-request-failed':
+          setError(
+            'Error de conexión. Verifica tu conexión a internet e intenta de nuevo.'
+          );
+          break;
         default:
-          setError('Error al iniciar sesión. Por favor intenta de nuevo.');
+          setError(
+            `Error al iniciar sesión: ${firebaseError.message || 'Error desconocido'}. Por favor intenta de nuevo.`
+          );
       }
     } finally {
       setIsLoading(false);

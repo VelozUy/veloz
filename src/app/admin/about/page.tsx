@@ -1115,11 +1115,11 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.values)) return prev;
 
         const oldIndex = prev.values.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutValueData) =>
             (item.id || `value-${Date.now()}-${Math.random()}`) === active.id
         );
         const newIndex = prev.values.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutValueData) =>
             (item.id || `value-${Date.now()}-${Math.random()}`) === over?.id
         );
 
@@ -1150,12 +1150,12 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.philosophyPoints)) return prev;
 
         const oldIndex = prev.philosophyPoints.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutPhilosophyPointData) =>
             (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
             active.id
         );
         const newIndex = prev.philosophyPoints.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutPhilosophyPointData) =>
             (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
             over?.id
         );
@@ -1187,12 +1187,12 @@ export default function AboutAdminPage() {
         if (!Array.isArray(prev.methodologySteps)) return prev;
 
         const oldIndex = prev.methodologySteps.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutMethodologyStepData) =>
             (item.id || `methodology-${Date.now()}-${Math.random()}`) ===
             active.id
         );
         const newIndex = prev.methodologySteps.findIndex(
-          (item: { id?: string }) =>
+          (item: AboutMethodologyStepData) =>
             (item.id || `methodology-${Date.now()}-${Math.random()}`) ===
             over?.id
         );
@@ -1447,9 +1447,12 @@ export default function AboutAdminPage() {
         if (!targetText) return;
 
         if (fieldKey === 'title') {
-          updated.title = { ...updated.title, [language]: targetText };
+          updated.heroTitle = { ...updated.heroTitle, [language]: targetText };
         } else if (fieldKey === 'subtitle') {
-          updated.subtitle = { ...updated.subtitle, [language]: targetText };
+          updated.heroSubtitle = {
+            ...updated.heroSubtitle,
+            [language]: targetText,
+          };
         } else if (fieldKey === 'philosophy.title') {
           updated.philosophyTitle = {
             ...updated.philosophyTitle,
@@ -1701,8 +1704,8 @@ export default function AboutAdminPage() {
                   <Input
                     id="title"
                     value={
-                      formData.title[
-                        currentLanguage as keyof typeof formData.title
+                      formData.heroTitle[
+                        currentLanguage as keyof typeof formData.heroTitle
                       ] || ''
                     }
                     onChange={e =>
@@ -1721,8 +1724,8 @@ export default function AboutAdminPage() {
                   <Textarea
                     id="subtitle"
                     value={
-                      formData.subtitle[
-                        currentLanguage as keyof typeof formData.subtitle
+                      formData.heroSubtitle[
+                        currentLanguage as keyof typeof formData.heroSubtitle
                       ] || ''
                     }
                     onChange={e =>
@@ -1799,7 +1802,7 @@ export default function AboutAdminPage() {
                       strategy={verticalListSortingStrategy}
                     >
                       {philosophyPointsWithId
-                        .sort((a, b) => a.order - b.order)
+                        .sort((a, b) => (a.order || 0) - (b.order || 0))
                         .map((point, index) => (
                           <SortablePhilosophyCard
                             key={point.id}
@@ -1884,13 +1887,17 @@ export default function AboutAdminPage() {
                     <SortableContext
                       items={
                         Array.isArray(formData.methodologySteps)
-                          ? formData.methodologySteps.map(item => item.id)
+                          ? formData.methodologySteps.map(
+                              item =>
+                                item.id ||
+                                `methodology-${Date.now()}-${Math.random()}`
+                            )
                           : []
                       }
                       strategy={verticalListSortingStrategy}
                     >
                       {formData.methodologySteps
-                        .sort((a, b) => a.order - b.order)
+                        .sort((a, b) => (a.order || 0) - (b.order || 0))
                         .map((step, index) => (
                           <SortableMethodologyCard
                             key={step.id}
@@ -1973,13 +1980,17 @@ export default function AboutAdminPage() {
                     <SortableContext
                       items={
                         Array.isArray(formData.values)
-                          ? formData.values.map(item => item.id)
+                          ? formData.values.map(
+                              item =>
+                                item.id ||
+                                `value-${Date.now()}-${Math.random()}`
+                            )
                           : []
                       }
                       strategy={verticalListSortingStrategy}
                     >
                       {formData.values
-                        .sort((a, b) => a.order - b.order)
+                        .sort((a, b) => (a.order || 0) - (b.order || 0))
                         .map((value, index) => (
                           <SortableValueCard
                             key={value.id}

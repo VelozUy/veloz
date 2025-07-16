@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ const navigation = [
 ];
 
 export default function AdminLayout({ children, title }: AdminLayoutProps) {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -51,7 +51,20 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     }
   };
 
-  if (!user) {
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    console.log('🔍 AdminLayout Auth State:', {
+      user: !!user,
+      loading,
+      userEmail: user?.email,
+    });
+    if (!user && !loading) {
+      console.log('🔄 Redirecting to login - no user and not loading');
+      router.push('/admin/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -60,6 +73,10 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
   }
 
   return (

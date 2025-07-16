@@ -35,7 +35,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return;
         }
 
-        const { auth } = await import('@/lib/firebase');
+        // Wait for Firebase to be properly initialized using the async service
+        const { getAuthService } = await import('@/lib/firebase');
+        const auth = await getAuthService();
 
         // Check if auth is properly initialized
         if (!auth || typeof auth.onAuthStateChanged !== 'function') {
@@ -45,6 +47,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         const unsubscribe = onAuthStateChanged(auth, user => {
+          console.log('🔍 AuthContext: User state changed:', {
+            user: !!user,
+            email: user?.email,
+            uid: user?.uid,
+          });
           setUser(user);
           setLoading(false);
         });
@@ -69,7 +76,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       if (typeof window === 'undefined') return;
 
-      const { auth } = await import('@/lib/firebase');
+      // Use the async auth service
+      const { getAuthService } = await import('@/lib/firebase');
+      const auth = await getAuthService();
+
       if (auth && typeof auth.signOut === 'function') {
         await firebaseSignOut(auth);
       }

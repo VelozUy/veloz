@@ -15,22 +15,26 @@ interface PerformanceMonitorProps {
   enabled?: boolean;
 }
 
-export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMonitorProps) {
+export function PerformanceMonitor({
+  onMetrics,
+  enabled = true,
+}: PerformanceMonitorProps) {
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') return;
 
     let observer: PerformanceObserver | null = null;
     let clsValue = 0;
-    let clsEntries: PerformanceEntry[] = [];
 
     // Track CLS (Cumulative Layout Shift)
     const trackCLS = () => {
-      observer = new PerformanceObserver((list) => {
+      observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
-          const layoutShiftEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
+          const layoutShiftEntry = entry as PerformanceEntry & {
+            hadRecentInput?: boolean;
+            value?: number;
+          };
           if (!layoutShiftEntry.hadRecentInput) {
             clsValue += layoutShiftEntry.value || 0;
-            clsEntries.push(entry);
           }
         }
       });
@@ -40,11 +44,11 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
 
     // Track LCP (Largest Contentful Paint)
     const trackLCP = () => {
-      observer = new PerformanceObserver((list) => {
+      observer = new PerformanceObserver(list => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
         const lcp = lastEntry.startTime;
-        
+
         // Send LCP metric
         sendMetric('lcp', lcp);
       });
@@ -54,9 +58,11 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
 
     // Track FID (First Input Delay)
     const trackFID = () => {
-      observer = new PerformanceObserver((list) => {
+      observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
-          const firstInputEntry = entry as PerformanceEntry & { processingStart?: number };
+          const firstInputEntry = entry as PerformanceEntry & {
+            processingStart?: number;
+          };
           const fid = (firstInputEntry.processingStart || 0) - entry.startTime;
           sendMetric('fid', fid);
         }
@@ -67,7 +73,7 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
 
     // Track FCP (First Contentful Paint)
     const trackFCP = () => {
-      observer = new PerformanceObserver((list) => {
+      observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           const fcp = entry.startTime;
           sendMetric('fcp', fcp);
@@ -79,9 +85,12 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
 
     // Track TTFB (Time to First Byte)
     const trackTTFB = () => {
-      const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigationEntry = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       if (navigationEntry) {
-        const ttfb = navigationEntry.responseStart - navigationEntry.requestStart;
+        const ttfb =
+          navigationEntry.responseStart - navigationEntry.requestStart;
         sendMetric('ttfb', ttfb);
       }
     };
@@ -89,8 +98,15 @@ export function PerformanceMonitor({ onMetrics, enabled = true }: PerformanceMon
     // Send metric to analytics
     const sendMetric = (metricName: string, value: number) => {
       // Send to analytics service
-      if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).gtag) {
-        const gtag = (window as unknown as Record<string, unknown>).gtag as (command: string, eventName: string, params: Record<string, unknown>) => void;
+      if (
+        typeof window !== 'undefined' &&
+        (window as unknown as Record<string, unknown>).gtag
+      ) {
+        const gtag = (window as unknown as Record<string, unknown>).gtag as (
+          command: string,
+          eventName: string,
+          params: Record<string, unknown>
+        ) => void;
         gtag('event', 'web_vitals', {
           event_category: 'Web Vitals',
           event_label: metricName,
@@ -155,9 +171,16 @@ export function usePerformanceMonitoring(enabled = true) {
     // Track page load time
     const trackPageLoad = () => {
       const loadTime = performance.now();
-      
-      if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).gtag) {
-        const gtag = (window as unknown as Record<string, unknown>).gtag as (command: string, eventName: string, params: Record<string, unknown>) => void;
+
+      if (
+        typeof window !== 'undefined' &&
+        (window as unknown as Record<string, unknown>).gtag
+      ) {
+        const gtag = (window as unknown as Record<string, unknown>).gtag as (
+          command: string,
+          eventName: string,
+          params: Record<string, unknown>
+        ) => void;
         gtag('event', 'timing_complete', {
           name: 'load',
           value: Math.round(loadTime),
@@ -168,12 +191,15 @@ export function usePerformanceMonitoring(enabled = true) {
     // Track resource loading
     const trackResourceTiming = () => {
       const resources = performance.getEntriesByType('resource');
-      resources.forEach((resource) => {
+      resources.forEach(resource => {
         const duration = resource.duration;
         const name = resource.name;
-        
-        if (duration > 1000) { // Log slow resources
-          console.warn(`Slow resource loaded: ${name} (${Math.round(duration)}ms)`);
+
+        if (duration > 1000) {
+          // Log slow resources
+          console.warn(
+            `Slow resource loaded: ${name} (${Math.round(duration)}ms)`
+          );
         }
       });
     };
@@ -187,4 +213,4 @@ export function usePerformanceMonitoring(enabled = true) {
       window.removeEventListener('load', trackPageLoad);
     };
   }, [enabled]);
-} 
+}

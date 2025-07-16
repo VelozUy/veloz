@@ -1,6 +1,10 @@
 // Firebase Configuration & Initialization
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getFirestore, Firestore, connectFirestoreEmulator } from 'firebase/firestore';
+import {
+  getFirestore,
+  Firestore,
+  connectFirestoreEmulator,
+} from 'firebase/firestore';
 import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { getAuth, Auth } from 'firebase/auth';
 import { firebaseConfig, validateFirebaseConfig } from './firebase-config';
@@ -52,17 +56,24 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
       if (app) {
         try {
           // Initialize Firestore with offline persistence
-          const { getFirestore, enableNetwork, disableNetwork } = await import('firebase/firestore');
+          const { getFirestore, enableNetwork, disableNetwork } = await import(
+            'firebase/firestore'
+          );
           db = getFirestore(app);
-          
+
           // Enable offline persistence
-          const { enableIndexedDbPersistence } = await import('firebase/firestore');
+          const { enableIndexedDbPersistence } = await import(
+            'firebase/firestore'
+          );
           try {
             await enableIndexedDbPersistence(db);
             console.log('✅ Firebase offline persistence enabled');
           } catch (persistenceError) {
             // If persistence fails, continue without it
-            console.warn('⚠️ Firebase offline persistence failed:', persistenceError);
+            console.warn(
+              '⚠️ Firebase offline persistence failed:',
+              persistenceError
+            );
           }
 
           // Initialize Auth with better error handling
@@ -80,11 +91,16 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
             storage = getStorage(app);
             console.log('✅ Firebase Storage initialized');
           } catch (storageError) {
-            console.warn('⚠️ Firebase Storage initialization failed:', storageError);
+            console.warn(
+              '⚠️ Firebase Storage initialization failed:',
+              storageError
+            );
           }
-
         } catch (firestoreError) {
-          console.error('❌ Firebase Firestore initialization failed:', firestoreError);
+          console.error(
+            '❌ Firebase Firestore initialization failed:',
+            firestoreError
+          );
           // Continue without Firestore
         }
       }
@@ -93,7 +109,7 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
       return app;
     } catch (error: unknown) {
       console.error('❌ Firebase initialization failed:', error);
-      
+
       // Return null but don't crash the app
       return null;
     } finally {
@@ -124,6 +140,9 @@ if (typeof window !== 'undefined') {
   storage = null;
 }
 
+// Synchronous getter for auth (for backward compatibility)
+export const getAuthSync = (): Auth | null => auth;
+
 // Function to get Firestore service only when needed
 export const getFirestoreService = async () => {
   if (typeof window === 'undefined') {
@@ -135,7 +154,10 @@ export const getFirestoreService = async () => {
     try {
       await initializeFirebase();
     } catch (error) {
-      console.error('❌ Firebase initialization failed in getFirestoreService:', error);
+      console.error(
+        '❌ Firebase initialization failed in getFirestoreService:',
+        error
+      );
       return null;
     }
   }
@@ -155,7 +177,10 @@ export const getStorageService = async (): Promise<FirebaseStorage | null> => {
     try {
       await initializeFirebase();
     } catch (error) {
-      console.error('❌ Firebase initialization failed in getStorageService:', error);
+      console.error(
+        '❌ Firebase initialization failed in getStorageService:',
+        error
+      );
       return null;
     }
   }
@@ -199,8 +224,35 @@ export const getAuthService = async (): Promise<Auth | null> => {
     try {
       await initializeFirebase();
     } catch (error) {
-      console.error('❌ Firebase initialization failed in getAuthService:', error);
+      console.error(
+        '❌ Firebase initialization failed in getAuthService:',
+        error
+      );
       return null;
+    }
+  }
+
+  // If auth is still null after initialization, wait a bit more
+  if (!auth) {
+    // Wait for initialization to complete
+    if (initializationPromise) {
+      try {
+        await initializationPromise;
+      } catch (error) {
+        console.error('❌ Firebase initialization promise failed:', error);
+        return null;
+      }
+    }
+
+    // If still null after waiting, try to get auth directly
+    if (!auth && app) {
+      try {
+        const { getAuth } = await import('firebase/auth');
+        auth = getAuth(app);
+      } catch (error) {
+        console.error('❌ Direct auth initialization failed:', error);
+        return null;
+      }
     }
   }
 
