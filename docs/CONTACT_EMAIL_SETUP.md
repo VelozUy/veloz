@@ -5,6 +5,7 @@ This document explains how to configure the contact email notification system fo
 ## 🏗️ System Overview
 
 The contact email system includes:
+
 - **Firestore Trigger**: Automatically triggered when new contact messages are created
 - **Admin Email Preferences**: Individual admin users can enable/disable contact notifications
 - **Dual Email Services**: Resend (primary) + Nodemailer (fallback) for reliability
@@ -124,6 +125,7 @@ curl -X GET "https://us-central1-veloz-6efe6.cloudfunctions.net/testContactEmail
 ### Cloud Function Logs
 
 View logs in Firebase Console:
+
 ```
 https://console.firebase.google.com/project/veloz-6efe6/functions/logs
 ```
@@ -151,6 +153,7 @@ Each contact message includes email status:
 ### Health Check
 
 Check system status:
+
 ```bash
 curl "https://us-central1-veloz-6efe6.cloudfunctions.net/healthCheck"
 ```
@@ -158,17 +161,20 @@ curl "https://us-central1-veloz-6efe6.cloudfunctions.net/healthCheck"
 ## 🚨 Troubleshooting
 
 ### Function Won't Deploy
+
 - Check Node.js version compatibility
 - Verify Firebase CLI authentication
 - Review function logs for syntax errors
 
 ### Emails Not Sending
+
 - Verify API keys and SMTP credentials
 - Check admin user email preferences
 - Review Cloud Function logs
 - Test individual email services
 
 ### Admin Not Receiving Emails
+
 - Verify `emailNotifications.contactMessages: true`
 - Check admin user status is `active`
 - Confirm admin email address is valid
@@ -197,4 +203,4 @@ curl "https://us-central1-veloz-6efe6.cloudfunctions.net/healthCheck"
 
 ---
 
-**Need Help?** Check the Firebase Console logs or contact the development team for assistance with email system configuration. 
+**Need Help?** Check the Firebase Console logs or contact the development team for assistance with email system configuration.

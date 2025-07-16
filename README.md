@@ -174,7 +174,14 @@ See `ENVIRONMENT.md` for detailed Firebase configuration instructions.
 
 ## 📋 Project Status
 
-This project follows a structured task-based development approach. See `TASK.md` for:
+This project follows a structured Agile development approach with Epic-based task management. See our documentation for:
+
+- 📋 **[Active Tasks](docs/TASK.md)** - Current work organized by Epics
+- 📚 **[Project Requirements](docs/PRD.md)** - Architecture, goals, and constraints
+- 🔄 **[Development Workflow](docs/WORKFLOW.md)** - Agile process and quality gates
+- 📝 **[Feature Backlog](docs/BACKLOG.md)** - Future ideas and unprioritized features
+
+### Current Status:
 
 - ✅ Completed features
 - 🚧 Current work in progress
