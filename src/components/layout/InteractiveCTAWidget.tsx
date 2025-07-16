@@ -139,7 +139,7 @@ const InlineCalendar = ({
             h-8 w-8 rounded-full text-sm transition-colors
             ${
               isPast
-                ? 'text-gray-300 cursor-not-allowed'
+                ? 'text-muted-foreground cursor-not-allowed'
                 : 'hover:bg-primary hover:text-primary-foreground cursor-pointer'
             }
             ${
@@ -355,7 +355,7 @@ export function InteractiveCTAWidget() {
 
   // Calculate widget base position classes
   const getWidgetBaseClasses = () => {
-    return 'fixed right-4 top-20 z-50 bg-green-500 text-white p-4 rounded-lg';
+    return 'fixed right-4 top-20 z-50 bg-primary text-primary-foreground p-4 rounded-lg shadow-lg border border-border';
   };
 
   // Add smooth transform animation styles with positioning and entrance animation
@@ -697,7 +697,7 @@ export function InteractiveCTAWidget() {
         return (
           <div className="space-y-4 text-center">
             <div className="space-y-2">
-              <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+              <CheckCircle className="w-16 h-16 text-primary mx-auto" />
               <h3 className="text-xl font-semibold text-foreground">
                 {getTranslation('widget.steps.complete.title')}
               </h3>
@@ -744,7 +744,7 @@ export function InteractiveCTAWidget() {
             });
             setIsOpen(true);
           }}
-          className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1 bg-yellow-500 text-black"
+          className="relative rounded-full shadow-lg hover:shadow-2xl h-12 px-4 md:px-6 w-full transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1 bg-primary text-primary-foreground"
           size="lg"
         >
           <MessageCircle className="w-5 h-5 mr-2" />
