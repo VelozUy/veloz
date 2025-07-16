@@ -239,22 +239,10 @@ export function InteractiveCTAWidget() {
   const [phoneInput, setPhoneInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Scroll direction and positioning state
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // Simple state for widget visibility
   const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(true); // Default to mobile to avoid hydration issues
-
-  // Dwell time tracking for user engagement
-  const [dwellStartTime, setDwellStartTime] = useState<number | null>(null);
-  const [dwellPosition, setDwellPosition] = useState<number>(0);
-  const [isUserEngaged, setIsUserEngaged] = useState(false);
-  const [dwellProgress, setDwellProgress] = useState(0); // Progress from 0 to 1
-
-  // Dwell time constants
-  const DWELL_THRESHOLD = 5000; // 5 seconds in milliseconds
-  const MOVEMENT_THRESHOLD = 100; // 100px allowed movement before resetting dwell timer
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
@@ -264,7 +252,7 @@ export function InteractiveCTAWidget() {
     const checkMobile = () => window.innerWidth < 768;
     setIsMobile(checkMobile());
 
-    // Add a small delay for the entrance animation to feel more natural
+    // Show widget immediately with a small delay for smooth entrance
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 200);
@@ -272,86 +260,18 @@ export function InteractiveCTAWidget() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle scroll direction detection, dwell time tracking, and window resize
+  // Handle window resize
   useEffect(() => {
     if (!mounted) return;
 
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Update scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setScrollDirection('down');
-      } else if (currentScrollY < lastScrollY) {
-        setScrollDirection('up');
-      }
-
-      // Check for significant movement that would reset dwell timer
-      const hasMovedSignificantly =
-        dwellStartTime !== null &&
-        Math.abs(currentScrollY - dwellPosition) > MOVEMENT_THRESHOLD;
-
-      if (hasMovedSignificantly) {
-        // User moved significantly, reset dwell tracking
-        setDwellStartTime(null);
-        setIsUserEngaged(false);
-      } else if (dwellStartTime === null) {
-        // Start new dwell timer
-        const startTime = Date.now();
-        setDwellStartTime(startTime);
-        setDwellPosition(currentScrollY);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
     const handleResize = () => {
-      // Update mobile state and force re-render on resize
       const checkMobile = () => window.innerWidth < 768;
       setIsMobile(checkMobile());
-      setIsVisible(false);
-      setTimeout(() => setIsVisible(true), 50);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [
-    lastScrollY,
-    mounted,
-    dwellStartTime,
-    dwellPosition,
-    DWELL_THRESHOLD,
-    MOVEMENT_THRESHOLD,
-  ]);
-
-  // Handle dwell timer and progress tracking
-  useEffect(() => {
-    if (!mounted || dwellStartTime === null) {
-      setDwellProgress(0);
-      return;
-    }
-
-    const progressInterval = setInterval(() => {
-      const elapsed = Date.now() - dwellStartTime;
-      const progress = Math.min(elapsed / DWELL_THRESHOLD, 1);
-      setDwellProgress(progress);
-
-      if (progress >= 1) {
-        // Add a small delay before showing the widget to make it feel more natural
-        setTimeout(() => {
-          setIsUserEngaged(true);
-        }, 300);
-        clearInterval(progressInterval);
-      }
-    }, 100); // Update progress every 100ms for smooth animation
-
-    return () => clearInterval(progressInterval);
-  }, [dwellStartTime, mounted, DWELL_THRESHOLD]);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mounted]);
 
   // Calculate widget base position classes
   const getWidgetBaseClasses = () => {
@@ -722,19 +642,6 @@ export function InteractiveCTAWidget() {
         className={`${getWidgetBaseClasses()}`}
         style={getWidgetTransformStyle()}
       >
-        {/* Progress indicator ring - shows when user is dwelling but not yet engaged */}
-        {mounted && dwellProgress > 0 && !isUserEngaged && (
-          <div
-            className="absolute inset-0 rounded-full border-2 border-primary/20 animate-pulse"
-            style={{
-              background: `conic-gradient(from -90deg, transparent 0deg, rgba(var(--primary), ${0.2 + dwellProgress * 0.3}) ${dwellProgress * 360}deg, transparent ${dwellProgress * 360}deg)`,
-              transform: `scale(${1 + dwellProgress * 0.05}) rotate(${dwellProgress * 10}deg)`,
-              transition: 'all 0.2s ease-out',
-              filter: `blur(${Math.max(0, 1 - dwellProgress)}px)`,
-            }}
-          />
-        )}
-
         <Button
           onClick={() => {
             trackCTAInteraction({
