@@ -29,6 +29,13 @@ function ContactPageContent() {
         name: { label: string; placeholder: string };
         email: { label: string; placeholder: string };
         phone: { label: string; placeholder: string; optional: string };
+        communicationPreference: {
+          label: string;
+          call: string;
+          whatsapp: string;
+          email: string;
+          zoom: string;
+        };
         eventType: {
           label: string;
           placeholder: string;
@@ -42,7 +49,7 @@ function ContactPageContent() {
         };
         eventDate: { label: string; optional: string; help: string };
         message: { label: string; optional: string; placeholder: string };
-        attachments?: { label: string; optional: string; description: string };
+        attachments: { label: string; optional: string; description: string };
         submit: { button: string; loading: string };
         privacy: { line1: string; line2: string };
       };

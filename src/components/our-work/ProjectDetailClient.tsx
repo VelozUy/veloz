@@ -11,6 +11,7 @@ import ProjectVisualGrid from '@/components/our-work/ProjectVisualGrid';
 import MasonryGallery from '@/components/our-work/MasonryGallery';
 import MeetTheTeam from '@/components/our-work/MeetTheTeam';
 import SocialFeed from '@/components/our-work/SocialFeed';
+import ProjectTimeline from '@/components/our-work/ProjectTimeline';
 import Image from 'next/image';
 
 interface ProjectDetailClientProps {
@@ -142,6 +143,9 @@ export default function ProjectDetailClient({
           </div>
         </div>
       </section>
+
+      {/* Project Timeline */}
+      <ProjectTimeline project={project} />
 
       {/* Project Media Gallery */}
       <section className="py-12">

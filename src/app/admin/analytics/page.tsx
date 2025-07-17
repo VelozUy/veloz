@@ -22,6 +22,7 @@ import {
   MediaInteractionsMetricCard,
   CrewInteractionsMetricCard,
   MediaInteractionBreakdownCard,
+  DeviceBreakdownCard,
 } from '@/components/admin/MetricCard';
 
 interface DashboardMetrics {
@@ -38,6 +39,7 @@ interface DashboardMetrics {
     completes: number;
     zooms: number;
   };
+  deviceBreakdown: Record<string, number>;
 }
 
 export default function AnalyticsDashboardPage() {
@@ -57,6 +59,7 @@ export default function AnalyticsDashboardPage() {
       completes: 0,
       zooms: 0,
     },
+    deviceBreakdown: {},
   });
   const [dateRange, setDateRange] = useState('7d'); // 7d, 30d, 90d, custom
   const [summaries, setSummaries] = useState<AnalyticsSummary[]>([]);
@@ -106,6 +109,7 @@ export default function AnalyticsDashboardPage() {
           completes: 0,
           zooms: 0,
         },
+        deviceBreakdown: {},
       };
 
       let totalTime = 0;
@@ -120,11 +124,26 @@ export default function AnalyticsDashboardPage() {
 
         // Aggregate media interaction breakdown
         if (summary.mediaInteractionBreakdown) {
-          aggregatedMetrics.mediaInteractionBreakdown.views += summary.mediaInteractionBreakdown.views;
-          aggregatedMetrics.mediaInteractionBreakdown.plays += summary.mediaInteractionBreakdown.plays;
-          aggregatedMetrics.mediaInteractionBreakdown.pauses += summary.mediaInteractionBreakdown.pauses;
-          aggregatedMetrics.mediaInteractionBreakdown.completes += summary.mediaInteractionBreakdown.completes;
-          aggregatedMetrics.mediaInteractionBreakdown.zooms += summary.mediaInteractionBreakdown.zooms;
+          aggregatedMetrics.mediaInteractionBreakdown.views +=
+            summary.mediaInteractionBreakdown.views;
+          aggregatedMetrics.mediaInteractionBreakdown.plays +=
+            summary.mediaInteractionBreakdown.plays;
+          aggregatedMetrics.mediaInteractionBreakdown.pauses +=
+            summary.mediaInteractionBreakdown.pauses;
+          aggregatedMetrics.mediaInteractionBreakdown.completes +=
+            summary.mediaInteractionBreakdown.completes;
+          aggregatedMetrics.mediaInteractionBreakdown.zooms +=
+            summary.mediaInteractionBreakdown.zooms;
+        }
+
+        // Aggregate device breakdown
+        if (summary.deviceBreakdown) {
+          Object.entries(summary.deviceBreakdown).forEach(
+            ([deviceType, count]) => {
+              aggregatedMetrics.deviceBreakdown[deviceType] =
+                (aggregatedMetrics.deviceBreakdown[deviceType] || 0) + count;
+            }
+          );
         }
 
         totalTime += summary.avgTimeOnPage;
@@ -279,6 +298,11 @@ export default function AnalyticsDashboardPage() {
           <MediaInteractionBreakdownCard
             data={{
               mediaInteractionBreakdown: metrics.mediaInteractionBreakdown,
+            }}
+          />
+          <DeviceBreakdownCard
+            data={{
+              deviceBreakdown: metrics.deviceBreakdown,
             }}
           />
         </MetricCardGrid>

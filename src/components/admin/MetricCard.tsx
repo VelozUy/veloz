@@ -14,6 +14,9 @@ import {
   Pause,
   CheckCircle,
   ZoomIn,
+  Monitor,
+  Smartphone,
+  Tablet,
 } from 'lucide-react';
 
 interface MetricCardProps {
@@ -57,6 +60,7 @@ interface MetricData {
     completes: number;
     zooms: number;
   };
+  deviceBreakdown?: Record<string, number>;
 }
 
 export function MetricCard({
@@ -268,7 +272,7 @@ export function CrewInteractionsMetricCard({ data }: { data: MetricData }) {
 // New detailed media interaction breakdown card
 export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
   const breakdown = data?.mediaInteractionBreakdown;
-  
+
   if (!breakdown) {
     return (
       <Card className="h-full">
@@ -288,7 +292,12 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
     );
   }
 
-  const totalInteractions = breakdown.views + breakdown.plays + breakdown.pauses + breakdown.completes + breakdown.zooms;
+  const totalInteractions =
+    breakdown.views +
+    breakdown.plays +
+    breakdown.pauses +
+    breakdown.completes +
+    breakdown.zooms;
 
   return (
     <Card className="h-full">
@@ -303,7 +312,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
         <p className="text-xs text-muted-foreground mt-1">
           Detailed media interaction metrics
         </p>
-        
+
         <div className="mt-3 space-y-2">
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
@@ -312,7 +321,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
             </div>
             <span className="font-medium">{breakdown.views}</span>
           </div>
-          
+
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
               <Play className="h-3 w-3 text-green-500" />
@@ -320,7 +329,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
             </div>
             <span className="font-medium">{breakdown.plays}</span>
           </div>
-          
+
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
               <Pause className="h-3 w-3 text-yellow-500" />
@@ -328,7 +337,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
             </div>
             <span className="font-medium">{breakdown.pauses}</span>
           </div>
-          
+
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
               <CheckCircle className="h-3 w-3 text-purple-500" />
@@ -336,7 +345,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
             </div>
             <span className="font-medium">{breakdown.completes}</span>
           </div>
-          
+
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
               <ZoomIn className="h-3 w-3 text-orange-500" />
@@ -344,6 +353,106 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
             </div>
             <span className="font-medium">{breakdown.zooms}</span>
           </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Device breakdown metric card
+export function DeviceBreakdownCard({ data }: { data: MetricData }) {
+  const deviceBreakdown = data?.deviceBreakdown;
+
+  if (!deviceBreakdown || Object.keys(deviceBreakdown).length === 0) {
+    return (
+      <Card className="h-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
+          <CardTitle className="text-xs font-medium">
+            Device Breakdown
+          </CardTitle>
+          <div className="text-muted-foreground">
+            <Monitor className="h-3 w-3" />
+          </div>
+        </CardHeader>
+        <CardContent className="px-4 pb-3">
+          <div className="text-xl font-bold">0</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            No device data available
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const totalDevices = Object.values(deviceBreakdown).reduce(
+    (sum, count) => sum + count,
+    0
+  );
+
+  const getDeviceIcon = (deviceType: string) => {
+    switch (deviceType.toLowerCase()) {
+      case 'desktop':
+        return <Monitor className="h-3 w-3 text-blue-500" />;
+      case 'mobile':
+        return <Smartphone className="h-3 w-3 text-green-500" />;
+      case 'tablet':
+        return <Tablet className="h-3 w-3 text-purple-500" />;
+      default:
+        return <Monitor className="h-3 w-3 text-gray-500" />;
+    }
+  };
+
+  const getDeviceLabel = (deviceType: string) => {
+    switch (deviceType.toLowerCase()) {
+      case 'desktop':
+        return 'Desktop';
+      case 'mobile':
+        return 'Mobile';
+      case 'tablet':
+        return 'Tablet';
+      default:
+        return deviceType.charAt(0).toUpperCase() + deviceType.slice(1);
+    }
+  };
+
+  return (
+    <Card className="h-full">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
+        <CardTitle className="text-xs font-medium">Device Breakdown</CardTitle>
+        <div className="text-muted-foreground">
+          <Monitor className="h-3 w-3" />
+        </div>
+      </CardHeader>
+      <CardContent className="px-4 pb-3">
+        <div className="text-xl font-bold">{totalDevices}</div>
+        <p className="text-xs text-muted-foreground mt-1">
+          Traffic by device type
+        </p>
+
+        <div className="mt-3 space-y-2">
+          {Object.entries(deviceBreakdown)
+            .sort(([, a], [, b]) => b - a) // Sort by count descending
+            .map(([deviceType, count]) => {
+              const percentage =
+                totalDevices > 0 ? Math.round((count / totalDevices) * 100) : 0;
+              return (
+                <div
+                  key={deviceType}
+                  className="flex items-center justify-between text-xs"
+                >
+                  <div className="flex items-center gap-1">
+                    {getDeviceIcon(deviceType)}
+                    <span>{getDeviceLabel(deviceType)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{count}</span>
+                    <span className="text-muted-foreground">
+                      ({percentage}%)
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </CardContent>
     </Card>

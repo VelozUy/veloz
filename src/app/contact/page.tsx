@@ -34,6 +34,7 @@ function ContactPageContent() {
           call: string;
           whatsapp: string;
           email: string;
+          zoom: string;
         };
         eventType: {
           label: string;
