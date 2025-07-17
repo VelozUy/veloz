@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { MultiLanguageTranslationButtons } from '@/components/admin/TranslationButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -70,12 +69,6 @@ interface FAQ {
   updatedAt: { toDate: () => Date } | null;
 }
 
-const LANGUAGES = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
-];
-
 const FAQ_CATEGORIES = [
   'General',
   'Servicios',
@@ -95,7 +88,6 @@ export default function FAQsAdminPage() {
   const [editFAQ, setEditFAQ] = useState<FAQ | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('es'); // Default to Spanish
   const [submitLoading, setSubmitLoading] = useState(false);
 
   // Create form state
@@ -370,112 +362,48 @@ export default function FAQsAdminPage() {
                   </Alert>
                 )}
 
-                {/* Language Selector */}
-                <div className="flex items-center space-x-2">
-                  <Label>Idioma de Edición:</Label>
-                  <Select
-                    value={currentLanguage}
-                    onValueChange={setCurrentLanguage}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {LANGUAGES.map(lang => (
-                        <SelectItem key={lang.code} value={lang.code}>
-                          {lang.flag} {lang.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 {/* Question */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor={`question-${currentLanguage}`}>
-                      Pregunta (
-                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                    </Label>
-                    <MultiLanguageTranslationButtons
-                      sourceText={createForm.question.es || ''}
-                      sourceLanguage="es"
-                      onTranslated={(language, translatedText) => {
-                        setCreateForm(prev => ({
-                          ...prev,
-                          question: {
-                            ...prev.question,
-                            [language]: translatedText,
-                          },
-                        }));
-                      }}
-                      contentType="faq"
-                      disabled={submitLoading}
-                    />
+                    <Label htmlFor="question-es">Pregunta (Español)</Label>
                   </div>
                   <Input
-                    id={`question-${currentLanguage}`}
-                    value={
-                      createForm.question[
-                        currentLanguage as keyof typeof createForm.question
-                      ]
-                    }
+                    id="question-es"
+                    value={createForm.question.es || ''}
                     onChange={e =>
                       setCreateForm(prev => ({
                         ...prev,
                         question: {
                           ...prev.question,
-                          [currentLanguage]: e.target.value,
+                          es: e.target.value,
                         },
                       }))
                     }
                     placeholder="¿Qué tipo de eventos cubren?"
-                    required={currentLanguage === 'es'} // Spanish required
+                    required
                   />
                 </div>
 
                 {/* Answer */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor={`answer-${currentLanguage}`}>
-                      Respuesta (
-                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                    </Label>
-                    <MultiLanguageTranslationButtons
-                      sourceText={createForm.answer.es || ''}
-                      sourceLanguage="es"
-                      onTranslated={(language, translatedText) => {
-                        setCreateForm(prev => ({
-                          ...prev,
-                          answer: {
-                            ...prev.answer,
-                            [language]: translatedText,
-                          },
-                        }));
-                      }}
-                      contentType="faq"
-                      disabled={submitLoading}
-                    />
+                    <Label htmlFor="answer-es">Respuesta (Español)</Label>
                   </div>
                   <Textarea
-                    id={`answer-${currentLanguage}`}
-                    value={
-                      createForm.answer[
-                        currentLanguage as keyof typeof createForm.answer
-                      ]
-                    }
+                    id="answer-es"
+                    value={createForm.answer.es || ''}
                     onChange={e =>
                       setCreateForm(prev => ({
                         ...prev,
                         answer: {
                           ...prev.answer,
-                          [currentLanguage]: e.target.value,
+                          es: e.target.value,
                         },
                       }))
                     }
                     placeholder="Cubrimos todo tipo de eventos: bodas, cumpleaños, eventos corporativos..."
                     rows={4}
-                    required={currentLanguage === 'es'} // Spanish required
+                    required
                   />
                 </div>
 
@@ -736,62 +664,20 @@ export default function FAQsAdminPage() {
                   </Alert>
                 )}
 
-                {/* Language Selector */}
-                <div className="flex items-center space-x-2">
-                  <Label>Idioma de Edición:</Label>
-                  <Select
-                    value={currentLanguage}
-                    onValueChange={setCurrentLanguage}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {LANGUAGES.map(lang => (
-                        <SelectItem key={lang.code} value={lang.code}>
-                          {lang.flag} {lang.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 {/* Question */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor={`edit-question-${currentLanguage}`}>
-                      Pregunta (
-                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                    </Label>
-                    <MultiLanguageTranslationButtons
-                      sourceText={editForm.question.es || ''}
-                      sourceLanguage="es"
-                      onTranslated={(language, translatedText) => {
-                        setEditForm(prev => ({
-                          ...prev,
-                          question: {
-                            ...prev.question,
-                            [language]: translatedText,
-                          },
-                        }));
-                      }}
-                      contentType="faq"
-                      disabled={submitLoading}
-                    />
+                    <Label htmlFor="edit-question-es">Pregunta (Español)</Label>
                   </div>
                   <Input
-                    id={`edit-question-${currentLanguage}`}
-                    value={
-                      editForm.question[
-                        currentLanguage as keyof typeof editForm.question
-                      ]
-                    }
+                    id="edit-question-es"
+                    value={editForm.question.es || ''}
                     onChange={e =>
                       setEditForm(prev => ({
                         ...prev,
                         question: {
                           ...prev.question,
-                          [currentLanguage]: e.target.value,
+                          es: e.target.value,
                         },
                       }))
                     }
@@ -802,39 +688,17 @@ export default function FAQsAdminPage() {
                 {/* Answer */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor={`edit-answer-${currentLanguage}`}>
-                      Respuesta (
-                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                    </Label>
-                    <MultiLanguageTranslationButtons
-                      sourceText={editForm.answer.es || ''}
-                      sourceLanguage="es"
-                      onTranslated={(language, translatedText) => {
-                        setEditForm(prev => ({
-                          ...prev,
-                          answer: {
-                            ...prev.answer,
-                            [language]: translatedText,
-                          },
-                        }));
-                      }}
-                      contentType="faq"
-                      disabled={submitLoading}
-                    />
+                    <Label htmlFor="edit-answer-es">Respuesta (Español)</Label>
                   </div>
                   <Textarea
-                    id={`edit-answer-${currentLanguage}`}
-                    value={
-                      editForm.answer[
-                        currentLanguage as keyof typeof editForm.answer
-                      ]
-                    }
+                    id="edit-answer-es"
+                    value={editForm.answer.es || ''}
                     onChange={e =>
                       setEditForm(prev => ({
                         ...prev,
                         answer: {
                           ...prev.answer,
-                          [currentLanguage]: e.target.value,
+                          es: e.target.value,
                         },
                       }))
                     }

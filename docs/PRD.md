@@ -350,6 +350,8 @@ This component improves user interaction and encourages conversions through a co
 
 ## 🔐 Admin Panel (Custom CMS) ✅ PARTIALLY COMPLETED
 
+> **NOTE:** The admin interface is Spanish-only. All content management, editing, and UI are in Spanish. There are no language toggles or multi-language editing in the admin panel. All admin-facing forms and controls are for Spanish content only.
+
 - ✅ Route: `/admin` (protected by Firebase Auth)
 - ✅ Layout: sidebar navigation with pages:
   - ✅ Dashboard (main admin overview)
