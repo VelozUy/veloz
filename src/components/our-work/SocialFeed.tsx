@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Instagram, Heart, MessageCircle, Share2, Play } from 'lucide-react';
@@ -24,17 +24,12 @@ export default function SocialFeed({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const socialPostService = new SocialPostService();
-
-  useEffect(() => {
-    loadSocialPosts();
-  }, [projectId]);
-
-  const loadSocialPosts = async () => {
+  const loadSocialPosts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
+      const socialPostService = new SocialPostService();
       const result = await socialPostService.getByProjectId(projectId);
       if (result.success) {
         setSocialPosts(result.data || []);
@@ -47,7 +42,11 @@ export default function SocialFeed({
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    loadSocialPosts();
+  }, [loadSocialPosts]);
 
   const getCaption = (post: SocialPost) => {
     return post.caption?.[language] || post.caption?.es || '';

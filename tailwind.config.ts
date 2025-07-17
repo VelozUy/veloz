@@ -46,6 +46,11 @@ const config: Config = {
           '4': 'var(--chart-4)',
           '5': 'var(--chart-5)',
         },
+        // Custom Veloz brand colors
+        charcoal: '#1a1a1a',
+        'blue-accent': '#3b82f6',
+        'grey-light': '#9ca3af',
+        'grey-medium': '#6b7280',
       },
 
       // Typography for elegance
@@ -53,6 +58,7 @@ const config: Config = {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
       },
 
       // Spacing system for optimization

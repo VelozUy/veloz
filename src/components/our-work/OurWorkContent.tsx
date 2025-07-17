@@ -3,13 +3,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { LocalizedContent } from '@/lib/static-content.generated';
 import {
   EVENT_TYPE_LABELS,
@@ -17,17 +10,9 @@ import {
   EVENT_TYPE_LABELS_PT,
 } from '@/constants';
 import { EventType } from '@/types';
-import {
-  Calendar,
-  MapPin,
-  Play,
-  ExternalLink,
-  Heart,
-  Filter,
-} from 'lucide-react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { FONT_OPTIONS } from '@/components/admin/VisualGridEditor';
 import HeroLayout from '@/components/layout/HeroLayout';
 import {
   CategoryBadge,

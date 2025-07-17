@@ -3,16 +3,11 @@
 import { useEffect } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory } from '@/constants/categories';
-import {
-  CategoryBadge,
-  CategoryTypography,
-} from '@/components/ui/category-typography';
-import ProjectVisualGrid from '@/components/our-work/ProjectVisualGrid';
+
 import MasonryGallery from '@/components/our-work/MasonryGallery';
 import MeetTheTeam from '@/components/our-work/MeetTheTeam';
 import SocialFeed from '@/components/our-work/SocialFeed';
 import ProjectTimeline from '@/components/our-work/ProjectTimeline';
-import Image from 'next/image';
 
 interface ProjectDetailClientProps {
   project: {
@@ -91,57 +86,35 @@ export default function ProjectDetailClient({
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section with Category Styling */}
-      <section className="relative bg-gradient-to-b from-background to-muted/30">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-12">
-          {/* Project Header */}
-          <div className="text-center mb-12">
-            <div className="mb-6">
-              <CategoryBadge category={category} />
-            </div>
-
-            <CategoryTypography
-              category={category}
-              variant="title"
-              size="xl"
-              language="es"
-              className="mb-4"
-            >
-              {project.title}
-            </CategoryTypography>
-
-            {project.description && (
-              <CategoryTypography
-                category={category}
-                variant="body"
-                size="lg"
-                language="es"
-                className="max-w-3xl mx-auto text-muted-foreground"
-              >
-                {project.description}
-              </CategoryTypography>
-            )}
+      <section className="relative flex flex-col items-center justify-center text-center py-24 px-6 bg-charcoal text-white">
+        {/* Optional background blur of image, masked */}
+        {project.media && project.media.length > 0 && (
+          <div className="absolute inset-0 overflow-hidden -z-10 opacity-10">
+            <img
+              src={project.media[0].url}
+              className="w-full h-full object-cover blur-md scale-110"
+              alt={`Background image for ${project.title}`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
           </div>
+        )}
 
-          {/* Project Details */}
-          <div className="flex flex-wrap justify-center gap-6 mb-8">
-            {project.location && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                {project.location}
-              </div>
-            )}
-            {project.eventDate && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                {new Date(project.eventDate).toLocaleDateString('es-ES', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </div>
-            )}
-          </div>
+        {/* Category badge */}
+        <div className="mb-4 px-4 py-1 text-sm rounded-full bg-white/10 border border-grey-medium text-white font-medium">
+          ✨ {category}
         </div>
+
+        {/* Title */}
+        <h1 className="text-4xl md:text-6xl font-display tracking-tight text-blue-accent drop-shadow-md">
+          {project.title}
+        </h1>
+
+        {/* Optional subheading or quote */}
+        {project.description && (
+          <p className="mt-4 max-w-xl text-grey-light text-lg italic">
+            &ldquo;{project.description}&rdquo;
+          </p>
+        )}
       </section>
 
       {/* Project Timeline */}
