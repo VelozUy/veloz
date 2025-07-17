@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 interface ContactFormData {
   name: string;
   email: string;
+  phone?: string;
   eventType: string;
   eventDate: string;
   message: string;
@@ -48,6 +49,11 @@ interface ContactFormProps {
         email: {
           label: string;
           placeholder: string;
+        };
+        phone: {
+          label: string;
+          placeholder: string;
+          optional: string;
         };
         eventType: {
           label: string;
@@ -112,6 +118,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     eventType: '',
     eventDate: '',
     message: '',
@@ -183,6 +190,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
     setFormData({
       name: '',
       email: '',
+      phone: '',
       eventType: '',
       eventDate: '',
       message: '',
@@ -333,6 +341,23 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       {errors.email}
                     </p>
                   )}
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-base font-medium">
+                    {t.form.phone.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.phone.optional}
+                    </span>
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder={t.form.phone.placeholder}
+                    value={formData.phone}
+                    onChange={e => handleInputChange('phone', e.target.value)}
+                  />
                 </div>
 
                 {/* Event Type */}

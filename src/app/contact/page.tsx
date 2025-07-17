@@ -28,6 +28,7 @@ function ContactPageContent() {
       form: {
         name: { label: string; placeholder: string };
         email: { label: string; placeholder: string };
+        phone: { label: string; placeholder: string; optional: string };
         eventType: {
           label: string;
           placeholder: string;

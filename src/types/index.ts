@@ -151,6 +151,11 @@ export interface FormContent {
         label: LocalizedContent;
         placeholder: LocalizedContent;
       };
+      phone: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+        optional: LocalizedContent;
+      };
       eventType: {
         label: LocalizedContent;
         placeholder: LocalizedContent;

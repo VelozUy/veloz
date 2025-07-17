@@ -87,6 +87,11 @@ const STATIC_TRANSLATIONS = {
           label: 'Correo electrónico',
           placeholder: 'tu.email@ejemplo.com',
         },
+        phone: {
+          label: 'Teléfono',
+          placeholder: 'Tu número de teléfono',
+          optional: '(opcional)',
+        },
         eventType: {
           label: '¿Qué estás celebrando?',
           placeholder: 'Elige tu tipo de evento',
@@ -341,6 +346,11 @@ const STATIC_TRANSLATIONS = {
           label: 'Email address',
           placeholder: 'your.email@example.com',
         },
+        phone: {
+          label: 'Phone',
+          placeholder: 'Your phone number',
+          optional: '(optional)',
+        },
         eventType: {
           label: 'What are you celebrating?',
           placeholder: 'Choose your event type',
@@ -593,6 +603,11 @@ const STATIC_TRANSLATIONS = {
         email: {
           label: 'Endereço de email',
           placeholder: 'seu.email@exemplo.com',
+        },
+        phone: {
+          label: 'Telefone',
+          placeholder: 'Seu número de telefone',
+          optional: '(opcional)',
         },
         eventType: {
           label: 'O que você está comemorando?',

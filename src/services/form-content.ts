@@ -133,6 +133,23 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               pt: 'seu.email@exemplo.com',
             },
           },
+          phone: {
+            label: {
+              es: 'Teléfono',
+              en: 'Phone',
+              pt: 'Telefone',
+            },
+            placeholder: {
+              es: 'Tu número de teléfono',
+              en: 'Your phone number',
+              pt: 'Seu número de telefone',
+            },
+            optional: {
+              es: '(opcional)',
+              en: '(optional)',
+              pt: '(opcional)',
+            },
+          },
           eventType: {
             label: {
               es: '¿Qué estás celebrando?',
