@@ -471,6 +471,103 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
+---
+
+## 🎁 **EPIC: Client Shareables & Post-Project Features**
+
+### 🎯 Objective: Create high-impact, shareable deliverables that increase client satisfaction and organic traffic
+
+#### 🟩 Low Priority Ideas (Post-Launch Implementation)
+
+- [ ] **Shareable Photo Book System** - Beautiful digital photo books for each project
+  - **User Intent**: Provide emotional value and easy sharing for clients
+  - **Key Features**:
+    - Automated photo book generation from project images
+    - Beautiful vertical scrollable layout or flipbook animation
+    - Public URL format: `https://veloz.com.uy/album/{project-slug}`
+    - Client customization options (reorder, hide photos)
+    - Social sharing integration and analytics tracking
+    - Admin management interface for curation
+  - **Estimated Time**: 3-4 weeks
+
+- [ ] **Anniversary Reminder System** - Automated anniversary reminders to re-engage clients
+  - **User Intent**: Rekindle memories and encourage repeat business
+  - **Key Features**:
+    - Automated scheduling based on project completion dates
+    - Email and WhatsApp message delivery
+    - Personalized content with project photos
+    - "Hoy hace un año viviste esto..." messaging in Spanish
+    - Analytics tracking for effectiveness measurement
+    - Admin management interface for customization
+  - **Estimated Time**: 2-3 weeks
+
+- [ ] **Testimonial Carousel with Client Favorites** - Public testimonial system showcasing client favorites
+  - **User Intent**: Build social proof and humanize projects
+  - **Key Features**:
+    - Client testimonial collection with favorite photo selection
+    - Responsive carousel component with smooth animations
+    - Public `/testimonios` page and individual testimonial pages
+    - Social sharing integration and analytics tracking
+    - Admin approval workflow for testimonials
+  - **Estimated Time**: 2-3 weeks
+
+#### 🧠 Discovered During Epic Planning
+
+- [ ] **Photo Book Templates** - Multiple design options for different project types
+- [ ] **Photo Book Printing Service** - Offer physical printed versions of digital books
+- [ ] **Multi-year Anniversary Reminders** - Send reminders for 2-year, 5-year anniversaries
+- [ ] **Anniversary Social Media Integration** - Automatically post anniversary content to social media
+- [ ] **Video Testimonial Support** - Allow clients to submit video testimonials
+- [ ] **Testimonial Categories and Filtering** - Organize testimonials by project type or service
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Client Satisfaction**: Increased client satisfaction scores and referrals
+- **Organic Traffic**: Growth in organic traffic from shared content
+- **Engagement**: High engagement rates on shared photo books and testimonials
+- **Repeat Business**: Increased repeat bookings from anniversary reminders
+
+**Secondary Metrics**:
+
+- **Social Sharing**: Number of shares per photo book/testimonial
+- **Lead Generation**: New leads generated from shared content
+- **Brand Awareness**: Increased brand mentions and visibility
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing admin panel and CMS infrastructure
+- Email and WhatsApp integration capabilities
+- Analytics tracking system
+- Social media sharing APIs
+
+**Business Dependencies**:
+
+- Client approval process for testimonials
+- Content moderation guidelines
+- Privacy and data protection compliance
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Ensure all content is properly branded with Veloz identity
+- Implement proper privacy controls for client data
+- Create clear opt-out mechanisms for anniversary reminders
+- Design for mobile-first sharing experience
+
+**Risk Mitigation**:
+
+- Start with pilot programs for each feature
+- Implement gradual rollout to test effectiveness
+- Monitor feedback and adjust features based on client response
+- Ensure compliance with data protection regulations
+
+---
+
 ## 📝 **Notes for Epic Refinement**
 
 When moving items from this backlog to active Epics:
