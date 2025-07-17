@@ -6,6 +6,199 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
+## 🎨 **EPIC: Veloz Brand Design System Implementation**
+
+### 🎯 Objective: Implement comprehensive brand design system across entire application for consistent visual identity and enhanced user experience
+
+**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete implementation plan and specifications
+
+#### 🟧 Critical Priority Tasks
+
+- [ ] **Phase 1: Color System Overhaul** - Replace current theme with Veloz monochromatic palette
+  - **User Intent**: Establish consistent brand identity across all touchpoints
+  - **Acceptance Criteria**:
+    - Update CSS variables in globals.css with Veloz color palette
+    - Remove dark mode support for brand consistency
+    - Implement semantic color mapping (primary, secondary, muted, etc.)
+    - Ensure all components use theme variables instead of hard-coded colors
+  - **Files**: `src/app/globals.css`, `tailwind.config.ts`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 1.1-1.3 (Color System Overhaul)
+  - **Estimated Time**: 2-3 days
+
+- [ ] **Phase 2: Typography System Implementation** - Implement REDJOLA and Roboto font system
+  - **User Intent**: Create clear typography hierarchy that reflects brand personality
+  - **Acceptance Criteria**:
+    - Load REDJOLA font for display text (titles, headlines)
+    - Load Roboto font for body text and UI elements
+    - Create typography utility classes (font-display, font-body)
+    - Update Tailwind config with new font families
+    - Implement fallback fonts if REDJOLA unavailable
+  - **Files**: `src/app/globals.css`, `tailwind.config.ts`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 2.1-2.3 (Typography System Implementation)
+  - **Estimated Time**: 1-2 days
+
+- [ ] **Phase 3: Core Component Updates** - Update all UI components to match brand system
+  - **User Intent**: Ensure all interactive elements follow brand guidelines
+  - **Acceptance Criteria**:
+    - Update Button component with new variants (primary: Vibrant Blue, secondary: transparent)
+    - Update Input component with Light Grey background and Blue focus ring
+    - Update Card component with Medium Grey background
+    - Update Dialog/Modal components with Vibrant Blue accents
+    - Ensure all components use theme variables
+  - **Files**: `src/components/ui/button.tsx`, `src/components/ui/input.tsx`, `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 3.1-3.4 (Component System Updates)
+  - **Estimated Time**: 3-4 days
+
+- [ ] **Phase 4: Logo Component Implementation** - Create VelozLogo component with proper usage guidelines
+  - **User Intent**: Ensure consistent logo presentation across all pages
+  - **Acceptance Criteria**:
+    - Create VelozLogo component with full/compact variants
+    - Implement proper exclusion zone spacing (1x around logo elements)
+    - Support different sizes (sm, md, lg)
+    - Ensure proper color handling (white on dark, black on light backgrounds)
+    - Add dog silhouette SVG icon
+  - **Files**: `src/components/shared/VelozLogo.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 6.1-6.2 (Logo Implementation)
+  - **Estimated Time**: 1-2 days
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Phase 5: Page-Specific Updates** - Update all main pages to use new design system
+  - **User Intent**: Ensure consistent visual experience across all user touchpoints
+  - **Acceptance Criteria**:
+    - Landing page: Charcoal Black background, Vibrant Blue CTAs, REDJOLA headlines
+    - About page: Medium Grey accordion borders, REDJOLA section headers
+    - Our Work page: Medium Grey filter buttons, Vibrant Blue media overlays
+    - Contact page: Light Grey form inputs, Vibrant Blue submit button
+  - **Files**: `src/app/page.tsx`, `src/app/about/page.tsx`, `src/app/our-work/page.tsx`, `src/app/contact/page.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 4.1-4.4 (Page-Specific Updates)
+  - **Estimated Time**: 4-5 days
+
+- [ ] **Phase 6: Admin Panel Updates** - Update admin interface to match brand system
+  - **User Intent**: Ensure admin experience reflects brand identity
+  - **Acceptance Criteria**:
+    - Admin layout: Charcoal Black sidebar, Light Grey content area
+    - All admin forms: Light Grey inputs, Vibrant Blue save buttons
+    - Navigation: White text with Vibrant Blue active states
+    - Status indicators: Use Vibrant Blue for success states
+  - **Files**: `src/app/admin/layout.tsx`, `src/components/admin/AdminLayout.tsx`, all admin components
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 5.1-5.2 (Admin Panel Updates)
+  - **Estimated Time**: 3-4 days
+
+- [ ] **Phase 7: Visual Style Implementation** - Implement spacing, animations, and border radius system
+  - **User Intent**: Create cohesive visual language that reflects brand values
+  - **Acceptance Criteria**:
+    - Implement spacing system based on logo proportions (1x, 2x, 3x, 4x)
+    - Add brand-specific animations (veloz-hover, etc.)
+    - Update border radius system for modern look
+    - Ensure all animations are smooth and purposeful
+  - **Files**: `tailwind.config.ts`, `src/app/globals.css`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 7.1-7.3 (Visual Style Implementation)
+  - **Estimated Time**: 2-3 days
+
+#### 🟩 Medium Priority Tasks
+
+- [ ] **Phase 8: Quality Assurance & Testing** - Comprehensive testing and optimization
+  - **User Intent**: Ensure design system works flawlessly across all scenarios
+  - **Acceptance Criteria**:
+    - Visual consistency checklist: All components follow design system
+    - Accessibility checklist: WCAG AA compliance for all color combinations
+    - Performance checklist: Font loading < 200ms, optimized CSS
+    - Cross-browser testing: Consistent appearance across major browsers
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 8.1-8.3 (Quality Assurance)
+  - **Estimated Time**: 3-4 days
+
+- [ ] **Animation System Enhancement** - Add brand-specific micro-interactions
+  - **User Intent**: Create engaging, purposeful animations that reflect brand personality
+  - **Acceptance Criteria**:
+    - Implement veloz-hover animation for interactive elements
+    - Add smooth transitions for all state changes
+    - Ensure animations are subtle and enhance UX without being distracting
+    - Optimize animations for performance
+  - **Files**: `tailwind.config.ts`, component-specific files
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 7.2 (Animation Updates)
+  - **Estimated Time**: 2-3 days
+
+- [ ] **Responsive Design Optimization** - Ensure design system works perfectly on all devices
+  - **User Intent**: Provide consistent experience across desktop, tablet, and mobile
+  - **Acceptance Criteria**:
+    - Test all components on mobile devices
+    - Ensure typography scales properly on small screens
+    - Verify touch targets are appropriately sized
+    - Test navigation and interactions on touch devices
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Implementation Timeline (Week 5)
+  - **Estimated Time**: 2-3 days
+
+#### 🟦 Low Priority Tasks
+
+- [ ] **Design Token Documentation** - Create comprehensive documentation for design system
+  - **User Intent**: Ensure future development follows brand guidelines
+  - **Acceptance Criteria**:
+    - Document all color values and usage guidelines
+    - Create typography scale documentation
+    - Document spacing and animation systems
+    - Include component usage examples
+  - **Files**: `docs/DESIGN_SYSTEM.md`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Success Metrics & Implementation Notes
+  - **Estimated Time**: 1-2 days
+
+- [ ] **Component Library Enhancement** - Create additional brand-specific components
+  - **User Intent**: Provide reusable components that reflect brand identity
+  - **Acceptance Criteria**:
+    - Create branded loading spinners
+    - Implement Veloz-specific form components
+    - Add branded notification/toast components
+    - Create consistent icon system
+  - **Files**: `src/components/ui/` (new components)
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Phase 3 (Component System Updates)
+  - **Estimated Time**: 3-4 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Consistency**: 100% of components follow new design system
+- **Performance**: Font loading time < 200ms
+- **Accessibility**: WCAG AA compliance for all color combinations
+- **Brand Alignment**: Visual identity matches Veloz brand manual specifications
+
+**Secondary Metrics**:
+
+- **Maintainability**: All design tokens centralized in CSS variables
+- **Developer Experience**: Clear component API and documentation
+- **User Experience**: Improved visual hierarchy and readability
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- REDJOLA font availability (or suitable alternative)
+- Current component system understanding
+- Access to brand manual specifications
+
+**Business Dependencies**:
+
+- Brand manual approval and sign-off
+- Stakeholder review of color palette and typography choices
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain backward compatibility during transition
+- Ensure no hard-coded colors remain in components
+- Test thoroughly across all user flows
+- Consider impact on existing content and media
+
+**Risk Mitigation**:
+
+- Implement changes incrementally to minimize disruption
+- Create rollback plan for each phase
+- Test extensively before deployment
+- Maintain clear communication with stakeholders
+
+---
+
 ## 🎨 **EPIC: Enhanced User Experience & Interface**
 
 ### 🎯 Objective: Improve user engagement and conversion through enhanced UI/UX features
