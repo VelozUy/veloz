@@ -25,15 +25,27 @@ import {
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
+import FileUpload from './FileUpload';
 
 // Contact form data type
 interface ContactFormData {
   name: string;
   email: string;
   phone?: string;
+  communicationPreference: 'call' | 'whatsapp' | 'email' | 'zoom';
   eventType: string;
   eventDate: string;
   message: string;
+  attachments?: string[]; // URLs of uploaded files
+}
+
+interface FileUploadItem {
+  id: string;
+  file: File;
+  progress: number;
+  status: 'pending' | 'uploading' | 'success' | 'error';
+  error?: string;
+  url?: string;
 }
 
 interface ContactFormProps {
@@ -55,6 +67,13 @@ interface ContactFormProps {
           placeholder: string;
           optional: string;
         };
+        communicationPreference: {
+          label: string;
+          call: string;
+          whatsapp: string;
+          email: string;
+          zoom: string;
+        };
         eventType: {
           label: string;
           placeholder: string;
@@ -75,6 +94,11 @@ interface ContactFormProps {
           label: string;
           optional: string;
           placeholder: string;
+        };
+        attachments: {
+          label: string;
+          optional: string;
+          description: string;
         };
         submit: {
           button: string;
@@ -119,11 +143,20 @@ export default function ContactForm({ translations }: ContactFormProps) {
     name: '',
     email: '',
     phone: '',
+    communicationPreference: 'whatsapp' as
+      | 'call'
+      | 'whatsapp'
+      | 'email'
+      | 'zoom',
     eventType: '',
     eventDate: '',
     message: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // File upload state
+  const [selectedFiles, setSelectedFiles] = useState<FileUploadItem[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   // Pre-fill form from URL parameters
   useEffect(() => {
@@ -146,9 +179,35 @@ export default function ContactForm({ translations }: ContactFormProps) {
       newErrors.name = 'Debe tener al menos 2 caracteres';
     }
 
-    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email =
-        'Por favor ingresa un email válido para que podamos responderte';
+    // Conditional validation based on communication preference
+    switch (formData.communicationPreference) {
+      case 'email':
+        // Email requires email but not phone
+        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+          newErrors.email =
+            'Por favor ingresa un email válido para que podamos responderte';
+        }
+        break;
+      case 'call':
+      case 'whatsapp':
+        // Call and WhatsApp require phone but not email
+        if (!formData.phone.trim()) {
+          newErrors.phone =
+            'Por favor ingresa tu número de teléfono para que podamos contactarte';
+        }
+        break;
+      case 'zoom':
+        // Zoom requires either email or phone (at least one)
+        const hasEmail =
+          formData.email.trim() && /\S+@\S+\.\S+/.test(formData.email);
+        const hasPhone = formData.phone.trim();
+        if (!hasEmail && !hasPhone) {
+          newErrors.email =
+            'Para videollamadas, necesitamos tu email o teléfono';
+          newErrors.phone =
+            'Para videollamadas, necesitamos tu email o teléfono';
+        }
+        break;
     }
 
     if (!formData.eventType) {
@@ -170,7 +229,16 @@ export default function ContactForm({ translations }: ContactFormProps) {
     setSubmitError(null);
 
     try {
-      await emailService.sendContactForm(formData as ContactFormData);
+      // Upload files first
+      const uploadedUrls = await uploadFiles();
+
+      // Prepare form data with attachments
+      const formDataWithAttachments = {
+        ...formData,
+        attachments: uploadedUrls,
+      } as ContactFormData;
+
+      await emailService.sendContactForm(formDataWithAttachments);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting contact form:', error);
@@ -191,19 +259,114 @@ export default function ContactForm({ translations }: ContactFormProps) {
       name: '',
       email: '',
       phone: '',
+      communicationPreference: 'whatsapp' as
+        | 'call'
+        | 'whatsapp'
+        | 'email'
+        | 'zoom',
       eventType: '',
       eventDate: '',
       message: '',
     });
     setErrors({});
+    setSelectedFiles([]);
+    setUploadingFiles(false);
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
+  };
+
+  // File upload handlers
+  const handleFilesSelected = (files: File[]) => {
+    const newFileItems: FileUploadItem[] = files.map(file => ({
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      file,
+      progress: 0,
+      status: 'pending',
+    }));
+    setSelectedFiles(prev => [...prev, ...newFileItems]);
+  };
+
+  const handleFilesRemoved = (fileIds: string[]) => {
+    setSelectedFiles(prev => prev.filter(item => !fileIds.includes(item.id)));
+  };
+
+  const uploadFiles = async (): Promise<string[]> => {
+    if (selectedFiles.length === 0) return [];
+
+    setUploadingFiles(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      const { FileUploadService } = await import('@/services/file-upload');
+      const fileUploadService = new FileUploadService();
+
+      for (const fileItem of selectedFiles) {
+        if (fileItem.status === 'pending') {
+          // Update status to uploading
+          setSelectedFiles(prev =>
+            prev.map(item =>
+              item.id === fileItem.id ? { ...item, status: 'uploading' } : item
+            )
+          );
+
+          const result = await fileUploadService.uploadFile(
+            fileItem.file,
+            'uploads/contacts',
+            {
+              maxFileSizeBytes: 10 * 1024 * 1024, // 10MB
+              allowedMimeTypes: [
+                'image/*',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              ],
+            },
+            progress => {
+              setSelectedFiles(prev =>
+                prev.map(item =>
+                  item.id === fileItem.id
+                    ? { ...item, progress: progress.percentage }
+                    : item
+                )
+              );
+            }
+          );
+
+          if (result.success && result.data) {
+            setSelectedFiles(prev =>
+              prev.map(item =>
+                item.id === fileItem.id
+                  ? { ...item, status: 'success', url: result.data!.url }
+                  : item
+              )
+            );
+            uploadedUrls.push(result.data.url);
+          } else {
+            setSelectedFiles(prev =>
+              prev.map(item =>
+                item.id === fileItem.id
+                  ? { ...item, status: 'error', error: result.error }
+                  : item
+              )
+            );
+          }
+        } else if (fileItem.status === 'success' && fileItem.url) {
+          uploadedUrls.push(fileItem.url);
+        }
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    } finally {
+      setUploadingFiles(false);
+    }
+
+    return uploadedUrls;
   };
 
   const t = translations.contact;
@@ -326,6 +489,22 @@ export default function ContactForm({ translations }: ContactFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-base font-medium">
                     {t.form.email.label}
+                    {formData.communicationPreference === 'email' && (
+                      <span className="text-destructive"> *</span>
+                    )}
+                    {formData.communicationPreference === 'zoom' && (
+                      <span className="text-muted-foreground font-normal">
+                        {' '}
+                        (recomendado)
+                      </span>
+                    )}
+                    {(formData.communicationPreference === 'call' ||
+                      formData.communicationPreference === 'whatsapp') && (
+                      <span className="text-muted-foreground font-normal">
+                        {' '}
+                        (opcional)
+                      </span>
+                    )}
                   </Label>
                   <Input
                     id="email"
@@ -346,10 +525,23 @@ export default function ContactForm({ translations }: ContactFormProps) {
                 {/* Phone */}
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-base font-medium">
-                    {t.form.phone.label}{' '}
-                    <span className="text-muted-foreground font-normal">
-                      {t.form.phone.optional}
-                    </span>
+                    {t.form.phone.label}
+                    {(formData.communicationPreference === 'call' ||
+                      formData.communicationPreference === 'whatsapp') && (
+                      <span className="text-destructive"> *</span>
+                    )}
+                    {formData.communicationPreference === 'zoom' && (
+                      <span className="text-muted-foreground font-normal">
+                        {' '}
+                        (recomendado)
+                      </span>
+                    )}
+                    {formData.communicationPreference === 'email' && (
+                      <span className="text-muted-foreground font-normal">
+                        {' '}
+                        (opcional)
+                      </span>
+                    )}
                   </Label>
                   <Input
                     id="phone"
@@ -357,7 +549,79 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     placeholder={t.form.phone.placeholder}
                     value={formData.phone}
                     onChange={e => handleInputChange('phone', e.target.value)}
+                    className={cn(errors.phone && 'border-destructive')}
                   />
+                  {errors.phone && (
+                    <p className="text-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
+
+                {/* Communication Preference */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium">
+                    {t.form.communicationPreference.label}
+                  </Label>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleInputChange('communicationPreference', 'call')
+                      }
+                      className={cn(
+                        'flex-1 px-3 py-2 text-sm rounded-md border transition-colors',
+                        formData.communicationPreference === 'call'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-input hover:bg-accent hover:text-accent-foreground'
+                      )}
+                    >
+                      {t.form.communicationPreference.call}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleInputChange('communicationPreference', 'whatsapp')
+                      }
+                      className={cn(
+                        'flex-1 px-3 py-2 text-sm rounded-md border transition-colors',
+                        formData.communicationPreference === 'whatsapp'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-input hover:bg-accent hover:text-accent-foreground'
+                      )}
+                    >
+                      {t.form.communicationPreference.whatsapp}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleInputChange('communicationPreference', 'email')
+                      }
+                      className={cn(
+                        'flex-1 px-3 py-2 text-sm rounded-md border transition-colors',
+                        formData.communicationPreference === 'email'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-input hover:bg-accent hover:text-accent-foreground'
+                      )}
+                    >
+                      {t.form.communicationPreference.email}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleInputChange('communicationPreference', 'zoom')
+                      }
+                      className={cn(
+                        'flex-1 px-3 py-2 text-sm rounded-md border transition-colors',
+                        formData.communicationPreference === 'zoom'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-input hover:bg-accent hover:text-accent-foreground'
+                      )}
+                    >
+                      {t.form.communicationPreference.zoom}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Event Type */}
@@ -443,20 +707,49 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     onChange={e => handleInputChange('message', e.target.value)}
                   />
                 </div>
+
+                {/* File Upload */}
+                <div className="space-y-2">
+                  <Label className="text-base font-medium">
+                    {t.form.attachments.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.attachments.optional}
+                    </span>
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    {t.form.attachments.description}
+                  </p>
+                  <FileUpload
+                    onFilesSelected={handleFilesSelected}
+                    onFilesRemoved={handleFilesRemoved}
+                    selectedFiles={selectedFiles}
+                    maxFiles={5}
+                    maxFileSize={10 * 1024 * 1024} // 10MB
+                    allowedTypes={[
+                      'image/*',
+                      'application/pdf',
+                      'application/msword',
+                      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    ]}
+                    disabled={isSubmitting || uploadingFiles}
+                  />
+                </div>
               </div>
 
               {/* Submit Button */}
               <div className="text-center space-y-6">
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || uploadingFiles}
                   size="lg"
                   className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-12 py-6 text-lg"
                 >
-                  {isSubmitting ? (
+                  {isSubmitting || uploadingFiles ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      {t.form.submit.loading}
+                      {uploadingFiles
+                        ? 'Uploading files...'
+                        : t.form.submit.loading}
                     </>
                   ) : (
                     <>

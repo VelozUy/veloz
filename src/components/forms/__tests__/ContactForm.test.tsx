@@ -44,6 +44,11 @@ describe('ContactForm Component', () => {
           label: 'Email',
           placeholder: 'your@email.com',
         },
+        phone: {
+          label: 'Phone',
+          placeholder: 'Your phone number',
+          optional: '(optional)',
+        },
         eventType: {
           label: 'Event Type',
           placeholder: 'Select event type',
@@ -106,6 +111,7 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
+      expect(screen.getByLabelText('Phone')).toBeInTheDocument();
       expect(screen.getByLabelText('Event Type')).toBeInTheDocument();
       expect(screen.getByLabelText(/Event Date/)).toBeInTheDocument();
       expect(screen.getByLabelText(/Message/)).toBeInTheDocument();

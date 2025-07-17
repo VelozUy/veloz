@@ -92,6 +92,13 @@ const STATIC_TRANSLATIONS = {
           placeholder: 'Tu número de teléfono',
           optional: '(opcional)',
         },
+        communicationPreference: {
+          label: 'Forma de contacto preferida',
+          call: 'Llamada',
+          whatsapp: 'WhatsApp',
+          email: 'Email',
+          zoom: 'Videollamada',
+        },
         eventType: {
           label: '¿Qué estás celebrando?',
           placeholder: 'Elige tu tipo de evento',
@@ -113,6 +120,12 @@ const STATIC_TRANSLATIONS = {
           optional: '(opcional)',
           placeholder:
             'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
+        },
+        attachments: {
+          label: 'Materiales de referencia',
+          optional: '(opcional)',
+          description:
+            'Sube imágenes, documentos o archivos que nos ayuden a entender mejor tu visión',
         },
         submit: {
           button: 'Empezar la conversación',
@@ -351,6 +364,13 @@ const STATIC_TRANSLATIONS = {
           placeholder: 'Your phone number',
           optional: '(optional)',
         },
+        communicationPreference: {
+          label: 'Preferred contact method',
+          call: 'Call',
+          whatsapp: 'WhatsApp',
+          email: 'Email',
+          zoom: 'Video Call',
+        },
         eventType: {
           label: 'What are you celebrating?',
           placeholder: 'Choose your event type',
@@ -372,6 +392,12 @@ const STATIC_TRANSLATIONS = {
           optional: '(optional)',
           placeholder:
             'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
+        },
+        attachments: {
+          label: 'Reference Materials',
+          optional: '(optional)',
+          description:
+            'Upload images, documents, or files that help us understand your vision better',
         },
         submit: {
           button: 'Start the conversation',
@@ -609,6 +635,13 @@ const STATIC_TRANSLATIONS = {
           placeholder: 'Seu número de telefone',
           optional: '(opcional)',
         },
+        communicationPreference: {
+          label: 'Método de contato preferido',
+          call: 'Ligação',
+          whatsapp: 'WhatsApp',
+          email: 'Email',
+          zoom: 'Videoconferência',
+        },
         eventType: {
           label: 'O que você está comemorando?',
           placeholder: 'Escolha seu tipo de evento',
@@ -630,6 +663,12 @@ const STATIC_TRANSLATIONS = {
           optional: '(opcional)',
           placeholder:
             'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+        },
+        attachments: {
+          label: 'Materiais de Referência',
+          optional: '(opcional)',
+          description:
+            'Faça upload de imagens, documentos ou arquivos que nos ajudem a entender melhor sua visão',
         },
         submit: {
           button: 'Iniciar a conversa',

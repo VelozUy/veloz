@@ -214,33 +214,56 @@ _Last updated: 2025-01-20_
     - Data stored and displayed to admin
   - **PO Sign-Off**: PO Approved (2025-01-20)
 
-- [ ] Create file upload component
+- [x] Create file upload component
   - **User Intent**: Allow clients to upload reference materials
   - **Acceptance Criteria**:
     - File upload functionality
     - File type validation
     - Progress indicators
+  - **PO Sign-Off**: PO Approved (2025-01-20)
 
-- [ ] Add file type validation
+- [x] Add file type validation
   - **User Intent**: Ensure only appropriate file types are uploaded
   - **Acceptance Criteria**:
     - Image and document formats accepted
     - Clear error messages for invalid files
     - File size limits enforced
+  - **PO Sign-Off**: PO Approved (2025-01-20)
 
-- [ ] Add file size validation
+- [x] Add file size validation
   - **User Intent**: Prevent oversized file uploads
   - **Acceptance Criteria**:
     - Maximum file size enforced
     - Clear error messages for oversized files
     - Progress tracking for large uploads
+  - **PO Sign-Off**: PO Approved (2025-01-20)
 
-- [ ] Add Zoom call checkbox
+- [x] Add Zoom call checkbox
   - **User Intent**: Allow clients to request video consultation
   - **Acceptance Criteria**:
     - Zoom call option in form
     - Data properly stored
     - Admin notification for Zoom requests
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] Add communication preference toggle
+  - **User Intent**: Allow clients to specify preferred contact method
+  - **Acceptance Criteria**:
+    - Toggle between call, WhatsApp, and email
+    - Default selection (email)
+    - Data properly stored and sent to admin
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] Replace zoom checkbox with communication preference option and add conditional validation
+  - **User Intent**: Improve form UX by integrating zoom option into communication preferences with smart validation
+  - **Acceptance Criteria**:
+    - Zoom option added to communication preference buttons
+    - Conditional validation based on selected communication method
+    - Email requires email but not phone
+    - Call/WhatsApp require phone but not email
+    - Zoom requires either email or phone (at least one)
+    - Form labels show required/optional status dynamically
+  - **PO Sign-Off**: PO Approved (2025-01-20)
 
 #### 🟩 Low
 
@@ -282,6 +305,12 @@ _Last updated: 2025-01-20_
 - [x] Add accessibility features (2025-01-16)
 - [x] Add CSP compliance (2025-01-16)
 - [x] Add phone input field (2025-01-20)
+- [x] Create file upload component (2025-01-20)
+- [x] Add file type validation (2025-01-20)
+- [x] Add file size validation (2025-01-20)
+- [x] Add Zoom call checkbox (2025-01-20)
+- [x] Add communication preference toggle (2025-01-20)
+- [x] Replace zoom checkbox with communication preference option and add conditional validation (2025-01-20)
 
 ---
 
