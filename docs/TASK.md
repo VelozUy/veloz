@@ -639,3 +639,163 @@ _Last updated: 2025-01-20_
 ---
 
 # Add new Epics below this line following the template above.
+
+---
+
+### 🧱 EPIC: Shareable Photo Book System
+
+**Objective**: Create beautiful, shareable digital photo books for each project to increase client satisfaction and organic traffic.
+
+**PRD Ref**: "Client Shareables – High-Impact Post-Project Features" section in new_features.md
+
+#### 🟩 Low Priority (Post-Launch)
+
+- [ ] Create photo book generation system
+  - **User Intent**: Automatically generate beautiful digital photo books for each project
+  - **Acceptance Criteria**:
+    - Automated photo book creation from project images
+    - Beautiful vertical scrollable layout or flipbook animation
+    - Includes project title, date, and optional client quote
+    - Embedded Veloz branding on intro/final pages
+    - Public URL format: `https://veloz.com.uy/album/{project-slug}`
+  - **Notes**: Should be integrated into CMS for automation and personalization
+
+- [ ] Implement photo book customization features
+  - **User Intent**: Allow clients to personalize their photo books
+  - **Acceptance Criteria**:
+    - Client can reorder photos in their book
+    - Option to hide certain photos
+    - Custom title and description fields
+    - Preview functionality before finalizing
+  - **Notes**: Optional feature to enhance client experience
+
+- [ ] Add photo book sharing and analytics
+  - **User Intent**: Track sharing and engagement with photo books
+  - **Acceptance Criteria**:
+    - Social sharing buttons (WhatsApp, Instagram, Facebook)
+    - Analytics tracking for book views and shares
+    - Referral tracking to identify new leads from shared books
+    - Print request button integration
+  - **Notes**: Critical for measuring ROI of the feature
+
+- [ ] Create admin photo book management
+  - **User Intent**: Allow admin to manage and customize photo books
+  - **Acceptance Criteria**:
+    - Admin can select which photos to include
+    - Manual curation options for premium books
+    - Template selection for different book styles
+    - Client access management and permissions
+  - **Notes**: Should integrate with existing admin panel
+
+#### 🧠 Discovered During the Epic
+
+- [ ] Add photo book templates
+  - **User Intent**: Provide multiple design options for different project types
+- [ ] Implement photo book printing service
+  - **User Intent**: Offer physical printed versions of digital books
+
+---
+
+### 🧱 EPIC: Anniversary Reminder System
+
+**Objective**: Implement automated anniversary reminders to re-engage clients and encourage repeat business.
+
+**PRD Ref**: "Client Shareables – High-Impact Post-Project Features" section in new_features.md
+
+#### 🟩 Low Priority (Post-Launch)
+
+- [ ] Create anniversary reminder scheduling system
+  - **User Intent**: Automatically send anniversary reminders exactly one year after events
+  - **Acceptance Criteria**:
+    - Automated scheduling based on project completion dates
+    - Email and WhatsApp message delivery
+    - Personalized content with project photos
+    - Link to private or public album included
+  - **Notes**: Should integrate with existing email system
+
+- [ ] Design anniversary reminder content templates
+  - **User Intent**: Create emotionally engaging anniversary messages
+  - **Acceptance Criteria**:
+    - "Hoy hace un año viviste esto..." messaging
+    - Photo collage or thumbnail inclusion
+    - Clear call-to-action buttons
+    - Options for "Volvé a vivirlo" and "Pedí tus impresiones"
+  - **Notes**: Content should be in Spanish and emotionally resonant
+
+- [ ] Implement anniversary reminder analytics
+  - **User Intent**: Track effectiveness of anniversary reminders
+  - **Acceptance Criteria**:
+    - Open rates and click-through tracking
+    - Conversion tracking for follow-up services
+    - A/B testing for different message formats
+    - ROI measurement for the feature
+  - **Notes**: Critical for optimizing the feature
+
+- [ ] Create admin anniversary management interface
+  - **User Intent**: Allow admin to manage and customize anniversary reminders
+  - **Acceptance Criteria**:
+    - View all scheduled anniversary reminders
+    - Manual override and customization options
+    - Client opt-out management
+    - Reminder performance dashboard
+  - **Notes**: Should integrate with existing admin panel
+
+#### 🧠 Discovered During the Epic
+
+- [ ] Add multi-year anniversary reminders
+  - **User Intent**: Send reminders for 2-year, 5-year anniversaries
+- [ ] Implement anniversary social media integration
+  - **User Intent**: Automatically post anniversary content to social media
+
+---
+
+### 🧱 EPIC: Testimonial Carousel with Client Favorites
+
+**Objective**: Create a public testimonial system that showcases client favorites and builds social proof.
+
+**PRD Ref**: "Client Shareables – High-Impact Post-Project Features" section in new_features.md
+
+#### 🟩 Low Priority (Post-Launch)
+
+- [ ] Create testimonial collection system
+  - **User Intent**: Collect and organize client testimonials with their favorite photos
+  - **Acceptance Criteria**:
+    - Client testimonial submission form
+    - Photo selection interface for clients
+    - Project title and category association
+    - Admin approval workflow for testimonials
+  - **Notes**: Should integrate with existing contact and project systems
+
+- [ ] Design testimonial carousel component
+  - **User Intent**: Display testimonials in an engaging, shareable format
+  - **Acceptance Criteria**:
+    - Responsive carousel with smooth animations
+    - Image + quote card format
+    - Project title and category display
+    - Social sharing integration
+  - **Notes**: Should match existing design system
+
+- [ ] Implement testimonial public pages
+  - **User Intent**: Create dedicated pages for testimonials
+  - **Acceptance Criteria**:
+    - Public `/testimonios` page with all testimonials
+    - Individual testimonial pages (e.g., `/testimonios/martin-y-josefa`)
+    - SEO optimization for testimonial pages
+    - Integration with homepage slider
+  - **Notes**: Should follow existing routing patterns
+
+- [ ] Add testimonial analytics and sharing
+  - **User Intent**: Track engagement and sharing of testimonials
+  - **Acceptance Criteria**:
+    - View and share analytics for each testimonial
+    - Social media sharing buttons
+    - Client sharing tracking
+    - Lead generation from testimonial traffic
+  - **Notes**: Critical for measuring feature effectiveness
+
+#### 🧠 Discovered During the Epic
+
+- [ ] Add video testimonial support
+  - **User Intent**: Allow clients to submit video testimonials
+- [ ] Implement testimonial categories and filtering
+  - **User Intent**: Organize testimonials by project type or service
