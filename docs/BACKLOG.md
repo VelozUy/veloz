@@ -1080,7 +1080,7 @@ This file contains unprioritized ideas and future features that have been identi
 
 #### 🟦 Low Priority Tasks
 
-- [ ] **Phase 9: Documentation and Testing** - Create comprehensive documentation and testing
+- [ ] **Phase 9: Documentation and Testing** - Create comprehensive documentation and tests
   - **User Intent**: Ensure the new border radius system is well-documented and tested
   - **Acceptance Criteria**:
     - Update component documentation with border radius guidelines
@@ -1136,6 +1136,15 @@ This file contains unprioritized ideas and future features that have been identi
 - Create rollback plan for each phase
 - Test with multiple content types to ensure consistency
 - Maintain backward compatibility during transition
+- Create comprehensive test suite for reliability
+
+**Border Radius Usage Rules**:
+
+- Tags/Badges: `rounded-full` for warmth and clarity
+- Cards/Forms: `rounded-md` or `rounded-lg` for accessibility
+- Hero/Layout: Asymmetrical (`rounded-tl-[3rem]`, `rounded-br-[4rem]`) for movement
+- Structural: `rounded-none` for precision and consistency
+- Avoid: `rounded-xl` and `rounded-2xl` to prevent overuse
 
 ---
 
@@ -2007,6 +2016,530 @@ This file contains unprioritized ideas and future features that have been identi
 - Hero/Layout: Asymmetrical (`rounded-tl-[3rem]`, `rounded-br-[4rem]`) for movement
 - Structural: `rounded-none` for precision and consistency
 - Avoid: `rounded-xl` and `rounded-2xl` to prevent overuse
+
+---
+
+## 🎯 **EPIC: Category-Based Gallery Navigation** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Transform the /our-work page to show galleries by project category with scroll navigation, displaying only feature media from each category in a single-page layout
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - Category-based gallery navigation requirements
+**User Intent**: Improve gallery organization with scroll navigation showing only feature media grouped by category, making it easier for clients to browse specific types of work in a single-page experience
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Category Scroll Navigation System** - Implement scroll-based navigation for project categories
+  - **User Intent**: Create smooth scroll navigation with everything on one page, showing only feature media from each category
+  - **Acceptance Criteria**:
+    - Single page layout with scroll navigation between categories
+    - Categories: Boda, Corporativo, Producto, Moda
+    - Each category section shows only feature media from projects in that category
+    - Smooth scroll transitions between category sections
+    - Sticky navigation with active section highlighting
+    - Mobile-responsive scroll navigation
+    - URL hash state management for direct category links
+  - **Files**: `src/components/our-work/CategoryScrollNavigation.tsx`, `src/app/our-work/page.tsx`
+  - **Reference**: Meeting document - "/our-work PAGE" section
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Category Feature Media Display** - Update gallery to show only feature media grouped by category
+  - **User Intent**: Display only feature media from projects organized by category in scroll sections
+  - **Acceptance Criteria**:
+    - Each category section shows only feature media from projects in that category
+    - Feature media displayed in responsive grid layout
+    - Maintain existing gallery styling and lightbox functionality
+    - Preserve static generation and SEO optimization
+    - Category-specific media counts displayed
+    - Smooth scroll navigation between category sections
+  - **Files**: `src/components/our-work/CategoryFeatureMedia.tsx`, `src/components/our-work/FeatureMediaGrid.tsx`
+  - **Reference**: Meeting document - "Show a gallery by project category instead of by individual project"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Admin-Built Micro Forms** - Create dynamic micro forms that admins can configure
+  - **User Intent**: Allow admins to build custom micro form steps with configurable input types and data fields
+  - **Acceptance Criteria**:
+    - Admin can create micro form steps with input types: date (calendar), number, short text, long text
+    - Admin can select data fields from contact database or create custom fields
+    - Custom fields from user input are added to main contact form description
+    - Dynamic form generation based on admin configuration
+    - Form validation and submission handling
+    - Category-specific form templates (Boda, Corporativo, Producto, Moda)
+  - **Files**: `src/components/admin/MicroFormBuilder.tsx`, `src/components/forms/DynamicMicroForm.tsx`, `src/app/admin/forms/micro-forms/page.tsx`
+  - **Reference**: Meeting document - "MICRO FORM" section
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 4: Category Analytics** - Implement category-specific analytics and insights
+  - **User Intent**: Track performance and engagement for each category
+  - **Acceptance Criteria**:
+    - Category view analytics
+    - Category-specific conversion tracking
+    - Popular categories reporting
+    - Category performance insights
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
+  - **Reference**: Meeting document - "Dashboard" section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **User Experience**: Smooth scroll navigation with everything on one page
+- **Visual Impact**: Feature media showcase for each category
+- **Conversion**: Higher contact form submissions with category-specific forms
+- **Organization**: Clear project categorization with scroll navigation
+- **SEO**: Maintained search engine optimization with single-page layout
+
+**Secondary Metrics**:
+
+- **Engagement**: Increased time spent browsing category-specific projects
+- **Lead Quality**: Better qualified leads through category-specific forms
+- **Admin Efficiency**: Easier project management by category
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current gallery page implementation
+- Understanding of existing static content generation
+- Access to project categorization data
+
+**Business Dependencies**:
+
+- User approval of category-based navigation approach
+- Stakeholder review of category-specific forms
+- Content team preparation for category organization
+
+---
+
+## 🗑️ **EPIC: Remove Individual Project Pages** ⭐ **LOW PRIORITY**
+
+### 🎯 Objective: Simple code cleanup to delete the /our-work/[slug] individual project detail pages
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - "This page will be removed"
+**User Intent**: Clean up the codebase by removing unused individual project pages - no data changes or other page modifications needed
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Delete Individual Project Pages** - Remove all individual project page files and routes
+  - **User Intent**: Simple code cleanup to remove unused individual project pages
+  - **Acceptance Criteria**:
+    - Remove `src/app/our-work/[slug]/` directory and all files
+    - Remove individual project components: `ProjectDetailClient.tsx`, `ProjectTimeline.tsx`, `MeetTheTeam.tsx`
+    - Remove individual project tests
+    - No changes to data, SEO, admin panel, or other pages
+  - **Files**: `src/app/our-work/[slug]/`, `src/components/our-work/ProjectDetailClient.tsx`, `src/components/our-work/ProjectTimeline.tsx`, `src/components/our-work/MeetTheTeam.tsx`
+  - **Reference**: Meeting document - "This page will be removed"
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Code Cleanup**: Successful removal of unused individual project pages
+- **No Breaking Changes**: All other functionality remains intact
+- **Bundle Size**: Reduced JavaScript bundle size
+
+**Secondary Metrics**:
+
+- **Maintainability**: Simplified codebase with fewer routes
+- **Performance**: Slightly improved build times
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Confirmation that individual project pages are no longer needed
+- Understanding of current individual project page structure
+
+**Business Dependencies**:
+
+- User approval of individual project page removal
+
+---
+
+## 📦 **EPIC: Client Project Tracking System** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Create a new client-facing project tracking system with code-based login and personalized dashboard for project progress, downloads, and status updates
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - "WHERE IS MY PROJECT?" and "/project/" sections
+**User Intent**: Provide clients with easy access to track their project progress, download materials, and view current status through a secure code-based login system
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Project Tracking Route Structure** - Create new project tracking routes and pages
+  - **User Intent**: Set up the basic route structure for client project tracking
+  - **Acceptance Criteria**:
+    - New route `/project` for project access
+    - New route `/project/[code]` for personalized dashboard
+    - New route `/project/[code]/album` for digital photo album
+    - Code-based authentication system
+    - Secure access control for project data
+  - **Files**: `src/app/project/page.tsx`, `src/app/project/[code]/page.tsx`, `src/app/project/[code]/album/page.tsx`
+  - **Reference**: Meeting document - "New route: /project" and "/project/" sections
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Project Process Flow Definition** - Define clear project milestones and status tracking
+  - **User Intent**: Create a structured project process with clear milestones for client tracking
+  - **Acceptance Criteria**:
+    - Define project statuses: draft, shooting scheduled, in editing, delivered
+    - Create milestone system: fecha confirmada, crew armado, shooting finalizado, imágenes editadas, imágenes entregadas, videos editados, videos entregados
+    - Implement progress tracking and percentage completion
+    - Create status update notifications
+  - **Files**: `src/types/project.ts`, `src/lib/project-milestones.ts`, `src/components/project/ProjectStatus.tsx`
+  - **Reference**: Meeting document - "Define a clear project process flow with milestones"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Client Dashboard Implementation** - Build personalized client dashboard
+  - **User Intent**: Create a comprehensive dashboard for clients to track their project progress
+  - **Acceptance Criteria**:
+    - Project overview with current status and progress
+    - Milestone checklist with completion status
+    - Download section for delivered media files (using existing media implementation)
+    - Timeline view of project progress
+    - Contact information for project team
+    - Mobile-responsive design
+  - **Files**: `src/components/project/ClientDashboard.tsx`, `src/components/project/ProjectTimeline.tsx`, `src/components/project/DownloadSection.tsx`
+  - **Reference**: Meeting document - "Personalized dashboard for each client to track progress, download material, and view current status"
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Digital Photo Album** - Create organic, emotionally engaging photo album
+  - **User Intent**: Build a beautiful digital photo album for sharing that feels organic and emotionally engaging
+  - **Acceptance Criteria**:
+    - Organic, emotionally engaging design
+    - Public-friendly sharing capabilities
+    - High-quality image display with lightbox
+    - Social sharing integration
+    - Mobile-optimized viewing experience
+    - Example style: Client Gallery Example (from meeting document)
+  - **Files**: `src/components/project/DigitalAlbum.tsx`, `src/components/project/AlbumGallery.tsx`
+  - **Reference**: Meeting document - "Digital photo album for sharing" and "Example style: Client Gallery Example"
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Admin Project Management Integration** - Connect client tracking to admin project management
+  - **User Intent**: Integrate client tracking system with existing admin project management
+  - **Acceptance Criteria**:
+    - Admin can create projects with tracking codes
+    - Admin can update project status and milestones
+    - Admin can mark media files as delivered for client download (using existing media system)
+    - Admin can manage client access and permissions
+    - Real-time status updates from admin to client dashboard
+  - **Files**: `src/app/admin/projects/new/page.tsx`, `src/components/admin/ProjectTrackingManager.tsx`
+  - **Reference**: Meeting document - "Projects Module" section
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Analytics and Reporting** - Add analytics for project tracking usage
+  - **User Intent**: Track how clients use the project tracking system for business insights
+  - **Acceptance Criteria**:
+    - Client dashboard usage analytics
+    - Download tracking and analytics
+    - Project completion time tracking
+    - Client satisfaction metrics
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
+  - **Reference**: Meeting document - "Dashboard" section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Client Satisfaction**: Reduced client inquiries about project status
+- **Project Transparency**: Clear visibility into project progress for clients
+- **Admin Efficiency**: Streamlined project management and client communication
+- **User Experience**: Intuitive and engaging client dashboard
+
+**Secondary Metrics**:
+
+- **Engagement**: High client dashboard usage rates
+- **Communication**: Reduced back-and-forth emails about project status
+- **Brand Perception**: Enhanced professional image through transparency
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current admin project management system
+- Email service integration
+- File upload and storage system
+- Authentication system for code-based access
+
+**Business Dependencies**:
+
+- User approval of client tracking system design
+- Stakeholder review of project milestone definitions
+- Content team preparation for client-facing materials
+
+---
+
+## 🧑‍🎨 **EPIC: Crew Portfolio System** ⭐ **MEDIUM PRIORITY**
+
+### 🎯 Objective: Create individual profile pages for each crew member with photo, bio, category focus, and recent works
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - "PHOTOGRAPHER PORTFOLIO" section
+**User Intent**: Showcase individual crew members with their unique styles, specialties, and recent work to help clients choose the right crew member for their needs
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Crew Profile Structure** - Create crew member profile pages and data structure
+  - **User Intent**: Set up the basic structure for individual crew member profiles
+  - **Acceptance Criteria**:
+    - New route `/crew/[name-slug]` for individual crew member pages
+    - Crew member data structure with photo, bio, category focus
+    - Profile page layout with crew member information
+    - Recent works section for each crew member
+    - Mobile-responsive design
+  - **Files**: `src/app/crew/[name-slug]/page.tsx`, `src/types/crew.ts`, `src/components/crew/CrewProfile.tsx`
+  - **Reference**: Meeting document - "A profile page for each photographer is essential"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Crew Portfolio Display** - Create portfolio showcase for each crew member
+  - **User Intent**: Display crew member's recent works and showcase their unique style
+  - **Acceptance Criteria**:
+    - Gallery of crew member's recent works
+    - Category-specific work filtering
+    - Crew member's style and specialty highlighting
+    - Contact information for direct inquiries
+    - Integration with main gallery system
+  - **Files**: `src/components/crew/CrewPortfolio.tsx`, `src/components/crew/CrewWorks.tsx`
+  - **Reference**: Meeting document - "Should include photo, bio, category focus, and recent works"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Admin Crew Management Enhancement** - Build on existing crew management system
+  - **User Intent**: Enhance existing crew management with portfolio features and profile management
+  - **Acceptance Criteria**:
+    - Extend existing crew management with portfolio features
+    - Add crew member profile editing with photo, bio, and specialties
+    - Add work assignment functionality to link projects to crew members
+    - Add category and specialty management for crew members
+    - Maintain existing crew management functionality
+  - **Files**: `src/app/admin/crew/page.tsx`, `src/components/admin/CrewManager.tsx` (enhance existing)
+  - **Reference**: Meeting document - "ADMIN FEATURES" section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 4: Crew Analytics** - Add analytics for crew portfolio performance
+  - **User Intent**: Track which crew members and styles are most popular
+  - **Acceptance Criteria**:
+    - Crew member profile view analytics
+    - Crew member work engagement tracking
+    - Category-specific crew member popularity
+    - Client inquiry tracking per crew member
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
+  - **Reference**: Meeting document - "Dashboard" section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Client Choice**: Clients can easily find and choose crew members
+- **Crew Visibility**: Individual crew members are properly showcased
+- **Project Matching**: Better crew-client matching based on specialties
+- **Brand Professionalism**: Enhanced professional image through individual showcases
+
+**Secondary Metrics**:
+
+- **Engagement**: High crew member profile view rates
+- **Inquiries**: Increased direct crew member inquiries
+- **Satisfaction**: Better client-crew matches
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current gallery and project management systems
+- Admin panel structure
+- Image upload and management system
+
+**Business Dependencies**:
+
+- User approval of photographer portfolio approach
+- Photographer content and bios
+- Stakeholder review of photographer showcase design
+
+---
+
+## 🛠️ **EPIC: Enhanced Admin Project Management** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Enhance admin project management with comprehensive project creation, status tracking, checklist system, and dashboard prioritization
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - "ADMIN FEATURES" and "Projects Module" sections
+**User Intent**: Provide comprehensive project management tools for admins to create projects, track status, manage checklists, and prioritize upcoming actions
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Enhanced Project Creation** - Build on existing project creation system
+  - **User Intent**: Enhance existing project creation with additional features and improved workflow
+  - **Acceptance Criteria**:
+    - Extend existing project creation form with enhanced client details
+    - Add improved contact information capture and management
+    - Add project assignment to categories and crew members
+    - Add project status management (draft, shooting scheduled, in editing, delivered)
+    - Add file upload for project materials
+    - Maintain existing project creation functionality
+  - **Files**: `src/app/admin/projects/new/page.tsx`, `src/components/admin/ProjectCreationForm.tsx` (enhance existing)
+  - **Reference**: Meeting document - "Admin can create new projects from scratch"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Project Task List System** - Implement task list with dates and dashboard integration
+  - **User Intent**: Create flexible task list system where each task can have a date, with dashboard showing upcoming tasks
+  - **Acceptance Criteria**:
+    - Default task template with common items: fecha confirmada, crew armado, shooting finalizado, imágenes editadas, imágenes entregadas, videos editados, videos entregados
+    - Editable task items per project (add, remove, modify)
+    - Each task can have a due date
+    - Admin can define and manage default task templates
+    - Checkbox system with completion tracking
+    - Progress percentage calculation
+    - Dashboard section showing all upcoming tasks across all projects
+    - Task filtering and sorting by date, project, priority
+  - **Files**: `src/components/admin/ProjectTaskList.tsx`, `src/components/admin/TaskItem.tsx`, `src/components/admin/TaskTemplateManager.tsx`, `src/components/admin/DashboardUpcomingTasks.tsx`
+  - **Reference**: Meeting document - "Include a checklist system per project"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Enhanced Dashboard with Task Integration** - Create dashboard with upcoming tasks and actions
+  - **User Intent**: Show upcoming tasks and actions prioritized by urgency and timeline
+  - **Acceptance Criteria**:
+    - Dashboard shows upcoming tasks from all projects
+    - Dashboard shows: "Shooting tomorrow", "Zoom call this week"
+    - Prioritized and sorted by urgency and timeline
+    - Action items with due dates and priority levels
+    - Quick action buttons for common tasks
+    - Real-time updates and notifications
+    - Integration with project task list system
+  - **Files**: `src/app/admin/page.tsx`, `src/components/admin/DashboardActions.tsx`, `src/components/admin/DashboardUpcomingTasks.tsx`
+  - **Reference**: Meeting document - "Shows upcoming actions: e.g. 'Shooting tomorrow', 'Zoom call this week'"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Contact Forms Integration** - Connect contact forms to projects and enable project creation from contacts
+  - **User Intent**: Link contact forms to projects and allow admins to create projects from contact data
+  - **Acceptance Criteria**:
+    - Contact forms connect to specific projects
+    - Contact data captured and stored with project
+    - Admin can create new project from existing contact item
+    - Contact data automatically integrated into new project
+    - Lead qualification and assignment
+    - Contact history tracking per project
+    - Automated follow-up system
+  - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/admin/ContactProjectAssignment.tsx`, `src/components/admin/CreateProjectFromContact.tsx`
+  - **Reference**: Meeting document - "Contact Forms - Each form connects to a project and captures contact data"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Project Status Management** - Comprehensive project status tracking
+  - **User Intent**: Track project progress through all stages with detailed status management
+  - **Acceptance Criteria**:
+    - Status tracking: draft, shooting scheduled, in editing, delivered
+    - Status change history and timestamps
+    - Status-based notifications and alerts
+    - Status-based dashboard filtering
+    - Status-based reporting and analytics
+  - **Files**: `src/components/admin/ProjectStatusManager.tsx`, `src/components/admin/StatusTimeline.tsx`
+  - **Reference**: Meeting document - "Projects have status: draft, shooting scheduled, in editing, delivered, etc."
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: QR Code Generator** - Admin tool for generating QR codes
+  - **User Intent**: Create QR codes for printed stickers linked to albums, galleries, etc.
+  - **Acceptance Criteria**:
+    - QR code generation for project albums
+    - QR code generation for gallery links
+    - QR code customization and branding
+    - QR code tracking and analytics
+    - Printable QR code formats
+  - **Files**: `src/components/admin/QRCodeGenerator.tsx`, `src/lib/qr-code.ts`
+  - **Reference**: Meeting document - "QR Code Generator - Admin tool to generate QR codes for printed stickers"
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+- [ ] **Phase 7: Promotion Module** - Placeholder for campaign and promotional material
+  - **User Intent**: Create framework for promotional campaigns and referral programs
+  - **Acceptance Criteria**:
+    - Campaign creation and management
+    - Referral program tracking
+    - Promotional material management
+    - Campaign analytics and reporting
+    - Integration with project tracking
+  - **Files**: `src/app/admin/promotions/page.tsx`, `src/components/admin/PromotionManager.tsx`
+  - **Reference**: Meeting document - "Promotion Module - Placeholder for campaign, referral or promotional material"
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Legacy Tools Migration** - Migrate from Google Calendar, Excel, Notebook
+  - **User Intent**: Replace external tools with integrated admin system
+  - **Acceptance Criteria**:
+    - Event scheduling integration (replace Google Calendar)
+    - Project status tracking (replace Excel)
+    - Planning and notes system (replace Notebook)
+    - Data migration from existing tools
+    - Training and documentation for new system
+  - **Files**: `src/components/admin/EventScheduler.tsx`, `src/components/admin/ProjectNotes.tsx`
+  - **Reference**: Meeting document - "LEGACY TOOLS TO MIGRATE" section
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Admin Efficiency**: Streamlined project management workflow
+- **Project Completion**: Higher project completion rates with checklist system
+- **Client Communication**: Better client communication through status tracking
+- **Resource Management**: Improved resource allocation and scheduling
+
+**Secondary Metrics**:
+
+- **Time Savings**: Reduced admin time spent on project management
+- **Error Reduction**: Fewer missed steps with checklist system
+- **Client Satisfaction**: Better project outcomes and communication
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current admin panel structure
+- Database schema for project management
+- Email and notification systems
+- File upload and storage system
+
+**Business Dependencies**:
+
+- User approval of enhanced admin features
+- Stakeholder review of project management workflow
+- Team training on new admin tools
 
 ---
 
