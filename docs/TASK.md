@@ -1410,6 +1410,208 @@ _No tasks completed yet for this Epic_
 
 ---
 
+### 🎯 EPIC: Contact Widget & Form Integration Enhancement ⭐ **HIGH PRIORITY**
+
+**Objective**: Implement and optimize the micro questions wizard widget with seamless integration to the contact form, ensuring all fields are properly pre-filled and the user experience is smooth and intuitive
+
+**Reference**: `docs/NEW_DESIGN_PLAN.md` - Contact widget specifications and form integration requirements
+**User Intent**: Create a sophisticated multi-step contact widget that collects user information efficiently and seamlessly transfers it to the contact form for completion
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Micro Questions Wizard Implementation** - Create multi-step contact widget with event type, date, location, and contact choice steps ✅
+  - **User Intent**: Replace simple contact form with sophisticated multi-step wizard for better user engagement
+  - **Acceptance Criteria**:
+    - Multi-step wizard with event type selection (wedding, corporate, other) ✅
+    - Date selection with inline calendar component ✅
+    - Location input with optional skip functionality ✅
+    - Contact choice (more info vs call me) ✅
+    - Phone input step for call requests ✅
+    - Validation to enable/disable "Next" buttons based on required inputs ✅
+    - Widget resets to step 1 when closed ✅
+  - **Files**: `src/components/gallery/ContactWidget.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Contact widget specifications
+  - **Estimated Time**: 2-3 days
+  - **Status**: Completed - Multi-step wizard implemented with all required functionality
+  - **Prompt Used**: "Create micro questions wizard form with event type, date, location, and contact choice steps"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 2: Contact Form Pre-fill Integration** - Implement URL parameter passing and form pre-filling ✅
+  - **User Intent**: Ensure seamless data transfer from widget to contact form with proper field mapping
+  - **Acceptance Criteria**:
+    - Widget sends event type as 'evento' parameter ✅
+    - Widget sends event date as 'fecha' parameter ✅
+    - Widget sends location info in 'mensaje' parameter ✅
+    - Contact form reads URL parameters and pre-fills fields ✅
+    - Event type field properly populated from 'evento' parameter ✅
+    - Event date field properly populated from 'fecha' parameter ✅
+    - Message field includes location information ✅
+    - Form resets properly when URL parameters change ✅
+  - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Form integration specifications
+  - **Estimated Time**: 1-2 days
+  - **Status**: Completed - URL parameter passing and form pre-filling implemented
+  - **Prompt Used**: "Implement URL parameter passing from widget to contact form with proper field mapping"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 3: UI/UX Optimization** - Improve widget and form user experience ✅
+  - **User Intent**: Create intuitive and visually appealing interface with proper validation and feedback
+  - **Acceptance Criteria**:
+    - Inline calendar appears on date step (not separate step) ✅
+    - "Next" buttons stacked vertically below other buttons ✅
+    - Validation prevents progression without required inputs ✅
+    - Smooth transitions between steps ✅
+    - Clear visual feedback for user actions ✅
+    - Responsive design works on all devices ✅
+  - **Files**: `src/components/gallery/ContactWidget.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - UI/UX specifications
+  - **Estimated Time**: 1-2 days
+  - **Status**: Completed - UI/UX optimized with inline calendar and proper validation
+  - **Prompt Used**: "Optimize widget UI with inline calendar, stacked buttons, and proper validation"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟧 High Priority Tasks
+
+- [x] **Phase 4: Hydration Mismatch Fix** - Resolve server-side rendering issues ✅
+  - **User Intent**: Ensure consistent rendering between server and client to avoid hydration warnings
+  - **Acceptance Criteria**:
+    - No hydration mismatch warnings in console ✅
+    - SideNavigation component renders consistently ✅
+    - Window-dependent calculations deferred until client mount ✅
+    - Client-only mount state implemented ✅
+  - **Files**: `src/components/gallery/SideNavigation.tsx`
+  - **Reference**: Next.js app directory SSR best practices
+  - **Estimated Time**: 1 day
+  - **Status**: Completed - Hydration mismatch resolved with client-only mount state
+  - **Prompt Used**: "Fix hydration mismatch in SideNavigation by deferring window-dependent calculations"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 5: Debugging and Testing** - Add comprehensive debugging and testing ✅
+  - **User Intent**: Ensure reliable data flow and identify any remaining issues
+  - **Acceptance Criteria**:
+    - Console logging for URL parameters and form data updates ✅
+    - Debug logs show widget data being sent correctly ✅
+    - Debug logs show form data being received correctly ✅
+    - All field mappings work as expected ✅
+    - Form resets properly when URL changes ✅
+    - Comprehensive test suite covering all wizard functionality ✅
+    - All tests pass without errors ✅
+  - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`, `src/components/gallery/__tests__/ContactWidget.test.tsx`
+  - **Reference**: Debugging best practices for React/Next.js
+  - **Estimated Time**: 1 day
+  - **Status**: Completed - Comprehensive debugging and testing implemented
+  - **Prompt Used**: "Add debugging logs to track URL parameter passing and form pre-filling"
+  - **PO Sign-Off**: PO Approved (2025-01-27)
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Performance Optimization** - Optimize widget and form performance
+  - **User Intent**: Ensure fast loading and smooth interactions
+  - **Acceptance Criteria**:
+    - Widget loads quickly without blocking page render
+    - Form pre-filling happens efficiently
+    - Smooth animations and transitions
+    - No memory leaks or performance issues
+  - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`
+  - **Reference**: React performance optimization best practices
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+- [ ] **Phase 7: Accessibility Enhancement** - Improve accessibility compliance
+  - **User Intent**: Ensure widget and form meet WCAG accessibility standards
+  - **Acceptance Criteria**:
+    - Proper ARIA labels and roles
+    - Keyboard navigation support
+    - Screen reader compatibility
+    - Focus management between steps
+  - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`
+  - **Reference**: WCAG 2.1 AA accessibility guidelines
+  - **Estimated Time**: 1-2 days
+  - **Status**: Not started
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Analytics Integration** - Track widget and form interactions
+  - **User Intent**: Monitor user behavior and conversion rates
+  - **Acceptance Criteria**:
+    - Track widget step completions
+    - Track form submission rates
+    - Track conversion from widget to form
+    - Track user drop-off points
+  - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`
+  - **Reference**: Google Analytics 4 event tracking
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+#### 🧠 Discovered During Epic
+
+- [x] **Build Error Fix** - Fix Hero component prop error ✅
+  - **Status**: Completed - Removed unknown `isVideoLoading` prop from Hero component
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Form Reset Logic** - Ensure form properly resets when URL parameters change ✅
+  - **Status**: Completed - Form now forces complete reset when URL parameters change
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **User Engagement**: Increased interaction with contact widget
+- **Conversion Rate**: Higher completion rate from widget to form
+- **User Experience**: Smooth, intuitive multi-step process
+- **Data Accuracy**: All fields properly pre-filled in contact form
+
+**Secondary Metrics**:
+
+- **Performance**: Fast loading and smooth transitions
+- **Accessibility**: WCAG AA compliance
+- **Technical Quality**: No hydration mismatches or console errors
+- **Maintainability**: Clean, well-documented code
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current contact form implementation
+- Access to `docs/NEW_DESIGN_PLAN.md` specifications
+- Understanding of Next.js app directory SSR patterns
+- React hooks and state management patterns
+
+**Business Dependencies**:
+
+- User approval of micro questions wizard approach
+- Stakeholder review of enhanced user experience
+- Content team preparation for widget copy and messaging
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Server-Side Rendering**: Ensure widget works with Next.js SSR
+- **State Management**: Proper state handling for multi-step wizard
+- **URL Parameters**: Secure and reliable parameter passing
+- **Form Integration**: Seamless data transfer between widget and form
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Test thoroughly with different user scenarios
+- Maintain backward compatibility during development
+- Create rollback plan for each phase
+
+### ✅ Completed
+
+- [x] Micro questions wizard implementation (2025-01-20)
+- [x] Contact form pre-fill integration (2025-01-20)
+- [x] UI/UX optimization with inline calendar (2025-01-20)
+- [x] Hydration mismatch fix (2025-01-20)
+- [x] Debugging and testing implementation (2025-01-20)
+- [x] Build error fix (2025-01-20)
+- [x] Form reset logic improvement (2025-01-20)
+
+---
+
 ### 🎨 EPIC: Veloz Brand Design System Implementation
 
 **Objective**: Implement comprehensive brand design system across entire application for consistent visual identity and enhanced user experience

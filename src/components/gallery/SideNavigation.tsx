@@ -16,10 +16,12 @@ interface SideNavigationProps {
 export default function SideNavigation({ projects }: SideNavigationProps) {
   const [activeProject, setActiveProject] = useState<string>('');
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
-  // Check for reduced motion preference
+  // Check for reduced motion preference and set mounted state
   useEffect(() => {
+    setIsMounted(true);
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
 
@@ -31,7 +33,10 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
 
   // Smart positioning based on content density
   const getSmartPosition = useCallback(() => {
-    if (typeof window === 'undefined') return { left: '2rem', top: '50%' };
+    // Default position for SSR and before mount
+    if (!isMounted) {
+      return { left: '2rem', top: '50%', transform: 'translateY(-50%)' };
+    }
 
     const viewportHeight = window.innerHeight;
     const projectCount = projects.length;
@@ -43,7 +48,7 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
     }
 
     return { left: '2rem', top: '50%', transform: 'translateY(-50%)' };
-  }, [projects.length]);
+  }, [projects.length, isMounted]);
 
   // Scroll tracking with improved performance
   useEffect(() => {

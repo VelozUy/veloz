@@ -167,13 +167,44 @@ export default function ContactForm({ translations }: ContactFormProps) {
     const eventType = searchParams.get('evento');
     const eventDate = searchParams.get('fecha');
     const message = searchParams.get('mensaje');
+    const ubicacion = searchParams.get('ubicacion');
 
-    setFormData(prev => ({
-      ...prev,
+    console.log('URL Parameters:', {
+      eventType,
+      eventDate,
+      message,
+      ubicacion,
+    });
+
+    // Build message from parameters
+    let fullMessage = message || '';
+    if (ubicacion && !fullMessage.includes('Ubicación:')) {
+      fullMessage += fullMessage ? '\n' : '';
+      fullMessage += `Ubicación: ${ubicacion}`;
+    }
+
+    const updatedFormData = {
       eventType: eventType || '',
       eventDate: eventDate || '',
-      message: message || '',
-    }));
+      message: fullMessage,
+    };
+
+    console.log('Updating form data:', updatedFormData);
+
+    // Force update by setting the entire form data
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      communicationPreference: 'whatsapp' as
+        | 'call'
+        | 'whatsapp'
+        | 'email'
+        | 'zoom',
+      eventType: eventType || '',
+      eventDate: eventDate || '',
+      message: fullMessage,
+    });
   }, [searchParams]);
 
   const validateForm = () => {
@@ -278,6 +309,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
+    console.log('handleInputChange:', field, value);
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {

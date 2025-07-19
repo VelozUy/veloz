@@ -61,7 +61,6 @@ export default function Home() {
         backgroundVideo={backgroundVideo}
         logoUrl={logoUrl}
         backgroundImages={!backgroundVideo ? fallbackImages : undefined}
-        isVideoLoading={false} // Static content, no loading needed
         isLogoLoading={false} // Static content, no loading needed
       />
     </main>
