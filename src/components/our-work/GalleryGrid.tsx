@@ -164,16 +164,6 @@ export default function GalleryGrid({
 
   return (
     <div className={`w-full ${className}`}>
-      {/* Gallery Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-2">
-          Galería del Proyecto
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          Explora los momentos capturados en {projectTitle}
-        </p>
-      </div>
-
       {/* Gallery Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {sortedMedia.map((item, index) => {
@@ -278,25 +268,9 @@ export default function GalleryGrid({
                   )}
                 </div>
               )}
-
-              {/* Caption overlay on hover */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-end">
-                <div className="w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <p className="text-white text-sm font-medium truncate">
-                    {item.description?.es || `${projectTitle} - ${item.type}`}
-                  </p>
-                </div>
-              </div>
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Gallery Footer */}
-      <div className="text-center mt-8">
-        <p className="text-sm text-muted-foreground">
-          Haz clic en cualquier imagen para ver en pantalla completa
-        </p>
       </div>
     </div>
   );
