@@ -73,18 +73,6 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
               preload="metadata"
               controls={false}
             />
-            {/* Play button overlay for videos */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-gray-800 ml-1"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
           </div>
         ) : (
           <Image

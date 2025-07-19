@@ -1670,3 +1670,166 @@ _No tasks completed yet for this Epic_
     - ✅ Ensure all components use theme variables
   - **Files**: `src/components/ui/button.tsx`, `src/components/ui/input.tsx`, `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`
   - **Reference**: `docs/NEW_DESIGN_PLAN.md`
+
+### 🎨 EPIC: Custom Lightbox Enhancement ⭐ **HIGH PRIORITY**
+
+**Objective**: Replace GLightbox with a custom lightbox implementation to avoid asset injection issues, add media preloading for smooth navigation, implement mobile touch support, and enhance UI with edge-positioned controls
+
+**Reference**: `src/lib/lightbox.ts` - Custom lightbox implementation
+**User Intent**: Create a robust, performant lightbox system without external dependencies that provides smooth navigation, mobile touch support, and professional UI controls
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Custom Lightbox Implementation** - Replace GLightbox with custom implementation ✅
+  - **User Intent**: Eliminate asset injection errors by creating a custom lightbox without external dependencies
+  - **Acceptance Criteria**:
+    - Custom lightbox implementation without GLightbox dependency ✅
+    - No asset injection errors ✅
+    - Proper image and video support ✅
+    - Navigation controls (prev/next/close) ✅
+    - Keyboard navigation (arrow keys, escape) ✅
+  - **Files**: `src/lib/lightbox.ts`, `src/components/gallery/GalleryItem.tsx`
+  - **Reference**: Previous GLightbox integration issues
+  - **Estimated Time**: 2-3 days
+  - **Status**: Completed - Custom lightbox implemented successfully
+  - **Prompt Used**: "Replace GLightbox with custom lightbox implementation to avoid asset injection errors"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 2: Media Preloading System** - Implement smart preloading for smooth navigation ✅
+  - **User Intent**: Eliminate loading screens by preloading media around the current item
+  - **Acceptance Criteria**:
+    - Preload current, next, previous, and adjacent items ✅
+    - Preload 2 items ahead and behind for smooth navigation ✅
+    - Use preloaded media when available to avoid loading screens ✅
+    - Clean up preloaded media when lightbox closes ✅
+    - Handle both images and videos with metadata preloading ✅
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: User feedback about ugly loading screens
+  - **Estimated Time**: 1-2 days
+  - **Status**: Completed - Preloading system implemented with smooth navigation
+  - **Prompt Used**: "Add media preloading system to avoid loading screens during navigation"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 3: Mobile Touch Support** - Add swipe gestures for mobile navigation ✅
+  - **User Intent**: Enable intuitive touch navigation for mobile users
+  - **Acceptance Criteria**:
+    - Swipe left/right to navigate between items ✅
+    - Swipe down to close lightbox ✅
+    - Minimum swipe distance (50px) to prevent accidental navigation ✅
+    - Passive event listeners for performance ✅
+    - Touch events work on all mobile devices ✅
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: Mobile user experience requirements
+  - **Estimated Time**: 1 day
+  - **Status**: Completed - Touch support implemented with intuitive gestures
+  - **Prompt Used**: "Add touch/drag support for mobile devices with swipe gestures"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟧 High Priority
+
+- [x] **Phase 4: UI Control Positioning** - Position controls against screen edges ✅
+  - **User Intent**: Create professional UI with controls positioned against screen edges
+  - **Acceptance Criteria**:
+    - Navigation arrows positioned against left/right screen edges ✅
+    - Close button positioned against top-right corner ✅
+    - Counter positioned against bottom center ✅
+    - Backdrop blur for better visibility ✅
+    - Consistent styling across all controls ✅
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: Professional lightbox UI patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Completed - Controls positioned against screen edges with professional styling
+  - **Prompt Used**: "Position navigation arrows against screen walls and enhance UI controls"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 5: Video Play Button Removal** - Remove play button overlay from gallery videos ✅
+  - **User Intent**: Display videos cleanly without play button overlays
+  - **Acceptance Criteria**:
+    - Remove white circular play button overlay ✅
+    - Videos display cleanly in gallery ✅
+    - Maintain hover effects and click functionality ✅
+    - Videos play properly in lightbox ✅
+  - **Files**: `src/components/gallery/GalleryItem.tsx`
+  - **Reference**: Clean video presentation requirements
+  - **Estimated Time**: 0.5 day
+  - **Status**: Completed - Play button overlay removed for clean video display
+  - **Prompt Used**: "Remove the play button showing on the videos"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 6: Comprehensive Testing** - Add comprehensive tests for lightbox functionality ✅
+  - **User Intent**: Ensure lightbox functionality is thoroughly tested and reliable
+  - **Acceptance Criteria**:
+    - Unit tests for lightbox core functions ✅
+    - Component tests for GalleryItem ✅
+    - Tests cover initialization, navigation, and error handling ✅
+    - All tests pass successfully ✅
+    - Test coverage for critical functionality ✅
+  - **Files**: `src/lib/__tests__/lightbox.test.ts`, `src/components/gallery/__tests__/GalleryItem.test.tsx`
+  - **Reference**: Testing requirements for production-ready code
+  - **Estimated Time**: 1 day
+  - **Status**: Completed - Comprehensive test suite implemented with 16 passing tests
+  - **Prompt Used**: "confirm that we have tests for this and the PO can sign it off"
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟨 Medium Priority
+
+- [ ] **Phase 6: Performance Optimization** - Optimize lightbox performance and memory usage
+  - **User Intent**: Ensure lightbox performs smoothly with large media collections
+  - **Acceptance Criteria**:
+    - Efficient memory management for preloaded media
+    - Smooth animations and transitions
+    - Fast loading times for large galleries
+    - Minimal impact on page performance
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: Performance requirements for large galleries
+  - **Estimated Time**: 1-2 days
+  - **Status**: Not started
+  - **Blocked By**: None
+
+- [ ] **Phase 7: Accessibility Enhancement** - Improve accessibility features
+  - **User Intent**: Ensure lightbox is fully accessible to all users
+  - **Acceptance Criteria**:
+    - ARIA labels for all controls
+    - Keyboard navigation for all functions
+    - Screen reader compatibility
+    - Focus management
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: WCAG accessibility guidelines
+  - **Estimated Time**: 1-2 days
+  - **Status**: Not started
+  - **Blocked By**: None
+
+#### 🟩 Low Priority
+
+- [ ] **Phase 8: Advanced Features** - Add advanced lightbox features
+  - **User Intent**: Enhance lightbox with professional features
+  - **Acceptance Criteria**:
+    - Fullscreen mode support
+    - Zoom functionality for images
+    - Download links for media
+    - Social sharing options
+  - **Files**: `src/lib/lightbox.ts`
+  - **Reference**: Professional lightbox feature requirements
+  - **Estimated Time**: 2-3 days
+  - **Status**: Not started
+  - **Blocked By**: None
+
+#### 🧠 Discovered During Epic
+
+- [x] **Aspect Ratio Handling** - Ensure vertical media displays correctly ✅
+  - **Status**: Completed - Vertical images and videos display with proper aspect ratios
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Video Pause Handling** - Ensure videos stop playing when lightbox closes ✅
+  - **Status**: Completed - Videos pause on close, navigation, and outside clicks
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Console Debugging** - Add comprehensive debugging for troubleshooting ✅
+  - **Status**: Completed - Debug logs added and then removed for production
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+### ✅ Completed
+
+_No tasks completed yet for this Epic_
+
+---

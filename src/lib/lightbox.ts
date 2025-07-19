@@ -169,22 +169,24 @@ const createLightbox = () => {
     </svg>
   `;
   prevButton.style.cssText = `
-    position: absolute;
-    left: 20px;
+    position: fixed;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
     font-size: 2rem;
-    padding: 15px;
+    padding: 20px 15px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 0 8px 8px 0;
     z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    min-height: 80px;
+    backdrop-filter: blur(10px);
   `;
   prevButton.onmouseover = () => {
     prevButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
@@ -201,22 +203,24 @@ const createLightbox = () => {
     </svg>
   `;
   nextButton.style.cssText = `
-    position: absolute;
-    right: 20px;
+    position: fixed;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
     font-size: 2rem;
-    padding: 15px;
+    padding: 20px 15px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 8px 0 0 8px;
     z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    min-height: 80px;
+    backdrop-filter: blur(10px);
   `;
   nextButton.onmouseover = () => {
     nextButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
@@ -233,21 +237,22 @@ const createLightbox = () => {
     </svg>
   `;
   closeButton.style.cssText = `
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: fixed;
+    top: 0;
+    right: 0;
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
     font-size: 2rem;
-    padding: 15px;
+    padding: 20px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 0 0 0 8px;
     z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    backdrop-filter: blur(10px);
   `;
   closeButton.onmouseover = () => {
     closeButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
@@ -261,16 +266,16 @@ const createLightbox = () => {
   const counter = document.createElement('div');
   counter.id = 'lightbox-counter';
   counter.style.cssText = `
-    position: absolute;
-    bottom: 20px;
+    position: fixed;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     color: white;
     font-size: 1rem;
     z-index: 10000;
     background: rgba(0, 0, 0, 0.5);
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
     font-weight: 500;
     backdrop-filter: blur(10px);
   `;
@@ -294,6 +299,59 @@ const createLightbox = () => {
         }
       });
       lightboxInstance?.close();
+    }
+  };
+
+  // Add touch/drag support for mobile
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+  const minSwipeDistance = 50;
+
+  lightboxElement.addEventListener(
+    'touchstart',
+    e => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    },
+    { passive: true }
+  );
+
+  lightboxElement.addEventListener(
+    'touchend',
+    e => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipe();
+    },
+    { passive: true }
+  );
+
+  const handleSwipe = () => {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
+
+    if (isHorizontalSwipe && Math.abs(deltaX) > minSwipeDistance) {
+      if (deltaX > 0) {
+        // Swipe right - go to previous
+        lightboxInstance?.prev();
+      } else {
+        // Swipe left - go to next
+        lightboxInstance?.next();
+      }
+    } else if (!isHorizontalSwipe && Math.abs(deltaY) > minSwipeDistance) {
+      if (deltaY > 0) {
+        // Swipe down - close lightbox
+        const videos = lightboxElement?.querySelectorAll('video');
+        videos?.forEach(video => {
+          if (video instanceof HTMLVideoElement) {
+            video.pause();
+          }
+        });
+        lightboxInstance?.close();
+      }
     }
   };
 
