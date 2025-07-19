@@ -251,7 +251,7 @@ export default function ProjectTimeline({
                   {/* Phase Content */}
                   <div className="flex-1 min-w-0">
                     <motion.div
-                      className="border border-border rounded-none p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+                      className="bg-card border border-border rounded-none p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                       onClick={() =>
                         setExpandedPhase(
                           expandedPhase === phase.id ? null : phase.id
@@ -272,7 +272,7 @@ export default function ProjectTimeline({
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-xl font-body font-normal text-foreground">
+                            <h3 className="text-xl font-body font-normal text-card-foreground">
                               {phase.title}
                             </h3>
                             <div
@@ -320,7 +320,7 @@ export default function ProjectTimeline({
                                     className="flex items-start gap-2 text-sm font-body"
                                   >
                                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                                    <span className="text-foreground">
+                                    <span className="text-card-foreground">
                                       {detail}
                                     </span>
                                   </motion.li>
@@ -347,7 +347,7 @@ export default function ProjectTimeline({
           className="text-center mt-12"
         >
           <div className="bg-card border border-border rounded-none p-6">
-            <h3 className="text-lg font-body font-normal mb-2 text-foreground">
+            <h3 className="text-lg font-body font-normal mb-2 text-card-foreground">
               ¿Te gustaría un proceso similar para tu evento?
             </h3>
             <p className="text-muted-foreground mb-4 font-body">

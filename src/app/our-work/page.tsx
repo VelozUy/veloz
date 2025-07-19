@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import { GalleryContent } from '@/components/gallery/GalleryContent';
-import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
+import OurWorkClient from '@/components/our-work/OurWorkClient';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 
 export const metadata: Metadata = {
   title: 'Nuestro Trabajo | Veloz Fotografía y Videografía',
@@ -33,11 +33,12 @@ export const metadata: Metadata = {
 export default function OurWorkPage() {
   // Get static content for Spanish (default)
   const content = getStaticContent('es');
+  const projects = content.content.projects || [];
 
   return (
     <div className="relative min-h-screen w-full bg-background">
-      {/* Gallery Content - static rendered */}
-      <GalleryContent content={content} />
+      {/* Category Navigation and Sections (client) */}
+      <OurWorkClient projects={projects} locale={content.locale} />
 
       {/* CTA Widget */}
       <ContactWidget language={content.locale} />
