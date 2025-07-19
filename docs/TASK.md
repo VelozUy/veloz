@@ -278,11 +278,11 @@ _No tasks completed yet for this Epic_
 
 #### 🧠 Discovered During Epic
 
-- [ ] **Cross-browser Testing** - Ensure gallery works across all major browsers
+- [ ] **Cross-browser Testing** - Ensure new theme works across all major browsers
   - **Status**: Not started
   - **Estimated Time**: 1 day
 
-- [ ] **Mobile Responsiveness Testing** - Verify gallery works perfectly on mobile devices
+- [ ] **Mobile Responsiveness Testing** - Verify theme works perfectly on mobile devices
   - **Status**: Not started
   - **Estimated Time**: 1 day
 
@@ -1831,5 +1831,810 @@ _No tasks completed yet for this Epic_
 ### ✅ Completed
 
 _No tasks completed yet for this Epic_
+
+---
+
+### 🎨 EPIC: Project Detail Gallery Enhancement ⭐ **HIGH PRIORITY**
+
+**Objective**: Implement modern, portfolio-quality gallery system for Veloz project detail pages with static generation at build time, preserving timeline and crew sections while enhancing media presentation
+
+**Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Complete gallery specification and implementation plan
+**User Intent**: Transform project detail pages with sophisticated gallery presentation while preserving the timeline/chronology and "Meet the Team" sections that are key differentiators for Veloz
+
+**Scope**: Only the media gallery content will be enhanced. Timeline, crew sections, and overall page structure remain unchanged.
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Core Gallery Components** - Create modern gallery components with masonry layout ✅
+  - **User Intent**: Build the foundation for portfolio-quality gallery presentation
+  - **Acceptance Criteria**:
+    - ProjectDetailGallery component with masonry layout ✅
+    - GalleryGrid component with responsive columns (4→3→2→1) ✅
+    - GalleryItem component with hover effects and lightbox integration ✅
+    - HeroSection component (optional) with parallax effects ✅
+    - **CRITICAL**: Preserve and enhance ProjectTimeline component ✅
+    - **CRITICAL**: Preserve and enhance MeetTheTeam component ✅
+    - GLightbox integration for full-screen viewing ✅
+  - **Files**: `src/components/our-work/ProjectDetailGallery.tsx`, `src/components/our-work/GalleryGrid.tsx`, `src/components/our-work/GalleryItem.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 1 (Core Gallery Components)
+  - **Estimated Time**: 3-4 days
+  - **Status**: Completed - All core gallery components created and working
+  - **Prompt Used**: "Create modern gallery components with masonry layout and GLightbox integration"
+  - **PO Sign-Off**: PO Approved (2025-07-19)
+
+- [x] **Phase 2: Static Generation Enhancement** - Enhance build process for gallery data ✅
+  - **User Intent**: Ensure all gallery data is properly included in static generation
+  - **Acceptance Criteria**:
+    - Enhanced build script to fetch media data with optimization ✅
+    - Generate static params for all projects with media ✅
+    - Create metadata generation for SEO with gallery images ✅
+    - Implement image optimization pipeline with blur data URLs ✅
+    - Add video optimization and poster generation ✅
+    - **CRITICAL**: Ensure timeline data is included in static generation ✅
+    - **CRITICAL**: Ensure crew member data is included in static generation ✅
+  - **Files**: `scripts/build-data.js`, `src/app/our-work/[slug]/page.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 2 (Static Generation)
+  - **Estimated Time**: 2-3 days
+  - **Status**: ✅ **COMPLETED** - Build script enhanced, TypeScript generation fixed, build successful
+  - **Prompt Used**: "Enhance build script to include crew members and timeline data for static generation"
+  - **Completion Date**: 2025-07-19
+  - **PO Sign-Off**: PO Approved (2025-07-19)
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Performance & Polish** - Optimize gallery performance and user experience
+  - **User Intent**: Ensure gallery loads quickly and provides excellent user experience
+  - **Acceptance Criteria**:
+    - Implement lazy loading strategy with Intersection Observer
+    - Add progressive image loading with blur-up effects
+    - Optimize for Core Web Vitals (FCP < 1.5s, LCP < 2.5s, CLS < 0.1)
+    - Add analytics tracking for gallery interactions
+    - Implement accessibility features with proper ARIA labels
+    - **CRITICAL**: Enhance timeline animations and interactions
+    - **CRITICAL**: Enhance crew member presentation and interactions
+  - **Files**: All gallery components, `src/lib/analytics.ts`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 3 (Performance & Polish)
+  - **Estimated Time**: 2-3 days
+  - **Status**: 🟢 **READY TO START** - Phase 2 completed, build successful, ready for performance optimization
+
+- [ ] **Phase 4: Testing & Deployment** - Comprehensive testing and deployment
+  - **User Intent**: Ensure gallery works perfectly across all devices and browsers
+  - **Acceptance Criteria**:
+    - Write comprehensive test suite for all gallery components
+    - Perform cross-browser testing (Chrome, Firefox, Safari, Edge)
+    - Optimize for mobile devices with touch interactions
+    - Configure CDN and caching for media assets
+    - Monitor performance metrics and Core Web Vitals
+    - **CRITICAL**: Test timeline functionality across all devices
+    - **CRITICAL**: Test crew member functionality across all devices
+  - **Files**: `src/components/our-work/__tests__/`, deployment configuration
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 4 (Testing & Deployment)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Advanced Features** - Add sophisticated gallery features
+  - **User Intent**: Enhance gallery with advanced features for professional presentation
+  - **Acceptance Criteria**:
+    - Social sharing integration for gallery items
+    - Download functionality for high-resolution images
+    - Keyboard navigation for accessibility
+    - Touch gestures for mobile devices
+    - Gallery filters and sorting options
+    - Full-screen mode with zoom capabilities
+  - **Files**: Gallery components, `src/lib/gallery-features.ts`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Advanced Features
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 6: Analytics & Insights** - Comprehensive analytics integration
+  - **User Intent**: Track gallery performance and user behavior for business insights
+  - **Acceptance Criteria**:
+    - Gallery interaction tracking (views, clicks, shares)
+    - Media performance analytics (load times, engagement)
+    - User journey tracking through gallery sections
+    - Conversion tracking from gallery to contact form
+    - A/B testing framework for gallery layouts
+  - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Analytics Integration
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Cross-browser Lightbox Testing** - Ensure lightbox works across all browsers
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Mobile Touch Gesture Testing** - Verify touch interactions work perfectly
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Performance Monitoring Setup** - Set up monitoring for gallery performance
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Performance**: Lighthouse performance score > 90
+- **Accessibility**: Accessibility score > 95
+- **SEO**: SEO score > 90
+- **User Experience**: Smooth, responsive gallery navigation
+- **CRITICAL**: Timeline/chronology functionality preserved and enhanced
+- **CRITICAL**: Meet the Team functionality preserved and enhanced
+
+**Secondary Metrics**:
+
+- **Loading Speed**: Fast loading times on all devices
+- **Engagement**: Increased time spent viewing project details
+- **Conversion**: Better conversion rates from project pages
+- **Brand Perception**: Enhanced professional presentation
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current project detail page implementation
+- Access to `docs/GALLERY_PORTFOLIO_SPEC.md` specifications
+- Understanding of existing static content generation
+- GLightbox library for lightbox functionality
+
+**Business Dependencies**:
+
+- User approval of portfolio-quality gallery presentation
+- Stakeholder review of enhanced project detail pages
+- Content team preparation for optimized media assets
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **CRITICAL PRESERVATION**: Timeline and crew sections are key differentiators and must be preserved
+- **Static Build-Time Generation**: All components MUST work with existing static content generation
+- **No Client-Side Fetching**: Zero real-time data fetching or Firestore listeners
+- **SEO Optimization**: Server-side rendered content for optimal search engine crawlability
+- **Performance**: Pre-generated HTML for fastest possible loading
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Test each phase with existing static content files
+- Maintain backward compatibility during transition
+- Ensure timeline and crew sections remain fully functional
+- Test thoroughly across all devices and browsers
+
+---
+
+### 🎨 EPIC: Project Timeline Page Theme Fix ⭐ **URGENT PRIORITY**
+
+**Objective**: Fix theme and styling of project timeline page (our-work/ciclismo) to match new Veloz design system with proper contrast, readability, and visual hierarchy
+
+**Reference**: `docs/THEME_FIX_PLAN.md` - Comprehensive theme fix plan and specifications
+**User Intent**: Fix the current visual issues shown in screenshot where background colors are incorrect, text is not readable, and components don't follow the design system
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Fix Background and Base Colors** - Ensure proper Charcoal Black background and semantic color usage
+  - **User Intent**: Fix the background color to pure Charcoal Black and ensure all colors follow the design system
+  - **Acceptance Criteria**:
+    - Background uses `#1A1B1F` (Charcoal Black) throughout the page
+    - All semantic color variables are properly applied
+    - No hardcoded color values remain in components
+    - Timeline section uses `bg-background` instead of gradients
+  - **Files**: `src/app/globals.css`, `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 1 (Fix Background and Base Colors)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Update Timeline Component Styling** - Fix timeline cards, status badges, and typography
+  - **User Intent**: Ensure timeline cards have proper contrast, status badges are clearly visible, and text is readable
+  - **Acceptance Criteria**:
+    - Timeline cards use `bg-card` with `border-border` for clear separation
+    - Status badges use `bg-green-500` with white text and checkmark icons
+    - Headers use REDJOLA font (never bold) with white text
+    - Body text uses Roboto font with proper contrast
+    - Timeline line uses `bg-primary/20` for subtle appearance
+  - **Files**: `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 2 (Update Timeline Component Styling)
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Fix Interactive Elements** - Update CTA button and hover states
+  - **User Intent**: Ensure all interactive elements follow the design system and are accessible
+  - **Acceptance Criteria**:
+    - CTA button uses `bg-primary text-primary-foreground` (Vibrant Blue)
+    - Hover states have proper color transitions
+    - Focus states have blue ring for accessibility
+    - All interactive elements meet WCAG AA standards
+  - **Files**: `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 3 (Fix Interactive Elements)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 4: Update Hero Section** - Fix project detail hero section styling
+  - **User Intent**: Ensure hero section matches the design system and has proper contrast
+  - **Acceptance Criteria**:
+    - Hero background uses `bg-background` instead of `bg-charcoal`
+    - Text colors use semantic color variables
+    - Category badge styling matches design system
+    - All text is clearly readable against the background
+  - **Files**: `src/components/our-work/ProjectDetailClient.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 4 (Update Hero Section)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Comprehensive Testing** - Test all changes across devices and accessibility standards
+  - **User Intent**: Ensure the fixed theme works properly across all scenarios
+  - **Acceptance Criteria**:
+    - Visual testing: Background is pure Charcoal Black, all text readable
+    - Accessibility testing: WCAG AA compliance, focus states visible
+    - Responsive testing: Works on mobile, cards stack properly
+    - Cross-browser testing: Consistent appearance across browsers
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Testing Checklist
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 4 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Background**: Pure Charcoal Black (`#1A1B1F`) throughout the page
+- **Readability**: All text clearly visible with proper contrast ratios
+- **Consistency**: Matches the new design system specifications
+- **Accessibility**: Meets WCAG AA standards for all color combinations
+
+**Secondary Metrics**:
+
+- **Performance**: No impact on page load times
+- **Maintainability**: All styling uses semantic color variables
+- **User Experience**: Improved visual hierarchy and component clarity
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current design system implementation
+- Access to `docs/THEME_FIX_PLAN.md` specifications
+- Understanding of current component structure
+
+**Business Dependencies**:
+
+- User approval of the fixed theme appearance
+- Stakeholder review of the timeline page design
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while improving visual design
+- Ensure no breaking changes to timeline interactions
+- Test thoroughly with actual project data
+- Consider impact on other project detail pages
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple project types to ensure consistency
+
+---
+
+### 🎯 EPIC: Category-Based Gallery Navigation ⭐ **HIGH PRIORITY**
+
+**Objective**: Transform the /our-work page to show galleries by project category with scroll navigation, displaying only feature media from each category in a single-page layout
+
+**Reference**: Meeting document "Reunión 19_07_25.md" - Category-based gallery navigation requirements
+**User Intent**: Improve gallery organization with scroll navigation showing only feature media grouped by category, making it easier for clients to browse specific types of work in a single-page experience
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Category Scroll Navigation System** - Implement scroll-based navigation for project categories
+  - **User Intent**: Create smooth scroll navigation with everything on one page, showing only feature media from each category
+  - **Acceptance Criteria**:
+    - Single page layout with scroll navigation between categories
+    - Categories: Boda, Corporativo, Producto, Moda
+    - Each category section shows only feature media from that category
+    - Smooth scroll transitions between categories
+    - Mobile-responsive navigation
+  - **Files**: `src/app/our-work/page.tsx`, `src/components/our-work/CategoryNavigation.tsx`
+  - **Reference**: Meeting requirements for category-based navigation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Feature Media Display System** - Implement feature media-only display for each category
+  - **User Intent**: Show only the best/feature media from each project category
+  - **Acceptance Criteria**:
+    - Each category shows only feature media (not all project media)
+    - Feature media is clearly marked in the data structure
+    - Responsive grid layout for feature media
+    - Hover effects and lightbox integration
+    - Proper aspect ratio handling
+  - **Files**: `src/components/our-work/FeatureMediaGrid.tsx`, `src/components/our-work/CategorySection.tsx`
+  - **Reference**: Feature media selection criteria
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Category Section Components** - Create individual category section components
+  - **User Intent**: Build dedicated components for each category section
+  - **Acceptance Criteria**:
+    - BodaSection component with wedding-specific styling
+    - CorporativoSection component with corporate-specific styling
+    - ProductoSection component with product-specific styling
+    - ModaSection component with fashion-specific styling
+    - Each section has category-specific visual treatment
+  - **Files**: `src/components/our-work/BodaSection.tsx`, `src/components/our-work/CorporativoSection.tsx`, `src/components/our-work/ProductoSection.tsx`, `src/components/our-work/ModaSection.tsx`
+  - **Reference**: Category-specific design requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Scroll Navigation Enhancement** - Implement smooth scroll navigation with visual indicators
+  - **User Intent**: Create intuitive scroll navigation with clear visual feedback
+  - **Acceptance Criteria**:
+    - Smooth scroll behavior with easing
+    - Visual indicators for current category
+    - Progress indicator showing scroll position
+    - Keyboard navigation support
+    - Mobile touch scroll support
+  - **Files**: `src/components/our-work/ScrollNavigation.tsx`, `src/hooks/useScrollNavigation.ts`
+  - **Reference**: Scroll navigation UX best practices
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Performance Optimization** - Optimize for smooth scrolling and fast loading
+  - **User Intent**: Ensure smooth performance with large media collections
+  - **Acceptance Criteria**:
+    - Lazy loading for category sections
+    - Image optimization for feature media
+    - Smooth scroll performance on all devices
+    - Fast initial page load
+    - Progressive enhancement
+  - **Files**: All category components, `src/lib/scroll-performance.ts`
+  - **Reference**: Performance optimization requirements
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Analytics Integration** - Track category navigation and engagement
+  - **User Intent**: Monitor user behavior and category preferences
+  - **Acceptance Criteria**:
+    - Track category scroll interactions
+    - Monitor time spent in each category
+    - Track feature media click-through rates
+    - Analyze category popularity
+    - Conversion tracking from category views
+  - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
+  - **Reference**: Analytics requirements for category navigation
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Features** - Add advanced category navigation features
+  - **User Intent**: Enhance category navigation with advanced features
+  - **Acceptance Criteria**:
+    - Category filtering within sections
+    - Search functionality across categories
+    - Category-specific contact forms
+    - Social sharing for category sections
+    - Category-specific testimonials
+  - **Files**: `src/components/our-work/CategoryFeatures.tsx`
+  - **Reference**: Advanced feature requirements
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Mobile Navigation Testing** - Ensure smooth navigation on mobile devices
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Accessibility Testing** - Verify accessibility compliance
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Cross-browser Testing** - Test across all major browsers
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **User Experience**: Smooth scroll navigation between categories
+- **Performance**: Fast loading and smooth scrolling
+- **Engagement**: Increased time spent browsing categories
+- **Conversion**: Better conversion rates from category views
+
+**Secondary Metrics**:
+
+- **Mobile Performance**: Smooth experience on mobile devices
+- **Accessibility**: WCAG AA compliance
+- **Analytics**: Clear tracking of category interactions
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current our-work page implementation
+- Access to meeting requirements document
+- Understanding of feature media selection
+- Scroll performance optimization knowledge
+
+**Business Dependencies**:
+
+- User approval of category-based navigation
+- Stakeholder review of feature media selection
+- Content team preparation for category organization
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while adding category navigation
+- Ensure smooth performance with large media collections
+- Test thoroughly on mobile devices
+- Consider impact on SEO and accessibility
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Test with multiple device types
+- Maintain backward compatibility during transition
+- Create comprehensive test suite
+
+---
+
+### 📦 EPIC: Client Project Tracking System ⭐ **HIGH PRIORITY**
+
+**Objective**: Implement comprehensive client project tracking system to manage project status, timelines, deliverables, and client communication throughout the project lifecycle
+
+**Reference**: Client project management requirements and workflow specifications
+**User Intent**: Create a robust system for tracking client projects from initial contact through completion, ensuring timely delivery and excellent client communication
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Project Database Schema** - Design and implement project tracking database structure
+  - **User Intent**: Create comprehensive database schema for project tracking
+  - **Acceptance Criteria**:
+    - Project collection with status, timeline, and client info
+    - Milestone collection for tracking deliverables
+    - Communication log collection for client interactions
+    - File/document collection for project assets
+    - Proper indexing for efficient queries
+  - **Files**: Firestore rules, database schema documentation
+  - **Reference**: Project management requirements
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Admin Project Management Interface** - Create comprehensive admin interface for project management
+  - **User Intent**: Build admin interface for managing all aspects of client projects
+  - **Acceptance Criteria**:
+    - Project dashboard with overview and status
+    - Project creation and editing forms
+    - Milestone tracking and management
+    - Client communication log
+    - File upload and management
+    - Status updates and notifications
+  - **Files**: `src/app/admin/projects/`, `src/components/admin/ProjectManagement.tsx`
+  - **Reference**: Admin interface requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Client Portal Implementation** - Create client-facing portal for project updates
+  - **User Intent**: Provide clients with secure access to their project information
+  - **Acceptance Criteria**:
+    - Secure client login system
+    - Project status dashboard for clients
+    - Milestone progress tracking
+    - File sharing and download capabilities
+    - Communication interface with Veloz team
+    - Mobile-responsive design
+  - **Files**: `src/app/client/`, `src/components/client/ClientPortal.tsx`
+  - **Reference**: Client portal requirements
+  - **Estimated Time**: 5-6 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Notification System** - Implement automated notifications and alerts
+  - **User Intent**: Keep clients and team informed of project progress
+  - **Acceptance Criteria**:
+    - Email notifications for milestone updates
+    - SMS notifications for urgent updates
+    - In-app notifications for admin users
+    - Customizable notification preferences
+    - Automated reminder system
+  - **Files**: `src/lib/notifications.ts`, `src/services/email.ts`
+  - **Reference**: Notification system requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Reporting and Analytics** - Create comprehensive reporting system
+  - **User Intent**: Track project performance and generate insights
+  - **Acceptance Criteria**:
+    - Project completion rate analytics
+    - Timeline performance metrics
+    - Client satisfaction tracking
+    - Revenue and profitability reports
+    - Custom report generation
+  - **Files**: `src/lib/analytics.ts`, `src/components/admin/Reports.tsx`
+  - **Reference**: Reporting requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Integration with Existing Systems** - Integrate with contact forms and gallery
+  - **User Intent**: Connect project tracking with existing website functionality
+  - **Acceptance Criteria**:
+    - Contact form creates new project entries
+    - Gallery projects link to tracking system
+    - Crew member assignments tracked
+    - Timeline integration with project management
+    - Seamless data flow between systems
+  - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/gallery/`
+  - **Reference**: Integration requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Features** - Add advanced project management features
+  - **User Intent**: Enhance project tracking with advanced capabilities
+  - **Acceptance Criteria**:
+    - Resource allocation tracking
+    - Budget management and tracking
+    - Time tracking for team members
+    - Advanced reporting and analytics
+    - API for third-party integrations
+  - **Files**: Advanced project management components
+  - **Reference**: Advanced feature requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Security Testing** - Ensure client data is properly secured
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+- [ ] **Performance Testing** - Test system with large project volumes
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+- [ ] **User Acceptance Testing** - Test with actual clients and team members
+  - **Status**: Not started
+  - **Estimated Time**: 3 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Project Completion Rate**: Improved project completion rates
+- **Client Satisfaction**: Higher client satisfaction scores
+- **Timeline Adherence**: Better adherence to project timelines
+- **Communication Quality**: Improved client communication
+
+**Secondary Metrics**:
+
+- **System Performance**: Fast loading and responsive interface
+- **User Adoption**: High adoption rate among team and clients
+- **Data Accuracy**: Accurate project tracking and reporting
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Firestore database setup
+- Authentication system
+- Email/SMS service integration
+- File storage system
+
+**Business Dependencies**:
+
+- Client approval of portal access
+- Team training on new system
+- Data migration from existing processes
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Ensure client data security and privacy
+- Maintain data integrity across systems
+- Provide intuitive user experience
+- Consider scalability for growth
+
+**Risk Mitigation**:
+
+- Implement security best practices
+- Create comprehensive backup system
+- Test thoroughly with real data
+- Provide training and documentation
+
+---
+
+### 🛠️ EPIC: Enhanced Admin Project Management ⭐ **HIGH PRIORITY**
+
+**Objective**: Enhance the admin project management system with advanced features for better project oversight, client communication, and team collaboration
+
+**Reference**: Admin system enhancement requirements and workflow specifications
+**User Intent**: Improve admin capabilities for managing projects, clients, and team members with advanced features and better user experience
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Enhanced Project Dashboard** - Create comprehensive project overview dashboard
+  - **User Intent**: Provide admin users with complete project visibility and management capabilities
+  - **Acceptance Criteria**:
+    - Real-time project status overview
+    - Timeline visualization and management
+    - Client information and communication history
+    - Team member assignments and workload
+    - Quick action buttons for common tasks
+    - Mobile-responsive design
+  - **Files**: `src/app/admin/dashboard/page.tsx`, `src/components/admin/ProjectDashboard.tsx`
+  - **Reference**: Dashboard requirements and specifications
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Advanced Project Forms** - Enhance project creation and editing forms
+  - **User Intent**: Provide comprehensive forms for detailed project management
+  - **Acceptance Criteria**:
+    - Multi-step project creation wizard
+    - Advanced project editing with all fields
+    - Client information management
+    - Milestone and deliverable tracking
+    - File upload and management
+    - Form validation and error handling
+  - **Files**: `src/app/admin/projects/new/page.tsx`, `src/components/admin/ProjectForms.tsx`
+  - **Reference**: Form enhancement requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Team Management System** - Implement comprehensive team management features
+  - **User Intent**: Manage team members, assignments, and workload
+  - **Acceptance Criteria**:
+    - Team member profiles and skills
+    - Project assignment management
+    - Workload tracking and balancing
+    - Performance metrics and reporting
+    - Communication tools for team collaboration
+    - Role-based access control
+  - **Files**: `src/app/admin/team/`, `src/components/admin/TeamManagement.tsx`
+  - **Reference**: Team management requirements
+  - **Estimated Time**: 5-6 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Client Communication Hub** - Create centralized client communication system
+  - **User Intent**: Manage all client communications in one place
+  - **Acceptance Criteria**:
+    - Communication history and logs
+    - Message templates and automation
+    - File sharing and document management
+    - Client feedback and satisfaction tracking
+    - Integration with email and SMS
+    - Communication analytics and reporting
+  - **Files**: `src/app/admin/communications/`, `src/components/admin/CommunicationHub.tsx`
+  - **Reference**: Communication system requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Advanced Analytics and Reporting** - Implement comprehensive analytics system
+  - **User Intent**: Provide detailed insights into project performance and business metrics
+  - **Acceptance Criteria**:
+    - Project performance analytics
+    - Revenue and profitability tracking
+    - Client satisfaction metrics
+    - Team productivity analysis
+    - Custom report generation
+    - Data visualization and charts
+  - **Files**: `src/app/admin/analytics/`, `src/components/admin/Analytics.tsx`
+  - **Reference**: Analytics requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Workflow Automation** - Implement automated workflows and processes
+  - **User Intent**: Automate repetitive tasks and improve efficiency
+  - **Acceptance Criteria**:
+    - Automated project status updates
+    - Client notification workflows
+    - File processing and organization
+    - Report generation automation
+    - Integration with external tools
+    - Custom workflow builder
+  - **Files**: `src/lib/workflows.ts`, `src/components/admin/WorkflowBuilder.tsx`
+  - **Reference**: Automation requirements
+  - **Estimated Time**: 5-6 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Features** - Add advanced admin features
+  - **User Intent**: Enhance admin system with cutting-edge features
+  - **Acceptance Criteria**:
+    - AI-powered project insights
+    - Predictive analytics for project success
+    - Advanced security features
+    - API for third-party integrations
+    - Mobile app for admin access
+    - Advanced customization options
+  - **Files**: Advanced admin components
+  - **Reference**: Advanced feature requirements
+  - **Estimated Time**: 6-8 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Security Audit** - Ensure admin system security
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+- [ ] **Performance Optimization** - Optimize for large data volumes
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+- [ ] **User Training** - Create training materials for admin users
+  - **Status**: Not started
+  - **Estimated Time**: 3 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Admin Efficiency**: Reduced time for project management tasks
+- **Data Accuracy**: Improved accuracy of project information
+- **Team Productivity**: Increased team productivity and collaboration
+- **Client Satisfaction**: Better client communication and satisfaction
+
+**Secondary Metrics**:
+
+- **System Performance**: Fast loading and responsive interface
+- **User Adoption**: High adoption rate among admin users
+- **Feature Utilization**: Effective use of new features
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing admin system
+- Database optimization
+- Authentication and authorization
+- File storage system
+
+**Business Dependencies**:
+
+- Admin user training
+- Process documentation
+- Stakeholder approval of new features
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain data security and privacy
+- Ensure intuitive user experience
+- Consider scalability for growth
+- Provide comprehensive training
+
+**Risk Mitigation**:
+
+- Implement security best practices
+- Create comprehensive backup system
+- Test thoroughly with real data
+- Provide training and documentation
 
 ---
