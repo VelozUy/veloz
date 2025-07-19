@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
@@ -58,12 +59,10 @@ export function LocaleSwitcher({
         <Button
           variant="ghost"
           size="sm"
-          className={className}
+          className={cn('p-2 h-auto w-auto', className)}
           aria-label="Change language"
         >
-          <Globe className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{currentLocaleData.name}</span>
-          <span className="sm:hidden">{currentLocaleData.flag}</span>
+          <Globe className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">

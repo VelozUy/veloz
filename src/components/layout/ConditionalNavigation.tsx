@@ -4,8 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { getStaticContent } from '@/lib/utils';
-import { TubelightNavBar } from '@/components/ui/tubelight-navbar';
-import Navigation from './navigation';
+import MinimalNavigation from './minimal-navigation';
 
 export default function ConditionalNavigation() {
   const pathname = usePathname();
@@ -48,15 +47,10 @@ export default function ConditionalNavigation() {
       gallery: string;
       contact: string;
     };
-    homepage: {
-      hero: {
-        cta: {
-          contact: string;
-        };
-      };
-    };
   };
 
-  // Use tubelight navbar (floating centered navigation)
-  return <TubelightNavBar translations={translations} locale={currentLocale} />;
+  // Use minimal navigation (top navigation with text and underlines)
+  return (
+    <MinimalNavigation translations={translations} locale={currentLocale} />
+  );
 }

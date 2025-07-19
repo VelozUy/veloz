@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface VelozLogoProps {
@@ -20,38 +21,37 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
 
   // Use proper typography classes for logo text - REDJOLA font only
   const textSizeClasses = {
-    sm: 'text-heading-sm font-logo font-normal', // Never bold for REDJOLA
-    md: 'text-heading-md font-logo font-normal', // Never bold for REDJOLA
-    lg: 'text-heading-lg font-logo font-normal', // Never bold for REDJOLA
+    sm: 'text-lg font-logo font-normal', // Never bold for REDJOLA
+    md: 'text-xl font-logo font-normal', // Never bold for REDJOLA
+    lg: 'text-2xl font-logo font-normal', // Never bold for REDJOLA
   };
 
   return (
     <div
       className={cn(
-        'flex justify-center items-center',
+        'flex items-center space-x-2',
         sizeClasses[size],
         className
       )}
     >
-      {/* Logo Image - Using PNG provided by user */}
-      {/* Temporarily hidden until proper PNG is provided */}
-      {/* <div className="relative h-full w-auto">
-        <Image
+      {/* Logo Image */}
+      <div className="relative h-full w-auto flex-shrink-0">
+        <img
           src="/veloz-logo.png"
           alt="Veloz Logo"
-          width={100}
-          height={100}
           className="h-full w-auto object-contain"
-          priority
+          style={{ maxHeight: '100%' }}
         />
-      </div> */}
+      </div>
 
       {variant === 'full' && (
         <span
-          className={cn(
-            'font-logo text-foreground text-center font-normal',
-            textSizeClasses[size]
-          )}
+          className={cn('font-logo font-normal', textSizeClasses[size])}
+          style={{
+            fontFamily:
+              'REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif !important',
+            fontWeight: 'normal',
+          }}
         >
           VELOZ
         </span>

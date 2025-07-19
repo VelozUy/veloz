@@ -13,5 +13,5 @@ export default function PageLayout({ children }: PageLayoutProps) {
   // Don't add top padding on homepage (no navigation) or admin pages (custom layout)
   const needsTopPadding = pathname !== '/' && !pathname.startsWith('/admin');
 
-  return <div className={needsTopPadding ? 'pt-20' : ''}>{children}</div>;
+  return <div className={needsTopPadding ? 'pt-16' : ''}>{children}</div>;
 }
