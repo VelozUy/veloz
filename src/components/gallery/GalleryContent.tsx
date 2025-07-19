@@ -1,8 +1,8 @@
 import { LocalizedContent } from '@/lib/static-content.generated';
 import { ProjectsDisplay } from './ProjectsDisplay';
-import { GalleryClientWrapper } from './GalleryClientWrapper';
 import { useMemo } from 'react';
 import SideNavigation from './SideNavigation';
+import { GalleryClientWrapper } from './GalleryClientWrapper';
 
 interface GalleryContentProps {
   content: LocalizedContent;
@@ -77,7 +77,9 @@ export function GalleryContent({ content }: GalleryContentProps) {
         </div>
 
         {/* Client-side functionality wrapper */}
-        <GalleryClientWrapper projectsCount={projects.length} />
+        <GalleryClientWrapper>
+          <div />
+        </GalleryClientWrapper>
       </div>
     </div>
   );

@@ -188,10 +188,6 @@ export const trackPerformanceMetric = (
       event_category: 'Performance',
       event_label: metricName,
       value: metricValue,
-      custom_parameters: {
-        metric_name: metricName,
-        metric_value: metricValue,
-      },
     });
   }
 };
@@ -205,14 +201,26 @@ export const initializeGalleryPerformance = () => {
   optimizeGalleryAnimations();
 };
 
-export default {
+const galleryPerformanceUtils = {
+  initializeGalleryPerformance,
+  trackPerformanceMetric,
   preloadCriticalImages,
   setupLazyLoading,
   optimizeImageLoading,
   smoothScrollToGallery,
-  debounce,
-  throttle,
   optimizeGalleryAnimations,
   generateGalleryStructuredData,
-  initializeGalleryPerformance,
 };
+
+export default galleryPerformanceUtils;
+
+// Add gtag to window interface
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void;
+  }
+}

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { initializeLightbox } from '@/lib/lightbox';
+import React, { useEffect } from 'react';
+import { initializeLightbox, destroyLightbox } from '@/lib/lightbox';
 import {
   initializeGalleryAnalytics,
   trackCategoryFilter,
@@ -9,49 +9,55 @@ import {
 import { initializeGalleryPerformance } from '@/lib/gallery-performance';
 
 interface GalleryClientWrapperProps {
-  projectsCount: number;
+  children: React.ReactNode;
 }
 
 /**
  * GalleryClientWrapper Component
  *
- * Handles all client-side functionality for the gallery:
- * - Lightbox initialization
- * - Analytics tracking
- * - Performance optimizations
- *
- * This component is rendered on the client side while the main
- * gallery content is statically generated on the server.
+ * Client-side wrapper that initializes the lightbox functionality.
+ * This component handles the initialization of GLightbox and ensures
+ * it's only loaded on the client side to avoid SSR issues.
  */
-export function GalleryClientWrapper({
-  projectsCount,
-}: GalleryClientWrapperProps) {
-  // Initialize portfolio-quality features
+export const GalleryClientWrapper: React.FC<GalleryClientWrapperProps> = ({
+  children,
+}) => {
   useEffect(() => {
-    // Initialize lightbox
-    const lightbox = initializeLightbox();
+    console.log('GalleryClientWrapper mounted');
+    let lightbox: any = null; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-    // Initialize analytics
-    initializeGalleryAnalytics();
+    const initializeGallery = async () => {
+      try {
+        console.log('Initializing gallery lightbox...');
+        // Initialize lightbox
+        lightbox = await initializeLightbox();
 
-    // Initialize performance optimizations
-    initializeGalleryPerformance();
+        if (lightbox) {
+          console.log('Gallery lightbox initialized successfully');
+        } else {
+          console.log('Failed to initialize lightbox - returned null');
+        }
+      } catch (error) {
+        console.error('Failed to initialize gallery lightbox:', error);
+      }
+    };
 
+    // Initialize on mount
+    initializeGallery();
+
+    // Cleanup on unmount
     return () => {
-      // Cleanup lightbox on unmount
-      if (lightbox) {
-        lightbox.destroy();
+      console.log('GalleryClientWrapper unmounting');
+      try {
+        // Cleanup lightbox on unmount
+        destroyLightbox();
+      } catch (error) {
+        console.error('Error during lightbox cleanup:', error);
       }
     };
   }, []);
 
-  // Track project views
-  useEffect(() => {
-    if (projectsCount > 0) {
-      trackCategoryFilter('all', projectsCount);
-    }
-  }, [projectsCount]);
+  return <>{children}</>;
+};
 
-  // This component doesn't render anything visible
-  return null;
-}
+export default GalleryClientWrapper;

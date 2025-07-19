@@ -34,7 +34,8 @@ interface ProjectsDisplayProps {
  * Displays projects in individual rows with titles above media,
  * showing only the media items flagged as featured per project.
  * Creates a responsive grid layout that adapts to media aspect ratios.
- * Each project area is clickable and navigates to the project detail page.
+ * Each image is individually clickable for lightbox functionality.
+ * Project titles are clickable for navigation to project detail page.
  */
 export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
   projects,
@@ -64,6 +65,20 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
     router.push(`/our-work/${projectIdentifier}`);
   };
 
+  const handleImageClick = (project: Project, media: Project['media'][0]) => {
+    // Track the image view for analytics
+    trackProjectView(project.id, project.title, project.eventType);
+
+    // The lightbox will be handled by GLightbox automatically
+    // since we have the proper data-gallery attributes
+    console.log(
+      'Image clicked:',
+      media.url,
+      'Gallery group:',
+      `project-${project.id}`
+    );
+  };
+
   return (
     <div className={`space-y-0 ${className}`}>
       {projects.map((project, projectIndex) => {
@@ -82,16 +97,9 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
             id={`project-${project.id}`}
             className="mb-16 last:mb-0"
           >
-            {/* Project Title Section */}
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                {project.title}
-              </h2>
-            </div>
-
-            {/* Clickable Project Area */}
+            {/* Project Title Section - Clickable for navigation */}
             <div
-              className="cursor-pointer group"
+              className="text-center mb-8 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => handleProjectClick(project)}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -103,51 +111,54 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
               role="button"
               aria-label={`Ver detalles del proyecto: ${project.title}`}
             >
-              {/* Project Featured Media Grid */}
-              <div className="space-y-8 md:space-y-6">
-                <div
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 group-hover:opacity-90 transition-opacity duration-300"
-                  data-width={`project-${projectIndex}`}
-                  data-project-id={project.id}
-                >
-                  {featuredMedia.map(media => {
-                    // Calculate aspect ratio for responsive sizing
-                    const aspectRatio =
-                      media.width && media.height
-                        ? media.width / media.height
-                        : 1;
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                {project.title}
+              </h2>
+              <span className="text-sm text-muted-foreground font-medium">
+                Click en el título para ver detalles →
+              </span>
+            </div>
 
-                    // Determine grid span based on aspect ratio
-                    let gridSpan = 'col-span-1';
-                    if (aspectRatio > 1.5) {
-                      // Wide images span 2 columns
-                      gridSpan = 'col-span-1 md:col-span-2';
-                    } else if (aspectRatio < 0.7) {
-                      // Tall images can span 2 rows (handled by CSS grid)
-                      gridSpan = 'col-span-1 row-span-2';
-                    }
+            {/* Project Featured Media Grid - Individual images clickable */}
+            <div className="space-y-8 md:space-y-6">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+                data-width={`project-${projectIndex}`}
+                data-project-id={project.id}
+              >
+                {featuredMedia.map(media => {
+                  // Calculate aspect ratio for responsive sizing
+                  const aspectRatio =
+                    media.width && media.height
+                      ? media.width / media.height
+                      : 1;
 
-                    return (
-                      <div
-                        key={media.id}
-                        className={`relative text-center group gs-asset ${gridSpan}`}
-                      >
-                        <GalleryItem
-                          media={media}
-                          galleryGroup={`project-${project.id}`}
-                          className="w-full h-full"
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                  // Determine grid span based on aspect ratio
+                  let gridSpan = 'col-span-1';
+                  if (aspectRatio > 1.5) {
+                    // Wide images span 2 columns
+                    gridSpan = 'col-span-1 md:col-span-2';
+                  } else if (aspectRatio < 0.7) {
+                    // Tall images can span 2 rows (handled by CSS grid)
+                    gridSpan = 'col-span-1 row-span-2';
+                  }
 
-              {/* Hover Indicator */}
-              <div className="mt-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span className="text-sm text-muted-foreground font-medium">
-                  Click para ver detalles →
-                </span>
+                  return (
+                    <div
+                      key={media.id}
+                      className={`relative text-center group gs-asset ${gridSpan}`}
+                    >
+                      <GalleryItem
+                        media={media}
+                        galleryGroup={`project-${project.id}`}
+                        className="w-full h-full"
+                        onClick={clickedMedia =>
+                          handleImageClick(project, clickedMedia)
+                        }
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

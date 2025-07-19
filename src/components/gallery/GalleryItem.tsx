@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { openGallery } from '@/lib/lightbox';
 
 interface GalleryItemProps {
   media: {
@@ -15,42 +16,56 @@ interface GalleryItemProps {
   galleryGroup: string;
   className?: string;
   style?: React.CSSProperties;
+  onClick?: (media: GalleryItemProps['media']) => void;
 }
 
 /**
  * GalleryItem Component
  *
- * Portfolio-quality gallery item with GLightbox integration and hover effects.
- * Implements the same approach as the PearsonLyle portfolio example with:
- * - GLightbox integration with gallery grouping
- * - 50% opacity hover effects with 700ms transition
- * - Professional presentation for both photos and videos
- * - Responsive design with proper aspect ratios
- *
- * NOTE: This component will be used in static build-time generation
+ * Portfolio-quality gallery item with individual hover effects and lightbox integration.
+ * Each image has its own hover animation and click handler for lightbox functionality.
  */
 export const GalleryItem: React.FC<GalleryItemProps> = ({
   media,
   galleryGroup,
   className = '',
   style,
+  onClick,
 }: GalleryItemProps) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log(
+      'GalleryItem clicked:',
+      media.url,
+      'galleryGroup:',
+      galleryGroup
+    );
+    console.log(
+      'Calling openGallery with selector:',
+      `[data-gallery="${galleryGroup}"]`
+    );
+
+    // Open the lightbox with the current gallery group
+    openGallery(`[data-gallery="${galleryGroup}"]`);
+  };
+
   return (
     <div
       className={`relative text-center flex flex-col group gs-asset mobile:!w-full ${className}`}
       style={style}
     >
-      {/* GLightbox link - covers entire item */}
+      {/* Custom lightbox link - covers entire item */}
       <a
         href={media.url}
-        className="absolute inset-0 glightbox z-10"
+        className="absolute inset-0 z-10"
         data-gallery={galleryGroup}
-        data-type={media.type === 'video' ? 'video' : 'image'}
-        data-effect="fade"
+        data-type={media.type}
         data-desc={media.alt}
+        style={{ cursor: 'pointer' }}
+        onClick={handleClick}
       />
 
-      {/* Media container with hover effects */}
+      {/* Media container with individual hover effects */}
       <figure className="flex-1 relative group-hover:opacity-50 transition-opacity duration-700">
         {media.type === 'video' ? (
           <div className="w-full h-full relative overflow-hidden rounded-md">
@@ -61,22 +76,20 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
               loop
               playsInline
               autoPlay
+              preload="metadata"
+              controls={false}
             />
-            {/* Play icon overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+            {/* Play button overlay for videos */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-gray-800 ml-1"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
             </div>
           </div>
         ) : (
