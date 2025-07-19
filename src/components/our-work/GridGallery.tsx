@@ -24,7 +24,7 @@ interface GridGalleryProps {
 // Helper function to convert aspect ratio string to width/height
 const parseAspectRatio = (aspectRatio?: string) => {
   if (!aspectRatio) return { width: 1, height: 1 }; // Default square
-  
+
   const parts = aspectRatio.split(':');
   if (parts.length === 2) {
     const width = parseInt(parts[0]);
@@ -33,7 +33,7 @@ const parseAspectRatio = (aspectRatio?: string) => {
       return { width, height };
     }
   }
-  
+
   // Fallback to square if parsing fails
   return { width: 1, height: 1 };
 };
@@ -42,7 +42,7 @@ const parseAspectRatio = (aspectRatio?: string) => {
 const getGridLayout = (aspectRatio?: string) => {
   const { width, height } = parseAspectRatio(aspectRatio);
   const ratio = width / height;
-  
+
   // Vertical media (taller than wide) - at least 2 cols, 2-3 rows
   if (ratio < 0.8) {
     return {
@@ -50,7 +50,7 @@ const getGridLayout = (aspectRatio?: string) => {
       row: Math.max(2, ratio < 0.5 ? 3 : 2), // Very tall images get 3 rows, min 2
     };
   }
-  
+
   // Horizontal media (wider than tall) - at least 2 cols, 2 rows if very wide
   if (ratio > 1.2) {
     return {
@@ -58,7 +58,7 @@ const getGridLayout = (aspectRatio?: string) => {
       row: 2, // Always at least 2 rows for horizontal
     };
   }
-  
+
   // Square-ish media - at least 2 cols, 2 rows
   return {
     col: 2,
@@ -75,7 +75,7 @@ export default function GridGallery({
   const gridItems = useMemo(() => {
     return media.map((item, index) => {
       const layout = getGridLayout(item.aspectRatio);
-      
+
       return {
         ...item,
         layout,
@@ -93,13 +93,20 @@ export default function GridGallery({
   }
 
   return (
-    <div className={cn('fixed inset-0 w-screen h-screen z-0', className)}>
+    <div
+      className={cn(
+        'fixed inset-0 w-screen h-screen z-0 rounded-br-[4rem]',
+        className
+      )}
+    >
       {/* Desktop Grid Layout */}
       <div className="hidden md:grid grid-cols-12 w-full h-full">
-        {gridItems.map((item) => {
-          const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(item.aspectRatio);
+        {gridItems.map(item => {
+          const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(
+            item.aspectRatio
+          );
           const aspectRatio = aspectWidth / aspectHeight;
-          
+
           return (
             <div
               key={item.id}
@@ -136,10 +143,12 @@ export default function GridGallery({
 
       {/* Mobile Stack Layout */}
       <div className="grid grid-cols-1 md:hidden w-full h-full">
-        {gridItems.map((item) => {
-          const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(item.aspectRatio);
+        {gridItems.map(item => {
+          const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(
+            item.aspectRatio
+          );
           const aspectRatio = aspectWidth / aspectHeight;
-          
+
           return (
             <div
               key={item.id}
@@ -171,4 +180,4 @@ export default function GridGallery({
       </div>
     </div>
   );
-} 
+}

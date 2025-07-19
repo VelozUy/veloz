@@ -256,7 +256,7 @@ export default function HomepageAdminPage() {
       // Firebase should be online by default
 
       const docRef = doc(db!, 'homepage', 'content');
-      const contentData = (({ id, ...rest }) => rest)(content);
+      const contentData = (({ id: _id, ...rest }) => rest)(content);
 
       await setDoc(docRef, {
         ...contentData,
@@ -936,7 +936,7 @@ export default function HomepageAdminPage() {
               <CardContent>
                 {content.logo.url ? (
                   <div className="space-y-4">
-                    <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                    <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
                       <Image
                         src={content.logo.url}
                         alt="Logo"
@@ -1046,7 +1046,7 @@ export default function HomepageAdminPage() {
               <CardContent>
                 {content.backgroundVideo.url ? (
                   <div className="space-y-4">
-                    <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                    <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
                       <video
                         src={content.backgroundVideo.url}
                         className="w-full h-full object-cover"
@@ -1160,7 +1160,7 @@ export default function HomepageAdminPage() {
                     <div className="grid grid-cols-2 gap-4">
                       {content.backgroundImages.urls.map((url, index) => (
                         <div key={index} className="relative group">
-                          <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                          <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
                             <Image
                               src={url}
                               alt={`Background ${index + 1}`}

@@ -244,7 +244,7 @@ const BentoItem: React.FC<BentoItemProps> = ({
     >
       <motion.div
         className={cn(
-          'relative w-full h-full cursor-pointer overflow-hidden rounded-sm bg-card',
+          'relative w-full h-full cursor-pointer overflow-hidden rounded-md bg-card',
           'border border-border/30'
         )}
         onClick={onClick}

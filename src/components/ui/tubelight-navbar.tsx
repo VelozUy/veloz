@@ -206,7 +206,7 @@ export function TubelightNavBar({
 
           {/* Dropdown */}
           <div className="absolute bottom-full mb-2 sm:top-full sm:bottom-auto sm:mt-2 sm:mb-0 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto z-[60]">
-            <div className="bg-background/95 backdrop-blur-lg border border-border/20 rounded-lg shadow-lg py-1 min-w-[80px]">
+            <div className="bg-background/95 backdrop-blur-lg border border-border/20 rounded-none shadow-lg py-1 min-w-[80px]">
               {LOCALES.map(locale_item => (
                 <button
                   key={locale_item.code}

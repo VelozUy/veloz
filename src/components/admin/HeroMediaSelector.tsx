@@ -283,7 +283,7 @@ export default function HeroMediaSelector({
 
           {/* Custom Ratio Input */}
           {aspectRatio === 'custom' && (
-            <div className="space-y-3 p-4 border rounded-lg bg-muted/50">
+            <div className="space-y-3 p-4 border rounded-none bg-muted/50">
               <Label className="text-sm font-medium">
                 Proporción Personalizada
               </Label>
@@ -508,7 +508,7 @@ export default function HeroMediaSelector({
           </CardHeader>
           <CardContent>
             <div
-              className={`w-full overflow-hidden rounded-lg border ${
+              className={`w-full overflow-hidden rounded-none border ${
                 ASPECT_RATIO_OPTIONS.find(opt => opt.value === aspectRatio)
                   ?.preview || 'aspect-video'
               }`}

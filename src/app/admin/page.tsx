@@ -26,8 +26,10 @@ export default function AdminDashboardPage() {
     <AdminLayout title="Panel Principal">
       <div className="container mx-auto p-4">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-1">Panel de Administración</h1>
-          <p className="text-muted-foreground text-sm">
+          <h1 className="text-heading-md font-body text-foreground mb-1">
+            Panel de Administración
+          </h1>
+          <p className="text-body-sm text-muted-foreground">
             Gestiona tu contenido, analiza el rendimiento y configura tu sitio
           </p>
         </div>
@@ -37,8 +39,8 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <BarChart3 className="h-5 w-5 text-blue-600" />
-                  <CardTitle className="text-lg">Analytics</CardTitle>
+                  <BarChart3 className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Analytics</CardTitle>
                 </div>
                 <CardDescription>
                   Monitorea el rendimiento y engagement de usuarios
@@ -56,15 +58,15 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <FolderOpen className="h-5 w-5 text-green-600" />
-                  <CardTitle className="text-lg">Proyectos</CardTitle>
+                  <FolderOpen className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Proyectos</CardTitle>
                 </div>
                 <CardDescription>
                   Gestiona tus proyectos y contenido
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   Crea, edita y organiza tus proyectos
                 </p>
               </CardContent>
@@ -75,15 +77,15 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-purple-600" />
-                  <CardTitle className="text-lg">Equipo</CardTitle>
+                  <Users className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Equipo</CardTitle>
                 </div>
                 <CardDescription>
                   Administra miembros del equipo
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   Gestiona perfiles y roles del equipo
                 </p>
               </CardContent>
@@ -94,13 +96,13 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <Image className="h-5 w-5 text-orange-600" />
-                  <CardTitle className="text-lg">Galería</CardTitle>
+                  <Image className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Galería</CardTitle>
                 </div>
                 <CardDescription>Gestiona imágenes y videos</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   Sube y organiza contenido multimedia
                 </p>
               </CardContent>
@@ -111,13 +113,13 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5 text-indigo-600" />
-                  <CardTitle className="text-lg">FAQs</CardTitle>
+                  <FileText className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">FAQs</CardTitle>
                 </div>
                 <CardDescription>Gestiona preguntas frecuentes</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   Crea y edita preguntas frecuentes
                 </p>
               </CardContent>
@@ -128,13 +130,13 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
-                  <MessageSquare className="h-5 w-5 text-pink-600" />
-                  <CardTitle className="text-lg">Contactos</CardTitle>
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Contactos</CardTitle>
                 </div>
                 <CardDescription>Revisa mensajes de contacto</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   Gestiona formularios de contacto
                 </p>
               </CardContent>
@@ -146,7 +148,7 @@ export default function AdminDashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-green-600" />
+                <TrendingUp className="h-5 w-5 text-primary" />
                 <span>Actividad Reciente</span>
               </CardTitle>
               <CardDescription>
@@ -155,15 +157,15 @@ export default function AdminDashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-body-sm">
                   <span>Visitas hoy</span>
                   <span className="font-medium">--</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-body-sm">
                   <span>Proyectos activos</span>
                   <span className="font-medium">--</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-body-sm">
                   <span>Mensajes nuevos</span>
                   <span className="font-medium">--</span>
                 </div>
@@ -174,7 +176,7 @@ export default function AdminDashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Settings className="h-5 w-5 text-gray-600" />
+                <Settings className="h-5 w-5 text-primary" />
                 <span>Acciones Rápidas</span>
               </CardTitle>
               <CardDescription>

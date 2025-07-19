@@ -6,24 +6,604 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
-## 🎨 **EPIC: Veloz Brand Design System Implementation**
+## 🎨 **EPIC: Dynamic Background Color System Implementation** ✅ **COMPLETED**
+
+### 🎯 Objective: Implement contextual background color system based on section type and element priority to improve visual clarity and emotional tone
+
+**Reference**: `docs/background_color_system_prompt.md` - Complete implementation plan and specifications
+**User Intent**: Improve visual clarity and emotional tone by varying background colors contextually based on section type and element priority
+
+**Status**: ✅ **COMPLETED** - All phases implemented successfully
+**Completion Date**: 2025-01-20
+**PO Sign-Off**: PO Approved (2025-01-20)
+
+#### ✅ Completed Tasks
+
+- [x] **Phase 1: Update Tailwind Color Tokens** - Add new background color system tokens ✅
+- [x] **Phase 2: Hero/Visual Impact Section Updates** - Implement charcoal backgrounds for hero blocks ✅
+- [x] **Phase 3: Content/Text Section Updates** - Implement gray-light backgrounds for text sections ✅
+- [x] **Phase 4: Forms/Inputs/Contact Updates** - Implement proper form styling with new color system ✅
+- [x] **Phase 5: Testimonials/Crew Section Updates** - Implement white backgrounds for testimonials ✅
+- [x] **Phase 6: CTA/Conversion Section Updates** - Implement contextual CTA styling ✅
+- [x] **Phase 7: Component System Integration** - Create utility functions for contextual backgrounds ✅
+- [x] **Phase 8: Admin Panel Integration** - Update admin interface with new color system ✅
+- [x] **Phase 9: Documentation and Testing** - Comprehensive documentation and testing ✅
+
+**Deliverables**:
+
+- ✅ New color tokens integrated into Tailwind config
+- ✅ All section types updated with contextual backgrounds
+- ✅ Utility functions for easy component integration
+- ✅ Comprehensive documentation (`docs/BACKGROUND_COLOR_SYSTEM.md`)
+- ✅ Complete test suite with 32 passing tests
+- ✅ Admin panel fully integrated with new system
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- ✅ **Visual Clarity**: Improved contrast and readability across all sections
+- ✅ **Emotional Tone**: Contextual backgrounds enhance user experience
+- ✅ **Brand Consistency**: All sections follow Veloz brand guidelines
+- ✅ **Accessibility**: WCAG AA compliance for all color combinations
+
+**Secondary Metrics**:
+
+- ✅ **Performance**: No impact on page load times
+- ✅ **Maintainability**: Clear utility functions for future development
+- ✅ **User Experience**: Enhanced visual hierarchy and component clarity
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- ✅ Current design system implementation
+- ✅ Access to `docs/background_color_system_prompt.md` specifications
+- ✅ Understanding of current component structure
+
+**Business Dependencies**:
+
+- ✅ User approval of the new background color system
+- ✅ Stakeholder review of the enhanced visual experience
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- ✅ Maintain existing functionality while improving visual design
+- ✅ Ensure no breaking changes to current interactions
+- ✅ Test thoroughly with actual content and data
+- ✅ Consider impact on existing design system
+
+**Risk Mitigation**:
+
+- ✅ Implement changes incrementally by phase
+- ✅ Create rollback plan for each phase
+- ✅ Test with multiple content types to ensure consistency
+- ✅ Maintain backward compatibility during transition
+
+---
+
+## 🎨 **EPIC: Gallery Portfolio Enhancement** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Transform the gallery projects list using portfolio-inspired design patterns from PearsonLyle example, implementing responsive picture elements, dynamic grid layouts, professional lightbox integration, and sophisticated filtering navigation
+
+**Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Complete portfolio specification and implementation plan
+**User Intent**: Enhance the gallery projects list with portfolio-quality presentation using responsive images, dynamic layouts, professional lightbox, and sophisticated filtering while maintaining Veloz's brand elegance and static build-time generation
+
+**Scope**: Only the projects list display and filtering system will be enhanced. Page structure, header, footer, and overall layout remain unchanged.
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Responsive Picture Component** - Create advanced responsive picture component with multiple srcset sources
+  - **User Intent**: Implement portfolio-quality responsive images with optimal performance across all devices
+  - **Acceptance Criteria**:
+    - ResponsivePicture component with multiple srcset sources (800px, 600px, 400px)
+    - WebP format optimization with fallback
+    - 100% quality for crisp visuals
+    - Lazy loading implementation
+    - Proper aspect ratio handling (1:1, 16:9, 9:16, 4:3, 3:4)
+  - **Files**: `src/components/gallery/ResponsivePicture.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 1 (Enhanced Media Component)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Dynamic Grid Layout System** - Implement percentage-based width calculations and responsive layouts
+  - **User Intent**: Create sophisticated grid layouts that adapt to image aspect ratios and screen sizes
+  - **Acceptance Criteria**:
+    - Dynamic width calculation based on aspect ratios
+    - Responsive breakpoints (mobile, tablet, desktop)
+    - Consistent gap management (8px mobile, 6px desktop)
+    - Visual harmony across different image sizes
+    - Masonry-style layout support
+  - **Files**: `src/components/gallery/GalleryGrid.tsx`, `src/components/gallery/GalleryRow.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 1.2 (Dynamic Grid Layout System)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: GLightbox Integration** - Implement professional lightbox gallery with hover effects
+  - **User Intent**: Add portfolio-quality lightbox functionality with smooth animations and gallery grouping
+  - **Acceptance Criteria**:
+    - GLightbox integration with touch navigation
+    - 50% opacity hover effects with 700ms transition
+    - Gallery grouping per category (gallery-1, gallery-2, etc.)
+    - Video autoplay support
+    - Loop functionality
+  - **Files**: `src/components/gallery/GalleryItem.tsx`, `src/lib/lightbox.ts`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 3 (Lightbox Integration)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Enhanced Projects Filtering** - Build sophisticated desktop and mobile filtering
+  - **User Intent**: Create elegant projects filtering with desktop horizontal layout and mobile dropdown
+  - **Acceptance Criteria**:
+    - Desktop horizontal filtering with underline styling
+    - Mobile collapsible dropdown with smooth animations
+    - Active state management with visual feedback
+    - Event type count display
+    - Smooth transitions between filters
+  - **Files**: `src/components/gallery/ProjectsFilterNavigation.tsx`, `src/components/gallery/MobileProjectsFilterDropdown.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 2 (Enhanced Projects Filtering System)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Enhanced Projects Display** - Implement dynamic row generation and aspect ratio optimization
+  - **User Intent**: Create sophisticated projects layouts that optimize for different aspect ratios and screen sizes
+  - **Acceptance Criteria**:
+    - Dynamic row generation based on project media content
+    - Aspect ratio-based width calculations
+    - Responsive gap management
+    - Optimal visual balance across different project sizes
+    - Support for mixed media (photos and videos) within projects
+  - **Files**: `src/components/gallery/ProjectsDisplay.tsx`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 4 (Enhanced Projects Display Layout)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Performance Optimization** - Optimize for speed and user experience
+  - **User Intent**: Ensure gallery loads quickly and performs smoothly across all devices
+  - **Acceptance Criteria**:
+    - Image loading optimization (40-60% faster loading)
+    - Smooth animations and transitions
+    - Progressive enhancement implementation
+    - SEO optimization with structured data
+  - **Files**: All gallery components
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Performance Optimizations
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Analytics Integration** - Add comprehensive analytics tracking
+  - **User Intent**: Track gallery interactions and user behavior for business insights
+  - **Acceptance Criteria**:
+    - Gallery interaction tracking
+    - Category view analytics
+    - Media performance monitoring
+    - Conversion tracking from gallery to contact
+  - **Files**: `src/lib/analytics.ts`
+  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Analytics Integration
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 6 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Cross-browser Testing** - Ensure gallery works across all major browsers
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Mobile Responsiveness Testing** - Verify gallery works perfectly on mobile devices
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Accessibility Testing** - Ensure gallery meets WCAG standards
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Performance**: 40-60% faster image loading with optimized responsive images
+- **User Experience**: Portfolio-quality presentation with professional lightbox
+- **Mobile Optimization**: Seamless experience across all device sizes
+- **SEO Enhancement**: Improved search engine optimization with structured data
+
+**Secondary Metrics**:
+
+- **Engagement**: Increased time spent browsing projects
+- **Conversion**: Higher contact form submissions from gallery
+- **Brand Perception**: Enhanced professional image through sophisticated presentation
+- **Technical Quality**: Maintained static build-time generation with no client-side fetching
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current gallery page implementation
+- Access to `docs/GALLERY_PORTFOLIO_SPEC.md` specifications
+- Understanding of existing `getStaticContent()` pattern
+- GLightbox library integration
+
+**Business Dependencies**:
+
+- User approval of portfolio-inspired design approach
+- Stakeholder review of enhanced project presentation
+- Content team preparation for optimized media assets
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Static Build-Time Generation**: All components MUST work with existing static content generation
+- **No Client-Side Fetching**: Zero real-time data fetching or Firestore listeners
+- **SEO Optimization**: Server-side rendered content for optimal search engine crawlability
+- **Performance**: Pre-generated HTML for fastest possible loading
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Test each phase with existing static content files
+- Maintain backward compatibility during transition
+- Ensure all enhancements work with existing `getStaticContent()` pattern
+
+---
+
+## 🎨 **EPIC: Gallery Page Migration to shadcn/ui Components** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Migrate the gallery page to use only shadcn/ui components and blocks, removing all custom components for consistency, maintainability, and better integration with the design system
+
+**Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Complete migration plan and specifications
+**User Intent**: Replace all custom gallery components with shadcn/ui components to ensure consistency, maintainability, and better integration with the design system while maintaining static page generation using project features media
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Install Required shadcn Components** - Install all necessary shadcn/ui components for gallery migration
+  - **User Intent**: Install all required shadcn/ui components needed for the gallery migration
+  - **Acceptance Criteria**:
+    - All required shadcn components are installed and configured
+    - Components include: card, tabs, scroll-area, carousel, form, calendar, badge, button, dialog, input, label, select, separator, hover-card
+    - All components are properly imported and available for use
+    - No installation errors or conflicts
+  - **Files**: `package.json`, `components.json`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 1 (Component Analysis and Replacement Mapping)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Create New GalleryContent Component** - Build new gallery content component using shadcn/ui
+  - **User Intent**: Create a new gallery content component that uses only shadcn/ui components and maintains static page generation
+  - **Acceptance Criteria**:
+    - Component uses only shadcn/ui components (Card, Tabs, ScrollArea, Badge, Button, Dialog, Carousel)
+    - Maintains static page generation using project features media
+    - Includes proper filtering, project display, and lightbox functionality
+    - Follows the design system and accessibility standards
+    - Includes proper TypeScript types and error handling
+  - **Files**: `src/components/gallery/GalleryContent.tsx`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 2 (New Gallery Page Structure)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Create ContactWidget Component** - Build new contact widget using shadcn/ui
+  - **User Intent**: Create a new contact widget component that uses only shadcn/ui components
+  - **Acceptance Criteria**:
+    - Component uses only shadcn/ui components (Card, Button, Input, Label, Calendar, Select, Dialog)
+    - Includes proper form handling and validation
+    - Follows the design system and accessibility standards
+    - Includes proper TypeScript types and error handling
+  - **Files**: `src/components/gallery/ContactWidget.tsx`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 2 (New Gallery Page Structure)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Update Gallery Page** - Update main gallery page to use new components
+  - **User Intent**: Update the main gallery page to use the new shadcn/ui components
+  - **Acceptance Criteria**:
+    - Page uses new GalleryContent and ContactWidget components
+    - Maintains static page generation and SEO optimization
+    - All functionality works correctly
+    - No breaking changes to existing behavior
+  - **Files**: `src/app/gallery/page.tsx`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 2 (New Gallery Page Structure)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 2-3 completion
+
+- [ ] **Phase 5: Remove Custom Components** - Remove all custom gallery components
+  - **User Intent**: Clean up by removing all custom gallery components that are no longer needed
+  - **Acceptance Criteria**:
+    - All custom gallery components are removed
+    - All test files for custom components are removed
+    - Index files are updated to remove references to custom components
+    - No broken imports or references remain
+  - **Files**: `src/components/gallery/`, `src/components/layout/`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 3 (Component Removal)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Create New Tests** - Create comprehensive tests for new components
+  - **User Intent**: Ensure new components are thoroughly tested
+  - **Acceptance Criteria**:
+    - New test files created for GalleryContent and ContactWidget
+    - Tests cover all functionality including filtering, lightbox, and form submission
+    - Tests include accessibility and error handling
+    - All tests pass
+  - **Files**: `src/components/gallery/__tests__/`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 4 (Testing and Validation)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+- [ ] **Phase 7: Performance Optimization** - Add loading states and error boundaries
+  - **User Intent**: Ensure new components have proper loading states and error handling
+  - **Acceptance Criteria**:
+    - Loading skeletons implemented for gallery content
+    - Error boundaries implemented for graceful error handling
+    - Performance optimizations for large media galleries
+    - Accessibility improvements for keyboard navigation
+  - **Files**: `src/components/gallery/`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 5 (Performance Optimization)
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 6 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Documentation Update** - Update documentation and types
+  - **User Intent**: Ensure documentation reflects the new component structure
+  - **Acceptance Criteria**:
+    - Update component documentation
+    - Update TypeScript types for gallery components
+    - Update build configuration if needed
+    - Update migration documentation
+  - **Files**: `docs/`, `src/types/`
+  - **Reference**: `docs/GALLERY_SHADCN_MIGRATION.md` - Phase 7 (Final Steps)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 7 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Consistency**: All gallery components use shadcn/ui design system
+- **Maintainability**: Standardized component library with clear documentation
+- **Performance**: Optimized components with proper loading states
+- **Accessibility**: Built-in accessibility features from shadcn/ui
+
+**Secondary Metrics**:
+
+- **Type Safety**: Better TypeScript integration with shadcn/ui
+- **Documentation**: Comprehensive shadcn/ui documentation available
+- **Community Support**: Active shadcn/ui community support
+- **Static Generation**: Maintains static page generation for SEO
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current gallery components and functionality
+- Access to `docs/GALLERY_SHADCN_MIGRATION.md` specifications
+- Understanding of current static content generation
+
+**Business Dependencies**:
+
+- User approval of the new gallery design
+- Stakeholder review of the migrated components
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while improving component architecture
+- Ensure no breaking changes to gallery interactions
+- Preserve static page generation for SEO
+- Test thoroughly with actual project data
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple project types to ensure consistency
+- Maintain feature parity throughout migration
+
+---
+
+## 🎨 **EPIC: Veloz Brand Design System Implementation** ⭐ **TOP PRIORITY**
 
 ### 🎯 Objective: Implement comprehensive brand design system across entire application for consistent visual identity and enhanced user experience
 
 **Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete implementation plan and specifications
+**Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Critical fixes for current visual issues
 
-#### 🟧 Critical Priority Tasks
+---
 
-- [ ] **Phase 1: Color System Overhaul** - Replace current theme with Veloz monochromatic palette
-  - **User Intent**: Establish consistent brand identity across all touchpoints
+## 🎨 **EPIC: Project Timeline Page Theme Fix** ⭐ **URGENT PRIORITY**
+
+### 🎯 Objective: Fix theme and styling of project timeline page (our-work/ciclismo) to match new Veloz design system with proper contrast, readability, and visual hierarchy
+
+**Reference**: `docs/THEME_FIX_PLAN.md` - Comprehensive theme fix plan and specifications
+**User Intent**: Fix the current visual issues shown in screenshot where background colors are incorrect, text is not readable, and components don't follow the design system
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Fix Background and Base Colors** - Ensure proper Charcoal Black background and semantic color usage
+  - **User Intent**: Fix the background color to pure Charcoal Black and ensure all colors follow the design system
   - **Acceptance Criteria**:
-    - Update CSS variables in globals.css with Veloz color palette
-    - Remove dark mode support for brand consistency
-    - Implement semantic color mapping (primary, secondary, muted, etc.)
-    - Ensure all components use theme variables instead of hard-coded colors
+    - Background uses `#1A1B1F` (Charcoal Black) throughout the page
+    - All semantic color variables are properly applied
+    - No hardcoded color values remain in components
+    - Timeline section uses `bg-background` instead of gradients
+  - **Files**: `src/app/globals.css`, `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 1 (Fix Background and Base Colors)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Update Timeline Component Styling** - Fix timeline cards, status badges, and typography
+  - **User Intent**: Ensure timeline cards have proper contrast, status badges are clearly visible, and text is readable
+  - **Acceptance Criteria**:
+    - Timeline cards use `bg-card` with `border-border` for clear separation
+    - Status badges use `bg-green-500` with white text and checkmark icons
+    - Headers use REDJOLA font (never bold) with white text
+    - Body text uses Roboto font with proper contrast
+    - Timeline line uses `bg-primary/20` for subtle appearance
+  - **Files**: `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 2 (Update Timeline Component Styling)
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Fix Interactive Elements** - Update CTA button and hover states
+  - **User Intent**: Ensure all interactive elements follow the design system and are accessible
+  - **Acceptance Criteria**:
+    - CTA button uses `bg-primary text-primary-foreground` (Vibrant Blue)
+    - Hover states have proper color transitions
+    - Focus states have blue ring for accessibility
+    - All interactive elements meet WCAG AA standards
+  - **Files**: `src/components/our-work/ProjectTimeline.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 3 (Fix Interactive Elements)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 4: Update Hero Section** - Fix project detail hero section styling
+  - **User Intent**: Ensure hero section matches the design system and has proper contrast
+  - **Acceptance Criteria**:
+    - Hero background uses `bg-background` instead of `bg-charcoal`
+    - Text colors use semantic color variables
+    - Category badge styling matches design system
+    - All text is clearly readable against the background
+  - **Files**: `src/components/our-work/ProjectDetailClient.tsx`
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Phase 4 (Update Hero Section)
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Comprehensive Testing** - Test all changes across devices and accessibility standards
+  - **User Intent**: Ensure the fixed theme works properly across all scenarios
+  - **Acceptance Criteria**:
+    - Visual testing: Background is pure Charcoal Black, all text readable
+    - Accessibility testing: WCAG AA compliance, focus states visible
+    - Responsive testing: Works on mobile, cards stack properly
+    - Cross-browser testing: Consistent appearance across browsers
+  - **Reference**: `docs/THEME_FIX_PLAN.md` - Testing Checklist
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 4 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Background**: Pure Charcoal Black (`#1A1B1F`) throughout the page
+- **Readability**: All text clearly visible with proper contrast ratios
+- **Consistency**: Matches the new design system specifications
+- **Accessibility**: Meets WCAG AA standards for all color combinations
+
+**Secondary Metrics**:
+
+- **Performance**: No impact on page load times
+- **Maintainability**: All styling uses semantic color variables
+- **User Experience**: Improved visual hierarchy and component clarity
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current design system implementation
+- Access to `docs/THEME_FIX_PLAN.md` specifications
+- Understanding of current component structure
+
+**Business Dependencies**:
+
+- User approval of the fixed theme appearance
+- Stakeholder review of the timeline page design
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while improving visual design
+- Ensure no breaking changes to timeline interactions
+- Test thoroughly with actual project data
+- Consider impact on other project detail pages
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple project types to ensure consistency
+
+---
+
+## 🎨 **EPIC: Veloz Brand Design System Implementation** ⭐ **TOP PRIORITY**
+
+#### 🟧 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Critical Background & Color Fixes** - Fix immediate visual issues with background colors and text visibility
+  - **User Intent**: Fix the current visual issues shown in screenshot where background colors are incorrect and text is not visible
+  - **Acceptance Criteria**:
+    - All pages use `bg-[#1a1a2e]` (Charcoal Black) background
+    - All text is white (`text-white`) or light gray (`text-gray-300`) for proper contrast
+    - Remove debug elements and test widgets from pages
+    - Fix REDJOLA font to never be bold (only `font-normal`)
+    - Update all buttons to use `bg-[#0066ff]` (Vibrant Blue) for primary actions
+  - **Files**: `src/app/globals.css`, `src/app/our-work/page.tsx`, `src/components/our-work/OurWorkContent.tsx`
+  - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 1 (Critical Background & Color Fixes)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Typography System Fix** - Fix REDJOLA font loading and ensure proper text visibility
+  - **User Intent**: Ensure REDJOLA font loads properly and text is clearly visible against dark backgrounds
+  - **Acceptance Criteria**:
+    - REDJOLA font loads correctly with proper fallbacks
+    - REDJOLA is never bold (only `font-normal` per user preference)
+    - All headings use `font-display` with white text
+    - All body text uses `font-body` with proper contrast
+    - Typography classes work consistently across all pages
   - **Files**: `src/app/globals.css`, `tailwind.config.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 1.1-1.3 (Color System Overhaul)
-  - **Estimated Time**: 2-3 days
+  - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 2 (Typography System Implementation)
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Component System Updates** - Update UI components to use Veloz brand colors
+  - **User Intent**: Ensure all interactive elements follow Veloz brand guidelines
+  - **Acceptance Criteria**:
+    - Button component uses Veloz colors (`bg-[#0066ff]` for primary, `border-[#8e8e93]` for secondary)
+    - Input component uses Light Grey background with Blue focus ring
+    - Card component uses Medium Grey background
+    - All components use theme variables instead of hard-coded colors
+  - **Files**: `src/components/ui/button.tsx`, `src/components/ui/input.tsx`, `src/components/ui/card.tsx`
+  - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 3 (Component System Updates)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 4: Navigation & Layout Fixes** - Fix navigation styling and page layouts
+  - **User Intent**: Ensure navigation is visible and properly styled against dark background
+  - **Acceptance Criteria**:
+    - Navigation links are white with blue hover states
+    - Active navigation states use Vibrant Blue
+    - Language selector is visible and properly styled
+    - CTA button uses Vibrant Blue background
+    - Hero layouts use proper background colors
+  - **Files**: `src/components/layout/navigation.tsx`, `src/components/layout/HeroLayout.tsx`
+  - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 4 (Page-Specific Updates)
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 5: Category Filter & Project Display Fixes** - Fix filter buttons and project cards
+  - **User Intent**: Ensure category filters and project cards are properly styled and visible
+  - **Acceptance Criteria**:
+    - Category filter buttons use Veloz colors and are clearly visible
+    - Project cards use Medium Grey background with white text
+    - Category icons are white and visible against dark background
+    - "Ver Proyecto" buttons use Vibrant Blue
+    - Project titles use REDJOLA font (never bold)
+  - **Files**: `src/components/our-work/OurWorkContent.tsx`, `src/constants/categories.ts`
+  - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 5 & 6 (Category Filter & Project Display Updates)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
 
 - [ ] **Phase 2: Typography System Implementation** - Implement REDJOLA and Roboto font system
   - **User Intent**: Create clear typography hierarchy that reflects brand personality
@@ -196,6 +776,183 @@ This file contains unprioritized ideas and future features that have been identi
 - Create rollback plan for each phase
 - Test extensively before deployment
 - Maintain clear communication with stakeholders
+
+---
+
+## 🎨 **EPIC: Border Radius System Implementation** ⭐ **NEW EPIC**
+
+### 🎯 Objective: Implement comprehensive border radius system across entire application to enhance visual clarity, precision, and modernism while maintaining Veloz brand identity
+
+**Reference**: `docs/new_border_radius_guidelines.md` - Complete border radius guidelines and specifications
+**User Intent**: Update all components to use intentional border radius system that emphasizes structure and hierarchy, with rounded corners used sparingly and purposefully
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Update Tailwind Border Radius Tokens** - Add new border radius system tokens
+  - **User Intent**: Define the new border radius tokens that align with Veloz brand guidelines
+  - **Acceptance Criteria**:
+    - Add `md: '0.375rem'` for inputs and small interactive elements
+    - Add `lg: '0.5rem'` for cards and forms
+    - Add `full: '9999px'` for badges and pills
+    - Add `tl: '3rem'` for layout curves and hero sections
+    - Add `br: '4rem'` for asymmetrical visual blocks
+    - Remove default `rounded-xl` and `rounded-2xl` usage
+  - **Files**: `tailwind.config.ts`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Implementation Strategy section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Update Container Components** - Fix all cards, modals, forms, and sections to use square borders
+  - **User Intent**: Ensure all general-purpose containers use square borders to emphasize structure
+  - **Acceptance Criteria**:
+    - All card components use `rounded-none` instead of rounded corners
+    - All modal/dialog components use `rounded-none`
+    - All form containers use `rounded-none`
+    - All section blocks use `rounded-none`
+    - All timeline components use `rounded-none`
+    - All content blocks use `rounded-none`
+  - **Files**: `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`, `src/components/forms/ContactForm.tsx`, all section components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Containers section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Update Tag and Badge Components** - Implement rounded-full for tags, badges, and pills
+  - **User Intent**: Ensure all tags, badges, and status indicators use rounded-full for warmth and clarity
+  - **Acceptance Criteria**:
+    - All category buttons use `rounded-full`
+    - All status indicators use `rounded-full`
+    - All labels use `rounded-full`
+    - All pill components use `rounded-full`
+    - All badge components use `rounded-full`
+  - **Files**: `src/components/ui/badge.tsx`, `src/constants/categories.ts`, all tag/badge components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Tags, Badges, and Pills section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Phase 4: Update Input and Interactive Elements** - Fix input fields and buttons to use appropriate border radius
+  - **User Intent**: Ensure input fields and buttons use appropriate border radius for usability
+  - **Acceptance Criteria**:
+    - All input fields use `rounded-md` for usability
+    - All buttons use appropriate border radius based on type
+    - All form elements use consistent border radius
+    - All interactive elements maintain accessibility
+  - **Files**: `src/components/ui/input.tsx`, `src/components/ui/button.tsx`, all form components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Examples section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Implement Asymmetrical Border Radius** - Add asymmetrical border radius for hero sections and visual blocks
+  - **User Intent**: Implement asymmetrical border radius for hero sections and featured content to express motion and boldness
+  - **Acceptance Criteria**:
+    - Hero sections use `rounded-tl-[3rem]` or similar asymmetrical patterns
+    - Featured content blocks use asymmetrical border radius
+    - Layout cuts use intentional asymmetrical patterns
+    - Visual blocks express motion without being ornamental
+  - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/GridGallery.tsx`, hero and visual block components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Blocks and Visual Sections section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Update Structural Elements** - Fix diagrams and structural components to use square corners
+  - **User Intent**: Ensure all structural and diagrammatic elements use square corners for precision
+  - **Acceptance Criteria**:
+    - All diagram components use `rounded-none`
+    - All wireframe elements use `rounded-none`
+    - All edge-glow UI elements use `rounded-none`
+    - All structural components maintain precision and consistency
+  - **Files**: All diagram and structural components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Structural/Diagrammatic Elements section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Medium Priority Tasks
+
+- [ ] **Phase 7: Admin Panel Integration** - Update admin interface with new border radius system
+  - **User Intent**: Ensure admin panel follows the new border radius guidelines
+  - **Acceptance Criteria**:
+    - Admin cards use `rounded-none`
+    - Admin forms use appropriate border radius
+    - Admin badges use `rounded-full`
+    - Admin modals use `rounded-none`
+    - All admin components follow border radius guidelines
+  - **Files**: All admin components in `src/app/admin/` and `src/components/admin/`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Element-specific guidelines
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Gallery and Media Components** - Update gallery components with new border radius system
+  - **User Intent**: Ensure gallery and media components follow the new border radius guidelines
+  - **Acceptance Criteria**:
+    - Gallery cards use `rounded-none`
+    - Media containers use appropriate border radius
+    - Lightbox components use `rounded-none`
+    - Filter components use `rounded-full` for tags
+    - All gallery components follow border radius guidelines
+  - **Files**: `src/components/gallery/`, `src/app/gallery/`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Element-specific guidelines
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 7 completion
+
+#### 🟦 Low Priority Tasks
+
+- [ ] **Phase 9: Documentation and Testing** - Create comprehensive documentation and testing
+  - **User Intent**: Ensure the new border radius system is well-documented and tested
+  - **Acceptance Criteria**:
+    - Update component documentation with border radius guidelines
+    - Create visual examples of proper border radius usage
+    - Test all components across different screen sizes
+    - Ensure accessibility standards are maintained
+    - Create border radius usage guidelines for future development
+  - **Files**: `docs/`, test files
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Complete guidelines
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 8 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Consistency**: 100% of components follow new border radius guidelines
+- **Clarity**: Improved visual hierarchy through intentional border radius usage
+- **Brand Alignment**: Visual identity matches Veloz brand guidelines
+- **Precision**: Square borders emphasize structure and hierarchy
+
+**Secondary Metrics**:
+
+- **Maintainability**: Clear border radius system for future development
+- **Developer Experience**: Consistent border radius tokens and usage patterns
+- **User Experience**: Enhanced visual clarity and modern appearance
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current component system understanding
+- Access to `docs/new_border_radius_guidelines.md` specifications
+- Understanding of current border radius usage patterns
+
+**Business Dependencies**:
+
+- User approval of the new border radius system
+- Stakeholder review of the enhanced visual clarity
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while improving visual design
+- Ensure no breaking changes to current interactions
+- Test thoroughly with actual content and data
+- Consider impact on existing design system
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple content types to ensure consistency
+- Maintain backward compatibility during transition
 
 ---
 
@@ -565,6 +1322,508 @@ This file contains unprioritized ideas and future features that have been identi
 - Implement gradual rollout to test effectiveness
 - Monitor feedback and adjust features based on client response
 - Ensure compliance with data protection regulations
+
+---
+
+## 🎨 **EPIC: Light Gray Background Color System Implementation** ⭐ **NEW EPIC**
+
+### 🎯 Objective: Implement contextual light gray background color system with hierarchical elements based on section type and element priority to improve visual clarity and user experience
+
+**Reference**: `docs/new_background_color_system_prompt.md` - Complete implementation plan and specifications
+**User Intent**: Transition from dark theme to light gray background system with proper visual hierarchy using contrast, elevation, and composition while maintaining Veloz brand identity
+
+### 📊 Epic Overview
+
+**Current State**: Dark theme with charcoal backgrounds (`#1a1b1f`)
+**Target State**: Light gray background system with hierarchical elements
+**Brand Requirements**: REDJOLA font only for VELOZ brand title, Roboto for all other text
+
+### 🎨 **EPIC: Light Gray Background Color System Implementation** ⭐ **NEW EPIC**
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Update Tailwind Color Tokens** - Add new light gray color system tokens
+  - **User Intent**: Define the new color palette for light gray background system
+  - **Acceptance Criteria**:
+    - Add `charcoal: '#1a1b1f'` for dark base visual/hero blocks
+    - Add `gray-light: '#f0f0f0'` for neutral text sections and forms
+    - Add `gray-medium: '#d2d2d2'` for borders and cards
+    - Add `blue-accent: '#1d7efc'` for CTA and focus elements
+    - Add `white: '#ffffff'` for elevated cards or clean sections
+    - Update font configuration: REDJOLA only for VELOZ brand title, Roboto for all other text
+  - **Files**: `tailwind.config.ts`, `src/app/globals.css`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Tailwind Tokens section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Update Global CSS Variables** - Implement new color system in CSS variables
+  - **User Intent**: Transition from dark theme to light gray background system
+  - **Acceptance Criteria**:
+    - Update `--background` to use light gray (`#f0f0f0`)
+    - Update `--foreground` to use charcoal (`#1a1b1f`) for proper contrast
+    - Update `--card` to use white (`#ffffff`) for elevated elements
+    - Update `--card-foreground` to use charcoal for text
+    - Update `--primary` to use blue-accent (`#1d7efc`)
+    - Update `--border` to use gray-medium (`#d2d2d2`)
+    - Ensure all semantic color variables are properly mapped
+  - **Files**: `src/app/globals.css`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Visual Hierarchy section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Create Utility Functions** - Build contextual background utility system
+  - **User Intent**: Create reusable utilities for applying backgrounds based on section type and priority
+  - **Acceptance Criteria**:
+    - Create `getBackgroundClasses(sectionType, priority)` utility function
+    - Support section types: 'hero', 'content', 'form', 'testimonial', 'cta', 'meta'
+    - Support priority levels: 'high', 'medium', 'low'
+    - Return appropriate Tailwind classes for background, text, and borders
+    - Include responsive variants for different screen sizes
+    - Add TypeScript types for section types and priorities
+  - **Files**: `src/lib/background-utils.ts`, `src/types/background.ts`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Output section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Phase 4: Update Hero Sections** - Implement charcoal backgrounds for hero blocks
+  - **User Intent**: Apply dark backgrounds to hero sections for visual impact
+  - **Acceptance Criteria**:
+    - Hero sections use `bg-charcoal` with white text
+    - CTA buttons use `bg-blue-accent` with white text
+    - Project titles use REDJOLA font (never bold) with white text
+    - Subtitles use Roboto font with proper contrast
+    - All hero elements follow high priority styling guidelines
+  - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/ProjectDetailClient.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Top Priority Elements
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Update Content Sections** - Implement light gray backgrounds for text sections
+  - **User Intent**: Apply light gray backgrounds to content sections with proper hierarchy
+  - **Acceptance Criteria**:
+    - Content sections use `bg-gray-light` as base
+    - Text uses `text-charcoal` for primary content
+    - Cards use `bg-white` with soft shadows for elevation
+    - Process sections use outlined cards with `border-gray-medium`
+    - All content follows mid priority styling guidelines
+  - **Files**: `src/components/our-work/OurWorkContent.tsx`, `src/app/about/page.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Update Form Sections** - Implement proper form styling with new color system
+  - **User Intent**: Ensure forms are clearly visible and accessible on light backgrounds
+  - **Acceptance Criteria**:
+    - Form sections use `bg-gray-light` as base
+    - Input fields use `bg-white` with `border-gray-medium`
+    - Focus states use `ring-blue-accent` for accessibility
+    - Labels use `text-charcoal` for clarity
+    - Submit buttons use `bg-blue-accent` with white text
+    - Error states use destructive colors with proper contrast
+  - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/ui/input.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 5 completion
+
+- [ ] **Phase 7: Update Testimonial Sections** - Implement white backgrounds for testimonials
+  - **User Intent**: Use white backgrounds to make testimonials stand out
+  - **Acceptance Criteria**:
+    - Testimonial sections use `bg-white` with soft shadows
+    - Quote text uses `text-charcoal` for readability
+    - Author names use `text-blue-accent` for emphasis
+    - Cards have subtle borders with `border-gray-medium`
+    - All testimonial elements follow mid priority guidelines
+  - **Files**: `src/components/our-work/TestimonialSection.tsx` (if exists)
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Update CTA Sections** - Implement contextual CTA styling
+  - **User Intent**: Ensure call-to-action elements are prominent and accessible
+  - **Acceptance Criteria**:
+    - CTA sections use `bg-blue-accent` or `bg-white` based on context
+    - CTA buttons use `bg-blue-accent` with white text
+    - Hover states have proper color transitions
+    - Focus states have blue ring for accessibility
+    - All CTA elements follow high priority guidelines
+  - **Files**: `src/components/ui/button.tsx`, `src/components/layout/InteractiveCTAWidget.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Top Priority Elements
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🟩 Medium Priority Tasks
+
+- [ ] **Phase 9: Update Meta Information Sections** - Implement subtle styling for low priority elements
+  - **User Intent**: Apply subtle styling to meta information, tags, and footers
+  - **Acceptance Criteria**:
+    - Meta sections use `bg-gray-light` as base
+    - Tags use `text-gray-medium` with `border-gray-medium`
+    - Footer sections use subtle styling without colored backgrounds
+    - All meta elements follow low priority guidelines
+    - Avoid saturated colors or prominent backgrounds
+  - **Files**: `src/components/layout/Footer.tsx`, tag components
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Low Priority Elements
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 8 completion
+
+- [ ] **Phase 10: Update Admin Panel** - Apply new color system to admin interface
+  - **User Intent**: Ensure admin panel follows the new light gray background system
+  - **Acceptance Criteria**:
+    - Admin sections use appropriate background colors based on function
+    - Forms use `bg-gray-light` with white input fields
+    - Tables use white backgrounds with subtle borders
+    - Navigation uses charcoal background with white text
+    - All admin elements maintain Spanish language requirement
+  - **Files**: `src/app/admin/**/*.tsx`, `src/components/admin/**/*.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Visual Hierarchy
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 9 completion
+
+- [ ] **Phase 11: Component System Integration** - Update all UI components to use new system
+  - **User Intent**: Ensure all reusable components work with the new background system
+  - **Acceptance Criteria**:
+    - Button component supports contextual styling
+    - Card component uses appropriate backgrounds
+    - Input component works with light backgrounds
+    - Modal component uses proper contrast
+    - All components use theme variables instead of hard-coded colors
+  - **Files**: `src/components/ui/**/*.tsx`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Component System
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 10 completion
+
+#### 🟦 Low Priority Tasks
+
+- [ ] **Phase 12: Responsive Design Updates** - Ensure new system works across all devices
+  - **User Intent**: Verify the light gray background system works properly on all screen sizes
+  - **Acceptance Criteria**:
+    - Mobile layouts maintain proper contrast and readability
+    - Tablet layouts use appropriate background hierarchies
+    - Desktop layouts showcase full visual hierarchy
+    - All breakpoints maintain brand consistency
+  - **Files**: All component files with responsive classes
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Responsive Design
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 11 completion
+
+- [ ] **Phase 13: Accessibility Testing** - Ensure WCAG compliance with new color system
+  - **User Intent**: Verify all color combinations meet accessibility standards
+  - **Acceptance Criteria**:
+    - All text has sufficient contrast ratios (WCAG AA)
+    - Focus states are clearly visible
+    - Color is not the only way to convey information
+    - Screen readers can navigate all sections properly
+  - **Files**: All updated component files
+  - **Reference**: WCAG 2.1 AA Guidelines
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 12 completion
+
+- [ ] **Phase 14: Documentation and Testing** - Create comprehensive documentation and tests
+  - **User Intent**: Document the new background system and create tests for reliability
+  - **Acceptance Criteria**:
+    - Update `docs/BACKGROUND_COLOR_SYSTEM.md` with new specifications
+    - Create unit tests for background utility functions
+    - Create visual regression tests for all section types
+    - Document usage examples and best practices
+    - Create migration guide for future developers
+  - **Files**: `docs/BACKGROUND_COLOR_SYSTEM.md`, `src/lib/__tests__/background-utils.test.ts`
+  - **Reference**: `docs/new_background_color_system_prompt.md` - Complete specifications
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 13 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Visual Clarity**: Improved contrast and readability across all sections
+- **Brand Consistency**: All sections follow Veloz brand guidelines with proper font usage
+- **User Experience**: Enhanced visual hierarchy and component clarity
+- **Accessibility**: WCAG AA compliance for all color combinations
+
+**Secondary Metrics**:
+
+- **Performance**: No impact on page load times
+- **Maintainability**: Clear utility functions for future development
+- **Developer Experience**: Easy-to-use background system for new components
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current design system implementation
+- Access to `docs/new_background_color_system_prompt.md` specifications
+- Understanding of current component structure
+- REDJOLA font files in `/public/redjola/`
+
+**Business Dependencies**:
+
+- User approval of the light gray background system
+- Stakeholder review of the enhanced visual experience
+- Confirmation that REDJOLA font should only be used for VELOZ brand title
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while transitioning to light backgrounds
+- Ensure no breaking changes to current interactions
+- Test thoroughly with actual content and data
+- Consider impact on existing design system
+- Ensure REDJOLA font is never used in bold (user preference)
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple content types to ensure consistency
+- Maintain backward compatibility during transition
+- Create comprehensive test suite for reliability
+
+**Font Usage Rules**:
+
+- REDJOLA font: ONLY for VELOZ brand title in logo
+- Roboto font: ALL other headings, buttons, and body text
+- Never use REDJOLA in bold (hard to read per user preference)
+
+---
+
+## 🎨 **EPIC: Border Radius System Implementation** ⭐ **NEW EPIC**
+
+### 🎯 Objective: Implement comprehensive border radius system across entire application based on updated Veloz brand guidelines for consistent visual identity and enhanced user experience
+
+**Reference**: `docs/border_radius_guidelines.md` - Complete border radius specifications and implementation guidelines
+**User Intent**: Apply selective and intentional border radius usage that reflects Veloz brand values of clarity, precision, and modernism while avoiding uniform application
+
+### 📊 Epic Overview
+
+**Current State**: Inconsistent border radius usage across components
+**Target State**: Systematic border radius application based on element type and purpose
+**Brand Requirements**: Selective use that reinforces movement and hierarchy without being ornamental
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Update Tailwind Border Radius Tokens** - Add new border radius system tokens
+  - **User Intent**: Define the new border radius tokens that align with Veloz brand guidelines
+  - **Acceptance Criteria**:
+    - Add `tl: '3rem'` for layout curves (hero sections, featured content)
+    - Add `br: '4rem'` for asymmetrical border radius
+    - Update `md: '0.375rem'` for inputs and forms
+    - Update `lg: '0.5rem'` for cards and modals
+    - Ensure `full: '9999px'` for badges and pills
+    - Remove or deprecate `xl` and `2xl` tokens to avoid overuse
+  - **Files**: `tailwind.config.ts`
+  - **Reference**: `docs/border_radius_guidelines.md` - Implementation Strategy section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Update Tag and Badge Components** - Apply rounded-full to all tags, badges, and pills
+  - **User Intent**: Create warmth and clarity at small scale for category buttons, labels, and status indicators
+  - **Acceptance Criteria**:
+    - Category filter buttons use `rounded-full`
+    - Status badges use `rounded-full`
+    - Tag components use `rounded-full`
+    - All small-scale indicators follow the warmth principle
+    - Test with various text lengths and content types
+  - **Files**: `src/components/ui/badge.tsx`, `src/components/our-work/OurWorkContent.tsx`, `src/constants/categories.ts`
+  - **Reference**: `docs/border_radius_guidelines.md` - Tags, Badges, and Pills section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 3: Update Card and Form Components** - Apply rounded-md and rounded-lg to cards, inputs, and modals
+  - **User Intent**: Maintain standard web accessibility and comfort for interactive elements
+  - **Acceptance Criteria**:
+    - Input fields use `rounded-md`
+    - Form components use `rounded-md`
+    - Modal dialogs use `rounded-lg`
+    - Card components use `rounded-lg`
+    - Gallery items use `rounded-lg`
+    - All admin UI elements follow these guidelines
+  - **Files**: `src/components/ui/card.tsx`, `src/components/ui/input.tsx`, `src/components/ui/dialog.tsx`, `src/components/forms/ContactForm.tsx`
+  - **Reference**: `docs/border_radius_guidelines.md` - Cards, Inputs, Modals, and Forms section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟨 High Priority Tasks
+
+- [ ] **Phase 4: Update Hero and Layout Sections** - Apply asymmetrical border radius to visual blocks
+  - **User Intent**: Express motion and boldness without being ornamental in hero sections and layout cuts
+  - **Acceptance Criteria**:
+    - Hero sections use `rounded-tl-[3rem]` for top-left curves
+    - Featured content blocks use `rounded-br-[4rem]` for bottom-right curves
+    - Layout cuts use asymmetrical border radius strategically
+    - Visual sections express movement and hierarchy
+    - Avoid overuse - apply only where it enhances the design
+  - **Files**: `src/components/layout/hero.tsx`, `src/components/layout/HeroLayout.tsx`, `src/components/our-work/ProjectDetailClient.tsx`
+  - **Reference**: `docs/border_radius_guidelines.md` - Blocks and Visual Sections section
+  - **Estimated Time**: 1.5 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Update Structural Elements** - Apply square corners to diagrams and precision elements
+  - **User Intent**: Use square corners for precision and consistency with brand visuals
+  - **Acceptance Criteria**:
+    - Diagram components use `rounded-none`
+    - Wireframe elements use `rounded-none`
+    - Edge-glow UI elements use `rounded-none`
+    - Structural elements maintain precision and consistency
+    - All precision-focused components follow this guideline
+  - **Files**: `src/components/ui/aspect-ratio.tsx`, diagram components, structural UI elements
+  - **Reference**: `docs/border_radius_guidelines.md` - Structural/Diagrammatic Elements section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Update Admin Panel Components** - Apply border radius system to admin interface
+  - **User Intent**: Ensure admin panel follows the new border radius system consistently
+  - **Acceptance Criteria**:
+    - Admin forms use `rounded-md` for inputs
+    - Admin cards use `rounded-lg` for content blocks
+    - Admin modals use `rounded-lg` for dialogs
+    - Status indicators use `rounded-full` for badges
+    - All admin elements maintain Spanish language requirement
+  - **Files**: `src/app/admin/**/*.tsx`, `src/components/admin/**/*.tsx`
+  - **Reference**: `docs/border_radius_guidelines.md` - Implementation Strategy
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Medium Priority Tasks
+
+- [ ] **Phase 7: Create Border Radius Utility Functions** - Build utility system for conditional border radius
+  - **User Intent**: Create reusable utilities for applying border radius based on element type and context
+  - **Acceptance Criteria**:
+    - Create `getBorderRadiusClasses(elementType, context)` utility function
+    - Support element types: 'tag', 'card', 'input', 'hero', 'structural'
+    - Support contexts: 'default', 'admin', 'public'
+    - Return appropriate Tailwind classes for border radius
+    - Include TypeScript types for element types and contexts
+    - Add comprehensive documentation and examples
+  - **Files**: `src/lib/border-radius-utils.ts`, `src/types/border-radius.ts`
+  - **Reference**: `docs/border_radius_guidelines.md` - Implementation Strategy
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Update Gallery and Media Components** - Apply border radius to media display elements
+  - **User Intent**: Ensure gallery items and media components follow the border radius system
+  - **Acceptance Criteria**:
+    - Gallery items use `rounded-lg` for cards
+    - Media lightbox components use `rounded-lg` for modals
+    - Image components use appropriate border radius based on context
+    - Video components follow the same guidelines
+    - All media elements maintain visual consistency
+  - **Files**: `src/components/gallery/**/*.tsx`, `src/components/shared/MediaDisplay.tsx`
+  - **Reference**: `docs/border_radius_guidelines.md` - Cards, Inputs, Modals, and Forms section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 7 completion
+
+- [ ] **Phase 9: Update Navigation and Layout Components** - Apply border radius to navigation elements
+  - **User Intent**: Ensure navigation and layout components follow the border radius system
+  - **Acceptance Criteria**:
+    - Navigation buttons use `rounded-md` for consistency
+    - Dropdown menus use `rounded-lg` for modals
+    - Mobile navigation elements follow the same guidelines
+    - Layout containers use appropriate border radius based on function
+    - All navigation elements maintain accessibility standards
+  - **Files**: `src/components/layout/navigation.tsx`, `src/components/layout/ConditionalNavigation.tsx`
+  - **Reference**: `docs/border_radius_guidelines.md` - Cards, Inputs, Modals, and Forms section
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 8 completion
+
+#### 🟦 Low Priority Tasks
+
+- [ ] **Phase 10: Responsive Design Updates** - Ensure border radius system works across all devices
+  - **User Intent**: Verify the border radius system works properly on all screen sizes
+  - **Acceptance Criteria**:
+    - Mobile layouts maintain proper border radius proportions
+    - Tablet layouts use appropriate border radius scaling
+    - Desktop layouts showcase full border radius system
+    - All breakpoints maintain visual consistency
+    - Touch targets remain accessible on mobile devices
+  - **Files**: All component files with responsive border radius classes
+  - **Reference**: `docs/border_radius_guidelines.md` - General Principles
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 9 completion
+
+- [ ] **Phase 11: Accessibility Testing** - Ensure border radius doesn't impact accessibility
+  - **User Intent**: Verify border radius doesn't interfere with accessibility features
+  - **Acceptance Criteria**:
+    - Focus states remain clearly visible with border radius
+    - Touch targets maintain appropriate size with rounded corners
+    - Screen readers can navigate all elements properly
+    - High contrast mode works with border radius
+    - All accessibility standards are maintained
+  - **Files**: All updated component files
+  - **Reference**: WCAG 2.1 AA Guidelines
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 10 completion
+
+- [ ] **Phase 12: Documentation and Testing** - Create comprehensive documentation and tests
+  - **User Intent**: Document the new border radius system and create tests for reliability
+  - **Acceptance Criteria**:
+    - Update `docs/border_radius_guidelines.md` with implementation examples
+    - Create unit tests for border radius utility functions
+    - Create visual regression tests for all element types
+    - Document usage examples and best practices
+    - Create migration guide for future developers
+  - **Files**: `docs/border_radius_guidelines.md`, `src/lib/__tests__/border-radius-utils.test.ts`
+  - **Reference**: `docs/border_radius_guidelines.md` - Complete specifications
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 11 completion
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Visual Consistency**: 100% of components follow new border radius system
+- **Brand Alignment**: All elements reflect Veloz brand values of clarity and precision
+- **User Experience**: Enhanced visual hierarchy without ornamental overuse
+- **Accessibility**: All border radius implementations maintain accessibility standards
+
+**Secondary Metrics**:
+
+- **Performance**: No impact on rendering performance
+- **Maintainability**: Clear utility functions for future development
+- **Developer Experience**: Easy-to-use border radius system for new components
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current component system implementation
+- Access to `docs/border_radius_guidelines.md` specifications
+- Understanding of current border radius usage across components
+- Tailwind CSS configuration access
+
+**Business Dependencies**:
+
+- User approval of the new border radius system
+- Stakeholder review of the enhanced visual experience
+- Confirmation that asymmetrical border radius aligns with brand vision
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while updating border radius
+- Ensure no breaking changes to current interactions
+- Test thoroughly with actual content and data
+- Consider impact on existing design system
+- Avoid overuse of asymmetrical border radius
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple content types to ensure consistency
+- Maintain backward compatibility during transition
+- Create comprehensive test suite for reliability
+
+**Border Radius Usage Rules**:
+
+- Tags/Badges: `rounded-full` for warmth and clarity
+- Cards/Forms: `rounded-md` or `rounded-lg` for accessibility
+- Hero/Layout: Asymmetrical (`rounded-tl-[3rem]`, `rounded-br-[4rem]`) for movement
+- Structural: `rounded-none` for precision and consistency
+- Avoid: `rounded-xl` and `rounded-2xl` to prevent overuse
 
 ---
 

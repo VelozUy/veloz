@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -22,7 +22,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {
   Grid,
@@ -32,12 +31,7 @@ import {
   Edit,
   Star,
   GripVertical,
-  Move,
-  Image as ImageIcon,
   Video as VideoIcon,
-  Download,
-  Copy,
-  MoreHorizontal,
   Check,
   X,
   Sparkles,
@@ -123,7 +117,7 @@ function SortableMediaItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`border rounded-lg overflow-hidden relative ${
+      className={`border rounded-none overflow-hidden relative ${
         selected ? 'ring-2 ring-primary' : ''
       } ${viewMode === 'list' ? 'flex items-center space-x-4 p-4' : ''}`}
     >
@@ -215,10 +209,20 @@ function SortableMediaItem({
               variant="ghost"
               size="sm"
               onClick={() => onToggleFeatured(media.id!, !media.featured)}
-              className={media.featured ? 'text-yellow-600 hover:text-yellow-700' : 'text-gray-400 hover:text-yellow-600'}
-              title={media.featured ? 'Quitar de destacados' : 'Marcar como destacado'}
+              className={
+                media.featured
+                  ? 'text-yellow-600 hover:text-yellow-700'
+                  : 'text-gray-400 hover:text-yellow-600'
+              }
+              title={
+                media.featured
+                  ? 'Quitar de destacados'
+                  : 'Marcar como destacado'
+              }
             >
-              <Star className={`w-4 h-4 ${media.featured ? 'fill-current' : ''}`} />
+              <Star
+                className={`w-4 h-4 ${media.featured ? 'fill-current' : ''}`}
+              />
             </Button>
             {/* SEO Analysis Button - for both photos and videos */}
             <Button
@@ -312,7 +316,7 @@ function EditMediaModal({
 
         <div className="space-y-4">
           {/* Media preview */}
-          <div className="flex items-center space-x-4 p-4 border rounded-lg">
+          <div className="flex items-center space-x-4 p-4 border rounded-none">
             {media.type === 'photo' ? (
               <Image
                 src={media.url}
@@ -690,12 +694,15 @@ export default function MediaManager({
   const handleToggleFeatured = async (mediaId: string, featured: boolean) => {
     try {
       const result = await projectMediaService.update(mediaId, { featured });
+
       if (result.success) {
         const updatedMedia = media.map(m =>
           m.id === mediaId ? { ...m, featured } : m
         );
         onMediaUpdate(updatedMedia);
-        onSuccess?.(`Media marcada como ${featured ? 'destacada' : 'no destacada'} exitosamente`);
+        onSuccess?.(
+          `Media marcada como ${featured ? 'destacada' : 'no destacada'} exitosamente`
+        );
       } else {
         onError?.(result.error || 'Error al marcar media como destacada');
       }

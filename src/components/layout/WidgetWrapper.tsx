@@ -1,7 +1,7 @@
 'use client';
 
-import { InteractiveCTAWidget } from './InteractiveCTAWidget';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 
 export function WidgetWrapper() {
-  return <InteractiveCTAWidget />;
+  return <ContactWidget language="es" />;
 }

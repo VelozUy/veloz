@@ -527,7 +527,7 @@ export default function CrewMemberForm({
                 )}
               </div>
             ) : (
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+              <div className="border-2 border-dashed border-muted-foreground/25 rounded-none p-6 text-center">
                 <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <Label htmlFor="portrait-upload" className="cursor-pointer">
                   <div className="space-y-2">

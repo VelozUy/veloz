@@ -17,6 +17,12 @@ const eslintConfig = [
       // Add any custom rules for Veloz project
       '@typescript-eslint/no-unused-vars': 'warn',
       'prefer-const': 'warn',
+      // Disable alt-text requirement for lucide-react icons
+      'jsx-a11y/alt-text': ['warn', {
+        'img': ['Image', 'img'],
+        'components': ['Image'],
+        'ignore': ['lucide-react']
+      }],
     },
   },
   {

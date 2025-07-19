@@ -37,19 +37,11 @@ export default function OurWorkPage() {
   console.log('🔍 Page: OurWorkPage is rendering');
 
   return (
-    <div className="relative min-h-screen w-full bg-background overflow-x-hidden">
-      {/* Debug element */}
-      <div className="fixed top-0 left-0 z-[9999] bg-purple-500 text-white p-2 text-xs">
-        PAGE DEBUG
-      </div>
-
+    <div className="relative min-h-screen w-full bg-background text-foreground overflow-x-hidden">
       {/* Our Work Content - static rendered */}
       <OurWorkContent content={content} />
 
       {/* CTA Widget */}
-      <div className="fixed top-4 right-4 z-50 bg-blue-500 text-white p-4 rounded-lg">
-        TEST WIDGET
-      </div>
       <WidgetWrapper />
     </div>
   );

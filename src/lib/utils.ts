@@ -205,6 +205,242 @@ export function t(
   return typeof current === 'string' ? current : fallback;
 }
 
+// Dynamic Background Color System Utilities
+
+/**
+ * Section types for contextual background colors
+ */
+export type SectionType =
+  | 'hero'
+  | 'content'
+  | 'form'
+  | 'testimonial'
+  | 'cta'
+  | 'gallery'
+  | 'navigation';
+
+/**
+ * Element priority levels for background color variations
+ */
+export type ElementPriority = 'primary' | 'secondary' | 'tertiary';
+
+/**
+ * Generate background color classes based on section type and element priority
+ * @param sectionType - The type of section (hero, content, form, etc.)
+ * @param priority - The element priority (primary, secondary, tertiary)
+ * @param variant - Optional variant for special cases
+ * @returns Tailwind CSS classes for background and related colors
+ */
+export function getBackgroundClasses(
+  sectionType: SectionType,
+  priority: ElementPriority = 'primary',
+  variant?: 'inverted' | 'elevated' | 'subtle'
+): string {
+  const baseClasses = {
+    hero: {
+      primary: 'bg-charcoal text-white',
+      secondary: 'bg-charcoal/90 text-white',
+      tertiary: 'bg-charcoal/80 text-white',
+    },
+    content: {
+      primary: 'bg-gray-light text-charcoal',
+      secondary: 'bg-gray-light/90 text-charcoal',
+      tertiary: 'bg-gray-light/80 text-charcoal',
+    },
+    form: {
+      primary: 'bg-gray-light text-charcoal',
+      secondary: 'bg-white border border-gray-medium text-charcoal',
+      tertiary: 'bg-gray-light/50 text-charcoal',
+    },
+    testimonial: {
+      primary: 'bg-white text-charcoal border border-gray-medium',
+      secondary: 'bg-white/90 text-charcoal',
+      tertiary: 'bg-gray-light text-charcoal',
+    },
+    cta: {
+      primary: 'bg-blue-accent text-white',
+      secondary: 'bg-charcoal text-white',
+      tertiary: 'bg-gray-light text-charcoal',
+    },
+    gallery: {
+      primary: 'bg-charcoal text-white',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-white text-charcoal',
+    },
+    navigation: {
+      primary: 'bg-charcoal text-white',
+      secondary: 'bg-charcoal/90 text-white',
+      tertiary: 'bg-gray-light text-charcoal',
+    },
+  };
+
+  let classes = baseClasses[sectionType][priority];
+
+  // Apply variants
+  if (variant === 'inverted') {
+    if (sectionType === 'hero' || sectionType === 'cta') {
+      classes = classes
+        .replace('bg-charcoal', 'bg-white')
+        .replace('text-white', 'text-charcoal');
+    } else if (sectionType === 'content' || sectionType === 'form') {
+      classes = classes
+        .replace('bg-gray-light', 'bg-charcoal')
+        .replace('text-charcoal', 'text-white');
+    }
+  } else if (variant === 'elevated') {
+    classes += ' shadow-lg';
+  } else if (variant === 'subtle') {
+    classes = classes.replace(/bg-(\w+)/g, 'bg-$1/50');
+  }
+
+  return classes;
+}
+
+/**
+ * Generate button color classes based on section type and priority
+ * @param sectionType - The type of section the button is in
+ * @param priority - The button priority (primary, secondary, tertiary)
+ * @returns Tailwind CSS classes for button styling
+ */
+export function getButtonClasses(
+  sectionType: SectionType,
+  priority: ElementPriority = 'primary'
+): string {
+  const buttonClasses = {
+    hero: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-white text-charcoal hover:bg-gray-light',
+      tertiary:
+        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+    },
+    content: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
+      tertiary: 'bg-gray-medium text-charcoal hover:bg-gray-medium/80',
+    },
+    form: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
+      tertiary: 'bg-gray-medium text-charcoal hover:bg-gray-medium/80',
+    },
+    testimonial: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
+      tertiary: 'bg-gray-light text-charcoal hover:bg-gray-medium',
+    },
+    cta: {
+      primary: 'bg-white text-charcoal hover:bg-gray-light',
+      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
+      tertiary:
+        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+    },
+    gallery: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-white text-charcoal hover:bg-gray-light',
+      tertiary:
+        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+    },
+    navigation: {
+      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
+      secondary: 'bg-transparent text-white hover:bg-white hover:text-charcoal',
+      tertiary: 'bg-gray-light text-charcoal hover:bg-gray-medium',
+    },
+  };
+
+  return buttonClasses[sectionType][priority];
+}
+
+/**
+ * Generate input field classes based on section type
+ * @param sectionType - The type of section the input is in
+ * @returns Tailwind CSS classes for input styling
+ */
+export function getInputClasses(sectionType: SectionType): string {
+  const inputClasses = {
+    hero: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    content: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    form: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    testimonial:
+      'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    cta: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    gallery: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    navigation:
+      'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+  };
+
+  return inputClasses[sectionType];
+}
+
+/**
+ * Generate link color classes based on section type
+ * @param sectionType - The type of section the link is in
+ * @returns Tailwind CSS classes for link styling
+ */
+export function getLinkClasses(sectionType: SectionType): string {
+  const linkClasses = {
+    hero: 'text-blue-accent hover:text-blue-accent/80',
+    content: 'text-blue-accent hover:text-blue-accent/80',
+    form: 'text-blue-accent hover:text-blue-accent/80',
+    testimonial: 'text-blue-accent hover:text-blue-accent/80',
+    cta: 'text-white hover:text-gray-light',
+    gallery: 'text-blue-accent hover:text-blue-accent/80',
+    navigation: 'text-white hover:text-gray-light',
+  };
+
+  return linkClasses[sectionType];
+}
+
+/**
+ * Generate card classes based on section type and priority
+ * @param sectionType - The type of section the card is in
+ * @param priority - The card priority (primary, secondary, tertiary)
+ * @returns Tailwind CSS classes for card styling
+ */
+export function getCardClasses(
+  sectionType: SectionType,
+  priority: ElementPriority = 'primary'
+): string {
+  const cardClasses = {
+    hero: {
+      primary: 'bg-white text-charcoal shadow-lg',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-transparent text-white border border-white',
+    },
+    content: {
+      primary: 'bg-white text-charcoal border border-gray-medium',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-gray-light/50 text-charcoal',
+    },
+    form: {
+      primary: 'bg-white text-charcoal border border-gray-medium',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-gray-light/50 text-charcoal',
+    },
+    testimonial: {
+      primary: 'bg-white text-charcoal border border-gray-medium',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-gray-light/50 text-charcoal',
+    },
+    cta: {
+      primary: 'bg-white text-charcoal shadow-lg',
+      secondary: 'bg-charcoal text-white',
+      tertiary: 'bg-gray-light text-charcoal',
+    },
+    gallery: {
+      primary: 'bg-white text-charcoal shadow-lg',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-transparent text-white',
+    },
+    navigation: {
+      primary: 'bg-charcoal text-white',
+      secondary: 'bg-gray-light text-charcoal',
+      tertiary: 'bg-transparent text-white',
+    },
+  };
+
+  return cardClasses[sectionType][priority];
+}
+
 /**
  * Get content data from static content
  */

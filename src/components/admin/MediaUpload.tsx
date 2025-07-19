@@ -105,7 +105,7 @@ function FileMetadataEditor({
   };
 
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 bg-white border border-gray-medium">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -131,10 +131,10 @@ function FileMetadataEditor({
             </div>
 
             <div>
-              <CardTitle className="text-sm font-medium truncate max-w-48">
+              <CardTitle className="text-sm font-medium truncate max-w-48 text-charcoal">
                 {uploadFile.file.name}
               </CardTitle>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-charcoal">
                 {(uploadFile.file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             </div>
@@ -146,6 +146,7 @@ function FileMetadataEditor({
               size="sm"
               onClick={() => onCopyToAll(uploadFile.metadata)}
               title="Copy this metadata to all other files"
+              className="border-gray-medium text-charcoal hover:bg-gray-light"
             >
               <Copy className="w-4 h-4 mr-1" />
               Copy to All
@@ -157,15 +158,26 @@ function FileMetadataEditor({
       <CardContent className="space-y-4">
         {/* Language Tabs */}
         <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="es">Español</TabsTrigger>
-            <TabsTrigger value="en">English</TabsTrigger>
-            <TabsTrigger value="pt">Português (Brasil)</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 bg-gray-light border border-gray-medium">
+            <TabsTrigger value="es" className="text-charcoal">
+              Español
+            </TabsTrigger>
+            <TabsTrigger value="en" className="text-charcoal">
+              English
+            </TabsTrigger>
+            <TabsTrigger value="pt" className="text-charcoal">
+              Português (Brasil)
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="es" className="space-y-3 mt-4">
             <div>
-              <Label htmlFor={`title-es-${uploadFile.id}`}>Título</Label>
+              <Label
+                htmlFor={`title-es-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Título
+              </Label>
               <Input
                 id={`title-es-${uploadFile.id}`}
                 value={uploadFile.metadata.title.es}
@@ -173,10 +185,16 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'es', e.target.value)
                 }
                 placeholder="Título en español"
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
             <div>
-              <Label htmlFor={`desc-es-${uploadFile.id}`}>Descripción</Label>
+              <Label
+                htmlFor={`desc-es-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Descripción
+              </Label>
               <Textarea
                 id={`desc-es-${uploadFile.id}`}
                 value={uploadFile.metadata.description.es}
@@ -185,13 +203,19 @@ function FileMetadataEditor({
                 }
                 placeholder="Descripción en español (para alt text y SEO)"
                 rows={2}
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
           </TabsContent>
 
           <TabsContent value="en" className="space-y-3 mt-4">
             <div>
-              <Label htmlFor={`title-en-${uploadFile.id}`}>Title</Label>
+              <Label
+                htmlFor={`title-en-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Title
+              </Label>
               <Input
                 id={`title-en-${uploadFile.id}`}
                 value={uploadFile.metadata.title.en}
@@ -199,10 +223,16 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'en', e.target.value)
                 }
                 placeholder="Title in English"
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
             <div>
-              <Label htmlFor={`desc-en-${uploadFile.id}`}>Description</Label>
+              <Label
+                htmlFor={`desc-en-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Description
+              </Label>
               <Textarea
                 id={`desc-en-${uploadFile.id}`}
                 value={uploadFile.metadata.description.en}
@@ -211,13 +241,19 @@ function FileMetadataEditor({
                 }
                 placeholder="Description in English (for alt text and SEO)"
                 rows={2}
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
           </TabsContent>
 
           <TabsContent value="pt" className="space-y-3 mt-4">
             <div>
-              <Label htmlFor={`title-pt-${uploadFile.id}`}>Título</Label>
+              <Label
+                htmlFor={`title-pt-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Título
+              </Label>
               <Input
                 id={`title-pt-${uploadFile.id}`}
                 value={uploadFile.metadata.title.pt}
@@ -225,10 +261,16 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'pt', e.target.value)
                 }
                 placeholder="Título em português brasileiro"
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
             <div>
-              <Label htmlFor={`desc-pt-${uploadFile.id}`}>Descrição</Label>
+              <Label
+                htmlFor={`desc-pt-${uploadFile.id}`}
+                className="text-charcoal"
+              >
+                Descrição
+              </Label>
               <Textarea
                 id={`desc-pt-${uploadFile.id}`}
                 value={uploadFile.metadata.description.pt}
@@ -237,6 +279,7 @@ function FileMetadataEditor({
                 }
                 placeholder="Descrição em português brasileiro (para alt text e SEO)"
                 rows={2}
+                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
               />
             </div>
           </TabsContent>
@@ -245,7 +288,7 @@ function FileMetadataEditor({
         {/* Tags and Featured */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor={`tags-${uploadFile.id}`}>
+            <Label htmlFor={`tags-${uploadFile.id}`} className="text-charcoal">
               Etiquetas (separadas por comas)
             </Label>
             <Input
@@ -253,6 +296,7 @@ function FileMetadataEditor({
               value={uploadFile.metadata.tags.join(', ')}
               onChange={e => handleTagsChange(e.target.value)}
               placeholder="boda, ceremonia, outdoor"
+              className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
             />
           </div>
           <div className="flex items-center space-x-2 pt-6">
@@ -260,8 +304,12 @@ function FileMetadataEditor({
               id={`featured-${uploadFile.id}`}
               checked={uploadFile.metadata.featured}
               onCheckedChange={handleFeaturedChange}
+              className="border-gray-medium focus:ring-blue-accent"
             />
-            <Label htmlFor={`featured-${uploadFile.id}`}>
+            <Label
+              htmlFor={`featured-${uploadFile.id}`}
+              className="text-charcoal"
+            >
               Marcar como destacado
             </Label>
           </div>
@@ -270,24 +318,30 @@ function FileMetadataEditor({
         {/* Upload status */}
         {uploadFile.status === 'uploading' && (
           <div className="mt-3">
-            <Progress value={uploadFile.progress} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-1">
+            <Progress
+              value={uploadFile.progress}
+              className="bg-gray-light h-2"
+            />
+            <p className="text-xs text-charcoal mt-1">
               {uploadFile.progress}% completado
             </p>
           </div>
         )}
 
         {uploadFile.status === 'error' && uploadFile.error && (
-          <Alert variant="destructive" className="mt-3">
+          <Alert
+            variant="destructive"
+            className="bg-white border border-gray-medium text-charcoal"
+          >
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-sm">
+            <AlertDescription className="text-sm text-charcoal">
               {uploadFile.error}
             </AlertDescription>
           </Alert>
         )}
 
         {uploadFile.status === 'success' && (
-          <Alert className="mt-3">
+          <Alert className="bg-white border border-gray-medium text-charcoal">
             <CheckCircle className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-sm text-green-800">
               ¡Archivo subido exitosamente!
@@ -323,7 +377,7 @@ export default function MediaUpload({
     'video/mov',
   ];
 
-  const validateFile = (file: File): string | null => {
+  const validateFile = useCallback((file: File): string | null => {
     if (!acceptedTypes.includes(file.type)) {
       return 'Tipo de archivo no soportado. Solo se permiten imágenes (JPG, PNG, WebP) y videos (MP4, WebM, MOV).';
     }
@@ -336,7 +390,7 @@ export default function MediaUpload({
     }
 
     return null;
-  };
+  }, []);
 
   const createFilePreview = (file: File): Promise<string | undefined> => {
     return new Promise(resolve => {
@@ -384,7 +438,7 @@ export default function MediaUpload({
 
       setUploadFiles(prev => [...prev, ...newFiles]);
     },
-    [onUploadError]
+    [onUploadError, validateFile]
   );
 
   const removeFile = useCallback((id: string) => {
@@ -541,10 +595,12 @@ export default function MediaUpload({
           Subir Media
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-white border border-blue-accent">
         <DialogHeader>
-          <DialogTitle>Subir Media al Proyecto</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-charcoal">
+            Subir Media al Proyecto
+          </DialogTitle>
+          <DialogDescription className="text-charcoal">
             Sube fotos y videos para este proyecto. La información (título,
             descripción, etiquetas) es opcional - puedes usar AI para generar
             contenido SEO después de subir.
@@ -566,14 +622,14 @@ export default function MediaUpload({
             onClick={() => fileInputRef.current?.click()}
           >
             <CardContent className="p-8 text-center">
-              <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">
+              <Upload className="w-12 h-12 text-charcoal mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-charcoal">
                 Arrastra archivos aquí o haz clic para seleccionar
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-charcoal mb-4">
                 Formatos soportados: JPG, PNG, WebP, MP4, WebM, MOV
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-charcoal">
                 Tamaño máximo: 10MB para imágenes, 100MB para videos
               </p>
               <input
@@ -591,11 +647,11 @@ export default function MediaUpload({
           {uploadFiles.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-lg font-semibold text-charcoal">
                   Archivos Seleccionados ({uploadFiles.length})
                 </h3>
                 {uploadFiles.length > 1 && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-charcoal">
                     Tip: Usa &quot;Copy to All&quot; para aplicar la misma
                     información a todos los archivos
                   </p>
@@ -635,14 +691,22 @@ export default function MediaUpload({
             <div className="flex justify-between items-center pt-4 border-t">
               <div className="space-x-2">
                 {hasCompletedUploads && (
-                  <Button variant="outline" onClick={clearCompletedUploads}>
+                  <Button
+                    variant="outline"
+                    onClick={clearCompletedUploads}
+                    className="border-gray-medium text-charcoal hover:bg-gray-light"
+                  >
                     Limpiar Completados
                   </Button>
                 )}
               </div>
 
               <div className="space-x-2">
-                <Button variant="outline" onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsOpen(false)}
+                  className="border-gray-medium text-charcoal hover:bg-gray-light"
+                >
                   Cerrar
                 </Button>
                 {hasPendingUploads && (

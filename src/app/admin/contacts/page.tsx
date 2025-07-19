@@ -173,10 +173,10 @@ export default function ContactMessagesPage() {
 
   const getStatusBadge = (status: string) => {
     const variants = {
-      new: 'bg-blue-100 text-blue-800',
-      in_progress: 'bg-yellow-100 text-yellow-800',
-      completed: 'bg-green-100 text-green-800',
-      archived: 'bg-gray-100 text-gray-800',
+      new: 'bg-primary/10 text-primary',
+      in_progress: 'bg-muted text-muted-foreground',
+      completed: 'bg-primary text-primary-foreground',
+      archived: 'bg-muted-foreground/10 text-muted-foreground',
     };
 
     const labels = {
@@ -190,7 +190,7 @@ export default function ContactMessagesPage() {
       <Badge
         className={
           variants[status as keyof typeof variants] ||
-          'bg-gray-100 text-gray-800'
+          'bg-muted-foreground/10 text-muted-foreground'
         }
       >
         {labels[status as keyof typeof labels] || status}
@@ -572,7 +572,7 @@ export default function ContactMessagesPage() {
               {selectedMessage.message && (
                 <div className="space-y-2">
                   <h4 className="font-medium">Mensaje</h4>
-                  <div className="bg-muted p-4 rounded-lg text-sm whitespace-pre-wrap">
+                  <div className="bg-muted p-4 rounded-none text-sm whitespace-pre-wrap">
                     {selectedMessage.message}
                   </div>
                 </div>

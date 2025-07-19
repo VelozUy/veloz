@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import StaticGalleryContent from '@/components/gallery/StaticGalleryContent';
-import { InteractiveCTAWidget } from '@/components/layout';
+import { GalleryContent } from '@/components/gallery/GalleryContent';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -37,10 +37,10 @@ export default function EnglishGalleryPage() {
   return (
     <div className="relative min-h-screen w-full bg-background">
       {/* Gallery Content - static rendered */}
-      <StaticGalleryContent content={content} />
+      <GalleryContent content={content} />
 
       {/* CTA Widget */}
-      <InteractiveCTAWidget />
+      <ContactWidget language={content.locale} />
     </div>
   );
 }

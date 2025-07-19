@@ -34,7 +34,7 @@ export default function ExpandableProjectGrid({
           aspectRatio={item.aspectRatio || '16:9'}
           index={index}
         >
-          <div className="relative w-full h-full overflow-hidden rounded-lg">
+          <div className="relative w-full h-full overflow-hidden rounded-none">
             {item.type === 'video' ? (
               <video
                 src={item.url}

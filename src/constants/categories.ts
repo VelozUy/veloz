@@ -49,8 +49,8 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Casamento',
     },
     typography: {
-      fontFamily: 'font-serif', // Elegant serif for weddings
-      fontWeight: 'font-medium',
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
         md: 'text-base',
@@ -61,11 +61,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-relaxed',
     },
     colors: {
-      primary: 'text-rose-600',
-      secondary: 'text-rose-500',
-      accent: 'text-rose-400',
-      background: 'bg-rose-50',
-      text: 'text-gray-800',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '💒',
     description: {
@@ -82,8 +82,8 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Corporativo',
     },
     typography: {
-      fontFamily: 'font-sans', // Clean sans-serif for corporate
-      fontWeight: 'font-semibold',
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
         md: 'text-base',
@@ -94,11 +94,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-tight',
     },
     colors: {
-      primary: 'text-blue-600',
-      secondary: 'text-blue-500',
-      accent: 'text-blue-400',
-      background: 'bg-blue-50',
-      text: 'text-gray-900',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '🏢',
     description: {
@@ -115,7 +115,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Culturais e artísticos',
     },
     typography: {
-      fontFamily: 'font-serif', // Artistic serif for cultural events
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -127,11 +127,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-loose',
     },
     colors: {
-      primary: 'text-purple-600',
-      secondary: 'text-purple-500',
-      accent: 'text-purple-400',
-      background: 'bg-purple-50',
-      text: 'text-gray-800',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '🎨',
     description: {
@@ -148,8 +148,8 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Photoshoot',
     },
     typography: {
-      fontFamily: 'font-sans', // Modern sans-serif for photoshoots
-      fontWeight: 'font-medium',
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
         md: 'text-base',
@@ -160,11 +160,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-normal',
     },
     colors: {
-      primary: 'text-emerald-600',
-      secondary: 'text-emerald-500',
-      accent: 'text-emerald-400',
-      background: 'bg-emerald-50',
-      text: 'text-gray-700',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '📸',
     description: {
@@ -181,8 +181,8 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Imprensa',
     },
     typography: {
-      fontFamily: 'font-sans', // Clean sans-serif for press
-      fontWeight: 'font-bold',
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
         md: 'text-base',
@@ -193,11 +193,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-snug',
     },
     colors: {
-      primary: 'text-red-600',
-      secondary: 'text-red-500',
-      accent: 'text-red-400',
-      background: 'bg-red-50',
-      text: 'text-gray-900',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '📰',
     description: {
@@ -214,7 +214,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Outros',
     },
     typography: {
-      fontFamily: 'font-sans', // Neutral sans-serif for others
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -226,11 +226,11 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       lineHeight: 'leading-normal',
     },
     colors: {
-      primary: 'text-gray-600',
-      secondary: 'text-gray-500',
-      accent: 'text-gray-400',
-      background: 'bg-gray-50',
-      text: 'text-gray-700',
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
     },
     icon: '✨',
     description: {

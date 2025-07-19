@@ -15,6 +15,8 @@ jest.mock('framer-motion', () => ({
         exit,
         transition,
         viewport,
+        onKeyDown,
+        tabIndex,
         ...restProps
       } = props;
       return <div {...restProps}>{children}</div>;

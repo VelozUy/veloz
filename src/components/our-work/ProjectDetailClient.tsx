@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory } from '@/constants/categories';
+import { useHeroBackground } from '@/hooks/useBackground';
 
 import MasonryGallery from '@/components/our-work/MasonryGallery';
 import MeetTheTeam from '@/components/our-work/MeetTheTeam';
@@ -53,6 +54,7 @@ export default function ProjectDetailClient({
   project,
 }: ProjectDetailClientProps) {
   const { trackProjectView } = useAnalytics();
+  const { classes: heroClasses } = useHeroBackground();
 
   useEffect(() => {
     if (project?.id && project?.title) {
@@ -86,7 +88,9 @@ export default function ProjectDetailClient({
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section with Category Styling */}
-      <section className="relative flex flex-col items-center justify-center text-center py-24 px-6 bg-charcoal text-white">
+      <section
+        className={`relative flex flex-col items-center justify-center text-center py-24 px-6 rounded-tl-[3rem] ${heroClasses.background} ${heroClasses.text}`}
+      >
         {/* Optional background blur of image, masked */}
         {project.media && project.media.length > 0 && (
           <div className="absolute inset-0 overflow-hidden -z-10 opacity-10">
@@ -100,18 +104,18 @@ export default function ProjectDetailClient({
         )}
 
         {/* Category badge */}
-        <div className="mb-4 px-4 py-1 text-sm rounded-full bg-white/10 border border-grey-medium text-white font-medium">
+        <div className="mb-4 px-4 py-1 text-sm rounded-full bg-primary text-primary-foreground font-medium">
           ✨ {category}
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-6xl font-display tracking-tight text-blue-accent drop-shadow-md">
+        <h1 className="text-4xl md:text-6xl font-body tracking-tight drop-shadow-md">
           {project.title}
         </h1>
 
         {/* Optional subheading or quote */}
         {project.description && (
-          <p className="mt-4 max-w-xl text-grey-light text-lg italic">
+          <p className="mt-4 max-w-xl text-gray-300 text-lg italic">
             &ldquo;{project.description}&rdquo;
           </p>
         )}

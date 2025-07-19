@@ -159,20 +159,20 @@ export default function ProjectTimeline({
       case 'completed':
         return 'bg-green-500 text-white';
       case 'in-progress':
-        return 'bg-blue-500 text-white';
+        return 'bg-primary text-primary-foreground';
       case 'upcoming':
-        return 'bg-gray-300 text-gray-600';
+        return 'bg-muted text-muted-foreground';
       default:
-        return 'bg-gray-300 text-gray-600';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
   const getStatusIcon = (status: TimelinePhase['status']) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-4 h-4" />;
+        return <CheckCircle className="w-4 h-4 text-white" />;
       case 'in-progress':
-        return <Clock className="w-4 h-4" />;
+        return <Clock className="w-4 h-4 text-white" />;
       case 'upcoming':
         return <Clock className="w-4 h-4" />;
       default:
@@ -181,17 +181,14 @@ export default function ProjectTimeline({
   };
 
   return (
-    <section
-      className={cn(
-        'py-12 bg-gradient-to-b from-background to-muted/20',
-        className
-      )}
-    >
+    <section className={cn('py-12 bg-background', className)}>
       <div className="max-w-6xl mx-auto px-4 md:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Cronología del Proyecto</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-3xl font-body font-normal mb-4 text-foreground">
+            Cronología del Proyecto
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto font-body">
             Descubre el proceso completo detrás de {project.title}, desde la
             planificación inicial hasta la entrega final
           </p>
@@ -200,7 +197,7 @@ export default function ProjectTimeline({
         {/* Timeline */}
         <div className="relative">
           {/* Timeline Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/20 via-primary to-primary/20 hidden md:block" />
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-primary/20 hidden md:block" />
 
           {/* Timeline Phases */}
           <div className="space-y-8">
@@ -216,7 +213,7 @@ export default function ProjectTimeline({
                 <div className="flex items-start gap-6">
                   {/* Timeline Dot */}
                   <div className="relative flex-shrink-0">
-                    <div className="w-16 h-16 rounded-full bg-background border-4 border-primary/20 flex items-center justify-center z-10 relative">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center z-10 relative">
                       <div
                         className={cn(
                           'w-8 h-8 rounded-full flex items-center justify-center',
@@ -226,7 +223,7 @@ export default function ProjectTimeline({
                         {phase.icon}
                       </div>
                     </div>
-                    <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground font-medium">
+                    <div className="absolute top-20 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground font-medium">
                       {phase.date}
                     </div>
                   </div>
@@ -234,7 +231,7 @@ export default function ProjectTimeline({
                   {/* Phase Content */}
                   <div className="flex-1 min-w-0">
                     <motion.div
-                      className="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                      className="border border-border rounded-none p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                       onClick={() =>
                         setExpandedPhase(
                           expandedPhase === phase.id ? null : phase.id
@@ -242,11 +239,20 @@ export default function ProjectTimeline({
                       }
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
+                      tabIndex={0}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setExpandedPhase(
+                            expandedPhase === phase.id ? null : phase.id
+                          );
+                        }
+                      }}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-xl font-semibold">
+                            <h3 className="text-xl font-body font-normal text-foreground">
                               {phase.title}
                             </h3>
                             <div
@@ -261,7 +267,7 @@ export default function ProjectTimeline({
                               {phase.status === 'upcoming' && 'Próximo'}
                             </div>
                           </div>
-                          <p className="text-muted-foreground">
+                          <p className="text-muted-foreground font-body">
                             {phase.description}
                           </p>
                         </div>
@@ -278,7 +284,7 @@ export default function ProjectTimeline({
                             className="overflow-hidden"
                           >
                             <div className="pt-4 border-t border-border">
-                              <h4 className="font-medium mb-3 text-sm text-muted-foreground uppercase tracking-wide">
+                              <h4 className="font-medium mb-3 text-sm text-muted-foreground uppercase tracking-wide font-body">
                                 Actividades Incluidas
                               </h4>
                               <ul className="space-y-2">
@@ -291,10 +297,12 @@ export default function ProjectTimeline({
                                       duration: 0.3,
                                       delay: detailIndex * 0.1,
                                     }}
-                                    className="flex items-start gap-2 text-sm"
+                                    className="flex items-start gap-2 text-sm font-body"
                                   >
                                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                                    <span>{detail}</span>
+                                    <span className="text-foreground">
+                                      {detail}
+                                    </span>
                                   </motion.li>
                                 ))}
                               </ul>
@@ -318,15 +326,15 @@ export default function ProjectTimeline({
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center mt-12"
         >
-          <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-6 border border-primary/20">
-            <h3 className="text-lg font-semibold mb-2">
+          <div className="bg-card border border-border rounded-none p-6">
+            <h3 className="text-lg font-body font-normal mb-2 text-foreground">
               ¿Te gustaría un proceso similar para tu evento?
             </h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-4 font-body">
               Cada proyecto es único y nos adaptamos a tus necesidades
               específicas
             </p>
-            <button className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+            <button className="bg-primary text-primary-foreground px-6 py-3 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
               Consultar Disponibilidad
             </button>
           </div>

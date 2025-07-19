@@ -16,15 +16,15 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Check, 
-  X, 
-  Edit, 
-  Eye, 
+import {
+  Check,
+  X,
+  Edit,
+  Eye,
   RefreshCw,
   Languages,
   AlertTriangle,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
@@ -47,7 +47,10 @@ interface TranslationReviewDialogProps {
   onClose: () => void;
   translations: TranslationReview[];
   onApprove: (approvedTranslations: TranslationReview[]) => void;
-  onRetranslate?: (fieldKey: string, targetLanguage: 'es' | 'en' | 'pt') => Promise<string>;
+  onRetranslate?: (
+    fieldKey: string,
+    targetLanguage: 'es' | 'en' | 'pt'
+  ) => Promise<string>;
   title?: string;
   description?: string;
 }
@@ -82,51 +85,83 @@ export default function TranslationReviewDialog({
   title = 'Revisar Traducciones',
   description = 'Revisa y edita las traducciones antes de aplicarlas.',
 }: TranslationReviewDialogProps) {
-  const [translations, setTranslations] = useState<TranslationReview[]>(initialTranslations);
+  const [translations, setTranslations] =
+    useState<TranslationReview[]>(initialTranslations);
   const [activeTab, setActiveTab] = useState<string>('');
-  const [showOriginalText, setShowOriginalText] = useState<Record<string, boolean>>({});
-  const [retranslatingFields, setRetranslatingFields] = useState<Set<string>>(new Set());
+  const [showOriginalText, setShowOriginalText] = useState<
+    Record<string, boolean>
+  >({});
+  const [retranslatingFields, setRetranslatingFields] = useState<Set<string>>(
+    new Set()
+  );
 
   // Update translations when prop changes
   useEffect(() => {
     setTranslations(initialTranslations);
     if (initialTranslations.length > 0) {
-      setActiveTab(`${initialTranslations[0].fieldKey}-${initialTranslations[0].targetLanguage}`);
+      setActiveTab(
+        `${initialTranslations[0].fieldKey}-${initialTranslations[0].targetLanguage}`
+      );
     }
   }, [initialTranslations]);
 
   // Get unique target languages
-  const targetLanguages = Array.from(new Set(translations.map(t => t.targetLanguage)));
+  const targetLanguages = Array.from(
+    new Set(translations.map(t => t.targetLanguage))
+  );
 
   // Group translations by language
-  const translationsByLanguage = targetLanguages.reduce((acc, lang) => {
-    acc[lang] = translations.filter(t => t.targetLanguage === lang);
-    return acc;
-  }, {} as Record<string, TranslationReview[]>);
+  const translationsByLanguage = targetLanguages.reduce(
+    (acc, lang) => {
+      acc[lang] = translations.filter(t => t.targetLanguage === lang);
+      return acc;
+    },
+    {} as Record<string, TranslationReview[]>
+  );
 
-  const handleTranslationEdit = (fieldKey: string, targetLanguage: string, newText: string) => {
-    setTranslations(prev => prev.map(translation => {
-      if (translation.fieldKey === fieldKey && translation.targetLanguage === targetLanguage) {
-        return {
-          ...translation,
-          editedTranslation: newText,
-          isEdited: newText !== translation.originalTranslation,
-        };
-      }
-      return translation;
-    }));
+  const handleTranslationEdit = (
+    fieldKey: string,
+    targetLanguage: string,
+    newText: string
+  ) => {
+    setTranslations(prev =>
+      prev.map(translation => {
+        if (
+          translation.fieldKey === fieldKey &&
+          translation.targetLanguage === targetLanguage
+        ) {
+          return {
+            ...translation,
+            editedTranslation: newText,
+            isEdited: newText !== translation.originalTranslation,
+          };
+        }
+        return translation;
+      })
+    );
   };
 
-  const handleApproveTranslation = (fieldKey: string, targetLanguage: string) => {
-    setTranslations(prev => prev.map(translation => {
-      if (translation.fieldKey === fieldKey && translation.targetLanguage === targetLanguage) {
-        return { ...translation, isApproved: !translation.isApproved };
-      }
-      return translation;
-    }));
+  const handleApproveTranslation = (
+    fieldKey: string,
+    targetLanguage: string
+  ) => {
+    setTranslations(prev =>
+      prev.map(translation => {
+        if (
+          translation.fieldKey === fieldKey &&
+          translation.targetLanguage === targetLanguage
+        ) {
+          return { ...translation, isApproved: !translation.isApproved };
+        }
+        return translation;
+      })
+    );
   };
 
-  const handleRetranslate = async (fieldKey: string, targetLanguage: 'es' | 'en' | 'pt') => {
+  const handleRetranslate = async (
+    fieldKey: string,
+    targetLanguage: 'es' | 'en' | 'pt'
+  ) => {
     if (!onRetranslate) return;
 
     const retranslateKey = `${fieldKey}-${targetLanguage}`;
@@ -134,19 +169,24 @@ export default function TranslationReviewDialog({
 
     try {
       const newTranslation = await onRetranslate(fieldKey, targetLanguage);
-      
-      setTranslations(prev => prev.map(translation => {
-        if (translation.fieldKey === fieldKey && translation.targetLanguage === targetLanguage) {
-          return {
-            ...translation,
-            originalTranslation: newTranslation,
-            editedTranslation: newTranslation,
-            isEdited: false,
-            isApproved: false, // Reset approval status
-          };
-        }
-        return translation;
-      }));
+
+      setTranslations(prev =>
+        prev.map(translation => {
+          if (
+            translation.fieldKey === fieldKey &&
+            translation.targetLanguage === targetLanguage
+          ) {
+            return {
+              ...translation,
+              originalTranslation: newTranslation,
+              editedTranslation: newTranslation,
+              isEdited: false,
+              isApproved: false, // Reset approval status
+            };
+          }
+          return translation;
+        })
+      );
     } catch (error) {
       console.error('Retranslation failed:', error);
     } finally {
@@ -159,12 +199,14 @@ export default function TranslationReviewDialog({
   };
 
   const handleApproveAll = (targetLanguage: string) => {
-    setTranslations(prev => prev.map(translation => {
-      if (translation.targetLanguage === targetLanguage) {
-        return { ...translation, isApproved: true };
-      }
-      return translation;
-    }));
+    setTranslations(prev =>
+      prev.map(translation => {
+        if (translation.targetLanguage === targetLanguage) {
+          return { ...translation, isApproved: true };
+        }
+        return translation;
+      })
+    );
   };
 
   const handleSubmit = () => {
@@ -186,11 +228,10 @@ export default function TranslationReviewDialog({
     }));
   };
 
-
-
   const getConfidenceBadge = (confidence: number) => {
     if (confidence >= 0.9) return { variant: 'default' as const, text: 'Alta' };
-    if (confidence >= 0.7) return { variant: 'secondary' as const, text: 'Media' };
+    if (confidence >= 0.7)
+      return { variant: 'secondary' as const, text: 'Media' };
     return { variant: 'destructive' as const, text: 'Baja' };
   };
 
@@ -209,11 +250,13 @@ export default function TranslationReviewDialog({
             {title}
           </DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          
+
           {/* Stats */}
           <div className="flex gap-4 text-sm">
             <div className="flex items-center gap-1">
-              <span className="font-medium">{approvedTranslations}/{totalTranslations}</span>
+              <span className="font-medium">
+                {approvedTranslations}/{totalTranslations}
+              </span>
               <span className="text-muted-foreground">aprobadas</span>
             </div>
             {editedTranslations > 0 && (
@@ -230,23 +273,26 @@ export default function TranslationReviewDialog({
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2">
               {targetLanguages.map(lang => (
-                <TabsTrigger 
-                  key={lang} 
+                <TabsTrigger
+                  key={lang}
                   value={`${lang}-overview`}
                   className="flex items-center gap-2"
                 >
                   {LANGUAGE_FLAGS[lang]} {LANGUAGE_NAMES[lang]}
                   <Badge variant="outline" className="ml-2">
-                    {translationsByLanguage[lang].filter(t => t.isApproved).length}/
-                    {translationsByLanguage[lang].length}
+                    {
+                      translationsByLanguage[lang].filter(t => t.isApproved)
+                        .length
+                    }
+                    /{translationsByLanguage[lang].length}
                   </Badge>
                 </TabsTrigger>
               ))}
             </TabsList>
 
             {targetLanguages.map(lang => (
-              <TabsContent 
-                key={`${lang}-overview`} 
+              <TabsContent
+                key={`${lang}-overview`}
                 value={`${lang}-overview`}
                 className="flex-1 min-h-0 mt-4"
               >
@@ -254,7 +300,8 @@ export default function TranslationReviewDialog({
                   {/* Language Actions */}
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg font-semibold flex items-center gap-2">
-                      {LANGUAGE_FLAGS[lang]} Traducciones a {LANGUAGE_NAMES[lang]}
+                      {LANGUAGE_FLAGS[lang]} Traducciones a{' '}
+                      {LANGUAGE_NAMES[lang]}
                     </h3>
                     <Button
                       variant="outline"
@@ -269,16 +316,19 @@ export default function TranslationReviewDialog({
 
                   <div className="h-[calc(100vh-300px)] overflow-y-auto">
                     <div className="space-y-4 pr-4">
-                      {translationsByLanguage[lang].map((translation) => {
+                      {translationsByLanguage[lang].map(translation => {
                         const showKey = `${translation.fieldKey}-${translation.targetLanguage}`;
-                        const isRetranslating = retranslatingFields.has(showKey);
-                        const confidenceBadge = getConfidenceBadge(translation.confidence);
+                        const isRetranslating =
+                          retranslatingFields.has(showKey);
+                        const confidenceBadge = getConfidenceBadge(
+                          translation.confidence
+                        );
 
                         return (
                           <div
                             key={showKey}
                             className={`
-                              border rounded-lg p-4 space-y-3 transition-all
+                              border rounded-none p-4 space-y-3 transition-all
                               ${translation.isApproved ? 'border-green-500 bg-green-50' : 'border-border'}
                               ${translation.isEdited ? 'border-blue-500' : ''}
                             `}
@@ -291,23 +341,30 @@ export default function TranslationReviewDialog({
                                 </Label>
                                 {translation.contentType && (
                                   <Badge variant="outline" className="text-xs">
-                                    {CONTENT_TYPE_BADGES[translation.contentType]}
+                                    {
+                                      CONTENT_TYPE_BADGES[
+                                        translation.contentType
+                                      ]
+                                    }
                                   </Badge>
                                 )}
-                                <Badge 
+                                <Badge
                                   variant={confidenceBadge.variant}
                                   className="text-xs"
                                 >
                                   Confianza: {confidenceBadge.text}
                                 </Badge>
                                 {translation.isEdited && (
-                                  <Badge variant="outline" className="text-xs bg-blue-50">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs bg-blue-50"
+                                  >
                                     <Edit className="w-3 h-3 mr-1" />
                                     Editado
                                   </Badge>
                                 )}
                               </div>
-                              
+
                               <div className="flex items-center gap-2">
                                 <Button
                                   variant="ghost"
@@ -316,14 +373,22 @@ export default function TranslationReviewDialog({
                                   className="text-xs"
                                 >
                                   <Eye className="w-3 h-3 mr-1" />
-                                  {showOriginalText[showKey] ? 'Ocultar' : 'Ver'} Original
+                                  {showOriginalText[showKey]
+                                    ? 'Ocultar'
+                                    : 'Ver'}{' '}
+                                  Original
                                 </Button>
-                                
+
                                 {onRetranslate && (
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => handleRetranslate(translation.fieldKey, translation.targetLanguage)}
+                                    onClick={() =>
+                                      handleRetranslate(
+                                        translation.fieldKey,
+                                        translation.targetLanguage
+                                      )
+                                    }
                                     disabled={isRetranslating}
                                     className="text-xs"
                                   >
@@ -340,11 +405,20 @@ export default function TranslationReviewDialog({
                                     )}
                                   </Button>
                                 )}
-                                
+
                                 <Button
-                                  variant={translation.isApproved ? "default" : "outline"}
+                                  variant={
+                                    translation.isApproved
+                                      ? 'default'
+                                      : 'outline'
+                                  }
                                   size="sm"
-                                  onClick={() => handleApproveTranslation(translation.fieldKey, translation.targetLanguage)}
+                                  onClick={() =>
+                                    handleApproveTranslation(
+                                      translation.fieldKey,
+                                      translation.targetLanguage
+                                    )
+                                  }
                                   className="text-xs"
                                 >
                                   {translation.isApproved ? (
@@ -367,7 +441,10 @@ export default function TranslationReviewDialog({
                               <div className="bg-gray-50 border rounded p-3 space-y-2">
                                 <div className="flex items-center gap-2">
                                   <Label className="text-xs font-medium text-gray-600">
-                                    Texto Original ({LANGUAGE_FLAGS[translation.sourceLanguage]} {LANGUAGE_NAMES[translation.sourceLanguage]})
+                                    Texto Original (
+                                    {LANGUAGE_FLAGS[translation.sourceLanguage]}{' '}
+                                    {LANGUAGE_NAMES[translation.sourceLanguage]}
+                                    )
                                   </Label>
                                 </div>
                                 <p className="text-sm text-gray-700">
@@ -379,17 +456,21 @@ export default function TranslationReviewDialog({
                             {/* Translation Edit Field */}
                             <div className="space-y-2">
                               <Label className="text-sm font-medium">
-                                Traducción ({LANGUAGE_FLAGS[translation.targetLanguage]} {LANGUAGE_NAMES[translation.targetLanguage]})
+                                Traducción (
+                                {LANGUAGE_FLAGS[translation.targetLanguage]}{' '}
+                                {LANGUAGE_NAMES[translation.targetLanguage]})
                               </Label>
-                              
+
                               {translation.sourceText.length > 100 ? (
                                 <Textarea
                                   value={translation.editedTranslation}
-                                  onChange={(e) => handleTranslationEdit(
-                                    translation.fieldKey,
-                                    translation.targetLanguage,
-                                    e.target.value
-                                  )}
+                                  onChange={e =>
+                                    handleTranslationEdit(
+                                      translation.fieldKey,
+                                      translation.targetLanguage,
+                                      e.target.value
+                                    )
+                                  }
                                   rows={3}
                                   className={`
                                     ${translation.isEdited ? 'border-blue-500' : ''}
@@ -399,11 +480,13 @@ export default function TranslationReviewDialog({
                               ) : (
                                 <Input
                                   value={translation.editedTranslation}
-                                  onChange={(e) => handleTranslationEdit(
-                                    translation.fieldKey,
-                                    translation.targetLanguage,
-                                    e.target.value
-                                  )}
+                                  onChange={e =>
+                                    handleTranslationEdit(
+                                      translation.fieldKey,
+                                      translation.targetLanguage,
+                                      e.target.value
+                                    )
+                                  }
                                   className={`
                                     ${translation.isEdited ? 'border-blue-500' : ''}
                                     ${translation.isApproved ? 'border-green-500' : ''}
@@ -417,7 +500,8 @@ export default function TranslationReviewDialog({
                               <Alert>
                                 <AlertTriangle className="h-4 w-4" />
                                 <AlertDescription className="text-sm">
-                                  Esta traducción tiene baja confianza. Te recomendamos revisarla cuidadosamente.
+                                  Esta traducción tiene baja confianza. Te
+                                  recomendamos revisarla cuidadosamente.
                                 </AlertDescription>
                               </Alert>
                             )}
@@ -439,13 +523,13 @@ export default function TranslationReviewDialog({
               {approvedTranslations} de {totalTranslations} aprobadas
             </div>
           </div>
-          
+
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleCancel}>
               <X className="w-4 h-4 mr-2" />
               Cancelar
             </Button>
-            <Button 
+            <Button
               onClick={handleSubmit}
               disabled={approvedTranslations === 0}
             >
@@ -457,4 +541,4 @@ export default function TranslationReviewDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

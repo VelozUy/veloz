@@ -1,0 +1,162 @@
+/* Enhanced Side Navigation Styles */
+
+/* Custom scrollbar for better UX */
+.side-nav-container {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground)) transparent;
+}
+
+.side-nav-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.side-nav-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.side-nav-container::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+.side-nav-container::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Magnetic effect container */
+.magnetic-nav {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Enhanced focus styles for accessibility */
+.nav-dot:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* Smooth transitions for all interactive elements */
+.nav-dot,
+.nav-line,
+.nav-tooltip {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Progressive line animation */
+.progressive-line {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--primary)) 0%,
+    hsl(var(--primary) / 0.8) 50%,
+    hsl(var(--primary) / 0.4) 100%
+  );
+}
+
+/* Enhanced tooltip with backdrop blur */
+.nav-tooltip {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border) / 0.1);
+  box-shadow:
+    0 4px 6px -1px hsl(var(--foreground) / 0.1),
+    0 2px 4px -1px hsl(var(--foreground) / 0.06);
+}
+
+/* Ripple effect animation */
+.ripple-effect {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Pulse animation for active state */
+.pulse-active {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Magnetic attraction effect */
+.magnetic-attraction {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Parallax effect for active indicator */
+.parallax-indicator {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-nav,
+  .nav-dot,
+  .nav-line,
+  .nav-tooltip,
+  .progressive-line,
+  .parallax-indicator {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .pulse-active {
+    animation: none !important;
+  }
+
+  .ripple-effect {
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .nav-dot {
+    border: 2px solid currentColor;
+  }
+
+  .nav-tooltip {
+    border: 2px solid currentColor;
+    background: hsl(var(--background));
+  }
+}
+
+/* Dark mode specific enhancements */
+@media (prefers-color-scheme: dark) {
+  .nav-tooltip {
+    background: hsl(var(--background) / 0.95);
+    border-color: hsl(var(--border) / 0.2);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .magnetic-nav {
+    display: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .magnetic-nav {
+    display: none;
+  }
+}

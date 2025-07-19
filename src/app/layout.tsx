@@ -26,7 +26,10 @@ import './globals.css';
 import '@/lib/emergency-console-fix';
 import { ConditionalNavigation, PageLayout } from '@/components/layout';
 import { AnalyticsWrapper } from '@/components/analytics';
-import { StructuredData, organizationSchema } from '@/components/seo/StructuredData';
+import {
+  StructuredData,
+  organizationSchema,
+} from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 
 const geistSans = Geist({
@@ -139,7 +142,7 @@ const workSans = Work_Sans({
 export const metadata: Metadata = {
   title: {
     default: 'Veloz - Professional Event Photography & Videography',
-    template: '%s | Veloz'
+    template: '%s | Veloz',
   },
   description:
     'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
@@ -153,7 +156,7 @@ export const metadata: Metadata = {
     'Montevideo events',
     'team photography',
     'event coverage',
-    'professional videography'
+    'professional videography',
   ],
   authors: [{ name: 'Veloz Team' }],
   creator: 'Veloz',
@@ -163,13 +166,15 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'
+  ),
   alternates: {
     canonical: '/',
     languages: {
-      'en': '/en',
-      'es': '/',
-      'pt': '/pt',
+      en: '/en',
+      es: '/',
+      pt: '/pt',
     },
   },
   openGraph: {
@@ -178,7 +183,8 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'Veloz',
     title: 'Veloz - Professional Event Photography & Videography',
-    description: 'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+    description:
+      'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
     images: [
       {
         url: '/og-image.jpg',
@@ -191,7 +197,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Veloz - Professional Event Photography & Videography',
-    description: 'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+    description:
+      'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
     images: ['/twitter-image.jpg'],
     creator: '@veloz_uy',
     site: '@veloz_uy',
@@ -220,7 +227,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable} ${cinzel.variable} ${libreBaskerville.variable} ${montserrat.variable} ${raleway.variable} ${quicksand.variable} ${nunito.variable} ${oswald.variable} ${anton.variable} ${bebasNeue.variable} ${lato.variable} ${sourceSansPro.variable} ${ubuntu.variable} ${workSans.variable} antialiased`}
       >

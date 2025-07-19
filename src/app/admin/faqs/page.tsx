@@ -563,7 +563,7 @@ export default function FAQsAdminPage() {
                   return (
                     <div
                       key={faq.id}
-                      className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+                      className="border rounded-none p-4 hover:bg-muted/50 transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">

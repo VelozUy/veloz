@@ -183,7 +183,7 @@ export default function AnalyticsDashboardPage() {
           <Card className="w-full max-w-md">
             <CardContent className="pt-4">
               <div className="text-center">
-                <p className="text-red-600 mb-3 text-sm">{error}</p>
+                <p className="text-destructive mb-3 text-sm">{error}</p>
                 <Button onClick={loadAnalyticsData} size="sm">
                   Reintentar
                 </Button>
@@ -383,7 +383,7 @@ export default function AnalyticsDashboardPage() {
                         );
                       }
                       return (
-                        <div className="mt-3 text-red-600 text-xs">
+                        <div className="mt-3 text-destructive text-xs">
                           <strong>Advertencia:</strong> Datos de idioma
                           malformados, no se puede mostrar la distribución.
                         </div>

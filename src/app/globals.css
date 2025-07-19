@@ -1,122 +1,127 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Google Fonts for title blocks */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Lato:wght@400;700&display=swap');
+/* Google Fonts for Veloz Brand */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Bebas+Neue&display=swap');
 
-@custom-variant dark (&:is(.dark *));
+/* REDJOLA Font Face Declarations */
+@font-face {
+  font-family: 'REDJOLA';
+  src:
+    url('/redjola/REDJOLA Free Trial.woff2') format('woff2'),
+    url('/redjola/REDJOLA Free Trial.woff') format('woff'),
+    url('/redjola/REDJOLA Free Trial.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* Veloz Brand Variables */
+/* Modern shadcn/ui Theme System with OKLCH Color Space - NEW_THEME_2.css */
 :root {
-  --background: oklch(0.9821 0 0);
-  --foreground: oklch(0.2435 0 0);
-  --card: oklch(0.9911 0 0);
-  --card-foreground: oklch(0.2435 0 0);
-  --popover: oklch(0.9911 0 0);
-  --popover-foreground: oklch(0.2435 0 0);
-  --primary: oklch(0.4929 0.0453 42.118);
+  /* Light Mode - OKLCH Color System from NEW_THEME_2.css */
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.3211 0 0);
+  --card: oklch(0.9702 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+  --popover: oklch(0.9702 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.3633 0.2269 264.3283);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(1 0 0);
-  --secondary-foreground: oklch(0.3956 0.0801 40.4711);
-  --muted: oklch(0.9521 0 0);
-  --muted-foreground: oklch(0.5032 0 0);
-  --accent: oklch(0.931 0 0);
-  --accent-foreground: oklch(0.2435 0 0);
-  --destructive: oklch(0.6979 0.1485 33.0107);
+  --secondary: oklch(0.9067 0 0);
+  --secondary-foreground: oklch(0.3211 0 0);
+  --muted: oklch(0.8853 0 0);
+  --muted-foreground: oklch(0.5103 0 0);
+  --accent: oklch(0.8078 0 0);
+  --accent-foreground: oklch(0.3211 0 0);
+  --destructive: oklch(0.5594 0.19 25.8625);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.8822 0 0);
-  --input: oklch(0.8822 0 0);
-  --ring: oklch(0.4929 0.0453 42.118);
-  --chart-1: oklch(0.4929 0.0453 42.118);
-  --chart-2: oklch(1 0 0);
-  --chart-3: oklch(0.931 0 0);
-  --chart-4: oklch(1 0 0);
-  --chart-5: oklch(0.4924 0.0503 43.3469);
-  --sidebar: oklch(0.9881 0 0);
-  --sidebar-foreground: oklch(0.2645 0 0);
-  --sidebar-primary: oklch(0.325 0 0);
-  --sidebar-primary-foreground: oklch(0.9881 0 0);
-  --sidebar-accent: oklch(0.9761 0 0);
-  --sidebar-accent-foreground: oklch(0.325 0 0);
-  --sidebar-border: oklch(0.9401 0 0);
-  --sidebar-ring: oklch(0.7731 0 0);
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
-  --radius: 0.5rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --border: oklch(0.8576 0 0);
+  --input: oklch(0.9067 0 0);
+  --ring: oklch(0.4891 0 0);
+  --chart-1: oklch(0.4891 0 0);
+  --chart-2: oklch(0.4863 0.0361 196.0278);
+  --chart-3: oklch(0.6534 0 0);
+  --chart-4: oklch(0.7316 0 0);
+  --chart-5: oklch(0.8078 0 0);
+  --sidebar: oklch(0.937 0 0);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.4891 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.8078 0 0);
+  --sidebar-accent-foreground: oklch(0.3211 0 0);
+  --sidebar-border: oklch(0.8576 0 0);
+  --sidebar-ring: oklch(0.4891 0 0);
+  --font-sans: Roboto, sans-serif;
+  --font-serif: Roboto, sans-serif;
+  --font-mono: Roboto, sans-serif;
+  --radius: 0rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 20% / 0.07);
+  --shadow-xs: 0px 2px 0px 0px hsl(0 0% 20% / 0.07);
   --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+  --shadow:
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 1px 2px -1px hsl(0 0% 20% / 0.15);
   --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 2px 4px -1px hsl(0 0% 20% / 0.15);
   --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 4px 6px -1px hsl(0 0% 20% / 0.15);
   --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 8px 10px -1px hsl(0 0% 20% / 0.15);
+  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 20% / 0.38);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
 }
 
 .dark {
-  --background: oklch(0.1776 0 0);
-  --foreground: oklch(0.9491 0 0);
-  --card: oklch(0.2134 0 0);
-  --card-foreground: oklch(0.9491 0 0);
-  --popover: oklch(0.2134 0 0);
-  --popover-foreground: oklch(0.9491 0 0);
-  --primary: oklch(1 0 0);
-  --primary-foreground: oklch(0.249 0.0317 198.7326);
-  --secondary: oklch(0.3558 0.0218 67.0274);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.252 0 0);
-  --muted-foreground: oklch(0.7699 0 0);
-  --accent: oklch(0.285 0 0);
-  --accent-foreground: oklch(0.9491 0 0);
-  --destructive: oklch(0.6979 0.1485 33.0107);
+  --background: oklch(0.2178 0 0);
+  --foreground: oklch(0.8853 0 0);
+  --card: oklch(0.2435 0 0);
+  --card-foreground: oklch(0.8853 0 0);
+  --popover: oklch(0.2435 0 0);
+  --popover-foreground: oklch(0.8853 0 0);
+  --primary: oklch(0.7058 0 0);
+  --primary-foreground: oklch(0.2178 0 0);
+  --secondary: oklch(0.3092 0 0);
+  --secondary-foreground: oklch(0.8853 0 0);
+  --muted: oklch(0.285 0 0);
+  --muted-foreground: oklch(0.5999 0 0);
+  --accent: oklch(0.3715 0 0);
+  --accent-foreground: oklch(0.8853 0 0);
+  --destructive: oklch(0.6591 0.153 22.1703);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.26 0.013 93.9028);
-  --input: oklch(0.4017 0 0);
-  --ring: oklch(1 0 0);
-  --chart-1: oklch(1 0 0);
-  --chart-2: oklch(0.3558 0.0218 67.0274);
-  --chart-3: oklch(0.285 0 0);
-  --chart-4: oklch(0.3916 0.0255 66.9631);
-  --chart-5: oklch(1 0 0);
-  --sidebar: oklch(0.232 0.0057 285.9459);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.5687 0.1899 265.813);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.3063 0.0053 286.0813);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.3063 0.0053 286.0813);
-  --sidebar-ring: oklch(1 0 0);
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
-  --radius: 0.5rem;
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --border: oklch(0.329 0 0);
+  --input: oklch(0.3092 0 0);
+  --ring: oklch(0.7058 0 0);
+  --chart-1: oklch(0.7058 0 0);
+  --chart-2: oklch(0.6714 0.0339 206.3482);
+  --chart-3: oklch(0.5452 0 0);
+  --chart-4: oklch(0.4604 0 0);
+  --chart-5: oklch(0.3715 0 0);
+  --sidebar: oklch(0.2393 0 0);
+  --sidebar-foreground: oklch(0.8853 0 0);
+  --sidebar-primary: oklch(0.7058 0 0);
+  --sidebar-primary-foreground: oklch(0.2178 0 0);
+  --sidebar-accent: oklch(0.3715 0 0);
+  --sidebar-accent-foreground: oklch(0.8853 0 0);
+  --sidebar-border: oklch(0.329 0 0);
+  --sidebar-ring: oklch(0.7058 0 0);
+  --font-sans: Roboto, sans-serif;
+  --font-serif: Roboto, sans-serif;
+  --font-mono: Roboto, sans-serif;
+  --radius: 0rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(0 0% 20% / 0.07);
+  --shadow-xs: 0px 2px 0px 0px hsl(0 0% 20% / 0.07);
   --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+  --shadow:
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 1px 2px -1px hsl(0 0% 20% / 0.15);
   --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 2px 4px -1px hsl(0 0% 20% / 0.15);
   --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 4px 6px -1px hsl(0 0% 20% / 0.15);
   --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 8px 10px -1px hsl(0 0% 20% / 0.15);
+  --shadow-2xl: 0px 2px 0px 0px hsl(0 0% 20% / 0.38);
 }
 
 @theme inline {
@@ -198,7 +203,66 @@ html {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
+}
+
+/* Veloz Typography System - REDJOLA only for logo, Roboto for everything else */
+.font-logo {
+  font-family:
+    'REDJOLA', 'Bebas Neue', 'Oswald', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Typography classes for headings and body text - all using Roboto */
+.text-heading-lg {
+  font-family: var(--font-body);
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+.text-heading-md {
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+
+.text-heading-sm {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+.text-body-md {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+.text-body-xs {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
 }
 
 /* Subtle breathing animation for the CTA widget */

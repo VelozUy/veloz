@@ -1235,7 +1235,7 @@ export default function VisualGridEditor({
             <CardContent className="p-6">
               {/* Title Block Toolbar */}
               {showTitleToolbar && editingTitleBlock && (
-                <div className="mb-3 p-4 bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
+                <div className="mb-3 p-4 bg-gray-900 border border-gray-700 rounded-none shadow-lg">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-medium text-gray-200">
                       Editar Título
@@ -1383,7 +1383,7 @@ export default function VisualGridEditor({
               )}
               {/* Block Controls Toolbar */}
               {selectedBlock && (
-                <div className="mb-2 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 shadow-lg w-fit">
+                <div className="mb-2 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-none px-3 py-2 shadow-lg w-fit">
                   <Button
                     size="icon"
                     variant="ghost"
@@ -1683,7 +1683,7 @@ export default function VisualGridEditor({
               {/* Responsive Grid Container */}
               <div
                 ref={containerRef}
-                className="w-full border border-gray-200 rounded-lg bg-white flex flex-col items-center justify-center"
+                className="w-full border border-gray-200 rounded-none bg-white flex flex-col items-center justify-center"
                 style={{
                   minHeight: expandable
                     ? `${(GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE + 80}px`
@@ -1692,7 +1692,7 @@ export default function VisualGridEditor({
               >
                 <div
                   ref={gridRef}
-                  className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg"
+                  className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-none"
                   style={{
                     width: GRID_WIDTH * GRID_CELL_SIZE,
                     height: (GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE,
@@ -1755,7 +1755,7 @@ export default function VisualGridEditor({
                         {!disabled && (
                           <div className="absolute top-1 left-1 flex gap-1 z-10">
                             <div
-                              className="w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-sm flex items-center justify-center"
+                              className="w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-md flex items-center justify-center"
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 handleMouseDown(e, block.id, 'drag');
@@ -1782,7 +1782,7 @@ export default function VisualGridEditor({
                               </svg>
                             </div>
                             <button
-                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-sm flex items-center justify-center transition-colors"
+                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-md flex items-center justify-center transition-colors"
                               onClick={e => {
                                 e.stopPropagation();
                                 const updatedBlocks = mediaBlocks.filter(
@@ -1901,7 +1901,7 @@ export default function VisualGridEditor({
 
                 {/* Expansion Controls - Bottom */}
                 {expandable && (
-                  <div className="flex items-center justify-center gap-2 mt-4 p-4 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center justify-center gap-2 mt-4 p-4 bg-gray-50 rounded-none border">
                     <button
                       onClick={handleRemoveRow}
                       disabled={additionalRows === 0}
@@ -1933,7 +1933,7 @@ export default function VisualGridEditor({
                     <button
                       onClick={handleAutoPopulate}
                       disabled={disabled}
-                      className="px-6 py-3 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                      className="px-6 py-3 text-sm bg-purple-600 text-white rounded-none hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                     >
                       🎯 Auto-popular Grid con Todo el Media
                     </button>
@@ -1984,7 +1984,7 @@ export default function VisualGridEditor({
                   {availableMedia.map(media => (
                     <div
                       key={media.id}
-                      className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 p-3 border rounded-none hover:bg-gray-50 cursor-pointer transition-colors"
                       onClick={() => addMediaBlock(media)}
                     >
                       <div className="relative w-12 h-12 overflow-hidden rounded">

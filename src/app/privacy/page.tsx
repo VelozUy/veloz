@@ -243,7 +243,7 @@ export default function PrivacyPolicy() {
             If you have any questions about this Privacy Policy or our data
             practices, please contact us:
           </p>
-          <div className="bg-muted p-4 rounded-lg mt-4">
+          <div className="bg-muted p-4 rounded-none mt-4">
             <p>
               <strong>Email:</strong> privacy@veloz.com.uy
             </p>

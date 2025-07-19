@@ -1,33 +1,41 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import Image from 'next/image';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { Badge } from '@/components/ui/badge';
 import {
   X,
-  ChevronLeft,
-  ChevronRight,
-  Calendar,
-  MapPin,
   Play,
   Pause,
-  Share2,
-  ZoomIn,
-  ZoomOut,
+  Volume2,
+  VolumeX,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import Image from 'next/image';
 
-interface MediaItem {
+export interface MediaItem {
   id: string;
   type: 'photo' | 'video';
   url: string;
-  caption?: {
-    en?: string;
-    es?: string;
-    he?: string;
-  };
+  description?: Record<string, string>;
+  tags?: string[];
   aspectRatio?: '1:1' | '16:9' | '9:16';
+  order: number;
+  featured?: boolean;
 }
 
 interface Project {
@@ -37,103 +45,92 @@ interface Project {
     es: string;
     he: string;
   };
-  eventType: string;
+  description?: string;
   location?: string;
   eventDate: string;
+  eventType: string;
+  featured?: boolean;
 }
 
 interface MediaLightboxProps {
   isOpen: boolean;
   onClose: () => void;
   media: MediaItem[];
-  projects: Record<string, Project>;
   currentIndex: number;
-  onNavigate: (index: number) => void;
+  onNavigate?: (index: number) => void;
+  projects?: Record<string, Project>;
 }
 
 export default function MediaLightbox({
   isOpen,
   onClose,
   media,
-  projects,
   currentIndex,
   onNavigate,
+  projects = {},
 }: MediaLightboxProps) {
-  const { trackMediaInteraction } = useAnalytics();
-  const [imageLoading, setImageLoading] = useState(true);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isImageZoomed, setIsImageZoomed] = useState(false);
-  const [videoStartTime, setVideoStartTime] = useState<number | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(currentIndex);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
 
-  const currentMedia = media[currentIndex];
-  const currentProject = currentMedia
-    ? projects[currentMedia.id.split('_')[0]]
-    : null;
+  // Update current index when prop changes
+  useEffect(() => {
+    setCurrentMediaIndex(currentIndex);
+  }, [currentIndex]);
+
+  // Reset video state when media changes
+  useEffect(() => {
+    setIsPlaying(false);
+    setIsMuted(true);
+  }, [currentMediaIndex]);
+
+  const currentMedia = media[currentMediaIndex];
+  const currentProject = currentMedia ? projects[currentMedia.id] : null;
+
+  const handleNavigate = useCallback(
+    (index: number) => {
+      setCurrentMediaIndex(index);
+      onNavigate?.(index);
+    },
+    [onNavigate]
+  );
 
   const handlePrevious = useCallback(() => {
-    if (currentIndex > 0) {
-      onNavigate(currentIndex - 1);
-    }
-  }, [currentIndex, onNavigate]);
+    const newIndex =
+      currentMediaIndex > 0 ? currentMediaIndex - 1 : media.length - 1;
+    handleNavigate(newIndex);
+  }, [currentMediaIndex, media.length, handleNavigate]);
 
   const handleNext = useCallback(() => {
-    if (currentIndex < media.length - 1) {
-      onNavigate(currentIndex + 1);
+    const newIndex =
+      currentMediaIndex < media.length - 1 ? currentMediaIndex + 1 : 0;
+    handleNavigate(newIndex);
+  }, [currentMediaIndex, media.length, handleNavigate]);
+
+  const handleVideoPlayPause = useCallback(() => {
+    if (videoRef) {
+      if (isPlaying) {
+        videoRef.pause();
+      } else {
+        videoRef.play();
+      }
+      setIsPlaying(!isPlaying);
     }
-  }, [currentIndex, media.length, onNavigate]);
+  }, [videoRef, isPlaying]);
 
-  // Track media interaction
-  const trackInteraction = useCallback((interactionType: 'view' | 'play' | 'pause' | 'complete', viewDuration?: number) => {
-    if (!currentMedia || !currentProject) return;
-    
-    trackMediaInteraction({
-      projectId: currentProject.id,
-      mediaId: currentMedia.id,
-      mediaType: currentMedia.type === 'photo' ? 'image' : 'video',
-      interactionType,
-      mediaTitle: getMediaCaption(),
-      viewDuration,
-    });
-  }, [currentMedia, currentProject, trackMediaInteraction]);
-
-  // Video interaction handlers
-  const handleVideoPlay = useCallback(() => {
-    setIsVideoPlaying(true);
-    setVideoStartTime(Date.now());
-    trackInteraction('play');
-  }, [trackInteraction]);
-
-  const handleVideoPause = useCallback(() => {
-    setIsVideoPlaying(false);
-    const duration = videoStartTime ? Date.now() - videoStartTime : 0;
-    trackInteraction('pause', duration);
-  }, [videoStartTime, trackInteraction]);
-
-  const handleVideoEnded = useCallback(() => {
-    setIsVideoPlaying(false);
-    const duration = videoStartTime ? Date.now() - videoStartTime : 0;
-    trackInteraction('complete', duration);
-    setVideoStartTime(null);
-  }, [videoStartTime, trackInteraction]);
-
-  // Image zoom handlers
-  const handleImageZoom = useCallback(() => {
-    if (!isImageZoomed) {
-      setIsImageZoomed(true);
-      trackInteraction('view'); // Track zoom as a view interaction
-    } else {
-      setIsImageZoomed(false);
+  const handleVideoMuteToggle = useCallback(() => {
+    if (videoRef) {
+      videoRef.muted = !isMuted;
+      setIsMuted(!isMuted);
     }
-  }, [isImageZoomed, trackInteraction]);
+  }, [videoRef, isMuted]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
       if (!isOpen) return;
 
-      switch (event.key) {
+      switch (e.key) {
         case 'Escape':
           onClose();
           break;
@@ -143,269 +140,202 @@ export default function MediaLightbox({
         case 'ArrowRight':
           handleNext();
           break;
-        case ' ': // Spacebar for video play/pause
-          if (currentMedia?.type === 'video' && videoRef.current) {
-            event.preventDefault();
-            if (isVideoPlaying) {
-              videoRef.current.pause();
-            } else {
-              videoRef.current.play();
-            }
-          }
-          break;
-        case 'z': // Z key for image zoom
-          if (currentMedia?.type === 'photo') {
-            event.preventDefault();
-            handleImageZoom();
+        case ' ':
+          if (currentMedia?.type === 'video') {
+            e.preventDefault();
+            handleVideoPlayPause();
           }
           break;
       }
-    };
+    },
+    [
+      isOpen,
+      onClose,
+      handlePrevious,
+      handleNext,
+      currentMedia,
+      handleVideoPlayPause,
+    ]
+  );
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose, handlePrevious, handleNext, currentMedia, isVideoPlaying, handleImageZoom]);
-
-  // Reset states when media changes
   useEffect(() => {
-    setImageLoading(true);
-    setIsVideoPlaying(false);
-    setIsImageZoomed(false);
-    setVideoStartTime(null);
-  }, [currentIndex]);
-
-  // Track initial view when lightbox opens
-  useEffect(() => {
-    if (isOpen && media[currentIndex] && projects) {
-      const item = media[currentIndex];
-      const project = projects[item.id.split('_')[0]];
-      if (item && project) {
-        trackInteraction('view');
-      }
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, currentIndex]);
+  }, [isOpen, handleKeyDown]);
 
-  const getProjectTitle = () => {
-    if (!currentProject) return 'Untitled Project';
-    return (
-      currentProject.title.en ||
-      currentProject.title.es ||
-      currentProject.title.he ||
-      'Untitled Project'
-    );
-  };
-
-  const getMediaCaption = () => {
-    if (!currentMedia?.caption) return '';
-    return (
-      currentMedia.caption.en ||
-      currentMedia.caption.es ||
-      currentMedia.caption.he ||
-      ''
-    );
-  };
-
-  const formatDate = (dateString: string) => {
-    try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch {
-      return '';
-    }
-  };
-
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: getProjectTitle(),
-          text: getMediaCaption(),
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.log('Error sharing:', error);
-      }
-    } else {
-      // Fallback: copy URL to clipboard
-      navigator.clipboard.writeText(window.location.href);
-    }
-  };
-
-  if (!currentMedia || !currentProject) return null;
+  if (!currentMedia) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl w-full h-full max-h-screen bg-black/95 border-none overflow-hidden p-0">
-        <div className="relative w-full h-full flex flex-col">
-          {/* Header */}
-          <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/50 to-transparent p-4">
-            <div className="flex items-center justify-between text-white">
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold mb-1">
-                  {getProjectTitle()}
-                </h2>
-                <div className="flex items-center gap-4 text-sm opacity-90">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{formatDate(currentProject.eventDate)}</span>
-                  </div>
-                  {currentProject.location && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{currentProject.location}</span>
-                    </div>
-                  )}
-                  <span className="text-muted-foreground">
-                    {currentIndex + 1} of {media.length}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {/* Media interaction controls */}
-                {currentMedia.type === 'photo' && (
+      <DialogContent className="max-w-7xl max-h-[90vh] p-0 overflow-hidden">
+        <DialogHeader className="p-6 pb-0">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-lg font-semibold">
+              {currentProject?.title?.es ||
+                currentProject?.title?.en ||
+                'Gallery Media'}
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="h-8 w-8"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </DialogHeader>
+
+        <div className="relative flex-1 overflow-hidden">
+          {/* Media Display */}
+          <div className="relative w-full h-full min-h-[400px] bg-black">
+            {currentMedia.type === 'photo' ? (
+              <Image
+                src={currentMedia.url}
+                alt={
+                  currentMedia.description?.es ||
+                  currentMedia.description?.en ||
+                  'Gallery media'
+                }
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 80vw"
+              />
+            ) : (
+              <div className="relative w-full h-full">
+                <video
+                  ref={setVideoRef}
+                  src={currentMedia.url}
+                  className="w-full h-full object-contain"
+                  controls={false}
+                  muted={isMuted}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                />
+
+                {/* Video Controls Overlay */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-lg p-2">
                   <Button
                     variant="ghost"
-                    size="sm"
-                    onClick={handleImageZoom}
-                    className="text-white hover:bg-white/20"
-                    aria-label={isImageZoomed ? "Zoom out" : "Zoom in"}
+                    size="icon"
+                    onClick={handleVideoPlayPause}
+                    className="h-8 w-8 text-white hover:bg-white/20"
                   >
-                    {isImageZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
-                  </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleShare}
-                  className="text-white hover:bg-white/20"
-                  aria-label="Share media"
-                >
-                  <Share2 className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClose}
-                  className="text-white hover:bg-white/20"
-                  aria-label="Close lightbox"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1 flex items-center justify-center relative p-16">
-            {/* Navigation Buttons */}
-            {currentIndex > 0 && (
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={handlePrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-40 text-white hover:bg-white/20 h-12 w-12"
-                aria-label="Previous media"
-              >
-                <ChevronLeft className="w-8 h-8" />
-              </Button>
-            )}
-
-            {currentIndex < media.length - 1 && (
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-40 text-white hover:bg-white/20 h-12 w-12"
-                aria-label="Next media"
-              >
-                <ChevronRight className="w-8 h-8" />
-              </Button>
-            )}
-
-            {/* Media Content */}
-            <div className="relative w-full h-full flex items-center justify-center">
-              {imageLoading && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-                </div>
-              )}
-
-              {currentMedia.type === 'photo' ? (
-                <div 
-                  ref={imageRef}
-                  className={`relative w-full h-full flex items-center justify-center transition-transform duration-300 ${
-                    isImageZoomed ? 'scale-150' : 'scale-100'
-                  }`}
-                >
-                  <Image
-                    src={currentMedia.url}
-                    alt={getMediaCaption() || getProjectTitle()}
-                    fill
-                    className="object-contain cursor-pointer"
-                    onLoad={() => setImageLoading(false)}
-                    onError={() => setImageLoading(false)}
-                    onClick={handleImageZoom}
-                    sizes="100vw"
-                    priority
-                  />
-                </div>
-              ) : (
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="relative w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden">
-                    <video
-                      ref={videoRef}
-                      src={currentMedia.url}
-                      className="w-full h-full object-cover"
-                      onPlay={handleVideoPlay}
-                      onPause={handleVideoPause}
-                      onEnded={handleVideoEnded}
-                      onLoadedData={() => setImageLoading(false)}
-                      onError={() => setImageLoading(false)}
-                      controls
-                      preload="metadata"
-                    />
-                    {!isVideoPlaying && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <Button
-                          size="lg"
-                          onClick={() => videoRef.current?.play()}
-                          className="bg-white/20 hover:bg-white/30 text-white border-white/20"
-                          aria-label="Play video"
-                        >
-                          <Play className="w-8 h-8 mr-2 fill-white" />
-                          Play Video
-                        </Button>
-                      </div>
+                    {isPlaying ? (
+                      <Pause className="h-4 w-4" />
+                    ) : (
+                      <Play className="h-4 w-4" />
                     )}
-                  </div>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleVideoMuteToggle}
+                    className="h-8 w-8 text-white hover:bg-white/20"
+                  >
+                    {isMuted ? (
+                      <VolumeX className="h-4 w-4" />
+                    ) : (
+                      <Volume2 className="h-4 w-4" />
+                    )}
+                  </Button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
-          {/* Footer */}
-          {getMediaCaption() && (
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
-              <p className="text-white text-center max-w-3xl mx-auto">
-                {getMediaCaption()}
-              </p>
-            </div>
+          {/* Navigation Arrows */}
+          {media.length > 1 && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handlePrevious}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 h-10 w-10 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNext}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 h-10 w-10 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </>
           )}
-
-          {/* Keyboard shortcuts hint */}
-          <div className="absolute bottom-4 left-4 text-white/60 text-xs">
-            <div className="flex gap-4">
-              <span>← → Navigate</span>
-              <span>ESC Close</span>
-              {currentMedia.type === 'video' && <span>Space Play/Pause</span>}
-              {currentMedia.type === 'photo' && <span>Z Zoom</span>}
-            </div>
-          </div>
         </div>
+
+        {/* Media Info */}
+        {(currentMedia.description || currentProject) && (
+          <div className="p-6 pt-0">
+            {currentMedia.description && (
+              <p className="text-sm text-muted-foreground mb-2">
+                {currentMedia.description.es || currentMedia.description.en}
+              </p>
+            )}
+            {currentProject && (
+              <div className="flex items-center gap-2">
+                {currentProject.eventType && (
+                  <Badge variant="secondary">{currentProject.eventType}</Badge>
+                )}
+                {currentProject.featured && <Badge>Destacado</Badge>}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Carousel for Multiple Media */}
+        {media.length > 1 && (
+          <div className="p-6 pt-0">
+            <Carousel className="w-full">
+              <CarouselContent className="-ml-2">
+                {media.map((item, index) => (
+                  <CarouselItem
+                    key={item.id}
+                    className="pl-2 basis-1/4 md:basis-1/6"
+                  >
+                    <div
+                      className={`relative aspect-video cursor-pointer rounded overflow-hidden ${
+                        index === currentMediaIndex
+                          ? 'ring-2 ring-primary'
+                          : 'ring-1 ring-border'
+                      }`}
+                      onClick={() => handleNavigate(index)}
+                    >
+                      {item.type === 'photo' ? (
+                        <Image
+                          src={item.url}
+                          alt={
+                            item.description?.es ||
+                            item.description?.en ||
+                            'Gallery thumbnail'
+                          }
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 25vw, 16vw"
+                        />
+                      ) : (
+                        <video
+                          src={item.url}
+                          className="w-full h-full object-cover"
+                          muted
+                          preload="metadata"
+                        />
+                      )}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="h-8 w-8" />
+              <CarouselNext className="h-8 w-8" />
+            </Carousel>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -14,3 +14,15 @@ export { useFirebaseVideo } from './useFirebaseVideo';
 
 // Analytics hooks
 export { useAnalytics, useScrollDepthTracking } from './useAnalytics';
+
+// Background system hooks
+export {
+  useBackground,
+  useBackgroundConfig,
+  useHeroBackground,
+  useContentBackground,
+  useFormBackground,
+  useCTABackground,
+  useTestimonialBackground,
+  useMetaBackground,
+} from './useBackground';

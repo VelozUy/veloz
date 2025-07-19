@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
 
 // Mock Next.js navigation

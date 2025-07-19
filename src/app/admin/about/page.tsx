@@ -683,12 +683,9 @@ export default function AboutAdminPage() {
         if (response.data) {
           setAboutContent(response.data);
           // Create form data without id, createdAt, updatedAt
-          const contentData = (({
-            id: _id,
-            createdAt: _createdAt,
-            updatedAt: _updatedAt,
-            ...rest
-          }) => rest)(response.data);
+          const contentData = (({ id, createdAt, updatedAt, ...rest }) => rest)(
+            response.data
+          );
 
           // Ensure all array items have IDs
           const processedData = {
@@ -1621,7 +1618,7 @@ export default function AboutAdminPage() {
 
         {success && (
           <Alert className="bg-green-50 border-green-200">
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-primary" />
             <AlertDescription className="text-green-800">
               {success}
             </AlertDescription>

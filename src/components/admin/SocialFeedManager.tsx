@@ -119,7 +119,7 @@ function SortableSocialPost({
               </Badge>
             </div>
 
-            <div className="aspect-square w-16 h-16 relative overflow-hidden rounded-lg bg-muted">
+            <div className="aspect-square w-16 h-16 relative overflow-hidden rounded-none bg-muted">
               {post.type === 'image' ? (
                 <Image
                   src={post.url}

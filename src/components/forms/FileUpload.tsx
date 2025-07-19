@@ -175,7 +175,7 @@ export default function FileUpload({
       {/* File Upload Area */}
       <div
         className={cn(
-          'border-2 border-dashed rounded-lg p-6 text-center transition-colors',
+          'border-2 border-dashed rounded-none p-6 text-center transition-colors',
           dragActive
             ? 'border-primary bg-primary/5'
             : 'border-muted-foreground/25 hover:border-muted-foreground/50',
@@ -234,7 +234,7 @@ export default function FileUpload({
             {selectedFiles.map(fileItem => (
               <div
                 key={fileItem.id}
-                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-none"
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0">
                   {getFileIcon(fileItem.file)}

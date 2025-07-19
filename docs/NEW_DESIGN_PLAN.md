@@ -21,7 +21,7 @@ This plan implements the Veloz brand manual specifications across the entire app
 :root {
   /* Veloz Monochromatic Palette */
   --veloz-accent: #0066ff; /* Vibrant Blue - CTA, links, focus */
-  --veloz-primary-dark: #1a1a2e; /* Charcoal Black with bluish undertone */
+  --veloz-primary-dark: #1a1b1f; /* Charcoal Black */
   --veloz-light-grey: #f5f5f7; /* Light Grey - inputs, disabled states */
   --veloz-medium-grey: #8e8e93; /* Medium Grey - borders, cards, dividers */
 

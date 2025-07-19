@@ -133,13 +133,13 @@ export default function MeetTheTeam({
   };
 
   return (
-    <section className={`py-12 bg-muted/30 ${className}`}>
+    <section className={`py-12 bg-white ${className}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Users className="w-6 h-6 text-primary" />
-            <h2 className="text-3xl font-bold">
+            <Users className="w-6 h-6 text-blue-accent" />
+            <h2 className="text-3xl font-bold text-charcoal">
               {language === 'en'
                 ? 'Meet the Team'
                 : language === 'pt'
@@ -147,7 +147,7 @@ export default function MeetTheTeam({
                   : 'Conoce al Equipo'}
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-charcoal max-w-2xl mx-auto">
             {language === 'en'
               ? 'The talented professionals behind this project'
               : language === 'pt'
@@ -161,7 +161,7 @@ export default function MeetTheTeam({
           {crewMembers.map(member => (
             <Card
               key={member.id}
-              className="group hover:shadow-lg transition-all duration-300"
+              className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-medium"
             >
               <CardContent className="p-6">
                 {/* Portrait and Basic Info */}
@@ -173,7 +173,7 @@ export default function MeetTheTeam({
                         alt={getLocalizedText(member.name, language)}
                         width={80}
                         height={80}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-blue-accent/20"
                       />
                     ) : (
                       <Avatar className="w-20 h-20">
@@ -185,10 +185,10 @@ export default function MeetTheTeam({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-lg mb-1 truncate">
+                    <h3 className="font-semibold text-lg mb-1 truncate text-charcoal">
                       {getLocalizedText(member.name, language)}
                     </h3>
-                    <p className="text-muted-foreground text-sm mb-2">
+                    <p className="text-charcoal text-sm mb-2">
                       {getLocalizedText(member.role, language)}
                     </p>
 
@@ -217,7 +217,7 @@ export default function MeetTheTeam({
 
                 {/* Bio */}
                 {getLocalizedText(member.bio, language) && (
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                  <p className="text-sm text-charcoal mb-4 line-clamp-3">
                     {getLocalizedText(member.bio, language)}
                   </p>
                 )}

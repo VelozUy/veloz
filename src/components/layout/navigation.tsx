@@ -99,29 +99,31 @@ export default function Navigation({ translations, locale }: NavigationProps) {
               href={getLocalizedPath('/', locale)}
               className="flex items-center space-x-2 group"
             >
-              <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
-              <span className="text-2xl font-bold text-primary">Veloz</span>
+              <Camera className="w-8 h-8 text-white group-hover:text-[#0066ff] transition-colors" />
+              <span className="text-2xl font-logo font-normal text-white">
+                Veloz
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href={getLocalizedPath('/our-work', locale)}
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
               >
                 <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Our Work</span>
               </Link>
               <Link
                 href={getLocalizedPath('/about', locale)}
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
               >
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">About & FAQ</span>
               </Link>
               <Link
                 href={getLocalizedPath('/contact', locale)}
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
               >
                 <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Work With Us</span>
@@ -131,7 +133,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             {/* CTA Button (Desktop) */}
             <div className="hidden md:block">
               <Link href={getLocalizedPath('/contact', locale)}>
-                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                   Get Started
                 </Button>
               </Link>
@@ -139,7 +141,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -166,8 +168,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             href={getLocalizedPath('/', locale)}
             className="flex items-center space-x-2 group"
           >
-            <Camera className="w-8 h-8 text-primary group-hover:text-accent transition-colors" />
-            <span className="text-2xl font-bold text-primary">Veloz</span>
+            <Camera className="w-8 h-8 text-white group-hover:text-primary transition-colors" />
+            <span className="text-2xl font-logo font-normal text-white">
+              Veloz
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -178,7 +182,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
@@ -191,7 +195,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
           <div className="hidden md:flex items-center space-x-4">
             <LocaleSwitcher currentLocale={locale} />
             <Link href={getLocalizedPath('/contact', locale)}>
-              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                 {translations.homepage.hero.cta.contact}
               </Button>
             </Link>
@@ -199,7 +203,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -213,7 +217,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t border-border">
             <div className="px-4 py-6 space-y-4">
               {navItems.map(item => {
                 const Icon = item.icon;
@@ -221,25 +225,23 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                    className="flex items-center space-x-3 px-4 py-3 rounded-none hover:bg-muted/20 transition-colors group"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Icon className="w-5 h-5 text-primary group-hover:text-accent transition-colors" />
-                    <span className="font-medium text-foreground">
-                      {item.name}
-                    </span>
+                    <Icon className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
+                    <span className="font-medium text-white">{item.name}</span>
                   </Link>
                 );
               })}
 
               {/* Language Switcher & Mobile CTA */}
-              <div className="pt-4 border-t space-y-4">
+              <div className="pt-4 border-t border-border space-y-4">
                 <div className="flex justify-center">
                   <LocaleSwitcher currentLocale={locale} />
                 </div>
                 <Link href={getLocalizedPath('/contact', locale)}>
                   <Button
-                    className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {translations.homepage.hero.cta.contact}

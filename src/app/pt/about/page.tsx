@@ -325,7 +325,7 @@ export default async function AboutPagePT() {
                     className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
                   >
                     <CardContent className="p-6 space-y-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
                         <IconComponent className="w-6 h-6 text-primary-foreground" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground">
@@ -362,7 +362,7 @@ export default async function AboutPagePT() {
                       <AccordionItem
                         key={faq.id}
                         value={faq.id}
-                        className="border-0 bg-muted/30 rounded-lg px-4"
+                        className="border-0 bg-muted/30 rounded-none px-4"
                       >
                         <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary transition-colors py-4">
                           {getFAQText(faq, 'question', 'pt')}

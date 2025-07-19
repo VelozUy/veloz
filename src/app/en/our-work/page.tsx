@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { OurWorkContent } from '@/components/our-work/OurWorkContent';
-import { InteractiveCTAWidget } from '@/components/layout';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function OurWorkPage() {
       <OurWorkContent content={content} />
 
       {/* CTA Widget */}
-      <InteractiveCTAWidget />
+      <ContactWidget language={content.locale} />
     </div>
   );
-} 
+}

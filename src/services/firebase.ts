@@ -586,7 +586,7 @@ async function detectAspectRatio(file: File): Promise<{
 // Project Media Service
 export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
   constructor() {
-    super('projectMedia', socialPostSchema);
+    super('projectMedia', projectMediaSchema);
   }
 
   async getByProjectId(

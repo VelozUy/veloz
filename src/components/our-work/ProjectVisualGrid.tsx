@@ -224,7 +224,7 @@ export default function ProjectVisualGrid({
           {projectMedia.slice(0, 6).map((media, index) => (
             <div
               key={media.id || index}
-              className="aspect-square relative overflow-hidden rounded-lg"
+              className="aspect-square relative overflow-hidden rounded-none"
             >
               {media.type === 'video' ? (
                 <video

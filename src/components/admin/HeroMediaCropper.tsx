@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { RotateCcw, ZoomIn, ZoomOut, Move } from 'lucide-react';
+import { RotateCcw, ZoomIn, Move } from 'lucide-react';
 import Image from 'next/image';
 import { ProjectMedia } from '@/services/firebase';
 import { HeroAspectRatio } from './HeroMediaSelector';
@@ -63,46 +63,52 @@ export default function HeroMediaCropper({
   }, [getAspectRatioDimensions]);
 
   // Handle mouse/touch events for dragging
-  const handleMouseDown = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    if (disabled) return;
-    
-    setIsDragging(true);
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    setDragStart({ x: clientX, y: clientY });
-  }, [disabled]);
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      if (disabled) return;
 
-  const handleMouseMove = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!isDragging || disabled) return;
-
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    
-    const deltaX = clientX - dragStart.x;
-    const deltaY = clientY - dragStart.y;
-
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const containerWidth = rect.width;
-      const containerHeight = rect.height;
-
-      // Convert pixel movement to percentage
-      const moveX = (deltaX / containerWidth) * 100;
-      const moveY = (deltaY / containerHeight) * 100;
-
-      // Calculate new position with bounds
-      const newX = Math.max(-100, Math.min(100, cropConfig.x + moveX));
-      const newY = Math.max(-100, Math.min(100, cropConfig.y + moveY));
-
-      onCropConfigChange({
-        ...cropConfig,
-        x: newX,
-        y: newY,
-      });
-
+      setIsDragging(true);
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
       setDragStart({ x: clientX, y: clientY });
-    }
-  }, [isDragging, disabled, dragStart, cropConfig, onCropConfigChange]);
+    },
+    [disabled]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!isDragging || disabled) return;
+
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      const deltaX = clientX - dragStart.x;
+      const deltaY = clientY - dragStart.y;
+
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const containerWidth = rect.width;
+        const containerHeight = rect.height;
+
+        // Convert pixel movement to percentage
+        const moveX = (deltaX / containerWidth) * 100;
+        const moveY = (deltaY / containerHeight) * 100;
+
+        // Calculate new position with bounds
+        const newX = Math.max(-100, Math.min(100, cropConfig.x + moveX));
+        const newY = Math.max(-100, Math.min(100, cropConfig.y + moveY));
+
+        onCropConfigChange({
+          ...cropConfig,
+          x: newX,
+          y: newY,
+        });
+
+        setDragStart({ x: clientX, y: clientY });
+      }
+    },
+    [isDragging, disabled, dragStart, cropConfig, onCropConfigChange]
+  );
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
@@ -136,12 +142,15 @@ export default function HeroMediaCropper({
   }, [onCropConfigChange]);
 
   // Handle slider changes
-  const handleSliderChange = useCallback((value: number[], type: keyof CropConfig) => {
-    onCropConfigChange({
-      ...cropConfig,
-      [type]: value[0],
-    });
-  }, [cropConfig, onCropConfigChange]);
+  const handleSliderChange = useCallback(
+    (value: number[], type: keyof CropConfig) => {
+      onCropConfigChange({
+        ...cropConfig,
+        [type]: value[0],
+      });
+    },
+    [cropConfig, onCropConfigChange]
+  );
 
   return (
     <Card>
@@ -165,7 +174,7 @@ export default function HeroMediaCropper({
           <Label className="text-sm font-medium">Vista Previa</Label>
           <div
             ref={containerRef}
-            className={`relative w-full max-w-md mx-auto border-2 border-dashed border-muted-foreground/30 rounded-lg overflow-hidden ${getAspectRatioClass()}`}
+            className={`relative w-full max-w-md mx-auto border-2 border-dashed border-muted-foreground/30 rounded-none overflow-hidden ${getAspectRatioClass()}`}
             style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown}
@@ -201,10 +210,7 @@ export default function HeroMediaCropper({
             <div className="absolute inset-0 pointer-events-none">
               <div className="w-full h-full grid grid-cols-3 grid-rows-3">
                 {Array.from({ length: 9 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="border border-white/20"
-                  />
+                  <div key={i} className="border border-white/20" />
                 ))}
               </div>
             </div>
@@ -226,10 +232,14 @@ export default function HeroMediaCropper({
             </Label>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Horizontal</Label>
+                <Label className="text-xs text-muted-foreground">
+                  Horizontal
+                </Label>
                 <Slider
                   value={[cropConfig.x]}
-                  onValueChange={(value: number[]) => handleSliderChange(value, 'x')}
+                  onValueChange={(value: number[]) =>
+                    handleSliderChange(value, 'x')
+                  }
                   min={-100}
                   max={100}
                   step={1}
@@ -241,10 +251,14 @@ export default function HeroMediaCropper({
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Vertical</Label>
+                <Label className="text-xs text-muted-foreground">
+                  Vertical
+                </Label>
                 <Slider
                   value={[cropConfig.y]}
-                  onValueChange={(value: number[]) => handleSliderChange(value, 'y')}
+                  onValueChange={(value: number[]) =>
+                    handleSliderChange(value, 'y')
+                  }
                   min={-100}
                   max={100}
                   step={1}
@@ -266,7 +280,9 @@ export default function HeroMediaCropper({
             </Label>
             <Slider
               value={[cropConfig.scale]}
-              onValueChange={(value: number[]) => handleSliderChange(value, 'scale')}
+              onValueChange={(value: number[]) =>
+                handleSliderChange(value, 'scale')
+              }
               min={0.5}
               max={3}
               step={0.1}
@@ -286,7 +302,9 @@ export default function HeroMediaCropper({
             </Label>
             <Slider
               value={[cropConfig.rotation]}
-              onValueChange={(value: number[]) => handleSliderChange(value, 'rotation')}
+              onValueChange={(value: number[]) =>
+                handleSliderChange(value, 'rotation')
+              }
               min={-180}
               max={180}
               step={1}
@@ -301,9 +319,10 @@ export default function HeroMediaCropper({
 
         {/* Aspect Ratio Info */}
         <div className="text-xs text-muted-foreground text-center p-3 bg-muted/50 rounded">
-          Proporción: {getAspectRatioDimensions().width}:{getAspectRatioDimensions().height}
+          Proporción: {getAspectRatioDimensions().width}:
+          {getAspectRatioDimensions().height}
         </div>
       </CardContent>
     </Card>
   );
-} 
+}

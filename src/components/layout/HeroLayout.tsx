@@ -87,10 +87,10 @@ export default function HeroLayout({
   if (!selectedMedia) {
     return (
       <div
-        className={`relative w-full bg-gradient-to-br from-gray-100 to-gray-200 ${getAspectRatioClass(heroConfig.aspectRatio)} ${className}`}
+        className={`relative w-full bg-gradient-to-br from-muted to-muted/50 ${getAspectRatioClass(heroConfig.aspectRatio)} ${className}`}
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-gray-500">
+          <div className="text-center text-muted-foreground">
             <h2 className="text-2xl font-semibold mb-2">
               {projectTitle || 'Proyecto'}
             </h2>
@@ -103,7 +103,7 @@ export default function HeroLayout({
 
   return (
     <div
-      className={`relative w-full overflow-hidden ${getAspectRatioClass(heroConfig.aspectRatio)} ${className}`}
+      className={`relative w-full overflow-hidden rounded-br-[4rem] ${getAspectRatioClass(heroConfig.aspectRatio)} ${className}`}
       style={getCustomAspectRatioStyle()}
     >
       {/* Media Content with Crop Transform */}
@@ -142,7 +142,7 @@ export default function HeroLayout({
 
             {/* Fallback background - shown until video is ready or on error */}
             <div
-              className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-opacity duration-1000 ${
+              className={`absolute inset-0 bg-background transition-opacity duration-1000 ${
                 videoCanPlay && !videoError ? 'opacity-0' : 'opacity-100'
               }`}
             />
@@ -166,12 +166,12 @@ export default function HeroLayout({
 
       {/* Error state for video */}
       {selectedMedia.type === 'video' && videoError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-          <div className="text-center text-white">
+        <div className="absolute inset-0 flex items-center justify-center bg-background">
+          <div className="text-center text-foreground">
             <p className="text-lg font-semibold mb-2">
               Error al cargar el video
             </p>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-muted-foreground">
               {selectedMedia.description?.es || 'Video'}
             </p>
           </div>

@@ -15,28 +15,6 @@ interface AboutContentPreviewProps {
   currentLanguage: string;
 }
 
-// Helper interfaces for the items
-interface PhilosophyPoint {
-  id: string;
-  title: { es?: string; en?: string; pt?: string };
-  description: { es?: string; en?: string; pt?: string };
-  order: number;
-}
-
-interface MethodologyStep {
-  id: string;
-  title: { es?: string; en?: string; pt?: string };
-  description: { es?: string; en?: string; pt?: string };
-  order: number;
-}
-
-interface Value {
-  id: string;
-  title: { es?: string; en?: string; pt?: string };
-  description: { es?: string; en?: string; pt?: string };
-  order: number;
-}
-
 // Core values with icons
 const coreValueIcons = [Heart, Users, Camera, Zap, Trophy, Shield];
 
@@ -67,7 +45,7 @@ export default function AboutContentPreview({
   };
 
   return (
-    <div className="bg-background border rounded-lg overflow-hidden">
+    <div className="bg-background border rounded-none overflow-hidden">
       {/* Preview Header */}
       <div className="bg-muted/50 px-4 py-3 border-b">
         <div className="flex items-center justify-between">
@@ -182,7 +160,7 @@ export default function AboutContentPreview({
                     className="group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
                   >
                     <CardContent className="p-4 space-y-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
                         <IconComponent className="w-5 h-5 text-primary-foreground" />
                       </div>
                       <h3 className="text-lg font-semibold text-foreground">

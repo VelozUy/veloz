@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
+import { VelozLogo } from '@/components/shared';
+import { useHeroBackground } from '@/hooks/useBackground';
 
 interface HeroProps {
   headline?: string;
@@ -27,6 +29,9 @@ export default function Hero({
   const [logoAnimationPhase, setLogoAnimationPhase] = useState<
     'hidden' | 'small' | 'large'
   >('hidden');
+
+  // Use the new background system for hero sections
+  const { classes: heroClasses } = useHeroBackground();
 
   // Use headline or fallback if not provided
   const displayHeadline = headline || 'Capturamos lo irrepetible';
@@ -105,7 +110,9 @@ export default function Hero({
   }, [videoCanPlay, backgroundVideo, logoAnimationPhase, logoUrl]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden rounded-tl-[3rem] ${heroClasses.background}`}
+    >
       {/* Background Video or Images */}
       {backgroundVideo ? (
         <>
@@ -128,7 +135,7 @@ export default function Hero({
 
           {/* Fallback background - shown until video is ready */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary transition-opacity duration-1000 ${
+            className={`absolute inset-0 bg-background transition-opacity duration-1000 ${
               videoCanPlay ? 'opacity-0' : 'opacity-100'
             }`}
           />
@@ -141,15 +148,17 @@ export default function Hero({
           }}
         />
       ) : (
-        // Theme-based gradient background - elegant and minimal
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary" />
+        // Veloz brand background - elegant and minimal
+        <div className="absolute inset-0 bg-background" />
       )}
 
       {/* Elegant overlay for text readability - reduced opacity for subtlety */}
       <div className="absolute inset-0 bg-black/20" />
 
       {/* Main content */}
-      <div className="relative z-10 text-center text-white px-4 animate-fade-in">
+      <div
+        className={`relative z-10 text-center px-4 animate-fade-in ${heroClasses.text}`}
+      >
         {/* Logo and Brand Section - Dynamic centering based on animation phase */}
         <div
           className={`transition-all duration-500 ease-out ${
@@ -188,30 +197,24 @@ export default function Hero({
             </div>
           </div>
 
-          {/* Brand Title - Starts centered, moves down and shrinks */}
+          {/* Brand Title - Starts centered, moves down but doesn't shrink */}
           <div
             className={`relative transition-all duration-500 ease-out ${
               logoAnimationPhase === 'hidden'
                 ? 'transform translate-y-0' // Centered when no logo
-                : 'transform translate-y-4' // Slightly down when logo present
+                : 'transform translate-y-8' // Move down when logo present
             }`}
           >
-            <h1
-              className={`font-bold transition-all duration-500 ease-out ${
-                logoAnimationPhase === 'hidden'
-                  ? 'text-6xl md:text-8xl' // Large when centered
-                  : logoAnimationPhase === 'small'
-                    ? 'text-5xl md:text-7xl' // Medium when logo is small
-                    : 'text-4xl md:text-5xl' // Small when logo is large and centered
-              }`}
-            >
-              <span className="text-primary-foreground">Veloz</span>
-            </h1>
+            <VelozLogo
+              variant="full"
+              size="lg" // Keep consistent large size
+              className="text-primary-foreground"
+            />
           </div>
         </div>
 
         {/* Headline - Always visible immediately */}
-        <h2 className="text-2xl md:text-4xl font-light mb-16 max-w-3xl mx-auto">
+        <h2 className="text-body-lg mb-16 max-w-3xl mx-auto font-medium">
           {displayHeadline}
         </h2>
 
@@ -219,7 +222,7 @@ export default function Hero({
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button
             size="lg"
-            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
             <a href="/about">Sobre Nosotros</a>
@@ -227,7 +230,7 @@ export default function Hero({
 
           <Button
             size="lg"
-            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
             <a href="/gallery">Nuestro Trabajo</a>
@@ -235,7 +238,7 @@ export default function Hero({
 
           <Button
             size="lg"
-            className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-8 py-6 text-lg font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
             <a href="/contact">Trabaja con Nosotros</a>

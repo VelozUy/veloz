@@ -888,7 +888,7 @@ export default function UnifiedProjectEditPage({
                           <Label className="text-sm font-medium">
                             Vista Previa de URL
                           </Label>
-                          <div className="mt-2 p-3 bg-muted rounded-lg border">
+                          <div className="mt-2 p-3 bg-muted rounded-none border">
                             <div className="flex items-center justify-between">
                               <div className="flex-1 min-w-0">
                                 <div className="text-sm text-muted-foreground mb-1">
@@ -1415,7 +1415,7 @@ export default function UnifiedProjectEditPage({
         <div className="fixed top-4 right-4 z-50">
           <div
             className={`
-              px-6 py-4 rounded-lg shadow-2xl transition-all duration-300 border-2
+              px-6 py-4 rounded-none shadow-2xl transition-all duration-300 border-2
               ${
                 hasUnsavedChanges
                   ? 'bg-yellow-500 border-yellow-600 text-yellow-900 animate-pulse shadow-yellow-500/50'

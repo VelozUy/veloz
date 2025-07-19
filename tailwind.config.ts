@@ -46,19 +46,26 @@ const config: Config = {
           '4': 'var(--chart-4)',
           '5': 'var(--chart-5)',
         },
-        // Custom Veloz brand colors
-        charcoal: '#1a1a1a',
-        'blue-accent': '#3b82f6',
-        'grey-light': '#9ca3af',
-        'grey-medium': '#6b7280',
+        // Modern shadcn/ui theme colors using OKLCH color space
+        // All colors are now defined via CSS variables in globals.css
       },
 
-      // Typography for elegance
+      // Typography for Veloz brand - REDJOLA only for logo, Roboto for everything else
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-        display: ['Playfair Display', 'Georgia', 'serif'],
+        sans: ['Roboto', 'sans-serif'],
+        serif: ['Roboto', 'sans-serif'],
+        mono: ['Roboto', 'sans-serif'],
+        // REDJOLA only for VELOZ brand title in logo
+        logo: [
+          'REDJOLA',
+          'Bebas Neue',
+          'Oswald',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif',
+        ],
+        // Roboto for all other text
+        body: ['Roboto', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
 
       // Spacing system for optimization
@@ -100,11 +107,14 @@ const config: Config = {
         },
       },
 
-      // Border radius for modern look
+      // Border radius system for modern shadcn/ui theme
       borderRadius: {
-        xl: '0.75rem',
-        '2xl': '1rem',
-        '3xl': '1.5rem',
+        DEFAULT: '0rem', // Default border radius from theme
+        sm: '0rem', // Small border radius
+        md: '0rem', // Medium border radius
+        lg: '0rem', // Large border radius
+        xl: '0rem', // Extra large border radius
+        full: '9999px', // Full rounded (for badges and pills)
       },
 
       // Box shadows using CSS variables

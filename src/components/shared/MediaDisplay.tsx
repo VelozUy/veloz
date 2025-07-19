@@ -70,11 +70,14 @@ export default function MediaDisplay({
     return lookup;
   }, [projects]);
 
-  const handleMediaClick = useCallback((mediaIndex: number) => {
-    setCurrentMediaIndex(mediaIndex);
-    setLightboxOpen(true);
-    onMediaClick?.(mediaIndex);
-  }, [onMediaClick]);
+  const handleMediaClick = useCallback(
+    (mediaIndex: number) => {
+      setCurrentMediaIndex(mediaIndex);
+      setLightboxOpen(true);
+      onMediaClick?.(mediaIndex);
+    },
+    [onMediaClick]
+  );
 
   const handleCloseLightbox = useCallback(() => {
     setLightboxOpen(false);
@@ -100,7 +103,9 @@ export default function MediaDisplay({
     return (
       <div className={cn('flex items-center justify-center h-64', className)}>
         <p className="text-muted-foreground">
-          {showOnlyFeatured ? 'No featured media available' : 'No media available'}
+          {showOnlyFeatured
+            ? 'No featured media available'
+            : 'No media available'}
         </p>
       </div>
     );
@@ -125,14 +130,19 @@ export default function MediaDisplay({
                 <div
                   key={media.id}
                   onClick={() => handleMediaClick(index)}
-                  className="relative overflow-hidden cursor-pointer h-full w-full rounded-lg bg-card/50"
+                  className="relative overflow-hidden cursor-pointer h-full w-full rounded-none bg-card/50"
                 >
                   {/* Media Content */}
                   <div className="relative w-full h-full">
                     {media.type === 'photo' ? (
                       <Image
                         src={media.url}
-                        alt={media.description?.es || (project?.title?.es || project?.title?.en || 'Gallery media')}
+                        alt={
+                          media.description?.es ||
+                          project?.title?.es ||
+                          project?.title?.en ||
+                          'Gallery media'
+                        }
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -180,13 +190,18 @@ export default function MediaDisplay({
                 <div
                   key={media.id}
                   onClick={() => handleMediaClick(index)}
-                  className="break-inside-avoid cursor-pointer rounded-lg overflow-hidden bg-card/50"
+                  className="break-inside-avoid cursor-pointer rounded-none overflow-hidden bg-card/50"
                 >
                   <div className="relative">
                     {media.type === 'photo' ? (
                       <Image
                         src={media.url}
-                        alt={media.description?.es || (project?.title?.es || project?.title?.en || 'Gallery media')}
+                        alt={
+                          media.description?.es ||
+                          project?.title?.es ||
+                          project?.title?.en ||
+                          'Gallery media'
+                        }
                         width={400}
                         height={300}
                         className="w-full h-auto object-cover"
@@ -234,13 +249,25 @@ export default function MediaDisplay({
               <div
                 key={media.id}
                 onClick={() => handleMediaClick(index)}
-                className="relative overflow-hidden cursor-pointer rounded-lg bg-card/50"
-                style={{ aspectRatio: media.aspectRatio === '1:1' ? '1' : media.aspectRatio === '9:16' ? '9/16' : '16/9' }}
+                className="relative overflow-hidden cursor-pointer rounded-none bg-card/50"
+                style={{
+                  aspectRatio:
+                    media.aspectRatio === '1:1'
+                      ? '1'
+                      : media.aspectRatio === '9:16'
+                        ? '9/16'
+                        : '16/9',
+                }}
               >
                 {media.type === 'photo' ? (
                   <Image
                     src={media.url}
-                    alt={media.description?.es || (project?.title?.es || project?.title?.en || 'Gallery media')}
+                    alt={
+                      media.description?.es ||
+                      project?.title?.es ||
+                      project?.title?.en ||
+                      'Gallery media'
+                    }
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -272,4 +299,4 @@ export default function MediaDisplay({
       />
     </>
   );
-} 
+}

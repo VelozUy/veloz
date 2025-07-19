@@ -127,7 +127,7 @@ export default function CrewMemberAssignment({
               {selectedCrewMembers.map(crew => (
                 <div
                   key={crew.id}
-                  className="flex items-center gap-2 bg-muted rounded-lg px-3 py-2"
+                  className="flex items-center gap-2 bg-muted rounded-none px-3 py-2"
                 >
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium">
                     {crew.name.es?.charAt(0) || crew.name.en?.charAt(0) || '?'}
@@ -198,7 +198,7 @@ export default function CrewMemberAssignment({
                   filteredCrewMembers.map(crew => (
                     <div
                       key={crew.id}
-                      className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      className={`flex items-center gap-3 p-3 rounded-none border cursor-pointer transition-colors ${
                         selectedCrewMemberIds.includes(crew.id)
                           ? 'bg-primary/10 border-primary'
                           : 'hover:bg-muted'

@@ -10,6 +10,7 @@ import {
   EVENT_TYPE_LABELS_PT,
 } from '@/constants';
 import { EventType } from '@/types';
+import { useContentBackground } from '@/hooks/useBackground';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -153,6 +154,9 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   const [carouselIndices, setCarouselIndices] = useState<
     Record<string, number>
   >({});
+
+  // Use the new background system for content sections
+  const { classes: contentClasses } = useContentBackground();
 
   // Determine current locale from content
   const currentLocale = content.locale || 'es';
@@ -306,7 +310,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             {project.media.slice(0, 6).map((media, index) => (
               <div
                 key={media.id || index}
-                className="aspect-square relative overflow-hidden rounded-lg"
+                className="aspect-square relative overflow-hidden rounded-none"
               >
                 {media.type === 'video' ? (
                   <video
@@ -356,7 +360,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           {project.media.slice(0, 6).map((media, index) => (
             <div
               key={media.id || index}
-              className="aspect-square relative overflow-hidden rounded-lg"
+              className="aspect-square relative overflow-hidden rounded-none"
             >
               {media.type === 'video' ? (
                 <video
@@ -389,7 +393,26 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-16">
+    <div className={`min-h-screen pt-20 pb-16 ${contentClasses.background}`}>
+      {/* Title and Subtitle Section */}
+      <section className="px-4 md:px-8 lg:px-12">
+        <div className="w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className={`text-center py-16 ${contentClasses.text}`}
+          >
+            <h1 className="text-heading-lg font-body font-normal mb-6">
+              {uiText.title}
+            </h1>
+            <p className="text-body-lg max-w-4xl mx-auto leading-relaxed">
+              {uiText.subtitle}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Projects Full-Width Wall-to-Wall Layout */}
       {filteredProjects.length === 0 ? (
         <section className="px-4 md:px-8 lg:px-12">
@@ -397,11 +420,9 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16"
+              className={`text-center py-16 ${contentClasses.text}`}
             >
-              <div className="text-muted-foreground text-lg">
-                {uiText.noProjects}
-              </div>
+              <div className="text-lg">{uiText.noProjects}</div>
             </motion.div>
           </div>
         </section>
@@ -430,7 +451,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                   className="block"
                 >
                   <div
-                    className={`w-full hover:bg-muted/50 transition-colors duration-300 cursor-pointer ${categoryStyle.colors.background}`}
+                    className={`w-full hover:bg-gray-medium/20 transition-colors duration-300 cursor-pointer ${contentClasses.background}`}
                   >
                     {/* Project Content - Full Width */}
                     <div className="w-full px-4 md:px-8 lg:px-12 py-8">
@@ -464,32 +485,15 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
                 {/* Separator between projects (except for the last one) */}
                 {index < filteredProjects.length - 1 && (
-                  <div className="w-full py-20 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
+                  <div
+                    className={`w-full py-20 ${contentClasses.border} bg-gradient-to-r from-transparent via-gray-medium/20 to-transparent`}
+                  />
                 )}
               </motion.section>
             );
           })}
         </motion.div>
       )}
-
-      {/* Title and Subtitle Section */}
-      <section className="px-4 md:px-8 lg:px-12">
-        <div className="w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-center py-16"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              {uiText.title}
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              {uiText.subtitle}
-            </p>
-          </motion.div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="px-4 md:px-8 lg:px-12">
@@ -498,12 +502,12 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-center py-16"
+            className={`text-center py-16 ${contentClasses.text}`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            <h2 className="text-heading-md font-body font-normal mb-6">
               {uiText.readyTitle}
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            <p className="text-body-lg max-w-3xl mx-auto mb-8">
               {uiText.readySubtitle}
             </p>
             <Button
