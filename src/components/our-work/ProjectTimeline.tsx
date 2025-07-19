@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar,
@@ -31,8 +31,17 @@ interface ProjectTimelineProps {
     location?: string;
     eventType?: string;
     crewMembers?: string[];
+    timeline?: Array<{
+      id: string;
+      title: string;
+      description: string;
+      date: string;
+      status: 'completed' | 'in_progress' | 'planned';
+    }>;
   };
   className?: string;
+  enhanced?: boolean; // Enable enhanced visual design
+  onInteraction?: (action: 'view' | 'click' | 'expand') => void;
 }
 
 const getTimelinePhases = (
@@ -150,9 +159,20 @@ const getTimelinePhases = (
 export default function ProjectTimeline({
   project,
   className,
+  onInteraction,
 }: ProjectTimelineProps) {
   const [expandedPhase, setExpandedPhase] = useState<string | null>(null);
   const phases = getTimelinePhases(project);
+
+  // Track timeline view on mount
+  useEffect(() => {
+    onInteraction?.('view');
+  }, [onInteraction]);
+
+  const handlePhaseClick = (phaseId: string) => {
+    setExpandedPhase(expandedPhase === phaseId ? null : phaseId);
+    onInteraction?.('click');
+  };
 
   const getStatusColor = (status: TimelinePhase['status']) => {
     switch (status) {

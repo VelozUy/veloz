@@ -1,499 +1,523 @@
-# Gallery Portfolio Specification
+# Gallery Portfolio Specification - Project Detail Pages
 
-_Based on PearsonLyle Portfolio Analysis_
+## 🎯 Overview
 
-## 📋 Executive Summary
+This specification outlines the implementation of a modern, portfolio-quality gallery system for Veloz project detail pages. The approach focuses on creating immersive, visually stunning media presentations that showcase the company's work while maintaining excellent performance through static generation at build time.
 
-This specification outlines how to adapt the sophisticated portfolio approach from the PearsonLyle example to Veloz's **gallery projects list**, creating a more dynamic, engaging, and professional presentation of our work. The page structure and layout remain unchanged - only the projects display and filtering system will be enhanced.
+## 🏗️ Architecture Requirements
 
-## 🎯 Key Insights from Portfolio Analysis
+### Static Generation at Build Time
 
-### 1. **Responsive Picture Element Implementation**
+- **CRITICAL**: All project detail pages must be generated as static HTML at build time
+- **SEO Optimization**: Full content rendered in HTML for search engine crawlability
+- **Performance**: Zero client-side data fetching for media content
+- **Build Process**: Media content embedded in static files during `npm run build`
 
-The portfolio uses advanced `<picture>` elements with multiple `srcset` sources for optimal performance:
+### Data Flow
 
-- **Desktop (1024px+)**: 800px width images
-- **Tablet (768px+)**: 600px width images
-- **Mobile**: 400px width images
-- **Format optimization**: WebP with fallback
-- **Quality**: 100% for crisp visuals
-
-### 2. **Dynamic Grid Layout System**
-
-- **Flexible width calculations**: Each image has percentage-based widths
-- **Responsive breakpoints**: Different layouts for mobile/desktop
-- **Gap management**: Consistent 8px (mobile) / 6px (desktop) spacing
-- **Aspect ratio handling**: Maintains visual harmony across different image sizes
-
-### 3. **Interactive Lightbox Gallery**
-
-- **GLightbox integration**: Professional lightbox with gallery grouping
-- **Hover effects**: 50% opacity on hover with 700ms transition
-- **Gallery organization**: Separate galleries per category (gallery-1, gallery-2, etc.)
-
-### 4. **Category-Based Navigation**
-
-- **Horizontal desktop navigation**: Clean underline styling
-- **Mobile dropdown**: Collapsible with smooth animations
-- **Active state management**: Visual feedback for current category
-
-## 🏗️ Technical Implementation Plan
-
-**CRITICAL REQUIREMENT: Static Build-Time Generation**
-All gallery components and pages MUST be generated during build time as static pages. This is a fundamental requirement for Veloz's architecture to ensure:
-
-- Optimal SEO performance with server-side rendering
-- Fast loading times with pre-generated content
-- No client-side data fetching or real-time listeners
-- Consistent with existing build-time data generation pattern
-
-**SCOPE CLARIFICATION:**
-This enhancement focuses ONLY on the projects list display within the existing gallery page structure. The page layout, header, footer, and overall page structure remain unchanged. Only the projects grid, filtering, and individual project presentation will be enhanced with portfolio-inspired features.
-
-### Phase 1: Enhanced Media Component
-
-#### 1.1 Responsive Picture Component
-
-```typescript
-interface ResponsivePictureProps {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
-  loading?: 'lazy' | 'eager';
-  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
-}
-
-// Implementation with Cloudinary/Firebase Storage optimization
-// NOTE: This component will be used in static build-time generation
-const ResponsivePicture = ({ src, alt, width, height, className, loading = 'lazy', aspectRatio }: ResponsivePictureProps) => {
-  const generateSrcSet = (baseUrl: string, sizes: number[]) => {
-    return sizes.map(size => `${baseUrl}?w=${size}&q=100&auto=format&fit=clip`).join(', ');
-  };
-
-  return (
-    <picture>
-      <source
-        srcSet={generateSrcSet(src, [800, 1200])}
-        media="(min-width: 1024px)"
-      />
-      <source
-        srcSet={generateSrcSet(src, [600, 800])}
-        media="(min-width: 768px)"
-      />
-      <img
-        src={`${src}?w=400&q=100&auto=format&fit=clip`}
-        width={width}
-        height={height}
-        className={`w-full h-full object-cover ${className}`}
-        alt={alt}
-        loading={loading}
-      />
-    </picture>
-  );
-};
+```
+Firestore → Build Script → Static JSON → Static HTML → Deploy
 ```
 
-#### 1.2 Dynamic Grid Layout System
+## 🎨 Design Approach
+
+### Visual Philosophy
+
+- **Immersive Experience**: Full-width, edge-to-edge media presentation
+- **Professional Quality**: Portfolio-grade visual presentation
+- **Responsive Design**: Optimized for all device sizes
+- **Performance First**: Optimized images and lazy loading
+- **Accessibility**: Proper ARIA labels and keyboard navigation
+
+### Layout Structure
+
+#### 1. Hero Section (Optional)
+
+- **Full-width hero media** (image or video)
+- **Overlay text** with project title and category
+- **Parallax effect** for depth and immersion
+- **Responsive behavior** with mobile-optimized layouts
+
+#### 2. Project Timeline/Chronology Section (PRESERVED & ENHANCED)
+
+- **CRITICAL**: Maintain existing `ProjectTimeline` component functionality
+- **Enhanced visual design** with improved animations and styling
+- **Interactive timeline phases** with expandable details
+- **Professional presentation** of project workflow
+- **Call-to-action integration** for lead generation
+- **Responsive timeline** with mobile-optimized layout
+- **Accessibility features** with proper ARIA labels and keyboard navigation
+
+#### 3. Media Gallery Grid
+
+- **Masonry layout** for dynamic, Pinterest-style presentation
+- **Responsive columns**: 4 columns (desktop) → 3 (tablet) → 2 (mobile) → 1 (small mobile)
+- **Aspect ratio preservation** with proper image scaling
+- **Hover effects** with subtle animations
+- **Lightbox integration** for full-screen viewing
+
+#### 4. Media Item Components
+
+- **Image optimization** with Next.js Image component
+- **Video support** with custom controls and autoplay
+- **Lazy loading** for performance
+- **Caption overlay** on hover (optional)
+- **Download/Share functionality** (optional)
+
+#### 5. Meet the Team Section (PRESERVED & ENHANCED)
+
+- **CRITICAL**: Maintain existing `MeetTheTeam` component functionality
+- **Crew member profiles** with portraits, names, roles, and bios
+- **Skills display** with badges and expertise indicators
+- **Social media links** (Instagram, LinkedIn, Website, Email)
+- **Analytics tracking** for crew member interactions
+- **Responsive grid layout** (1 column mobile, 2 tablet, 3 desktop)
+- **Professional presentation** with hover effects and transitions
+- **Multi-language support** (Spanish, English, Portuguese)
+- **Accessibility features** with proper ARIA labels
+
+## 🧩 Component Architecture
+
+### 1. ProjectDetailGallery (Main Component)
+
+```typescript
+interface ProjectDetailGalleryProps {
+  project: {
+    id: string;
+    title: string;
+    description?: string;
+    eventType?: string;
+    media: ProjectMedia[];
+    heroMedia?: ProjectMedia;
+    eventDate?: string;
+    location?: string;
+    crewMembers?: string[];
+  };
+  layout?: 'masonry' | 'grid' | 'timeline';
+  showHero?: boolean;
+  showTimeline?: boolean; // CRITICAL: Preserve timeline functionality
+  className?: string;
+}
+```
+
+### 2. GalleryGrid (Layout Component)
 
 ```typescript
 interface GalleryGridProps {
-  media: Array<{
-    id: string;
-    type: 'photo' | 'video';
-    url: string;
-    aspectRatio: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
-    width: number;
-    height: number;
-    alt: string;
-  }>;
-  layout: 'masonry' | 'grid' | 'masonry-responsive';
+  media: ProjectMedia[];
+  columns?: number;
   gap?: number;
+  className?: string;
 }
-
-// Responsive width calculation based on aspect ratio
-const calculateResponsiveWidth = (
-  aspectRatio: string,
-  containerWidth: number
-) => {
-  const ratios = {
-    '1:1': 1,
-    '16:9': 1.78,
-    '9:16': 0.56,
-    '4:3': 1.33,
-    '3:4': 0.75,
-  };
-
-  return Math.min(containerWidth * 0.8, containerWidth / ratios[aspectRatio]);
-};
 ```
 
-### Phase 2: Enhanced Projects Filtering System
-
-#### 2.1 Desktop Filter Navigation
+### 3. GalleryItem (Individual Media)
 
 ```typescript
-interface ProjectsFilterProps {
-  eventTypes: Array<{
+interface GalleryItemProps {
+  media: ProjectMedia;
+  index: number;
+  onClick?: (media: ProjectMedia) => void;
+  className?: string;
+}
+```
+
+### 4. HeroSection (Optional)
+
+```typescript
+interface HeroSectionProps {
+  media: ProjectMedia;
+  title: string;
+  category?: string;
+  description?: string;
+  className?: string;
+}
+```
+
+### 5. ProjectTimeline (PRESERVED & ENHANCED)
+
+```typescript
+interface ProjectTimelineProps {
+  project: {
     id: string;
-    name: string;
-    slug: string;
-    count: number;
-  }>;
-  activeFilter: string;
-  onFilterChange: (filter: string) => void;
+    title: string;
+    eventDate?: string;
+    location?: string;
+    eventType?: string;
+    crewMembers?: string[];
+  };
+  className?: string;
+  enhanced?: boolean; // Enable enhanced visual design
+}
+```
+
+### 6. MeetTheTeam (PRESERVED & ENHANCED)
+
+```typescript
+interface MeetTheTeamProps {
+  crewMemberIds: string[];
+  language?: 'es' | 'en' | 'pt';
+  className?: string;
+  projectId?: string; // For analytics tracking
+  enhanced?: boolean; // Enable enhanced visual design
+}
+```
+
+## 📱 Responsive Design Specifications
+
+### Breakpoint Strategy
+
+- **Desktop (1200px+)**: 4-column masonry layout
+- **Tablet (768px-1199px)**: 3-column layout
+- **Mobile (480px-767px)**: 2-column layout
+- **Small Mobile (<480px)**: 1-column layout
+
+### Media Optimization
+
+- **Image formats**: WebP with JPEG fallback
+- **Video formats**: MP4 with H.264 codec
+- **Lazy loading**: Intersection Observer API
+- **Progressive loading**: Blur-up effect for images
+
+## 🎭 Interactive Features
+
+### Lightbox Integration
+
+- **GLightbox library** for full-screen viewing
+- **Gallery navigation** with keyboard controls
+- **Touch gestures** for mobile devices
+- **Zoom functionality** for detailed viewing
+- **Social sharing** integration
+
+### Hover Effects
+
+- **Subtle scale animation** (1.02x on hover)
+- **Brightness adjustment** (+10% on hover)
+- **Caption overlay** with project information
+- **Smooth transitions** (300ms duration)
+
+### Keyboard Navigation
+
+- **Tab navigation** through all media items
+- **Enter/Space** to open lightbox
+- **Arrow keys** for lightbox navigation
+- **Escape** to close lightbox
+
+## 🚀 Performance Optimizations
+
+### Image Optimization
+
+```typescript
+// Next.js Image component with optimization
+<Image
+  src={media.url}
+  alt={media.alt}
+  width={media.width}
+  height={media.height}
+  className="object-cover"
+  sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+  priority={index < 4} // Prioritize first 4 images
+  placeholder="blur"
+  blurDataURL={media.blurDataURL}
+/>
+```
+
+### Video Optimization
+
+```typescript
+// Optimized video component
+<video
+  src={media.url}
+  className="object-cover"
+  muted
+  loop
+  playsInline
+  preload="metadata"
+  poster={media.poster}
+/>
+```
+
+### Lazy Loading Strategy
+
+- **Intersection Observer** for viewport-based loading
+- **Progressive loading** with skeleton placeholders
+- **Priority loading** for above-the-fold content
+
+## 🎨 Visual Design Specifications
+
+### Color Scheme
+
+- **Background**: `var(--background)` (Veloz primary dark)
+- **Text**: `var(--foreground)` (White)
+- **Accent**: `var(--primary)` (Veloz accent blue)
+- **Muted**: `var(--muted-foreground)` (Medium grey)
+
+### Typography
+
+- **Project Title**: `font-display text-4xl font-bold`
+- **Category Badge**: `font-body text-sm font-medium`
+- **Caption Text**: `font-body text-sm text-muted-foreground`
+
+### Spacing System
+
+- **Grid Gap**: `gap-4 md:gap-6 lg:gap-8`
+- **Section Padding**: `py-12 md:py-16 lg:py-20`
+- **Item Margin**: `mb-4 md:mb-6`
+
+## 🔧 Technical Implementation
+
+### Static Generation Process
+
+```typescript
+// Generate static params at build time
+export async function generateStaticParams() {
+  const content = getStaticContent('es');
+
+  return (
+    content.content.projects?.map(project => ({
+      slug: project.slug || project.id,
+    })) || []
+  );
 }
 
-const ProjectsFilterNavigation = ({ eventTypes, activeFilter, onFilterChange }: ProjectsFilterProps) => {
-  return (
-    <ul className="hidden md:flex justify-center items-center gap-8 h3">
-      {eventTypes.map(eventType => (
-        <li key={eventType.id}>
-          <button
-            onClick={() => onFilterChange(eventType.slug)}
-            className={`underline-offset-8 decoration-1 hover:text-grey transition-colors duration-300 ${
-              activeFilter === eventType.slug ? 'underline' : ''
-            }`}
-          >
-            {eventType.name}
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-};
-```
+// Generate metadata for SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const project = findProjectBySlug(slug);
 
-#### 2.2 Mobile Filter Dropdown
-
-```typescript
-const MobileProjectsFilterDropdown = ({ eventTypes, activeFilter, onFilterChange }: ProjectsFilterProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="relative h-14 z-30 md:hidden" x-data="{active: activeFilter, open: false}">
-      <ul className="flex flex-col absolute top-0 min-h-[3.5rem] inset-x-0 bg-white border border-black rounded-sm text-center h3">
-        {eventTypes.map(eventType => (
-          <li key={eventType.id} x-show="open || active == eventType.slug" x-cloak>
-            <button
-              className="p-4 block w-full text-left"
-              onClick={() => {
-                onFilterChange(eventType.slug);
-                setIsOpen(false);
-              }}
-            >
-              {eventType.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <i className="w-6 block absolute right-4 top-4" :class="{'rotate-180': open}">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" className="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-      </i>
-    </div>
-  );
-};
-```
-
-### Phase 3: Lightbox Integration
-
-#### 3.1 GLightbox Setup
-
-```typescript
-// Install: npm install glightbox
-import GLightbox from 'glightbox';
-import 'glightbox/dist/css/glightbox.min.css';
-
-const initializeLightbox = () => {
-  GLightbox({
-    selector: '.glightbox',
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: true,
-    plyr: {
-      css: 'https://cdn.plyr.io/3.6.8/plyr.css',
-      js: 'https://cdn.plyr.io/3.6.8/plyr.js',
+  return {
+    title: `${project.title} - Veloz`,
+    description: project.description,
+    openGraph: {
+      images: project.media?.slice(0, 3).map(m => m.url) || [],
     },
+  };
+}
+```
+
+### Media Data Structure
+
+```typescript
+interface ProjectMedia {
+  id: string;
+  type: 'photo' | 'video';
+  url: string;
+  alt: string;
+  width: number;
+  height: number;
+  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:5';
+  caption?: Record<string, string>;
+  tags?: string[];
+  featured?: boolean;
+  order: number;
+  blurDataURL?: string; // For progressive loading
+  poster?: string; // For video thumbnails
+}
+```
+
+### Build-Time Data Fetching
+
+```typescript
+// scripts/build-data.js enhancement
+const fetchProjectMedia = async (projectId: string) => {
+  const mediaSnapshot = await getDocs(
+    collection(db, 'projects', projectId, 'media')
+  );
+
+  return mediaSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+    // Generate blur data URLs for images
+    blurDataURL: await generateBlurDataURL(doc.data().url),
+  }));
+};
+```
+
+## 📊 Analytics Integration
+
+### Event Tracking
+
+```typescript
+// Track gallery interactions
+const trackGalleryInteraction = (projectId: string, action: string) => {
+  gtag('event', 'gallery_interaction', {
+    project_id: projectId,
+    action: action, // 'view', 'zoom', 'share', 'download'
+    timestamp: Date.now(),
   });
 };
 ```
 
-#### 3.2 Gallery Item Component
+### Performance Monitoring
+
+- **Core Web Vitals** tracking
+- **Image loading times** monitoring
+- **User interaction** analytics
+- **Conversion tracking** for contact form submissions
+
+## 🔒 Security & Privacy
+
+### Content Security Policy
+
+```html
+<!-- CSP for media content -->
+<meta
+  http-equiv="Content-Security-Policy"
+  content="img-src 'self' data: https:; 
+               media-src 'self' https:; 
+               script-src 'self' 'unsafe-inline';"
+/>
+```
+
+### Privacy Considerations
+
+- **No tracking pixels** in media content
+- **Respect user preferences** for analytics
+- **GDPR compliance** for data collection
+- **Secure media URLs** with proper access controls
+
+## 🧪 Testing Strategy
+
+### Unit Tests
 
 ```typescript
-interface GalleryItemProps {
-  media: {
-    id: string;
-    type: 'photo' | 'video';
-    url: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
-  galleryGroup: string;
-  className?: string;
-  style?: React.CSSProperties;
-}
+// Test gallery components
+describe('ProjectDetailGallery', () => {
+  it('renders media items correctly', () => {
+    // Test media rendering
+  });
 
-const GalleryItem = ({ media, galleryGroup, className, style }: GalleryItemProps) => {
-  return (
-    <div className={`relative text-center flex flex-col group gs-asset mobile:!w-full ${className}`} style={style}>
-      <a
-        href={media.url}
-        className="absolute inset-0 glightbox z-10"
-        data-gallery={galleryGroup}
-      />
+  it('handles empty media gracefully', () => {
+    // Test empty state
+  });
 
-      <figure className="flex-1 relative group-hover:opacity-50 transition-opacity duration-700">
-        <ResponsivePicture
-          src={media.url}
-          alt={media.alt}
-          width={media.width}
-          height={media.height}
-          className="w-full h-full object-cover"
-        />
-      </figure>
-    </div>
-  );
-};
+  it('supports keyboard navigation', () => {
+    // Test accessibility
+  });
+});
 ```
 
-### Phase 4: Enhanced Projects Display Layout
+### Integration Tests
 
-#### 4.1 Dynamic Projects Row Generation
+- **Build process** verification
+- **Static generation** testing
+- **Performance benchmarks**
+- **Cross-browser compatibility**
 
-```typescript
-interface ProjectsRowProps {
-  projects: Array<{
-    id: string;
-    title: string;
-    eventType: string;
-    media: Array<{
-      id: string;
-      type: 'photo' | 'video';
-      url: string;
-      width: number;
-      height: number;
-      alt: string;
-    }>;
-  }>;
-  layout: 'flex' | 'grid';
-  gap?: number;
-  dataWidth?: number;
-}
+### Visual Regression Tests
 
-// NOTE: This component will be used in static build-time generation
-// All project data comes from build-time generated content files
-const ProjectsRow = ({ projects, layout, gap = 6, dataWidth }: ProjectsRowProps) => {
-  const calculateProjectWidth = (index: number, total: number) => {
-    // Implement dynamic width calculation based on project media aspect ratios
-    // Similar to portfolio example's percentage-based system
-    const aspectRatios = projects.map(project => {
-      const primaryMedia = project.media[0];
-      const ratio = primaryMedia.width / primaryMedia.height;
-      return ratio > 1.5 ? 'landscape' : ratio < 0.7 ? 'portrait' : 'square';
-    });
+- **Screenshot comparison** for layout changes
+- **Responsive design** verification
+- **Animation consistency** checks
 
-    // Calculate optimal widths based on aspect ratios
-    return calculateOptimalWidths(aspectRatios, total);
-  };
+## 📈 Performance Benchmarks
 
-  return (
-    <div
-      className={`flex flex-wrap md:flex-nowrap md:items-stretch md:justify-start gap-8 md:gap-${gap}`}
-      data-width={dataWidth}
-    >
-      {projects.map((project, index) => (
-        <ProjectItem
-          key={project.id}
-          project={project}
-          galleryGroup="projects-gallery"
-          style={{ width: `${calculateProjectWidth(index, projects.length)}%` }}
-        />
-      ))}
-    </div>
-  );
-};
+### Target Metrics
+
+- **First Contentful Paint**: < 1.5s
+- **Largest Contentful Paint**: < 2.5s
+- **Cumulative Layout Shift**: < 0.1
+- **Time to Interactive**: < 3.5s
+
+### Optimization Strategies
+
+- **Image compression** and format optimization
+- **Video compression** and adaptive streaming
+- **Code splitting** for non-critical features
+- **CDN delivery** for media assets
+
+## 🚀 Deployment Considerations
+
+### Build Process
+
+```bash
+# Enhanced build script
+npm run build:data    # Fetch all media and generate static content
+npm run build         # Generate static pages with embedded media
+npm run export        # Export static files for deployment
 ```
 
-## 🎨 Design System Integration
+### CDN Configuration
 
-### Color Scheme Adaptation
+- **Media asset caching** (1 year for images, 1 month for videos)
+- **Gzip compression** for all assets
+- **HTTP/2 support** for parallel loading
+- **Edge caching** for global performance
 
-```css
-/* Portfolio-inspired color palette for Veloz */
-:root {
-  --veloz-primary: #1a1a1a; /* Deep black for elegance */
-  --veloz-secondary: #666666; /* Warm grey for warmth */
-  --veloz-accent: #f5f5f5; /* Light grey for effectiveness */
-  --veloz-background: #ffffff; /* Clean white background */
-  --veloz-border: #e5e5e5; /* Subtle borders */
-  --veloz-hover: #f0f0f0; /* Hover states */
-}
-```
+## 📋 Implementation Checklist
 
-### Typography System
+### Phase 1: Core Gallery Components
 
-```css
-/* Typography hierarchy inspired by portfolio */
-.h1 {
-  @apply text-4xl md:text-5xl lg:text-6xl font-serif font-light;
-}
+- [ ] Create `ProjectDetailGallery` component
+- [ ] Implement `GalleryGrid` with masonry layout
+- [ ] Build `GalleryItem` with hover effects
+- [ ] Add `HeroSection` component (optional)
+- [ ] **CRITICAL**: Preserve and enhance `ProjectTimeline` component
+- [ ] **CRITICAL**: Preserve and enhance `MeetTheTeam` component
+- [ ] Integrate GLightbox for lightbox functionality
 
-.h2 {
-  @apply text-2xl md:text-3xl lg:text-4xl font-serif font-light;
-}
+### Phase 2: Static Generation
 
-.h3 {
-  @apply text-lg md:text-xl lg:text-2xl font-sans font-medium;
-}
+- [ ] Enhance build script to fetch media data
+- [ ] Generate static params for all projects
+- [ ] Create metadata generation for SEO
+- [ ] Implement image optimization pipeline
+- [ ] Add video optimization and poster generation
+- [ ] **CRITICAL**: Ensure timeline data is included in static generation
+- [ ] **CRITICAL**: Ensure crew member data is included in static generation
 
-/* Navigation typography */
-.nav-link {
-  @apply font-sans text-sm uppercase tracking-wider;
-}
-```
+### Phase 3: Performance & Polish
 
-## 📱 Responsive Behavior
+- [ ] Implement lazy loading strategy
+- [ ] Add progressive image loading
+- [ ] Optimize for Core Web Vitals
+- [ ] Add analytics tracking
+- [ ] Implement accessibility features
+- [ ] **CRITICAL**: Enhance timeline animations and interactions
+- [ ] **CRITICAL**: Enhance crew member presentation and interactions
 
-### Breakpoint Strategy
+### Phase 4: Testing & Deployment
 
-- **Mobile (< 768px)**: Single column, full-width images
-- **Tablet (768px - 1024px)**: 2-3 column grid
-- **Desktop (> 1024px)**: Dynamic multi-column layout
+- [ ] Write comprehensive test suite
+- [ ] Perform cross-browser testing
+- [ ] Optimize for mobile devices
+- [ ] Configure CDN and caching
+- [ ] Monitor performance metrics
+- [ ] **CRITICAL**: Test timeline functionality across all devices
+- [ ] **CRITICAL**: Test crew member functionality across all devices
 
-### Performance Optimizations
+## 🎯 Success Criteria
 
-1. **Lazy loading**: All images use `loading="lazy"`
-2. **Progressive enhancement**: Core content loads first
-3. **Image optimization**: Multiple sizes for different devices
-4. **Smooth animations**: CSS transitions for interactions
+### Technical Success
 
-## 🔧 Implementation Checklist
+- ✅ All pages generated as static HTML at build time
+- ✅ Lighthouse performance score > 90
+- ✅ Accessibility score > 95
+- ✅ SEO score > 90
+- ✅ Cross-browser compatibility verified
 
-### Phase 1: Foundation (Week 1)
+### User Experience Success
 
-- [ ] Create ResponsivePicture component for project media
-- [ ] Implement dynamic width calculation system for projects
-- [ ] Set up GLightbox integration for project galleries
-- [ ] Create enhanced project display component
-- [ ] **CRITICAL**: Ensure all components work with static build-time generation
-- [ ] **CRITICAL**: Test with existing `getStaticContent()` pattern
+- ✅ Smooth, responsive gallery navigation
+- ✅ Fast loading times on all devices
+- ✅ Intuitive lightbox interaction
+- ✅ Professional visual presentation
+- ✅ Accessible keyboard navigation
+- ✅ **CRITICAL**: Timeline/chronology functionality preserved and enhanced
+- ✅ **CRITICAL**: Meet the Team functionality preserved and enhanced
 
-### Phase 2: Projects Filtering (Week 2)
+### Business Success
 
-- [ ] Build desktop projects filter navigation
-- [ ] Implement mobile projects filter dropdown
-- [ ] Add active state management for filters
-- [ ] Integrate with existing event type filtering system
-- [ ] **CRITICAL**: Verify filtering works with static content files
-
-### Phase 3: Projects Layout System (Week 3)
-
-- [ ] Create dynamic projects row generation
-- [ ] Implement aspect ratio-based project layouts
-- [ ] Add responsive gap management for projects
-- [ ] Test with various project media combinations
-- [ ] **CRITICAL**: Ensure all project layouts render correctly at build time
-
-### Phase 4: Polish & Testing (Week 4)
-
-- [ ] Add hover effects and animations for projects
-- [ ] Implement loading states for project media
-- [ ] Test performance across devices
-- [ ] Optimize for SEO
-- [ ] **CRITICAL**: Verify static generation works for all locales (es, en, pt)
-- [ ] **CRITICAL**: Test build process and deployment
-
-## 🎯 Expected Outcomes
-
-### User Experience Improvements
-
-1. **Faster loading**: Optimized project images reduce load times by 40-60%
-2. **Better mobile experience**: Responsive project display works seamlessly across devices
-3. **Professional presentation**: Portfolio-quality project lightbox provides premium feel
-4. **Improved project discovery**: Enhanced filtering system makes finding relevant projects easier
-
-### Technical Benefits
-
-1. **SEO optimization**: Proper image alt tags and structured data
-2. **Performance**: Lazy loading and optimized assets
-3. **Maintainability**: Modular component system
-4. **Scalability**: Easy to add new categories and media types
-5. **Static Generation**: All content pre-rendered at build time for optimal performance
-6. **No Client-Side Data Fetching**: Eliminates loading states and improves reliability
-
-### Business Impact
-
-1. **Increased engagement**: Professional project presentation encourages exploration
-2. **Better conversion**: Clear project filtering guides users to relevant content
-3. **Brand enhancement**: Sophisticated project display reinforces Veloz's professional image
-4. **Mobile optimization**: Better project browsing experience for mobile users (60%+ of traffic)
-
-## 🔗 Integration with Existing System
-
-### Build-Time Static Generation
-
-- **Content Files**: Use existing `content-es.json`, `content-en.json`, `content-pt.json` from build process
-- **Static Rendering**: All gallery pages generated at build time using `getStaticContent()`
-- **No Client-Side Fetching**: All data comes from pre-generated static files
-- **SEO Optimization**: Server-side rendered content for optimal search engine crawlability
-- **Performance**: Pre-generated HTML for fastest possible loading
-
-### Content Management
-
-- **Admin Panel**: Add category management interface
-- **Media Upload**: Support for multiple aspect ratios
-- **Metadata**: Enhanced alt text and description fields
-- **Ordering**: Drag-and-drop gallery item ordering
-- **Build Trigger**: Changes trigger automatic rebuild and deployment
-
-### SEO Integration
-
-- **Structured Data**: Gallery schema markup
-- **Meta Tags**: Category-specific meta descriptions
-- **Sitemap**: Dynamic sitemap generation for categories
-- **Social Sharing**: Optimized Open Graph images
-- **Static URLs**: All gallery URLs pre-generated at build time
-
-### Analytics Integration
-
-- **Project Interactions**: Track which project types are most viewed
-- **Project Media Performance**: Monitor which project images/videos get most engagement
-- **User Journey**: Understand how users navigate through projects
-- **Conversion Tracking**: Measure project browsing-to-contact form conversions
+- ✅ Improved page load times
+- ✅ Enhanced SEO rankings
+- ✅ Increased user engagement
+- ✅ Better conversion rates
+- ✅ Reduced server costs through static generation
+- ✅ **CRITICAL**: Timeline section drives lead generation and trust building
+- ✅ **CRITICAL**: Meet the Team section builds credibility and personal connections
 
 ---
 
-## 🚨 **CRITICAL ARCHITECTURE REQUIREMENT**
+**Note**: This specification ensures that the gallery implementation maintains the high-quality, professional standards expected for Veloz's portfolio while leveraging modern web technologies for optimal performance and user experience. The static generation approach guarantees fast loading times and excellent SEO performance.
 
-**Static Build-Time Generation is MANDATORY**
-
-All gallery components and pages MUST follow Veloz's established pattern:
-
-1. **Data Source**: Use `getStaticContent()` to access pre-generated content files
-2. **Build Process**: All gallery pages generated during `npm run build`
-3. **No Client-Side Fetching**: Zero real-time data fetching or Firestore listeners
-4. **SEO Optimization**: Server-side rendered content for search engines
-5. **Performance**: Pre-generated HTML for instant loading
-
-**Implementation Pattern:**
-
-```typescript
-// Gallery page must follow this pattern
-export default function GalleryPage() {
-  const content = getStaticContent('es'); // Static content at build time
-
-  return (
-    <div className="relative min-h-screen w-full bg-background">
-      <GalleryContent content={content} /> {/* Static rendered */}
-      <ContactWidget language={content.locale} />
-    </div>
-  );
-}
-```
-
-_This specification provides a comprehensive roadmap for transforming Veloz's gallery into a sophisticated, portfolio-quality presentation system that maintains the brand's elegance while significantly improving user experience and technical performance. All implementations MUST follow the static build-time generation pattern._
+**CRITICAL PRESERVATION**: The Project Timeline/Chronology section and Meet the Team section are key differentiators for Veloz, showcasing the professional workflow and building trust with potential clients. These components must be preserved and enhanced, not replaced, in any gallery implementation.

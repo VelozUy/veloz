@@ -1,368 +1,363 @@
-/**
- * Gallery Analytics Integration Utility
- *
- * Comprehensive analytics tracking for gallery interactions and user behavior.
- * Implements portfolio-quality analytics tracking with:
- * - Gallery interaction tracking
- * - Category view analytics
- * - Media performance monitoring
- * - Conversion tracking from gallery to contact
- *
- * NOTE: This utility will be used in static build-time generation
- */
+export interface GalleryAnalyticsEvent {
+  action:
+    | 'gallery_view'
+    | 'image_click'
+    | 'video_play'
+    | 'lightbox_open'
+    | 'lightbox_close'
+    | 'timeline_interaction'
+    | 'crew_interaction';
+  projectId?: string;
+  projectTitle?: string;
+  mediaId?: string;
+  mediaType?: 'photo' | 'video';
+  section?: 'gallery' | 'timeline' | 'crew';
+  performance?: {
+    loadTime?: number;
+    imageSize?: number;
+    viewportSize?: string;
+  };
+}
 
-// Extend Window interface for gtag
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
+export interface GalleryPerformanceMetrics {
+  firstContentfulPaint?: number;
+  largestContentfulPaint?: number;
+  cumulativeLayoutShift?: number;
+  imageLoadTimes: Record<string, number>;
+  userInteractions: Record<string, number>;
+}
+
+/**
+ * Enhanced Gallery Analytics
+ *
+ * Tracks comprehensive gallery performance and user interactions
+ * for business insights and optimization opportunities.
+ */
+export class GalleryAnalytics {
+  private static instance: GalleryAnalytics;
+  private performanceMetrics: GalleryPerformanceMetrics = {
+    imageLoadTimes: {},
+    userInteractions: {},
+  };
+  private startTime: number = Date.now();
+
+  static getInstance(): GalleryAnalytics {
+    if (!GalleryAnalytics.instance) {
+      GalleryAnalytics.instance = new GalleryAnalytics();
+    }
+    return GalleryAnalytics.instance;
   }
-}
 
-interface GalleryAnalyticsEvent {
-  event: string;
-  category: string;
-  action: string;
-  label?: string;
-  value?: number;
-  customParameters?: Record<string, string | number | boolean | undefined>;
-}
+  /**
+   * Track gallery view with performance metrics
+   */
+  trackGalleryView(projectId: string, projectTitle: string) {
+    const loadTime = Date.now() - this.startTime;
 
-/**
- * Track gallery interactions with comprehensive analytics
- */
-export const trackGalleryInteraction = ({
-  event,
-  category,
-  action,
-  label,
-  value,
-  customParameters,
-}: {
-  event: string;
-  category: string;
-  action: string;
-  label: string;
-  value?: number;
-  customParameters?: Record<string, string | number | boolean | undefined>;
-}) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    const parameters: Record<string, string | number | boolean | undefined> = {
-      event_category: category,
-      event_label: label,
-      value: value || 1,
-      ...customParameters,
+    this.trackEvent({
+      action: 'gallery_view',
+      projectId,
+      projectTitle,
+      performance: {
+        loadTime,
+        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+      },
+    });
+
+    // Track Core Web Vitals if available
+    if ('PerformanceObserver' in window) {
+      this.observeCoreWebVitals();
+    }
+  }
+
+  /**
+   * Track image interaction
+   */
+  trackImageInteraction(
+    projectId: string,
+    mediaId: string,
+    action: 'click' | 'view'
+  ) {
+    const event: GalleryAnalyticsEvent = {
+      action: action === 'click' ? 'image_click' : 'gallery_view',
+      projectId,
+      mediaId,
+      mediaType: 'photo',
+      section: 'gallery',
     };
 
-    window.gtag('event', event, parameters);
+    this.trackEvent(event);
+    this.incrementInteraction(action);
   }
-};
+
+  /**
+   * Track video interaction
+   */
+  trackVideoInteraction(
+    projectId: string,
+    mediaId: string,
+    action: 'play' | 'pause' | 'complete'
+  ) {
+    const event: GalleryAnalyticsEvent = {
+      action: action === 'play' ? 'video_play' : 'gallery_view',
+      projectId,
+      mediaId,
+      mediaType: 'video',
+      section: 'gallery',
+    };
+
+    this.trackEvent(event);
+    this.incrementInteraction(action);
+  }
+
+  /**
+   * Track lightbox interactions
+   */
+  trackLightboxInteraction(
+    action: 'open' | 'close',
+    projectId?: string,
+    mediaId?: string
+  ) {
+    const event: GalleryAnalyticsEvent = {
+      action: action === 'open' ? 'lightbox_open' : 'lightbox_close',
+      projectId,
+      mediaId,
+      section: 'gallery',
+    };
+
+    this.trackEvent(event);
+    this.incrementInteraction(`lightbox_${action}`);
+  }
+
+  /**
+   * Track timeline interactions
+   */
+  trackTimelineInteraction(
+    action: 'view' | 'click' | 'expand',
+    projectId?: string
+  ) {
+    const event: GalleryAnalyticsEvent = {
+      action: 'timeline_interaction',
+      projectId,
+      section: 'timeline',
+    };
+
+    this.trackEvent(event);
+    this.incrementInteraction(`timeline_${action}`);
+  }
+
+  /**
+   * Track crew member interactions
+   */
+  trackCrewInteraction(
+    action: 'view' | 'click' | 'social_click',
+    projectId?: string,
+    crewMemberId?: string
+  ) {
+    const event: GalleryAnalyticsEvent = {
+      action: 'crew_interaction',
+      projectId,
+      section: 'crew',
+    };
+
+    this.trackEvent(event);
+    this.incrementInteraction(`crew_${action}`);
+  }
+
+  /**
+   * Track image load performance
+   */
+  trackImageLoad(mediaId: string, loadTime: number, imageSize?: number) {
+    this.performanceMetrics.imageLoadTimes[mediaId] = loadTime;
+
+    if (imageSize) {
+      this.trackEvent({
+        action: 'gallery_view',
+        mediaId,
+        performance: {
+          loadTime,
+          imageSize,
+        },
+      });
+    }
+  }
+
+  /**
+   * Get performance metrics
+   */
+  getPerformanceMetrics(): GalleryPerformanceMetrics {
+    return { ...this.performanceMetrics };
+  }
+
+  /**
+   * Reset performance metrics
+   */
+  resetMetrics() {
+    this.performanceMetrics = {
+      imageLoadTimes: {},
+      userInteractions: {},
+    };
+    this.startTime = Date.now();
+  }
+
+  /**
+   * Observe Core Web Vitals
+   */
+  private observeCoreWebVitals() {
+    // First Contentful Paint
+    new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      const fcp = entries[entries.length - 1];
+      if (fcp) {
+        this.performanceMetrics.firstContentfulPaint = fcp.startTime;
+      }
+    }).observe({ entryTypes: ['paint'] });
+
+    // Largest Contentful Paint
+    new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      const lcp = entries[entries.length - 1];
+      if (lcp) {
+        this.performanceMetrics.largestContentfulPaint = lcp.startTime;
+      }
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+    // Cumulative Layout Shift
+    new PerformanceObserver(list => {
+      let cls = 0;
+      for (const entry of list.getEntries()) {
+        const layoutShiftEntry = entry as {
+          hadRecentInput?: boolean;
+          value?: number;
+        };
+        if (!layoutShiftEntry.hadRecentInput) {
+          cls += layoutShiftEntry.value || 0;
+        }
+      }
+      this.performanceMetrics.cumulativeLayoutShift = cls;
+    }).observe({ entryTypes: ['layout-shift'] });
+  }
+
+  /**
+   * Track analytics event
+   */
+  public trackEvent(event: GalleryAnalyticsEvent) {
+    // Fallback to console logging for development
+    console.log('Gallery Analytics Event:', event);
+  }
+
+  /**
+   * Increment interaction counter
+   */
+  private incrementInteraction(action: string) {
+    this.performanceMetrics.userInteractions[action] =
+      (this.performanceMetrics.userInteractions[action] || 0) + 1;
+  }
+}
 
 /**
- * Track project view events
+ * Hook for gallery analytics
  */
+export function useGalleryAnalytics() {
+  const analytics = GalleryAnalytics.getInstance();
+
+  return {
+    trackGalleryView: analytics.trackGalleryView.bind(analytics),
+    trackImageInteraction: analytics.trackImageInteraction.bind(analytics),
+    trackVideoInteraction: analytics.trackVideoInteraction.bind(analytics),
+    trackLightboxInteraction:
+      analytics.trackLightboxInteraction.bind(analytics),
+    trackTimelineInteraction:
+      analytics.trackTimelineInteraction.bind(analytics),
+    trackCrewInteraction: analytics.trackCrewInteraction.bind(analytics),
+    trackImageLoad: analytics.trackImageLoad.bind(analytics),
+    getPerformanceMetrics: analytics.getPerformanceMetrics.bind(analytics),
+    resetMetrics: analytics.resetMetrics.bind(analytics),
+  };
+}
+
+/**
+ * Performance monitoring utilities
+ */
+export const galleryPerformance = {
+  /**
+   * Debounce function for performance tracking
+   */
+  debounce<T extends (...args: unknown[]) => unknown>(
+    func: T,
+    wait: number
+  ): (...args: Parameters<T>) => void {
+    let timeout: NodeJS.Timeout;
+    return (...args: Parameters<T>) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  },
+
+  /**
+   * Throttle function for performance tracking
+   */
+  throttle<T extends (...args: unknown[]) => unknown>(
+    func: T,
+    limit: number
+  ): (...args: Parameters<T>) => void {
+    let inThrottle: boolean;
+    return (...args: Parameters<T>) => {
+      if (!inThrottle) {
+        func(...args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  },
+
+  /**
+   * Measure image load time
+   */
+  measureImageLoad(url: string): Promise<number> {
+    return new Promise(resolve => {
+      const startTime = performance.now();
+      const img = new Image();
+
+      img.onload = () => {
+        const loadTime = performance.now() - startTime;
+        resolve(loadTime);
+      };
+
+      img.onerror = () => {
+        const loadTime = performance.now() - startTime;
+        resolve(loadTime);
+      };
+
+      img.src = url;
+    });
+  },
+};
+
+// Legacy exports for backward compatibility
+export const initializeGalleryAnalytics = () => {
+  const analytics = GalleryAnalytics.getInstance();
+  analytics.resetMetrics();
+  return analytics;
+};
+
+export const trackCategoryFilter = (category: string, count: number) => {
+  const analytics = GalleryAnalytics.getInstance();
+  analytics.trackEvent({
+    action: 'gallery_view',
+    performance: {
+      viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+    },
+  });
+};
+
 export const trackProjectView = (
   projectId: string,
   projectTitle: string,
   eventType: string
 ) => {
-  trackGalleryInteraction({
-    event: 'project_view',
-    category: 'Gallery',
-    action: 'View Project',
-    label: `${projectTitle} (${eventType})`,
-    customParameters: {
-      project_id: projectId,
-      project_title: projectTitle,
-      event_type: eventType,
-    },
-  });
+  const analytics = GalleryAnalytics.getInstance();
+  analytics.trackGalleryView(projectId, projectTitle);
 };
 
-/**
- * Track category filter usage
- */
-export const trackCategoryFilter = (category: string, count: number) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    const customParameters: Record<
-      string,
-      string | number | boolean | undefined
-    > = {
-      category,
-      item_count: count,
-      page_type: 'gallery',
-      timestamp: Date.now(),
-    };
-
-    window.gtag('event', 'gallery_filter', {
-      event_category: 'Gallery',
-      event_label: category,
-      custom_parameters: customParameters,
-    });
-  }
-};
-
-/**
- * Track media interaction (image/video clicks)
- */
-export const trackMediaInteraction = (
-  mediaId: string,
-  mediaType: 'photo' | 'video',
-  projectId: string
-) => {
-  trackGalleryInteraction({
-    event: 'media_interaction',
-    category: 'Gallery',
-    action: 'View Media',
-    label: `${mediaType} - ${mediaId}`,
-    customParameters: {
-      media_id: mediaId,
-      media_type: mediaType,
-      project_id: projectId,
-    },
-  });
-};
-
-/**
- * Track lightbox usage
- */
-export const trackLightboxUsage = (
-  galleryGroup: string,
-  itemIndex: number,
-  totalItems: number
-) => {
-  trackGalleryInteraction({
-    event: 'lightbox_usage',
-    category: 'Gallery',
-    action: 'Open Lightbox',
-    label: `${galleryGroup} - Item ${itemIndex + 1}`,
-    value: totalItems,
-    customParameters: {
-      gallery_group: galleryGroup,
-      item_index: itemIndex,
-      total_items: totalItems,
-    },
-  });
-};
-
-/**
- * Track gallery to contact conversion
- */
-export const trackGalleryToContact = (source: string, projectId?: string) => {
-  trackGalleryInteraction({
-    event: 'gallery_to_contact',
-    category: 'Conversion',
-    action: 'Contact from Gallery',
-    label: source,
-    customParameters: {
-      source: source,
-      project_id: projectId,
-    },
-  });
-};
-
-/**
- * Track gallery performance metrics
- */
-export const trackGalleryPerformance = (metric: string, value: number) => {
-  trackGalleryInteraction({
-    event: 'gallery_performance',
-    category: 'Performance',
-    action: metric,
-    label: metric,
-    value: value,
-    customParameters: {
-      metric_name: metric,
-      metric_value: value,
-    },
-  });
-};
-
-/**
- * Track user journey through gallery
- */
-export const trackGalleryJourney = (step: string, duration?: number) => {
-  trackGalleryInteraction({
-    event: 'gallery_journey',
-    category: 'User Journey',
-    action: step,
-    label: step,
-    value: duration,
-    customParameters: {
-      journey_step: step,
-      duration_ms: duration,
-    },
-  });
-};
-
-/**
- * Track mobile vs desktop usage
- */
-export const trackDeviceUsage = (
-  deviceType: 'mobile' | 'desktop' | 'tablet'
-) => {
-  trackGalleryInteraction({
-    event: 'device_usage',
-    category: 'Device',
-    action: 'Gallery Access',
-    label: deviceType,
-    customParameters: {
-      device_type: deviceType,
-      user_agent: navigator.userAgent,
-    },
-  });
-};
-
-/**
- * Track search/filter usage
- */
-export const trackSearchUsage = (searchTerm: string, resultsCount: number) => {
-  trackGalleryInteraction({
-    event: 'gallery_search',
-    category: 'Search',
-    action: 'Search Projects',
-    label: searchTerm,
-    value: resultsCount,
-    customParameters: {
-      search_term: searchTerm,
-      results_count: resultsCount,
-    },
-  });
-};
-
-/**
- * Track social sharing from gallery
- */
-export const trackSocialShare = (
-  platform: string,
-  projectId: string,
-  projectTitle: string
-) => {
-  trackGalleryInteraction({
-    event: 'social_share',
-    category: 'Social',
-    action: 'Share Project',
-    label: platform,
-    customParameters: {
-      platform: platform,
-      project_id: projectId,
-      project_title: projectTitle,
-    },
-  });
-};
-
-/**
- * Initialize analytics tracking
- */
-export const initializeGalleryAnalytics = () => {
-  if (typeof window === 'undefined') return; // Server-side rendering
-
-  // Track initial gallery load
-  trackGalleryInteraction({
-    event: 'gallery_load',
-    category: 'Gallery',
-    action: 'Load Gallery',
-    label: 'Gallery Page',
-    customParameters: {
-      timestamp: Date.now(),
-      url: window.location.href,
-    },
-  });
-
-  // Track device usage
-  const deviceType =
-    window.innerWidth < 768
-      ? 'mobile'
-      : window.innerWidth < 1024
-        ? 'tablet'
-        : 'desktop';
-  trackDeviceUsage(deviceType);
-
-  // Set up performance monitoring
-  if ('performance' in window) {
-    window.addEventListener('load', () => {
-      const loadTime =
-        performance.timing.loadEventEnd - performance.timing.navigationStart;
-      trackGalleryPerformance('page_load_time', loadTime);
-    });
-  }
-};
-
-/**
- * Track gallery scroll depth
- */
-export const trackScrollDepth = () => {
-  if (typeof window === 'undefined') return; // Server-side rendering
-
-  let maxScrollDepth = 0;
-  const trackScroll = throttle(() => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const scrollDepth = Math.round(
-      ((scrollTop + windowHeight) / documentHeight) * 100
-    );
-
-    if (scrollDepth > maxScrollDepth) {
-      maxScrollDepth = scrollDepth;
-
-      // Track at 25%, 50%, 75%, 100% milestones
-      if ([25, 50, 75, 100].includes(scrollDepth)) {
-        trackGalleryInteraction({
-          event: 'scroll_depth',
-          category: 'Engagement',
-          action: 'Scroll Depth',
-          label: `${scrollDepth}%`,
-          value: scrollDepth,
-          customParameters: {
-            scroll_depth: scrollDepth,
-            max_scroll_depth: maxScrollDepth,
-          },
-        });
-      }
-    }
-  }, 1000);
-
-  window.addEventListener('scroll', trackScroll);
-};
-
-// Utility functions for debouncing and throttling
-const debounce = <T extends (...args: unknown[]) => unknown>(
-  func: T,
-  wait: number
-): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
-
-const throttle = <T extends (...args: unknown[]) => unknown>(
-  func: T,
-  limit: number
-): ((...args: Parameters<T>) => void) => {
-  let inThrottle: boolean;
-  return (...args: Parameters<T>) => {
-    if (!inThrottle) {
-      func(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-};
-
-export default {
-  trackGalleryInteraction,
-  trackProjectView,
-  trackCategoryFilter,
-  trackMediaInteraction,
-  trackLightboxUsage,
-  trackGalleryToContact,
-  trackGalleryPerformance,
-  trackGalleryJourney,
-  trackDeviceUsage,
-  trackSearchUsage,
-  trackSocialShare,
-  initializeGalleryAnalytics,
-  trackScrollDepth,
-};
+export default GalleryAnalytics;

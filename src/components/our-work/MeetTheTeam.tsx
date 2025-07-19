@@ -16,6 +16,7 @@ interface MeetTheTeamProps {
   language?: 'es' | 'en' | 'pt';
   className?: string;
   projectId?: string; // Add projectId for analytics tracking
+  enhanced?: boolean; // Enable enhanced visual design
 }
 
 export default function MeetTheTeam({

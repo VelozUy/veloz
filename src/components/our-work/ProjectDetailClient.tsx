@@ -4,11 +4,10 @@ import { useEffect } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory } from '@/constants/categories';
 import { useHeroBackground } from '@/hooks/useBackground';
+import { getStaticContent } from '@/lib/utils';
+import { LocalizedContent } from '@/lib/static-content.generated';
 
-import MasonryGallery from '@/components/our-work/MasonryGallery';
-import MeetTheTeam from '@/components/our-work/MeetTheTeam';
-import SocialFeed from '@/components/our-work/SocialFeed';
-import ProjectTimeline from '@/components/our-work/ProjectTimeline';
+import ProjectDetailGallery from '@/components/our-work/ProjectDetailGallery';
 
 interface ProjectDetailClientProps {
   project: {
@@ -29,6 +28,8 @@ interface ProjectDetailClientProps {
       width?: number;
       height?: number;
       order: number;
+      blurDataURL?: string;
+      placeholder?: string;
     }>;
     detailPageBlocks?: Array<{
       id: string;
@@ -46,105 +47,73 @@ interface ProjectDetailClientProps {
       mediaOffsetY?: number;
     }>;
     detailPageGridHeight?: number;
-    crewMembers?: string[];
+    timeline?: Array<{
+      id: string;
+      title: string;
+      description: string;
+      date: string;
+      status: 'completed' | 'in_progress' | 'planned';
+    }>;
+    crewMemberIds?: string[];
+    socialFeed?: Array<{
+      id: string;
+      type: 'image' | 'video';
+      url: string;
+      caption: string;
+      order: number;
+    }>;
+    crewMembers?: Array<{
+      id: string;
+      name: string;
+      role: string;
+      portrait: string;
+      bio: string;
+      socialLinks?: {
+        instagram?: string;
+        linkedin?: string;
+        website?: string;
+        email?: string;
+      };
+      skills: string[];
+      order: number;
+    }>;
   };
 }
 
 export default function ProjectDetailClient({
   project,
 }: ProjectDetailClientProps) {
-  const { trackProjectView } = useAnalytics();
-  const { classes: heroClasses } = useHeroBackground();
+  // Get crew members from static content
+  const staticContent = getStaticContent('es');
+  const crewMembers = staticContent.content.crewMembers || [];
 
-  useEffect(() => {
-    if (project?.id && project?.title) {
-      trackProjectView({
-        projectId: project.id,
-        projectTitle: project.title,
-        projectCategory: project.eventType || 'otros',
-        projectLanguage: 'es', // Adjust if multi-language
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project?.id]);
+  // Filter crew members for this project
+  const projectCrewMembers = project.crewMemberIds
+    ? crewMembers.filter(
+        (crew: LocalizedContent['content']['crewMembers'][0]) =>
+          project.crewMemberIds?.includes(crew.id)
+      )
+    : [];
 
-  // Get category from event type
-  const getCategoryFromEventType = (eventType: string): EventCategory => {
-    const eventTypeMap: Record<string, EventCategory> = {
-      casamiento: 'Casamiento',
-      corporativos: 'Corporativos',
-      'culturales-artisticos': 'Culturales y artísticos',
-      photoshoot: 'Photoshoot',
-      prensa: 'Prensa',
-      otros: 'Otros',
-    };
-    return eventTypeMap[eventType] || 'Otros';
+  // Enhance project with crew data for gallery
+  const enhancedProject = {
+    ...project,
+    crewMembers: projectCrewMembers,
   };
 
-  const category = project.eventType
-    ? getCategoryFromEventType(project.eventType)
-    : 'Otros';
+  // Create timeline-compatible project (crewMembers as IDs)
+  const timelineProject = {
+    ...project,
+    crewMembers: project.crewMemberIds || [],
+  };
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section with Category Styling */}
-      <section
-        className={`relative flex flex-col items-center justify-center text-center py-24 px-6 rounded-tl-[3rem] ${heroClasses.background} ${heroClasses.text}`}
-      >
-        {/* Optional background blur of image, masked */}
-        {project.media && project.media.length > 0 && (
-          <div className="absolute inset-0 overflow-hidden -z-10 opacity-10">
-            <img
-              src={project.media[0].url}
-              className="w-full h-full object-cover blur-md scale-110"
-              alt={`Background image for ${project.title}`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
-          </div>
-        )}
-
-        {/* Category badge */}
-        <div className="mb-4 px-4 py-1 text-sm rounded-full bg-primary text-primary-foreground font-medium">
-          ✨ {category}
-        </div>
-
-        {/* Title */}
-        <h1 className="text-4xl md:text-6xl font-body tracking-tight drop-shadow-md">
-          {project.title}
-        </h1>
-
-        {/* Optional subheading or quote */}
-        {project.description && (
-          <p className="mt-4 max-w-xl text-gray-300 text-lg italic">
-            &ldquo;{project.description}&rdquo;
-          </p>
-        )}
-      </section>
-
-      {/* Project Timeline */}
-      <ProjectTimeline project={project} />
-
-      {/* Project Media Gallery */}
-      <section className="py-12">
-        {/* Masonry Gallery - Responsive masonry layout favoring horizontal media */}
-        <MasonryGallery
-          media={project.media || []}
-          projectTitle={project.title}
-          className="mb-8"
-        />
-      </section>
-
-      {/* Meet the Team Section */}
-      {project.crewMembers && project.crewMembers.length > 0 && (
-        <MeetTheTeam
-          crewMemberIds={project.crewMembers}
-          language="es"
-          projectId={project.id}
-        />
-      )}
-
-      {/* Social Feed Section */}
-      <SocialFeed projectId={project.id} language="es" />
-    </div>
+    <ProjectDetailGallery
+      project={enhancedProject}
+      timelineProject={timelineProject}
+      layout="masonry"
+      showHero={true}
+      showTimeline={true}
+    />
   );
 }

@@ -1072,6 +1072,12 @@ async function fetchProjects(db) {
 
         // Fetch media for this project
         project.media = await fetchProjectMedia(db, doc.id);
+
+        // Enhanced project data for gallery system
+        project.timeline = data.timeline || [];
+        project.crewMemberIds = data.crewMemberIds || [];
+        project.socialFeed = data.socialFeed || [];
+
         projects.push(project);
       }
     }
@@ -1129,6 +1135,9 @@ async function fetchProjectMedia(db, projectId) {
         height: data.height,
         order: data.order || 0,
         featured: data.featured || false,
+        // Enhanced for gallery optimization
+        blurDataURL: data.blurDataURL || undefined,
+        placeholder: data.placeholder || undefined,
       });
     });
 
@@ -1144,6 +1153,45 @@ async function fetchProjectMedia(db, projectId) {
       `⚠️ Error fetching media for project ${projectId}:`,
       error.message
     );
+    return [];
+  }
+}
+
+/**
+ * Fetch all crew members for static generation
+ */
+async function fetchCrewMembers(db) {
+  try {
+    console.log('👥 Fetching crew members...');
+    const crewRef = collection(db, 'crewMembers');
+    const crewQuery = query(crewRef, orderBy('order', 'asc'));
+    const snapshot = await getDocs(crewQuery);
+
+    const crewMembers = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      crewMembers.push({
+        id: doc.id,
+        name: data.name || {},
+        role: data.role || {},
+        portrait: data.portrait || '',
+        bio: data.bio || {},
+        socialLinks: data.socialLinks || {},
+        skills: data.skills || [],
+        order: data.order || 0,
+        createdAt: data.createdAt
+          ? data.createdAt.toDate().toISOString()
+          : null,
+        updatedAt: data.updatedAt
+          ? data.updatedAt.toDate().toISOString()
+          : null,
+      });
+    });
+
+    console.log(`✅ Found ${crewMembers.length} crew members`);
+    return crewMembers;
+  } catch (error) {
+    console.warn('⚠️ Error fetching crew members:', error.message);
     return [];
   }
 }
@@ -1189,7 +1237,8 @@ function generateLocaleContent(
   homepageContent,
   faqs,
   projects,
-  aboutContent
+  aboutContent,
+  crewMembers
 ) {
   return {
     locale,
@@ -1383,9 +1432,23 @@ function generateLocaleContent(
           detailPageBlocks: validateMediaBlocks(project.detailPageBlocks || []),
           detailPageGridHeight: project.detailPageGridHeight || 9,
           media: project.media || [],
+          // Enhanced gallery data
+          timeline: project.timeline || [],
+          crewMemberIds: project.crewMemberIds || [],
+          socialFeed: project.socialFeed || [],
         };
         return transformedProject;
       }),
+      crewMembers: crewMembers.map(crew => ({
+        id: crew.id,
+        name: crew.name?.[locale] || crew.name?.es || '',
+        role: crew.role?.[locale] || crew.role?.es || '',
+        portrait: crew.portrait || '',
+        bio: crew.bio?.[locale] || crew.bio?.es || '',
+        socialLinks: crew.socialLinks || {},
+        skills: crew.skills || [],
+        order: crew.order || 0,
+      })),
     },
     lastUpdated: new Date().toISOString(),
     buildTime: true,
@@ -1406,12 +1469,14 @@ async function buildStaticContent() {
     const db = getFirestore(app);
 
     // Fetch all content from Firestore
-    const [homepageContent, faqs, projects, aboutContent] = await Promise.all([
-      fetchHomepageContent(db),
-      fetchFAQs(db),
-      fetchProjects(db),
-      fetchAboutContent(db),
-    ]);
+    const [homepageContent, faqs, projects, aboutContent, crewMembers] =
+      await Promise.all([
+        fetchHomepageContent(db),
+        fetchFAQs(db),
+        fetchProjects(db),
+        fetchAboutContent(db),
+        fetchCrewMembers(db),
+      ]);
 
     // Ensure data directory exists
     const dataDir = path.join(process.cwd(), 'src', 'data');
@@ -1428,7 +1493,8 @@ async function buildStaticContent() {
         homepageContent,
         faqs,
         projects,
-        aboutContent
+        aboutContent,
+        crewMembers
       );
       allContent[locale] = localeContent;
 
@@ -1568,19 +1634,51 @@ export interface LocalizedContent {
         color?: string;
       }>;
       detailPageGridHeight?: number;
-      media: Array<{
-        id: string;
-        projectId: string;
-        type: 'photo' | 'video';
-        url: string;
-        description?: Record<string, string>;
-        tags?: string[];
-        aspectRatio?: '1:1' | '16:9' | '9:16';
-        width?: number;
-        height?: number;
-        order: number;
-        featured?: boolean;
+              media: Array<{
+          id: string;
+          projectId: string;
+          type: 'photo' | 'video';
+          url: string;
+          description?: Record<string, string>;
+          tags?: string[];
+          aspectRatio?: '1:1' | '16:9' | '9:16';
+          width?: number;
+          height?: number;
+          order: number;
+          featured?: boolean;
+          blurDataURL?: string;
+          placeholder?: string;
+        }>;
+        timeline?: Array<{
+          id: string;
+          title: string;
+          description: string;
+          date: string;
+          status: 'completed' | 'in_progress' | 'planned';
+        }>;
+        crewMemberIds?: string[];
+        socialFeed?: Array<{
+          id: string;
+          type: 'image' | 'video';
+          url: string;
+          caption: string;
+          order: number;
+        }>;
       }>;
+    crewMembers: Array<{
+      id: string;
+      name: string;
+      role: string;
+      portrait: string;
+      bio: string;
+      socialLinks?: {
+        instagram?: string;
+        linkedin?: string;
+        website?: string;
+        email?: string;
+      };
+      skills: string[];
+      order: number;
     }>;
   };
   lastUpdated: string;
