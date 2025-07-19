@@ -1,22 +1,22 @@
 import { Metadata } from 'next';
-import { OurWorkContent } from '@/components/our-work/OurWorkContent';
+import { GalleryContent } from '@/components/gallery/GalleryContent';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
   description:
-    'Explore nosso portfólio de projetos passados. Casamentos, eventos corporativos, aniversários e mais. Descubra por que os clientes escolhem Veloz para seus momentos especiais.',
+    'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais. Descubra por que os clientes escolhem Veloz para seus momentos especiais.',
   openGraph: {
     title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
     description:
-      'Explore nosso portfólio de projetos passados. Casamentos, eventos corporativos, aniversários e mais. Descubra por que os clientes escolhem Veloz para seus momentos especiais.',
+      'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais. Descubra por que os clientes escolhem Veloz para seus momentos especiais.',
     images: [
       {
-        url: '/og-our-work.jpg',
+        url: '/og-gallery.jpg',
         width: 1200,
         height: 630,
-        alt: 'Portfólio de Projetos da Veloz Fotografia e Videografia',
+        alt: 'Portfólio da Veloz Fotografia e Videografia',
       },
     ],
   },
@@ -35,9 +35,9 @@ export default function OurWorkPage() {
   const content = getStaticContent('pt');
 
   return (
-    <div className="relative min-h-screen w-full bg-background overflow-x-hidden">
-      {/* Our Work Content - static rendered */}
-      <OurWorkContent content={content} />
+    <div className="relative min-h-screen w-full bg-background">
+      {/* Gallery Content - static rendered */}
+      <GalleryContent content={content} />
 
       {/* CTA Widget */}
       <ContactWidget language={content.locale} />

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { VelozLogo } from '@/components/shared';
 import { useHeroBackground } from '@/hooks/useBackground';
@@ -13,7 +13,6 @@ interface HeroProps {
   backgroundImages?: string[];
   logoUrl?: string;
   isLogoLoading?: boolean;
-  isVideoLoading?: boolean;
 }
 
 export default function Hero({
@@ -22,34 +21,33 @@ export default function Hero({
   backgroundImages = [],
   logoUrl,
   isLogoLoading = false,
-  isVideoLoading = false,
 }: HeroProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [videoCanPlay, setVideoCanPlay] = useState(false);
+  const [previousVideoUrl, setPreviousVideoUrl] = useState<string>('');
   const [logoAnimationPhase, setLogoAnimationPhase] = useState<
     'hidden' | 'small' | 'large'
   >('hidden');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Use the new background system for hero sections
   const { classes: heroClasses } = useHeroBackground();
 
-  // Use headline or fallback if not provided
-  const displayHeadline = headline || 'Capturamos lo irrepetible';
+  // Display headline with fallback
+  const displayHeadline =
+    headline || 'Capturamos momentos únicos con pasión y profesionalismo';
 
-  // Rotate background images every 5 seconds (only when images are provided)
+  // Background image rotation
   useEffect(() => {
     if (backgroundImages.length > 1) {
       const interval = setInterval(() => {
-        setCurrentImageIndex(prev => (prev + 1) % backgroundImages.length);
+        setCurrentImageIndex(
+          current => (current + 1) % backgroundImages.length
+        );
       }, 5000);
+
       return () => clearInterval(interval);
     }
   }, [backgroundImages.length]);
-
-  // Reset video state only when URL actually changes, not on re-renders
-  const [previousVideoUrl, setPreviousVideoUrl] = useState<string | undefined>(
-    undefined
-  );
 
   useEffect(() => {
     if (backgroundVideo !== previousVideoUrl) {
@@ -58,7 +56,7 @@ export default function Hero({
         to: backgroundVideo,
       });
       setVideoCanPlay(false);
-      setPreviousVideoUrl(backgroundVideo);
+      setPreviousVideoUrl(backgroundVideo || '');
     }
   }, [backgroundVideo, previousVideoUrl]);
 
@@ -225,7 +223,7 @@ export default function Hero({
             className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
-            <a href="/about">Sobre Nosotros</a>
+            <Link href="/about">Sobre Nosotros</Link>
           </Button>
 
           <Button
@@ -233,7 +231,7 @@ export default function Hero({
             className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
-            <a href="/gallery">Nuestro Trabajo</a>
+            <Link href="/our-work">Nuestro Trabajo</Link>
           </Button>
 
           <Button
@@ -241,7 +239,7 @@ export default function Hero({
             className="px-8 py-6 text-body-md font-medium transition-all duration-300"
             asChild
           >
-            <a href="/contact">Trabaja con Nosotros</a>
+            <Link href="/contact">Trabaja con Nosotros</Link>
           </Button>
         </div>
       </div>

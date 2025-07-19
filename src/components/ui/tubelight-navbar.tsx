@@ -50,22 +50,11 @@ export function TubelightNavBar({
   const router = useRouter();
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState('');
-  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Determine active tab based on current path
@@ -75,7 +64,7 @@ export function TubelightNavBar({
     // Clean pathname for comparison
     const cleanPath = pathname.replace(/^\/(en|pt)/, '') || '/';
 
-    if (cleanPath.includes('/gallery')) {
+    if (cleanPath.includes('/our-work')) {
       setActiveTab('gallery');
     } else if (cleanPath.includes('/about')) {
       setActiveTab('about');
@@ -110,7 +99,7 @@ export function TubelightNavBar({
   const navItems: NavItem[] = [
     {
       name: translations.navigation.gallery,
-      url: getLocalizedPath('/gallery', locale),
+      url: getLocalizedPath('/our-work', locale),
       icon: Camera,
     },
     {
@@ -143,7 +132,7 @@ export function TubelightNavBar({
           const Icon = item.icon;
           const isActive =
             activeTab === item.name.toLowerCase() ||
-            (item.url.includes('/gallery') && activeTab === 'gallery') ||
+            (item.url.includes('/our-work') && activeTab === 'gallery') ||
             (item.url.includes('/about') && activeTab === 'about') ||
             (item.url.includes('/contact') && activeTab === 'contact');
 

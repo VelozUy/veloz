@@ -1,145 +1,125 @@
-# Enhanced Side Navigation
+# Gallery Components
 
-A modern, elegant side navigation component for the gallery with advanced interactive features and accessibility support.
+This directory contains the gallery components used by the `/our-work` pages to display the portfolio of projects.
 
-## Features Implemented
+## Components
 
-### 1. Progressive Line Animation
+### Core Components
 
-- **What it does**: The vertical line progressively fills as you scroll through projects
-- **How it works**: Uses Framer Motion's `scaleY` animation based on scroll position
-- **Visual impact**: Provides clear visual feedback of navigation progress
+#### `GalleryContent.tsx`
 
-### 2. Magnetic Effect
+Main container component that orchestrates the gallery display. This is a server component that:
 
-- **What it does**: Navigation subtly moves toward the cursor when nearby
-- **How it works**: Uses Framer Motion's spring animations with mouse position tracking
-- **Interaction zone**: Only activates within 100px of the navigation
-- **Performance**: Throttled to prevent excessive calculations
+- Transforms static content into project format
+- Sorts projects by featured status and date
+- Renders `SideNavigation` and `ProjectsDisplay`
+- Handles empty state when no projects are available
 
-### 3. Parallax Movement
+#### `ProjectsDisplay.tsx`
 
-- **What it does**: Active indicators move slightly with mouse movement
-- **How it works**: Uses `useTransform` to map mouse Y position to indicator movement
-- **Effect**: Creates depth and responsiveness to user interaction
+Displays projects in a clean grid layout with:
 
-### 4. Smart Positioning
+- Project titles above media
+- Featured media items only
+- Responsive grid that adapts to media aspect ratios
+- Clickable project areas that navigate to detail pages
+- Hover effects and accessibility features
 
-- **What it does**: Automatically adjusts navigation position based on content density
-- **Logic**:
-  - Default: Centered vertically on the left
-  - Overflow: Moves to top-left if navigation would overflow viewport
-- **Responsive**: Adapts to different screen sizes and project counts
+#### `SideNavigation.tsx`
 
-### 5. Micro-interactions
+Floating navigation component that provides:
 
-- **Hover effects**: Dots scale up and show enhanced tooltips
-- **Click animations**: Ripple effects on button press
-- **Active states**: Pulsing animation for current project
-- **Smooth transitions**: All animations use cubic-bezier easing
+- Scroll-based project tracking
+- Animated navigation dots
+- Smart positioning based on content density
+- Accessibility features with keyboard navigation
+- Reduced motion support
 
-### 6. Accessibility Enhancements
+#### `GalleryItem.tsx`
 
-- **Keyboard navigation**: Full Tab/Enter/Arrow key support
-- **Screen reader support**: Proper ARIA labels and roles
-- **Reduced motion**: Respects `prefers-reduced-motion` preference
-- **High contrast**: Enhanced focus indicators and borders
-- **Focus management**: Clear visual feedback for keyboard users
+Individual media item component with:
 
-## Technical Implementation
+- GLightbox integration for lightbox functionality
+- Hover effects with opacity transitions
+- Support for both photos and videos
+- Responsive design with proper aspect ratios
+- Professional presentation styling
 
-### Dependencies
+#### `ContactWidget.tsx`
 
-- **Framer Motion**: For smooth animations and motion values
-- **React Hooks**: `useState`, `useEffect`, `useRef`, `useCallback`
-- **CSS Modules**: Custom styling with accessibility considerations
+Floating contact button that provides:
 
-### Performance Optimizations
+- Multi-language support (ES/EN/PT)
+- Contact form dialog
+- Event type selection
+- Form validation
+- Lead generation functionality
 
-- **Throttled scroll handling**: Uses `requestAnimationFrame` for smooth performance
-- **Memoized callbacks**: Prevents unnecessary re-renders
-- **Passive event listeners**: Improves scroll performance
-- **Reduced motion support**: Disables animations for users who prefer it
+#### `GalleryClientWrapper.tsx`
 
-### Browser Support
+Client-side functionality wrapper that handles:
 
-- **Modern browsers**: Full support for all features
-- **Reduced motion**: Graceful degradation for accessibility
-- **Mobile**: Responsive design with touch-friendly interactions
+- Lightbox initialization
+- Analytics tracking
+- Performance optimizations
+- Cleanup on component unmount
+
+### Supporting Files
+
+#### `SideNavigation.css`
+
+CSS styles for the side navigation component including:
+
+- Navigation dot animations
+- Tooltip styling
+- Progressive line animations
+- Responsive positioning
 
 ## Usage
 
+These components are used in the `/our-work` pages across all locales:
+
 ```tsx
-import SideNavigation from './SideNavigation';
+import { GalleryContent } from '@/components/gallery/GalleryContent';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 
-const projects = [
-  { id: '1', title: 'Project 1' },
-  { id: '2', title: 'Project 2' },
-  // ... more projects
-];
+export default function OurWorkPage() {
+  const content = getStaticContent('es');
 
-function GalleryPage() {
   return (
-    <div>
-      <SideNavigation projects={projects} />
-      {/* Your gallery content */}
+    <div className="relative min-h-screen w-full bg-background">
+      <GalleryContent content={content} />
+      <ContactWidget language={content.locale} />
     </div>
   );
 }
 ```
 
-## CSS Classes
+## Features
 
-The component uses several CSS classes for styling:
+- **Static Generation**: Components are optimized for build-time rendering
+- **Responsive Design**: Mobile-first approach with adaptive layouts
+- **Accessibility**: WCAG compliant with keyboard navigation
+- **Performance**: Optimized images and lazy loading
+- **Analytics**: Built-in tracking for project views
+- **Internationalization**: Multi-language support
 
-- `.magnetic-nav`: Main navigation container
-- `.nav-dot`: Individual navigation buttons
-- `.nav-tooltip`: Enhanced tooltip styling
-- `.ripple-effect`: Click animation
-- `.pulse-active`: Active state animation
-- `.parallax-indicator`: Active indicator with parallax
+## Dependencies
 
-## Accessibility Features
-
-### Keyboard Navigation
-
-- **Tab**: Navigate between projects
-- **Enter/Space**: Activate selected project
-- **Arrow keys**: Navigate through projects (planned enhancement)
-
-### Screen Reader Support
-
-- **ARIA labels**: Descriptive labels for each navigation item
-- **ARIA current**: Indicates the currently active project
-- **Role attributes**: Proper semantic structure
-
-### Visual Accessibility
-
-- **High contrast mode**: Enhanced borders and focus indicators
-- **Reduced motion**: Respects user preferences
-- **Focus indicators**: Clear visual feedback for keyboard users
+- **Next.js Image**: For optimized image loading
+- **Framer Motion**: For smooth animations
+- **GLightbox**: For lightbox functionality
+- **Tailwind CSS**: For styling
+- **TypeScript**: For type safety
 
 ## Testing
 
-The component includes comprehensive tests covering:
+Tests are located in `__tests__/` directory:
 
-- Rendering and accessibility
-- Click interactions
-- CSS class application
-- Reduced motion handling
+- `GalleryContent.test.tsx`
+- `ContactWidget.test.tsx`
+- `SideNavigation.test.tsx`
 
-Run tests with:
+## Migration Notes
 
-```bash
-npm test SideNavigation
-```
-
-## Future Enhancements
-
-Potential improvements for future versions:
-
-- **Arrow key navigation**: Full keyboard navigation support
-- **Touch gestures**: Swipe interactions for mobile
-- **Custom animations**: Configurable animation styles
-- **Theming**: More customization options
-- **Performance**: Further optimizations for large project lists
+These components were originally part of the `/gallery` page but have been moved to `/our-work` pages as part of a content consolidation effort. The gallery pages now redirect to the our-work pages.

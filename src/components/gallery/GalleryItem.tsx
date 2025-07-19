@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ResponsivePicture } from './ResponsivePicture';
+import Image from 'next/image';
 
 interface GalleryItemProps {
   media: {
@@ -80,7 +80,7 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
             </div>
           </div>
         ) : (
-          <ResponsivePicture
+          <Image
             src={media.url}
             alt={media.alt}
             width={media.width}

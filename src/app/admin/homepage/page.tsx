@@ -134,7 +134,7 @@ const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
         es: 'Nuestro Trabajo',
         pt: 'Nosso Trabalho',
       },
-      link: '/gallery',
+      link: '/our-work',
       enabled: true,
     },
   },
@@ -256,7 +256,7 @@ export default function HomepageAdminPage() {
       // Firebase should be online by default
 
       const docRef = doc(db!, 'homepage', 'content');
-      const contentData = (({ id: _id, ...rest }) => rest)(content);
+      const contentData = (({ id, ...rest }) => rest)(content);
 
       await setDoc(docRef, {
         ...contentData,
@@ -890,7 +890,7 @@ export default function HomepageAdminPage() {
                           : prev
                       )
                     }
-                    placeholder="/gallery"
+                    placeholder="/our-work"
                   />
                 </div>
               </CardContent>
