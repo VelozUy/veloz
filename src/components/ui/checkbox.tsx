@@ -5,16 +5,24 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 function Checkbox({
   className,
+  priority = 'top',
   ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+}: React.ComponentProps<typeof CheckboxPrimitive.Root> & {
+  priority?: 'top' | 'mid' | 'low';
+}) {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer h-4 w-4 shrink-0 rounded-md border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:not([class*='size-']):size-4",
+        "peer h-4 w-4 shrink-0 rounded-md border ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:not([class*='size-']):size-4",
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
       {...props}

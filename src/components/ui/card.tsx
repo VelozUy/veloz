@@ -1,13 +1,22 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
+function Card({
+  className,
+  priority = 'top',
+  ...props
+}: React.ComponentProps<'div'> & { priority?: 'top' | 'mid' | 'low' }) {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-none border py-6 shadow-sm',
+        'flex flex-col gap-6 rounded-none border py-6 shadow-sm',
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
       {...props}

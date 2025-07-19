@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { getPriorityClasses } from '@/lib/utils';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -132,13 +133,23 @@ function Carousel({
   );
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
+function CarouselContent({
+  className,
+  priority = 'top',
+  ...props
+}: React.ComponentProps<'div'> & { priority?: 'top' | 'mid' | 'low' }) {
   const { carouselRef, orientation } = useCarousel();
+  const priorityClasses = getPriorityClasses(priority);
 
   return (
     <div
       ref={carouselRef}
-      className="overflow-hidden"
+      className={cn(
+        'overflow-hidden',
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border
+      )}
       data-slot="carousel-content"
     >
       <div

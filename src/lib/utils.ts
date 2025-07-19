@@ -464,3 +464,37 @@ export function normalizeLocale(locale?: string): Locale {
 
   return 'es'; // Default fallback
 }
+
+/**
+ * Returns Tailwind classes for background, text, and border based on priority.
+ * @param priority 'top' | 'mid' | 'low'
+ * @returns { bg: string, text: string, border: string }
+ */
+export function getPriorityClasses(priority: 'top' | 'mid' | 'low') {
+  switch (priority) {
+    case 'top':
+      return {
+        bg: 'bg-white',
+        text: 'text-charcoal',
+        border: 'border-gray-medium',
+      };
+    case 'mid':
+      return {
+        bg: 'bg-gray-light',
+        text: 'text-charcoal',
+        border: 'border-gray-medium',
+      };
+    case 'low':
+      return {
+        bg: 'bg-transparent',
+        text: 'text-gray-medium',
+        border: 'border-gray-medium',
+      };
+    default:
+      return {
+        bg: '',
+        text: '',
+        border: '',
+      };
+  }
+}

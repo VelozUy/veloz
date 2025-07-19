@@ -10,10 +10,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
   className?: string;
+  priority?: 'top' | 'mid' | 'low';
 }
 
 const LOCALES = [
@@ -25,9 +27,11 @@ const LOCALES = [
 export function LocaleSwitcher({
   currentLocale,
   className,
+  priority = 'top',
 }: LocaleSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const priorityClasses = getPriorityClasses(priority);
 
   const switchLocale = (newLocale: string) => {
     // Store the locale preference in localStorage
@@ -59,13 +63,23 @@ export function LocaleSwitcher({
         <Button
           variant="ghost"
           size="sm"
-          className={cn('p-2 h-auto w-auto', className)}
+          className={cn(
+            'p-2 h-auto w-auto',
+            priorityClasses.bg,
+            priorityClasses.text,
+            priorityClasses.border,
+            className
+          )}
           aria-label="Change language"
         >
           <Globe className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-[150px]"
+        priority={priority}
+      >
         {LOCALES.map(locale => (
           <DropdownMenuItem
             key={locale.code}

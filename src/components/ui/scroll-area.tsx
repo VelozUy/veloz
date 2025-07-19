@@ -4,16 +4,27 @@ import * as React from 'react';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 function ScrollArea({
   className,
   children,
+  priority = 'top',
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
+  priority?: 'top' | 'mid' | 'low';
+}) {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
-      className={cn('relative', className)}
+      className={cn(
+        'relative',
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
+        className
+      )}
       {...props}
     >
       <ScrollAreaPrimitive.Viewport

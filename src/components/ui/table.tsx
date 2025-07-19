@@ -3,8 +3,14 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
-function Table({ className, ...props }: React.ComponentProps<'table'>) {
+function Table({
+  className,
+  priority = 'top',
+  ...props
+}: React.ComponentProps<'table'> & { priority?: 'top' | 'mid' | 'low' }) {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <div
       data-slot="table-container"
@@ -12,7 +18,13 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
     >
       <table
         data-slot="table"
-        className={cn('w-full caption-bottom text-sm', className)}
+        className={cn(
+          'w-full caption-bottom text-sm',
+          priorityClasses.bg,
+          priorityClasses.text,
+          priorityClasses.border,
+          className
+        )}
         {...props}
       />
     </div>

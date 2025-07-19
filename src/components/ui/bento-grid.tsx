@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { BlurFade } from './blur-fade';
+import { getPriorityClasses } from '@/lib/utils';
 
 interface BentoGridProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ interface BentoGridProps {
   enableRandomLayout?: boolean;
   expandable?: boolean;
   onExpand?: (rows: number) => void;
+  priority?: 'top' | 'mid' | 'low';
 }
 
 interface BentoItemProps {
@@ -262,12 +264,14 @@ const BentoGrid: React.FC<BentoGridProps> = ({
   enableRandomLayout = false,
   expandable = false,
   onExpand,
+  priority = 'top',
 }) => {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>(
     'desktop'
   );
   const [isHydrated, setIsHydrated] = useState(false);
   const [additionalRows, setAdditionalRows] = useState(0);
+  const priorityClasses = getPriorityClasses(priority);
 
   // Prevent hydration mismatch by only enabling random layout after hydration
   useEffect(() => {
@@ -381,6 +385,9 @@ const BentoGrid: React.FC<BentoGridProps> = ({
           useAspectRatioMode
             ? `${getGridCols()} auto-rows-[minmax(100px,auto)]` // Smaller minimum height for full screen
             : `auto-rows-[100px] ${getGridCols()}`, // Smaller row height for full screen
+          priorityClasses.bg,
+          priorityClasses.text,
+          priorityClasses.border,
           className
         )}
         style={{

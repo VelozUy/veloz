@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 import {
   EventCategory,
   getCategoryStyle,
@@ -66,6 +67,7 @@ interface CategoryBadgeProps {
   className?: string;
   showIcon?: boolean;
   showDescription?: boolean;
+  priority?: 'top' | 'mid' | 'low';
 }
 
 export function CategoryBadge({
@@ -74,10 +76,12 @@ export function CategoryBadge({
   className = '',
   showIcon = true,
   showDescription = false,
+  priority = 'top',
 }: CategoryBadgeProps) {
   const style = getCategoryStyle(category);
   const displayName = getCategoryDisplayName(category, language);
   const description = getCategoryDescription(category, language);
+  const priorityClasses = getPriorityClasses(priority);
 
   return (
     <div
@@ -85,6 +89,9 @@ export function CategoryBadge({
         'inline-flex items-center gap-2 px-3 py-1 rounded-full',
         style.colors.background,
         style.colors.primary,
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
     >

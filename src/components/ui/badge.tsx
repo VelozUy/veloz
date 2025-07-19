@@ -3,6 +3,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 const badgeVariants = cva(
   'inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden',
@@ -29,15 +30,26 @@ function Badge({
   className,
   variant,
   asChild = false,
+  priority = 'top',
   ...props
 }: React.ComponentProps<'span'> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+  VariantProps<typeof badgeVariants> & {
+    asChild?: boolean;
+    priority?: 'top' | 'mid' | 'low';
+  }) {
   const Comp = asChild ? Slot : 'span';
+  const priorityClasses = getPriorityClasses(priority);
 
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      className={cn(
+        badgeVariants({ variant }),
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
+        className
+      )}
       {...props}
     />
   );

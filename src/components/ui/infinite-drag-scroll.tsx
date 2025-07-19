@@ -15,6 +15,7 @@ import {
 } from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 //Types
 type variants = 'default' | 'masonry' | 'polaroid';
@@ -40,14 +41,25 @@ export const DraggableContainer = ({
   className,
   children,
   variant,
+  priority = 'top',
 }: {
   className?: string;
   children: React.ReactNode;
   variant?: variants;
+  priority?: 'top' | 'mid' | 'low';
 }) => {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <GridVariantContext.Provider value={variant}>
-      <div className={cn('w-full min-h-screen bg-background p-4', className)}>
+      <div
+        className={cn(
+          'w-full min-h-screen p-4',
+          priorityClasses.bg,
+          priorityClasses.text,
+          priorityClasses.border,
+          className
+        )}
+      >
         {children}
       </div>
     </GridVariantContext.Provider>

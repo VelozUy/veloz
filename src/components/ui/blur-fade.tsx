@@ -9,6 +9,8 @@ import {
   MotionProps,
 } from 'motion/react';
 import { useRef } from 'react';
+import { getPriorityClasses } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 type MarginType = UseInViewOptions['margin'];
 
@@ -26,6 +28,7 @@ interface BlurFadeProps extends MotionProps {
   inViewMargin?: MarginType;
   threshold?: number;
   blur?: string;
+  priority?: 'top' | 'mid' | 'low';
 }
 
 export function BlurFade({
@@ -39,6 +42,7 @@ export function BlurFade({
   inViewMargin = '0px',
   threshold = 0.1,
   blur = '6px',
+  priority = 'top',
   ...props
 }: BlurFadeProps) {
   const ref = useRef(null);
@@ -61,6 +65,7 @@ export function BlurFade({
     },
   };
   const combinedVariants = variant || defaultVariants;
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <AnimatePresence>
       <motion.div
@@ -74,7 +79,12 @@ export function BlurFade({
           duration,
           ease: 'easeOut',
         }}
-        className={className}
+        className={cn(
+          priorityClasses.bg,
+          priorityClasses.text,
+          priorityClasses.border,
+          className
+        )}
         {...props}
       >
         {children}

@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 function Tabs({
   className,
@@ -20,13 +21,20 @@ function Tabs({
 
 function TabsList({
   className,
+  priority = 'top',
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+}: React.ComponentProps<typeof TabsPrimitive.List> & {
+  priority?: 'top' | 'mid' | 'low';
+}) {
+  const priorityClasses = getPriorityClasses(priority);
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        'bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-none p-[3px]',
+        'inline-flex h-9 w-fit items-center justify-center rounded-none p-[3px]',
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
       {...props}

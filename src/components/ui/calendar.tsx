@@ -10,6 +10,7 @@ import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { getPriorityClasses } from '@/lib/utils';
 
 function Calendar({
   className,
@@ -19,19 +20,25 @@ function Calendar({
   buttonVariant = 'ghost',
   formatters,
   components,
+  priority = 'top',
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>['variant'];
+  priority?: 'top' | 'mid' | 'low';
 }) {
   const defaultClassNames = getDefaultClassNames();
+  const priorityClasses = getPriorityClasses(priority);
 
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        'bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
+        'group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
         String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
       captionLayout={captionLayout}

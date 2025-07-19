@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { LucideIcon, Camera, MessageCircle, Phone, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPriorityClasses } from '@/lib/utils';
 
 interface NavItem {
   name: string;
@@ -23,6 +24,7 @@ interface TubelightNavBarProps {
     };
   };
   className?: string;
+  priority?: 'top' | 'mid' | 'low';
 }
 
 const LOCALES = [
@@ -46,11 +48,13 @@ export function TubelightNavBar({
   locale,
   translations,
   className,
+  priority = 'top',
 }: TubelightNavBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState('');
   const [mounted, setMounted] = useState(false);
+  const priorityClasses = getPriorityClasses(priority);
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
@@ -124,6 +128,9 @@ export function TubelightNavBar({
     <div
       className={cn(
         'fixed bottom-6 sm:top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none',
+        priorityClasses.bg,
+        priorityClasses.text,
+        priorityClasses.border,
         className
       )}
     >
