@@ -34,19 +34,13 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
 }: GalleryItemProps) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log(
-      'GalleryItem clicked:',
-      media.url,
-      'galleryGroup:',
-      galleryGroup
-    );
-    console.log(
-      'Calling openGallery with selector:',
-      `[data-gallery="${galleryGroup}"]`
-    );
 
-    // Open the lightbox with the current gallery group
-    openGallery(`[data-gallery="${galleryGroup}"]`);
+    try {
+      // Open the lightbox with the current gallery group
+      openGallery(`[data-gallery="${galleryGroup}"]`);
+    } catch (error) {
+      console.error('Error calling openGallery:', error);
+    }
   };
 
   return (

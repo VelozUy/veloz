@@ -21,25 +21,100 @@ let lightboxInstance: {
 let currentItems: LightboxItem[] = [];
 let currentIndex = 0;
 let lightboxElement: HTMLDivElement | null = null;
+const preloadedMedia: Map<string, HTMLImageElement | HTMLVideoElement> =
+  new Map();
+
+/**
+ * Preload media items around the current index
+ */
+const preloadMedia = (items: LightboxItem[], currentIdx: number) => {
+  // Calculate indices to preload (current, next, previous)
+  const indicesToPreload = [
+    currentIdx,
+    (currentIdx + 1) % items.length,
+    (currentIdx - 1 + items.length) % items.length,
+  ];
+
+  // Also preload 2 items ahead and behind for smooth navigation
+  if (items.length > 3) {
+    indicesToPreload.push(
+      (currentIdx + 2) % items.length,
+      (currentIdx - 2 + items.length) % items.length
+    );
+  }
+
+  indicesToPreload.forEach(index => {
+    const item = items[index];
+    if (!item) return;
+
+    const cacheKey = `${item.src}-${item.type}`;
+
+    // Skip if already preloaded
+    if (preloadedMedia.has(cacheKey)) {
+      return;
+    }
+
+    if (item.type === 'video') {
+      const video = document.createElement('video');
+      video.src = item.src;
+      video.preload = 'metadata'; // Preload metadata for faster navigation
+      video.muted = true; // Muted to avoid autoplay issues
+      video.style.display = 'none'; // Hide the preload element
+
+      video.addEventListener('loadedmetadata', () => {
+        preloadedMedia.set(cacheKey, video);
+      });
+
+      video.addEventListener('error', () => {
+        // Silently handle preload errors
+      });
+
+      // Add to DOM temporarily for preloading
+      document.body.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.style.display = 'none'; // Hide the preload element
+
+      img.addEventListener('load', () => {
+        preloadedMedia.set(cacheKey, img);
+      });
+
+      img.addEventListener('error', () => {
+        // Silently handle preload errors
+      });
+
+      // Add to DOM temporarily for preloading
+      document.body.appendChild(img);
+    }
+  });
+};
+
+/**
+ * Clean up preloaded media
+ */
+const cleanupPreloadedMedia = () => {
+  preloadedMedia.forEach(element => {
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+  });
+  preloadedMedia.clear();
+};
 
 /**
  * Create and initialize the custom lightbox
  */
 const createLightbox = () => {
-  console.log('createLightbox called');
-
   if (typeof window === 'undefined') {
-    console.log('Window is undefined in createLightbox, returning null');
     return null;
   }
 
   // Remove existing lightbox if any
   if (lightboxElement) {
-    console.log('Removing existing lightbox element');
     document.body.removeChild(lightboxElement);
   }
 
-  console.log('Creating lightbox container...');
   // Create lightbox container
   lightboxElement = document.createElement('div');
   lightboxElement.id = 'custom-lightbox';
@@ -56,7 +131,6 @@ const createLightbox = () => {
     justify-content: center;
   `;
 
-  console.log('Creating content container...');
   // Create content container
   const contentContainer = document.createElement('div');
   contentContainer.style.cssText = `
@@ -87,7 +161,6 @@ const createLightbox = () => {
     box-sizing: border-box;
   `;
 
-  console.log('Creating navigation buttons...');
   // Create navigation buttons
   const prevButton = document.createElement('button');
   prevButton.innerHTML = `
@@ -184,7 +257,6 @@ const createLightbox = () => {
   };
   closeButton.onclick = () => lightboxInstance?.close();
 
-  console.log('Creating counter...');
   // Create counter
   const counter = document.createElement('div');
   counter.id = 'lightbox-counter';
@@ -203,7 +275,6 @@ const createLightbox = () => {
     backdrop-filter: blur(10px);
   `;
 
-  console.log('Assembling lightbox...');
   // Assemble lightbox
   contentContainer.appendChild(mediaElement);
   contentContainer.appendChild(prevButton);
@@ -215,13 +286,11 @@ const createLightbox = () => {
   // Add click outside to close
   lightboxElement.onclick = e => {
     if (e.target === lightboxElement) {
-      console.log('Clicking outside lightbox to close');
       // Pause all videos before closing
       const videos = lightboxElement?.querySelectorAll('video');
       videos?.forEach(video => {
         if (video instanceof HTMLVideoElement) {
           video.pause();
-          console.log('Paused video on outside click:', video.src);
         }
       });
       lightboxInstance?.close();
@@ -231,56 +300,56 @@ const createLightbox = () => {
   // Add keyboard navigation
   document.addEventListener('keydown', handleKeydown);
 
-  console.log('Appending lightbox to document body...');
   document.body.appendChild(lightboxElement);
-  console.log('Lightbox element appended to body');
 
   const lightboxInstance = {
     open: (items: LightboxItem[], startIndex = 0) => {
-      console.log(
-        'Lightbox open called with items:',
-        items.length,
-        'startIndex:',
-        startIndex
-      );
       currentItems = items;
       currentIndex = startIndex;
+
+      // Preload media around the current item
+      preloadMedia(items, startIndex);
+
       showCurrentItem();
       lightboxElement!.style.display = 'flex';
-      console.log('Lightbox should now be visible');
     },
     close: () => {
-      console.log('Lightbox close called');
-
       // Pause all videos in the lightbox before closing
       const videos = lightboxElement?.querySelectorAll('video');
       if (videos) {
         videos.forEach(video => {
           if (video instanceof HTMLVideoElement) {
             video.pause();
-            console.log('Paused video:', video.src);
           }
         });
       }
+
+      // Clean up preloaded media
+      cleanupPreloadedMedia();
 
       if (lightboxElement) {
         lightboxElement.style.display = 'none';
       }
     },
     next: () => {
-      console.log('Lightbox next called');
       currentIndex = (currentIndex + 1) % currentItems.length;
+
+      // Preload media around the new current item
+      preloadMedia(currentItems, currentIndex);
+
       showCurrentItem();
     },
     prev: () => {
-      console.log('Lightbox prev called');
       currentIndex =
         (currentIndex - 1 + currentItems.length) % currentItems.length;
+
+      // Preload media around the new current item
+      preloadMedia(currentItems, currentIndex);
+
       showCurrentItem();
     },
   };
 
-  console.log('Lightbox instance created:', lightboxInstance);
   return lightboxInstance;
 };
 
@@ -288,15 +357,7 @@ const createLightbox = () => {
  * Show the current item in the lightbox
  */
 const showCurrentItem = () => {
-  console.log(
-    'showCurrentItem called, currentIndex:',
-    currentIndex,
-    'items length:',
-    currentItems.length
-  );
-
   if (!lightboxElement || currentItems.length === 0) {
-    console.log('No lightbox element or no items, returning');
     return;
   }
 
@@ -304,7 +365,6 @@ const showCurrentItem = () => {
   const counter = document.getElementById('lightbox-counter');
 
   if (!mediaElement || !counter) {
-    console.log('Media element or counter not found');
     return;
   }
 
@@ -313,112 +373,158 @@ const showCurrentItem = () => {
   existingVideos.forEach(video => {
     if (video instanceof HTMLVideoElement) {
       video.pause();
-      console.log('Paused existing video:', video.src);
     }
   });
 
   const item = currentItems[currentIndex];
-  console.log('Showing item:', item);
 
   // Clear previous content
   mediaElement.innerHTML = '';
 
-  if (item.type === 'video') {
-    console.log('Creating video element for:', item.src);
-    const video = document.createElement('video');
-    video.src = item.src;
-    video.controls = true;
-    video.autoplay = true;
-    video.style.cssText = `
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 8px;
-      display: block;
-    `;
+  // Check if we have preloaded media for this item
+  const cacheKey = `${item.src}-${item.type}`;
+  const preloadedElement = preloadedMedia.get(cacheKey);
 
-    // Add loadedmetadata handler to detect video dimensions
-    video.addEventListener('loadedmetadata', () => {
-      console.log(
-        'Video loaded, dimensions:',
-        video.videoWidth,
-        'x',
-        video.videoHeight
-      );
+  if (preloadedElement) {
+    if (item.type === 'video' && preloadedElement instanceof HTMLVideoElement) {
+      // Clone the preloaded video to avoid conflicts
+      const video = preloadedElement.cloneNode(true) as HTMLVideoElement;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = false; // Unmute for display
+      video.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
+      `;
 
-      // Check if it's a vertical video (height > width)
+      // Apply aspect ratio styling
       const isVertical = video.videoHeight > video.videoWidth;
-      console.log('Is vertical video:', isVertical);
-
       if (isVertical) {
-        // For vertical videos, ensure they don't get stretched
         video.style.maxHeight = '90vh';
         video.style.maxWidth = 'auto';
         video.style.width = 'auto';
         video.style.height = 'auto';
-        console.log('Applied vertical video styling');
       } else {
-        // For horizontal videos, maintain current styling
         video.style.maxWidth = '95vw';
         video.style.maxHeight = '95vh';
         video.style.width = 'auto';
         video.style.height = 'auto';
-        console.log('Applied horizontal video styling');
       }
-    });
 
-    mediaElement.appendChild(video);
-  } else {
-    console.log('Creating image element for:', item.src);
-    const img = document.createElement('img');
-    img.src = item.src;
-    img.alt = item.alt;
-    img.style.cssText = `
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 8px;
-      display: block;
-    `;
-    // Add onload handler to ensure proper sizing
-    img.onload = () => {
-      console.log(
-        'Image loaded, dimensions:',
-        img.naturalWidth,
-        'x',
-        img.naturalHeight
-      );
+      mediaElement.appendChild(video);
+    } else if (
+      item.type === 'image' &&
+      preloadedElement instanceof HTMLImageElement
+    ) {
+      // Clone the preloaded image to avoid conflicts
+      const img = preloadedElement.cloneNode(true) as HTMLImageElement;
+      img.alt = item.alt;
+      img.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
+      `;
 
-      // Check if it's a vertical image (height > width)
+      // Apply aspect ratio styling
       const isVertical = img.naturalHeight > img.naturalWidth;
-      console.log('Is vertical image:', isVertical);
-
       if (isVertical) {
-        // For vertical images, ensure they don't get stretched
         img.style.maxHeight = '90vh';
         img.style.maxWidth = 'auto';
         img.style.width = 'auto';
         img.style.height = 'auto';
-        console.log('Applied vertical image styling');
       } else {
-        // For horizontal images, maintain current styling
         img.style.maxWidth = '95vw';
         img.style.maxHeight = '95vh';
         img.style.width = 'auto';
         img.style.height = 'auto';
-        console.log('Applied horizontal image styling');
       }
-    };
-    mediaElement.appendChild(img);
+
+      mediaElement.appendChild(img);
+    }
+  } else {
+    if (item.type === 'video') {
+      const video = document.createElement('video');
+      video.src = item.src;
+      video.controls = true;
+      video.autoplay = true;
+      video.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
+      `;
+
+      // Add loadedmetadata handler to detect video dimensions
+      video.addEventListener('loadedmetadata', () => {
+        // Check if it's a vertical video (height > width)
+        const isVertical = video.videoHeight > video.videoWidth;
+
+        if (isVertical) {
+          // For vertical videos, ensure they don't get stretched
+          video.style.maxHeight = '90vh';
+          video.style.maxWidth = 'auto';
+          video.style.width = 'auto';
+          video.style.height = 'auto';
+        } else {
+          // For horizontal videos, maintain current styling
+          video.style.maxWidth = '95vw';
+          video.style.maxHeight = '95vh';
+          video.style.width = 'auto';
+          video.style.height = 'auto';
+        }
+      });
+
+      mediaElement.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.alt;
+      img.style.cssText = `
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
+      `;
+      // Add onload handler to ensure proper sizing
+      img.onload = () => {
+        // Check if it's a vertical image (height > width)
+        const isVertical = img.naturalHeight > img.naturalWidth;
+
+        if (isVertical) {
+          // For vertical images, ensure they don't get stretched
+          img.style.maxHeight = '90vh';
+          img.style.maxWidth = 'auto';
+          img.style.width = 'auto';
+          img.style.height = 'auto';
+        } else {
+          // For horizontal images, maintain current styling
+          img.style.maxWidth = '95vw';
+          img.style.maxHeight = '95vh';
+          img.style.width = 'auto';
+          img.style.height = 'auto';
+        }
+      };
+      mediaElement.appendChild(img);
+    }
   }
 
   // Update counter
   counter.textContent = `${currentIndex + 1} / ${currentItems.length}`;
-  console.log('Counter updated to:', counter.textContent);
 };
 
 /**
@@ -429,13 +535,11 @@ const handleKeydown = (e: KeyboardEvent) => {
 
   switch (e.key) {
     case 'Escape':
-      console.log('Escape key pressed, closing lightbox');
       // Pause all videos before closing
       const videos = lightboxElement?.querySelectorAll('video');
       videos?.forEach(video => {
         if (video instanceof HTMLVideoElement) {
           video.pause();
-          console.log('Paused video on escape:', video.src);
         }
       });
       lightboxInstance?.close();
@@ -453,27 +557,19 @@ const handleKeydown = (e: KeyboardEvent) => {
  * Initialize lightbox
  */
 export const initializeLightbox = async () => {
-  console.log('initializeLightbox called');
-
   if (typeof window === 'undefined') {
-    console.log('Window is undefined (SSR), returning null');
     return null;
   }
 
   try {
-    console.log('Creating lightbox...');
     lightboxInstance = createLightbox();
-    console.log('Lightbox created:', lightboxInstance);
 
     if (lightboxInstance) {
-      console.log('Custom lightbox initialized successfully');
       return lightboxInstance;
     } else {
-      console.log('Lightbox creation returned null');
       return null;
     }
   } catch (error) {
-    console.error('Failed to initialize custom lightbox:', error);
     return null;
   }
 };
@@ -502,24 +598,24 @@ export const refreshLightbox = async () => {
  * Open gallery
  */
 export const openGallery = (selector: string) => {
-  console.log('openGallery called with selector:', selector);
-
   if (!lightboxInstance) {
-    console.log('No lightbox instance found, trying to initialize...');
-    initializeLightbox().then(() => {
-      console.log('Lightbox initialized, now opening gallery...');
-      openGallery(selector);
+    initializeLightbox().then(instance => {
+      if (instance) {
+        openGallery(selector);
+      }
     });
     return;
   }
 
   const elements = document.querySelectorAll(selector);
-  console.log('Found elements:', elements.length);
+
+  if (elements.length === 0) {
+    return;
+  }
 
   const items: LightboxItem[] = Array.from(elements).map(el => {
     const link = el as HTMLAnchorElement;
     const type = link.dataset.type === 'video' ? 'video' : 'image';
-    console.log('Processing element:', link.href, 'type:', type);
     return {
       src: link.href,
       type: type as 'image' | 'video',
@@ -527,13 +623,8 @@ export const openGallery = (selector: string) => {
     };
   });
 
-  console.log('Items to show:', items);
-
   if (items.length > 0) {
-    console.log('Opening lightbox with items...');
     lightboxInstance.open(items, 0);
-  } else {
-    console.log('No items found to show in lightbox');
   }
 };
 
