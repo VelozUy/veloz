@@ -95,7 +95,7 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
       if (element) {
         element.scrollIntoView({
           behavior: reducedMotion ? 'auto' : 'smooth',
-          block: 'center',
+          block: 'start',
         });
       }
     },
@@ -129,11 +129,11 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
         <div className="relative">
           <div
             className="w-0.5 bg-muted-foreground/30 rounded-full"
-            style={{ height: `${projects.length * 48 + 24}px` }}
+            style={{ height: `${(projects.length - 1) * 45}px` }}
           />
           <motion.div
             className="absolute top-0 left-0 w-0.5 bg-primary rounded-full origin-top"
-            style={{ height: `${projects.length * 48 + 24}px` }}
+            style={{ height: `${(projects.length - 1) * 45}px` }}
             initial={{ scaleY: 0 }}
             animate={{ scaleY: progress }}
             transition={{
@@ -220,16 +220,6 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
                   </div>
                 </div>
               </motion.div>
-
-              {/* Active Indicator */}
-              {activeProject === project.id && (
-                <motion.div
-                  className="absolute -left-4 top-0 bottom-0 w-0.5 bg-primary rounded-full"
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ duration: reducedMotion ? 0 : 0.3 }}
-                />
-              )}
             </motion.button>
           ))}
         </div>
