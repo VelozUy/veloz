@@ -6,14 +6,94 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
-## 🎨 **EPIC: Gallery Portfolio Enhancement** ⭐ **HIGH PRIORITY**
+## 📑 **Quick Navigation**
+
+### **🎨 Styling & Design Epics**
+
+- [Gallery Portfolio Enhancement](#-epic-gallery-portfolio-enhancement--high-priority) ⭐ **HIGH PRIORITY**
+- [Project Detail Gallery Enhancement](#-epic-project-detail-gallery-enhancement--high-priority) ⭐ **HIGH PRIORITY**
+- [Gallery Page Migration to shadcn/ui Components](#-epic-gallery-page-migration-to-shadcnui-components--high-priority) ⭐ **HIGH PRIORITY**
+- [Veloz Brand Design System Implementation](#-epic-veloz-brand-design-system-implementation--top-priority) ⭐ **TOP PRIORITY**
+- [Project Timeline Page Theme Fix](#-epic-project-timeline-page-theme-fix--urgent-priority) ⭐ **URGENT PRIORITY**
+- [Border Radius System Implementation](#-epic-border-radius-system-implementation--new-epic) ⭐ **NEW EPIC**
+- [Light Gray Background Color System Implementation](#-epic-light-gray-background-color-system-implementation--new-epic) ⭐ **NEW EPIC**
+
+### **🎯 Core Functionality Epics**
+
+- [Category-Based Gallery Navigation](#-epic-category-based-gallery-navigation--high-priority) ⭐ **HIGH PRIORITY**
+- [Client Project Tracking System](#-epic-client-project-tracking-system--high-priority) ⭐ **HIGH PRIORITY**
+- [Enhanced Admin Project Management](#-epic-enhanced-admin-project-management--high-priority) ⭐ **HIGH PRIORITY**
+- [Crew Portfolio System](#-epic-crew-portfolio-system--medium-priority) 🟧 **MEDIUM PRIORITY**
+- [Remove Individual Project Pages](#-epic-remove-individual-project-pages--low-priority) 🟩 **LOW PRIORITY**
+
+### **📱 Performance & UX Epics**
+
+- [Mobile & Performance Optimization](#-epic-mobile--performance-optimization) 🟧 **HIGH PRIORITY**
+- [Enhanced User Experience & Interface](#-epic-enhanced-user-experience--interface) 🟧 **HIGH PRIORITY**
+
+### **🔍 Marketing & SEO Epics**
+
+- [SEO & Marketing Enhancement](#-epic-seo--marketing-enhancement) 🟧 **HIGH PRIORITY**
+
+### **🛠️ Admin & Management Epics**
+
+- [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
+
+### **📊 Analytics & Business Intelligence Epics**
+
+- [Analytics & Business Intelligence](#-epic-analytics--business-intelligence) 🟧 **HIGH PRIORITY**
+
+### **🔗 Integration & Services Epics**
+
+- [Integration & Third-Party Services](#-epic-integration--third-party-services) 🟧 **HIGH PRIORITY**
+
+### **🎯 Advanced Features Epics**
+
+- [Advanced Features & Innovation](#-epic-advanced-features--innovation) 🟧 **HIGH PRIORITY**
+
+### **📋 Quality & Testing Epics**
+
+- [Quality Assurance & Testing](#-epic-quality-assurance--testing) 🟧 **HIGH PRIORITY**
+
+### **🚀 Infrastructure Epics**
+
+- [Scalability & Infrastructure](#-epic-scalability--infrastructure) 🟧 **HIGH PRIORITY**
+
+### **🎁 Client Features Epics**
+
+- [Client Shareables & Post-Project Features](#-epic-client-shareables--post-project-features) 🟩 **LOW PRIORITY**
+
+---
+
+## 📊 **Epic Status Summary**
+
+| Priority               | Count | Status                        |
+| ---------------------- | ----- | ----------------------------- |
+| ⭐ **HIGH PRIORITY**   | 10    | Ready to start or in progress |
+| 🟧 **MEDIUM PRIORITY** | 8     | Future development            |
+| 🟩 **LOW PRIORITY**    | 2     | Backlog items                 |
+| ✅ **COMPLETED**       | 1     | Removed during cleanup        |
+
+**Total Active Epics**: 20
+
+---
+
+## 🎨 **EPIC: Gallery Portfolio Enhancement** ⭐ **HIGH PRIORITY** | 🟢 **READY TO START**
 
 ### 🎯 Objective: Transform the gallery projects list using portfolio-inspired design patterns from PearsonLyle example, implementing responsive picture elements, dynamic grid layouts, professional lightbox integration, and sophisticated filtering navigation
 
 **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Complete portfolio specification and implementation plan
 **User Intent**: Enhance the gallery projects list with portfolio-quality presentation using responsive images, dynamic layouts, professional lightbox, and sophisticated filtering while maintaining Veloz's brand elegance and static build-time generation
 
+**Tags**: `#gallery` `#portfolio` `#responsive` `#lightbox` `#performance`
+
+**Quick Actions**:
+
+- 📋 [View in TASK.md](#) | 📊 [View Analytics](#) | 🔗 [View Spec](#)
+
 **Scope**: Only the projects list display and filtering system will be enhanced. Page structure, header, footer, and overall layout remain unchanged.
+
+**Progress**: 🟢 **0/7 phases completed** - Ready to start immediately
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 
@@ -146,16 +226,23 @@ This file contains unprioritized ideas and future features that have been identi
 
 **Technical Dependencies**:
 
-- Current gallery page implementation
-- Access to `docs/GALLERY_PORTFOLIO_SPEC.md` specifications
-- Understanding of existing `getStaticContent()` pattern
-- GLightbox library integration
+- ✅ Current gallery page implementation
+- ✅ Access to `docs/GALLERY_PORTFOLIO_SPEC.md` specifications
+- ✅ Understanding of existing `getStaticContent()` pattern
+- ⏳ GLightbox library integration (needs installation)
 
 **Business Dependencies**:
 
-- User approval of portfolio-inspired design approach
-- Stakeholder review of enhanced project presentation
-- Content team preparation for optimized media assets
+- ✅ User approval of portfolio-inspired design approach
+- ⏳ Stakeholder review of enhanced project presentation
+- ⏳ Content team preparation for optimized media assets
+
+**Timeline**:
+
+- **Phase 1-3**: 4-7 days (Critical)
+- **Phase 4-5**: 4-6 days (High Priority)
+- **Phase 6-7**: 2-3 days (Medium/Low Priority)
+- **Total Estimated**: 10-16 days
 
 ### 📋 Implementation Notes
 
@@ -175,7 +262,7 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
-## 🎨 **EPIC: Project Detail Gallery Enhancement** ⭐ **HIGH PRIORITY**
+## 🎨 **EPIC: Project Detail Gallery Enhancement** ⭐ **HIGH PRIORITY** | 🟡 **IN PROGRESS**
 
 ### 🎯 Objective: Implement modern, portfolio-quality gallery system for Veloz project detail pages with static generation at build time, preserving timeline and crew sections while enhancing media presentation
 
@@ -1051,6 +1138,7 @@ This file contains unprioritized ideas and future features that have been identi
 - Ensure no breaking changes to current interactions
 - Test thoroughly with actual content and data
 - Consider impact on existing design system
+- Ensure REDJOLA font is never used in bold (user preference)
 
 **Risk Mitigation**:
 
