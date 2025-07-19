@@ -436,23 +436,27 @@ export default function ContactForm({ translations }: ContactFormProps) {
   }
 
   return (
-    <div className={`min-h-screen py-16 px-4 ${formClasses.background}`}>
+    <div
+      className={`min-h-screen py-8 lg:py-16 px-4 ${formClasses.background}`}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className={`text-center mb-16 space-y-6 ${formClasses.text}`}>
+        <div
+          className={`text-center mb-8 lg:mb-16 space-y-4 lg:space-y-6 ${formClasses.text}`}
+        >
           <h1 className="text-heading-lg font-body">{t.title}</h1>
           <p className="text-body-lg max-w-3xl mx-auto leading-relaxed">
             {t.subtitle}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Trust Indicators */}
-          <div className="lg:col-span-1 space-y-8">
+          <div className="lg:col-span-1 space-y-6 lg:space-y-8 order-2 lg:order-1">
             <div
-              className={`bg-white rounded-none p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Shield className="text-primary size-5" />
                 <h3 className="font-display text-lg font-normal">
                   {translations.contact.trust.response.title}
@@ -464,9 +468,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
             </div>
 
             <div
-              className={`bg-white rounded-none p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Clock className="text-primary size-5" />
                 <h3 className="font-display text-lg font-normal">
                   {translations.contact.trust.commitment.title}
@@ -478,9 +482,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
             </div>
 
             <div
-              className={`bg-white rounded-none p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Heart className="text-primary size-5" />
                 <h3 className="font-display text-lg font-normal">
                   {translations.contact.trust.privacy.title}
@@ -493,10 +497,10 @@ export default function ContactForm({ translations }: ContactFormProps) {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <form onSubmit={onSubmit} className="space-y-8">
+          <div className="lg:col-span-2 order-1 lg:order-2">
+            <form onSubmit={onSubmit} className="space-y-6 lg:space-y-8">
               <div
-                className={`bg-white rounded-none p-8 shadow-sm ${formClasses.border} space-y-6`}
+                className={`bg-white rounded-none p-6 lg:p-8 shadow-sm ${formClasses.border} space-y-6`}
               >
                 {/* Name */}
                 <div className="space-y-2">
@@ -609,14 +613,14 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   >
                     {t.form.communicationPreference.label}
                   </Label>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       type="button"
                       onClick={() =>
                         handleInputChange('communicationPreference', 'call')
                       }
                       className={cn(
-                        'flex-1 px-3 py-2 text-body-sm rounded-md border transition-colors',
+                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
                         formData.communicationPreference === 'call'
                           ? 'bg-primary text-primary-foreground border-primary'
                           : 'bg-background border-border hover:bg-muted hover:text-foreground'
@@ -630,7 +634,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                         handleInputChange('communicationPreference', 'whatsapp')
                       }
                       className={cn(
-                        'flex-1 px-3 py-2 text-body-sm rounded-md border transition-colors',
+                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
                         formData.communicationPreference === 'whatsapp'
                           ? 'bg-primary text-primary-foreground border-primary'
                           : 'bg-background border-border hover:bg-muted hover:text-foreground'
@@ -644,7 +648,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                         handleInputChange('communicationPreference', 'email')
                       }
                       className={cn(
-                        'flex-1 px-3 py-2 text-body-sm rounded-md border transition-colors',
+                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
                         formData.communicationPreference === 'email'
                           ? 'bg-primary text-primary-foreground border-primary'
                           : 'bg-background border-border hover:bg-muted hover:text-foreground'
@@ -658,7 +662,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                         handleInputChange('communicationPreference', 'zoom')
                       }
                       className={cn(
-                        'flex-1 px-3 py-2 text-body-sm rounded-md border transition-colors',
+                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
                         formData.communicationPreference === 'zoom'
                           ? 'bg-primary text-primary-foreground border-primary'
                           : 'bg-background border-border hover:bg-muted hover:text-foreground'
@@ -793,12 +797,12 @@ export default function ContactForm({ translations }: ContactFormProps) {
               </div>
 
               {/* Submit Button */}
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-4 lg:space-y-6">
                 <Button
                   type="submit"
                   disabled={isSubmitting || uploadingFiles}
                   size="lg"
-                  className="font-semibold px-12 py-6 text-body-lg"
+                  className="font-semibold px-8 lg:px-12 py-4 lg:py-6 text-body-lg w-full lg:w-auto"
                 >
                   {isSubmitting || uploadingFiles ? (
                     <>

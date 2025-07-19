@@ -175,7 +175,7 @@ export default function FileUpload({
       {/* File Upload Area */}
       <div
         className={cn(
-          'border-2 border-dashed rounded-none p-6 text-center transition-colors',
+          'border-2 border-dashed rounded-none p-4 lg:p-6 text-center transition-colors',
           dragActive
             ? 'border-primary bg-primary/5'
             : 'border-muted-foreground/25 hover:border-muted-foreground/50',
@@ -187,12 +187,12 @@ export default function FileUpload({
         onDrop={handleDrop}
       >
         <div className="flex flex-col items-center space-y-2">
-          <Upload className="w-8 h-8 text-muted-foreground" />
+          <Upload className="w-6 h-6 lg:w-8 lg:h-8 text-muted-foreground" />
           <div className="text-sm">
             <span className="font-medium text-foreground">Click to upload</span>{' '}
             or drag and drop
           </div>
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-muted-foreground text-center">
             {allowedTypes.includes('image/*') && 'Images, '}
             {allowedTypes.includes('application/pdf') && 'PDFs, '}
             {allowedTypes.includes('application/msword') && 'Word documents'}
@@ -218,7 +218,7 @@ export default function FileUpload({
           type="button"
           variant="outline"
           size="sm"
-          className="mt-4"
+          className="mt-4 w-full lg:w-auto"
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
         >
@@ -234,7 +234,7 @@ export default function FileUpload({
             {selectedFiles.map(fileItem => (
               <div
                 key={fileItem.id}
-                className="flex items-center justify-between p-3 bg-muted/50 rounded-none"
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-none flex-wrap gap-2"
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0">
                   {getFileIcon(fileItem.file)}
