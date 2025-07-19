@@ -215,6 +215,15 @@ const createLightbox = () => {
   // Add click outside to close
   lightboxElement.onclick = e => {
     if (e.target === lightboxElement) {
+      console.log('Clicking outside lightbox to close');
+      // Pause all videos before closing
+      const videos = lightboxElement?.querySelectorAll('video');
+      videos?.forEach(video => {
+        if (video instanceof HTMLVideoElement) {
+          video.pause();
+          console.log('Paused video on outside click:', video.src);
+        }
+      });
       lightboxInstance?.close();
     }
   };
@@ -242,6 +251,18 @@ const createLightbox = () => {
     },
     close: () => {
       console.log('Lightbox close called');
+
+      // Pause all videos in the lightbox before closing
+      const videos = lightboxElement?.querySelectorAll('video');
+      if (videos) {
+        videos.forEach(video => {
+          if (video instanceof HTMLVideoElement) {
+            video.pause();
+            console.log('Paused video:', video.src);
+          }
+        });
+      }
+
       if (lightboxElement) {
         lightboxElement.style.display = 'none';
       }
@@ -286,6 +307,15 @@ const showCurrentItem = () => {
     console.log('Media element or counter not found');
     return;
   }
+
+  // Pause any existing videos before showing new content
+  const existingVideos = mediaElement.querySelectorAll('video');
+  existingVideos.forEach(video => {
+    if (video instanceof HTMLVideoElement) {
+      video.pause();
+      console.log('Paused existing video:', video.src);
+    }
+  });
 
   const item = currentItems[currentIndex];
   console.log('Showing item:', item);
@@ -399,6 +429,15 @@ const handleKeydown = (e: KeyboardEvent) => {
 
   switch (e.key) {
     case 'Escape':
+      console.log('Escape key pressed, closing lightbox');
+      // Pause all videos before closing
+      const videos = lightboxElement?.querySelectorAll('video');
+      videos?.forEach(video => {
+        if (video instanceof HTMLVideoElement) {
+          video.pause();
+          console.log('Paused video on escape:', video.src);
+        }
+      });
       lightboxInstance?.close();
       break;
     case 'ArrowLeft':
