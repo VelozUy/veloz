@@ -19,6 +19,7 @@ interface UseScrollNavigationReturn {
  *
  * Manages scroll-based navigation between categories with smooth scrolling
  * and active category detection based on scroll position.
+ * Enhanced with better mobile touch support and improved scroll detection.
  */
 export const useScrollNavigation = ({
   categories,
@@ -80,16 +81,53 @@ export const useScrollNavigation = ({
     setTimeout(() => setIsScrolling(false), 1000);
   }, []);
 
-  // Add scroll event listener
+  // Enhanced scroll event listener with throttling
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!isScrolling) {
-        detectActiveCategory();
+      if (!ticking && !isScrolling) {
+        requestAnimationFrame(() => {
+          detectActiveCategory();
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
+    // Add passive scroll listener for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Add touch event listeners for mobile
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndY = e.changedTouches[0].clientY;
+      const touchDiff = touchStartY - touchEndY;
+
+      // If significant touch movement, update active category after a delay
+      if (Math.abs(touchDiff) > 50) {
+        setTimeout(() => {
+          detectActiveCategory();
+        }, 100);
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart, {
+      passive: true,
+    });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
   }, [detectActiveCategory, isScrolling]);
 
   // Initialize active category on mount

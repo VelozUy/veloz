@@ -32,7 +32,7 @@ const CATEGORY_CONFIG = [
     label: 'Bodas y Eventos',
     title: 'Boda',
     description: 'Fotografía y video de bodas y eventos sociales.',
-    eventTypes: ['Boda', 'Bodas', 'Wedding'],
+    eventTypes: ['Casamiento', 'Boda', 'Bodas', 'Wedding'],
   },
   {
     id: 'corporativo',
@@ -40,7 +40,7 @@ const CATEGORY_CONFIG = [
     label: 'Eventos Corporativos',
     title: 'Corporativo',
     description: 'Eventos corporativos, conferencias y lanzamientos.',
-    eventTypes: ['Corporativo', 'Corporate'],
+    eventTypes: ['Corporativos', 'Corporativo', 'Corporate'],
   },
   {
     id: 'producto',
@@ -48,7 +48,7 @@ const CATEGORY_CONFIG = [
     label: 'Fotografía de Producto',
     title: 'Producto',
     description: 'Fotografía de producto y campañas publicitarias.',
-    eventTypes: ['Producto', 'Product'],
+    eventTypes: ['Photoshoot', 'Producto', 'Product'],
   },
   {
     id: 'moda',
@@ -56,7 +56,7 @@ const CATEGORY_CONFIG = [
     label: 'Fotografía de Moda',
     title: 'Moda',
     description: 'Fotografía de moda y editoriales.',
-    eventTypes: ['Moda', 'Fashion'],
+    eventTypes: ['Culturales y artísticos', 'Moda', 'Fashion'],
   },
 ];
 
@@ -71,6 +71,7 @@ export default function OurWorkClient({
       const projectsInCategory = projects.filter((p: Project) =>
         category.eventTypes.includes(p.eventType || '')
       );
+
       // Collect all featured media from these projects
       const media = projectsInCategory.flatMap((project: Project) =>
         (project.media || [])
@@ -87,6 +88,7 @@ export default function OurWorkClient({
             featured: m.featured || false,
           }))
       );
+
       return {
         id: category.id,
         title: category.title,

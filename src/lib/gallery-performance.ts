@@ -91,8 +91,8 @@ export const smoothScrollToGallery = (elementId: string) => {
   }
 };
 
-// Utility functions for debouncing and throttling
-const debounce = <T extends (...args: unknown[]) => unknown>(
+// Utility functions for debouncing and throttling (exported for reuse)
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -103,7 +103,7 @@ const debounce = <T extends (...args: unknown[]) => unknown>(
   };
 };
 
-const throttle = <T extends (...args: unknown[]) => unknown>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
@@ -224,3 +224,107 @@ declare global {
     ) => void;
   }
 }
+
+/**
+ * Performance optimization utilities for gallery components
+ */
+
+// Image preloading utility
+export const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => reject();
+    img.src = src;
+  });
+};
+
+// Batch preload images with concurrency control
+export const preloadImages = async (
+  urls: string[],
+  concurrency = 3
+): Promise<void> => {
+  const chunks = [];
+  for (let i = 0; i < urls.length; i += concurrency) {
+    chunks.push(urls.slice(i, i + concurrency));
+  }
+
+  for (const chunk of chunks) {
+    await Promise.allSettled(chunk.map(url => preloadImage(url)));
+  }
+};
+
+// Lazy loading with intersection observer
+export const createLazyLoadObserver = (
+  callback: (entries: IntersectionObserverEntry[]) => void,
+  options: IntersectionObserverInit = {
+    rootMargin: '50px',
+    threshold: 0.1,
+  }
+): IntersectionObserver => {
+  return new IntersectionObserver(callback, options);
+};
+
+// Debounce utility for scroll events (reuses existing debounce function)
+// Throttle utility for performance-heavy operations (reuses existing throttle function)
+
+// Performance monitoring
+export const measurePerformance = (name: string, fn: () => void): void => {
+  const start = performance.now();
+  fn();
+  const end = performance.now();
+  console.log(`${name} took ${end - start}ms`);
+};
+
+// Image optimization utilities
+export const getOptimizedImageUrl = (
+  originalUrl: string,
+  width: number,
+  quality = 80
+): string => {
+  // If using a CDN or image optimization service, add parameters here
+  // For now, return the original URL
+  return originalUrl;
+};
+
+// Memory management for large galleries
+export const cleanupGalleryMemory = (): void => {
+  // Force garbage collection if available
+  if (window.gc) {
+    window.gc();
+  }
+};
+
+// Progressive enhancement for gallery loading
+export const createProgressiveLoader = (
+  items: Array<{ id: string; url: string }>,
+  onProgress: (loaded: number, total: number) => void
+) => {
+  let loaded = 0;
+  const total = items.length;
+
+  const loadItem = async (item: { id: string; url: string }) => {
+    try {
+      await preloadImage(item.url);
+      loaded++;
+      onProgress(loaded, total);
+    } catch (error) {
+      console.warn(`Failed to load image: ${item.url}`, error);
+      loaded++;
+      onProgress(loaded, total);
+    }
+  };
+
+  return {
+    loadAll: async () => {
+      const chunks = [];
+      for (let i = 0; i < items.length; i += 3) {
+        chunks.push(items.slice(i, i + 3));
+      }
+
+      for (const chunk of chunks) {
+        await Promise.allSettled(chunk.map(loadItem));
+      }
+    },
+  };
+};

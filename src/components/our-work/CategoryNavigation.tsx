@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface Category {
   id: string;
@@ -17,127 +17,266 @@ interface CategoryNavigationProps {
   className?: string;
 }
 
-const CATEGORIES: Category[] = [
-  {
-    id: 'boda',
-    name: 'Boda',
-    label: 'Bodas y Eventos',
-  },
-  {
-    id: 'corporativo',
-    name: 'Corporativo',
-    label: 'Eventos Corporativos',
-  },
-  {
-    id: 'producto',
-    name: 'Producto',
-    label: 'Fotografía de Producto',
-  },
-  {
-    id: 'moda',
-    name: 'Moda',
-    label: 'Fotografía de Moda',
-  },
-];
-
 export default function CategoryNavigation({
-  categories = CATEGORIES,
+  categories,
   activeCategory,
   onCategoryChange,
-  className = '',
+  className,
 }: CategoryNavigationProps) {
   const [isScrolling, setIsScrolling] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Handle smooth scroll to category section
-  const scrollToCategory = (categoryId: string) => {
-    setIsScrolling(true);
-    onCategoryChange(categoryId);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    const element = document.getElementById(`category-${categoryId}`);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
+    let lastScrollTime = Date.now();
+    let lastScrollY = window.scrollY;
+    let scrollSpeed = 0;
+    let consecutiveFastScrolls = 0;
 
-    // Reset scrolling state after animation
-    setTimeout(() => setIsScrolling(false), 1000);
-  };
+    const handleScroll = () => {
+      const now = Date.now();
+      const currentScrollY = window.scrollY;
+      const timeDelta = now - lastScrollTime;
+      const scrollDelta = Math.abs(currentScrollY - lastScrollY);
 
-  return (
-    <div
-      className={`sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border ${className}`}
-    >
-      <div className="container mx-auto px-4 py-4">
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center justify-center space-x-8">
-          {categories.map(category => (
-            <motion.button
-              key={category.id}
-              onClick={() => scrollToCategory(category.id)}
-              disabled={isScrolling}
-              className={`relative px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeCategory === category.id
-                  ? 'text-white bg-primary shadow-lg'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="flex items-center gap-2">
-                {category.name}
-                {activeCategory === category.id && (
-                  <motion.div
-                    className="w-2 h-2 rounded-full bg-primary-foreground"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                )}
-              </span>
-            </motion.button>
-          ))}
-        </div>
+      // Calculate scroll speed (pixels per millisecond)
+      scrollSpeed = timeDelta > 0 ? scrollDelta / timeDelta : 0;
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4 overflow-x-auto scrollbar-hide">
-              {categories.map(category => (
-                <motion.button
-                  key={category.id}
-                  onClick={() => scrollToCategory(category.id)}
-                  disabled={isScrolling}
-                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
-                    activeCategory === category.id
-                      ? 'text-white bg-primary shadow-lg'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {category.name}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </div>
+      // Only show navigation if scrolling fast (more than 0.27 pixels per millisecond)
+      // This means scrolling 27 pixels in 100ms or faster
+      if (scrollSpeed > 0.27) {
+        consecutiveFastScrolls++;
 
-        {/* Progress Indicator */}
-        <div className="mt-4">
-          <div className="w-full bg-muted rounded-full h-1">
-            <motion.div
-              className="bg-primary h-1 rounded-full"
-              initial={{ width: '0%' }}
-              animate={{
-                width: `${((categories.findIndex(c => c.id === activeCategory) + 1) / categories.length) * 100}%`,
-              }}
-              transition={{ duration: 0.5 }}
-            />
+        // Only show navigation after 2 consecutive fast scroll events
+        // This prevents showing on accidental fast movements
+        if (consecutiveFastScrolls >= 2) {
+          console.log(
+            `🔄 Fast scroll detected - speed: ${scrollSpeed.toFixed(2)} px/ms (${consecutiveFastScrolls} consecutive)`
+          );
+          setIsScrolling(true);
+
+          // Clear existing timeout
+          if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+          }
+
+          // Set timeout to hide navigation
+          scrollTimeout = setTimeout(() => {
+            console.log('⏰ Scroll timeout - hiding navigation');
+            setIsScrolling(false);
+            consecutiveFastScrolls = 0; // Reset counter when hiding
+          }, 1500);
+        }
+      } else {
+        // Reset counter if scrolling slowly
+        consecutiveFastScrolls = 0;
+      }
+
+      // Update tracking variables
+      lastScrollTime = now;
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const currentIndex = categories.findIndex(
+        cat => cat.id === activeCategory
+      );
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          e.preventDefault();
+          const nextIndex = (currentIndex + 1) % categories.length;
+          onCategoryChange(categories[nextIndex].id);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          e.preventDefault();
+          const prevIndex =
+            currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
+          onCategoryChange(categories[prevIndex].id);
+          break;
+        case 'Home':
+          e.preventDefault();
+          onCategoryChange(categories[0].id);
+          break;
+        case 'End':
+          e.preventDefault();
+          onCategoryChange(categories[categories.length - 1].id);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [categories, activeCategory, onCategoryChange]);
+
+  // Calculate progress for mobile
+  const progressValue =
+    categories.length > 0
+      ? ((categories.findIndex(cat => cat.id === activeCategory) + 1) /
+          categories.length) *
+        100
+      : 0;
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div
+        className={cn(
+          'fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden lg:block',
+          className
+        )}
+      >
+        <div className="p-4">
+          <div className="space-y-2">
+            {categories.map(category => (
+              <button
+                key={category.id}
+                className="block w-full text-left px-4 py-3 text-sm font-medium text-foreground/80 hover:text-primary transition-colors relative group"
+              >
+                <span>{category.name}</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <>
+      {/* Desktop Vertical Navigation */}
+      <div
+        className={cn(
+          'fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden lg:block',
+          className
+        )}
+      >
+        <motion.div
+          className="p-4"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="space-y-2">
+            {categories.map(category => {
+              const isActive = activeCategory === category.id;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => onCategoryChange(category.id)}
+                  className={cn(
+                    'block w-full text-left px-4 py-3 text-sm font-medium transition-colors relative group',
+                    isActive
+                      ? 'text-primary'
+                      : 'text-foreground/80 hover:text-primary'
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <span className="relative">
+                    {category.name}
+                    <span
+                      className={cn(
+                        'absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-200',
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      )}
+                    />
+                  </span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Mobile Navigation - Sidebar that shows when scrolling */}
+      <AnimatePresence>
+        {isScrolling && (
+          <motion.div
+            className="fixed left-6 top-1/2 -translate-y-1/2 z-50 lg:hidden"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="p-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="space-y-2">
+                {categories.map(category => {
+                  const isActive = activeCategory === category.id;
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => onCategoryChange(category.id)}
+                      className={cn(
+                        'block w-full text-left px-4 py-3 text-sm font-medium transition-colors relative group',
+                        isActive
+                          ? 'text-primary'
+                          : 'text-foreground/80 hover:text-primary'
+                      )}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      <span className="relative">
+                        {category.name}
+                        <span
+                          className={cn(
+                            'absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-200',
+                            isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                          )}
+                        />
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeIndicator"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
