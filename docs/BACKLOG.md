@@ -78,22 +78,209 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
-## 🎨 **EPIC: Gallery Portfolio Enhancement** ⭐ **HIGH PRIORITY** | 🟢 **READY TO START**
+## 🎨 **EPIC: Editorial Photo Showcase Style Implementation** ⭐ **HIGH PRIORITY** | 🟢 **READY TO START**
 
-### 🎯 Objective: Transform the gallery projects list using portfolio-inspired design patterns from PearsonLyle example, implementing responsive picture elements, dynamic grid layouts, professional lightbox integration, and sophisticated filtering navigation
+### 🎯 Objective: Transform the /our-work page to match the editorial, minimal style of Jonathan Gregson portfolio on PearsonLyle, emphasizing flat layout, typography, and media-focused presentation while respecting Veloz's theme system
 
-**Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Complete portfolio specification and implementation plan
-**User Intent**: Enhance the gallery projects list with portfolio-quality presentation using responsive images, dynamic layouts, professional lightbox, and sophisticated filtering while maintaining Veloz's brand elegance and static build-time generation
+**Reference**: Editorial photo showcase style specification from Jonathan Gregson portfolio analysis
+**User Intent**: Apply editorial, minimal design principles to the /our-work page with flat layouts, removed UI ornamentation, and emphasis on photography and typography while maintaining Veloz's brand identity
 
-**Tags**: `#gallery` `#portfolio` `#responsive` `#lightbox` `#performance`
+**Tags**: `#editorial` `#minimal` `#typography` `#photography` `#shadcn-ui`
 
 **Quick Actions**:
 
 - 📋 [View in TASK.md](#) | 📊 [View Analytics](#) | 🔗 [View Spec](#)
 
-**Scope**: Only the projects list display and filtering system will be enhanced. Page structure, header, footer, and overall layout remain unchanged.
+**Scope**: Update shadcn/ui components and /our-work page styling to match editorial photo showcase aesthetic. Maintain existing functionality while enhancing visual presentation.
 
-**Progress**: 🟢 **0/7 phases completed** - Ready to start immediately
+**Progress**: 🟢 **0/8 phases completed** - Ready to start immediately
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Core shadcn/ui Component Updates** - Remove rounded corners, shadows, and ornamentation
+  - **User Intent**: Transform shadcn/ui components to match editorial, minimal aesthetic
+  - **Acceptance Criteria**:
+    - Card component: `rounded-none border border-border bg-card text-card-foreground shadow-none`
+    - Button component: `rounded-none shadow-none` for default variant
+    - Input component: `rounded-none border border-border bg-input text-foreground shadow-none`
+    - Dialog component: `rounded-none bg-popover p-0 shadow-none max-w-[90vw] max-h-[90vh]`
+    - All components use theme tokens consistently
+    - No visual ornamentation (shadows, rounded corners, decorative elements)
+  - **Files**: `src/components/ui/card.tsx`, `src/components/ui/button.tsx`, `src/components/ui/input.tsx`, `src/components/ui/dialog.tsx`
+  - **Reference**: Editorial photo showcase style specification - Component Changes section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Typography System Enhancement** - Implement editorial typography hierarchy
+  - **User Intent**: Create sophisticated typography system with uppercase headings and tight tracking
+  - **Acceptance Criteria**:
+    - h2 headings: `text-xl uppercase tracking-tight font-semibold text-foreground`
+    - h3 headings: `text-sm uppercase font-semibold` for section labels
+    - Consistent use of Roboto font family
+    - Proper typographic hierarchy and spacing
+    - Uppercase styling for category labels and section headers
+  - **Files**: `src/components/ui/typography.tsx`, `src/components/our-work/CategorySection.tsx`
+  - **Reference**: Editorial photo showcase style specification - Typography section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Tabs Component Editorial Styling** - Transform category navigation to editorial style
+  - **User Intent**: Create horizontal navigation with underlines that feels like print magazine section switcher
+  - **Acceptance Criteria**:
+    - Tabs styling: `inline-flex items-center px-1 pb-1 text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground`
+    - Horizontal layout with underline indicators
+    - Uppercase text with tight tracking
+    - Smooth transitions between states
+    - Print magazine aesthetic
+  - **Files**: `src/components/ui/tabs.tsx`, `src/components/our-work/CategoryNavigation.tsx`
+  - **Reference**: Editorial photo showcase style specification - Tabs section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Overview Page Layout** - Implement editorial overview with featured media
+  - **User Intent**: Create sophisticated overview page with featured media from each category
+  - **Acceptance Criteria**:
+    - Overview tab shows featured media from each category
+    - Category sections separated with horizontal lines (`border-t border-border my-6`)
+    - Section headings styled with `text-sm uppercase font-semibold`
+    - Preview grid with featured media and category labels
+    - Generous spacing and minimal visual clutter
+  - **Files**: `src/components/our-work/OverviewSection.tsx`, `src/app/our-work/page.tsx`
+  - **Reference**: Editorial photo showcase style specification - Overview Analysis
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Category Gallery Grid** - Implement editorial grid layout without cards
+  - **User Intent**: Create loose visual grid with mixed image sizes and no card wrappers
+  - **Acceptance Criteria**:
+    - Responsive CSS grid with variable image dimensions
+    - No card wrappers, direct image placement
+    - Spacing via `gap-*` utilities
+    - Support for portrait, landscape, and square images
+    - Optional Dialog wrapper for lightbox interaction
+    - Loose visual grid (not uniform squares)
+  - **Files**: `src/components/our-work/GridGallery.tsx`, `src/components/our-work/MasonryGallery.tsx`
+  - **Reference**: Editorial photo showcase style specification - Grid Gallery section
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Spacing and Rhythm System** - Implement editorial spacing patterns
+  - **User Intent**: Create large margins and generous spacing with no visual clutter
+  - **Acceptance Criteria**:
+    - Large margins and generous spacing throughout
+    - No shadows or rounded elements
+    - Consistent use of Tailwind spacing utilities
+    - `--radius: 0` enforced across all components
+    - Clean, breathable layouts
+  - **Files**: All /our-work page components
+  - **Reference**: Editorial photo showcase style specification - Spacing and Rhythm section
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Theme Consistency Verification** - Ensure all components use theme tokens
+  - **User Intent**: Verify that all styling uses proper theme tokens and maintains consistency
+  - **Acceptance Criteria**:
+    - All background colors use `bg-card`, `bg-input`, etc.
+    - All border colors use `border-border`
+    - All text colors use `text-foreground`, `text-muted-foreground`
+    - Radius set to `0rem` in theme
+    - Roboto font family as default
+  - **Files**: All updated components
+  - **Reference**: Editorial photo showcase style specification - Theme Consistency section
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Accessibility and Performance Testing** - Ensure editorial design meets standards
+  - **User Intent**: Verify that editorial design maintains accessibility and performance
+  - **Acceptance Criteria**:
+    - All color combinations meet WCAG AA contrast requirements
+    - Focus states are clearly visible
+    - Interactive elements are clearly distinguishable
+    - No performance regressions from styling changes
+    - Responsive design works across all devices
+  - **Files**: All updated components and pages
+  - **Reference**: Editorial photo showcase style specification - Accessibility considerations
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Cross-browser Testing** - Ensure editorial design works across all major browsers
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Mobile Responsiveness Testing** - Verify editorial design works perfectly on mobile devices
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Print Styles** - Ensure editorial design works for print media
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Visual Transformation**: Complete adoption of editorial, minimal aesthetic
+- **Typography Enhancement**: Sophisticated typographic hierarchy with uppercase styling
+- **Component Consistency**: All shadcn/ui components follow editorial style
+- **User Experience**: Enhanced focus on photography and content presentation
+
+**Secondary Metrics**:
+
+- **Brand Alignment**: Maintained Veloz brand identity while adopting editorial style
+- **Performance**: No performance regressions from styling changes
+- **Accessibility**: Maintained WCAG compliance with new design
+- **Technical Quality**: Consistent use of theme tokens and design system
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- ✅ Current /our-work page implementation
+- ✅ shadcn/ui component library
+- ✅ Veloz theme system with OKLCH colors
+- ✅ Tailwind CSS framework
+
+**Business Dependencies**:
+
+- ✅ User approval of editorial photo showcase approach
+- ⏳ Stakeholder review of minimal, typography-focused design
+- ⏳ Content team preparation for enhanced media presentation
+
+**Timeline**:
+
+- **Phase 1-3**: 3-6 days (Critical)
+- **Phase 4-5**: 4-6 days (High Priority)
+- **Phase 6-8**: 3-5 days (Medium/Low Priority)
+- **Total Estimated**: 10-17 days
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- All changes must respect the existing Veloz theme system
+- Maintain static build-time generation with no client-side fetching
+- Ensure responsive design works across all device sizes
+- Preserve existing functionality while enhancing visual presentation
+- Use consistent naming conventions and file structure
+
+**Reference Materials**:
+
+- Editorial photo showcase style specification (attached)
+- Jonathan Gregson portfolio on PearsonLyle: https://pearsonlyle.co.uk/artists/jonathan-gregson-photography
+- Current Veloz theme system and design tokens
+- shadcn/ui component library documentation
+
+---
+
+## 🎨 **EPIC: Gallery Portfolio Enhancement** ⭐ **HIGH PRIORITY** | 🟢 **READY TO START**
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 
