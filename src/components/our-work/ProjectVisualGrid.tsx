@@ -309,7 +309,7 @@ export default function ProjectVisualGrid({
           ))}
 
           {/* Render each media block */}
-          {sortedBlocks.map(block => {
+          {sortedBlocks.map((block, index) => {
             const media = block.mediaId ? mediaMap.get(block.mediaId) : null;
             const mergedBlock = getMergedBlockData(block);
             const left = block.x * GRID_CELL_SIZE;
@@ -333,7 +333,7 @@ export default function ProjectVisualGrid({
             };
 
             return (
-              <div key={block.id} style={blockStyle}>
+              <div key={block.id} className="absolute" style={blockStyle}>
                 {block.type === 'title' ? (
                   // Title block
                   <div
@@ -361,10 +361,7 @@ export default function ProjectVisualGrid({
                         loop
                         playsInline
                         autoPlay
-                        style={{
-                          transform: `translate(${mergedBlock.mediaOffsetX || 0}%, ${mergedBlock.mediaOffsetY || 0}%) scale(${calculateMaxOffset(block, media).scale})`,
-                          objectPosition: 'center',
-                        }}
+                        preload={index < 4 ? 'auto' : 'metadata'}
                       />
                     ) : (
                       <Image
@@ -373,10 +370,8 @@ export default function ProjectVisualGrid({
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        style={{
-                          transform: `translate(${mergedBlock.mediaOffsetX || 0}%, ${mergedBlock.mediaOffsetY || 0}%) scale(${calculateMaxOffset(block, media).scale})`,
-                          objectPosition: 'center',
-                        }}
+                        priority={index < 4}
+                        loading={index < 4 ? 'eager' : 'lazy'}
                       />
                     )}
                   </div>

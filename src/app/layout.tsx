@@ -31,6 +31,10 @@ import {
   organizationSchema,
 } from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
+import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
+import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
+import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -226,6 +230,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Initialize cross-browser, mobile, and accessibility testing in development
+  if (typeof window !== 'undefined') {
+    initCrossBrowserTesting();
+    initMobileResponsivenessTesting();
+    initAccessibilityTesting();
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body

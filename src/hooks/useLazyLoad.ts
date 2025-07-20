@@ -45,7 +45,7 @@ export const useLazyLoad = (
       // Fallback for older browsers
       if (fallback) {
         setIsVisible(true);
-        setIsLoaded(true);
+        // Don't auto-set isLoaded for fallback - let component handle it
       }
       return;
     }
@@ -56,8 +56,7 @@ export const useLazyLoad = (
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            // Auto-load after a small delay for better UX
-            setTimeout(() => setIsLoaded(true), 100);
+            // Don't auto-set isLoaded - let the component handle it based on actual load events
             // Disconnect observer once visible
             if (observerRef.current) {
               observerRef.current.disconnect();

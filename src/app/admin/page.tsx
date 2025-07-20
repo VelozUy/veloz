@@ -35,6 +35,25 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <Link href="/admin/dashboard">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-2">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Dashboard</CardTitle>
+                </div>
+                <CardDescription>
+                  Vista completa de proyectos y gestión avanzada
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Monitorea proyectos, clientes y equipo en tiempo real
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
           <Link href="/admin/analytics">
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">

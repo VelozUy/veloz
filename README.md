@@ -159,8 +159,6 @@ npm run type-check  # Run TypeScript checks
 
 ### Theme System
 
-The application uses a comprehensive theme system based on `NEW_THEME_2.css`:
-
 - **CSS Custom Properties**: All colors defined as semantic variables
 - **OKLCH Color Space**: Modern color space for superior accuracy
 - **Accessibility First**: WCAG AA compliance built-in

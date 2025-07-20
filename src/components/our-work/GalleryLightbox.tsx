@@ -19,25 +19,34 @@ export default function GalleryLightbox({ projectId }: GalleryLightboxProps) {
       return;
     }
 
-    // Import GLightbox only on client side
-    import('glightbox').then(({ default: GLightbox }) => {
-      // Initialize GLightbox for this project's gallery
-      const lightbox = GLightbox({
-        selector: `[data-gallery="project-${projectId}"]`,
-        touchNavigation: true,
-        loop: true,
-        autoplayVideos: true,
-        plyr: {
-          css: 'https://cdn.plyr.io/3.6.8/plyr.css',
-          js: 'https://cdn.plyr.io/3.6.8/plyr.js',
-        },
-      });
+    // Defer GLightbox initialization to avoid blocking FCP
+    const initializeLightbox = () => {
+      import('glightbox').then(({ default: GLightbox }) => {
+        // Initialize GLightbox for this project's gallery
+        const lightbox = GLightbox({
+          selector: `[data-gallery="project-${projectId}"]`,
+          touchNavigation: true,
+          loop: true,
+          autoplayVideos: true,
+          plyr: {
+            css: 'https://cdn.plyr.io/3.6.8/plyr.css',
+            js: 'https://cdn.plyr.io/3.6.8/plyr.js',
+          },
+        });
 
-      // Cleanup on unmount
-      return () => {
-        lightbox.destroy();
-      };
-    });
+        // Cleanup on unmount
+        return () => {
+          lightbox.destroy();
+        };
+      });
+    };
+
+    // Use requestIdleCallback if available, otherwise setTimeout
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initializeLightbox);
+    } else {
+      setTimeout(initializeLightbox, 100);
+    }
   }, [projectId]);
 
   return null; // This component doesn't render anything

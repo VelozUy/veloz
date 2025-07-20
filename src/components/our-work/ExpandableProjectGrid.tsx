@@ -43,6 +43,7 @@ export default function ExpandableProjectGrid({
                 loop
                 playsInline
                 autoPlay
+                preload={index < 4 ? 'auto' : 'metadata'}
               />
             ) : (
               <Image
@@ -51,6 +52,8 @@ export default function ExpandableProjectGrid({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={index < 4}
+                loading={index < 4 ? 'eager' : 'lazy'}
               />
             )}
           </div>

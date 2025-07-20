@@ -320,6 +320,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     loop
                     playsInline
                     autoPlay
+                    preload={index < 4 ? 'auto' : 'metadata'}
                   />
                 ) : (
                   <Image
@@ -328,6 +329,8 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    priority={index < 4}
+                    loading={index < 4 ? 'eager' : 'lazy'}
                   />
                 )}
               </div>
@@ -357,31 +360,45 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
         {/* Simple Grid for Our-Work List Page */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {project.media.slice(0, 6).map((media, index) => (
-            <div
-              key={media.id || index}
-              className="aspect-square relative overflow-hidden rounded-none"
-            >
-              {media.type === 'video' ? (
-                <video
-                  src={media.url}
-                  className="w-full h-full object-cover"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                />
-              ) : (
-                <Image
-                  src={media.url}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              )}
-            </div>
-          ))}
+          {project.media.slice(0, 6).map((media, index) => {
+            // Calculate aspect ratio for responsive sizing
+            const aspectRatio = media.aspectRatio || '1:1';
+
+            // Calculate padding-bottom for proper aspect ratio
+            let paddingBottom = '100%'; // Default square
+            if (aspectRatio === '16:9') paddingBottom = '56.25%';
+            else if (aspectRatio === '9:16') paddingBottom = '177.78%';
+
+            return (
+              <div
+                key={media.id || index}
+                className="relative overflow-hidden rounded-none"
+                style={{ paddingBottom }}
+              >
+                {media.type === 'video' ? (
+                  <video
+                    src={media.url}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    preload={index < 4 ? 'auto' : 'metadata'}
+                  />
+                ) : (
+                  <Image
+                    src={media.url}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    priority={index < 4}
+                    loading={index < 4 ? 'eager' : 'lazy'}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );

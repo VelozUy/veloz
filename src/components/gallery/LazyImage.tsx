@@ -41,22 +41,29 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   onLoad,
   onError,
 }: LazyImageProps) => {
-  const { isVisible, isLoaded, ref } = useLazyLoad({
+  const { isVisible, ref } = useLazyLoad({
     threshold: 0.1,
     rootMargin: '100px',
     fallback: true,
   });
+
+  // Track actual image loading state
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [hasError, setHasError] = React.useState(false);
 
   const { trackImageLoad, trackImageError, trackVisibility } =
     useLazyLoadPerformance();
   const imageId = `${src}-${width}-${height}`;
 
   const handleLoad = () => {
+    setIsLoaded(true);
+    setHasError(false);
     trackImageLoad(imageId);
     onLoad?.();
   };
 
   const handleError = () => {
+    setHasError(true);
     trackImageError(imageId);
     onError?.();
   };
@@ -76,7 +83,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       data-testid="lazy-image-container"
     >
       {/* Loading placeholder */}
-      {!isLoaded && (
+      {!isLoaded && !hasError && (
         <div
           className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center"
           data-testid="loading-placeholder"
@@ -86,7 +93,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       )}
 
       {/* Blur placeholder */}
-      {isVisible && !isLoaded && blurDataURL && (
+      {isVisible && !isLoaded && !hasError && blurDataURL && (
         <Image
           src={blurDataURL}
           alt=""
@@ -124,7 +131,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       )}
 
       {/* Error fallback */}
-      {isVisible && !isLoaded && (
+      {hasError && (
         <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
           <div className="text-gray-500 text-sm" data-testid="error-fallback">
             Error loading image

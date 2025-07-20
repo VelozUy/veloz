@@ -80,6 +80,7 @@ export default function GridGallery({
         ...item,
         layout,
         index,
+        // poster and blurDataURL are already spread if present
       };
     });
   }, [media]);
@@ -101,7 +102,7 @@ export default function GridGallery({
     >
       {/* Desktop Grid Layout */}
       <div className="hidden md:grid grid-cols-12 w-full h-full">
-        {gridItems.map(item => {
+        {gridItems.map((item, index) => {
           const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(
             item.aspectRatio
           );
@@ -125,6 +126,8 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
+                  // LCP optimization: load poster eagerly for first 4 videos
+                  preload={index < 4 ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
@@ -134,6 +137,8 @@ export default function GridGallery({
                   fill
                   className="object-cover"
                   sizes="100vw"
+                  priority={index < 4}
+                  loading={index < 4 ? 'eager' : 'lazy'}
                 />
               )}
             </div>
@@ -143,7 +148,7 @@ export default function GridGallery({
 
       {/* Mobile Stack Layout */}
       <div className="grid grid-cols-1 md:hidden w-full h-full">
-        {gridItems.map(item => {
+        {gridItems.map((item, index) => {
           const { width: aspectWidth, height: aspectHeight } = parseAspectRatio(
             item.aspectRatio
           );
@@ -163,6 +168,7 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
+                  preload={index < 4 ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
@@ -172,6 +178,8 @@ export default function GridGallery({
                   fill
                   className="object-cover"
                   sizes="100vw"
+                  priority={index < 4}
+                  loading={index < 4 ? 'eager' : 'lazy'}
                 />
               )}
             </div>

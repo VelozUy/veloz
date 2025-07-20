@@ -20,13 +20,27 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email == resource.data.ownerEmail;
     }
     
+    // Helper function to check if user has client access to project
+    function hasClientAccess(projectId) {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/clientSessions/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/clientSessions/$(request.auth.uid)).data.projectId == projectId &&
+        get(/databases/$(database)/documents/clientSessions/$(request.auth.uid)).data.isActive == true;
+    }
+    
+    // Helper function to check if access code is valid for project
+    function isValidAccessCode(projectId, accessCode) {
+      return exists(/databases/$(database)/documents/projects/$(projectId)) &&
+        get(/databases/$(database)/documents/projects/$(projectId)).data.client.accessCode == accessCode;
+    }
+    
     // Admin Users Collection - Only authenticated admin users can manage
     match /adminUsers/{email} {
       allow read, write: if isActiveAdmin() || request.auth.token.email == email;
       allow create: if isActiveAdmin(); // Only admins can invite new users
     }
     
-    // Projects Collection - Admin access required for writes, public read for all
+    // Enhanced Projects Collection - Admin access required for writes, public read for all
     match /projects/{projectId} {
       allow read: if true;  // Allow public read for all projects
       allow write, delete: if isActiveAdmin();
@@ -38,11 +52,53 @@ service cloud.firestore {
         allow write, delete: if isActiveAdmin();
         allow create: if isActiveAdmin();
       }
+      
+      // Project Milestones Subcollection - Admin full access, client read access
+      match /milestones/{milestoneId} {
+        allow read: if true || hasClientAccess(projectId);
+        allow write, delete: if isActiveAdmin();
+        allow create: if isActiveAdmin();
+      }
+      
+      // Project Communications Subcollection - Admin full access, client read access
+      match /communications/{communicationId} {
+        allow read: if true || hasClientAccess(projectId);
+        allow write, delete: if isActiveAdmin();
+        allow create: if isActiveAdmin();
+      }
+      
+      // Project Files Subcollection - Admin full access, client read access for public files
+      match /files/{fileId} {
+        allow read: if true || (hasClientAccess(projectId) && resource.data.isPublic == true);
+        allow write, delete: if isActiveAdmin();
+        allow create: if isActiveAdmin();
+      }
+      
+      // Project Notifications Subcollection - Admin full access, client read access for their notifications
+      match /notifications/{notificationId} {
+        allow read: if isActiveAdmin() || (hasClientAccess(projectId) && resource.data.recipient == request.auth.token.email);
+        allow write, delete: if isActiveAdmin();
+        allow create: if isActiveAdmin();
+      }
     }
 
     // Project Media Collection - Admin write, public read
     match /projectMedia/{mediaId} {
       allow read: if true; // Public read for all project media
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
+    // Client Sessions Collection - Secure client portal access
+    match /clientSessions/{sessionId} {
+      allow read, write: if request.auth != null && request.auth.uid == sessionId;
+      allow create: if request.auth != null; // Allow clients to create sessions
+      allow delete: if isActiveAdmin() || (request.auth != null && request.auth.uid == sessionId);
+    }
+    
+    // Client Access Codes Collection - For validating client access
+    match /clientAccessCodes/{accessCode} {
+      allow read: if request.auth != null; // Allow authenticated users to validate codes
       allow write, delete: if isActiveAdmin();
       allow create: if isActiveAdmin();
     }
@@ -149,6 +205,14 @@ service firebase.storage {
         get(/databases/$(database)/documents/adminUsers/$(request.auth.token.email)).data.status == 'active';
     }
     
+    // Helper function to check if user has client access to project files
+    function hasClientAccess(projectId) {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/clientSessions/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/clientSessions/$(request.auth.uid)).data.projectId == projectId &&
+        get(/databases/$(database)/documents/clientSessions/$(request.auth.uid)).data.isActive == true;
+    }
+    
     // Homepage media (logos, backgrounds) - Admin write, public read
     match /homepage/{allPaths=**} {
       allow read: if true; // Public read for homepage media
@@ -158,6 +222,12 @@ service firebase.storage {
     // Project media - Admin write, public read
     match /projects/{projectId}/{allPaths=**} {
       allow read: if true; // Public read for project media
+      allow write, delete: if isActiveAdmin();
+    }
+    
+    // Project files - Admin write, client read for public files
+    match /project-files/{projectId}/{allPaths=**} {
+      allow read: if true || hasClientAccess(projectId); // Client access for their project files
       allow write, delete: if isActiveAdmin();
     }
     
@@ -171,6 +241,13 @@ service firebase.storage {
     match /uploads/contacts/{allPaths=**} {
       allow create: if true; // Allow contact form file uploads
       allow read, write, delete: if isActiveAdmin();
+    }
+    
+    // Client portal uploads - Allow clients to upload files to their projects
+    match /client-uploads/{projectId}/{allPaths=**} {
+      allow create: if hasClientAccess(projectId); // Allow clients to upload to their projects
+      allow read: if hasClientAccess(projectId); // Allow clients to read their uploads
+      allow write, delete: if isActiveAdmin(); // Only admins can modify/delete
     }
     
     // Default deny for other paths

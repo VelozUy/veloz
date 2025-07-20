@@ -168,6 +168,9 @@ export default function ProjectDetailGallery({
                 src={project.media[0].url}
                 className="w-full h-full object-cover blur-md scale-110"
                 alt={`Imagen de fondo para ${project.title}`}
+                loading="eager"
+                decoding="async"
+                style={{ willChange: 'transform' }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
             </div>
