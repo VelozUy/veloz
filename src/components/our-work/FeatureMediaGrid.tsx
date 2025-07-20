@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { GalleryItem } from '@/components/gallery/GalleryItem';
 import { trackProjectView } from '@/lib/gallery-analytics';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
 
@@ -44,34 +42,40 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   categoryId,
   className = '',
 }: FeatureMediaGridProps) => {
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-  const [errorImages, setErrorImages] = useState<Set<string>>(new Set());
+  // Track loading states for each media item
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
+    {}
+  );
 
   // Initialize performance optimizations
   useEffect(() => {
     initializePerformanceOptimizations();
   }, []);
 
-  // Track image load
+  // Handle image load events
   const handleImageLoad = useCallback((mediaId: string) => {
-    setLoadedImages(prev => new Set([...prev, mediaId]));
-    setErrorImages(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(mediaId);
-      return newSet;
-    });
+    setLoadingStates(prev => ({
+      ...prev,
+      [mediaId]: false,
+    }));
   }, []);
 
-  // Track image error
+  // Handle image error events
   const handleImageError = useCallback((mediaId: string) => {
-    setErrorImages(prev => new Set([...prev, mediaId]));
-    setLoadedImages(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(mediaId);
-      return newSet;
-    });
-    console.error(`Failed to load image: ${mediaId}`);
+    setLoadingStates(prev => ({
+      ...prev,
+      [mediaId]: false,
+    }));
   }, []);
+
+  // Initialize loading states
+  useEffect(() => {
+    const initialStates: Record<string, boolean> = {};
+    media.forEach(item => {
+      initialStates[item.id] = true;
+    });
+    setLoadingStates(initialStates);
+  }, [media]);
 
   // Memoize media processing for performance
   const processedMedia = useMemo(() => {
@@ -113,55 +117,14 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
     );
   }
 
-  const handleImageClick = (mediaItem: FeatureMedia) => {
-    // Track the image view for analytics
-    trackProjectView(mediaItem.projectId, mediaItem.projectTitle, categoryId);
-
-    // The lightbox will be handled by GLightbox automatically
-    // since we have the proper data-gallery attributes
-    console.log(
-      'Feature media clicked:',
-      mediaItem.url,
-      'Gallery group:',
-      `category-${categoryId}`
-    );
-  };
-
   return (
     <div className={`gallery-container ${className}`}>
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {processedMedia.map((mediaItem, index) => {
-          const isLoaded = loadedImages.has(mediaItem.id);
-          const hasError = errorImages.has(mediaItem.id);
-
           return (
-            <motion.div
+            <div
               key={mediaItem.id}
               className={`gallery-item relative text-center group ${mediaItem.gridSpan}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 0.3,
-                delay: mediaItem.animationDelay,
-                ease: 'easeOut',
-              }}
-              whileHover={{ scale: 1.02 }}
-              // Add lazy loading with intersection observer
-              whileInView={{
-                opacity: 1,
-                scale: 1,
-                transition: {
-                  duration: 0.3,
-                  delay: mediaItem.animationDelay,
-                  ease: 'easeOut',
-                },
-              }}
-              viewport={{ once: true, margin: '50px' }}
             >
               {mediaItem.type === 'video' ? (
                 <div
@@ -181,6 +144,8 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                     autoPlay
                     preload={index < 4 ? 'auto' : 'metadata'}
                     data-testid={`video-${mediaItem.id}`}
+                    onCanPlay={() => handleImageLoad(mediaItem.id)}
+                    onError={() => handleImageError(mediaItem.id)}
                   />
                 </div>
               ) : (
@@ -196,9 +161,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                     src={mediaItem.url}
                     alt={mediaItem.alt}
                     fill
-                    className={`object-cover transition-opacity duration-300 ${
-                      isLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index < 4}
                     loading={index < 4 ? 'eager' : 'lazy'}
@@ -206,40 +169,20 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                     onError={() => handleImageError(mediaItem.id)}
                     quality={85}
                   />
-
-                  {/* Enhanced skeleton loader for better FCP */}
-                  {!isLoaded && !hasError && (
-                    <div className="gallery-skeleton absolute inset-0 flex items-center justify-center">
-                      <div className="w-8 h-8 border-2 border-border rounded-full animate-spin" />
-                    </div>
-                  )}
-
-                  {/* Error fallback */}
-                  {hasError && (
-                    <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                      <div className="text-muted-foreground text-sm">
-                        Error loading image
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
               {/* Project title overlay on hover */}
-              <motion.div
-                className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-              >
+              <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
                 <div className="text-primary-foreground text-center">
                   <h4 className="text-sm font-medium truncate">
                     {mediaItem.projectTitle}
                   </h4>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 };

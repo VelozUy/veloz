@@ -206,23 +206,66 @@ export function validateCoreWebVitals(): Promise<OptimizationResult> {
  * Create skeleton loaders for better perceived performance
  */
 export function createSkeletonLoaders(): void {
-  const galleryItems = document.querySelectorAll('.gallery-item');
+  // Add a small delay to ensure DOM is ready
+  setTimeout(() => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
 
-  galleryItems.forEach(item => {
-    if (!item.querySelector('.skeleton-loader')) {
-      const skeleton = document.createElement('div');
-      skeleton.className = 'skeleton-loader';
-      skeleton.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 8px;
-      `;
-      item.appendChild(skeleton);
-    }
-  });
+    galleryItems.forEach(item => {
+      // Only add skeleton if it doesn't already exist
+      if (!item.querySelector('.skeleton-loader')) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-loader gallery-skeleton';
+        skeleton.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 8px;
+          z-index: 1;
+          transition: opacity 0.3s ease;
+        `;
+        item.appendChild(skeleton);
+
+        // Remove skeleton when image/video loads
+        const image = item.querySelector('img');
+        const video = item.querySelector('video');
+
+        if (image) {
+          // For images, remove skeleton on load
+          const removeSkeleton = () => {
+            if (skeleton.parentNode) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => skeleton.remove(), 300);
+            }
+          };
+
+          if (image.complete) {
+            // Image already loaded
+            removeSkeleton();
+          } else {
+            // Image still loading
+            image.addEventListener('load', removeSkeleton);
+            image.addEventListener('error', removeSkeleton);
+          }
+        } else if (video) {
+          // For videos, remove skeleton when video can play
+          const removeSkeleton = () => {
+            if (skeleton.parentNode) {
+              skeleton.style.opacity = '0';
+              setTimeout(() => skeleton.remove(), 300);
+            }
+          };
+
+          video.addEventListener('canplay', removeSkeleton);
+          video.addEventListener('error', removeSkeleton);
+
+          // Also remove after a timeout to prevent stuck skeletons
+          setTimeout(removeSkeleton, 5000);
+        }
+      }
+    });
+  }, 100); // 100ms delay to ensure DOM is ready
 }
 
 /**
@@ -345,7 +388,7 @@ export function initializePerformanceOptimizations(): void {
   optimizeFCP();
 
   // Additional optimizations
-  createSkeletonLoaders();
+  createSkeletonLoaders(); // Re-enabled with improved implementation
   optimizeImageLoading();
   implementBlurUpPlaceholders();
   optimizeCriticalRenderingPath();
@@ -357,7 +400,7 @@ export function initializePerformanceOptimizations(): void {
   });
 }
 
-export default {
+const galleryPerformanceOptimizations = {
   preventCLS,
   optimizeFCP,
   validateCoreWebVitals,
@@ -367,3 +410,5 @@ export default {
   optimizeCriticalRenderingPath,
   initializePerformanceOptimizations,
 };
+
+export default galleryPerformanceOptimizations;
