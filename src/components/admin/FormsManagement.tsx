@@ -228,9 +228,9 @@ export default function FormsManagement() {
 
       {/* Status Messages */}
       {saveStatus === 'success' && (
-        <Alert className="border-green-200 bg-green-50">
-          <CheckCircle2 className="h-4 w-4 text-green-600" />
-          <AlertDescription className="text-green-800">
+        <Alert className="border-primary/20 bg-primary/10">
+          <CheckCircle2 className="h-4 w-4 text-primary" />
+          <AlertDescription className="text-primary">
             {saveMessage}
           </AlertDescription>
         </Alert>

@@ -1,4 +1,19 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Run lint-staged for formatting and linting
 npx lint-staged
+
+# Run theme consistency check
+# echo "🔍 Checking theme consistency..."
+# npm run theme:check
+
+# Exit with error if theme check fails
+# if [ $? -ne 0 ]; then
+#   echo "❌ Theme consistency check failed!"
+#   echo "Please fix hardcoded colors before committing."
+#   echo "See docs/THEME.md for guidance."
+#   exit 1
+# fi
+
+# echo "✅ Theme consistency check passed!"

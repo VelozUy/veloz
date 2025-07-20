@@ -366,7 +366,7 @@ export default function GlobalTranslationButtons({
     if (status === 'success') {
       return (
         <>
-          <Check className="w-4 h-4 mr-2 text-green-600" />
+          <Check className="w-4 h-4 mr-2 text-primary" />
           ¡Traducido!
         </>
       );
@@ -375,7 +375,7 @@ export default function GlobalTranslationButtons({
     if (status === 'error') {
       return (
         <>
-          <AlertCircle className="w-4 h-4 mr-2 text-red-600" />
+          <AlertCircle className="w-4 h-4 mr-2 text-destructive" />
           Error
         </>
       );
@@ -402,7 +402,7 @@ export default function GlobalTranslationButtons({
     if (allStatus === 'success') {
       return (
         <>
-          <Check className="w-4 h-4 mr-2 text-green-600" />
+          <Check className="w-4 h-4 mr-2 text-primary" />
           ¡Todo Traducido!
         </>
       );
@@ -411,7 +411,7 @@ export default function GlobalTranslationButtons({
     if (allStatus === 'error') {
       return (
         <>
-          <AlertCircle className="w-4 h-4 mr-2 text-red-600" />
+          <AlertCircle className="w-4 h-4 mr-2 text-destructive" />
           Error
         </>
       );
@@ -442,8 +442,8 @@ export default function GlobalTranslationButtons({
             }
             className={`
               w-full transition-all duration-200
-              ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-              ${allStatus === 'error' ? 'border-red-500' : ''}
+              ${allStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+              ${allStatus === 'error' ? 'border-destructive' : ''}
             `}
           >
             {getTranslateAllButtonContent()}
@@ -464,8 +464,8 @@ export default function GlobalTranslationButtons({
             }
             className={`
               transition-all duration-200
-              ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-              ${enStatus === 'error' ? 'border-red-500' : ''}
+              ${enStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+              ${enStatus === 'error' ? 'border-destructive' : ''}
             `}
           >
             🇺🇸 EN
@@ -483,8 +483,8 @@ export default function GlobalTranslationButtons({
             }
             className={`
               transition-all duration-200
-              ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-              ${ptStatus === 'error' ? 'border-red-500' : ''}
+              ${ptStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+              ${ptStatus === 'error' ? 'border-destructive' : ''}
             `}
           >
             🇧🇷 BR
@@ -574,8 +574,8 @@ export default function GlobalTranslationButtons({
           }
           className={`
             transition-all duration-200
-            ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-            ${enStatus === 'error' ? 'border-red-500' : ''}
+            ${enStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+            ${enStatus === 'error' ? 'border-destructive' : ''}
           `}
         >
           🇺🇸 EN
@@ -593,8 +593,8 @@ export default function GlobalTranslationButtons({
           }
           className={`
             transition-all duration-200
-            ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-            ${ptStatus === 'error' ? 'border-red-500' : ''}
+            ${ptStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+            ${ptStatus === 'error' ? 'border-destructive' : ''}
           `}
         >
           🇧🇷 BR
@@ -614,8 +614,8 @@ export default function GlobalTranslationButtons({
             }
             className={`
               transition-all duration-200
-              ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-              ${allStatus === 'error' ? 'border-red-500' : ''}
+              ${allStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+              ${allStatus === 'error' ? 'border-destructive' : ''}
             `}
           >
             {allStatus === 'translating' ? (
@@ -625,12 +625,12 @@ export default function GlobalTranslationButtons({
               </>
             ) : allStatus === 'success' ? (
               <>
-                <Check className="w-3 h-3 mr-2 text-green-600" />
+                <Check className="w-3 h-3 mr-2 text-primary" />
                 ¡Listo!
               </>
             ) : allStatus === 'error' ? (
               <>
-                <AlertCircle className="w-3 h-3 mr-2 text-red-600" />
+                <AlertCircle className="w-3 h-3 mr-2 text-destructive" />
                 Error
               </>
             ) : (
@@ -647,7 +647,7 @@ export default function GlobalTranslationButtons({
           (enStatus === 'error' ||
             ptStatus === 'error' ||
             allStatus === 'error') && (
-            <div className="ml-2 text-red-600 text-xs">Error</div>
+            <div className="ml-2 text-destructive text-xs">Error</div>
           )}
 
         {/* Translation Review Dialog */}
@@ -721,8 +721,8 @@ export default function GlobalTranslationButtons({
           }
           className={`
             transition-all duration-200 flex-1
-            ${enStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-            ${enStatus === 'error' ? 'border-red-500' : ''}
+            ${enStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+            ${enStatus === 'error' ? 'border-destructive' : ''}
           `}
         >
           {getButtonContent('en', enStatus, enProgress)}
@@ -739,8 +739,8 @@ export default function GlobalTranslationButtons({
           }
           className={`
             transition-all duration-200 flex-1
-            ${ptStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-            ${ptStatus === 'error' ? 'border-red-500' : ''}
+            ${ptStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+            ${ptStatus === 'error' ? 'border-destructive' : ''}
           `}
         >
           {getButtonContent('pt', ptStatus, ptProgress)}
@@ -760,8 +760,8 @@ export default function GlobalTranslationButtons({
           }
           className={`
             w-full transition-all duration-200
-            ${allStatus === 'success' ? 'border-green-500 text-green-700 bg-green-50' : ''}
-            ${allStatus === 'error' ? 'border-red-500' : ''}
+            ${allStatus === 'success' ? 'border-primary text-primary bg-primary/10' : ''}
+            ${allStatus === 'error' ? 'border-destructive' : ''}
           `}
         >
           {getTranslateAllButtonContent()}
