@@ -141,6 +141,31 @@ describe('CategoryPageClient', () => {
     expect(sectionTitles).toHaveLength(0);
   });
 
+  it('should render category title with dynamic sizing', () => {
+    render(
+      <CategoryPageClient
+        projects={mockProjects}
+        categories={mockCategories}
+        categorySlug="casamiento"
+        locale="es"
+      />
+    );
+
+    const titleElement = screen.getByText('Casamiento');
+    expect(titleElement).toBeInTheDocument();
+
+    // Check that the title has the correct styling for single-line display
+    expect(titleElement).toHaveClass('whitespace-nowrap');
+    expect(titleElement).toHaveClass('overflow-hidden');
+    expect(titleElement).toHaveClass('leading-none');
+
+    // Check that it uses dynamic font sizing
+    expect(titleElement).toHaveStyle({
+      fontSize: 'clamp(2rem, 8vw, 12rem)',
+      lineHeight: '0.9',
+    });
+  });
+
   it('handles category not found gracefully', () => {
     render(
       <CategoryPageClient

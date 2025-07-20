@@ -178,8 +178,12 @@ export default function ProjectDetailGallery({
 
           {/* Title */}
           <h1
-            className="text-8xl md:text-9xl lg:text-[12rem] font-body tracking-tight text-right w-full text-foreground"
+            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap overflow-hidden"
             id="project-title"
+            style={{
+              fontSize: 'clamp(2rem, 8vw, 12rem)',
+              lineHeight: '0.9',
+            }}
           >
             {project.eventType
               ? getCategoryDisplayName(project.eventType as EventCategory, 'es')
