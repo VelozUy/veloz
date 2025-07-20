@@ -157,7 +157,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                 >
                   <video
                     src={mediaItem.url}
-                    className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.8 ? 'object-contain' : 'object-cover'}`}
+                    className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'}`}
                     muted
                     loop
                     playsInline
@@ -181,7 +181,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                     src={mediaItem.url}
                     alt={mediaItem.alt}
                     fill
-                    className={`${mediaItem.aspectRatio < 0.8 ? 'object-contain' : 'object-cover'}`}
+                    className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'}`}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index < 4}
                     loading={index < 4 ? 'eager' : 'lazy'}
