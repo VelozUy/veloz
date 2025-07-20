@@ -42,6 +42,17 @@ jest.mock('@/hooks/useScrollNavigation', () => ({
   }),
 }));
 
+// Mock the CategoryNavigation component to capture its props
+const mockCategoryNavigation = jest.fn();
+jest.mock('../CategoryNavigation', () => {
+  return function MockCategoryNavigation(props: any) {
+    mockCategoryNavigation(props);
+    return (
+      <div data-testid="category-navigation">Mock Category Navigation</div>
+    );
+  };
+});
+
 describe('CategoryPageClient', () => {
   const mockProjects = [
     {
@@ -144,5 +155,26 @@ describe('CategoryPageClient', () => {
     expect(
       screen.getByText('La categoría solicitada no existe.')
     ).toBeInTheDocument();
+  });
+
+  it('passes correct activeCategory to CategoryNavigation on individual category pages', () => {
+    render(
+      <CategoryPageClient
+        projects={mockProjects}
+        categories={mockCategories}
+        locale="es"
+        categorySlug="casamiento"
+      />
+    );
+
+    // Verify that CategoryNavigation was called
+    expect(mockCategoryNavigation).toHaveBeenCalled();
+
+    // Get the props passed to CategoryNavigation
+    const categoryNavigationProps = mockCategoryNavigation.mock.calls[0][0];
+
+    // Verify that the activeCategory is the categorySlug, not the one from useScrollNavigation
+    expect(categoryNavigationProps.activeCategory).toBe('casamiento');
+    expect(categoryNavigationProps.categories).toEqual(mockCategories);
   });
 });

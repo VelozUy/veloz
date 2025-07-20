@@ -149,6 +149,46 @@ The web application's primary goal is to communicate Veloz's professionalism and
 - **Components**: `OurWorkClient`, `CategoryPageClient`, `CategoryNavigation`
 - **Routing**: Next.js 15 dynamic routes with Promise<params> compliance
 
+#### 📱 CategoryNavigation Responsive Design
+
+**CRITICAL FEATURE**: Responsive CategoryNavigation component that adapts to different screen sizes for optimal user experience.
+
+**Desktop Experience**:
+
+- **Horizontal Tabs**: Editorial-style horizontal tabs with clean typography
+- **Active State**: Clear visual indication of current category
+- **Smooth Transitions**: Elegant hover and focus states
+- **Typography**: Uppercase labels with tight tracking for editorial feel
+
+**Mobile Experience**:
+
+- **Dropdown Selector**: Radix UI Select component for better mobile UX
+- **Touch-Friendly**: Larger touch targets for mobile interaction
+- **Consistent Styling**: Maintains theme system consistency
+- **Responsive Breakpoint**: Switches at md (768px) breakpoint
+
+**Layout Improvements**:
+
+- **No Underline**: Removed border line under categories for cleaner look
+- **Even Spacing**: Categories evenly distributed using `justify-center` with `gap-8`
+- **Edge Padding**: Consistent `px-4` padding for proper edge spacing
+- **Theme Integration**: Uses theme variables for consistent styling
+
+**Localization Support**:
+
+- **Category Names**: "Overview" renamed to "Events" (EN) and "Eventos" (ES/PT)
+- **Dynamic Generation**: Build script generates localized category names
+- **Multi-language**: Supports all three languages (Spanish, English, Portuguese)
+- **Content Updates**: Static content files updated for all locales
+
+**Technical Implementation**:
+
+- **Responsive Logic**: Conditional rendering based on screen size
+- **Component Architecture**: Single component handles both desktop and mobile
+- **Theme Integration**: Consistent use of theme variables
+- **Accessibility**: Proper ARIA labels and keyboard navigation
+- **Testing**: Comprehensive test coverage for both desktop and mobile states
+
 **Quality Control**:
 
 - Only event types with projects containing featured media become categories

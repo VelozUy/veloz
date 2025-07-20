@@ -12,7 +12,7 @@ jest.mock('framer-motion', () => ({
 
 const defaultProps = {
   categories: [
-    { id: 'overview', name: 'Overview', label: 'Vista General' },
+    { id: 'overview', name: 'Eventos', label: 'Eventos' },
     { id: 'food', name: 'Food', label: 'Fotografía Gastronómica' },
     { id: 'people', name: 'People', label: 'Fotografía de Personas' },
     { id: 'still-life', name: 'Still Life', label: 'Bodegones' },
@@ -37,7 +37,7 @@ describe('CategoryNavigation', () => {
 
       // Check that all category names are present in the tabs by checking the tab elements
       const tabTexts = desktopTabs.map(tab => tab.textContent);
-      expect(tabTexts).toContain('Overview');
+      expect(tabTexts).toContain('Eventos');
       expect(tabTexts).toContain('Food');
       expect(tabTexts).toContain('People');
       expect(tabTexts).toContain('Still Life');
@@ -89,7 +89,7 @@ describe('CategoryNavigation', () => {
       expect(selectTrigger).toBeInTheDocument();
 
       // Check that the select shows the active category
-      expect(selectTrigger).toHaveTextContent('Overview');
+      expect(selectTrigger).toHaveTextContent('Eventos');
     });
 
     it('select component has all categories as options', () => {
@@ -104,7 +104,7 @@ describe('CategoryNavigation', () => {
       expect(selectItems).toHaveLength(5);
 
       const itemTexts = selectItems.map(item => item.textContent);
-      expect(itemTexts).toContain('Overview');
+      expect(itemTexts).toContain('Eventos');
       expect(itemTexts).toContain('Food');
       expect(itemTexts).toContain('People');
       expect(itemTexts).toContain('Still Life');
@@ -208,9 +208,7 @@ describe('CategoryNavigation', () => {
     it('handles single category', () => {
       render(
         <CategoryNavigation
-          categories={[
-            { id: 'overview', name: 'Overview', label: 'Vista General' },
-          ]}
+          categories={[{ id: 'overview', name: 'Eventos', label: 'Eventos' }]}
           activeCategory="overview"
           onCategoryChange={jest.fn()}
         />

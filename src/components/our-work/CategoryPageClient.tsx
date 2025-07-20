@@ -46,14 +46,17 @@ export default function CategoryPageClient({
 }: CategoryPageClientProps) {
   const categoryIds = categories.map(cat => cat.id);
 
+  // Find the current category
+  const currentCategory = categories.find(cat => cat.id === categorySlug);
+
   // useScrollNavigation for scroll-based navigation
   const { activeCategory, scrollToCategory } = useScrollNavigation({
     categories: categoryIds,
     scrollThreshold: 100,
   });
 
-  // Find the current category
-  const currentCategory = categories.find(cat => cat.id === categorySlug);
+  // On individual category pages, the active category should be the current category slug
+  const effectiveActiveCategory = categorySlug || activeCategory;
 
   // Get all media for the current category
   const categoryMedia = useMemo(() => {
@@ -141,7 +144,7 @@ export default function CategoryPageClient({
       {/* Category Navigation */}
       <CategoryNavigation
         categories={categories}
-        activeCategory={activeCategory}
+        activeCategory={effectiveActiveCategory}
         onCategoryChange={scrollToCategory}
       />
 

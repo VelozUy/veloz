@@ -115,12 +115,28 @@ export default function MinimalNavigation({
   const cleanPath = pathname.replace(/^\/(en|pt)/, '') || '/';
   const isActive = (href: string) => {
     const cleanHref = href.replace(/^\/(en|pt)/, '');
-    return (
-      cleanPath === cleanHref ||
-      (cleanHref === '/our-work' && cleanPath.includes('/our-work')) ||
-      (cleanHref === '/about' && cleanPath.includes('/about')) ||
-      (cleanHref === '/contact' && cleanPath.includes('/contact'))
-    );
+
+    // Exact match
+    if (cleanPath === cleanHref) {
+      return true;
+    }
+
+    // Handle our-work routes (both /our-work and /our-work/[slug])
+    if (cleanHref === '/our-work' && cleanPath.startsWith('/our-work')) {
+      return true;
+    }
+
+    // Handle about routes
+    if (cleanHref === '/about' && cleanPath.startsWith('/about')) {
+      return true;
+    }
+
+    // Handle contact routes
+    if (cleanHref === '/contact' && cleanPath.startsWith('/contact')) {
+      return true;
+    }
+
+    return false;
   };
 
   return (

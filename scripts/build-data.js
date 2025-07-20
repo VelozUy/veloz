@@ -1241,7 +1241,7 @@ function generateLocaleContent(
   crewMembers
 ) {
   // Generate categories from project event types
-  const categories = generateCategories(projects);
+  const categories = generateCategories(projects, locale);
 
   return {
     locale,
@@ -1462,7 +1462,7 @@ function generateLocaleContent(
 /**
  * Generate categories from project event types
  */
-function generateCategories(projects) {
+function generateCategories(projects, locale = 'es') {
   // Get all unique event types from projects that have featured media
   const eventTypesWithFeaturedMedia = new Set();
 
@@ -1491,12 +1491,20 @@ function generateCategories(projects) {
 
   // Always include overview category if there are any projects with featured media
   if (categories.length > 0) {
+    const overviewText = locale === 'en' ? 'Events' : 'Eventos';
+    const overviewDescription =
+      locale === 'en'
+        ? 'A selection of our best work.'
+        : locale === 'pt'
+          ? 'Uma seleção dos nossos melhores trabalhos.'
+          : 'Una selección de nuestros mejores trabajos.';
+
     categories.unshift({
       id: 'overview',
-      name: 'Overview',
-      label: 'Vista General',
-      title: 'Overview',
-      description: 'Una selección de nuestros mejores trabajos.',
+      name: overviewText,
+      label: overviewText,
+      title: overviewText,
+      description: overviewDescription,
       eventTypes: ['*'], // Matches all event types
     });
   }

@@ -68,11 +68,11 @@ export function TubelightNavBar({
     // Clean pathname for comparison
     const cleanPath = pathname.replace(/^\/(en|pt)/, '') || '/';
 
-    if (cleanPath.includes('/our-work')) {
+    if (cleanPath.startsWith('/our-work')) {
       setActiveTab('gallery');
-    } else if (cleanPath.includes('/about')) {
+    } else if (cleanPath.startsWith('/about')) {
       setActiveTab('about');
-    } else if (cleanPath.includes('/contact')) {
+    } else if (cleanPath.startsWith('/contact')) {
       setActiveTab('contact');
     } else {
       setActiveTab('gallery'); // Default to gallery if not found
