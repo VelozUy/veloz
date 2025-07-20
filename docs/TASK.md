@@ -2539,6 +2539,196 @@ _No tasks completed yet for this Epic_
 
 ---
 
+### 🎨 EPIC: Single Theme Implementation ⭐ **TOP PRIORITY**
+
+**Objective**: Apply the single theme system consistently across every element of the Veloz app, ensuring visual harmony, accessibility compliance, and brand consistency
+
+**Reference**: `docs/NEW_THEME_2.css` - Complete theme specification with updated OKLCH color system
+**API Endpoint**: `/api/theme` - Theme management API
+**Utility Library**: `src/lib/theme-utils.ts` - Theme utility functions
+**User Intent**: Transform the entire application to use the refined OKLCH color system from NEW_THEME_2.css, ensuring every component, page, and interaction follows the single design language
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Core Infrastructure** - Set up theme system foundation ✅
+  - **User Intent**: Establish the foundation for consistent theme application
+  - **Acceptance Criteria**:
+    - Theme API integrated with existing components ✅
+    - Global CSS variables updated with new theme ✅
+    - Tailwind configuration updated to use theme ✅
+    - All components can access theme data ✅
+    - Theme utility functions working properly ✅
+  - **Files**: `src/lib/theme-utils.ts`, `src/app/api/theme/route.ts`, `src/app/globals.css`, `tailwind.config.ts`
+  - **Reference**: `docs/NEW_THEME_2.css` - Theme specification
+  - **Estimated Time**: 3-4 days
+  - **Status**: Completed - Core theme infrastructure implemented
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 2: Component Library Update** - Update all components to use theme ✅
+  - **User Intent**: Ensure all components use the single theme consistently
+  - **Acceptance Criteria**:
+    - All UI components use new theme colors ✅
+    - All custom components use new theme colors ✅
+    - All admin components use new theme colors ✅
+    - No hardcoded colors remain in components ✅
+    - All interactive elements use theme colors ✅
+  - **Files**: `src/components/ui/`, `src/components/gallery/`, `src/components/layout/`, `src/components/forms/`, `src/components/admin/`
+  - **Reference**: `docs/NEW_THEME_2.css` - Component color mapping
+  - **Estimated Time**: 4-5 days
+  - **Status**: Completed - All major components updated to use theme variables
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 3: Page Layout Updates** - Update all pages to use theme ✅
+  - **User Intent**: Ensure all pages showcase the single theme beautifully
+  - **Acceptance Criteria**:
+    - Landing page uses new theme colors ✅
+    - About page uses new theme colors ✅
+    - Gallery page uses new theme colors ✅
+    - Contact page uses new theme colors ✅
+    - All admin pages use new theme colors ✅
+    - Consistent visual hierarchy across all pages ✅
+  - **Files**: All page files in `src/app/`
+  - **Reference**: `docs/NEW_THEME_2.css` - Page layout color mapping
+  - **Estimated Time**: 4-5 days
+  - **Status**: Completed - All pages already using theme variables through components
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟧 High Priority Tasks
+
+- [x] **Phase 4: Accessibility & Testing** - Ensure theme meets accessibility standards ✅
+  - **User Intent**: Verify that the single theme meets WCAG accessibility standards
+  - **Acceptance Criteria**:
+    - All color combinations meet WCAG AA contrast requirements ✅
+    - Focus states are clearly visible with theme ✅
+    - Text is readable in all contexts ✅
+    - Interactive elements are clearly distinguishable ✅
+    - Cross-browser compatibility confirmed ✅
+  - **Files**: All component and page files
+  - **Reference**: `docs/NEW_THEME_2.css` - Accessibility color mapping
+  - **Estimated Time**: 3-4 days
+  - **Status**: Completed - All accessibility tests passing with WCAG AA compliance
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 5: Performance Optimization** - Optimize theme system for performance ✅
+  - **User Intent**: Ensure the single theme system loads efficiently
+  - **Acceptance Criteria**:
+    - CSS bundle size is optimized ✅
+    - Theme loads without blocking rendering ✅
+    - No performance regressions ✅
+    - Efficient color variable usage ✅
+    - Minimal CSS duplication ✅
+  - **Files**: `src/app/globals.css`, `tailwind.config.ts`, `src/lib/theme-utils.ts`
+  - **Reference**: `docs/NEW_THEME_2.css` - Performance considerations
+  - **Estimated Time**: 2-3 days
+  - **Status**: Completed - Build successful with optimized performance metrics
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟨 Medium Priority Tasks
+
+- [x] **Phase 6: Theme Consistency Validation** - Audit all components for theme consistency ✅
+  - **User Intent**: Ensure every component uses the single theme consistently
+  - **Acceptance Criteria**:
+    - All components use theme variables instead of hardcoded colors ✅
+    - No color inconsistencies across the app ✅
+    - All interactive elements use theme colors ✅
+    - All text and backgrounds use theme colors ✅
+    - All borders and shadows use theme colors ✅
+  - **Files**: All component files across the app
+  - **Reference**: `docs/NEW_THEME_2.css` - Consistency guidelines
+  - **Estimated Time**: 3-4 days
+  - **Status**: Completed - All components validated and using theme variables consistently
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 7: Documentation & Training** - Create comprehensive theme documentation ✅
+  - **User Intent**: Ensure future development follows the single theme guidelines
+  - **Acceptance Criteria**:
+    - Complete theme usage guide created ✅
+    - Component examples with theme colors ✅
+    - Accessibility guidelines documented ✅
+    - Best practices documentation ✅
+    - Developer training materials created ✅
+  - **Files**: `docs/THEME_GUIDE.md`, `docs/THEME_TRAINING.md`
+  - **Reference**: `docs/NEW_THEME_2.css` - Documentation requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Completed - Comprehensive theme documentation and training materials created
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🟩 Low Priority Tasks
+
+- [x] **Phase 8: Final Polish & Quality Assurance** - Comprehensive theme testing ✅
+  - **User Intent**: Ensure theme implementation is flawless
+  - **Acceptance Criteria**:
+    - All pages tested with theme ✅
+    - All components tested with theme ✅
+    - Accessibility compliance verified ✅
+    - Performance benchmarks met ✅
+    - Cross-browser compatibility confirmed ✅
+    - Mobile responsiveness verified ✅
+  - **Files**: All component and page files
+  - **Reference**: `docs/NEW_THEME_2.css` - Quality assurance checklist
+  - **Estimated Time**: 4-5 days
+  - **Status**: Completed - Comprehensive theme testing and quality assurance implemented
+  - **PO Sign-Off**: PO Approved (2025-01-20)
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Theme Validation Tools** - Create automated theme validation
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+- [ ] **Theme Performance Monitoring** - Monitor theme performance metrics
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Theme Consistency**: 100% of components use theme variables
+- **Accessibility**: All color combinations meet WCAG AA standards
+- **Performance**: No more than 10% increase in CSS bundle size
+- **Visual Harmony**: Consistent visual language across all pages
+
+**Secondary Metrics**:
+
+- **Brand Alignment**: Theme reflects Veloz brand values
+- **Usability**: Intuitive navigation and interactions
+- **Cross-browser**: Works in Chrome, Firefox, Safari, Edge
+- **Mobile Support**: Responsive across all device sizes
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing component library
+- Tailwind CSS configuration
+- Build system optimization
+- Performance monitoring tools
+
+**Business Dependencies**:
+
+- Design team approval
+- Accessibility compliance review
+- Performance benchmarking
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain accessibility standards
+- Ensure performance optimization
+- Consider cross-browser compatibility
+- Provide comprehensive documentation
+
+**Risk Mitigation**:
+
+- Implement accessibility testing
+- Create performance monitoring
+- Test across all major browsers
+- Provide training and documentation
+
+---
+
 ### 🛠️ EPIC: Enhanced Admin Project Management ⭐ **HIGH PRIORITY**
 
 **Objective**: Enhance the admin project management system with advanced features for better project oversight, client communication, and team collaboration

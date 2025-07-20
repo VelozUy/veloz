@@ -105,7 +105,7 @@ function FileMetadataEditor({
   };
 
   return (
-    <Card className="mb-4 bg-white border border-gray-medium">
+    <Card className="mb-4 bg-card border border-border">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -131,10 +131,10 @@ function FileMetadataEditor({
             </div>
 
             <div>
-              <CardTitle className="text-sm font-medium truncate max-w-48 text-charcoal">
+              <CardTitle className="text-sm font-medium truncate max-w-48 text-card-foreground">
                 {uploadFile.file.name}
               </CardTitle>
-              <p className="text-xs text-charcoal">
+              <p className="text-xs text-card-foreground">
                 {(uploadFile.file.size / (1024 * 1024)).toFixed(2)} MB
               </p>
             </div>
@@ -146,7 +146,7 @@ function FileMetadataEditor({
               size="sm"
               onClick={() => onCopyToAll(uploadFile.metadata)}
               title="Copy this metadata to all other files"
-              className="border-gray-medium text-charcoal hover:bg-gray-light"
+              className="border-border text-foreground hover:bg-accent"
             >
               <Copy className="w-4 h-4 mr-1" />
               Copy to All
@@ -158,14 +158,14 @@ function FileMetadataEditor({
       <CardContent className="space-y-4">
         {/* Language Tabs */}
         <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
-          <TabsList className="grid w-full grid-cols-3 bg-gray-light border border-gray-medium">
-            <TabsTrigger value="es" className="text-charcoal">
+          <TabsList className="grid w-full grid-cols-3 bg-muted border border-border">
+            <TabsTrigger value="es" className="text-foreground">
               Español
             </TabsTrigger>
-            <TabsTrigger value="en" className="text-charcoal">
+            <TabsTrigger value="en" className="text-foreground">
               English
             </TabsTrigger>
-            <TabsTrigger value="pt" className="text-charcoal">
+            <TabsTrigger value="pt" className="text-foreground">
               Português (Brasil)
             </TabsTrigger>
           </TabsList>
@@ -174,7 +174,7 @@ function FileMetadataEditor({
             <div>
               <Label
                 htmlFor={`title-es-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Título
               </Label>
@@ -185,13 +185,13 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'es', e.target.value)
                 }
                 placeholder="Título en español"
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
             <div>
               <Label
                 htmlFor={`desc-es-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Descripción
               </Label>
@@ -203,7 +203,7 @@ function FileMetadataEditor({
                 }
                 placeholder="Descripción en español (para alt text y SEO)"
                 rows={2}
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
           </TabsContent>
@@ -212,7 +212,7 @@ function FileMetadataEditor({
             <div>
               <Label
                 htmlFor={`title-en-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Title
               </Label>
@@ -223,13 +223,13 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'en', e.target.value)
                 }
                 placeholder="Title in English"
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
             <div>
               <Label
                 htmlFor={`desc-en-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Description
               </Label>
@@ -241,7 +241,7 @@ function FileMetadataEditor({
                 }
                 placeholder="Description in English (for alt text and SEO)"
                 rows={2}
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
           </TabsContent>
@@ -250,7 +250,7 @@ function FileMetadataEditor({
             <div>
               <Label
                 htmlFor={`title-pt-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Título
               </Label>
@@ -261,13 +261,13 @@ function FileMetadataEditor({
                   handleMetadataChange('title', 'pt', e.target.value)
                 }
                 placeholder="Título em português brasileiro"
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
             <div>
               <Label
                 htmlFor={`desc-pt-${uploadFile.id}`}
-                className="text-charcoal"
+                className="text-foreground"
               >
                 Descrição
               </Label>
@@ -279,7 +279,7 @@ function FileMetadataEditor({
                 }
                 placeholder="Descrição em português brasileiro (para alt text e SEO)"
                 rows={2}
-                className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+                className="bg-card border border-border text-foreground focus:ring-ring"
               />
             </div>
           </TabsContent>
@@ -288,7 +288,10 @@ function FileMetadataEditor({
         {/* Tags and Featured */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor={`tags-${uploadFile.id}`} className="text-charcoal">
+            <Label
+              htmlFor={`tags-${uploadFile.id}`}
+              className="text-foreground"
+            >
               Etiquetas (separadas por comas)
             </Label>
             <Input
@@ -296,7 +299,7 @@ function FileMetadataEditor({
               value={uploadFile.metadata.tags.join(', ')}
               onChange={e => handleTagsChange(e.target.value)}
               placeholder="boda, ceremonia, outdoor"
-              className="bg-white border border-gray-medium text-charcoal focus:ring-blue-accent"
+              className="bg-card border border-border text-foreground focus:ring-ring"
             />
           </div>
           <div className="flex items-center space-x-2 pt-6">

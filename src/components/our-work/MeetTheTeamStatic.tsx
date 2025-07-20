@@ -75,13 +75,13 @@ export default function MeetTheTeamStatic({
   };
 
   return (
-    <section className={`py-12 bg-white ${className}`}>
+    <section className={`py-12 bg-card ${className}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Users className="w-6 h-6 text-blue-accent" />
-            <h2 className="text-3xl font-bold text-charcoal">
+            <Users className="w-6 h-6 text-primary" />
+            <h2 className="text-3xl font-bold text-card-foreground">
               {language === 'en'
                 ? 'Meet the Team'
                 : language === 'pt'
@@ -89,7 +89,7 @@ export default function MeetTheTeamStatic({
                   : 'Conoce al Equipo'}
             </h2>
           </div>
-          <p className="text-charcoal max-w-2xl mx-auto">
+          <p className="text-card-foreground max-w-2xl mx-auto">
             {language === 'en'
               ? 'The talented professionals behind this project'
               : language === 'pt'
@@ -103,7 +103,7 @@ export default function MeetTheTeamStatic({
           {crewMembers.map(member => (
             <Card
               key={member.id}
-              className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-medium"
+              className="group hover:shadow-lg transition-all duration-300 bg-card border border-border"
             >
               <CardContent className="p-6">
                 {/* Portrait and Basic Info */}
@@ -113,7 +113,7 @@ export default function MeetTheTeamStatic({
                       <img
                         src={member.portrait}
                         alt={member.name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-blue-accent/20"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
                       />
                     ) : (
                       <Avatar className="w-20 h-20">
@@ -125,10 +125,12 @@ export default function MeetTheTeamStatic({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-lg mb-1 truncate text-charcoal">
+                    <h3 className="font-semibold text-lg mb-1 truncate text-card-foreground">
                       {member.name}
                     </h3>
-                    <p className="text-charcoal text-sm mb-2">{member.role}</p>
+                    <p className="text-card-foreground text-sm mb-2">
+                      {member.role}
+                    </p>
 
                     {/* Skills */}
                     {Array.isArray(member.skills) &&
@@ -155,7 +157,7 @@ export default function MeetTheTeamStatic({
 
                 {/* Bio */}
                 {member.bio && (
-                  <p className="text-charcoal text-sm mb-4 line-clamp-3">
+                  <p className="text-card-foreground text-sm mb-4 line-clamp-3">
                     {member.bio}
                   </p>
                 )}

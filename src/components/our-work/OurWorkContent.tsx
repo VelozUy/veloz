@@ -451,7 +451,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                   className="block"
                 >
                   <div
-                    className={`w-full hover:bg-gray-medium/20 transition-colors duration-300 cursor-pointer ${contentClasses.background}`}
+                    className={`w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer ${contentClasses.background}`}
                   >
                     {/* Project Content - Full Width */}
                     <div className="w-full px-4 md:px-8 lg:px-12 py-8">

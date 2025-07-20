@@ -5,7 +5,6 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
 
 function Accordion({
   ...props
@@ -15,20 +14,13 @@ function Accordion({
 
 function AccordionItem({
   className,
-  priority = 'top',
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Item> & {
-  priority?: 'top' | 'mid' | 'low';
-}) {
-  const priorityClasses = getPriorityClasses(priority);
+}: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        'border-b last:border-b-0',
-        priorityClasses.bg,
-        priorityClasses.text,
-        priorityClasses.border,
+        'border-b last:border-b-0 bg-card text-card-foreground border-border',
         className
       )}
       {...props}

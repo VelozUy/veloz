@@ -186,7 +186,7 @@ export default function MinimalNavigation({
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-xl border-t border-border/20">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-card/95 backdrop-blur-md shadow-xl border-t border-border/20">
             <div className="px-6 py-6 space-y-4">
               {navItems.map(item => {
                 const active = isActive(item.href);

@@ -381,8 +381,8 @@ export default function ProjectVisualGrid({
                     )}
                   </div>
                 ) : (
-                  <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <span className="text-muted-foreground text-sm">
                       Media no encontrado
                     </span>
                   </div>

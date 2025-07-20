@@ -90,7 +90,7 @@ export function MetricCard({
       case 'decrease':
         return <TrendingDown className="h-3 w-3 text-red-600" />;
       default:
-        return <Minus className="h-3 w-3 text-gray-400" />;
+        return <Minus className="h-3 w-3 text-muted-foreground" />;
     }
   };
 
@@ -101,7 +101,7 @@ export function MetricCard({
       case 'decrease':
         return 'text-red-600';
       default:
-        return 'text-gray-500';
+        return 'text-muted-foreground';
     }
   };
 
@@ -135,7 +135,7 @@ export function MetricCard({
                 ) : trend.direction === 'down' ? (
                   <TrendingDown className="h-3 w-3 text-red-600" />
                 ) : (
-                  <Minus className="h-3 w-3 text-gray-400" />
+                  <Minus className="h-3 w-3 text-muted-foreground" />
                 )}
                 <span className="text-xs text-muted-foreground">
                   {trend.label}
@@ -398,7 +398,7 @@ export function DeviceBreakdownCard({ data }: { data: MetricData }) {
       case 'tablet':
         return <Tablet className="h-3 w-3 text-purple-500" />;
       default:
-        return <Monitor className="h-3 w-3 text-gray-500" />;
+        return <Monitor className="h-3 w-3 text-muted-foreground" />;
     }
   };
 

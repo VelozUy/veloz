@@ -18,6 +18,8 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "seed:about": "node scripts/seed-about-content.js",
     "migrate:slugs": "node scripts/migrate-slugs.mjs",
+    "theme:check": "node scripts/theme-consistency-checker.mjs",
+    "theme:accessibility": "node scripts/theme-accessibility-test.js",
     "prepare": "husky"
   },
   "dependencies": {
@@ -48,6 +50,7 @@
     "firebase": "^11.9.1",
     "framer-motion": "^12.23.6",
     "glightbox": "^3.3.1",
+    "glob": "^11.0.3",
     "isomorphic-dompurify": "^2.26.0",
     "lucide-react": "^0.522.0",
     "motion": "^12.19.1",
