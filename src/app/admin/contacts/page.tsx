@@ -254,7 +254,7 @@ export default function ContactMessagesPage() {
             <MailOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-primary">
               {stats.unread}
             </div>
           </CardContent>
@@ -266,7 +266,7 @@ export default function ContactMessagesPage() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-primary">
               {stats.newMessages}
             </div>
           </CardContent>
@@ -278,7 +278,7 @@ export default function ContactMessagesPage() {
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">
+            <div className="text-2xl font-bold text-primary">
               {stats.inProgress}
             </div>
           </CardContent>
@@ -371,13 +371,13 @@ export default function ContactMessagesPage() {
                 filteredMessages.map(message => (
                   <TableRow
                     key={message.id}
-                    className={`cursor-pointer hover:bg-muted/50 ${!message.isRead ? 'bg-blue-50/50' : ''}`}
+                    className={`cursor-pointer hover:bg-muted/50 ${!message.isRead ? 'bg-primary/10' : ''}`}
                     onClick={() => handleViewDetails(message)}
                   >
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {!message.isRead && (
-                          <div className="w-2 h-2 bg-blue-600 rounded-full" />
+                          <div className="w-2 h-2 bg-primary rounded-full" />
                         )}
                         <span
                           className={!message.isRead ? 'font-semibold' : ''}
@@ -504,7 +504,7 @@ export default function ContactMessagesPage() {
                   {getStatusBadge(selectedMessage.status)}
                   {getSourceBadge(selectedMessage.source)}
                   {!selectedMessage.isRead && (
-                    <Badge variant="outline" className="text-blue-600">
+                    <Badge variant="outline" className="text-primary">
                       No Leído
                     </Badge>
                   )}

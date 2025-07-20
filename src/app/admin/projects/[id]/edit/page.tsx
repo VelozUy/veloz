@@ -1196,7 +1196,7 @@ export default function UnifiedProjectEditPage({
                   <Card>
                     <CardContent className="p-8 text-center">
                       <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Instagram className="w-8 h-8 text-white" />
+                        <Instagram className="w-8 h-8 text-primary-foreground" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground mb-2">
                         Feed Social del Proyecto
@@ -1439,7 +1439,9 @@ export default function UnifiedProjectEditPage({
               ) : (
                 <>
                   <div className="w-6 h-6 bg-green-700 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">✓</span>
+                    <span className="text-primary-foreground font-bold text-xs">
+                      ✓
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-lg">All Changes Saved</span>

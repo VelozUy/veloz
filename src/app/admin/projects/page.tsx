@@ -398,7 +398,7 @@ export default function ProjectsPage() {
                         </td>
                         <td className="p-3">
                           <Badge
-                            className={`text-white text-xs ${getStatusColor(project.status)}`}
+                            className={`text-primary-foreground text-xs ${getStatusColor(project.status)}`}
                           >
                             {project.status}
                           </Badge>

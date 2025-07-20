@@ -443,7 +443,7 @@ export default function FAQsAdminPage() {
                             published: e.target.checked,
                           }))
                         }
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <Label htmlFor="published" className="text-sm">
                         Publicado
@@ -743,7 +743,7 @@ export default function FAQsAdminPage() {
                             published: e.target.checked,
                           }))
                         }
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <Label htmlFor="edit-published" className="text-sm">
                         Publicado

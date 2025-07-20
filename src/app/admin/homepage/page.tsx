@@ -755,7 +755,7 @@ export default function HomepageAdminPage() {
                               : prev
                           )
                         }
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <Label htmlFor="primary-enabled" className="text-sm">
                         Activado
@@ -838,7 +838,7 @@ export default function HomepageAdminPage() {
                               : prev
                           )
                         }
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <Label htmlFor="secondary-enabled" className="text-sm">
                         Activado
@@ -925,7 +925,7 @@ export default function HomepageAdminPage() {
                             : prev
                         )
                       }
-                      className="rounded border-gray-300"
+                      className="rounded border-border"
                     />
                     <Label htmlFor="logo-enabled" className="text-sm">
                       Activado
@@ -1035,7 +1035,7 @@ export default function HomepageAdminPage() {
                             : prev
                         )
                       }
-                      className="rounded border-gray-300"
+                      className="rounded border-border"
                     />
                     <Label htmlFor="video-enabled" className="text-sm">
                       Enabled
@@ -1146,7 +1146,7 @@ export default function HomepageAdminPage() {
                             : prev
                         )
                       }
-                      className="rounded border-gray-300"
+                      className="rounded border-border"
                     />
                     <Label htmlFor="images-enabled" className="text-sm">
                       Enabled
@@ -1169,7 +1169,7 @@ export default function HomepageAdminPage() {
                               sizes="(max-width: 768px) 50vw, 25vw"
                               quality={85}
                             />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                               <Button
                                 size="sm"
                                 variant="destructive"
