@@ -86,9 +86,9 @@ export function MetricCard({
   const getChangeIcon = () => {
     switch (changeType) {
       case 'increase':
-        return <TrendingUp className="h-3 w-3 text-green-600" />;
+        return <TrendingUp className="h-3 w-3 text-primary" />;
       case 'decrease':
-        return <TrendingDown className="h-3 w-3 text-red-600" />;
+        return <TrendingDown className="h-3 w-3 text-destructive" />;
       default:
         return <Minus className="h-3 w-3 text-muted-foreground" />;
     }
@@ -97,9 +97,9 @@ export function MetricCard({
   const getChangeColor = () => {
     switch (changeType) {
       case 'increase':
-        return 'text-green-600';
+        return 'text-primary';
       case 'decrease':
-        return 'text-red-600';
+        return 'text-destructive';
       default:
         return 'text-muted-foreground';
     }
@@ -131,9 +131,9 @@ export function MetricCard({
             {trend && (
               <div className="flex items-center gap-1">
                 {trend.direction === 'up' ? (
-                  <TrendingUp className="h-3 w-3 text-green-600" />
+                  <TrendingUp className="h-3 w-3 text-primary" />
                 ) : trend.direction === 'down' ? (
-                  <TrendingDown className="h-3 w-3 text-red-600" />
+                  <TrendingDown className="h-3 w-3 text-destructive" />
                 ) : (
                   <Minus className="h-3 w-3 text-muted-foreground" />
                 )}
@@ -316,7 +316,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
         <div className="mt-3 space-y-2">
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              <Eye className="h-3 w-3 text-blue-500" />
+              <Eye className="h-3 w-3 text-primary" />
               <span>Views</span>
             </div>
             <span className="font-medium">{breakdown.views}</span>
@@ -324,7 +324,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
 
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              <Play className="h-3 w-3 text-green-500" />
+              <Play className="h-3 w-3 text-primary" />
               <span>Plays</span>
             </div>
             <span className="font-medium">{breakdown.plays}</span>
@@ -332,7 +332,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
 
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              <Pause className="h-3 w-3 text-yellow-500" />
+              <Pause className="h-3 w-3 text-muted-foreground" />
               <span>Pauses</span>
             </div>
             <span className="font-medium">{breakdown.pauses}</span>
@@ -340,7 +340,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
 
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              <CheckCircle className="h-3 w-3 text-purple-500" />
+              <CheckCircle className="h-3 w-3 text-primary" />
               <span>Completes</span>
             </div>
             <span className="font-medium">{breakdown.completes}</span>
@@ -348,7 +348,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
 
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1">
-              <ZoomIn className="h-3 w-3 text-orange-500" />
+              <ZoomIn className="h-3 w-3 text-primary" />
               <span>Zooms</span>
             </div>
             <span className="font-medium">{breakdown.zooms}</span>
@@ -392,11 +392,11 @@ export function DeviceBreakdownCard({ data }: { data: MetricData }) {
   const getDeviceIcon = (deviceType: string) => {
     switch (deviceType.toLowerCase()) {
       case 'desktop':
-        return <Monitor className="h-3 w-3 text-blue-500" />;
+        return <Monitor className="h-3 w-3 text-primary" />;
       case 'mobile':
-        return <Smartphone className="h-3 w-3 text-green-500" />;
+        return <Smartphone className="h-3 w-3 text-primary" />;
       case 'tablet':
-        return <Tablet className="h-3 w-3 text-purple-500" />;
+        return <Tablet className="h-3 w-3 text-primary" />;
       default:
         return <Monitor className="h-3 w-3 text-muted-foreground" />;
     }

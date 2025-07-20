@@ -81,7 +81,7 @@ export default function BuildTrigger({
     if (lastBuildStatus === 'success') {
       return (
         <>
-          <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+          <CheckCircle className="w-4 h-4 mr-2 text-primary" />
           Build Triggered
         </>
       );
@@ -90,7 +90,7 @@ export default function BuildTrigger({
     if (lastBuildStatus === 'error') {
       return (
         <>
-          <AlertCircle className="w-4 h-4 mr-2 text-red-500" />
+          <AlertCircle className="w-4 h-4 mr-2 text-destructive" />
           Build Failed
         </>
       );
@@ -121,8 +121,8 @@ export default function BuildTrigger({
         <div
           className={`text-sm p-2 rounded-md ${
             notification.type === 'success'
-              ? 'bg-green-100 text-green-800 border border-green-200'
-              : 'bg-red-100 text-red-800 border border-red-200'
+              ? 'bg-success/10 text-success border border-success/20'
+              : 'bg-destructive/10 text-destructive border border-destructive/20'
           }`}
         >
           {notification.message}

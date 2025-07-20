@@ -107,9 +107,9 @@ function SortableSocialPost({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               {post.type === 'image' ? (
-                <ImageIcon className="w-4 h-4 text-blue-600" />
+                <ImageIcon className="w-4 h-4 text-primary" />
               ) : (
-                <VideoIcon className="w-4 h-4 text-purple-600" />
+                <VideoIcon className="w-4 h-4 text-primary" />
               )}
               <Badge variant="outline" className="text-xs">
                 {post.type === 'image' ? 'Imagen' : 'Video'}

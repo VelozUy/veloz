@@ -216,7 +216,7 @@ export default function HeroMediaCropper({
             </div>
 
             {/* Instructions */}
-            <div className="absolute bottom-2 left-2 right-2 bg-black/50 text-white text-xs p-2 rounded">
+            <div className="absolute bottom-2 left-2 right-2 bg-foreground/50 text-primary-foreground text-xs p-2 rounded">
               Arrastra para mover • Usa los controles para ajustar
             </div>
           </div>

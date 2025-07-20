@@ -334,10 +334,10 @@ export default function GalleryGrid({
                         blurDataURL={item.blurDataURL}
                       />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors duration-300">
-                      <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 group-hover:bg-foreground/10 transition-colors duration-300">
+                      <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                         <svg
-                          className="w-8 h-8 text-black ml-1"
+                          className="w-8 h-8 text-foreground ml-1"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -387,15 +387,15 @@ export default function GalleryGrid({
 
                     {/* Skeleton loader for better FCP */}
                     {!isLoaded && !hasError && !item.blurDataURL && (
-                      <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-                        <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+                        <div className="w-8 h-8 border-2 border-border rounded-full animate-spin" />
                       </div>
                     )}
 
                     {/* Error fallback */}
                     {hasError && (
-                      <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-                        <div className="text-gray-500 text-sm">
+                      <div className="absolute inset-0 bg-muted flex items-center justify-center">
+                        <div className="text-muted-foreground text-sm">
                           Error loading image
                         </div>
                       </div>
@@ -405,10 +405,10 @@ export default function GalleryGrid({
               </div>
 
               {/* Enhanced Hover Overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100">
+              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 transform scale-95 group-hover:scale-100 transition-transform duration-300">
-                    <span className="text-sm font-medium text-black">
+                  <div className="bg-background/90 backdrop-blur-sm rounded-lg px-4 py-2 transform scale-95 group-hover:scale-100 transition-transform duration-300">
+                    <span className="text-sm font-medium text-foreground">
                       {item.type === 'video'
                         ? 'Reproducir Video'
                         : 'Ver Imagen'}

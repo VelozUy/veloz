@@ -85,10 +85,10 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       {/* Loading placeholder */}
       {!isLoaded && !hasError && (
         <div
-          className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center"
+          className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center"
           data-testid="loading-placeholder"
         >
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-border rounded-full animate-spin" />
         </div>
       )}
 
@@ -132,8 +132,11 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 
       {/* Error fallback */}
       {hasError && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-          <div className="text-gray-500 text-sm" data-testid="error-fallback">
+        <div className="absolute inset-0 bg-muted flex items-center justify-center">
+          <div
+            className="text-muted-foreground text-sm"
+            data-testid="error-fallback"
+          >
             Error loading image
           </div>
         </div>

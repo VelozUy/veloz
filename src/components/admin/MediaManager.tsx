@@ -126,7 +126,7 @@ function SortableMediaItem({
         <Checkbox
           checked={selected}
           onCheckedChange={checked => onSelect(media.id!, !!checked)}
-          className="bg-white/90 border-gray-300"
+          className="bg-background/90 border-border"
         />
       </div>
 
@@ -136,8 +136,8 @@ function SortableMediaItem({
         {...listeners}
         className="absolute top-2 right-2 z-10 cursor-grab active:cursor-grabbing"
       >
-        <div className="bg-white/90 p-1 rounded">
-          <GripVertical className="w-4 h-4 text-gray-600" />
+        <div className="bg-background/90 p-1 rounded">
+          <GripVertical className="w-4 h-4 text-muted-foreground" />
         </div>
       </div>
 
@@ -164,13 +164,13 @@ function SortableMediaItem({
         </div>
       ) : (
         <div
-          className={`bg-blue-100 flex items-center justify-center ${
+          className={`bg-primary/10 flex items-center justify-center ${
             viewMode === 'grid'
               ? 'aspect-square'
               : 'w-20 h-20 rounded flex-shrink-0'
           }`}
         >
-          <VideoIcon className="w-8 h-8 text-blue-600" />
+          <VideoIcon className="w-8 h-8 text-primary" />
         </div>
       )}
 
@@ -211,8 +211,8 @@ function SortableMediaItem({
               onClick={() => onToggleFeatured(media.id!, !media.featured)}
               className={
                 media.featured
-                  ? 'text-yellow-600 hover:text-yellow-700'
-                  : 'text-gray-400 hover:text-yellow-600'
+                  ? 'text-primary hover:text-primary-dark'
+                  : 'text-muted-foreground hover:text-primary'
               }
               title={
                 media.featured
@@ -230,7 +230,7 @@ function SortableMediaItem({
               size="sm"
               onClick={() => onAnalyze(media)}
               disabled={isAnalyzing}
-              className="text-purple-600 hover:text-purple-700"
+              className="text-primary hover:text-primary-dark"
               title={
                 media.type === 'video'
                   ? 'Analizar video para SEO'
@@ -326,8 +326,8 @@ function EditMediaModal({
                 className="object-cover rounded"
               />
             ) : (
-              <div className="w-20 h-20 bg-blue-100 flex items-center justify-center rounded">
-                <VideoIcon className="w-8 h-8 text-blue-600" />
+              <div className="w-20 h-20 bg-primary/10 flex items-center justify-center rounded">
+                <VideoIcon className="w-8 h-8 text-primary" />
               </div>
             )}
             <div>

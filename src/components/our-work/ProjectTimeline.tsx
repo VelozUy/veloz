@@ -221,7 +221,7 @@ export default function ProjectTimeline({
   const getStatusColor = useCallback((status: TimelinePhase['status']) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-500 text-white';
+        return 'bg-primary text-primary-foreground';
       case 'in-progress':
         return 'bg-primary text-primary-foreground';
       case 'upcoming':
@@ -234,9 +234,9 @@ export default function ProjectTimeline({
   const getStatusIcon = useCallback((status: TimelinePhase['status']) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-4 h-4 text-white" />;
+        return <CheckCircle className="w-4 h-4 text-primary-foreground" />;
       case 'in-progress':
-        return <Clock className="w-4 h-4 text-white" />;
+        return <Clock className="w-4 h-4 text-primary-foreground" />;
       case 'upcoming':
         return <Clock className="w-4 h-4" />;
       default:

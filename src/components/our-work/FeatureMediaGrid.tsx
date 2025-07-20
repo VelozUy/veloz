@@ -210,14 +210,14 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   {/* Enhanced skeleton loader for better FCP */}
                   {!isLoaded && !hasError && (
                     <div className="gallery-skeleton absolute inset-0 flex items-center justify-center">
-                      <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                      <div className="w-8 h-8 border-2 border-border rounded-full animate-spin" />
                     </div>
                   )}
 
                   {/* Error fallback */}
                   {hasError && (
-                    <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-                      <div className="text-gray-500 text-sm">
+                    <div className="absolute inset-0 bg-muted flex items-center justify-center">
+                      <div className="text-muted-foreground text-sm">
                         Error loading image
                       </div>
                     </div>
@@ -226,11 +226,11 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
               )}
               {/* Project title overlay on hover */}
               <motion.div
-                className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4"
+                className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4"
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 1 }}
               >
-                <div className="text-white text-center">
+                <div className="text-primary-foreground text-center">
                   <h4 className="text-sm font-medium truncate">
                     {mediaItem.projectTitle}
                   </h4>

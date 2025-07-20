@@ -221,9 +221,9 @@ export default function ProjectDashboard() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'published':
-        return 'bg-green-500';
+        return 'bg-primary';
       case 'in-progress':
-        return 'bg-blue-500';
+        return 'bg-muted';
       case 'completed':
         return 'bg-green-600';
       case 'draft':
@@ -238,17 +238,17 @@ export default function ProjectDashboard() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'published':
-        return <CheckCircle className="h-4 w-4" />;
+        return <CheckCircle className="h-4 w-4 text-primary-foreground" />;
       case 'in-progress':
-        return <Clock className="h-4 w-4" />;
+        return <Clock className="h-4 w-4 text-muted-foreground" />;
       case 'completed':
-        return <CheckCircle className="h-4 w-4" />;
+        return <CheckCircle className="h-4 w-4 text-primary-foreground" />;
       case 'draft':
-        return <Pause className="h-4 w-4" />;
+        return <Pause className="h-4 w-4 text-muted-foreground" />;
       case 'archived':
-        return <FolderOpen className="h-4 w-4" />;
+        return <FolderOpen className="h-4 w-4 text-muted-foreground" />;
       default:
-        return <AlertCircle className="h-4 w-4" />;
+        return <AlertCircle className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -413,7 +413,7 @@ export default function ProjectDashboard() {
                       </p>
                     </div>
                     <Badge
-                      className={`${getStatusColor(project.status)} text-white`}
+                      className={`${getStatusColor(project.status)} text-primary-foreground`}
                     >
                       {getStatusIcon(project.status)}
                     </Badge>
@@ -519,8 +519,8 @@ export default function ProjectDashboard() {
                                 milestone.status === 'completed'
                                   ? 'bg-green-500'
                                   : milestone.status === 'overdue'
-                                    ? 'bg-red-500'
-                                    : 'bg-yellow-500'
+                                    ? 'bg-destructive'
+                                    : 'bg-accent'
                               }`}
                             />
                             <span className="flex-1">{milestone.title}</span>

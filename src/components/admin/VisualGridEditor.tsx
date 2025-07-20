@@ -1235,15 +1235,15 @@ export default function VisualGridEditor({
             <CardContent className="p-6">
               {/* Title Block Toolbar */}
               {showTitleToolbar && editingTitleBlock && (
-                <div className="mb-3 p-4 bg-gray-900 border border-gray-700 rounded-none shadow-lg">
+                <div className="mb-3 p-4 bg-card border border-border rounded-none shadow-lg">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-gray-200">
+                    <h3 className="text-sm font-medium text-muted-foreground">
                       Editar Título
                     </h3>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-6 w-6 p-0 text-gray-400 hover:text-white hover:bg-gray-800"
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-primary-foreground hover:bg-muted/80"
                       onClick={() => {
                         setShowTitleToolbar(false);
                         setEditingTitleBlock(null);
@@ -1254,8 +1254,8 @@ export default function VisualGridEditor({
                   </div>
 
                   {/* Live Preview */}
-                  <div className="mb-3 p-3 bg-gray-800 rounded border border-gray-600">
-                    <div className="text-xs text-gray-400 mb-1">
+                  <div className="mb-3 p-3 bg-muted rounded border border-border">
+                    <div className="text-xs text-muted-foreground mb-1">
                       Vista previa:
                     </div>
                     <div
@@ -1280,7 +1280,7 @@ export default function VisualGridEditor({
                   <div className="space-y-3">
                     {/* Title Input */}
                     <div>
-                      <label className="text-xs text-gray-400 mb-1 block">
+                      <label className="text-xs text-muted-foreground mb-1 block">
                         Texto del título:
                       </label>
                       <Input
@@ -1292,13 +1292,13 @@ export default function VisualGridEditor({
                           })
                         }
                         placeholder="Título del proyecto"
-                        className="text-sm h-8 bg-gray-800 border-gray-600 text-gray-200 placeholder-gray-500"
+                        className="text-sm h-8 bg-muted border-border text-muted-foreground placeholder-muted-foreground"
                       />
                     </div>
 
                     {/* Font Selection */}
                     <div>
-                      <label className="text-xs text-gray-400 mb-1 block">
+                      <label className="text-xs text-muted-foreground mb-1 block">
                         Fuente:
                       </label>
                       <Select
@@ -1309,10 +1309,10 @@ export default function VisualGridEditor({
                           })
                         }
                       >
-                        <SelectTrigger className="text-sm h-8 bg-gray-800 border-gray-600 text-gray-200">
+                        <SelectTrigger className="text-sm h-8 bg-muted border-border text-muted-foreground">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600 max-h-60">
+                        <SelectContent className="bg-muted border-border max-h-60">
                           {Object.entries(
                             FONT_OPTIONS.reduce(
                               (acc, font) => {
@@ -1328,7 +1328,7 @@ export default function VisualGridEditor({
                             )
                           ).map(([category, fonts]) => (
                             <div key={category}>
-                              <div className="px-2 py-1 text-xs font-medium text-gray-400 bg-gray-700">
+                              <div className="px-2 py-1 text-xs font-medium text-muted-foreground bg-muted">
                                 {category === 'modern' && 'Moderno & Limpio'}
                                 {category === 'elegant' && 'Elegante & Lujoso'}
                                 {category === 'creative' &&
@@ -1343,7 +1343,7 @@ export default function VisualGridEditor({
                                 <SelectItem
                                   key={font.value}
                                   value={font.value}
-                                  className="text-gray-200 hover:bg-gray-700"
+                                  className="text-muted-foreground hover:bg-muted"
                                 >
                                   <span style={{ fontFamily: font.fontFamily }}>
                                     {font.label}
@@ -1358,7 +1358,7 @@ export default function VisualGridEditor({
 
                     {/* Color Selection */}
                     <div>
-                      <label className="text-xs text-gray-400 mb-1 block">
+                      <label className="text-xs text-muted-foreground mb-1 block">
                         Color:
                       </label>
                       <div className="flex items-center gap-2">
@@ -1371,9 +1371,9 @@ export default function VisualGridEditor({
                               color: e.target.value,
                             })
                           }
-                          className="w-10 h-8 p-1 bg-gray-800 border-gray-600"
+                          className="w-10 h-8 p-1 bg-muted border-border"
                         />
-                        <span className="text-xs text-gray-400 font-mono">
+                        <span className="text-xs text-muted-foreground font-mono">
                           {editingTitleBlock.color || '#000000'}
                         </span>
                       </div>
@@ -1383,11 +1383,11 @@ export default function VisualGridEditor({
               )}
               {/* Block Controls Toolbar */}
               {selectedBlock && (
-                <div className="mb-2 flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-none px-3 py-2 shadow-lg w-fit">
+                <div className="mb-2 flex items-center gap-2 bg-card border border-border rounded-none px-3 py-2 shadow-lg w-fit">
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-7 w-7 text-gray-400 hover:text-white"
+                    className="h-7 w-7 text-muted-foreground hover:text-primary-foreground"
                     onClick={() => {
                       // Move block up (increase zIndex)
                       const block = mediaBlocks.find(
@@ -1420,7 +1420,7 @@ export default function VisualGridEditor({
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-7 w-7 text-gray-400 hover:text-white"
+                    className="h-7 w-7 text-muted-foreground hover:text-primary-foreground"
                     onClick={() => {
                       // Move block down (decrease zIndex)
                       const block = mediaBlocks.find(
@@ -1451,14 +1451,14 @@ export default function VisualGridEditor({
                     ▼
                   </Button>
 
-                  <div className="w-px h-6 bg-gray-600 mx-2"></div>
+                  <div className="w-px h-6 bg-border mx-2"></div>
 
                   {/* Move Controls */}
                   <div className="flex items-center gap-1">
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1482,7 +1482,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1506,7 +1506,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1530,7 +1530,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1553,14 +1553,14 @@ export default function VisualGridEditor({
                     </Button>
                   </div>
 
-                  <div className="w-px h-6 bg-gray-600 mx-1"></div>
+                  <div className="w-px h-6 bg-border mx-1"></div>
 
                   {/* Resize Controls */}
                   <div className="flex items-center gap-1">
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1586,7 +1586,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1612,7 +1612,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1638,7 +1638,7 @@ export default function VisualGridEditor({
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-6 w-6 text-gray-400 hover:text-white"
+                      className="h-6 w-6 text-muted-foreground hover:text-primary-foreground"
                       onClick={() => {
                         const block = mediaBlocks.find(
                           b => b.id === selectedBlock
@@ -1663,7 +1663,7 @@ export default function VisualGridEditor({
                     </Button>
                   </div>
 
-                  <div className="w-px h-6 bg-gray-600 mx-2"></div>
+                  <div className="w-px h-6 bg-border mx-2"></div>
 
                   <Button
                     size="sm"
@@ -1683,7 +1683,7 @@ export default function VisualGridEditor({
               {/* Responsive Grid Container */}
               <div
                 ref={containerRef}
-                className="w-full border border-gray-200 rounded-none bg-white flex flex-col items-center justify-center"
+                className="w-full border border-border rounded-none bg-background flex flex-col items-center justify-center"
                 style={{
                   minHeight: expandable
                     ? `${(GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE + 80}px`
@@ -1692,7 +1692,7 @@ export default function VisualGridEditor({
               >
                 <div
                   ref={gridRef}
-                  className="relative bg-gray-100 border-2 border-dashed border-gray-300 rounded-none"
+                  className="relative bg-muted border-2 border-dashed border-border rounded-none"
                   style={{
                     width: GRID_WIDTH * GRID_CELL_SIZE,
                     height: (GRID_HEIGHT + additionalRows) * GRID_CELL_SIZE,
@@ -1704,7 +1704,7 @@ export default function VisualGridEditor({
                     {Array.from({ length: GRID_WIDTH + 1 }).map((_, i) => (
                       <div
                         key={`v-${i}`}
-                        className="absolute top-0 bottom-0 border-l border-gray-200"
+                        className="absolute top-0 bottom-0 border-l border-border"
                         style={{ left: i * GRID_CELL_SIZE }}
                       />
                     ))}
@@ -1713,7 +1713,7 @@ export default function VisualGridEditor({
                     }).map((_, i) => (
                       <div
                         key={`h-${i}`}
-                        className="absolute left-0 right-0 border-t border-gray-200"
+                        className="absolute left-0 right-0 border-t border-border"
                         style={{ top: i * GRID_CELL_SIZE }}
                       />
                     ))}
@@ -1870,8 +1870,8 @@ export default function VisualGridEditor({
                               )}
                             </div>
                           ) : (
-                            <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                              <span className="text-gray-500 text-sm">
+                            <div className="w-full h-full bg-muted flex items-center justify-center">
+                              <span className="text-muted-foreground text-sm">
                                 Media no encontrado
                               </span>
                             </div>
@@ -1901,7 +1901,7 @@ export default function VisualGridEditor({
 
                 {/* Expansion Controls - Bottom */}
                 {expandable && (
-                  <div className="flex items-center justify-center gap-2 mt-4 p-4 bg-gray-50 rounded-none border">
+                  <div className="flex items-center justify-center gap-2 mt-4 p-4 bg-muted rounded-none border">
                     <button
                       onClick={handleRemoveRow}
                       disabled={additionalRows === 0}
@@ -1921,7 +1921,7 @@ export default function VisualGridEditor({
                     >
                       +9 Filas
                     </button>
-                    <span className="text-sm text-muted-foreground ml-4 px-3 py-2 bg-white rounded border">
+                    <span className="text-sm text-muted-foreground ml-4 px-3 py-2 bg-background rounded border">
                       Filas adicionales: {additionalRows}
                     </span>
                   </div>
@@ -1984,7 +1984,7 @@ export default function VisualGridEditor({
                   {availableMedia.map(media => (
                     <div
                       key={media.id}
-                      className="flex items-center gap-3 p-3 border rounded-none hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 p-3 border rounded-none hover:bg-muted/50 cursor-pointer transition-colors"
                       onClick={() => addMediaBlock(media)}
                     >
                       <div className="relative w-12 h-12 overflow-hidden rounded">

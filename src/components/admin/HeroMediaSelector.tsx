@@ -217,13 +217,13 @@ export default function HeroMediaSelector({
   const getCompatibilityIcon = (compatibility: string) => {
     switch (compatibility) {
       case 'perfect':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'compatible':
-        return <CheckCircle className="w-4 h-4 text-yellow-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'stretch':
         return <AlertTriangle className="w-4 h-4 text-orange-500" />;
       default:
-        return <XCircle className="w-4 h-4 text-gray-400" />;
+        return <XCircle className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -382,8 +382,8 @@ export default function HeroMediaSelector({
                             sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                           />
                         ) : (
-                          <div className="w-full h-full bg-blue-100 flex items-center justify-center">
-                            <Video className="w-8 h-8 text-blue-600" />
+                          <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                            <Video className="w-8 h-8 text-primary" />
                           </div>
                         )}
                       </div>

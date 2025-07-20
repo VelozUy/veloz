@@ -112,8 +112,8 @@ function FileMetadataEditor({
             {/* File preview */}
             <div className="flex-shrink-0">
               {uploadFile.file.type.startsWith('video/') ? (
-                <div className="w-12 h-12 bg-blue-100 flex items-center justify-center rounded">
-                  <VideoIcon className="w-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded">
+                  <VideoIcon className="w-6 h-6 text-primary" />
                 </div>
               ) : uploadFile.previewUrl ? (
                 <Image
@@ -124,8 +124,8 @@ function FileMetadataEditor({
                   className="object-cover rounded"
                 />
               ) : (
-                <div className="w-12 h-12 bg-green-100 flex items-center justify-center rounded">
-                  <ImageIcon className="w-6 h-6 text-green-600" />
+                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded">
+                  <ImageIcon className="w-6 h-6 text-primary" />
                 </div>
               )}
             </div>
@@ -307,11 +307,11 @@ function FileMetadataEditor({
               id={`featured-${uploadFile.id}`}
               checked={uploadFile.metadata.featured}
               onCheckedChange={handleFeaturedChange}
-              className="border-gray-medium focus:ring-blue-accent"
+              className="border-border focus:ring-ring"
             />
             <Label
               htmlFor={`featured-${uploadFile.id}`}
-              className="text-charcoal"
+              className="text-foreground"
             >
               Marcar como destacado
             </Label>
@@ -325,7 +325,7 @@ function FileMetadataEditor({
               value={uploadFile.progress}
               className="bg-gray-light h-2"
             />
-            <p className="text-xs text-charcoal mt-1">
+            <p className="text-xs text-foreground mt-1">
               {uploadFile.progress}% completado
             </p>
           </div>
@@ -334,19 +334,19 @@ function FileMetadataEditor({
         {uploadFile.status === 'error' && uploadFile.error && (
           <Alert
             variant="destructive"
-            className="bg-white border border-gray-medium text-charcoal"
+            className="bg-background border border-border text-foreground"
           >
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-sm text-charcoal">
+            <AlertDescription className="text-sm text-foreground">
               {uploadFile.error}
             </AlertDescription>
           </Alert>
         )}
 
         {uploadFile.status === 'success' && (
-          <Alert className="bg-white border border-gray-medium text-charcoal">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-sm text-green-800">
+          <Alert className="bg-background border border-border text-foreground">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <AlertDescription className="text-sm text-primary">
               ¡Archivo subido exitosamente!
             </AlertDescription>
           </Alert>
@@ -598,12 +598,12 @@ export default function MediaUpload({
           Subir Media
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-white border border-blue-accent">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-background border border-primary">
         <DialogHeader>
-          <DialogTitle className="text-charcoal">
+          <DialogTitle className="text-foreground">
             Subir Media al Proyecto
           </DialogTitle>
-          <DialogDescription className="text-charcoal">
+          <DialogDescription className="text-foreground">
             Sube fotos y videos para este proyecto. La información (título,
             descripción, etiquetas) es opcional - puedes usar AI para generar
             contenido SEO después de subir.
@@ -625,14 +625,14 @@ export default function MediaUpload({
             onClick={() => fileInputRef.current?.click()}
           >
             <CardContent className="p-8 text-center">
-              <Upload className="w-12 h-12 text-charcoal mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2 text-charcoal">
+              <Upload className="w-12 h-12 text-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-foreground">
                 Arrastra archivos aquí o haz clic para seleccionar
               </h3>
-              <p className="text-sm text-charcoal mb-4">
+              <p className="text-sm text-foreground mb-4">
                 Formatos soportados: JPG, PNG, WebP, MP4, WebM, MOV
               </p>
-              <p className="text-xs text-charcoal">
+              <p className="text-xs text-foreground">
                 Tamaño máximo: 10MB para imágenes, 100MB para videos
               </p>
               <input
@@ -650,11 +650,11 @@ export default function MediaUpload({
           {uploadFiles.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-charcoal">
+                <h3 className="text-lg font-semibold text-foreground">
                   Archivos Seleccionados ({uploadFiles.length})
                 </h3>
                 {uploadFiles.length > 1 && (
-                  <p className="text-sm text-charcoal">
+                  <p className="text-sm text-foreground">
                     Tip: Usa &quot;Copy to All&quot; para aplicar la misma
                     información a todos los archivos
                   </p>
@@ -697,7 +697,7 @@ export default function MediaUpload({
                   <Button
                     variant="outline"
                     onClick={clearCompletedUploads}
-                    className="border-gray-medium text-charcoal hover:bg-gray-light"
+                    className="border-border text-foreground hover:bg-muted"
                   >
                     Limpiar Completados
                   </Button>
@@ -708,7 +708,7 @@ export default function MediaUpload({
                 <Button
                   variant="outline"
                   onClick={() => setIsOpen(false)}
-                  className="border-gray-medium text-charcoal hover:bg-gray-light"
+                  className="border-border text-foreground hover:bg-muted"
                 >
                   Cerrar
                 </Button>

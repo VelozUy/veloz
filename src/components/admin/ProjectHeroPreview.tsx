@@ -204,8 +204,8 @@ export default function ProjectHeroPreview({
 
           {/* No Media Selected Warning */}
           {!heroConfig?.mediaId && projectMedia.length > 0 && (
-            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-none">
-              <p className="text-sm text-yellow-800">
+            <div className="p-4 bg-primary/10 border border-primary/20 rounded-none">
+              <p className="text-sm text-primary">
                 <strong>Nota:</strong> No hay media seleccionado para el hero.
                 Selecciona un media en la sección de configuración para ver la
                 vista previa.
@@ -215,8 +215,8 @@ export default function ProjectHeroPreview({
 
           {/* No Media Available Warning */}
           {projectMedia.length === 0 && (
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-none">
-              <p className="text-sm text-blue-800">
+            <div className="p-4 bg-primary/10 border border-primary/20 rounded-none">
+              <p className="text-sm text-primary">
                 <strong>Nota:</strong> No hay media disponible para este
                 proyecto. Sube fotos o videos primero para poder configurar el
                 hero.

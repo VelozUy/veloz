@@ -134,12 +134,12 @@ export default function MeetTheTeam({
   };
 
   return (
-    <section className={`py-12 bg-white ${className}`}>
+    <section className={`py-12 bg-card ${className}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Users className="w-6 h-6 text-blue-accent" />
+            <Users className="w-6 h-6 text-primary" />
             <h2 className="text-3xl font-bold text-charcoal">
               {language === 'en'
                 ? 'Meet the Team'
@@ -162,7 +162,7 @@ export default function MeetTheTeam({
           {crewMembers.map(member => (
             <Card
               key={member.id}
-              className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-medium"
+              className="group hover:shadow-lg transition-all duration-300 bg-card border border-border"
             >
               <CardContent className="p-6">
                 {/* Portrait and Basic Info */}
@@ -174,7 +174,7 @@ export default function MeetTheTeam({
                         alt={getLocalizedText(member.name, language)}
                         width={80}
                         height={80}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-blue-accent/20"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
                       />
                     ) : (
                       <Avatar className="w-20 h-20">
@@ -237,7 +237,7 @@ export default function MeetTheTeam({
                           href={member.socialLinks.instagram}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-pink-600 hover:text-pink-700"
+                          className="text-accent hover:text-accent-foreground"
                         >
                           <Instagram className="w-4 h-4" />
                         </a>
@@ -255,7 +255,7 @@ export default function MeetTheTeam({
                           href={member.socialLinks.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-700"
+                          className="text-primary hover:text-primary-foreground"
                         >
                           <Linkedin className="w-4 h-4" />
                         </a>
@@ -273,7 +273,7 @@ export default function MeetTheTeam({
                           href={member.socialLinks.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-gray-600 hover:text-gray-700"
+                          className="text-muted-foreground hover:text-muted-foreground"
                         >
                           <Globe className="w-4 h-4" />
                         </a>
@@ -289,7 +289,7 @@ export default function MeetTheTeam({
                       >
                         <a
                           href={`mailto:${member.socialLinks.email}`}
-                          className="text-gray-600 hover:text-gray-700"
+                          className="text-muted-foreground hover:text-muted-foreground"
                         >
                           <Mail className="w-4 h-4" />
                         </a>
