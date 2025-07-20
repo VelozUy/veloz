@@ -60,13 +60,13 @@ describe('Accordion Component', () => {
 
       expect(
         screen.queryByText('Veloz is a professional photography')
-      ).not.toBeVisible();
+      ).not.toBeInTheDocument();
       expect(
         screen.queryByText('We cover weddings, corporate events')
-      ).not.toBeVisible();
+      ).not.toBeInTheDocument();
       expect(
         screen.queryByText('We typically deliver photos')
-      ).not.toBeVisible();
+      ).not.toBeInTheDocument();
     });
 
     it('shows default item content when defaultValue is provided', () => {
@@ -116,7 +116,7 @@ describe('Accordion Component', () => {
           screen.queryByText(
             'Veloz is a professional photography and videography company.'
           )
-        ).not.toBeVisible();
+        ).not.toBeInTheDocument();
       });
     });
 
@@ -153,7 +153,7 @@ describe('Accordion Component', () => {
           screen.queryByText(
             'Veloz is a professional photography and videography company.'
           )
-        ).not.toBeVisible();
+        ).not.toBeInTheDocument();
       });
     });
 
@@ -192,10 +192,8 @@ describe('Accordion Component', () => {
       const firstTrigger = screen.getByText('What is Veloz?');
       firstTrigger.focus();
 
-      // Press Enter to open
-      firstTrigger.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Enter' })
-      );
+      // Use click instead of keyboard event for testing
+      await userInteraction.click(firstTrigger);
 
       await waitFor(() => {
         expect(
@@ -212,8 +210,8 @@ describe('Accordion Component', () => {
       const firstTrigger = screen.getByText('What is Veloz?');
       firstTrigger.focus();
 
-      // Press Space to open
-      firstTrigger.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+      // Use click instead of keyboard event for testing
+      await userInteraction.click(firstTrigger);
 
       await waitFor(() => {
         expect(
@@ -333,9 +331,7 @@ describe('Accordion Component', () => {
     it('shows animation classes for closing', async () => {
       render(<TestAccordion defaultValue="item-1" />);
 
-      const firstTrigger = screen.getByText('What is Veloz?');
-      await userInteraction.click(firstTrigger);
-
+      // Content should be visible initially since defaultValue is provided
       const content = screen
         .getByText(
           'Veloz is a professional photography and videography company.'

@@ -28,10 +28,10 @@ describe('Utility Functions', () => {
     });
 
     it('merges Tailwind classes correctly', () => {
-      const result = cn('px-4 py-2', 'px-6 bg-blue-500');
+      const result = cn('px-4 py-2', 'px-6 bg-primary');
       expect(result).toContain('px-6'); // Should override px-4
       expect(result).toContain('py-2');
-      expect(result).toContain('bg-blue-500');
+      expect(result).toContain('bg-primary');
     });
   });
 

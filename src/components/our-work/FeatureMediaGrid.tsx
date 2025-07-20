@@ -49,7 +49,8 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
   // Initialize performance optimizations
   useEffect(() => {
-    initializePerformanceOptimizations();
+    // Temporarily disabled to fix aspect ratio issues
+    // initializePerformanceOptimizations();
   }, []);
 
   // Handle image load events
@@ -84,19 +85,30 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
       let aspectRatio = 1;
       let cssAspectRatio = 100; // Default to square (1:1)
 
+      // Always prioritize actual dimensions if available, as they are more accurate
       if (mediaItem.width && mediaItem.height) {
-        // Use actual dimensions if available
+        // Use actual dimensions - these are the most accurate
         aspectRatio = mediaItem.width / mediaItem.height;
         cssAspectRatio = (mediaItem.height / mediaItem.width) * 100;
+
+        // Debug logging for all images
+        console.log(`Image ${mediaItem.id}:`, {
+          width: mediaItem.width,
+          height: mediaItem.height,
+          aspectRatio,
+          cssAspectRatio,
+          originalAspectRatio: mediaItem.aspectRatio,
+          isVertical: aspectRatio < 1,
+        });
       } else if (mediaItem.aspectRatio) {
-        // Use aspectRatio string from database if width/height not available
+        // Fallback to aspectRatio string from database if width/height not available
         const ratioMap = {
           '1:1': { aspectRatio: 1, cssAspectRatio: 100 },
-          '16:9': { aspectRatio: 16/9, cssAspectRatio: (9/16) * 100 },
-          '9:16': { aspectRatio: 9/16, cssAspectRatio: (16/9) * 100 },
-          '4:5': { aspectRatio: 4/5, cssAspectRatio: (5/4) * 100 },
+          '16:9': { aspectRatio: 16 / 9, cssAspectRatio: (9 / 16) * 100 },
+          '9:16': { aspectRatio: 9 / 16, cssAspectRatio: (16 / 9) * 100 },
+          '4:5': { aspectRatio: 4 / 5, cssAspectRatio: (5 / 4) * 100 },
         };
-        
+
         const ratio = ratioMap[mediaItem.aspectRatio as keyof typeof ratioMap];
         if (ratio) {
           aspectRatio = ratio.aspectRatio;
@@ -110,8 +122,8 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
         // Wide images span 2 columns on larger screens
         gridSpan = 'col-span-1 md:col-span-2';
       } else if (aspectRatio < 0.8) {
-        // Tall images can span 2 rows (handled by CSS grid)
-        gridSpan = 'col-span-1 row-span-2';
+        // Tall images - let them take their natural height
+        gridSpan = 'col-span-1';
       }
 
       return {
@@ -139,25 +151,26 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
   return (
     <div className={`gallery-container ${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 auto-rows-fr">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {processedMedia.map((mediaItem, index) => {
           return (
             <div
               key={mediaItem.id}
-              className={`gallery-item relative text-center group ${mediaItem.gridSpan}`}
+              className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan} hover:shadow-xl`}
             >
+              {/* Hover Overlay with gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
+
               {mediaItem.type === 'video' ? (
                 <div
-                  className="aspect-ratio-container"
-                  style={
-                    {
-                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
-                    } as React.CSSProperties
-                  }
+                  className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                  style={{
+                    aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
+                  }}
                 >
                   <video
                     src={mediaItem.url}
-                    className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'}`}
+                    className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
                     muted
                     loop
                     playsInline
@@ -170,18 +183,16 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                 </div>
               ) : (
                 <div
-                  className="aspect-ratio-container"
-                  style={
-                    {
-                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
-                    } as React.CSSProperties
-                  }
+                  className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                  style={{
+                    aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
+                  }}
                 >
                   <Image
                     src={mediaItem.url}
                     alt={mediaItem.alt}
                     fill
-                    className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'}`}
+                    className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index < 4}
                     loading={index < 4 ? 'eager' : 'lazy'}

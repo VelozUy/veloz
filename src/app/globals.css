@@ -200,14 +200,53 @@ html {
 
 .text-body-sm {
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 400;
 }
 
 .text-body-xs {
   font-size: 0.75rem;
-  line-height: 1.4;
+  line-height: 1.6;
   font-weight: 400;
+}
+
+/* Aspect ratio container for responsive images */
+.aspect-ratio-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.aspect-ratio-container > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Gallery skeleton loader */
+.gallery-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    var(--accent) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Animation keyframes */
@@ -219,6 +258,78 @@ html {
   50% {
     transform: scale(1.05);
   }
+}
+
+/* Modern hover animations for gallery items */
+@keyframes hover-lift {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+@keyframes hover-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0);
+  }
+  100% {
+    box-shadow: 0 8px 32px rgba(var(--primary), 0.15);
+  }
+}
+
+/* Entrance animations */
+@keyframes fade-in-0 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-bottom-4 {
+  from {
+    transform: translateY(1rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Animation utilities */
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in-0 {
+  animation-name: fade-in-0;
+}
+
+.slide-in-from-bottom-4 {
+  animation-name: slide-in-from-bottom-4;
+}
+
+.duration-700 {
+  animation-duration: 700ms;
+}
+
+/* Gallery item hover effects */
+.gallery-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  min-height: 0; /* Allow grid items to shrink */
+}
+
+.gallery-item:hover {
+  transform: translateY(-2px);
+  z-index: 10;
+}
+
+/* Ensure grid allows natural heights */
+.gallery-container .grid {
+  align-items: start; /* Don't stretch items */
 }
 
 /* Masonry grid styles */

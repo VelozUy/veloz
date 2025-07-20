@@ -136,8 +136,9 @@ describe('CategoryBadge', () => {
     render(<CategoryBadge {...defaultProps} />);
     const element = screen.getByText('Casamiento').closest('div');
 
-    expect(element).toHaveClass('bg-rose-50');
-    expect(element).toHaveClass('text-rose-600');
+    expect(element).toHaveClass('bg-card');
+    expect(element).toHaveClass('text-card-foreground');
+    expect(element).toHaveClass('border-border');
   });
 
   it('applies custom className', () => {

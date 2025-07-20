@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import FeatureMediaGrid from './FeatureMediaGrid';
+import { H2, H3, Body, Muted } from '@/components/ui/typography';
 
 interface CategorySectionProps {
   id: string;
@@ -27,7 +27,7 @@ interface CategorySectionProps {
  * CategorySection Component
  *
  * Displays a category section with title, description, and feature media grid.
- * Each section is scrollable and has smooth animations.
+ * Each section is scrollable and has smooth animations with editorial typography.
  */
 export const CategorySection: React.FC<CategorySectionProps> = ({
   id,
@@ -43,52 +43,33 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
     >
       <div className="container mx-auto px-4">
         {/* Category Header */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-body font-normal text-foreground mb-6">
-            {title}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-body">
+        <div className="text-center mb-12">
+          <H2 className="mb-6">{title}</H2>
+          <Body className="text-muted-foreground max-w-3xl mx-auto">
             {description}
-          </p>
-        </motion.div>
+          </Body>
+        </div>
 
         {/* Feature Media Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        <div>
           <FeatureMediaGrid media={media} categoryId={id} className="mb-8" />
-        </motion.div>
+        </div>
 
         {/* Category Footer */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
+        <div className="text-center mt-12">
           <div className="bg-card border border-border rounded-none p-6 max-w-2xl mx-auto">
-            <h3 className="text-lg font-body font-normal mb-2 text-card-foreground">
+            <H3 className="mb-2 text-card-foreground">
               ¿Te gustaría un trabajo similar?
-            </h3>
-            <p className="text-muted-foreground mb-4 font-body">
+            </H3>
+            <Muted className="mb-4">
               Cada proyecto es único y nos adaptamos a tus necesidades
               específicas
-            </p>
+            </Muted>
             <button className="bg-primary text-primary-foreground px-6 py-3 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
               Consultar Disponibilidad
             </button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

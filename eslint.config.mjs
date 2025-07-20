@@ -75,6 +75,13 @@ const eslintConfig = [
     },
   },
   {
+    // Allow className.includes in border-radius-utils.ts for legitimate border radius checking
+    files: ["src/lib/border-radius-utils.ts"],
+    rules: {
+      'no-restricted-properties': 'off',
+    },
+  },
+  {
     // Theme-specific rules for component files
     files: ["src/components/**/*.tsx", "src/app/**/*.tsx"],
     rules: {

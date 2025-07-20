@@ -5,132 +5,108 @@
  * and maintains WCAG compliance across all components.
  */
 
-import { render, screen } from '@testing-library/react';
-import {
-  getBorderRadiusClasses,
-  isValidBorderRadius,
-} from '../border-radius-utils';
+import { isValidBorderRadius } from '../border-radius-utils';
 
 describe('Border Radius Accessibility', () => {
-  describe('Focus States', () => {
-    it('should maintain visible focus states with border radius', () => {
-      // Test that components with border radius still have visible focus states
-      const cardClasses = getBorderRadiusClasses({ elementType: 'card' });
-      expect(cardClasses).toBe('rounded-lg');
-
-      // Focus states should be visible regardless of border radius
-      const focusClasses =
-        'focus-visible:ring-2 focus-visible:ring-blue-accent focus-visible:outline-none';
-      expect(focusClasses).toContain('focus-visible:ring-2');
-    });
-
-    it('should ensure touch targets remain accessible with rounded corners', () => {
-      // Test that rounded buttons maintain minimum touch target size
-      const buttonClasses = getBorderRadiusClasses({ elementType: 'input' });
-      expect(buttonClasses).toBe('rounded-md');
-
-      // Touch targets should be at least 44px for mobile accessibility
-      const touchTargetClasses = 'min-h-[44px] min-w-[44px]';
-      expect(touchTargetClasses).toContain('min-h-[44px]');
-      expect(touchTargetClasses).toContain('min-w-[44px]');
-    });
-  });
-
-  describe('Screen Reader Compatibility', () => {
-    it("should ensure border radius doesn't affect screen reader navigation", () => {
-      // Border radius should not interfere with screen reader functionality
-      const validClasses = [
-        'rounded-none',
-        'rounded-sm',
-        'rounded-md',
-        'rounded-lg',
-        'rounded-full',
-        'rounded-tl-[3rem]',
-        'rounded-br-[4rem]',
+  describe('Visual Accessibility', () => {
+    it('should maintain sufficient contrast ratios', () => {
+      // Test that border radius doesn't reduce contrast
+      const contrastTestCases = [
+        'rounded-lg bg-background text-foreground',
+        'rounded-md bg-card text-card-foreground',
+        'rounded-full bg-primary text-primary-foreground',
       ];
 
-      validClasses.forEach(className => {
+      contrastTestCases.forEach(className => {
+        expect(className).toMatch(/bg-/);
+        expect(className).toMatch(/text-/);
         expect(isValidBorderRadius(className)).toBe(true);
       });
     });
 
-    it('should maintain proper contrast ratios with border radius', () => {
-      // Test that border radius doesn't affect color contrast
-      const testCases = [
-        { background: 'bg-white', text: 'text-charcoal', expected: 'good' },
-        { background: 'bg-charcoal', text: 'text-white', expected: 'good' },
-        { background: 'bg-blue-accent', text: 'text-white', expected: 'good' },
-        {
-          background: 'bg-gray-light',
-          text: 'text-charcoal',
-          expected: 'good',
-        },
+    it('should provide clear visual boundaries', () => {
+      // Test that border radius provides clear visual boundaries
+      const boundaryTestCases = [
+        'rounded-lg border-2 border-border',
+        'rounded-md border border-border',
+        'rounded-full border-2 border-primary',
       ];
 
-      testCases.forEach(({ background, text, expected }) => {
-        // In a real implementation, you would test actual contrast ratios
-        // For now, we're testing that the classes are valid
-        expect(background).toMatch(/^bg-/);
-        expect(text).toMatch(/^text-/);
+      boundaryTestCases.forEach(className => {
+        expect(className).toMatch(/border/);
+        expect(isValidBorderRadius(className)).toBe(true);
       });
     });
-  });
 
-  describe('High Contrast Mode', () => {
-    it('should work properly in high contrast mode', () => {
-      // Border radius should not break in high contrast mode
+    it('should work with high contrast mode', () => {
+      // Test that border radius works in high contrast mode
       const highContrastClasses = [
-        'rounded-lg border-2 border-black',
-        'rounded-md border-2 border-white',
-        'rounded-full border-2 border-black',
+        'rounded-lg bg-background border-2 border-foreground',
+        'rounded-md bg-card border border-card-foreground',
+        'rounded-full bg-primary border-2 border-primary-foreground',
       ];
 
       highContrastClasses.forEach(className => {
+        expect(className).toMatch(/border-/);
         expect(isValidBorderRadius(className)).toBe(true);
       });
     });
+  });
 
-    it('should maintain focus visibility in high contrast mode', () => {
-      // Focus rings should be visible in high contrast mode
-      const highContrastFocusClasses = [
-        'focus-visible:ring-2 focus-visible:ring-black',
-        'focus-visible:ring-2 focus-visible:ring-white',
-        'focus-visible:outline-2 focus-visible:outline-black',
+  describe('Focus Management', () => {
+    it('should maintain visible focus indicators', () => {
+      // Test that border radius doesn't interfere with focus indicators
+      const focusClasses = [
+        'rounded-lg focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-md focus-visible:outline-2 focus-visible:outline-ring',
+        'rounded-full focus-visible:ring-2 focus-visible:ring-ring',
       ];
 
-      highContrastFocusClasses.forEach(className => {
+      focusClasses.forEach(className => {
+        expect(className).toContain('focus-visible:');
+      });
+    });
+
+    it('should work with keyboard navigation', () => {
+      // Test that border radius works with keyboard navigation
+      const keyboardClasses = [
+        'rounded-lg focus-visible:ring-2',
+        'rounded-md focus-visible:outline-2',
+        'rounded-full focus-visible:ring-2',
+      ];
+
+      keyboardClasses.forEach(className => {
         expect(className).toContain('focus-visible:');
       });
     });
   });
 
-  describe('Keyboard Navigation', () => {
-    it('should maintain keyboard navigation with border radius', () => {
-      // Test that tab order and keyboard navigation work with border radius
-      const keyboardNavigationClasses = [
-        'focus-visible:ring-2 focus-visible:ring-blue-accent',
-        'focus-visible:outline-none',
-        'tabindex="0"',
+  describe('Screen Reader Compatibility', () => {
+    it('should not interfere with screen reader announcements', () => {
+      // Test that border radius doesn't affect screen reader functionality
+      const screenReaderClasses = [
+        'rounded-lg aria-label="Button"',
+        'rounded-md role="button"',
+        'rounded-full aria-describedby="description"',
       ];
 
-      keyboardNavigationClasses.forEach(className => {
-        if (className.includes('focus-visible:')) {
-          expect(className).toContain('focus-visible:');
-        }
+      screenReaderClasses.forEach(className => {
+        expect(className).toMatch(/aria-|role=/);
+        expect(isValidBorderRadius(className)).toBe(true);
       });
     });
 
-    it('should ensure proper tab order with rounded elements', () => {
-      // Elements with border radius should maintain proper tab order
-      const tabOrderClasses = [
-        'rounded-md tabindex="0"',
-        'rounded-lg tabindex="0"',
-        'rounded-full tabindex="0"',
+    it('should maintain semantic meaning', () => {
+      // Test that border radius doesn't change semantic meaning
+      const semanticClasses = [
+        { element: 'button', className: 'rounded-lg', semantic: 'button' },
+        { element: 'input', className: 'rounded-md', semantic: 'textbox' },
+        { element: 'card', className: 'rounded-lg', semantic: 'region' },
       ];
 
-      tabOrderClasses.forEach(className => {
-        expect(className).toContain('tabindex="0"');
+      semanticClasses.forEach(({ className, semantic }) => {
         expect(isValidBorderRadius(className)).toBe(true);
+        expect(semantic).toBeDefined();
       });
     });
   });
@@ -139,9 +115,9 @@ describe('Border Radius Accessibility', () => {
     it('should not rely solely on color for information', () => {
       // Border radius should not be the only way to convey information
       const accessibilityClasses = [
-        'rounded-lg border-2 border-blue-accent', // Visual + color
-        'rounded-md border-2 border-gray-medium', // Visual + color
-        'rounded-full bg-blue-accent text-white', // Color + text
+        'rounded-lg border-2 border-border', // Visual + color
+        'rounded-md border-2 border-border', // Visual + color
+        'rounded-full bg-primary text-primary-foreground', // Color + text
       ];
 
       accessibilityClasses.forEach(className => {
@@ -153,9 +129,13 @@ describe('Border Radius Accessibility', () => {
     it('should maintain sufficient contrast for color blind users', () => {
       // Test contrast ratios for color blind accessibility
       const contrastTestCases = [
-        { background: 'bg-white', text: 'text-charcoal', ratio: 'high' },
-        { background: 'bg-charcoal', text: 'text-white', ratio: 'high' },
-        { background: 'bg-blue-accent', text: 'text-white', ratio: 'high' },
+        { background: 'bg-background', text: 'text-foreground', ratio: 'high' },
+        { background: 'bg-card', text: 'text-card-foreground', ratio: 'high' },
+        {
+          background: 'bg-primary',
+          text: 'text-primary-foreground',
+          ratio: 'high',
+        },
       ];
 
       contrastTestCases.forEach(({ background, text, ratio }) => {
@@ -176,9 +156,8 @@ describe('Border Radius Accessibility', () => {
       ];
 
       reducedMotionClasses.forEach(className => {
-        if (className.includes('transition-')) {
-          expect(className).toMatch(/duration-\d+/);
-        }
+        expect(className).toMatch(/transition-/);
+        expect(className).toMatch(/duration-\d+/);
       });
     });
 

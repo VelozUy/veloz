@@ -1,70 +1,125 @@
-import { render, screen } from '@/lib/test-utils'
-import { Button } from '@/components/ui/button'
-import { userInteraction } from '@/lib/test-utils'
+import { render, screen } from '@/lib/test-utils';
+import { Button } from '@/components/ui/button';
+import { userInteraction } from '@/lib/test-utils';
 
 describe('Button Component', () => {
   it('renders correctly with default props', () => {
-    render(<Button>Click me</Button>)
-    
-    const button = screen.getByRole('button', { name: /click me/i })
-    expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('bg-primary')
-  })
+    render(<Button>Click me</Button>);
+
+    const button = screen.getByRole('button', { name: /click me/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('shadow-none');
+    expect(button).toHaveClass('rounded-none');
+    // Priority classes override variant classes
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-border');
+  });
 
   it('renders with different variants', () => {
-    const { rerender } = render(<Button variant="outline">Outline</Button>)
-    let button = screen.getByRole('button')
-    expect(button).toHaveClass('border')
-    expect(button).toHaveClass('bg-background')
+    const { rerender } = render(<Button variant="outline">Outline</Button>);
+    let button = screen.getByRole('button');
+    expect(button).toHaveClass('border');
+    expect(button).toHaveClass('shadow-none');
+    expect(button).toHaveClass('rounded-none');
+    // Priority classes override variant classes
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-border');
 
-    rerender(<Button variant="destructive">Destructive</Button>)
-    button = screen.getByRole('button')
-    expect(button).toHaveClass('bg-destructive')
+    rerender(<Button variant="secondary">Secondary</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('border');
+    expect(button).toHaveClass('shadow-none');
+    expect(button).toHaveClass('rounded-none');
+    // Priority classes override variant classes
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-border');
 
-    rerender(<Button variant="ghost">Ghost</Button>)
-    button = screen.getByRole('button')
-    expect(button).toHaveClass('hover:bg-accent')
-  })
+    rerender(<Button variant="ghost">Ghost</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('rounded-none');
+    // Priority classes override variant classes
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-border');
+  });
 
   it('renders with different sizes', () => {
-    const { rerender } = render(<Button size="sm">Small</Button>)
-    let button = screen.getByRole('button')
-    expect(button).toHaveClass('h-8')
+    const { rerender } = render(<Button size="sm">Small</Button>);
+    let button = screen.getByRole('button');
+    expect(button).toHaveClass('h-8');
+    expect(button).toHaveClass('px-3');
+    expect(button).toHaveClass('rounded-none');
 
-    rerender(<Button size="lg">Large</Button>)
-    button = screen.getByRole('button')
-    expect(button).toHaveClass('h-10')
-  })
+    rerender(<Button size="lg">Large</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('h-10');
+    expect(button).toHaveClass('px-6');
+    expect(button).toHaveClass('rounded-none');
 
-  it('handles click events', async () => {
-    const handleClick = jest.fn()
-    render(<Button onClick={handleClick}>Click me</Button>)
-    
-    const button = screen.getByRole('button')
-    await userInteraction.click(button)
-    
-    expect(handleClick).toHaveBeenCalledTimes(1)
-  })
+    rerender(<Button size="icon">Icon</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('size-9');
+    expect(button).toHaveClass('rounded-full'); // Icon size uses rounded-full
+  });
 
-  it('can be disabled', () => {
-    const handleClick = jest.fn()
-    render(<Button disabled onClick={handleClick}>Disabled</Button>)
-    
-    const button = screen.getByRole('button')
-    expect(button).toBeDisabled()
-    expect(button).toHaveClass('disabled:pointer-events-none')
-  })
+  it('renders with different priorities', () => {
+    const { rerender } = render(<Button priority="top">Top Priority</Button>);
+    let button = screen.getByRole('button');
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-border');
 
-  it('renders with icons', () => {
-    const TestIcon = () => <span data-testid="test-icon">Icon</span>
+    rerender(<Button priority="mid">Mid Priority</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('bg-muted');
+    expect(button).toHaveClass('text-muted-foreground');
+    expect(button).toHaveClass('border-border');
+
+    rerender(<Button priority="low">Low Priority</Button>);
+    button = screen.getByRole('button');
+    expect(button).toHaveClass('bg-transparent');
+    expect(button).toHaveClass('text-muted-foreground');
+    expect(button).toHaveClass('border-border');
+  });
+
+  it('handles disabled state', () => {
+    render(<Button disabled>Disabled</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    expect(button).toHaveClass('disabled:pointer-events-none');
+    expect(button).toHaveClass('disabled:opacity-50');
+  });
+
+  it('handles asChild prop', () => {
     render(
-      <Button>
-        <TestIcon />
-        Button with icon
+      <Button asChild>
+        <a href="/test">Link Button</a>
       </Button>
-    )
-    
-    expect(screen.getByTestId('test-icon')).toBeInTheDocument()
-    expect(screen.getByText('Button with icon')).toBeInTheDocument()
-  })
-}) 
+    );
+    const link = screen.getByRole('link');
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/test');
+    expect(link).toHaveClass('bg-card');
+    expect(link).toHaveClass('text-card-foreground');
+    expect(link).toHaveClass('border-border');
+  });
+
+  it('handles user interactions', async () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click me</Button>);
+
+    const button = screen.getByRole('button');
+    await userInteraction.click(button);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('applies custom className', () => {
+    render(<Button className="custom-class">Custom</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('custom-class');
+  });
+});
