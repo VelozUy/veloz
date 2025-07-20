@@ -61,6 +61,14 @@ The theme system uses CSS custom properties organized into logical groups. This 
   --background: oklch(0.9551 0 0);
   --foreground: oklch(0.3211 0 0);
 
+  /* Card colors */
+  --card: oklch(0.9702 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+
+  /* Popover colors */
+  --popover: oklch(0.9702 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+
   /* Primary colors */
   --primary: oklch(0.3633 0.2269 264.3283);
   --primary-foreground: oklch(1 0 0);
@@ -88,8 +96,54 @@ The theme system uses CSS custom properties organized into logical groups. This 
   /* Ring colors */
   --ring: oklch(0.4891 0 0);
 
+  /* Chart colors */
+  --chart-1: oklch(0.4891 0 0);
+  --chart-2: oklch(0.4863 0.0361 196.0278);
+  --chart-3: oklch(0.6534 0 0);
+  --chart-4: oklch(0.7316 0 0);
+  --chart-5: oklch(0.8078 0 0);
+
+  /* Sidebar colors */
+  --sidebar: oklch(0.937 0 0);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.4891 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.8078 0 0);
+  --sidebar-accent-foreground: oklch(0.3211 0 0);
+  --sidebar-border: oklch(0.8576 0 0);
+  --sidebar-ring: oklch(0.4891 0 0);
+
+  /* Typography */
+  --font-sans: Roboto, sans-serif;
+  --font-serif: Roboto, sans-serif;
+  --font-mono: Roboto, sans-serif;
+
   /* Radius */
   --radius: 0rem;
+
+  /* Shadows */
+  --shadow-2xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
+  --shadow-xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
+  --shadow-sm:
+    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
+    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+  --shadow:
+    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
+    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+  --shadow-md:
+    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
+    0px 2px 4px -1px hsl(0 0% 20% / 0.15);
+  --shadow-lg:
+    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
+    0px 4px 6px -1px hsl(0 0% 20% / 0.15);
+  --shadow-xl:
+    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
+    0px 8px 10px -1px hsl(0 0% 20% / 0.15);
+  --shadow-2xl: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.38);
+
+  /* Spacing */
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
 }
 ```
 
@@ -107,6 +161,21 @@ The theme uses OKLCH color space for:
 - **Modern support**: Future-proof color system
 
 ### Color Categories
+
+#### Background Colors
+
+- **Background**: Main application background
+- **Foreground**: Primary text color
+
+#### Card Colors
+
+- **Card**: Card component backgrounds
+- **Card Foreground**: Text on card backgrounds
+
+#### Popover Colors
+
+- **Popover**: Popover component backgrounds
+- **Popover Foreground**: Text on popover backgrounds
 
 #### Primary Colors
 
@@ -132,6 +201,31 @@ The theme uses OKLCH color space for:
 
 - **Destructive**: Error states and dangerous actions
 - **Destructive Foreground**: Text on destructive backgrounds
+
+#### Border Colors
+
+- **Border**: Standard border color
+- **Input**: Input field borders
+
+#### Ring Colors
+
+- **Ring**: Focus ring color for accessibility
+
+#### Chart Colors
+
+- **Chart-1 through Chart-5**: Data visualization colors
+- Used for charts, graphs, and data displays
+
+#### Sidebar Colors
+
+- **Sidebar**: Sidebar background color
+- **Sidebar Foreground**: Text on sidebar backgrounds
+- **Sidebar Primary**: Primary actions in sidebar
+- **Sidebar Primary Foreground**: Text on sidebar primary backgrounds
+- **Sidebar Accent**: Accent elements in sidebar
+- **Sidebar Accent Foreground**: Text on sidebar accent backgrounds
+- **Sidebar Border**: Sidebar border color
+- **Sidebar Ring**: Sidebar focus ring color
 
 ### Single Theme System
 
