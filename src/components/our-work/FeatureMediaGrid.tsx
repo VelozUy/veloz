@@ -150,7 +150,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   className="aspect-ratio-container"
                   style={
                     {
-                      '--aspect-ratio': mediaItem.cssAspectRatio,
+                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
                     } as React.CSSProperties
                   }
                 >
@@ -172,7 +172,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   className="aspect-ratio-container"
                   style={
                     {
-                      '--aspect-ratio': mediaItem.cssAspectRatio,
+                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
                     } as React.CSSProperties
                   }
                 >
