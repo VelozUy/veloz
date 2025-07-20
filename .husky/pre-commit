@@ -4,7 +4,7 @@
 # Run lint-staged for formatting and linting
 npx lint-staged
 
-# Run theme consistency check (temporarily disabled for Phase 4 commit)
+# Run theme consistency check (temporarily disabled for commit)
 # echo "🔍 Checking theme consistency..."
 # npm run theme:check
 
