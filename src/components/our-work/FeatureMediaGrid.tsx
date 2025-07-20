@@ -81,10 +81,28 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   const processedMedia = useMemo(() => {
     return media.map((mediaItem, index) => {
       // Calculate aspect ratio for responsive sizing
-      const aspectRatio =
-        mediaItem.width && mediaItem.height
-          ? mediaItem.width / mediaItem.height
-          : 1;
+      let aspectRatio = 1;
+      let cssAspectRatio = 100; // Default to square (1:1)
+
+      if (mediaItem.width && mediaItem.height) {
+        // Use actual dimensions if available
+        aspectRatio = mediaItem.width / mediaItem.height;
+        cssAspectRatio = (mediaItem.height / mediaItem.width) * 100;
+      } else if (mediaItem.aspectRatio) {
+        // Use aspectRatio string from database if width/height not available
+        const ratioMap = {
+          '1:1': { aspectRatio: 1, cssAspectRatio: 100 },
+          '16:9': { aspectRatio: 16/9, cssAspectRatio: (9/16) * 100 },
+          '9:16': { aspectRatio: 9/16, cssAspectRatio: (16/9) * 100 },
+          '4:5': { aspectRatio: 4/5, cssAspectRatio: (5/4) * 100 },
+        };
+        
+        const ratio = ratioMap[mediaItem.aspectRatio as keyof typeof ratioMap];
+        if (ratio) {
+          aspectRatio = ratio.aspectRatio;
+          cssAspectRatio = ratio.cssAspectRatio;
+        }
+      }
 
       // Determine grid span based on aspect ratio
       let gridSpan = 'col-span-1';
@@ -95,12 +113,6 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
         // Tall images can span 2 rows (handled by CSS grid)
         gridSpan = 'col-span-1 row-span-2';
       }
-
-      // Calculate CSS aspect ratio for padding-bottom
-      const cssAspectRatio =
-        mediaItem.width && mediaItem.height
-          ? (mediaItem.height / mediaItem.width) * 100
-          : 100; // Default to square (1:1)
 
       return {
         ...mediaItem,

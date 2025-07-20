@@ -17,6 +17,7 @@ interface Project {
     width?: number;
     height?: number;
     featured?: boolean;
+    aspectRatio?: '1:1' | '16:9' | '9:16' | '4:5';
   }>;
 }
 
@@ -76,17 +77,24 @@ export default function OurWorkClient({
       const media = projectsInCategory.flatMap((project: Project) =>
         (project.media || [])
           .filter(m => m.featured)
-          .map(m => ({
-            id: m.id,
-            projectId: project.id,
-            projectTitle: project.title,
-            type: m.type,
-            url: m.url,
-            width: m.width || 800,
-            height: m.height || 600,
-            alt: `${project.title} - ${m.type}`,
-            featured: m.featured || false,
-          }))
+          .map(m => {
+            // Use actual dimensions if available, otherwise use better defaults
+            const width = m.width || 1200;
+            const height = m.height || 800;
+            
+            return {
+              id: m.id,
+              projectId: project.id,
+              projectTitle: project.title,
+              type: m.type,
+              url: m.url,
+              width,
+              height,
+              aspectRatio: m.aspectRatio,
+              alt: `${project.title} - ${m.type}`,
+              featured: m.featured || false,
+            };
+          })
       );
 
       return {
