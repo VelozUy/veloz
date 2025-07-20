@@ -191,14 +191,6 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   />
                 </div>
               )}
-              {/* Project title overlay on hover */}
-              <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
-                <div className="text-primary-foreground text-center">
-                  <h4 className="text-sm font-medium truncate">
-                    {mediaItem.projectTitle}
-                  </h4>
-                </div>
-              </div>
             </div>
           );
         })}
