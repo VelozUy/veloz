@@ -88,17 +88,24 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
       // Determine grid span based on aspect ratio
       let gridSpan = 'col-span-1';
-      if (aspectRatio > 1.5) {
+      if (aspectRatio > 1.3) {
         // Wide images span 2 columns on larger screens
         gridSpan = 'col-span-1 md:col-span-2';
-      } else if (aspectRatio < 0.7) {
+      } else if (aspectRatio < 0.8) {
         // Tall images can span 2 rows (handled by CSS grid)
         gridSpan = 'col-span-1 row-span-2';
       }
 
+      // Calculate CSS aspect ratio for padding-bottom
+      const cssAspectRatio =
+        mediaItem.width && mediaItem.height
+          ? (mediaItem.height / mediaItem.width) * 100
+          : 100; // Default to square (1:1)
+
       return {
         ...mediaItem,
         gridSpan,
+        cssAspectRatio,
         animationDelay: index * 0.1,
       };
     });
@@ -119,7 +126,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
   return (
     <div className={`gallery-container ${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 auto-rows-auto">
         {processedMedia.map((mediaItem, index) => {
           return (
             <div
@@ -131,7 +138,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   className="aspect-ratio-container"
                   style={
                     {
-                      '--aspect-ratio': `${(mediaItem.height / mediaItem.width) * 100}%`,
+                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
                     } as React.CSSProperties
                   }
                 >
@@ -153,7 +160,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   className="aspect-ratio-container"
                   style={
                     {
-                      '--aspect-ratio': `${(mediaItem.height / mediaItem.width) * 100}%`,
+                      '--aspect-ratio': `${mediaItem.cssAspectRatio}%`,
                     } as React.CSSProperties
                   }
                 >
