@@ -26,7 +26,7 @@ describe('Theme Performance Tests', () => {
   test('should generate performance report', () => {
     const report = generateThemePerformanceReport();
 
-    expect(report).toContain('Theme Performance Report for NEW_THEME_2.css');
+    expect(report).toContain('Theme Performance Report for Veloz Theme');
     expect(report).toContain('Bundle Size Analysis');
     expect(report).toContain('Optimization Opportunities');
     expect(report).toContain('Performance Recommendations');

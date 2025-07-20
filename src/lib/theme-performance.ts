@@ -2,7 +2,7 @@
  * Theme Performance Optimization Utilities
  *
  * This module provides utilities to analyze and optimize the performance
- * of the NEW_THEME_2.css theme system.
+ * of the Veloz theme system.
  */
 
 /**
@@ -49,7 +49,7 @@ export function analyzeThemePerformance(): {
 export function generateThemePerformanceReport(): string {
   const analysis = analyzeThemePerformance();
 
-  let report = `# Theme Performance Report for NEW_THEME_2.css\n\n`;
+  let report = `# Theme Performance Report for Veloz Theme\n\n`;
   report += `## Bundle Size Analysis\n`;
   report += `- CSS Variables: ${analysis.cssVariables}\n`;
   report += `- Color Definitions: ${analysis.colorDefinitions}\n`;

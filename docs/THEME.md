@@ -1,0 +1,564 @@
+# 🎨 Veloz Theme System
+
+_Last updated: 2025-01-20_
+
+---
+
+## 📋 Table of Contents
+
+1. [Overview](#overview)
+2. [Theme Architecture](#theme-architecture)
+3. [Color System](#color-system)
+4. [Typography](#typography)
+5. [Usage Guidelines](#usage-guidelines)
+6. [Component Examples](#component-examples)
+7. [Accessibility](#accessibility)
+8. [Best Practices](#best-practices)
+9. [Migration Guide](#migration-guide)
+10. [Testing](#testing)
+
+---
+
+## 🎯 Overview
+
+The Veloz theme system is built on a **single, definitive OKLCH-based color system** that provides precise color accuracy, excellent accessibility, and consistent visual hierarchy across the entire application. This is the **only theme** the application should use - no dark mode toggle, no custom overrides, no font color modifications.
+
+### Key Principles
+
+- **Single Theme**: One definitive theme system for the entire application
+- **OKLCH Color Space**: Modern color system for superior accuracy and accessibility
+- **Light Mode Default**: Application uses light theme by default
+- **Semantic Naming**: All colors use semantic names rather than literal color values
+- **Zero Border Radius**: Modern flat design with `--radius: 0rem`
+- **Performance Optimized**: Efficient CSS bundle
+- **Accessibility First**: WCAG AA compliance built-in
+- **No Custom Overrides**: No dark mode toggle or custom font colors
+
+---
+
+## 🏗️ Theme Architecture
+
+### Core Files
+
+```
+src/
+├── app/
+│   └── globals.css              # Theme CSS variables (OKLCH)
+├── lib/
+│   ├── theme-utils.ts           # Theme utilities and hooks
+│   └── theme-consistency-checker.ts  # Theme validation
+└── components/
+    └── ui/                      # shadcn/ui components
+```
+
+### Theme Structure
+
+The theme system uses CSS custom properties organized into logical groups. This is the **definitive theme** - the only one the application should use:
+
+```css
+:root {
+  /* Background colors */
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.3211 0 0);
+
+  /* Primary colors */
+  --primary: oklch(0.3633 0.2269 264.3283);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary colors */
+  --secondary: oklch(0.9067 0 0);
+  --secondary-foreground: oklch(0.3211 0 0);
+
+  /* Muted colors */
+  --muted: oklch(0.8853 0 0);
+  --muted-foreground: oklch(0.5103 0 0);
+
+  /* Accent colors */
+  --accent: oklch(0.8078 0 0);
+  --accent-foreground: oklch(0.3211 0 0);
+
+  /* Destructive colors */
+  --destructive: oklch(0.5594 0.19 25.8625);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Border colors */
+  --border: oklch(0.8576 0 0);
+  --input: oklch(0.9067 0 0);
+
+  /* Ring colors */
+  --ring: oklch(0.4891 0 0);
+
+  /* Radius */
+  --radius: 0rem;
+}
+```
+
+---
+
+## 🎨 Color System
+
+### OKLCH Color Space
+
+The theme uses OKLCH color space for:
+
+- **Precise color control**: Better color accuracy than RGB/HSL
+- **Accessibility**: Easier to maintain contrast ratios
+- **Consistency**: Predictable color relationships
+- **Modern support**: Future-proof color system
+
+### Color Categories
+
+#### Primary Colors
+
+- **Primary**: Main brand color for CTAs and important actions
+- **Primary Foreground**: Text on primary backgrounds
+
+#### Secondary Colors
+
+- **Secondary**: Supporting UI elements
+- **Secondary Foreground**: Text on secondary backgrounds
+
+#### Muted Colors
+
+- **Muted**: Subtle backgrounds and borders
+- **Muted Foreground**: Less prominent text
+
+#### Accent Colors
+
+- **Accent**: Highlighting and focus states
+- **Accent Foreground**: Text on accent backgrounds
+
+#### Destructive Colors
+
+- **Destructive**: Error states and dangerous actions
+- **Destructive Foreground**: Text on destructive backgrounds
+
+### Single Theme System
+
+**CRITICAL**: This is the **only theme** the application should use. There is no dark mode toggle, no theme switching, and no custom color overrides.
+
+The application uses the light theme by default:
+
+```css
+:root {
+  /* This is the definitive theme - no overrides allowed */
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.3633 0.2269 264.3283);
+  --primary-foreground: oklch(1 0 0);
+  /* ... all other theme variables */
+}
+```
+
+**No Dark Mode**: The `.dark` class should not be used. The application only uses the light theme.
+
+---
+
+## 🔤 Typography
+
+### Font System
+
+The Veloz brand uses a carefully selected typography system:
+
+#### REDJOLA Font (Display)
+
+- **Usage**: Only for the Veloz logo/brand title
+- **Weight**: Normal only (never bold - per user preference)
+- **Loading**: Optimized with `font-display: swap`
+
+```css
+@font-face {
+  font-family: 'REDJOLA';
+  src: url('/redjola/REDJOLA Free Trial.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+#### Roboto Font (Body)
+
+- **Usage**: All other text throughout the application
+- **Weights**: 400 (normal), 500 (medium), 700 (bold)
+- **Loading**: Google Fonts with optimized loading
+
+### Typography Classes
+
+```css
+/* Display text (REDJOLA) - Never bold */
+.text-display-xl {
+  @apply font-display text-5xl font-normal text-white;
+}
+
+.text-display-lg {
+  @apply font-display text-4xl font-normal text-white;
+}
+
+/* Body text (Roboto) */
+.text-body-xl {
+  @apply font-body text-xl font-medium text-white;
+}
+
+.text-body-lg {
+  @apply font-body text-lg font-medium text-white;
+}
+
+.text-body-md {
+  @apply font-body text-base font-normal text-white;
+}
+```
+
+---
+
+## 📖 Usage Guidelines
+
+### 1. Always Use Theme Variables
+
+✅ **Correct**
+
+```tsx
+<div className="bg-background text-foreground">
+  <button className="bg-primary text-primary-foreground">Click me</button>
+</div>
+```
+
+❌ **Incorrect**
+
+```tsx
+<div className="bg-white text-black">
+  <button className="bg-blue-500 text-white">Click me</button>
+</div>
+```
+
+### 2. Use Semantic Color Names
+
+✅ **Correct**
+
+```tsx
+// Use semantic names
+<button className="bg-primary text-primary-foreground">
+  Primary Action
+</button>
+
+<button className="bg-secondary text-secondary-foreground">
+  Secondary Action
+</button>
+
+<button className="bg-destructive text-destructive-foreground">
+  Delete
+</button>
+```
+
+❌ **Incorrect**
+
+```tsx
+// Don't use specific color names
+<button className="bg-blue-500 text-white">Primary Action</button>
+```
+
+### 3. Maintain Contrast Ratios
+
+Always ensure sufficient contrast between text and background:
+
+```tsx
+// High contrast for important text
+<h1 className="text-foreground">Main Heading</h1>
+
+// Lower contrast for secondary text
+<p className="text-muted-foreground">Secondary information</p>
+```
+
+### 4. Use Zero Border Radius
+
+The theme uses zero border radius for modern flat design:
+
+```tsx
+// All components use zero border radius
+<div className="rounded-none border border-border bg-card">
+  <button className="rounded-none bg-primary text-primary-foreground">
+    Action
+  </button>
+</div>
+```
+
+---
+
+## 🧩 Component Examples
+
+### Button Components
+
+```tsx
+// Primary Button
+<Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+  Primary Action
+</Button>
+
+// Secondary Button
+<Button variant="secondary" className="bg-secondary text-secondary-foreground">
+  Secondary Action
+</Button>
+
+// Destructive Button
+<Button variant="destructive" className="bg-destructive text-destructive-foreground">
+  Delete Item
+</Button>
+
+// Ghost Button
+<Button variant="ghost" className="text-foreground hover:bg-accent">
+  Ghost Action
+</Button>
+```
+
+### Card Components
+
+```tsx
+<Card className="bg-card text-card-foreground border border-border">
+  <CardHeader>
+    <CardTitle className="text-foreground">Card Title</CardTitle>
+    <CardDescription className="text-muted-foreground">
+      Card description
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p className="text-foreground">Card content</p>
+  </CardContent>
+</Card>
+```
+
+### Input Components
+
+```tsx
+<Input
+  className="bg-input text-foreground border-border focus:ring-ring"
+  placeholder="Enter text..."
+/>
+```
+
+### Navigation Components
+
+```tsx
+<nav className="bg-background border-b border-border">
+  <div className="flex items-center space-x-4">
+    <a href="/" className="text-foreground hover:text-primary">
+      Home
+    </a>
+    <a href="/about" className="text-muted-foreground hover:text-foreground">
+      About
+    </a>
+  </div>
+</nav>
+```
+
+---
+
+## ♿ Accessibility
+
+### Contrast Ratios
+
+All color combinations meet WCAG AA standards:
+
+- **Normal text**: 4.5:1 minimum contrast ratio
+- **Large text**: 3:1 minimum contrast ratio
+
+### Focus States
+
+```css
+/* Focus ring uses theme ring color */
+.focus-visible:ring-2.focus-visible:ring-ring.focus-visible:ring-offset-2
+```
+
+### Color Blindness Support
+
+The OKLCH color space provides better support for color blindness:
+
+- High contrast ratios maintained
+- Semantic meaning not dependent on color alone
+- Clear visual hierarchy
+
+### Screen Reader Support
+
+- Semantic HTML structure maintained
+- ARIA labels provided where necessary
+- Color information not conveyed through color alone
+
+---
+
+## 🛠️ Best Practices
+
+### 1. Component Theming
+
+```tsx
+// Create themed components
+const ThemedButton = ({ variant = 'primary', children, ...props }) => {
+  const variants = {
+    primary: 'bg-primary text-primary-foreground',
+    secondary: 'bg-secondary text-secondary-foreground',
+    destructive: 'bg-destructive text-destructive-foreground',
+  };
+
+  return (
+    <button
+      className={cn(variants[variant], 'rounded-none px-4 py-2')}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+```
+
+### 2. Single Theme Usage
+
+```tsx
+// The application uses a single theme - no theme switching
+const MyComponent = () => {
+  return (
+    <div className="bg-background text-foreground">
+      <p>This component uses the definitive theme</p>
+    </div>
+  );
+};
+```
+
+### 3. Responsive Design
+
+```tsx
+// Use theme colors in responsive designs
+<div className="bg-background text-foreground md:bg-card md:text-card-foreground">
+  <h1 className="text-2xl md:text-4xl font-display">Title</h1>
+  <p className="text-muted-foreground">Content</p>
+</div>
+```
+
+### 4. Animation Integration
+
+```tsx
+// Use theme colors in animations
+<div className="bg-background hover:bg-accent transition-colors duration-200">
+  <span className="text-foreground">Hover me</span>
+</div>
+```
+
+---
+
+## 🔄 Migration Guide
+
+### From Hardcoded Colors
+
+**Before:**
+
+```tsx
+<div className="bg-blue-600 text-white border-gray-200">
+  <button className="bg-green-500 hover:bg-green-600">Save</button>
+</div>
+```
+
+**After:**
+
+```tsx
+<div className="bg-primary text-primary-foreground border-border">
+  <button className="bg-primary hover:bg-primary/90">Save</button>
+</div>
+```
+
+### Common Mappings
+
+| Old Class         | New Class               | Usage             |
+| ----------------- | ----------------------- | ----------------- |
+| `bg-white`        | `bg-background`         | Main background   |
+| `text-black`      | `text-foreground`       | Main text         |
+| `bg-blue-600`     | `bg-primary`            | Primary actions   |
+| `text-blue-600`   | `text-primary`          | Primary text      |
+| `bg-gray-100`     | `bg-muted`              | Muted backgrounds |
+| `text-gray-600`   | `text-muted-foreground` | Muted text        |
+| `border-gray-200` | `border-border`         | Borders           |
+
+### From Rounded Components
+
+**Before:**
+
+```tsx
+<div className="rounded-lg bg-white shadow-md">
+  <button className="rounded-md bg-blue-500">Action</button>
+</div>
+```
+
+**After:**
+
+```tsx
+<div className="rounded-none bg-card border border-border">
+  <button className="rounded-none bg-primary text-primary-foreground">
+    Action
+  </button>
+</div>
+```
+
+---
+
+## 🧪 Testing
+
+### Theme Consistency Testing
+
+```bash
+npm run theme:check
+```
+
+- Scans all component files for hardcoded colors
+- Ensures consistent use of theme variables
+- Provides detailed reports and recommendations
+
+### Accessibility Testing
+
+```bash
+npm run theme:accessibility
+```
+
+- Tests color combinations for WCAG AA compliance
+- Validates theme files for proper structure
+- Provides accessibility recommendations
+
+### Visual Testing
+
+1. **Single Theme**: Verify only the light theme is used
+2. **Component Rendering**: Verify all components display correctly
+3. **Responsive Design**: Test across all device sizes
+4. **Cross-browser**: Verify in all major browsers
+
+### Performance Testing
+
+1. **Bundle Size**: Ensure theme doesn't impact performance
+2. **Memory Usage**: Check for memory leaks
+3. **Rendering Performance**: Test with large component trees
+
+---
+
+## 📚 Resources
+
+### Documentation
+
+- [Theme System Guide](THEME_SYSTEM_GUIDE.md) - Detailed system guide
+- [Project Requirements](PRD.md) - Architecture and constraints
+- [Task Tracking](TASK.md) - Current theme-related tasks
+
+### Tools
+
+- [Theme Consistency Checker](../src/lib/theme-consistency-checker.ts)
+- [Accessibility Testing](../src/lib/accessibility-test.ts)
+- [Theme Performance](../src/lib/theme-performance.ts)
+
+### External Resources
+
+- [OKLCH Color Space](https://oklch.com/) - Color space documentation
+- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/) - Accessibility standards
+- [shadcn/ui](https://ui.shadcn.com/) - Component library documentation
+
+---
+
+## 📝 Notes
+
+- All theme information references the actual implementation in `src/app/globals.css`
+- The theme system is designed for the Veloz brand identity
+- REDJOLA font should never be used in bold (per user preference)
+- All components should use semantic color names
+- Zero border radius is intentional for modern flat design
+- Performance and accessibility are prioritized in all design decisions

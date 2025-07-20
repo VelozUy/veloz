@@ -29,7 +29,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 ### 🎨 Theme System & Color Consistency
 
-**CRITICAL RULE**: All components and pages MUST use the theme color system defined in `tailwind.config.ts` and `globals.css`.
+**CRITICAL RULE**: All components and pages MUST use the theme color system defined in `src/app/globals.css`.
 
 **NEVER use hard-coded Tailwind colors like:**
 
@@ -48,10 +48,15 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 **Benefits:**
 
-- Automatic light/dark mode support
+- Modern OKLCH color space for superior accuracy
+- Single light theme for consistent experience
 - Consistent brand colors across the entire application
 - Easy theme updates and maintenance
 - Better accessibility with proper contrast ratios
+- Zero border radius for modern flat design
+- No theme switching complexity
+
+**Theme Documentation**: See [docs/THEME.md](docs/THEME.md) for complete theme system guide.
 
 ## 🌍 Multilanguage Support ✅ COMPLETED
 

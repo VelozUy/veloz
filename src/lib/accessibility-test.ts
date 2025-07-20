@@ -1,5 +1,5 @@
 /**
- * Accessibility Testing Utilities for NEW_THEME_2.css
+ * Accessibility Testing Utilities for Veloz Theme
  *
  * This module provides utilities to test the accessibility of the new theme system,
  * ensuring it meets WCAG AA standards for contrast ratios and color combinations.
@@ -163,7 +163,7 @@ export function runAccessibilityTests(): {
 export function generateAccessibilityReport(): string {
   const { summary, results } = runAccessibilityTests();
 
-  let report = `# Accessibility Test Report for NEW_THEME_2.css\n\n`;
+  let report = `# Accessibility Test Report for Veloz Theme\n\n`;
   report += `## Summary\n`;
   report += `- Total combinations tested: ${summary.total}\n`;
   report += `- Passed: ${summary.passed}\n`;

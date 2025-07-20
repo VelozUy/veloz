@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Veloz application uses a modern, accessible theme system based on `NEW_THEME_2.css` with OKLCH color space for superior color accuracy and accessibility.
+The Veloz application uses a modern, accessible theme system with OKLCH color space for superior color accuracy and accessibility.
 
 ## Theme Architecture
 
@@ -19,7 +19,7 @@ The Veloz application uses a modern, accessible theme system based on `NEW_THEME
 ```
 src/app/globals.css          # Main theme definitions
 tailwind.config.ts           # Tailwind integration
-docs/NEW_THEME_2.css        # Theme specification
+docs/THEME.md               # Theme specification
 src/lib/accessibility-test.ts # Accessibility testing
 src/lib/theme-performance.ts # Performance optimization
 ```
@@ -290,7 +290,7 @@ npm test -- --testPathPatterns=theme-performance.test.ts
 
 ## References
 
-- [NEW_THEME_2.css](./NEW_THEME_2.css) - Complete theme specification
+- [THEME.md](./THEME.md) - Complete theme specification
 - [Accessibility Testing](./accessibility-test.ts) - WCAG compliance testing
 - [Performance Testing](./theme-performance.ts) - Performance optimization
 - [Tailwind Configuration](./tailwind.config.ts) - CSS framework integration

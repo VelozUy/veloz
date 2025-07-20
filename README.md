@@ -150,21 +150,23 @@ npm run type-check  # Run TypeScript checks
 ## 🎨 Styling & Theme System
 
 - **Tailwind CSS 4** for utility-first styling
-- **NEW_THEME_2.css** with OKLCH Color System for modern, accessible colors
+- **Modern OKLCH Color System** for superior accuracy and accessibility
 - **shadcn/ui** for consistent component design
 - **Framer Motion** for smooth animations
 - **Responsive Design** with mobile-first approach
 - **WCAG AA Compliant** with built-in accessibility testing
-- **Light/Dark Mode Support** with seamless theme switching
+- **Single Light Theme** - No dark mode toggle
 
 ### Theme System
 
 - **CSS Custom Properties**: All colors defined as semantic variables
 - **OKLCH Color Space**: Modern color space for superior accuracy
 - **Accessibility First**: WCAG AA compliance built-in
-- **Performance Optimized**: Minimal bundle impact with instant theme switching
+- **Performance Optimized**: Minimal bundle impact
+- **Zero Border Radius**: Modern flat design aesthetic
+- **Single Theme**: No dark mode toggle or custom overrides
 
-See [Theme System Guide](docs/THEME_SYSTEM_GUIDE.md) for detailed usage guidelines.
+See [Theme System Guide](docs/THEME.md) for detailed usage guidelines.
 
 ## 🔥 Firebase Setup
 

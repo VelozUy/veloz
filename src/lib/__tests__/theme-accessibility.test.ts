@@ -3,7 +3,7 @@ import {
   generateAccessibilityReport,
 } from '../accessibility-test';
 
-describe('NEW_THEME_2.css Accessibility Tests', () => {
+describe('Theme Accessibility Tests', () => {
   test('theme should meet WCAG AA standards', () => {
     const isAccessible = isThemeAccessible();
     expect(isAccessible).toBe(true);
@@ -11,7 +11,7 @@ describe('NEW_THEME_2.css Accessibility Tests', () => {
 
   test('should generate accessibility report', () => {
     const report = generateAccessibilityReport();
-    expect(report).toContain('Accessibility Test Report for NEW_THEME_2.css');
+    expect(report).toContain('Accessibility Test Report for Veloz Theme');
     expect(report).toContain('Summary');
     expect(report).toContain('Detailed Results');
   });

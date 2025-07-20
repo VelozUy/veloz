@@ -21,7 +21,9 @@ _Last updated: 2025-01-20_
 
 ## 🎯 Overview
 
-The Veloz theme system is built on a **single OKLCH-based color system** that provides precise color accuracy, excellent accessibility, and consistent visual hierarchy across the entire application. This guide covers everything you need to know about using the theme system effectively.
+The Veloz theme system is built on a **modern OKLCH-based color system** that provides precise color accuracy, excellent accessibility, and consistent visual hierarchy across the entire application. This guide covers everything you need to know about using the theme system effectively.
+
+**Note**: For the complete theme system documentation, see [docs/THEME.md](docs/THEME.md).
 
 ### Key Principles
 
