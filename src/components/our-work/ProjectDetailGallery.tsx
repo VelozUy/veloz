@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { EventCategory } from '@/constants/categories';
+import { EventCategory, getCategoryDisplayName } from '@/constants/categories';
 import { useHeroBackground } from '@/hooks/useBackground';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 
@@ -181,7 +181,9 @@ export default function ProjectDetailGallery({
             className="text-8xl md:text-9xl lg:text-[12rem] font-body tracking-tight text-right w-full text-foreground"
             id="project-title"
           >
-            {project.title}
+            {project.eventType
+              ? getCategoryDisplayName(project.eventType as EventCategory, 'es')
+              : project.title}
           </h1>
         </section>
       )}

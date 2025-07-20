@@ -36,6 +36,7 @@ export const useScrollNavigation = ({
 
     const scrollPosition = window.scrollY + scrollThreshold;
 
+    // Check all categories
     for (let i = categories.length - 1; i >= 0; i--) {
       const categoryId = categories[i];
       const element = document.getElementById(`category-${categoryId}`);
@@ -59,6 +60,7 @@ export const useScrollNavigation = ({
     setIsScrolling(true);
     setActiveCategory(categoryId);
 
+    // Scroll to specific category
     const element = document.getElementById(`category-${categoryId}`);
     if (element) {
       element.scrollIntoView({

@@ -1240,6 +1240,9 @@ function generateLocaleContent(
   aboutContent,
   crewMembers
 ) {
+  // Generate categories from project event types
+  const categories = generateCategories(projects);
+
   return {
     locale,
     translations: STATIC_TRANSLATIONS[locale],
@@ -1407,6 +1410,7 @@ function generateLocaleContent(
           order: faq.order,
         }))
         .filter(faq => faq.question && faq.answer),
+      categories: categories, // Add categories to the content
       projects: projects.map(project => {
         // Transform project data for static content
         const transformedProject = {
@@ -1453,6 +1457,51 @@ function generateLocaleContent(
     lastUpdated: new Date().toISOString(),
     buildTime: true,
   };
+}
+
+/**
+ * Generate categories from project event types
+ */
+function generateCategories(projects) {
+  // Get all unique event types from projects that have featured media
+  const eventTypesWithFeaturedMedia = new Set();
+
+  projects.forEach(project => {
+    if (project.eventType && project.media && project.media.length > 0) {
+      // Check if this project has any featured media
+      const hasFeaturedMedia = project.media.some(media => media.featured);
+      if (hasFeaturedMedia) {
+        eventTypesWithFeaturedMedia.add(project.eventType);
+      }
+    }
+  });
+
+  // Create categories from event types that have featured media
+  const categories = Array.from(eventTypesWithFeaturedMedia).map(eventType => ({
+    id: eventType
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, ''),
+    name: eventType,
+    label: eventType,
+    title: eventType,
+    description: `Proyectos de ${eventType.toLowerCase()}`,
+    eventTypes: [eventType], // Each category only includes its own event type
+  }));
+
+  // Always include overview category if there are any projects with featured media
+  if (categories.length > 0) {
+    categories.unshift({
+      id: 'overview',
+      name: 'Overview',
+      label: 'Vista General',
+      title: 'Overview',
+      description: 'Una selección de nuestros mejores trabajos.',
+      eventTypes: ['*'], // Matches all event types
+    });
+  }
+
+  return categories;
 }
 
 /**
@@ -1589,6 +1638,14 @@ export interface LocalizedContent {
       answer: string;
       category?: string;
       order: number;
+    }>;
+    categories: Array<{
+      id: string;
+      name: string;
+      label: string;
+      title: string;
+      description: string;
+      eventTypes: string[];
     }>;
     projects: Array<{
       id: string;

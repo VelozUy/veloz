@@ -912,7 +912,7 @@ export default function UnifiedProjectEditPage({
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
-                                  const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'}/our-work/${draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}`;
+                                  const url = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy'}/projects/${draftProject.slug || generateUniqueSlug(draftProject.title.es, [], draftProject.id)}`;
                                   navigator.clipboard.writeText(url);
                                 }}
                                 className="ml-2 flex-shrink-0"

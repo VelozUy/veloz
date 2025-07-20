@@ -324,7 +324,7 @@ describe('ProjectsDisplay', () => {
       const button = screen.getByRole('button');
       fireEvent.click(button);
 
-      expect(mockRouter.push).toHaveBeenCalledWith('/our-work/project-no-slug');
+      expect(mockRouter.push).toHaveBeenCalledWith('/projects/project-no-slug');
     });
   });
 

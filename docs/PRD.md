@@ -118,16 +118,43 @@ The web application's primary goal is to communicate Veloz's professionalism and
 [ Section: Methodology (Icons/Steps) ]
 [ Section: Our Values (Icon + Text Grid) ]
 
-### 3. **Our Work** (Gallery)
+### 3. **Our Work** (Gallery) ✅ **COMPLETED**
 
-- Filterable grid by event type:
-  - Weddings, Birthdays, Live Shows, Corporate, Cultural, Others
-- Photo gallery:
-  - Hosted on Cloudinary or Firebase Storage
-  - Admin-editable entries with caption, tags, etc.
-- Video embeds:
-  - Vimeo, YouTube, or Mux embeds
-  - Stored in CMS with metadata (title, description, language)
+- ✅ **Dynamic Category System**: Categories generated from project event types at build time
+- ✅ **Database-Driven Categories**: Categories automatically adapt to actual event types in database
+- ✅ **Featured Media Filtering**: Only categories with projects containing featured media are shown
+- ✅ **Category Navigation**: Horizontal editorial tabs with underline indicators
+- ✅ **Category Pages**: Dedicated `/our-work/categories/[category]` pages for each category
+- ✅ **Overview Page**: Shows featured media from all categories with proper sections
+- ✅ **Build-Time Generation**: Categories included in static JSON content for performance
+- ✅ **TypeScript Integration**: Auto-generated types for category system
+
+**Current Categories Generated**:
+
+- **Overview** - Shows all projects with featured media
+- **Photoshoot** - Projects with eventType "Photoshoot" and featured media
+- **Culturales y artísticos** - Projects with eventType "Culturales y artísticos" and featured media
+- **Casamiento** - Projects with eventType "Casamiento" and featured media
+
+**URL Structure**:
+
+- **Overview**: `/our-work` (shows featured media from all categories)
+- **Category Pages**: `/our-work/[category-slug]` (shows all media from category)
+- **Project Pages**: `/projects/[project-slug]` (individual project detail pages)
+
+**Technical Implementation**:
+
+- **Build Script**: `scripts/build-data.js` generates categories from project event types
+- **Static Content**: Categories included in `src/data/content-*.json` files
+- **Components**: `OurWorkClient`, `CategoryPageClient`, `CategoryNavigation`
+- **Routing**: Next.js 15 dynamic routes with Promise<params> compliance
+
+**Quality Control**:
+
+- Only event types with projects containing featured media become categories
+- Overview category only included if there are valid categories
+- Clean navigation without empty categories
+- Automatic adaptation to new event types in database
 
 #### 🖼️ Custom Lightbox Implementation
 
@@ -283,8 +310,8 @@ src/
 
 **URL Structure**:
 
-- **Primary**: `/our-work/[slug]` (e.g., `/our-work/boda-maria-y-juan`)
-- **Fallback**: `/our-work/[id]` (e.g., `/our-work/proj123`) for backward compatibility
+- **Primary**: `/projects/[slug]` (e.g., `/projects/boda-maria-y-juan`)
+- **Fallback**: `/projects/[id]` (e.g., `/projects/proj123`) for backward compatibility
 - **Redirects**: Old ID-based URLs redirect to slug-based URLs
 - **404 handling**: Proper 404 page for non-existent slugs
 

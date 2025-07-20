@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Category {
   id: string;
@@ -71,14 +71,19 @@ export default function CategoryNavigation({
     return (
       <div className={cn('w-full', className)}>
         <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-          <TabsList className="w-full justify-start bg-transparent border-b border-border rounded-none p-0 h-auto">
+          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto">
             {categories.map(category => (
-              <TabsTrigger
-                key={category.id}
-                value={category.id}
-                className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
-              >
-                {category.name}
+              <TabsTrigger key={category.id} value={category.id} asChild>
+                <Link
+                  href={
+                    category.id === 'overview'
+                      ? '/our-work'
+                      : `/our-work/${category.id}`
+                  }
+                  className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
+                >
+                  {category.name}
+                </Link>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -90,14 +95,19 @@ export default function CategoryNavigation({
   return (
     <div className={cn('w-full', className)}>
       <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-        <TabsList className="w-full justify-start bg-transparent border-b border-border rounded-none p-0 h-auto">
+        <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto">
           {categories.map(category => (
-            <TabsTrigger
-              key={category.id}
-              value={category.id}
-              className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
-            >
-              {category.name}
+            <TabsTrigger key={category.id} value={category.id} asChild>
+              <Link
+                href={
+                  category.id === 'overview'
+                    ? '/our-work'
+                    : `/our-work/${category.id}`
+                }
+                className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
+              >
+                {category.name}
+              </Link>
             </TabsTrigger>
           ))}
         </TabsList>

@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const projects = content.content.projects || [];
     for (const project of projects) {
       const url =
-        `${baseUrl}/${lang === 'es' ? '' : lang + '/'}our-work/${project.slug || project.id}`.replace(
+        `${baseUrl}/${lang === 'es' ? '' : lang + '/'}projects/${project.slug || project.id}`.replace(
           /\/our-work\//,
           '/our-work/'
         );

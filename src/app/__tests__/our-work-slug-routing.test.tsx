@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import {
   generateStaticParams,
   generateMetadata,
-} from '../our-work/[slug]/page';
+} from '../projects/[slug]/page';
 import { getStaticContent } from '@/lib/utils';
 
 // Mock Next.js navigation
@@ -237,7 +237,7 @@ describe('Project Detail Page Slug Routing', () => {
       });
 
       // Should redirect to slug-based URL
-      expect(mockRedirect).toHaveBeenCalledWith('/our-work/boda-maria-y-juan');
+      expect(mockRedirect).toHaveBeenCalledWith('/projects/boda-maria-y-juan');
     });
 
     it('should not redirect when accessing project by ID and it has no slug', async () => {
@@ -436,7 +436,7 @@ describe('Project Detail Page Slug Routing', () => {
       });
 
       // Should redirect to slug-based URL
-      expect(mockRedirect).toHaveBeenCalledWith('/our-work/evento-empresarial');
+      expect(mockRedirect).toHaveBeenCalledWith('/projects/evento-empresarial');
 
       // Reset mock
       jest.clearAllMocks();

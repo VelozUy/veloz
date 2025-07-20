@@ -2,8 +2,9 @@
 
 import { useMemo } from 'react';
 import CategoryNavigation from '@/components/our-work/CategoryNavigation';
-import { CategorySection } from '@/components/our-work/CategorySection';
+import OverviewSection from '@/components/our-work/OverviewSection';
 import { useScrollNavigation } from '@/hooks/useScrollNavigation';
+import VelozLogo from '@/components/shared/VelozLogo';
 
 interface Project {
   id: string;
@@ -18,59 +19,37 @@ interface Project {
     height?: number;
     featured?: boolean;
     aspectRatio?: '1:1' | '16:9' | '9:16' | '4:5';
+    projectId?: string;
   }>;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  label: string;
+  title: string;
+  description: string;
+  eventTypes: string[];
 }
 
 interface OurWorkClientProps {
   projects: Project[];
+  categories: Category[];
   locale: string;
 }
 
-const CATEGORY_CONFIG = [
-  {
-    id: 'boda',
-    name: 'Boda',
-    label: 'Bodas y Eventos',
-    title: 'Boda',
-    description: 'Fotografía y video de bodas y eventos sociales.',
-    eventTypes: ['Casamiento', 'Boda', 'Bodas', 'Wedding'],
-  },
-  {
-    id: 'corporativo',
-    name: 'Corporativo',
-    label: 'Eventos Corporativos',
-    title: 'Corporativo',
-    description: 'Eventos corporativos, conferencias y lanzamientos.',
-    eventTypes: ['Corporativos', 'Corporativo', 'Corporate'],
-  },
-  {
-    id: 'producto',
-    name: 'Producto',
-    label: 'Fotografía de Producto',
-    title: 'Producto',
-    description: 'Fotografía de producto y campañas publicitarias.',
-    eventTypes: ['Photoshoot', 'Producto', 'Product'],
-  },
-  {
-    id: 'moda',
-    name: 'Moda',
-    label: 'Fotografía de Moda',
-    title: 'Moda',
-    description: 'Fotografía de moda y editoriales.',
-    eventTypes: ['Culturales y artísticos', 'Moda', 'Fashion'],
-  },
-];
-
 export default function OurWorkClient({
   projects,
-  locale,
+  categories,
 }: OurWorkClientProps) {
   // Group featured media by category
   const categoryMedia = useMemo(() => {
-    return CATEGORY_CONFIG.map(category => {
+    return categories.map(category => {
       // Find all projects matching this category
-      const projectsInCategory = projects.filter((p: Project) =>
-        category.eventTypes.includes(p.eventType || '')
+      const projectsInCategory = projects.filter(
+        (p: Project) =>
+          category.eventTypes.includes('*') ||
+          category.eventTypes.includes(p.eventType || '')
       );
 
       // Collect all featured media from these projects
@@ -81,7 +60,7 @@ export default function OurWorkClient({
             // Use actual dimensions if available, otherwise use better defaults
             const width = m.width || 1200;
             const height = m.height || 800;
-            
+
             return {
               id: m.id,
               projectId: project.id,
@@ -104,11 +83,11 @@ export default function OurWorkClient({
         media,
       };
     });
-  }, [projects]);
+  }, [projects, categories]);
 
-  // Only include categories with at least one featured media
+  // Only include categories with at least one featured media for sections
   const visibleCategories = categoryMedia.filter(cat => cat.media.length > 0);
-  const categoryIds = visibleCategories.map(cat => cat.id);
+  const categoryIds = categories.map(cat => cat.id); // Always show all categories in navigation
 
   // useScrollNavigation for scroll-based navigation
   const { activeCategory, scrollToCategory } = useScrollNavigation({
@@ -118,23 +97,25 @@ export default function OurWorkClient({
 
   return (
     <>
+      {/* Page Header */}
+      <header className="py-16 bg-background">
+        <div className="container mx-auto px-4 text-center">
+          {/* Page Title */}
+          <div className="flex justify-center mb-4">
+            <VelozLogo variant="full" size="lg" />
+          </div>
+        </div>
+      </header>
+
       {/* Category Navigation */}
       <CategoryNavigation
-        categories={CATEGORY_CONFIG.filter(cat => categoryIds.includes(cat.id))}
+        categories={categories}
         activeCategory={activeCategory}
         onCategoryChange={scrollToCategory}
       />
 
-      {/* Category Sections */}
-      {visibleCategories.map(category => (
-        <CategorySection
-          key={category.id}
-          id={category.id}
-          title={category.title}
-          description={category.description}
-          media={category.media}
-        />
-      ))}
+      {/* Overview Section */}
+      <OverviewSection categories={visibleCategories} />
     </>
   );
 }

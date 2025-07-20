@@ -40,15 +40,20 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
     <section
       id={`category-${id}`}
       className={`min-h-screen py-16 bg-background ${className}`}
+      data-testid="category-section"
     >
       <div className="container mx-auto px-4">
-        {/* Category Header */}
-        <div className="text-center mb-12">
-          <H2 className="mb-6">{title}</H2>
-          <Body className="text-muted-foreground max-w-3xl mx-auto">
-            {description}
-          </Body>
-        </div>
+        {/* Category Header - Only show if title or description is provided */}
+        {(title || description) && (
+          <div className="text-center mb-12">
+            {title && <H2 className="mb-6">{title}</H2>}
+            {description && (
+              <Body className="text-muted-foreground max-w-3xl mx-auto">
+                {description}
+              </Body>
+            )}
+          </div>
+        )}
 
         {/* Feature Media Grid */}
         <div>

@@ -34,11 +34,16 @@ export default function OurWorkPage() {
   // Get static content for Spanish (default)
   const content = getStaticContent('es');
   const projects = content.content.projects || [];
+  const categories = content.content.categories || [];
 
   return (
     <div className="relative min-h-screen w-full bg-background">
       {/* Category Navigation and Sections (client) */}
-      <OurWorkClient projects={projects} locale={content.locale} />
+      <OurWorkClient
+        projects={projects}
+        categories={categories}
+        locale={content.locale}
+      />
 
       {/* CTA Widget */}
       <ContactWidget language={content.locale} />

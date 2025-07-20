@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getStaticContent } from '@/lib/utils';
-import ProjectDetailClient from '@/components/our-work/ProjectDetailClient';
+import CategoryPageClient from '@/components/our-work/CategoryPageClient';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 
-interface ProjectDetailPageProps {
+interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }
 
@@ -11,63 +12,77 @@ interface ProjectDetailPageProps {
 export async function generateStaticParams() {
   const content = getStaticContent('es');
 
-  if (!content.content.projects) {
-    return [];
+  const params: Array<{ slug: string }> = [];
+
+  // Add category slugs only
+  if (content.content.categories) {
+    content.content.categories.forEach(category => {
+      params.push({
+        slug: category.id,
+      });
+    });
   }
 
-  return content.content.projects.map(project => ({
-    slug: project.slug || project.id, // Use slug if available, fallback to ID
-  }));
+  return params;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({
   params,
-}: ProjectDetailPageProps): Promise<Metadata> {
+}: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
   const content = getStaticContent('es');
 
-  // Try to find project by slug first, then by ID
-  const project = content.content.projects?.find(
-    p => p.slug === slug || p.id === slug
-  );
+  // Try to find category by ID
+  const category = content.content.categories?.find(c => c.id === slug);
 
-  if (!project) {
+  if (category) {
     return {
-      title: 'Project Not Found',
+      title: `${category.title} | Veloz Fotografía y Videografía`,
+      description: `Explora nuestra colección de ${category.title.toLowerCase()} en Veloz Fotografía y Videografía.`,
+      openGraph: {
+        title: `${category.title} | Veloz Fotografía y Videografía`,
+        description: `Explora nuestra colección de ${category.title.toLowerCase()} en Veloz Fotografía y Videografía.`,
+        images: [
+          {
+            url: '/og-gallery.jpg',
+            width: 1200,
+            height: 630,
+            alt: `Portafolio de ${category.title} - Veloz Fotografía y Videografía`,
+          },
+        ],
+      },
     };
   }
 
   return {
-    title: `${project.title} - Veloz`,
-    description: project.description,
-    openGraph: {
-      title: project.title,
-      description: project.description,
-      images: project.media?.slice(0, 3).map(m => m.url) || [],
-    },
+    title: 'Page Not Found',
   };
 }
 
-export default async function ProjectDetailPage({
-  params,
-}: ProjectDetailPageProps) {
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
   const content = getStaticContent('es');
 
-  // Try to find project by slug first, then by ID
-  const project = content.content.projects?.find(
-    p => p.slug === slug || p.id === slug
-  );
+  // Try to find category by ID
+  const category = content.content.categories?.find(c => c.id === slug);
 
-  if (!project) {
-    notFound();
+  if (category) {
+    return (
+      <div className="relative min-h-screen w-full bg-background">
+        {/* Category Page (client) */}
+        <CategoryPageClient
+          projects={content.content.projects || []}
+          categories={content.content.categories || []}
+          locale={content.locale}
+          categorySlug={category.id}
+        />
+
+        {/* CTA Widget */}
+        <ContactWidget language={content.locale} />
+      </div>
+    );
   }
 
-  // If we found the project by ID but it has a slug, redirect to the slug URL
-  if (project.slug && project.slug !== slug) {
-    redirect(`/our-work/${project.slug}`);
-  }
-
-  return <ProjectDetailClient project={project} />;
+  notFound();
 }
