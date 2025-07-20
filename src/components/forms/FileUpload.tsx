@@ -39,7 +39,7 @@ interface FileUploadItem {
   url?: string;
 }
 
-const fileUploadService = new FileUploadService();
+// const fileUploadService = new FileUploadService(); // eslint-disable-line @typescript-eslint/no-unused-vars
 
 export default function FileUpload({
   onFilesSelected,
@@ -57,7 +57,7 @@ export default function FileUpload({
   disabled = false,
 }: FileUploadProps) {
   const [dragActive, setDragActive] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  // const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
@@ -162,9 +162,9 @@ export default function FileUpload({
       case 'uploading':
         return <Loader2 className="w-4 h-4 animate-spin" />;
       case 'success':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'error':
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
+        return <AlertCircle className="w-4 h-4 text-destructive" />;
       default:
         return <Upload className="w-4 h-4" />;
     }

@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { MessageCircle, Phone, Calendar as CalendarIcon } from 'lucide-react';
+import { MessageCircle, Phone } from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 
 interface ContactWidgetProps {
@@ -383,7 +383,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       case 'complete':
         return (
           <div className="space-y-6 text-center">
-            <div className="text-green-600">
+            <div className="text-primary">
               <MessageCircle className="w-12 h-12 mx-auto mb-4" />
             </div>
             <h3 className="text-lg font-semibold">

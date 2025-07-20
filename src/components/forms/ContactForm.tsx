@@ -415,7 +415,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
       >
         <div className="max-w-2xl mx-auto text-center space-y-8">
           <div className="flex justify-center">
-            <CheckCircle className="w-24 h-24 text-green-500" />
+            <CheckCircle className="w-24 h-24 text-primary" />
           </div>
 
           <div className={`space-y-4 ${formClasses.text}`}>
@@ -454,7 +454,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
           {/* Trust Indicators */}
           <div className="lg:col-span-1 space-y-6 lg:space-y-8 order-2 lg:order-1">
             <div
-              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-card rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
               <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Shield className="text-primary size-5" />
@@ -468,7 +468,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
             </div>
 
             <div
-              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-card rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
               <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Clock className="text-primary size-5" />
@@ -482,7 +482,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
             </div>
 
             <div
-              className={`bg-white rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
+              className={`bg-card rounded-none p-4 lg:p-6 shadow-sm ${formClasses.border}`}
             >
               <div className="flex items-center gap-2 mb-3 lg:mb-4">
                 <Heart className="text-primary size-5" />
@@ -500,7 +500,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
           <div className="lg:col-span-2 order-1 lg:order-2">
             <form onSubmit={onSubmit} className="space-y-6 lg:space-y-8">
               <div
-                className={`bg-white rounded-none p-6 lg:p-8 shadow-sm ${formClasses.border} space-y-6`}
+                className={`bg-card rounded-none p-6 lg:p-8 shadow-sm ${formClasses.border} space-y-6`}
               >
                 {/* Name */}
                 <div className="space-y-2">

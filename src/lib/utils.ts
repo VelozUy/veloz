@@ -238,39 +238,39 @@ export function getBackgroundClasses(
 ): string {
   const baseClasses = {
     hero: {
-      primary: 'bg-charcoal text-white',
-      secondary: 'bg-charcoal/90 text-white',
-      tertiary: 'bg-charcoal/80 text-white',
+      primary: 'bg-background text-foreground',
+      secondary: 'bg-background/90 text-foreground',
+      tertiary: 'bg-background/80 text-foreground',
     },
     content: {
-      primary: 'bg-gray-light text-charcoal',
-      secondary: 'bg-gray-light/90 text-charcoal',
-      tertiary: 'bg-gray-light/80 text-charcoal',
+      primary: 'bg-muted text-foreground',
+      secondary: 'bg-muted/90 text-foreground',
+      tertiary: 'bg-muted/80 text-foreground',
     },
     form: {
-      primary: 'bg-gray-light text-charcoal',
-      secondary: 'bg-white border border-gray-medium text-charcoal',
-      tertiary: 'bg-gray-light/50 text-charcoal',
+      primary: 'bg-muted text-foreground',
+      secondary: 'bg-card border border-border text-foreground',
+      tertiary: 'bg-muted/50 text-foreground',
     },
     testimonial: {
-      primary: 'bg-white text-charcoal border border-gray-medium',
-      secondary: 'bg-white/90 text-charcoal',
-      tertiary: 'bg-gray-light text-charcoal',
+      primary: 'bg-card text-foreground border border-border',
+      secondary: 'bg-card/90 text-foreground',
+      tertiary: 'bg-muted text-foreground',
     },
     cta: {
-      primary: 'bg-blue-accent text-white',
-      secondary: 'bg-charcoal text-white',
-      tertiary: 'bg-gray-light text-charcoal',
+      primary: 'bg-primary text-primary-foreground',
+      secondary: 'bg-background text-foreground',
+      tertiary: 'bg-muted text-foreground',
     },
     gallery: {
-      primary: 'bg-charcoal text-white',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-white text-charcoal',
+      primary: 'bg-background text-foreground',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-card text-foreground',
     },
     navigation: {
-      primary: 'bg-charcoal text-white',
-      secondary: 'bg-charcoal/90 text-white',
-      tertiary: 'bg-gray-light text-charcoal',
+      primary: 'bg-background text-foreground',
+      secondary: 'bg-background/90 text-foreground',
+      tertiary: 'bg-muted text-foreground',
     },
   };
 
@@ -280,12 +280,12 @@ export function getBackgroundClasses(
   if (variant === 'inverted') {
     if (sectionType === 'hero' || sectionType === 'cta') {
       classes = classes
-        .replace('bg-charcoal', 'bg-white')
-        .replace('text-white', 'text-charcoal');
+        .replace('bg-background', 'bg-card')
+        .replace('text-foreground', 'text-card-foreground');
     } else if (sectionType === 'content' || sectionType === 'form') {
       classes = classes
-        .replace('bg-gray-light', 'bg-charcoal')
-        .replace('text-charcoal', 'text-white');
+        .replace('bg-muted', 'bg-background')
+        .replace('text-foreground', 'text-foreground');
     }
   } else if (variant === 'elevated') {
     classes += ' shadow-lg';
@@ -308,42 +308,43 @@ export function getButtonClasses(
 ): string {
   const buttonClasses = {
     hero: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-white text-charcoal hover:bg-gray-light',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-card text-card-foreground hover:bg-muted',
       tertiary:
-        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
     },
     content: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
-      tertiary: 'bg-gray-medium text-charcoal hover:bg-gray-medium/80',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-background text-foreground hover:bg-background/90',
+      tertiary: 'bg-muted text-foreground hover:bg-muted/80',
     },
     form: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
-      tertiary: 'bg-gray-medium text-charcoal hover:bg-gray-medium/80',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-background text-foreground hover:bg-background/90',
+      tertiary: 'bg-muted text-foreground hover:bg-muted/80',
     },
     testimonial: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
-      tertiary: 'bg-gray-light text-charcoal hover:bg-gray-medium',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-background text-foreground hover:bg-background/90',
+      tertiary: 'bg-muted text-foreground hover:bg-muted',
     },
     cta: {
-      primary: 'bg-white text-charcoal hover:bg-gray-light',
-      secondary: 'bg-charcoal text-white hover:bg-charcoal/90',
+      primary: 'bg-card text-card-foreground hover:bg-muted',
+      secondary: 'bg-background text-foreground hover:bg-background/90',
       tertiary:
-        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
     },
     gallery: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-white text-charcoal hover:bg-gray-light',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary: 'bg-card text-card-foreground hover:bg-muted',
       tertiary:
-        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal',
+        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
     },
     navigation: {
-      primary: 'bg-blue-accent text-white hover:bg-blue-accent/90',
-      secondary: 'bg-transparent text-white hover:bg-white hover:text-charcoal',
-      tertiary: 'bg-gray-light text-charcoal hover:bg-gray-medium',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      secondary:
+        'bg-transparent text-foreground hover:bg-card hover:text-card-foreground',
+      tertiary: 'bg-muted text-foreground hover:bg-muted',
     },
   };
 
@@ -357,15 +358,13 @@ export function getButtonClasses(
  */
 export function getInputClasses(sectionType: SectionType): string {
   const inputClasses = {
-    hero: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    content: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    form: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    testimonial:
-      'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    cta: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    gallery: 'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
-    navigation:
-      'bg-white text-charcoal border-gray-medium focus:ring-blue-accent',
+    hero: 'bg-card text-card-foreground border-border focus:ring-ring',
+    content: 'bg-card text-card-foreground border-border focus:ring-ring',
+    form: 'bg-card text-card-foreground border-border focus:ring-ring',
+    testimonial: 'bg-card text-card-foreground border-border focus:ring-ring',
+    cta: 'bg-card text-card-foreground border-border focus:ring-ring',
+    gallery: 'bg-card text-card-foreground border-border focus:ring-ring',
+    navigation: 'bg-card text-card-foreground border-border focus:ring-ring',
   };
 
   return inputClasses[sectionType];
@@ -378,13 +377,13 @@ export function getInputClasses(sectionType: SectionType): string {
  */
 export function getLinkClasses(sectionType: SectionType): string {
   const linkClasses = {
-    hero: 'text-blue-accent hover:text-blue-accent/80',
-    content: 'text-blue-accent hover:text-blue-accent/80',
-    form: 'text-blue-accent hover:text-blue-accent/80',
-    testimonial: 'text-blue-accent hover:text-blue-accent/80',
-    cta: 'text-white hover:text-gray-light',
-    gallery: 'text-blue-accent hover:text-blue-accent/80',
-    navigation: 'text-white hover:text-gray-light',
+    hero: 'text-primary hover:text-primary/80',
+    content: 'text-primary hover:text-primary/80',
+    form: 'text-primary hover:text-primary/80',
+    testimonial: 'text-primary hover:text-primary/80',
+    cta: 'text-foreground hover:text-muted-foreground',
+    gallery: 'text-primary hover:text-primary/80',
+    navigation: 'text-foreground hover:text-muted-foreground',
   };
 
   return linkClasses[sectionType];
@@ -402,39 +401,39 @@ export function getCardClasses(
 ): string {
   const cardClasses = {
     hero: {
-      primary: 'bg-white text-charcoal shadow-lg',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-transparent text-white border border-white',
+      primary: 'bg-card text-card-foreground shadow-lg',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-transparent text-foreground border border-foreground',
     },
     content: {
-      primary: 'bg-white text-charcoal border border-gray-medium',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-gray-light/50 text-charcoal',
+      primary: 'bg-card text-card-foreground border border-border',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-muted/50 text-foreground',
     },
     form: {
-      primary: 'bg-white text-charcoal border border-gray-medium',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-gray-light/50 text-charcoal',
+      primary: 'bg-card text-card-foreground border border-border',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-muted/50 text-foreground',
     },
     testimonial: {
-      primary: 'bg-white text-charcoal border border-gray-medium',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-gray-light/50 text-charcoal',
+      primary: 'bg-card text-card-foreground border border-border',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-muted/50 text-foreground',
     },
     cta: {
-      primary: 'bg-white text-charcoal shadow-lg',
-      secondary: 'bg-charcoal text-white',
-      tertiary: 'bg-gray-light text-charcoal',
+      primary: 'bg-card text-card-foreground shadow-lg',
+      secondary: 'bg-background text-foreground',
+      tertiary: 'bg-muted text-foreground',
     },
     gallery: {
-      primary: 'bg-white text-charcoal shadow-lg',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-transparent text-white',
+      primary: 'bg-card text-card-foreground shadow-lg',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-transparent text-foreground',
     },
     navigation: {
-      primary: 'bg-charcoal text-white',
-      secondary: 'bg-gray-light text-charcoal',
-      tertiary: 'bg-transparent text-white',
+      primary: 'bg-background text-foreground',
+      secondary: 'bg-muted text-foreground',
+      tertiary: 'bg-transparent text-foreground',
     },
   };
 
@@ -474,21 +473,21 @@ export function getPriorityClasses(priority: 'top' | 'mid' | 'low') {
   switch (priority) {
     case 'top':
       return {
-        bg: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        bg: 'bg-card',
+        text: 'text-card-foreground',
+        border: 'border-border',
       };
     case 'mid':
       return {
-        bg: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        bg: 'bg-muted',
+        text: 'text-muted-foreground',
+        border: 'border-border',
       };
     case 'low':
       return {
         bg: 'bg-transparent',
-        text: 'text-gray-medium',
-        border: 'border-gray-medium',
+        text: 'text-muted-foreground',
+        border: 'border-border',
       };
     default:
       return {
