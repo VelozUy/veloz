@@ -170,6 +170,157 @@ _No tasks completed yet for this Epic_
 
 ---
 
+### 🎨 EPIC: Theme Implementation Issues Fix ⭐ **CRITICAL PRIORITY**
+
+**Objective**: Fix all hardcoded colors, documentation inconsistencies, and theme violations to ensure 100% theme compliance across the entire application
+
+**Reference**: Theme Implementation Report - Found 50+ hardcoded colors and documentation gaps
+**User Intent**: Eliminate all hardcoded colors, ensure documentation accuracy, and create automated theme validation to prevent future violations
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Hardcoded Colors Elimination** - Replace all hardcoded colors with theme variables
+  - **User Intent**: Remove all hardcoded colors (bg-white, text-blue-600, border-gray-300, etc.) and replace with semantic theme variables
+  - **Acceptance Criteria**:
+    - Zero hardcoded color classes in the entire codebase
+    - All colors use semantic theme variables (bg-primary, text-foreground, border-border)
+    - No Tailwind color utilities (bg-blue-500, text-white, etc.)
+    - All components maintain visual consistency
+    - Automated scan shows 0 violations
+  - **Files**: All `.tsx` files in `src/` directory
+  - **Reference**: Theme Implementation Report - Critical Issues section
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Documentation Synchronization** - Update theme documentation with missing variables
+  - **User Intent**: Ensure `docs/THEME.md` contains all theme variables from `globals.css`
+  - **Acceptance Criteria**:
+    - All CSS variables from `globals.css` documented in `docs/THEME.md`
+    - No missing variables (card, card-foreground, popover, popover-foreground)
+    - Complete color system documentation
+    - Usage examples for all variables
+    - Migration guide updated
+  - **Files**: `docs/THEME.md`, `src/app/globals.css`
+  - **Reference**: Theme Implementation Report - Documentation Inconsistency
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Legacy Theme Files Cleanup** - Remove conflicting theme files
+  - **User Intent**: Eliminate confusion by removing outdated theme files
+  - **Acceptance Criteria**:
+    - Remove or archive `.superdesign/` theme files
+    - No conflicting theme definitions
+    - Single source of truth in `docs/THEME.md`
+    - Clear theme system architecture
+  - **Files**: `.superdesign/design_iterations/` directory
+  - **Reference**: Theme Implementation Report - Legacy Theme Files
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Automated Theme Validation** - Create theme consistency checker
+  - **User Intent**: Build automated tools to prevent future theme violations
+  - **Acceptance Criteria**:
+    - Working theme consistency checker script
+    - CI/CD integration for theme validation
+    - ESLint rules for hardcoded colors
+    - Pre-commit hooks for theme compliance
+    - Automated reporting of violations
+  - **Files**: `scripts/theme-consistency-checker.mjs`, `.eslintrc.js`, `package.json`
+  - **Reference**: Theme Implementation Report - Action Plan
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Component Theme Audit** - Verify all components use theme correctly
+  - **User Intent**: Ensure all UI components follow theme guidelines
+  - **Acceptance Criteria**:
+    - All shadcn/ui components use theme variables
+    - Custom components follow theme patterns
+    - No component-specific color overrides
+    - Consistent use of semantic color names
+    - Zero border radius enforcement
+  - **Files**: All components in `src/components/ui/` and `src/components/`
+  - **Reference**: Theme Implementation Report - Component Implementation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Theme Testing Infrastructure** - Create comprehensive theme testing
+  - **User Intent**: Build testing framework for theme validation
+  - **Acceptance Criteria**:
+    - Unit tests for theme variables
+    - Visual regression tests for theme changes
+    - Accessibility tests for color combinations
+    - Performance tests for theme loading
+    - Cross-browser theme compatibility tests
+  - **Files**: `src/lib/__tests__/theme-*.test.ts`, `jest.config.js`
+  - **Reference**: Theme Implementation Report - Long-term Actions
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+- [ ] **Phase 7: Developer Experience Enhancement** - Improve theme development tools
+  - **User Intent**: Create better tools for theme development and debugging
+  - **Acceptance Criteria**:
+    - Theme preview component for development
+    - Theme debugging tools
+    - Theme documentation generator
+    - Theme migration helpers
+    - Theme validation in development mode
+  - **Files**: `src/components/debug/ThemePreview.tsx`, `scripts/theme-*.js`
+  - **Reference**: Theme Implementation Report - Developer Experience
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Theme Performance Optimization** - Optimize theme loading and rendering
+  - **User Intent**: Ensure theme system performs optimally
+  - **Acceptance Criteria**:
+    - Fast theme loading times
+    - Optimized CSS variable usage
+    - Minimal theme-related bundle size
+    - Efficient theme switching (if needed in future)
+    - Performance monitoring for theme changes
+  - **Files**: `src/app/globals.css`, `next.config.ts`, performance monitoring
+  - **Reference**: Theme Implementation Report - Performance considerations
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 7 completion
+
+- [ ] **Phase 9: Theme Accessibility Audit** - Comprehensive accessibility review
+  - **User Intent**: Ensure theme meets all accessibility standards
+  - **Acceptance Criteria**:
+    - WCAG AA compliance for all color combinations
+    - Proper focus states for all interactive elements
+    - High contrast mode support (if needed)
+    - Screen reader compatibility
+    - Keyboard navigation support
+  - **Files**: All theme-related components and styles
+  - **Reference**: Theme Implementation Report - Accessibility considerations
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 8 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Theme Migration Script** - Automated migration from hardcoded colors
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Theme Documentation Generator** - Auto-generate theme documentation
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Theme Visual Regression Tests** - Automated visual testing for theme changes
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+### ✅ Completed
+
+_No tasks completed yet for this Epic_
+
+---
+
 ### ✅ **COMPLETED: Theme System Implementation**
 
 **Objective**: ✅ **COMPLETED** - Modern OKLCH-based theme system with zero border radius design, comprehensive accessibility support, and performance optimization
