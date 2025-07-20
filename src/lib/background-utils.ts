@@ -63,27 +63,27 @@ function getHeroClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-charcoal',
-        text: 'text-white',
+        background: 'bg-background',
+        text: 'text-foreground',
         shadow: 'shadow-lg',
       };
     case 'medium':
       return {
-        background: 'bg-charcoal/90',
-        text: 'text-white',
+        background: 'bg-background/90',
+        text: 'text-foreground',
         shadow: 'shadow-md',
       };
     case 'low':
       return {
-        background: 'bg-charcoal/75',
-        text: 'text-white',
+        background: 'bg-background/75',
+        text: 'text-foreground',
         shadow: 'shadow-sm',
       };
     default:
       // Default to high priority for hero sections
       return {
-        background: 'bg-charcoal',
-        text: 'text-white',
+        background: 'bg-background',
+        text: 'text-foreground',
         shadow: 'shadow-lg',
       };
   }
@@ -96,29 +96,29 @@ function getContentClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-md',
       };
     case 'medium':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium/50',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border/50',
       };
     case 'low':
       return {
-        background: 'bg-gray-light/50',
-        text: 'text-charcoal/80',
-        border: 'border-gray-medium/30',
+        background: 'bg-muted/50',
+        text: 'text-muted-foreground',
+        border: 'border-border/30',
       };
     default:
       // Default to medium priority for unknown priority levels
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium/50',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border/50',
       };
   }
 }
@@ -130,29 +130,29 @@ function getFormClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-sm',
       };
     case 'medium':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium/50',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border/50',
       };
     case 'low':
       return {
-        background: 'bg-gray-light/75',
-        text: 'text-charcoal/90',
-        border: 'border-gray-medium/30',
+        background: 'bg-muted/75',
+        text: 'text-muted-foreground',
+        border: 'border-border/30',
       };
     default:
       // Default to high priority for form sections
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-sm',
       };
   }
@@ -165,31 +165,31 @@ function getTestimonialClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-lg',
       };
     case 'medium':
       return {
-        background: 'bg-white/95',
-        text: 'text-charcoal',
-        border: 'border-gray-medium/70',
+        background: 'bg-background/95',
+        text: 'text-foreground',
+        border: 'border-border/70',
         shadow: 'shadow-md',
       };
     case 'low':
       return {
-        background: 'bg-white/90',
-        text: 'text-charcoal/90',
-        border: 'border-gray-medium/50',
+        background: 'bg-background/90',
+        text: 'text-muted-foreground',
+        border: 'border-border/50',
         shadow: 'shadow-sm',
       };
     default:
       // Default to medium priority for testimonial sections
       return {
-        background: 'bg-white/95',
-        text: 'text-charcoal',
-        border: 'border-gray-medium/70',
+        background: 'bg-background/95',
+        text: 'text-foreground',
+        border: 'border-border/70',
         shadow: 'shadow-md',
       };
   }
@@ -202,28 +202,28 @@ function getCTAClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-blue-accent',
-        text: 'text-white',
+        background: 'bg-primary',
+        text: 'text-primary-foreground',
         shadow: 'shadow-lg',
       };
     case 'medium':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-blue-accent',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-primary',
         shadow: 'shadow-md',
       };
     case 'low':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-blue-accent/50',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-primary/50',
       };
     default:
       // Default to high priority for CTA sections
       return {
-        background: 'bg-blue-accent',
-        text: 'text-white',
+        background: 'bg-primary',
+        text: 'text-primary-foreground',
         shadow: 'shadow-lg',
       };
   }
@@ -236,29 +236,29 @@ function getAdminClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-charcoal',
-        text: 'text-white',
+        background: 'bg-background',
+        text: 'text-foreground',
         shadow: 'shadow-lg',
       };
     case 'medium':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-md',
       };
     case 'low':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-background',
+        text: 'text-foreground',
+        border: 'border-border',
       };
     default:
       // Default to medium priority for admin sections
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-md',
       };
   }
@@ -271,28 +271,28 @@ function getMetaClasses(priority: PriorityLevel): BackgroundClasses {
   switch (priority) {
     case 'high':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal/80',
-        border: 'border-gray-medium/50',
+        background: 'bg-muted',
+        text: 'text-muted-foreground',
+        border: 'border-border/50',
       };
     case 'medium':
       return {
-        background: 'bg-gray-light/75',
-        text: 'text-charcoal/70',
-        border: 'border-gray-medium/30',
+        background: 'bg-muted/75',
+        text: 'text-muted-foreground',
+        border: 'border-border/30',
       };
     case 'low':
       return {
-        background: 'bg-gray-light/50',
-        text: 'text-charcoal/60',
-        border: 'border-gray-medium/20',
+        background: 'bg-muted/50',
+        text: 'text-muted-foreground',
+        border: 'border-border/20',
       };
     default:
       // Default to low priority for meta sections
       return {
-        background: 'bg-gray-light/50',
-        text: 'text-charcoal/60',
-        border: 'border-gray-medium/20',
+        background: 'bg-muted/50',
+        text: 'text-muted-foreground',
+        border: 'border-border/20',
       };
   }
 }
@@ -330,7 +330,7 @@ function getMobileClasses(
   // Mobile typically uses simpler backgrounds for performance
   if (sectionType === 'hero' && priority === 'high') {
     return {
-      background: 'bg-charcoal', // Keep full charcoal on mobile for impact
+      background: 'bg-background', // Keep full background on mobile for impact
       shadow: 'shadow-md', // Lighter shadow on mobile
     };
   }
