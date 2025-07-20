@@ -4,6 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface Category {
   id: string;
@@ -30,7 +37,7 @@ export default function CategoryNavigation({
     setMounted(true);
   }, []);
 
-  // Keyboard navigation
+  // Keyboard navigation for desktop tabs
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const currentIndex = categories.findIndex(
@@ -70,17 +77,88 @@ export default function CategoryNavigation({
   if (!mounted) {
     return (
       <div className={cn('w-full', className)}>
-        <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto">
+        {/* Mobile Select - visible on small screens */}
+        <div className="block md:hidden">
+          <Select value={activeCategory} onValueChange={onCategoryChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map(category => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Desktop Tabs - visible on medium screens and up */}
+        <div className="hidden md:block">
+          <Tabs value={activeCategory} onValueChange={onCategoryChange}>
+            <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 gap-8">
+              {categories.map(category => (
+                <TabsTrigger
+                  key={category.id}
+                  value={category.id}
+                  asChild
+                  className="border-b-0 hover:border-b-0 data-[state=active]:border-b-0"
+                >
+                  <Link
+                    href={
+                      category.id === 'overview'
+                        ? '/our-work'
+                        : `/our-work/${category.id}`
+                    }
+                    className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
+                  >
+                    {category.name}
+                  </Link>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('w-full', className)}>
+      {/* Mobile Select - visible on small screens */}
+      <div className="block md:hidden">
+        <Select value={activeCategory} onValueChange={onCategoryChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
             {categories.map(category => (
-              <TabsTrigger key={category.id} value={category.id} asChild>
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Desktop Tabs - visible on medium screens and up */}
+      <div className="hidden md:block">
+        <Tabs value={activeCategory} onValueChange={onCategoryChange}>
+          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 gap-8">
+            {categories.map(category => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                asChild
+                className="border-b-0 hover:border-b-0 data-[state=active]:border-b-0"
+              >
                 <Link
                   href={
                     category.id === 'overview'
                       ? '/our-work'
                       : `/our-work/${category.id}`
                   }
-                  className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
+                  className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
                 >
                   {category.name}
                 </Link>
@@ -89,29 +167,6 @@ export default function CategoryNavigation({
           </TabsList>
         </Tabs>
       </div>
-    );
-  }
-
-  return (
-    <div className={cn('w-full', className)}>
-      <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-        <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto">
-          {categories.map(category => (
-            <TabsTrigger key={category.id} value={category.id} asChild>
-              <Link
-                href={
-                  category.id === 'overview'
-                    ? '/our-work'
-                    : `/our-work/${category.id}`
-                }
-                className="text-base uppercase tracking-tight border-b-2 border-transparent hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 data-[state=active]:border-primary data-[state=active]:text-primary"
-              >
-                {category.name}
-              </Link>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
     </div>
   );
 }

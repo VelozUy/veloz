@@ -31,18 +31,24 @@ describe('CategoryNavigation', () => {
     it('renders all category tabs', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Should render 5 categories
-      expect(screen.getByText('Overview')).toBeInTheDocument();
-      expect(screen.getByText('Food')).toBeInTheDocument();
-      expect(screen.getByText('People')).toBeInTheDocument();
-      expect(screen.getByText('Still Life')).toBeInTheDocument();
-      expect(screen.getByText('Travel')).toBeInTheDocument();
+      // Should render 5 categories in the desktop tabs
+      const desktopTabs = screen.getAllByRole('tab');
+      expect(desktopTabs).toHaveLength(5);
+
+      // Check that all category names are present in the tabs by checking the tab elements
+      const tabTexts = desktopTabs.map(tab => tab.textContent);
+      expect(tabTexts).toContain('Overview');
+      expect(tabTexts).toContain('Food');
+      expect(tabTexts).toContain('People');
+      expect(tabTexts).toContain('Still Life');
+      expect(tabTexts).toContain('Travel');
     });
 
     it('highlights active category', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const activeTab = screen.getByText('Overview');
+      // Find the active tab specifically in the desktop tabs
+      const activeTab = screen.getByRole('tab', { selected: true });
       expect(activeTab).toHaveClass('data-[state=active]:border-primary');
     });
 
@@ -71,6 +77,38 @@ describe('CategoryNavigation', () => {
         expect(tab).toHaveClass('uppercase');
         expect(tab).toHaveClass('tracking-tight');
       });
+    });
+  });
+
+  describe('Mobile Select', () => {
+    it('renders select component for mobile', () => {
+      render(<CategoryNavigation {...defaultProps} />);
+
+      // Check that the select trigger is present
+      const selectTrigger = screen.getByRole('combobox');
+      expect(selectTrigger).toBeInTheDocument();
+
+      // Check that the select shows the active category
+      expect(selectTrigger).toHaveTextContent('Overview');
+    });
+
+    it('select component has all categories as options', () => {
+      render(<CategoryNavigation {...defaultProps} />);
+
+      // Open the select dropdown
+      const selectTrigger = screen.getByRole('combobox');
+      fireEvent.click(selectTrigger);
+
+      // Check that all categories are available as options by looking for select items
+      const selectItems = screen.getAllByRole('option');
+      expect(selectItems).toHaveLength(5);
+
+      const itemTexts = selectItems.map(item => item.textContent);
+      expect(itemTexts).toContain('Overview');
+      expect(itemTexts).toContain('Food');
+      expect(itemTexts).toContain('People');
+      expect(itemTexts).toContain('Still Life');
+      expect(itemTexts).toContain('Travel');
     });
   });
 
@@ -121,6 +159,14 @@ describe('CategoryNavigation', () => {
       const tabList = screen.getByRole('tablist');
       expect(tabList).toBeInTheDocument();
     });
+
+    it('has proper select accessibility', () => {
+      render(<CategoryNavigation {...defaultProps} />);
+
+      const selectTrigger = screen.getByRole('combobox');
+      expect(selectTrigger).toBeInTheDocument();
+      expect(selectTrigger).toHaveAttribute('aria-expanded');
+    });
   });
 
   describe('Responsive Behavior', () => {
@@ -130,6 +176,18 @@ describe('CategoryNavigation', () => {
       const tabList = screen.getByRole('tablist');
       expect(tabList).toHaveClass('w-full');
       expect(tabList).toHaveClass('justify-center');
+      expect(tabList).toHaveClass('gap-8');
+    });
+
+    it('renders both mobile and desktop components', () => {
+      render(<CategoryNavigation {...defaultProps} />);
+
+      // Check that both mobile select and desktop tabs are present
+      const selectTrigger = screen.getByRole('combobox');
+      const tabList = screen.getByRole('tablist');
+
+      expect(selectTrigger).toBeInTheDocument();
+      expect(tabList).toBeInTheDocument();
     });
   });
 
@@ -158,8 +216,13 @@ describe('CategoryNavigation', () => {
         />
       );
 
-      // Should have 1 tab
-      expect(screen.getByText('Overview')).toBeInTheDocument();
+      // Should have 1 tab in desktop view
+      const tabs = screen.getAllByRole('tab');
+      expect(tabs).toHaveLength(1);
+
+      // Should also have the select component
+      const selectTrigger = screen.getByRole('combobox');
+      expect(selectTrigger).toBeInTheDocument();
     });
 
     it('handles active category not in list', () => {
@@ -168,8 +231,8 @@ describe('CategoryNavigation', () => {
       );
 
       // Should still render all tabs
-      expect(screen.getByText('Overview')).toBeInTheDocument();
-      expect(screen.getByText('Food')).toBeInTheDocument();
+      const tabs = screen.getAllByRole('tab');
+      expect(tabs).toHaveLength(5);
     });
   });
 });
