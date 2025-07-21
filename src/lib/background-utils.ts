@@ -1,11 +1,17 @@
 /**
  * Background Utility System
- * 
+ *
  * Provides contextual background classes based on section type and priority
  * for the Light Gray Background Color System implementation
  */
 
-export type SectionType = 'hero' | 'content' | 'form' | 'testimonial' | 'cta' | 'meta';
+export type SectionType =
+  | 'hero'
+  | 'content'
+  | 'form'
+  | 'testimonial'
+  | 'cta'
+  | 'meta';
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface BackgroundClasses {
@@ -32,8 +38,8 @@ export function getBackgroundClasses(
   switch (sectionType) {
     case 'hero':
       return {
-        background: 'bg-charcoal',
-        text: 'text-white',
+        background: 'bg-background',
+        text: 'text-foreground',
         border: 'border-transparent',
         shadow: 'shadow-lg',
       };
@@ -41,15 +47,15 @@ export function getBackgroundClasses(
     case 'content':
       if (priority === 'high') {
         return {
-          background: 'bg-white',
-          text: 'text-charcoal',
-          border: 'border-gray-medium',
+          background: 'bg-card',
+          text: 'text-card-foreground',
+          border: 'border-border',
           shadow: 'shadow-md',
         };
       } else {
         return {
-          background: 'bg-gray-light',
-          text: 'text-charcoal',
+          background: 'bg-muted',
+          text: 'text-foreground',
           border: 'border-transparent',
           shadow: 'shadow-sm',
         };
@@ -57,49 +63,49 @@ export function getBackgroundClasses(
 
     case 'form':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border',
         shadow: 'shadow-sm',
       };
 
     case 'testimonial':
       return {
-        background: 'bg-white',
-        text: 'text-charcoal',
-        border: 'border-gray-medium',
+        background: 'bg-card',
+        text: 'text-card-foreground',
+        border: 'border-border',
         shadow: 'shadow-md',
       };
 
     case 'cta':
       if (priority === 'high') {
         return {
-          background: 'bg-blue-accent',
-          text: 'text-white',
-          border: 'border-blue-accent',
+          background: 'bg-primary',
+          text: 'text-primary-foreground',
+          border: 'border-primary',
           shadow: 'shadow-lg',
         };
       } else {
         return {
-          background: 'bg-white',
-          text: 'text-charcoal',
-          border: 'border-blue-accent',
+          background: 'bg-card',
+          text: 'text-card-foreground',
+          border: 'border-primary',
           shadow: 'shadow-md',
         };
       }
 
     case 'meta':
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
+        background: 'bg-muted',
+        text: 'text-foreground',
         border: 'border-transparent',
         shadow: 'shadow-xs',
       };
 
     default:
       return {
-        background: 'bg-gray-light',
-        text: 'text-charcoal',
+        background: 'bg-muted',
+        text: 'text-foreground',
         border: 'border-transparent',
         shadow: 'shadow-sm',
       };
@@ -142,23 +148,24 @@ export function getInteractiveStates(sectionType: SectionType): {
   switch (sectionType) {
     case 'hero':
       return {
-        focus: 'focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-charcoal',
-        hover: 'hover:bg-white hover:text-charcoal',
-        active: 'active:bg-gray-light',
+        focus:
+          'focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background',
+        hover: 'hover:bg-card hover:text-card-foreground',
+        active: 'active:bg-muted',
       };
 
     case 'cta':
       return {
-        focus: 'focus:ring-2 focus:ring-blue-accent focus:ring-offset-2',
-        hover: 'hover:bg-blue-accent/90',
-        active: 'active:bg-blue-accent/80',
+        focus: 'focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        hover: 'hover:bg-primary/90',
+        active: 'active:bg-primary/80',
       };
 
     default:
       return {
-        focus: 'focus:ring-2 focus:ring-blue-accent focus:ring-offset-2',
-        hover: 'hover:bg-gray-medium/20',
-        active: 'active:bg-gray-medium/30',
+        focus: 'focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        hover: 'hover:bg-muted/20',
+        active: 'active:bg-muted/30',
       };
   }
 }
@@ -171,22 +178,22 @@ export function getAccessibilityClasses(sectionType: SectionType): string[] {
 
   switch (sectionType) {
     case 'hero':
-      classes.push('text-white', 'contrast-200');
+      classes.push('text-foreground', 'contrast-200');
       break;
     case 'content':
-      classes.push('text-charcoal', 'contrast-150');
+      classes.push('text-foreground', 'contrast-150');
       break;
     case 'form':
-      classes.push('text-charcoal', 'contrast-150');
+      classes.push('text-foreground', 'contrast-150');
       break;
     case 'testimonial':
-      classes.push('text-charcoal', 'contrast-150');
+      classes.push('text-foreground', 'contrast-150');
       break;
     case 'cta':
-      classes.push('text-white', 'contrast-200');
+      classes.push('text-primary-foreground', 'contrast-200');
       break;
     default:
-      classes.push('text-charcoal', 'contrast-150');
+      classes.push('text-foreground', 'contrast-150');
   }
 
   return classes;
@@ -202,7 +209,7 @@ export function getCompleteBackgroundSystem(
 ): string {
   const baseClasses = getBackgroundClasses(sectionType, priority);
   const accessibilityClasses = getAccessibilityClasses(sectionType);
-  
+
   let classes = [
     baseClasses.background,
     baseClasses.text,
@@ -221,6 +228,29 @@ export function getCompleteBackgroundSystem(
   }
 
   return classes.join(' ');
+}
+
+/**
+ * Get background class string for easy use
+ */
+export function getBackgroundClassString(
+  sectionType: SectionType,
+  priority: PriorityLevel = 'medium'
+): string {
+  const classes = getBackgroundClasses(sectionType, priority);
+  return [classes.background, classes.text, classes.border, classes.shadow]
+    .filter(Boolean)
+    .join(' ');
+}
+
+/**
+ * Get background classes from config object
+ */
+export function getBackgroundClassesFromConfig(config: {
+  sectionType: SectionType;
+  priority: PriorityLevel;
+}): BackgroundClasses {
+  return getBackgroundClasses(config.sectionType, config.priority);
 }
 
 /**

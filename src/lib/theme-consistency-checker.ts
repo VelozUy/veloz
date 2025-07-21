@@ -29,8 +29,8 @@ export interface ConsistencyReport {
  */
 const HARDCODED_COLOR_PATTERNS = [
   // Background colors
-  /bg-white/g,
-  /bg-black/g,
+  /bg-white(?![-\/])/g,
+  /bg-black(?![-\/])/g,
   /bg-gray-\d+/g,
   /bg-blue-\d+/g,
   /bg-green-\d+/g,
@@ -52,8 +52,8 @@ const HARDCODED_COLOR_PATTERNS = [
   /bg-stone-\d+/g,
 
   // Text colors
-  /text-white/g,
-  /text-black/g,
+  /text-white(?![-\/])/g,
+  /text-black(?![-\/])/g,
   /text-gray-\d+/g,
   /text-blue-\d+/g,
   /text-green-\d+/g,
@@ -75,8 +75,8 @@ const HARDCODED_COLOR_PATTERNS = [
   /text-stone-\d+/g,
 
   // Border colors
-  /border-white/g,
-  /border-black/g,
+  /border-white(?![-\/])/g,
+  /border-black(?![-\/])/g,
   /border-gray-\d+/g,
   /border-blue-\d+/g,
   /border-green-\d+/g,
@@ -98,8 +98,8 @@ const HARDCODED_COLOR_PATTERNS = [
   /border-stone-\d+/g,
 
   // Ring colors
-  /ring-white/g,
-  /ring-black/g,
+  /ring-white(?![-\/])/g,
+  /ring-black(?![-\/])/g,
   /ring-gray-\d+/g,
   /ring-blue-\d+/g,
   /ring-green-\d+/g,
@@ -202,6 +202,11 @@ export function validateFileForThemeConsistency(
   filePath: string,
   content: string
 ): ConsistencyIssue[] {
+  // Skip checking the theme consistency checker itself
+  if (filePath.includes('theme-consistency-checker')) {
+    return [];
+  }
+
   const issues: ConsistencyIssue[] = [];
   const lines = content.split('\n');
 

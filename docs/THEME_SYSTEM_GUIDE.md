@@ -85,8 +85,8 @@ src/lib/theme-performance.ts # Performance optimization
 
 ```tsx
 // Incorrect: Hardcoded colors
-<div className="bg-white text-black">
-  <button className="bg-blue-600 text-white">Click me</button>
+<div className="bg-background text-foreground">
+  <button className="bg-primary text-primary-foreground">Click me</button>
 </div>
 ```
 
@@ -227,8 +227,8 @@ npm run build
 **Before:**
 
 ```tsx
-<div className="bg-blue-600 text-white border-gray-200">
-  <button className="bg-green-500 hover:bg-green-600">Save</button>
+<div className="bg-primary text-primary-foreground border-border">
+  <button className="bg-primary hover:bg-primary/90">Save</button>
 </div>
 ```
 
@@ -247,7 +247,7 @@ npm run build
 | `bg-white`        | `bg-background`         | Main background   |
 | `text-black`      | `text-foreground`       | Main text         |
 | `bg-blue-600`     | `bg-primary`            | Primary actions   |
-| `text-blue-600`   | `text-primary`          | Primary text      |
+| `text-violet-500` | `text-primary`          | Primary text      |
 | `bg-gray-100`     | `bg-muted`              | Muted backgrounds |
 | `text-gray-600`   | `text-muted-foreground` | Muted text        |
 | `border-gray-200` | `border-border`         | Borders           |

@@ -173,7 +173,7 @@ describe('Hero Component', () => {
       render(<Hero {...defaultProps} />);
 
       const aboutButton = screen.getByText('Sobre Nosotros');
-      expect(aboutButton).toHaveClass('bg-white/10');
+      expect(aboutButton).toHaveClass('bg-background/10');
 
       const galleryButton = screen.getByText('Nuestro Trabajo');
       expect(galleryButton).toHaveClass('border');
@@ -182,13 +182,7 @@ describe('Hero Component', () => {
 
   describe('Video Functionality', () => {
     it('handles video loading states', () => {
-      render(
-        <Hero
-          {...defaultProps}
-          backgroundVideo="video.mp4"
-          isVideoLoading={true}
-        />
-      );
+      render(<Hero {...defaultProps} backgroundVideo="video.mp4" />);
 
       const video = document.querySelector('video');
       expect(video).toHaveClass('opacity-0');

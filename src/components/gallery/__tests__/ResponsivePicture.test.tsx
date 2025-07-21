@@ -186,7 +186,7 @@ describe('ResponsivePicture', () => {
     render(<ResponsivePicture {...defaultProps} onClick={() => {}} />);
 
     const container = screen.getByTestId('next-image').closest('.relative');
-    const overlay = container?.querySelector('.bg-black\\/0');
+    const overlay = container?.querySelector('.bg-background\\/0');
     expect(overlay).toBeInTheDocument();
   });
 
@@ -194,7 +194,7 @@ describe('ResponsivePicture', () => {
     render(<ResponsivePicture {...defaultProps} />);
 
     const container = screen.getByTestId('next-image').closest('.relative');
-    const overlay = container?.querySelector('.bg-black\\/0');
+    const overlay = container?.querySelector('.bg-background\\/0');
     expect(overlay).not.toBeInTheDocument();
   });
 

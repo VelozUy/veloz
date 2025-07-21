@@ -160,8 +160,10 @@ describe('Border Radius Utilities', () => {
     });
 
     it('should work with combined classes', () => {
-      expect(isValidBorderRadius('bg-white rounded-lg border')).toBe(true);
-      expect(isValidBorderRadius('bg-white rounded-xl border')).toBe(false);
+      expect(isValidBorderRadius('bg-background rounded-lg border')).toBe(true);
+      expect(isValidBorderRadius('bg-background rounded-xl border')).toBe(
+        false
+      );
     });
   });
 
@@ -253,7 +255,7 @@ describe('Border Radius Utilities', () => {
     });
 
     it('should handle className with no border radius', () => {
-      expect(isValidBorderRadius('bg-white text-black')).toBe(false);
+      expect(isValidBorderRadius('bg-background text-foreground')).toBe(false);
     });
 
     it('should handle multiple border radius classes', () => {
@@ -262,7 +264,7 @@ describe('Border Radius Utilities', () => {
 
     it('should handle complex className strings', () => {
       const complexClass =
-        'bg-white hover:bg-gray-100 rounded-lg border border-gray-200 px-4 py-2';
+        'bg-background hover:bg-muted rounded-lg border border-border px-4 py-2';
       expect(isValidBorderRadius(complexClass)).toBe(true);
     });
   });

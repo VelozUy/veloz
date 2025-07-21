@@ -12,85 +12,91 @@ describe('Background Color System Utilities', () => {
   describe('getBackgroundClasses', () => {
     it('should return correct classes for hero section', () => {
       const classes = getBackgroundClasses('hero', 'primary');
-      expect(classes).toBe('bg-charcoal text-white');
+      expect(classes).toBe('bg-background text-foreground');
     });
 
     it('should return correct classes for content section', () => {
       const classes = getBackgroundClasses('content', 'primary');
-      expect(classes).toBe('bg-gray-light text-charcoal');
+      expect(classes).toBe('bg-muted text-foreground');
     });
 
     it('should return correct classes for form section', () => {
       const classes = getBackgroundClasses('form', 'primary');
-      expect(classes).toBe('bg-gray-light text-charcoal');
+      expect(classes).toBe('bg-muted text-foreground');
     });
 
     it('should return correct classes for testimonial section', () => {
       const classes = getBackgroundClasses('testimonial', 'primary');
-      expect(classes).toBe('bg-white text-charcoal border border-gray-medium');
+      expect(classes).toBe('bg-card text-foreground border border-border');
     });
 
     it('should return correct classes for cta section', () => {
       const classes = getBackgroundClasses('cta', 'primary');
-      expect(classes).toBe('bg-blue-accent text-white');
+      expect(classes).toBe('bg-primary text-primary-foreground');
     });
 
     it('should apply elevated variant correctly', () => {
       const classes = getBackgroundClasses('hero', 'primary', 'elevated');
-      expect(classes).toBe('bg-charcoal text-white shadow-lg');
+      expect(classes).toBe('bg-background text-foreground shadow-lg');
     });
 
     it('should apply inverted variant correctly', () => {
       const classes = getBackgroundClasses('hero', 'primary', 'inverted');
-      expect(classes).toBe('bg-white text-charcoal');
+      expect(classes).toBe('bg-card text-foreground');
     });
 
     it('should apply subtle variant correctly', () => {
       const classes = getBackgroundClasses('hero', 'primary', 'subtle');
-      expect(classes).toBe('bg-charcoal/50 text-white');
+      expect(classes).toBe('bg-background/50 text-foreground');
     });
 
     it('should handle secondary priority', () => {
       const classes = getBackgroundClasses('hero', 'secondary');
-      expect(classes).toBe('bg-charcoal/90 text-white');
+      expect(classes).toBe('bg-background/90 text-foreground');
     });
 
     it('should handle tertiary priority', () => {
       const classes = getBackgroundClasses('hero', 'tertiary');
-      expect(classes).toBe('bg-charcoal/80 text-white');
+      expect(classes).toBe('bg-background/80 text-foreground');
     });
   });
 
   describe('getButtonClasses', () => {
     it('should return correct button classes for hero section', () => {
       const classes = getButtonClasses('hero', 'primary');
-      expect(classes).toBe('bg-blue-accent text-white hover:bg-blue-accent/90');
+      expect(classes).toBe(
+        'bg-primary text-primary-foreground hover:bg-primary/90'
+      );
     });
 
     it('should return correct button classes for content section', () => {
       const classes = getButtonClasses('content', 'primary');
-      expect(classes).toBe('bg-blue-accent text-white hover:bg-blue-accent/90');
+      expect(classes).toBe(
+        'bg-primary text-primary-foreground hover:bg-primary/90'
+      );
     });
 
     it('should return correct button classes for form section', () => {
       const classes = getButtonClasses('form', 'primary');
-      expect(classes).toBe('bg-blue-accent text-white hover:bg-blue-accent/90');
+      expect(classes).toBe(
+        'bg-primary text-primary-foreground hover:bg-primary/90'
+      );
     });
 
     it('should return correct button classes for cta section', () => {
       const classes = getButtonClasses('cta', 'primary');
-      expect(classes).toBe('bg-white text-charcoal hover:bg-gray-light');
+      expect(classes).toBe('bg-card text-foreground hover:bg-muted');
     });
 
     it('should handle secondary priority', () => {
       const classes = getButtonClasses('hero', 'secondary');
-      expect(classes).toBe('bg-white text-charcoal hover:bg-gray-light');
+      expect(classes).toBe('bg-card text-foreground hover:bg-muted');
     });
 
     it('should handle tertiary priority', () => {
       const classes = getButtonClasses('hero', 'tertiary');
       expect(classes).toBe(
-        'bg-transparent text-white border border-white hover:bg-white hover:text-charcoal'
+        'bg-transparent text-foreground border border-border hover:bg-card hover:text-foreground'
       );
     });
   });
@@ -98,32 +104,34 @@ describe('Background Color System Utilities', () => {
   describe('getCardClasses', () => {
     it('should return correct card classes for hero section', () => {
       const classes = getCardClasses('hero', 'primary');
-      expect(classes).toBe('bg-white text-charcoal shadow-lg');
+      expect(classes).toBe('bg-card text-foreground shadow-lg');
     });
 
     it('should return correct card classes for content section', () => {
       const classes = getCardClasses('content', 'primary');
-      expect(classes).toBe('bg-white text-charcoal border border-gray-medium');
+      expect(classes).toBe('bg-card text-foreground border border-border');
     });
 
     it('should return correct card classes for testimonial section', () => {
       const classes = getCardClasses('testimonial', 'primary');
-      expect(classes).toBe('bg-white text-charcoal border border-gray-medium');
+      expect(classes).toBe('bg-card text-foreground border border-border');
     });
 
     it('should return correct card classes for cta section', () => {
       const classes = getCardClasses('cta', 'primary');
-      expect(classes).toBe('bg-white text-charcoal shadow-lg');
+      expect(classes).toBe('bg-card text-foreground shadow-lg');
     });
 
     it('should handle secondary priority', () => {
       const classes = getCardClasses('hero', 'secondary');
-      expect(classes).toBe('bg-gray-light text-charcoal');
+      expect(classes).toBe('bg-muted text-foreground');
     });
 
     it('should handle tertiary priority', () => {
       const classes = getCardClasses('hero', 'tertiary');
-      expect(classes).toBe('bg-transparent text-white border border-white');
+      expect(classes).toBe(
+        'bg-transparent text-foreground border border-border'
+      );
     });
   });
 
@@ -142,7 +150,7 @@ describe('Background Color System Utilities', () => {
       sectionTypes.forEach(sectionType => {
         const classes = getInputClasses(sectionType);
         expect(classes).toBe(
-          'bg-white text-charcoal border-gray-medium focus:ring-blue-accent'
+          'bg-input text-foreground border-border focus:ring-ring'
         );
       });
     });
@@ -151,17 +159,17 @@ describe('Background Color System Utilities', () => {
   describe('getLinkClasses', () => {
     it('should return correct link classes for content sections', () => {
       const classes = getLinkClasses('content');
-      expect(classes).toBe('text-blue-accent hover:text-blue-accent/80');
+      expect(classes).toBe('text-primary hover:text-primary/80');
     });
 
     it('should return correct link classes for cta sections', () => {
       const classes = getLinkClasses('cta');
-      expect(classes).toBe('text-white hover:text-gray-light');
+      expect(classes).toBe('text-foreground hover:text-muted-foreground');
     });
 
     it('should return correct link classes for navigation sections', () => {
       const classes = getLinkClasses('navigation');
-      expect(classes).toBe('text-white hover:text-gray-light');
+      expect(classes).toBe('text-foreground hover:text-muted-foreground');
     });
 
     it('should return correct link classes for other sections', () => {
@@ -174,7 +182,7 @@ describe('Background Color System Utilities', () => {
 
       sectionTypes.forEach(sectionType => {
         const classes = getLinkClasses(sectionType);
-        expect(classes).toBe('text-blue-accent hover:text-blue-accent/80');
+        expect(classes).toBe('text-primary hover:text-primary/80');
       });
     });
   });
@@ -212,12 +220,12 @@ describe('Background Color System Utilities', () => {
   describe('Edge Cases', () => {
     it('should handle undefined priority with default', () => {
       const classes = getBackgroundClasses('hero');
-      expect(classes).toBe('bg-charcoal text-white');
+      expect(classes).toBe('bg-background text-foreground');
     });
 
     it('should handle undefined variant', () => {
       const classes = getBackgroundClasses('hero', 'primary', undefined);
-      expect(classes).toBe('bg-charcoal text-white');
+      expect(classes).toBe('bg-background text-foreground');
     });
 
     it('should return consistent results for same inputs', () => {

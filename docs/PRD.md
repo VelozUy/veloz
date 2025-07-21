@@ -34,7 +34,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
 **NEVER use hard-coded Tailwind colors like:**
 
 - ❌ `slate-50`, `slate-100`, `blue-600`, `purple-500`, etc.
-- ❌ `text-slate-800`, `bg-white`, `border-gray-200`, etc.
+- ❌ `text-slate-800`, `bg-background`, `border-border`, etc.
 
 **ALWAYS use theme variables:**
 

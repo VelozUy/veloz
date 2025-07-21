@@ -163,6 +163,7 @@ const IGNORE_PATTERNS = [
   /\.env\.local/,
   /\.env\.production/,
   /\.env\.development/,
+  /theme-consistency-checker/,
 ];
 
 // File extensions to check

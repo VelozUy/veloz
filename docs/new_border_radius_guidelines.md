@@ -103,7 +103,7 @@ borderRadius: {
 </button>
 
 // Status badge
-<span className="rounded-full px-2 py-1 bg-green-100 text-green-800 text-xs">
+<span className="rounded-full px-2 py-1 bg-primary/10 text-primary text-xs">
   Completed
 </span>
 ```

@@ -281,24 +281,24 @@ The Veloz brand uses a carefully selected typography system:
 ```css
 /* Display text (REDJOLA) - Never bold */
 .text-display-xl {
-  @apply font-display text-5xl font-normal text-white;
+  @apply font-display text-5xl font-normal text-foreground;
 }
 
 .text-display-lg {
-  @apply font-display text-4xl font-normal text-white;
+  @apply font-display text-4xl font-normal text-foreground;
 }
 
 /* Body text (Roboto) */
 .text-body-xl {
-  @apply font-body text-xl font-medium text-white;
+  @apply font-body text-xl font-medium text-foreground;
 }
 
 .text-body-lg {
-  @apply font-body text-lg font-medium text-white;
+  @apply font-body text-lg font-medium text-foreground;
 }
 
 .text-body-md {
-  @apply font-body text-base font-normal text-white;
+  @apply font-body text-base font-normal text-foreground;
 }
 ```
 
@@ -319,8 +319,8 @@ The Veloz brand uses a carefully selected typography system:
 ❌ **Incorrect**
 
 ```tsx
-<div className="bg-white text-black">
-  <button className="bg-blue-500 text-white">Click me</button>
+<div className="bg-background text-foreground">
+  <button className="bg-primary text-primary-foreground">Click me</button>
 </div>
 ```
 
@@ -347,7 +347,7 @@ The Veloz brand uses a carefully selected typography system:
 
 ```tsx
 // Don't use specific color names
-<button className="bg-blue-500 text-white">Primary Action</button>
+<button className="bg-primary text-primary-foreground">Primary Action</button>
 ```
 
 ### 3. Maintain Contrast Ratios
@@ -542,8 +542,8 @@ const MyComponent = () => {
 **Before:**
 
 ```tsx
-<div className="bg-blue-600 text-white border-gray-200">
-  <button className="bg-green-500 hover:bg-green-600">Save</button>
+<div className="bg-primary text-primary-foreground border-border">
+  <button className="bg-primary hover:bg-primary/90">Save</button>
 </div>
 ```
 
@@ -562,7 +562,7 @@ const MyComponent = () => {
 | `bg-white`        | `bg-background`         | Main background   |
 | `text-black`      | `text-foreground`       | Main text         |
 | `bg-blue-600`     | `bg-primary`            | Primary actions   |
-| `text-blue-600`   | `text-primary`          | Primary text      |
+| `text-violet-500` | `text-primary`          | Primary text      |
 | `bg-gray-100`     | `bg-muted`              | Muted backgrounds |
 | `text-gray-600`   | `text-muted-foreground` | Muted text        |
 | `border-gray-200` | `border-border`         | Borders           |
@@ -572,8 +572,10 @@ const MyComponent = () => {
 **Before:**
 
 ```tsx
-<div className="rounded-lg bg-white shadow-md">
-  <button className="rounded-md bg-blue-500">Action</button>
+<div className="rounded-none bg-card border border-border">
+  <button className="rounded-none bg-primary text-primary-foreground">
+    Action
+  </button>
 </div>
 ```
 

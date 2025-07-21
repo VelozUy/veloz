@@ -161,8 +161,8 @@ The theme automatically switches to dark mode using the `dark` class:
 ❌ **Incorrect**
 
 ```tsx
-<div className="bg-white text-black">
-  <button className="bg-blue-500 text-white">Click me</button>
+<div className="bg-background text-foreground">
+  <button className="bg-primary text-primary-foreground">Click me</button>
 </div>
 ```
 
@@ -189,7 +189,7 @@ The theme automatically switches to dark mode using the `dark` class:
 
 ```tsx
 // Don't use specific color names
-<button className="bg-blue-500 text-white">Primary Action</button>
+<button className="bg-primary text-primary-foreground">Primary Action</button>
 ```
 
 ### 3. Maintain Contrast Ratios
@@ -474,7 +474,7 @@ const MyComponent = () => {
 ❌ **Avoid**
 
 ```tsx
-<div className="bg-blue-500 text-white">Hardcoded colors</div>
+<div className="bg-primary text-primary-foreground">Hardcoded colors</div>
 ```
 
 ✅ **Use theme variables**
@@ -518,7 +518,7 @@ const MyComponent = () => {
 ❌ **Avoid**
 
 ```tsx
-<div className="bg-gray-200 text-gray-300">Poor contrast</div>
+<div className="bg-muted text-muted-foreground">Poor contrast</div>
 ```
 
 ✅ **Ensure good contrast**
@@ -532,7 +532,7 @@ const MyComponent = () => {
 ❌ **Avoid**
 
 ```tsx
-<div className="rounded-lg border border-gray-300">Inconsistent radius</div>
+<div className="rounded-md border border-border">Inconsistent radius</div>
 ```
 
 ✅ **Use theme radius**

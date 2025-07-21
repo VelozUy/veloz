@@ -34,11 +34,11 @@ jest.mock('@/constants/categories', () => ({
       lineHeight: 'leading-relaxed',
     },
     colors: {
-      primary: 'text-rose-600',
-      secondary: 'text-rose-500',
-      accent: 'text-rose-400',
-      background: 'bg-rose-50',
-      text: 'text-gray-800',
+      primary: 'text-primary',
+      secondary: 'text-primary/80',
+      accent: 'text-primary/60',
+      background: 'bg-primary/10',
+      text: 'text-foreground',
     },
     icon: '💒',
     description: {
@@ -72,7 +72,7 @@ describe('CategoryTypography', () => {
     expect(element).toHaveClass('text-base');
     expect(element).toHaveClass('tracking-wide');
     expect(element).toHaveClass('leading-relaxed');
-    expect(element).toHaveClass('text-gray-800');
+    expect(element).toHaveClass('text-foreground');
   });
 
   it('applies different variants correctly', () => {

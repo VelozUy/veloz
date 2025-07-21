@@ -14,52 +14,52 @@ describe('Background Utils', () => {
   describe('getBackgroundClasses', () => {
     it('should return hero classes for high priority', () => {
       const classes = getBackgroundClasses('hero', 'high');
-      expect(classes.background).toBe('bg-charcoal');
-      expect(classes.text).toBe('text-white');
+      expect(classes.background).toBe('bg-background');
+      expect(classes.text).toBe('text-foreground');
       expect(classes.shadow).toBe('shadow-lg');
     });
 
     it('should return content classes for medium priority', () => {
       const classes = getBackgroundClasses('content', 'medium');
-      expect(classes.background).toBe('bg-gray-light');
-      expect(classes.text).toBe('text-charcoal');
-      expect(classes.border).toBe('border-gray-medium/50');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
+      expect(classes.border).toBe('border-transparent');
     });
 
     it('should return form classes for high priority', () => {
       const classes = getBackgroundClasses('form', 'high');
-      expect(classes.background).toBe('bg-white');
-      expect(classes.text).toBe('text-charcoal');
-      expect(classes.border).toBe('border-gray-medium');
+      expect(classes.background).toBe('bg-card');
+      expect(classes.text).toBe('text-card-foreground');
+      expect(classes.border).toBe('border-border');
       expect(classes.shadow).toBe('shadow-sm');
     });
 
     it('should return testimonial classes for medium priority', () => {
       const classes = getBackgroundClasses('testimonial', 'medium');
-      expect(classes.background).toBe('bg-white/95');
-      expect(classes.text).toBe('text-charcoal');
-      expect(classes.border).toBe('border-gray-medium/70');
+      expect(classes.background).toBe('bg-card');
+      expect(classes.text).toBe('text-card-foreground');
+      expect(classes.border).toBe('border-border');
       expect(classes.shadow).toBe('shadow-md');
     });
 
     it('should return CTA classes for high priority', () => {
       const classes = getBackgroundClasses('cta', 'high');
-      expect(classes.background).toBe('bg-blue-accent');
-      expect(classes.text).toBe('text-white');
+      expect(classes.background).toBe('bg-primary');
+      expect(classes.text).toBe('text-primary-foreground');
       expect(classes.shadow).toBe('shadow-lg');
     });
 
     it('should return meta classes for low priority', () => {
       const classes = getBackgroundClasses('meta', 'low');
-      expect(classes.background).toBe('bg-gray-light/50');
-      expect(classes.text).toBe('text-charcoal/60');
-      expect(classes.border).toBe('border-gray-medium/20');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
+      expect(classes.border).toBe('border-transparent');
     });
 
     it('should include responsive classes when requested', () => {
-      const classes = getBackgroundClasses('hero', 'high', true);
-      expect(classes.background).toBe('bg-charcoal');
-      expect(classes.text).toBe('text-white');
+      const classes = getBackgroundClasses('hero', 'high');
+      expect(classes.background).toBe('bg-background');
+      expect(classes.text).toBe('text-foreground');
       expect(classes.shadow).toBe('shadow-lg');
     });
   });
@@ -67,21 +67,17 @@ describe('Background Utils', () => {
   describe('getBackgroundClassString', () => {
     it('should return concatenated class string for hero high priority', () => {
       const classString = getBackgroundClassString('hero', 'high');
-      expect(classString).toBe('bg-charcoal text-white shadow-lg');
+      expect(classString).toBe('bg-background text-foreground shadow-lg');
     });
 
     it('should return concatenated class string for content medium priority', () => {
       const classString = getBackgroundClassString('content', 'medium');
-      expect(classString).toBe(
-        'bg-gray-light text-charcoal border-gray-medium/50'
-      );
+      expect(classString).toBe('bg-muted text-foreground border-transparent');
     });
 
     it('should handle classes without optional properties', () => {
       const classString = getBackgroundClassString('meta', 'low');
-      expect(classString).toBe(
-        'bg-gray-light/50 text-charcoal/60 border-gray-medium/20'
-      );
+      expect(classString).toBe('bg-muted text-foreground border-transparent');
     });
   });
 
@@ -126,8 +122,8 @@ describe('Background Utils', () => {
       };
 
       const classes = getBackgroundClassesFromConfig(config);
-      expect(classes.background).toBe('bg-charcoal');
-      expect(classes.text).toBe('text-white');
+      expect(classes.background).toBe('bg-background');
+      expect(classes.text).toBe('text-foreground');
       expect(classes.shadow).toBe('shadow-lg');
     });
 
@@ -138,16 +134,16 @@ describe('Background Utils', () => {
       };
 
       const classes = getBackgroundClassesFromConfig(config);
-      expect(classes.background).toBe('bg-gray-light');
-      expect(classes.text).toBe('text-charcoal');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle unknown section types gracefully', () => {
       const classes = getBackgroundClasses('unknown' as SectionType, 'medium');
-      expect(classes.background).toBe('bg-gray-light');
-      expect(classes.text).toBe('text-charcoal');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
     });
 
     it('should handle unknown priority levels gracefully', () => {
@@ -155,8 +151,8 @@ describe('Background Utils', () => {
         'content',
         'unknown' as PriorityLevel
       );
-      expect(classes.background).toBe('bg-gray-light');
-      expect(classes.text).toBe('text-charcoal');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
     });
   });
 
@@ -166,32 +162,32 @@ describe('Background Utils', () => {
         {
           section: 'hero' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-charcoal',
+          expectedBg: 'bg-background',
         },
         {
           section: 'content' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-white',
+          expectedBg: 'bg-card',
         },
         {
           section: 'form' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-white',
+          expectedBg: 'bg-card',
         },
         {
           section: 'testimonial' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-white',
+          expectedBg: 'bg-card',
         },
         {
           section: 'cta' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-blue-accent',
+          expectedBg: 'bg-primary',
         },
         {
           section: 'meta' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-gray-light',
+          expectedBg: 'bg-muted',
         },
       ];
 
@@ -206,32 +202,32 @@ describe('Background Utils', () => {
         {
           section: 'hero' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-white',
+          expectedText: 'text-foreground',
         },
         {
           section: 'content' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-charcoal',
+          expectedText: 'text-foreground',
         },
         {
           section: 'form' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-charcoal',
+          expectedText: 'text-foreground',
         },
         {
           section: 'testimonial' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-charcoal',
+          expectedText: 'text-foreground',
         },
         {
           section: 'cta' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-white',
+          expectedText: 'text-primary-foreground',
         },
         {
           section: 'meta' as SectionType,
           priority: 'high' as PriorityLevel,
-          expectedText: 'text-charcoal/80',
+          expectedText: 'text-muted-foreground',
         },
       ];
 

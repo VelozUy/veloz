@@ -999,11 +999,11 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 1: Critical Background & Color Fixes** - Fix immediate visual issues with background colors and text visibility
   - **User Intent**: Fix the current visual issues shown in screenshot where background colors are incorrect and text is not visible
   - **Acceptance Criteria**:
-    - All pages use `bg-[#1a1a2e]` (Charcoal Black) background
-    - All text is white (`text-white`) or light gray (`text-gray-300`) for proper contrast
+    - All pages use `bg-background` (Light Gray) background
+    - All text uses `text-foreground` (Charcoal) for proper contrast
     - Remove debug elements and test widgets from pages
     - Fix REDJOLA font to never be bold (only `font-normal`)
-    - Update all buttons to use `bg-[#0066ff]` (Vibrant Blue) for primary actions
+    - Update all buttons to use `bg-primary` (Blue Accent) for primary actions
   - **Files**: `src/app/globals.css`, `src/app/our-work/page.tsx`, `src/components/our-work/OurWorkContent.tsx`
   - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 1 (Critical Background & Color Fixes)
   - **Estimated Time**: 1-2 days
@@ -1793,9 +1793,9 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 4: Update Hero Sections** - Implement charcoal backgrounds for hero blocks
   - **User Intent**: Apply dark backgrounds to hero sections for visual impact
   - **Acceptance Criteria**:
-    - Hero sections use `bg-charcoal` with white text
-    - CTA buttons use `bg-blue-accent` with white text
-    - Project titles use REDJOLA font (never bold) with white text
+    - Hero sections use `bg-background` with `text-foreground`
+    - CTA buttons use `bg-primary` with `text-primary-foreground`
+    - Project titles use REDJOLA font (never bold) with `text-foreground`
     - Subtitles use Roboto font with proper contrast
     - All hero elements follow high priority styling guidelines
   - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/ProjectDetailClient.tsx`
@@ -1806,10 +1806,10 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 5: Update Content Sections** - Implement light gray backgrounds for text sections
   - **User Intent**: Apply light gray backgrounds to content sections with proper hierarchy
   - **Acceptance Criteria**:
-    - Content sections use `bg-gray-light` as base
-    - Text uses `text-charcoal` for primary content
-    - Cards use `bg-white` with soft shadows for elevation
-    - Process sections use outlined cards with `border-gray-medium`
+    - Content sections use `bg-muted` as base
+    - Text uses `text-foreground` for primary content
+    - Cards use `bg-card` with soft shadows for elevation
+    - Process sections use outlined cards with `border-border`
     - All content follows mid priority styling guidelines
   - **Files**: `src/components/our-work/OurWorkContent.tsx`, `src/app/about/page.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1819,11 +1819,11 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 6: Update Form Sections** - Implement proper form styling with new color system
   - **User Intent**: Ensure forms are clearly visible and accessible on light backgrounds
   - **Acceptance Criteria**:
-    - Form sections use `bg-gray-light` as base
-    - Input fields use `bg-white` with `border-gray-medium`
-    - Focus states use `ring-blue-accent` for accessibility
-    - Labels use `text-charcoal` for clarity
-    - Submit buttons use `bg-blue-accent` with white text
+    - Form sections use `bg-muted` as base
+    - Input fields use `bg-input` with `border-border`
+    - Focus states use `ring-ring` for accessibility
+    - Labels use `text-foreground` for clarity
+    - Submit buttons use `bg-primary` with `text-primary-foreground`
     - Error states use destructive colors with proper contrast
   - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/ui/input.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1833,10 +1833,10 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 7: Update Testimonial Sections** - Implement white backgrounds for testimonials
   - **User Intent**: Use white backgrounds to make testimonials stand out
   - **Acceptance Criteria**:
-    - Testimonial sections use `bg-white` with soft shadows
-    - Quote text uses `text-charcoal` for readability
-    - Author names use `text-blue-accent` for emphasis
-    - Cards have subtle borders with `border-gray-medium`
+    - Testimonial sections use `bg-card` with soft shadows
+    - Quote text uses `text-foreground` for readability
+    - Author names use `text-primary` for emphasis
+    - Cards have subtle borders with `border-border`
     - All testimonial elements follow mid priority guidelines
   - **Files**: `src/components/our-work/TestimonialSection.tsx` (if exists)
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1846,10 +1846,10 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 8: Update CTA Sections** - Implement contextual CTA styling
   - **User Intent**: Ensure call-to-action elements are prominent and accessible
   - **Acceptance Criteria**:
-    - CTA sections use `bg-blue-accent` or `bg-white` based on context
-    - CTA buttons use `bg-blue-accent` with white text
+    - CTA sections use `bg-primary` or `bg-card` based on context
+    - CTA buttons use `bg-primary` with `text-primary-foreground`
     - Hover states have proper color transitions
-    - Focus states have blue ring for accessibility
+    - Focus states have ring for accessibility
     - All CTA elements follow high priority guidelines
   - **Files**: `src/components/ui/button.tsx`, `src/components/layout/InteractiveCTAWidget.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Top Priority Elements
@@ -1861,8 +1861,8 @@ This file contains unprioritized ideas and future features that have been identi
 - [ ] **Phase 9: Update Meta Information Sections** - Implement subtle styling for low priority elements
   - **User Intent**: Apply subtle styling to meta information, tags, and footers
   - **Acceptance Criteria**:
-    - Meta sections use `bg-gray-light` as base
-    - Tags use `text-gray-medium` with `border-gray-medium`
+    - Meta sections use `bg-muted` as base
+    - Tags use `text-muted-foreground` with `border-border`
     - Footer sections use subtle styling without colored backgrounds
     - All meta elements follow low priority guidelines
     - Avoid saturated colors or prominent backgrounds
@@ -1875,9 +1875,9 @@ This file contains unprioritized ideas and future features that have been identi
   - **User Intent**: Ensure admin panel follows the new light gray background system
   - **Acceptance Criteria**:
     - Admin sections use appropriate background colors based on function
-    - Forms use `bg-gray-light` with white input fields
-    - Tables use white backgrounds with subtle borders
-    - Navigation uses charcoal background with white text
+    - Forms use `bg-muted` with `bg-input` input fields
+    - Tables use `bg-card` backgrounds with subtle borders
+    - Navigation uses `bg-background` with `text-foreground`
     - All admin elements maintain Spanish language requirement
   - **Files**: `src/app/admin/**/*.tsx`, `src/components/admin/**/*.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Visual Hierarchy

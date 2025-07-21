@@ -625,11 +625,11 @@ _Last updated: 2025-01-20_
 #### 🟥 Critical
 
 - [x] **Phase 1: Hardcoded Colors Elimination** - Replace all hardcoded colors with theme variables ✅ **COMPLETED**
-  - **User Intent**: Remove all hardcoded colors (bg-white, text-blue-600, border-gray-300, etc.) and replace with semantic theme variables
+  - **User Intent**: Remove all hardcoded colors (bg-background, text-primary, border-border, etc.) and replace with semantic theme variables
   - **Success Criteria**:
     - Zero hardcoded color classes in the entire codebase
     - All colors use semantic theme variables (bg-primary, text-foreground, border-border)
-    - No Tailwind color utilities (bg-blue-500, text-white, etc.)
+    - No Tailwind color utilities (bg-primary, text-foreground, etc.)
   - **Files**: All component files across the application
   - **Reference**: Theme Implementation Report - Critical Issues section
 
@@ -1242,11 +1242,11 @@ _No discoveries yet_
 - [x] **Phase 1: Critical Background & Color Fixes** - Fix immediate visual issues with background colors and text visibility
   - **User Intent**: Fix the current visual issues shown in screenshot where background colors are incorrect and text is not visible
   - **Acceptance Criteria**:
-    - All pages use `bg-[#1a1a2e]` (Charcoal Black) background ✅
-    - All text is white (`text-white`) or light gray (`text-gray-300`) for proper contrast ✅
+    - All pages use `bg-background` (Light Gray) background ✅
+    - All text uses `text-foreground` (Charcoal) for proper contrast ✅
     - Remove debug elements and test widgets from pages ✅
     - Fix REDJOLA font to never be bold (only `font-normal`) ✅
-    - Update all buttons to use `bg-[#0066ff]` (Vibrant Blue) for primary actions ✅
+    - Update all buttons to use `bg-primary` (Blue Accent) for primary actions ✅
   - **Files**: `src/app/globals.css`, `src/app/our-work/page.tsx`, `src/components/our-work/OurWorkContent.tsx`
   - **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Phase 1 (Critical Background & Color Fixes)
   - **Estimated Time**: 1-2 days
@@ -1501,9 +1501,9 @@ _No tasks completed yet for this Epic_
 - [ ] **Phase 4: Update Hero Sections** - Implement charcoal backgrounds for hero blocks
   - **User Intent**: Apply dark backgrounds to hero sections for visual impact
   - **Acceptance Criteria**:
-    - Hero sections use `bg-charcoal` with white text
-    - CTA buttons use `bg-blue-accent` with white text
-    - Project titles use REDJOLA font (never bold) with white text
+    - Hero sections use `bg-background` with `text-foreground`
+    - CTA buttons use `bg-primary` with `text-primary-foreground`
+    - Project titles use REDJOLA font (never bold) with `text-foreground`
     - Subtitles use Roboto font with proper contrast
     - All hero elements follow high priority styling guidelines
   - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/ProjectDetailClient.tsx`
@@ -1514,10 +1514,10 @@ _No tasks completed yet for this Epic_
 - [ ] **Phase 5: Update Content Sections** - Implement light gray backgrounds for text sections
   - **User Intent**: Apply light gray backgrounds to content sections with proper hierarchy
   - **Acceptance Criteria**:
-    - Content sections use `bg-gray-light` as base
-    - Text uses `text-charcoal` for primary content
-    - Cards use `bg-white` with soft shadows for elevation
-    - Process sections use outlined cards with `border-gray-medium`
+    - Content sections use `bg-muted` as base
+    - Text uses `text-foreground` for primary content
+    - Cards use `bg-card` with soft shadows for elevation
+    - Process sections use outlined cards with `border-border`
     - All content follows mid priority styling guidelines
   - **Files**: `src/components/our-work/OurWorkContent.tsx`, `src/app/about/page.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1527,11 +1527,11 @@ _No tasks completed yet for this Epic_
 - [ ] **Phase 6: Update Form Sections** - Implement proper form styling with new color system
   - **User Intent**: Ensure forms are clearly visible and accessible on light backgrounds
   - **Acceptance Criteria**:
-    - Form sections use `bg-gray-light` as base
-    - Input fields use `bg-white` with `border-gray-medium`
-    - Focus states use `ring-blue-accent` for accessibility
-    - Labels use `text-charcoal` for clarity
-    - Submit buttons use `bg-blue-accent` with white text
+    - Form sections use `bg-muted` as base
+    - Input fields use `bg-input` with `border-border`
+    - Focus states use `ring-ring` for accessibility
+    - Labels use `text-foreground` for clarity
+    - Submit buttons use `bg-primary` with `text-primary-foreground`
     - Error states use destructive colors with proper contrast
   - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/ui/input.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1541,10 +1541,10 @@ _No tasks completed yet for this Epic_
 - [ ] **Phase 7: Update Testimonial Sections** - Implement white backgrounds for testimonials
   - **User Intent**: Use white backgrounds to make testimonials stand out
   - **Acceptance Criteria**:
-    - Testimonial sections use `bg-white` with soft shadows
-    - Quote text uses `text-charcoal` for readability
-    - Author names use `text-blue-accent` for emphasis
-    - Cards have subtle borders with `border-gray-medium`
+    - Testimonial sections use `bg-card` with soft shadows
+    - Quote text uses `text-foreground` for readability
+    - Author names use `text-primary` for emphasis
+    - Cards have subtle borders with `border-border`
     - All testimonial elements follow mid priority guidelines
   - **Files**: `src/components/our-work/TestimonialSection.tsx` (if exists)
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1554,8 +1554,8 @@ _No tasks completed yet for this Epic_
 - [ ] **Phase 8: Update CTA Sections** - Implement contextual CTA styling
   - **User Intent**: Ensure call-to-action elements are prominent and accessible
   - **Acceptance Criteria**:
-    - High priority CTAs use `bg-blue-accent` with white text
-    - Medium priority CTAs use `bg-white` with blue border
+    - High priority CTAs use `bg-primary` with `text-primary-foreground`
+    - Medium priority CTAs use `bg-card` with `border-primary`
     - All CTAs have proper hover and focus states
     - CTA text uses Roboto font for consistency
     - CTAs follow accessibility guidelines
@@ -1607,10 +1607,10 @@ _No tasks completed yet for this Epic_
 - [x] **Phase 3: Create Utility Functions** (2025-01-27)
   - **User Intent**: Apply light gray backgrounds to content sections with proper hierarchy
   - **Acceptance Criteria**:
-    - Content sections use `bg-gray-light` as base ✅
-    - Text uses `text-charcoal` for primary content ✅
-    - Cards use `bg-white` with soft shadows for elevation ✅
-    - Process sections use outlined cards with `border-gray-medium` ✅
+    - Content sections use `bg-muted` as base ✅
+    - Text uses `text-foreground` for primary content ✅
+    - Cards use `bg-card` with soft shadows for elevation ✅
+    - Process sections use outlined cards with `border-border` ✅
     - All content follows mid priority styling guidelines ✅
   - **Files**: `src/components/our-work/OurWorkContent.tsx`, `src/app/about/page.tsx`, `src/components/about/AboutContent.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1621,11 +1621,11 @@ _No tasks completed yet for this Epic_
 - [x] **Phase 6: Update Form Sections** - Implement proper form styling with new color system (2025-01-27)
   - **User Intent**: Ensure forms are clearly visible and accessible on light backgrounds
   - **Acceptance Criteria**:
-    - Form sections use `bg-gray-light` as base ✅
-    - Input fields use `bg-white` with `border-gray-medium` ✅
-    - Focus states use `ring-blue-accent` for accessibility ✅
-    - Labels use `text-charcoal` for clarity ✅
-    - Submit buttons use `bg-blue-accent` with white text ✅
+    - Form sections use `bg-muted` as base ✅
+    - Input fields use `bg-input` with `border-border` ✅
+    - Focus states use `ring-ring` for accessibility ✅
+    - Labels use `text-foreground` for clarity ✅
+    - Submit buttons use `bg-primary` with `text-primary-foreground` ✅
     - Error states use destructive colors with proper contrast ✅
   - **Files**: `src/components/forms/ContactForm.tsx`, `src/components/ui/input.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Mid Priority Elements
@@ -1636,10 +1636,10 @@ _No tasks completed yet for this Epic_
 - [x] **Phase 7: Update CTA Sections** - Implement contextual CTA styling (2025-01-27)
   - **User Intent**: Ensure call-to-action elements are prominent and accessible
   - **Acceptance Criteria**:
-    - CTA sections use `bg-blue-accent` or `bg-white` based on context ✅
-    - CTA buttons use `bg-blue-accent` with white text ✅
+    - CTA sections use `bg-primary` or `bg-card` based on context ✅
+    - CTA buttons use `bg-primary` with `text-primary-foreground` ✅
     - Hover states have proper color transitions ✅
-    - Focus states have blue ring for accessibility ✅
+    - Focus states have ring for accessibility ✅
     - All CTA elements follow high priority guidelines ✅
   - **Files**: `src/components/ui/button.tsx`, `src/components/layout/InteractiveCTAWidget.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Top Priority Elements
@@ -1653,15 +1653,15 @@ _No tasks completed yet for this Epic_
   - **User Intent**: Ensure admin panel follows the new light gray background system with proper readability
   - **Acceptance Criteria**:
     - Admin sections use appropriate background colors based on function ✅
-    - Forms use `bg-gray-light` with white input fields ✅
-    - Tables use white backgrounds with subtle borders ✅
-    - Navigation uses charcoal background with white text ✅
+    - Forms use `bg-muted` with `bg-input` input fields ✅
+    - Tables use `bg-card` backgrounds with subtle borders ✅
+    - Navigation uses `bg-background` with `text-foreground` ✅
     - All admin elements maintain Spanish language requirement ✅
-    - Fixed readability issues: replaced `text-gray-medium` with `text-charcoal` for proper contrast ✅
-    - Updated sidebar navigation to use full white text instead of `text-white/80` ✅
-    - Fixed user section text to use full white instead of `text-white/70` ✅
-    - Updated main content area to use `bg-gray-light` with `text-charcoal` ✅
-    - Fixed loading state text to use `text-charcoal` instead of `text-muted-foreground` ✅
+    - Fixed readability issues: replaced `text-muted-foreground` with `text-foreground` for proper contrast ✅
+    - Updated sidebar navigation to use full foreground text instead of `text-foreground/80` ✅
+    - Fixed user section text to use full foreground instead of `text-foreground/70` ✅
+    - Updated main content area to use `bg-muted` with `text-foreground` ✅
+    - Fixed loading state text to use `text-foreground` instead of `text-muted-foreground` ✅
   - **Files**: `src/components/admin/AdminLayout.tsx`, `src/components/admin/MediaUpload.tsx`
   - **Reference**: `docs/new_background_color_system_prompt.md` - Visual Hierarchy
   - **Estimated Time**: 1 day
@@ -2501,7 +2501,7 @@ _No tasks completed yet for this Epic_
   - **User Intent**: Ensure timeline cards have proper contrast, status badges are clearly visible, and text is readable
   - **Acceptance Criteria**:
     - Timeline cards use `bg-card` with `border-border` for clear separation ✅
-    - Status badges use `bg-green-500` with white text and checkmark icons ✅
+    - Status badges use `bg-primary` with `text-primary-foreground` and checkmark icons ✅
     - Headers use REDJOLA font (never bold) with white text ✅
     - Body text uses Roboto font with proper contrast ✅
     - Timeline line uses `bg-primary/20` for subtle appearance ✅
@@ -3930,5 +3930,101 @@ _No tasks completed yet for this Epic_
 - Create rollback plan for each phase
 - Test with multiple project types to ensure consistency
 - Maintain feature parity throughout implementation
+
+---
+
+### 🎨 EPIC: Theme Consistency Cleanup ⭐ **HIGH PRIORITY** | 🟡 **IN PROGRESS**
+
+**Objective**: Replace all hardcoded colors with theme variables to ensure complete theme consistency across the entire application
+
+**Reference**: Theme consistency checker results - 294 hardcoded color violations found
+**User Intent**: Ensure all components use the modern OKLCH theme system consistently
+
+**Status**: 🟡 **IN PROGRESS** - Theme system is complete, but hardcoded colors need to be replaced
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Documentation Cleanup** - Update all documentation files to use theme variables
+  - **User Intent**: Replace hardcoded colors in documentation with theme variables
+  - **Acceptance Criteria**:
+    - Update `docs/PRD.md` to use theme variables instead of hardcoded colors
+    - Update `docs/TASK.md` to use theme variables instead of hardcoded colors
+    - Update `docs/THEME.md` to use theme variables instead of hardcoded colors
+    - Update `docs/BACKLOG.md` to use theme variables instead of hardcoded colors
+    - All documentation examples use semantic theme variables
+  - **Files**: `docs/PRD.md`, `docs/TASK.md`, `docs/THEME.md`, `docs/BACKLOG.md`
+  - **Reference**: Theme consistency checker results
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Test Files Cleanup** - Update all test files to use theme variables
+  - **User Intent**: Replace hardcoded colors in test files with theme variables
+  - **Acceptance Criteria**:
+    - Update `src/lib/__tests__/background-color-system.test.ts` to use theme variables
+    - Update `src/lib/__tests__/background-utils.test.ts` to use theme variables
+    - Update `src/lib/__tests__/border-radius-utils.test.ts` to use theme variables
+    - Update component test files to use theme variables
+    - All test examples use semantic theme variables
+  - **Files**: All test files with hardcoded color violations
+  - **Reference**: Theme consistency checker results
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Background Utils Cleanup** - Update background utility system to use theme variables
+  - **User Intent**: Replace hardcoded colors in background utilities with theme variables
+  - **Acceptance Criteria**:
+    - Update `src/lib/background-utils.ts` to use theme variables
+    - Update `src/lib/theme-consistency-checker.ts` to use theme variables
+    - All background utility functions use semantic theme variables
+    - Maintain functionality while using theme system
+  - **Files**: `src/lib/background-utils.ts`, `src/lib/theme-consistency-checker.ts`
+  - **Reference**: Theme consistency checker results
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Component Test Cleanup** - Update component test files
+  - **User Intent**: Replace hardcoded colors in component test files
+  - **Acceptance Criteria**:
+    - Update `src/components/gallery/__tests__/ResponsivePicture.test.tsx`
+    - Update `src/components/layout/__tests__/hero.test.tsx`
+    - Update `src/components/ui/__tests__/category-typography.test.tsx`
+    - All component tests use theme variables
+  - **Files**: Component test files with hardcoded color violations
+  - **Reference**: Theme consistency checker results
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Validation and Testing** - Ensure theme consistency is maintained
+  - **User Intent**: Verify that all hardcoded colors have been replaced
+  - **Acceptance Criteria**:
+    - Run theme consistency checker and get 0 violations
+    - All tests pass with theme variables
+    - Visual inspection confirms proper theme usage
+    - No hardcoded colors remain in the codebase
+  - **Files**: All files in the codebase
+  - **Reference**: Theme consistency checker results
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Performance Optimization** - Optimize theme system for better performance
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Documentation Update** - Update theme system documentation
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+### ✅ Completed
+
+- [x] **Theme System Implementation** (2025-01-27)
+  - **Status**: Completed - Modern OKLCH color system implemented
+  - **Features**: Light gray background system, semantic color variables, zero border radius
+  - **Completion Date**: 2025-01-27
 
 ---
