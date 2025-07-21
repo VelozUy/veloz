@@ -183,44 +183,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   return (
     <div className={`performance-monitor ${className}`}>
-      {/* Performance metrics display (hidden by default, can be enabled for debugging) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-card border border-border p-4 rounded-none shadow-none text-xs text-muted-foreground z-50">
-          <div className="font-semibold mb-2">Performance Grade: {grade}</div>
-          <div className="space-y-1">
-            <div>
-              FCP:{' '}
-              {metrics.firstContentfulPaint
-                ? `${Math.round(metrics.firstContentfulPaint)}ms`
-                : 'N/A'}
-            </div>
-            <div>
-              LCP:{' '}
-              {metrics.largestContentfulPaint
-                ? `${Math.round(metrics.largestContentfulPaint)}ms`
-                : 'N/A'}
-            </div>
-            <div>
-              FID:{' '}
-              {metrics.firstInputDelay
-                ? `${Math.round(metrics.firstInputDelay)}ms`
-                : 'N/A'}
-            </div>
-            <div>
-              CLS:{' '}
-              {metrics.cumulativeLayoutShift
-                ? metrics.cumulativeLayoutShift.toFixed(3)
-                : 'N/A'}
-            </div>
-            <div>
-              TBT:{' '}
-              {metrics.totalBlockingTime
-                ? `${Math.round(metrics.totalBlockingTime)}ms`
-                : 'N/A'}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Performance monitoring runs silently in background */}
     </div>
   );
 };
