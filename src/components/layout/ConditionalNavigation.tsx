@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { getStaticContent } from '@/lib/utils';
-import MinimalNavigation from './minimal-navigation';
+import VelozBannerNav from './veloz-banner-nav';
 
 export default function ConditionalNavigation() {
   const pathname = usePathname();
@@ -49,8 +49,6 @@ export default function ConditionalNavigation() {
     };
   };
 
-  // Use minimal navigation (top navigation with text and underlines)
-  return (
-    <MinimalNavigation translations={translations} locale={currentLocale} />
-  );
+  // Use the new banner navigation design
+  return <VelozBannerNav translations={translations} locale={currentLocale} />;
 }

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface VelozLogoProps {
   variant?: 'full' | 'compact';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 }
 
@@ -17,6 +17,7 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
     sm: 'h-8 w-auto',
     md: 'h-12 w-auto',
     lg: 'h-16 w-auto',
+    xl: 'h-24 w-auto',
   };
 
   // Use proper typography classes for logo text - REDJOLA font only
@@ -24,6 +25,7 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
     sm: 'text-lg font-logo font-normal', // Never bold for REDJOLA
     md: 'text-xl font-logo font-normal', // Never bold for REDJOLA
     lg: 'text-2xl font-logo font-normal', // Never bold for REDJOLA
+    xl: 'text-3xl font-logo font-normal', // Never bold for REDJOLA
   };
 
   return (
@@ -45,14 +47,7 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
       </div>
 
       {variant === 'full' && (
-        <span
-          className={cn('font-logo font-normal', textSizeClasses[size])}
-          style={{
-            fontFamily:
-              'REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif !important',
-            fontWeight: 'normal',
-          }}
-        >
+        <span className={cn('font-logo font-normal', textSizeClasses[size])}>
           VELOZ
         </span>
       )}

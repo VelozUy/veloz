@@ -66,14 +66,14 @@ This file contains unprioritized ideas and future features that have been identi
 
 ## 📊 **Epic Status Summary**
 
-| Priority               | Count | Status                        |
-| ---------------------- | ----- | ----------------------------- |
-| ⭐ **HIGH PRIORITY**   | 9     | Ready to start or in progress |
-| 🟧 **MEDIUM PRIORITY** | 8     | Future development            |
-| 🟩 **LOW PRIORITY**    | 2     | Backlog items                 |
-| ✅ **COMPLETED**       | 2     | Category system completed     |
+| Priority               | Count | Status                                |
+| ---------------------- | ----- | ------------------------------------- |
+| ⭐ **HIGH PRIORITY**   | 8     | Ready to start or in progress         |
+| 🟧 **MEDIUM PRIORITY** | 8     | Future development                    |
+| 🟩 **LOW PRIORITY**    | 2     | Backlog items                         |
+| ✅ **COMPLETED**       | 3     | Category system, banner nav completed |
 
-**Total Active Epics**: 19
+**Total Active Epics**: 18
 
 ---
 

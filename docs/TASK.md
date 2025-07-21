@@ -36,6 +36,87 @@ _Last updated: 2025-01-20_
 **Reference**: Editorial photo showcase style specification from Jonathan Gregson portfolio analysis
 **User Intent**: Apply editorial, minimal design principles to the /our-work page with flat layouts, removed UI ornamentation, and emphasis on photography and typography while maintaining Veloz's brand identity
 
+### 🎨 EPIC: Banner Navigation System Redesign ⭐ **HIGH PRIORITY**
+
+**Objective**: Redesign the top navigation bar to match the reference image design with a horizontal banner layout featuring VELOZ logo and navigation items
+
+**Reference**: Banner navigation design specification with two-tone layout
+**User Intent**: Create a professional, modern navigation that matches the reference design with proper proportions, curved transitions, and responsive behavior
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Banner Navigation Component** - Create new VelozBannerNav component ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Implement horizontal banner navigation with two-tone design
+  - **Acceptance Criteria**:
+    - Horizontal banner layout with gray left section and blue right section ✅
+    - VELOZ logo using VelozLogo component with proper REDJOLA font ✅
+    - Curved transition between sections using border radius ✅
+    - Responsive proportions (65% mobile, 50% desktop for logo area) ✅
+    - Navigation items: "Nuestro Trabajo", "Sobre Nosotros", "Contacto" ✅
+    - Language switcher integration ✅
+    - Mobile hamburger menu with dropdown ✅
+    - Theme integration using CSS variables ✅
+    - Comprehensive test coverage ✅
+  - **Files**: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/__tests__/veloz-banner-nav.test.tsx`
+  - **Reference**: Banner navigation design specification
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ Completed - Banner navigation system fully implemented
+
+- [x] **Phase 2: Font System Enhancement** - Fix REDJOLA font integration ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Ensure VELOZ logo uses proper REDJOLA font
+  - **Acceptance Criteria**:
+    - Added `--font-logo` CSS variable to globals.css ✅
+    - Updated VelozLogo component to use proper font system ✅
+    - Removed redundant inline styles ✅
+    - Font displays correctly across all browsers ✅
+  - **Files**: `src/app/globals.css`, `src/components/shared/VelozLogo.tsx`
+  - **Estimated Time**: 30 minutes
+  - **Status**: ✅ Completed - REDJOLA font properly integrated
+
+- [x] **Phase 3: Logo Size Enhancement** - Increase logo size for better prominence ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Make the VELOZ logo more prominent in the navigation
+  - **Acceptance Criteria**:
+    - Added "xl" size option to VelozLogo component ✅
+    - Updated navigation to use "xl" size (96px height) ✅
+    - Logo is 50% larger than previous size ✅
+    - Maintains proper proportions and responsive behavior ✅
+  - **Files**: `src/components/shared/VelozLogo.tsx`, `src/components/layout/veloz-banner-nav.tsx`
+  - **Estimated Time**: 30 minutes
+  - **Status**: ✅ Completed - Logo size enhanced for better prominence
+
+- [x] **Phase 4: Mobile Responsive Optimization** - Optimize proportions for mobile devices ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Improve mobile experience with better proportions
+  - **Acceptance Criteria**:
+    - Mobile: 65% logo area, 35% navigation area ✅
+    - Desktop: 50% logo area, 50% navigation area ✅
+    - Responsive breakpoints properly implemented ✅
+    - Mobile menu works correctly on all screen sizes ✅
+  - **Files**: `src/components/layout/veloz-banner-nav.tsx`
+  - **Estimated Time**: 30 minutes
+  - **Status**: ✅ Completed - Mobile responsive optimization implemented
+
+#### ✅ Completed Tasks
+
+- [x] **Banner Navigation System** - Complete horizontal banner navigation implementation (2025-01-20)
+- [x] **Font System Enhancement** - REDJOLA font integration (2025-01-20)
+- [x] **Logo Size Enhancement** - Increased logo prominence (2025-01-20)
+- [x] **Mobile Responsive Optimization** - Mobile-optimized proportions (2025-01-20)
+
+#### 🧠 Discovered During the Epic
+
+- [ ] Consider adding hover effects to navigation items
+- [ ] Explore animation options for mobile menu transitions
+- [ ] Consider adding active state indicators for current page
+
+### ✅ Completed
+
+- [x] **Banner Navigation System Redesign** (2025-01-20)
+  - Complete horizontal banner navigation with two-tone design
+  - VELOZ logo integration with proper REDJOLA font
+  - Curved transitions and responsive proportions
+  - Mobile-optimized layout with hamburger menu
+  - Comprehensive test coverage and accessibility support
+
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 
 - [x] **Phase 1: Core shadcn/ui Component Updates** - Remove rounded corners, shadows, and ornamentation ✅ **COMPLETED** (2025-01-20)

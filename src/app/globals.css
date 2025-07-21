@@ -54,6 +54,8 @@
   --font-sans: Roboto, sans-serif;
   --font-serif: Roboto, sans-serif;
   --font-mono: Roboto, sans-serif;
+  --font-logo:
+    REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
   --radius: 0rem;
   --shadow-2xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
   --shadow-xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);

@@ -83,6 +83,26 @@ The web application's primary goal is to communicate Veloz's professionalism and
   - `Our Work` → navigates to curated gallery of photos/videos
   - `Work with Us` → opens contact form page
 
+### 1.5. **Banner Navigation System** ✅ **COMPLETED**
+
+- ✅ **Horizontal Banner Design**: Two-tone navigation with gray left section (65% mobile, 50% desktop) and blue right section (35% mobile, 50% desktop)
+- ✅ **VELOZ Logo Integration**: Uses VelozLogo component with proper REDJOLA font and responsive sizing (xl size)
+- ✅ **Curved Transition**: Smooth curved border between gray and blue sections using `rounded-l-[1rem]`
+- ✅ **Responsive Proportions**: Mobile-optimized with larger logo area (65% width) and smaller navigation area (35% width)
+- ✅ **Navigation Items**: "Nuestro Trabajo", "Sobre Nosotros", "Contacto" with proper localization
+- ✅ **Language Switcher**: Integrated LocaleSwitcher component for Spanish, English, Portuguese
+- ✅ **Mobile Menu**: Hamburger menu for tablet/mobile with dropdown navigation
+- ✅ **Theme Integration**: Uses theme variables for consistent styling across all screen sizes
+- ✅ **Accessibility**: Proper ARIA labels, keyboard navigation, and screen reader support
+- ✅ **Testing**: Comprehensive test coverage for all functionality
+
+**Technical Implementation**:
+
+- **Component**: `src/components/layout/veloz-banner-nav.tsx`
+- **Tests**: `src/components/layout/__tests__/veloz-banner-nav.test.tsx`
+- **Integration**: Updated `ConditionalNavigation.tsx` to use new banner design
+- **Font System**: Added `--font-logo` CSS variable for proper REDJOLA font support
+
 ### 2. **About Us / FAQ Page** ✅ COMPLETED
 
 - ✅ Accordion-style expandable questions (accessible UI with shadcn/ui)
