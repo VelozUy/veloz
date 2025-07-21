@@ -196,6 +196,41 @@ The web application's primary goal is to communicate Veloz's professionalism and
 - Clean navigation without empty categories
 - Automatic adaptation to new event types in database
 
+#### 🎨 Shared Header Component Architecture
+
+**CRITICAL FEATURE**: Shared OurWorkHeader component ensures consistent styling and behavior across all our-work pages.
+
+**Component Benefits**:
+
+- **Consistency**: Same styling and behavior across `/our-work` and `/our-work/<slug>` pages
+- **Maintainability**: Single source of truth for header logic
+- **Flexibility**: Supports custom titles and active categories
+- **DRY Principle**: Eliminates code duplication
+- **Future-proof**: Easy to update styling or behavior for all pages
+
+**Technical Implementation**:
+
+- **OurWorkHeader Component**: Shared component for title and navigation
+- **Responsive Font Sizing**: `clamp(1.5rem, min(6vw, 8rem), 8rem)` for dynamic scaling
+- **Localization Support**: "Events" (EN) and "Eventos" (ES/PT) titles
+- **Custom Title Support**: Optional title prop for category-specific pages
+- **Active Category Override**: Optional activeCategory prop for specific pages
+- **Scroll Navigation**: Integrated useScrollNavigation hook functionality
+
+**Component Usage**:
+
+- **OurWorkClient**: Uses default "Eventos" title with scroll-based navigation
+- **CategoryPageClient**: Uses custom category title with active category override
+- **Consistent Styling**: Same responsive font sizing and navigation behavior
+- **Theme Integration**: Uses theme variables for consistent styling
+
+**Testing Coverage**:
+
+- **OurWorkHeader.test.tsx**: Comprehensive tests for shared component
+- **OurWorkClient.test.tsx**: Updated tests for new structure
+- **CategoryPageClient.test.tsx**: Updated tests for new structure
+- **All 15 tests passing**: Complete test coverage for shared functionality
+
 #### 🖼️ Custom Lightbox Implementation
 
 **CRITICAL FEATURE**: Custom lightbox implementation without external dependencies to avoid asset injection issues and provide optimal performance.
