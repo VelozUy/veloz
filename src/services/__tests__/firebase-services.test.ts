@@ -1,4 +1,11 @@
-import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import {
+  describe,
+  it,
+  expect,
+  jest,
+  beforeEach,
+  afterEach,
+} from '@jest/globals';
 import { z } from 'zod';
 
 // Mock Firebase before any imports
@@ -35,12 +42,7 @@ jest.mock('firebase/firestore', () => ({
   },
 }));
 
-import { 
-  FAQ, 
-  Photo, 
-  Video, 
-  HomepageContent 
-} from '@/types';
+import { FAQ, Photo, Video, HomepageContent } from '@/types';
 
 import {
   FAQService,
@@ -66,13 +68,26 @@ describe('Firebase Services', () => {
 
     describe('getByCategory', () => {
       it('should fetch FAQs by category successfully', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'faq1',
             data: () => ({
-              question: { en: 'What is pricing?', es: '¿Cuál es el precio?', pt: 'Qual é o preço?' },
-              answer: { en: 'Our pricing varies', es: 'Nuestros precios varían', pt: 'Nossos preços variam' },
+              question: {
+                en: 'What is pricing?',
+                es: '¿Cuál es el precio?',
+                pt: 'Qual é o preço?',
+              },
+              answer: {
+                en: 'Our pricing varies',
+                es: 'Nuestros precios varían',
+                pt: 'Nossos preços variam',
+              },
               category: 'pricing',
               order: 1,
             }),
@@ -80,8 +95,16 @@ describe('Firebase Services', () => {
           {
             id: 'faq2',
             data: () => ({
-              question: { en: 'How to book?', es: '¿Cómo reservar?', pt: 'Como reservar?' },
-              answer: { en: 'Contact us', es: 'Contáctanos', pt: 'Entre em contato' },
+              question: {
+                en: 'How to book?',
+                es: '¿Cómo reservar?',
+                pt: 'Como reservar?',
+              },
+              answer: {
+                en: 'Contact us',
+                es: 'Contáctanos',
+                pt: 'Entre em contato',
+              },
               category: 'pricing',
               order: 2,
             }),
@@ -116,12 +139,21 @@ describe('Firebase Services', () => {
 
     describe('getPublished', () => {
       it('should fetch only published FAQs', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'faq1',
             data: () => ({
-              question: { en: 'Published FAQ', es: 'FAQ Publicado', pt: 'FAQ Publicado' },
+              question: {
+                en: 'Published FAQ',
+                es: 'FAQ Publicado',
+                pt: 'FAQ Publicado',
+              },
               answer: { en: 'Answer', es: 'Respuesta', pt: 'Resposta' },
               isPublished: true,
               order: 1,
@@ -161,14 +193,23 @@ describe('Firebase Services', () => {
 
     describe('getByEventType', () => {
       it('should fetch photos by event type successfully', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'photo1',
             data: () => ({
               url: 'https://example.com/photo1.jpg',
-              eventType: 'casamiento',
-              title: { en: 'Wedding Photo', es: 'Foto de Boda', pt: 'Foto de Casamento' },
+              eventType: 'casamientos',
+              title: {
+                en: 'Wedding Photo',
+                es: 'Foto de Boda',
+                pt: 'Foto de Casamento',
+              },
               order: 1,
             }),
           },
@@ -176,8 +217,12 @@ describe('Firebase Services', () => {
             id: 'photo2',
             data: () => ({
               url: 'https://example.com/photo2.jpg',
-              eventType: 'casamiento',
-              title: { en: 'Ceremony Photo', es: 'Foto de Ceremonia', pt: 'Foto da Cerimônia' },
+              eventType: 'casamientos',
+              title: {
+                en: 'Ceremony Photo',
+                es: 'Foto de Ceremonia',
+                pt: 'Foto da Cerimônia',
+              },
               order: 2,
             }),
           },
@@ -185,12 +230,12 @@ describe('Firebase Services', () => {
 
         getDocs.mockResolvedValue({ docs: mockDocs });
 
-        const result = await photoService.getByEventType('casamiento');
+        const result = await photoService.getByEventType('casamientos');
 
         expect(result.success).toBe(true);
         expect(result.data).toHaveLength(2);
-        expect(result.data[0].eventType).toBe('casamiento');
-        expect(where).toHaveBeenCalledWith('eventType', '==', 'casamiento');
+        expect(result.data[0].eventType).toBe('casamientos');
+        expect(where).toHaveBeenCalledWith('eventType', '==', 'casamientos');
         expect(orderBy).toHaveBeenCalledWith('order', 'asc');
       });
 
@@ -198,7 +243,7 @@ describe('Firebase Services', () => {
         const { getDocs } = require('firebase/firestore');
         getDocs.mockRejectedValue(new Error('Failed to fetch photos'));
 
-        const result = await photoService.getByEventType('casamiento');
+        const result = await photoService.getByEventType('casamientos');
 
         expect(result.success).toBe(false);
         expect(result.error).toBe('Failed to fetch photos');
@@ -207,14 +252,23 @@ describe('Firebase Services', () => {
 
     describe('getFeatured', () => {
       it('should fetch featured photos', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'photo1',
             data: () => ({
               url: 'https://example.com/featured1.jpg',
               featured: true,
-              title: { en: 'Featured Photo', es: 'Foto Destacada', pt: 'Foto em Destaque' },
+              title: {
+                en: 'Featured Photo',
+                es: 'Foto Destacada',
+                pt: 'Foto em Destaque',
+              },
               order: 1,
             }),
           },
@@ -241,14 +295,23 @@ describe('Firebase Services', () => {
 
     describe('getByEventType', () => {
       it('should fetch videos by event type successfully', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'video1',
             data: () => ({
               url: 'https://example.com/video1.mp4',
               eventType: 'corporativos',
-              title: { en: 'Corporate Video', es: 'Video Corporativo', pt: 'Vídeo Corporativo' },
+              title: {
+                en: 'Corporate Video',
+                es: 'Video Corporativo',
+                pt: 'Vídeo Corporativo',
+              },
               duration: 120,
               order: 1,
             }),
@@ -287,7 +350,11 @@ describe('Firebase Services', () => {
             data: () => ({
               url: 'https://example.com/featured-video.mp4',
               featured: true,
-              title: { en: 'Featured Video', es: 'Video Destacado', pt: 'Vídeo em Destaque' },
+              title: {
+                en: 'Featured Video',
+                es: 'Video Destacado',
+                pt: 'Vídeo em Destaque',
+              },
               duration: 180,
             }),
           },
@@ -375,7 +442,9 @@ describe('Firebase Services', () => {
 
       it('should handle errors in getContent', async () => {
         const { getDocs } = require('firebase/firestore');
-        getDocs.mockRejectedValue(new Error('Failed to fetch homepage content'));
+        getDocs.mockRejectedValue(
+          new Error('Failed to fetch homepage content')
+        );
 
         const result = await homepageService.getContent();
 
@@ -467,12 +536,13 @@ describe('Firebase Services', () => {
         const { addDoc } = require('firebase/firestore');
         addDoc.mockResolvedValue({ id: 'new-message-id' });
 
-        const formData: any = { // Changed to any to avoid zod schema import
+        const formData: any = {
+          // Changed to any to avoid zod schema import
           name: 'John Doe',
           email: 'john@example.com',
           message: 'I need photography services for my wedding.',
           phone: '+1234567890',
-          eventType: 'casamiento',
+          eventType: 'casamientos',
           eventDate: '2024-06-15',
           location: 'Montevideo, Uruguay',
           budget: '$2000-3000',
@@ -492,7 +562,7 @@ describe('Firebase Services', () => {
             email: 'john@example.com',
             message: 'I need photography services for my wedding.',
             phone: '+1234567890',
-            eventType: 'casamiento',
+            eventType: 'casamientos',
             isRead: false,
             status: 'new',
             createdAt: expect.any(Date),
@@ -505,7 +575,8 @@ describe('Firebase Services', () => {
         const { addDoc } = require('firebase/firestore');
         addDoc.mockRejectedValue(new Error('Failed to create message'));
 
-        const formData: any = { // Changed to any to avoid zod schema import
+        const formData: any = {
+          // Changed to any to avoid zod schema import
           name: 'John Doe',
           email: 'john@example.com',
           message: 'Test message',
@@ -552,7 +623,10 @@ describe('Firebase Services', () => {
         const { updateDoc } = require('firebase/firestore');
         updateDoc.mockResolvedValue(undefined);
 
-        const result = await contactService.updateStatus('message-id', 'in_progress');
+        const result = await contactService.updateStatus(
+          'message-id',
+          'in_progress'
+        );
 
         expect(result.success).toBe(true);
         expect(updateDoc).toHaveBeenCalledWith(
@@ -568,7 +642,10 @@ describe('Firebase Services', () => {
         const { updateDoc } = require('firebase/firestore');
         updateDoc.mockRejectedValue(new Error('Failed to update status'));
 
-        const result = await contactService.updateStatus('message-id', 'completed');
+        const result = await contactService.updateStatus(
+          'message-id',
+          'completed'
+        );
 
         expect(result.success).toBe(false);
         expect(result.error).toBe('Failed to update status');
@@ -614,7 +691,12 @@ describe('Firebase Services', () => {
 
     describe('getByProjectId', () => {
       it('should fetch media by project ID successfully', async () => {
-        const { getDocs, query, where, orderBy } = require('firebase/firestore');
+        const {
+          getDocs,
+          query,
+          where,
+          orderBy,
+        } = require('firebase/firestore');
         const mockDocs = [
           {
             id: 'media1',
@@ -705,7 +787,7 @@ describe('Firebase Services', () => {
       it('should delete media and its file successfully', async () => {
         const { getDoc, deleteDoc } = require('firebase/firestore');
         const { deleteObject } = require('firebase/storage');
-        
+
         const mockDoc = {
           exists: () => true,
           data: () => ({ filePath: 'projects/project-123/photo1.jpg' }),
@@ -725,7 +807,7 @@ describe('Firebase Services', () => {
       it('should handle missing file when deleting media', async () => {
         const { getDoc, deleteDoc } = require('firebase/firestore');
         const { deleteObject } = require('firebase/storage');
-        
+
         const mockDoc = {
           exists: () => true,
           data: () => ({ filePath: 'projects/project-123/photo1.jpg' }),
@@ -831,8 +913,10 @@ describe('Firebase Services', () => {
     it('should handle network disconnection gracefully', async () => {
       const faqService = new FAQService();
       const { getDocs } = require('firebase/firestore');
-      
-      getDocs.mockRejectedValue(new Error('Network error: Unable to reach Firebase'));
+
+      getDocs.mockRejectedValue(
+        new Error('Network error: Unable to reach Firebase')
+      );
 
       const result = await faqService.getAll();
 
@@ -843,7 +927,7 @@ describe('Firebase Services', () => {
     it('should handle invalid data gracefully', async () => {
       const contactService = new ContactMessageService();
       const { addDoc } = require('firebase/firestore');
-      
+
       addDoc.mockRejectedValue(new Error('Invalid document structure'));
 
       const invalidFormData: any = {}; // Changed to any to avoid zod schema import
@@ -856,12 +940,12 @@ describe('Firebase Services', () => {
     it('should handle concurrent operations', async () => {
       const photoService = new PhotoService();
       const { getDocs } = require('firebase/firestore');
-      
+
       getDocs.mockResolvedValue({ docs: [] });
 
       // Simulate concurrent requests
       const promises = [
-        photoService.getByEventType('casamiento'),
+        photoService.getByEventType('casamientos'),
         photoService.getByEventType('corporativos'),
         photoService.getFeatured(),
       ];
@@ -877,23 +961,23 @@ describe('Firebase Services', () => {
     it('should handle large datasets efficiently', async () => {
       const photoService = new PhotoService();
       const { getDocs } = require('firebase/firestore');
-      
+
       // Simulate large dataset
       const largeMockDocs = Array.from({ length: 1000 }, (_, i) => ({
         id: `photo${i}`,
         data: () => ({
           url: `https://example.com/photo${i}.jpg`,
-          eventType: 'casamiento',
+          eventType: 'casamientos',
           order: i,
         }),
       }));
 
       getDocs.mockResolvedValue({ docs: largeMockDocs });
 
-      const result = await photoService.getByEventType('casamiento');
+      const result = await photoService.getByEventType('casamientos');
 
       expect(result.success).toBe(true);
       expect(result.data).toHaveLength(1000);
     });
   });
-}); 
+});

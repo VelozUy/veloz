@@ -261,7 +261,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   // Get category from event type
   const getCategoryFromEventType = (eventType: string): EventCategory => {
     const eventTypeMap: Record<string, EventCategory> = {
-      casamiento: 'Casamiento',
+      casamientos: 'Casamientos',
       corporativos: 'Corporativos',
       'culturales-artisticos': 'Culturales y artísticos',
       photoshoot: 'Photoshoot',

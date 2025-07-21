@@ -32,7 +32,7 @@ describe('OurWorkClient', () => {
     {
       id: '1',
       title: 'Test Project',
-      eventType: 'Casamiento',
+      eventType: 'Casamientos',
       media: [
         {
           id: '1',

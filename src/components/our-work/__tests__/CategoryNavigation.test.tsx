@@ -13,10 +13,14 @@ jest.mock('framer-motion', () => ({
 const defaultProps = {
   categories: [
     { id: 'overview', name: 'Eventos', label: 'Eventos' },
-    { id: 'food', name: 'Food', label: 'Fotografía Gastronómica' },
-    { id: 'people', name: 'People', label: 'Fotografía de Personas' },
-    { id: 'still-life', name: 'Still Life', label: 'Bodegones' },
-    { id: 'travel', name: 'Travel', label: 'Fotografía de Viajes' },
+    { id: 'casamiento', name: 'Casamiento', label: 'Casamientos' },
+    { id: 'photoshoot', name: 'Photoshoot', label: 'Photoshoot' },
+    {
+      id: 'culturales-y-artsticos',
+      name: 'Culturales y artísticos',
+      label: 'Culturales y artísticos',
+    },
+    { id: 'corporativos', name: 'Corporativos', label: 'Corporativos' },
   ],
   activeCategory: 'overview',
   onCategoryChange: jest.fn(),
@@ -38,10 +42,10 @@ describe('CategoryNavigation', () => {
       // Check that all category names are present in the tabs by checking the tab elements
       const tabTexts = desktopTabs.map(tab => tab.textContent);
       expect(tabTexts).toContain('Eventos');
-      expect(tabTexts).toContain('Food');
-      expect(tabTexts).toContain('People');
-      expect(tabTexts).toContain('Still Life');
-      expect(tabTexts).toContain('Travel');
+      expect(tabTexts).toContain('Casamientos');
+      expect(tabTexts).toContain('Photoshoot');
+      expect(tabTexts).toContain('Culturales y artísticos');
+      expect(tabTexts).toContain('Corporativos');
     });
 
     it('highlights active category', () => {
@@ -105,10 +109,10 @@ describe('CategoryNavigation', () => {
 
       const itemTexts = selectItems.map(item => item.textContent);
       expect(itemTexts).toContain('Eventos');
-      expect(itemTexts).toContain('Food');
-      expect(itemTexts).toContain('People');
-      expect(itemTexts).toContain('Still Life');
-      expect(itemTexts).toContain('Travel');
+      expect(itemTexts).toContain('Casamientos');
+      expect(itemTexts).toContain('Photoshoot');
+      expect(itemTexts).toContain('Culturales y artísticos');
+      expect(itemTexts).toContain('Corporativos');
     });
   });
 
@@ -116,13 +120,15 @@ describe('CategoryNavigation', () => {
     it('handles arrow key navigation', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Test right arrow (should go from overview to food)
+      // Test right arrow (should go from overview to casamiento)
       fireEvent.keyDown(window, { key: 'ArrowRight' });
-      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith('food');
+      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith('casamiento');
 
-      // Test left arrow (should go from overview to travel)
+      // Test left arrow (should go from overview to corporativos)
       fireEvent.keyDown(window, { key: 'ArrowLeft' });
-      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith('travel');
+      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith(
+        'corporativos'
+      );
     });
 
     it('handles Home key navigation', () => {
@@ -136,7 +142,9 @@ describe('CategoryNavigation', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
       fireEvent.keyDown(window, { key: 'End' });
-      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith('travel');
+      expect(defaultProps.onCategoryChange).toHaveBeenCalledWith(
+        'corporativos'
+      );
     });
   });
 

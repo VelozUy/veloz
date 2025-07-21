@@ -13,9 +13,9 @@ import { EventCategory } from '@/constants/categories';
 
 // Mock the categories module
 jest.mock('@/constants/categories', () => ({
-  EventCategory: 'Casamiento' as const,
+  EventCategory: 'Casamientos' as const,
   getCategoryStyle: jest.fn(() => ({
-    name: 'Casamiento',
+    name: 'Casamientos',
     displayName: {
       es: 'Casamiento',
       en: 'Wedding',

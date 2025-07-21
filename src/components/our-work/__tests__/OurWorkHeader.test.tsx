@@ -30,22 +30,17 @@ describe('OurWorkHeader', () => {
       eventTypes: ['*'],
     },
     {
-      id: 'casamiento',
-      name: 'Casamiento',
-      label: 'Casamiento',
-      title: 'Casamiento',
+      id: 'casamientos',
+      name: 'Casamientos',
+      label: 'Casamientos',
+      title: 'Casamientos',
       description: 'Celebración de amor y unión',
-      eventTypes: ['Casamiento'],
+      eventTypes: ['Casamientos'],
     },
   ];
 
   it('renders default Eventos title for Spanish locale', () => {
-    render(
-      <OurWorkHeader
-        categories={mockCategories}
-        locale="es"
-      />
-    );
+    render(<OurWorkHeader categories={mockCategories} locale="es" />);
 
     const titleElement = screen.getByText('Eventos');
     expect(titleElement).toBeInTheDocument();
@@ -54,12 +49,7 @@ describe('OurWorkHeader', () => {
   });
 
   it('renders Events title for English locale', () => {
-    render(
-      <OurWorkHeader
-        categories={mockCategories}
-        locale="en"
-      />
-    );
+    render(<OurWorkHeader categories={mockCategories} locale="en" />);
 
     const titleElement = screen.getByText('Events');
     expect(titleElement).toBeInTheDocument();
@@ -79,12 +69,7 @@ describe('OurWorkHeader', () => {
   });
 
   it('renders CategoryNavigation component', () => {
-    render(
-      <OurWorkHeader
-        categories={mockCategories}
-        locale="es"
-      />
-    );
+    render(<OurWorkHeader categories={mockCategories} locale="es" />);
 
     const navigationElement = screen.getByTestId('category-navigation');
     expect(navigationElement).toBeInTheDocument();
@@ -95,7 +80,7 @@ describe('OurWorkHeader', () => {
       <OurWorkHeader
         categories={mockCategories}
         locale="es"
-        activeCategory="casamiento"
+        activeCategory="casamientos"
       />
     );
 
@@ -104,4 +89,4 @@ describe('OurWorkHeader', () => {
     const navigationElement = screen.getByTestId('category-navigation');
     expect(navigationElement).toBeInTheDocument();
   });
-}); 
+});

@@ -57,7 +57,7 @@ describe('Constants', () => {
   it('defines event types correctly', () => {
     // Test that our event types are properly defined
     const eventTypes = [
-      'Casamiento',
+      'Casamientos',
       'Corporativos',
       'Culturales y artísticos',
       'Photoshoot',

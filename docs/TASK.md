@@ -3584,5 +3584,14 @@ _No tasks completed yet for this Epic_
     - Tests updated for new URL structure ✅
   - **Files**: `src/app/projects/[slug]/page.tsx`, `src/app/our-work/[slug]/page.tsx`, `src/components/our-work/OurWorkContent.tsx`, `src/app/sitemap.ts`
   - **Status**: ✅ Completed - URL structure updated with clean separation
+- [x] **Category Display Name Fix** (2025-01-21)
+  - **User Intent**: Fix category navigation to display plural names instead of singular
+  - **Acceptance Criteria**:
+    - Category navigation shows "Casamientos" instead of "Casamiento" ✅
+    - Page titles display plural names consistently ✅
+    - getCategoryDisplayName function properly handles all categories ✅
+    - Tests updated to reflect new display names ✅
+  - **Files**: `src/constants/categories.ts`, `src/components/our-work/CategoryNavigation.tsx`, `src/components/our-work/__tests__/CategoryNavigation.test.tsx`
+  - **Status**: ✅ Completed - Category display names fixed
 
 ---

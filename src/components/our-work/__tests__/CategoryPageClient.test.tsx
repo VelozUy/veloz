@@ -23,7 +23,7 @@ jest.mock('@/components/shared/VelozLogo', () => {
 jest.mock('@/constants/categories', () => ({
   getCategoryDisplayName: (category: string) => {
     const displayNames: Record<string, string> = {
-      Casamiento: 'Casamiento',
+      Casamientos: 'Casamientos',
       Corporativos: 'Corporativos',
       'Culturales y artísticos': 'Culturales y artísticos',
       Photoshoot: 'Photoshoot',
@@ -37,7 +37,7 @@ jest.mock('@/constants/categories', () => ({
 // Mock the useScrollNavigation hook
 jest.mock('@/hooks/useScrollNavigation', () => ({
   useScrollNavigation: () => ({
-    activeCategory: 'casamiento',
+    activeCategory: 'casamientos',
     scrollToCategory: jest.fn(),
   }),
 }));
@@ -58,7 +58,7 @@ describe('CategoryPageClient', () => {
     {
       id: '1',
       title: 'Test Wedding',
-      eventType: 'Casamiento',
+      eventType: 'Casamientos',
       media: [
         {
           id: '1',
@@ -72,12 +72,12 @@ describe('CategoryPageClient', () => {
 
   const mockCategories = [
     {
-      id: 'casamiento',
-      name: 'Casamiento',
-      label: 'Casamiento',
-      title: 'Casamiento',
+      id: 'casamientos',
+      name: 'Casamientos',
+      label: 'Casamientos',
+      title: 'Casamientos',
       description: 'Celebración de amor y unión',
-      eventTypes: ['Casamiento'],
+      eventTypes: ['Casamientos'],
     },
   ];
 
@@ -86,16 +86,16 @@ describe('CategoryPageClient', () => {
       <CategoryPageClient
         projects={mockProjects}
         categories={mockCategories}
-        categorySlug="casamiento"
+        categorySlug="casamientos"
         locale="es"
       />
     );
 
     // Check that the VelozLogo is not present since it was removed
     expect(screen.queryByTestId('veloz-logo')).not.toBeInTheDocument();
-    
+
     // Check that the category title is rendered
-    const titleElement = screen.getByText('Casamiento');
+    const titleElement = screen.getByText('Casamientos');
     expect(titleElement).toBeInTheDocument();
   });
 
@@ -105,13 +105,13 @@ describe('CategoryPageClient', () => {
         projects={mockProjects}
         categories={mockCategories}
         locale="es"
-        categorySlug="casamiento"
+        categorySlug="casamientos"
       />
     );
 
     // Check that the event type is displayed as the title in the header
     const headerTitle = screen.getByRole('heading', { level: 1 });
-    expect(headerTitle).toHaveTextContent('Casamiento');
+    expect(headerTitle).toHaveTextContent('Casamientos');
 
     // Check that the old hardcoded title is not present
     expect(screen.queryByText('Veloz')).not.toBeInTheDocument();
@@ -124,13 +124,13 @@ describe('CategoryPageClient', () => {
         projects={mockProjects}
         categories={mockCategories}
         locale="es"
-        categorySlug="casamiento"
+        categorySlug="casamientos"
       />
     );
 
     // Check that the event type appears in the header
     const headerTitle = screen.getByRole('heading', { level: 1 });
-    expect(headerTitle).toHaveTextContent('Casamiento');
+    expect(headerTitle).toHaveTextContent('Casamientos');
 
     // Check that there's no duplicate title in the CategorySection
     // The CategorySection should not have its own title since we're showing it in the header
@@ -147,19 +147,19 @@ describe('CategoryPageClient', () => {
       <CategoryPageClient
         projects={mockProjects}
         categories={mockCategories}
-        categorySlug="casamiento"
+        categorySlug="casamientos"
         locale="es"
       />
     );
 
-    const titleElement = screen.getByText('Casamiento');
+    const titleElement = screen.getByText('Casamientos');
     expect(titleElement).toBeInTheDocument();
-    
+
     // Check that the title has the correct styling for single-line display
     expect(titleElement).toHaveClass('whitespace-nowrap');
     expect(titleElement).toHaveClass('leading-none');
     expect(titleElement).toHaveClass('uppercase');
-    
+
     // Check that it uses dynamic font sizing
     expect(titleElement).toHaveStyle({
       fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
@@ -189,7 +189,7 @@ describe('CategoryPageClient', () => {
         projects={mockProjects}
         categories={mockCategories}
         locale="es"
-        categorySlug="casamiento"
+        categorySlug="casamientos"
       />
     );
 
@@ -200,7 +200,7 @@ describe('CategoryPageClient', () => {
     const categoryNavigationProps = mockCategoryNavigation.mock.calls[0][0];
 
     // Verify that the activeCategory is the categorySlug, not the one from useScrollNavigation
-    expect(categoryNavigationProps.activeCategory).toBe('casamiento');
+    expect(categoryNavigationProps.activeCategory).toBe('casamientos');
     expect(categoryNavigationProps.categories).toEqual(mockCategories);
   });
 });

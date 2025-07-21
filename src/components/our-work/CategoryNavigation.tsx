@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { getCategoryDisplayName, EventCategory } from '@/constants/categories';
 
 interface Category {
   id: string;
@@ -86,7 +87,12 @@ export default function CategoryNavigation({
             <SelectContent>
               {categories.map(category => (
                 <SelectItem key={category.id} value={category.id}>
-                  {category.name}
+                  {category.id === 'overview'
+                    ? category.name
+                    : getCategoryDisplayName(
+                        category.name as EventCategory,
+                        'es'
+                      )}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -112,7 +118,12 @@ export default function CategoryNavigation({
                     }
                     className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
                   >
-                    {category.name}
+                    {category.id === 'overview'
+                      ? category.name
+                      : getCategoryDisplayName(
+                          category.name as EventCategory,
+                          'es'
+                        )}
                   </Link>
                 </TabsTrigger>
               ))}
@@ -134,7 +145,12 @@ export default function CategoryNavigation({
           <SelectContent>
             {categories.map(category => (
               <SelectItem key={category.id} value={category.id}>
-                {category.name}
+                {category.id === 'overview'
+                  ? category.name
+                  : getCategoryDisplayName(
+                      category.name as EventCategory,
+                      'es'
+                    )}
               </SelectItem>
             ))}
           </SelectContent>
@@ -160,7 +176,12 @@ export default function CategoryNavigation({
                   }
                   className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
                 >
-                  {category.name}
+                  {category.id === 'overview'
+                    ? category.name
+                    : getCategoryDisplayName(
+                        category.name as EventCategory,
+                        'es'
+                      )}
                 </Link>
               </TabsTrigger>
             ))}

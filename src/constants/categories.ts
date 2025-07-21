@@ -1,5 +1,6 @@
 export type EventCategory =
   | 'Casamiento'
+  | 'Casamientos'
   | 'Corporativos'
   | 'Culturales y artísticos'
   | 'Photoshoot'
@@ -44,9 +45,42 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
   Casamiento: {
     name: 'Casamiento',
     displayName: {
-      es: 'Casamiento',
-      en: 'Wedding',
-      pt: 'Casamento',
+      es: 'Casamientos',
+      en: 'Weddings',
+      pt: 'Casamentos',
+    },
+    typography: {
+      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontWeight: 'font-normal',
+      fontSize: {
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'text-lg',
+        xl: 'text-xl',
+      },
+      letterSpacing: 'tracking-wide',
+      lineHeight: 'leading-relaxed',
+    },
+    colors: {
+      primary: 'text-white',
+      secondary: 'text-white',
+      accent: 'text-white',
+      background: 'bg-[#8e8e93]',
+      text: 'text-white',
+    },
+    icon: '💒',
+    description: {
+      es: 'Celebración de amor y unión',
+      en: 'Celebration of love and union',
+      pt: 'Celebração de amor e união',
+    },
+  },
+  Casamientos: {
+    name: 'Casamientos',
+    displayName: {
+      es: 'Casamientos',
+      en: 'Weddings',
+      pt: 'Casamentos',
     },
     typography: {
       fontFamily: 'font-body', // Roboto for all text except VELOZ brand title

@@ -6,7 +6,7 @@ import ProjectDetailGallery from '../ProjectDetailGallery';
 jest.mock('@/constants/categories', () => ({
   getCategoryDisplayName: (category: string) => {
     const displayNames: Record<string, string> = {
-      Casamiento: 'Casamiento',
+      Casamientos: 'Casamientos',
       Corporativos: 'Corporativos',
       'Culturales y artísticos': 'Culturales y artísticos',
       Photoshoot: 'Photoshoot',
@@ -45,7 +45,7 @@ describe('ProjectDetailGallery', () => {
     id: 'test-project',
     title: 'Test Wedding Project',
     description: 'A beautiful wedding celebration',
-    eventType: 'Casamiento',
+    eventType: 'Casamientos',
     media: [
       {
         id: 'media-1',
@@ -68,7 +68,7 @@ describe('ProjectDetailGallery', () => {
     );
 
     // Check that the event type is displayed as the title
-    expect(screen.getByText('Casamiento')).toBeInTheDocument();
+    expect(screen.getByText('Casamientos')).toBeInTheDocument();
 
     // Check that the project title is not displayed as the main title
     expect(screen.queryByText('Test Wedding Project')).not.toBeInTheDocument();

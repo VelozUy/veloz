@@ -140,7 +140,7 @@ describe('Validation Schemas', () => {
         email: 'john@example.com',
         message: 'Hello world',
         phone: '+1234567890',
-        eventType: 'casamiento',
+        eventType: 'casamientos',
         ipAddress: '192.168.1.1',
         userAgent: 'Mozilla/5.0...',
         isRead: false,
@@ -277,7 +277,7 @@ describe('Validation Schemas', () => {
           es: 'Una hermosa celebración de boda',
           pt: 'Uma linda celebração de casamento',
         },
-        eventType: 'casamiento',
+        eventType: 'casamientos',
         status: 'published',
         featured: true,
         coverImageUrl: 'https://example.com/cover.jpg',
@@ -297,7 +297,7 @@ describe('Validation Schemas', () => {
 
       expect(() => projectSchema.parse(validData)).not.toThrow();
       const result = projectSchema.parse(validData);
-      expect(result.eventType).toBe('casamiento');
+      expect(result.eventType).toBe('casamientos');
       expect(result.featured).toBe(true);
       expect(result.client?.confidential).toBe(false);
     });
@@ -344,7 +344,7 @@ describe('Validation Schemas', () => {
           es: 'Título del Proyecto',
           pt: 'Título do Projeto',
         },
-        eventType: 'casamiento' as const,
+        eventType: 'casamientos' as const,
         coverImageUrl: 'not-a-url',
       };
 
@@ -363,7 +363,7 @@ describe('Validation Schemas', () => {
           es: '',
           pt: '',
         },
-        eventType: 'casamiento' as const,
+        eventType: 'casamientos' as const,
         client: {
           name: 'Client Name',
         },
@@ -618,7 +618,7 @@ describe('Validation Schemas', () => {
     it('should validate search query with all fields', () => {
       const validData = {
         query: 'wedding photography',
-        eventType: 'casamiento' as const,
+        eventType: 'casamientos' as const,
         tags: ['outdoor', 'summer'],
         status: 'published' as const,
         featured: true,
@@ -632,7 +632,7 @@ describe('Validation Schemas', () => {
 
       expect(() => searchQuerySchema.parse(validData)).not.toThrow();
       const result = searchQuerySchema.parse(validData);
-      expect(result.eventType).toBe('casamiento');
+      expect(result.eventType).toBe('casamientos');
       expect(result.page).toBe(2);
       expect(result.pageSize).toBe(50);
     });

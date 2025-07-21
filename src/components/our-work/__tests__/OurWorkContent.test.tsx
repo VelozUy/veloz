@@ -13,7 +13,7 @@ const mockContent = {
         title: 'Test Wedding',
         description: 'A beautiful wedding celebration',
         tags: ['wedding', 'outdoor'],
-        eventType: 'casamiento',
+        eventType: 'casamientos',
         location: 'Montevideo',
         eventDate: '2024-01-15',
         featured: true,
@@ -22,7 +22,11 @@ const mockContent = {
             id: 'media-1',
             type: 'photo' as const,
             url: 'https://example.com/test-image.jpg',
-            description: { es: 'Test photo', en: 'Test photo', pt: 'Test photo' },
+            description: {
+              es: 'Test photo',
+              en: 'Test photo',
+              pt: 'Test photo',
+            },
             tags: ['wedding'],
             aspectRatio: '16:9' as const,
             order: 1,
@@ -36,38 +40,42 @@ const mockContent = {
 describe('OurWorkContent', () => {
   it('renders the page title and subtitle', () => {
     render(<OurWorkContent content={mockContent} />);
-    
+
     expect(screen.getByText('Nuestro Trabajo')).toBeInTheDocument();
-    expect(screen.getByText(/Explora nuestra colección de proyectos pasados/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Explora nuestra colección de proyectos pasados/)
+    ).toBeInTheDocument();
   });
 
   it('renders project cards with correct information', () => {
     render(<OurWorkContent content={mockContent} />);
-    
+
     expect(screen.getByText('Test Wedding')).toBeInTheDocument();
-    expect(screen.getByText('A beautiful wedding celebration')).toBeInTheDocument();
+    expect(
+      screen.getByText('A beautiful wedding celebration')
+    ).toBeInTheDocument();
     expect(screen.getByText('Montevideo')).toBeInTheDocument();
   });
 
   it('renders filter buttons', () => {
     render(<OurWorkContent content={mockContent} />);
-    
+
     expect(screen.getByText('Todos los Proyectos')).toBeInTheDocument();
     // Check for the filter button specifically (not the badge)
-    const filterButtons = screen.getAllByText('Casamiento');
+    const filterButtons = screen.getAllByText('Casamientos');
     expect(filterButtons.length).toBeGreaterThan(0);
   });
 
   it('renders CTA buttons', () => {
     render(<OurWorkContent content={mockContent} />);
-    
+
     expect(screen.getByText('Quiero algo así')).toBeInTheDocument();
     expect(screen.getByText('Comenzar Conversación')).toBeInTheDocument();
   });
 
   it('renders featured badge for featured projects', () => {
     render(<OurWorkContent content={mockContent} />);
-    
+
     expect(screen.getByText('Destacado')).toBeInTheDocument();
   });
 
@@ -78,9 +86,11 @@ describe('OurWorkContent', () => {
         projects: [],
       },
     } as any;
-    
+
     render(<OurWorkContent content={emptyContent} />);
-    
-    expect(screen.getByText('No se encontraron proyectos para esta categoría.')).toBeInTheDocument();
+
+    expect(
+      screen.getByText('No se encontraron proyectos para esta categoría.')
+    ).toBeInTheDocument();
   });
-}); 
+});

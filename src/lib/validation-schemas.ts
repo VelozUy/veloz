@@ -45,7 +45,7 @@ export const contactFormSchema = z.object({
   phone: z.string().optional(),
   eventType: z
     .enum([
-      'casamiento',
+      'casamientos',
       'corporativos',
       'culturales-artisticos',
       'photoshoot',
@@ -107,7 +107,7 @@ export const projectSchema = baseSchema.extend({
     }),
   description: optionalMultiLanguageTextSchema,
   eventType: z.enum([
-    'casamiento',
+    'casamientos',
     'corporativos',
     'culturales-artisticos',
     'photoshoot',
@@ -370,7 +370,7 @@ export const searchQuerySchema = z.object({
   query: z.string().optional(),
   eventType: z
     .enum([
-      'casamiento',
+      'casamientos',
       'corporativos',
       'culturales-artisticos',
       'photoshoot',

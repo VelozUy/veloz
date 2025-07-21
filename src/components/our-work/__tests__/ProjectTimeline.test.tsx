@@ -30,7 +30,7 @@ const mockProject = {
   title: 'Test Wedding',
   eventDate: '2024-06-15',
   location: 'Buenos Aires',
-  eventType: 'casamiento',
+  eventType: 'casamientos',
   crewMembers: ['crew1', 'crew2'],
 };
 
