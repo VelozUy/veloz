@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar,
@@ -10,8 +10,10 @@ import {
   Video,
   CheckCircle,
   Clock,
+  Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useContentBackground } from '@/hooks/useBackground';
 
 interface TimelinePhase {
   id: string;
@@ -180,63 +182,80 @@ export default function ProjectTimeline({
   className,
   onInteraction,
 }: ProjectTimelineProps) {
+  // Use the new background system for content sections
+  const { classes: contentClasses } = useContentBackground();
+
+  // Enhanced timeline with animations and interactions
   const [expandedPhase, setExpandedPhase] = useState<string | null>(null);
   const [visiblePhases, setVisiblePhases] = useState<Set<string>>(new Set());
-  const phases = getTimelinePhases(project);
 
-  // Track timeline view on mount
+  // Get timeline phases from project data
+  const phases = useMemo(() => getTimelinePhases(project), [project]);
+
+  // Track visible phases for animations
   useEffect(() => {
-    onInteraction?.('view');
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const phaseId = entry.target.getAttribute('data-phase-id');
+          if (phaseId) {
+            setVisiblePhases(prev => {
+              const newSet = new Set(prev);
+              if (entry.isIntersecting) {
+                newSet.add(phaseId);
+              } else {
+                newSet.delete(phaseId);
+              }
+              return newSet;
+            });
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
 
-    // Initialize visible phases for animation
-    const timer = setTimeout(() => {
-      phases.forEach((phase, index) => {
-        setTimeout(() => {
-          setVisiblePhases(prev => new Set([...prev, phase.id]));
-        }, index * 200);
-      });
-    }, 500);
+    // Observe all timeline items
+    const timelineItems = document.querySelectorAll('[data-phase-id]');
+    timelineItems.forEach(item => observer.observe(item));
 
-    return () => clearTimeout(timer);
-  }, [onInteraction, phases]);
+    return () => observer.disconnect();
+  }, [phases]);
 
-  const handlePhaseClick = useCallback(
-    (phaseId: string) => {
-      setExpandedPhase(expandedPhase === phaseId ? null : phaseId);
-      onInteraction?.('click');
-    },
-    [expandedPhase, onInteraction]
-  );
+  // Handle phase click for enhanced interactions
+  const handlePhaseClick = (phaseId: string) => {
+    setExpandedPhase(prev => (prev === phaseId ? null : phaseId));
+    onInteraction?.('click');
+  };
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent, phaseId: string) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        handlePhaseClick(phaseId);
-      }
-    },
-    [handlePhaseClick]
-  );
-
-  const getStatusColor = useCallback((status: TimelinePhase['status']) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-primary text-primary-foreground';
-      case 'in-progress':
-        return 'bg-primary text-primary-foreground';
-      case 'upcoming':
-        return 'bg-muted text-muted-foreground';
-      default:
-        return 'bg-muted text-muted-foreground';
+  // Handle keyboard navigation
+  const handleKeyDown = (event: React.KeyboardEvent, phaseId: string) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handlePhaseClick(phaseId);
     }
-  }, []);
+  };
 
-  const getStatusIcon = useCallback((status: TimelinePhase['status']) => {
+  // Get status color for timeline dots
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-4 h-4 text-primary-foreground" />;
+        return 'bg-primary border-primary';
       case 'in-progress':
-        return <Clock className="w-4 h-4 text-primary-foreground" />;
+        return 'bg-accent border-accent';
+      case 'upcoming':
+        return 'bg-muted border-muted';
+      default:
+        return 'bg-muted border-muted';
+    }
+  };
+
+  // Get status icon for timeline dots
+  const getStatusIcon = useCallback((status: string) => {
+    switch (status) {
+      case 'completed':
+        return <Check className="w-4 h-4" />;
+      case 'in-progress':
+        return <Clock className="w-4 h-4" />;
       case 'upcoming':
         return <Clock className="w-4 h-4" />;
       default:
@@ -246,7 +265,10 @@ export default function ProjectTimeline({
 
   return (
     <section
-      className={cn('py-12 bg-background text-foreground', className)}
+      className={cn(
+        `py-12 ${contentClasses.background} ${contentClasses.text}`,
+        className
+      )}
       role="region"
       aria-label={`Cronología del proyecto ${project.title}`}
     >
@@ -328,6 +350,7 @@ export default function ProjectTimeline({
                       onKeyDown={e => handleKeyDown(e, phase.id)}
                       aria-label={`${phase.title} - ${phase.description}. Click para ver detalles`}
                       aria-expanded={isExpanded}
+                      data-phase-id={phase.id}
                     >
                       {/* Phase Header */}
                       <div className="flex items-center justify-between mb-4">

@@ -1,10 +1,17 @@
 /**
  * Background System Types
- * 
+ *
  * TypeScript definitions for the Light Gray Background Color System
  */
 
-export type SectionType = 'hero' | 'content' | 'form' | 'testimonial' | 'cta' | 'meta';
+export type SectionType =
+  | 'hero'
+  | 'content'
+  | 'form'
+  | 'testimonial'
+  | 'cta'
+  | 'meta'
+  | 'admin';
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface BackgroundClasses {

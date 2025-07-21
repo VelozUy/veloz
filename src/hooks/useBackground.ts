@@ -3,6 +3,7 @@ import {
   getBackgroundClasses,
   getBackgroundClassString,
   validateBackgroundConfig,
+  getResponsiveBackgroundClasses,
 } from '../lib/background-utils';
 import type {
   SectionType,
@@ -34,10 +35,14 @@ export function useBackground(
       console.warn(
         `Invalid background config: ${sectionType} with ${priority} priority`
       );
-      return getBackgroundClasses('content', 'medium', responsive);
+      return responsive
+        ? getResponsiveBackgroundClasses('content', 'medium').mobile
+        : getBackgroundClasses('content', 'medium');
     }
 
-    return getBackgroundClasses(sectionType, priority, responsive);
+    return responsive
+      ? getResponsiveBackgroundClasses(sectionType, priority).mobile
+      : getBackgroundClasses(sectionType, priority);
   }, [sectionType, priority, responsive, isValid]);
 
   const classString = useMemo(() => {

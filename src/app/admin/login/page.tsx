@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { getAuthService, getFirestoreService } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,16 +12,26 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Lock, Loader2, Mail } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, Mail, Shield, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuthService, getFirestoreService } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { useAdminBackground } from '@/hooks/useBackground';
 
 // Owner email - this user is always allowed
 const OWNER_EMAIL = process.env.NEXT_PUBLIC_OWNER_EMAIL || '';
 
 export default function AdminLoginPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter();
-  const { user, loading } = useAuth();
+
+  // Use the new background system for admin sections
+  const { classes: adminClasses } = useAdminBackground();
 
   // Redirect to admin dashboard if already authenticated
   useEffect(() => {
@@ -36,7 +43,9 @@ export default function AdminLoginPage() {
   // Show loading while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div
+        className={`min-h-screen ${adminClasses.background} ${adminClasses.text} flex items-center justify-center`}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
           <p className="text-muted-foreground text-sm">
@@ -191,12 +200,14 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div
+      className={`min-h-screen ${adminClasses.background} ${adminClasses.text} flex items-center justify-center p-4`}
+    >
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <Lock className="w-8 h-8 text-primary mr-2" />
+            <Shield className="w-8 h-8 text-primary mr-2" />
             <h1 className="text-2xl font-bold text-primary">
               Administración Veloz
             </h1>

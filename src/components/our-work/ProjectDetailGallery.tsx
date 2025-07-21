@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory, getCategoryDisplayName } from '@/constants/categories';
-import { useHeroBackground } from '@/hooks/useBackground';
+import { getStaticContent } from '@/lib/utils';
+import { LocalizedContent } from '@/lib/static-content.generated';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 import { useGalleryPerformanceMonitor } from '@/lib/gallery-performance-monitor';
 
@@ -101,7 +102,6 @@ export default function ProjectDetailGallery({
   const { trackProjectView } = useAnalytics();
   const { trackGalleryView, trackTimelineInteraction, trackCrewInteraction } =
     useGalleryAnalytics();
-  const { classes: heroClasses } = useHeroBackground();
   const {
     initialize: initializePerformanceMonitor,
     getMetrics: getPerformanceMetrics,
@@ -162,7 +162,7 @@ export default function ProjectDetailGallery({
       {/* Hero Section with Category Styling */}
       {showHero && (
         <section
-          className={`relative flex flex-col items-end justify-end text-right py-2 px-8 bg-background text-foreground`}
+          className={`relative flex flex-col items-end justify-end text-right py-2 px-8 bg-foreground text-background`}
           role="banner"
           aria-label={`Hero del proyecto ${project.title}`}
         >
@@ -186,7 +186,7 @@ export default function ProjectDetailGallery({
 
           {/* Title */}
           <h1
-            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap uppercase"
+            className="font-body tracking-tight text-right w-full text-background leading-none whitespace-nowrap uppercase"
             id="project-title"
             style={{
               fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',

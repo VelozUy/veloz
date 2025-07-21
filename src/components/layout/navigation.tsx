@@ -13,6 +13,7 @@ import {
   Image as ImageIcon,
   MessageCircle,
 } from 'lucide-react';
+import { useCTABackground } from '@/hooks/useBackground';
 
 interface NavigationProps {
   translations: {
@@ -45,9 +46,8 @@ function getLocalizedPath(path: string, locale: string): string {
 }
 
 export default function Navigation({ translations, locale }: NavigationProps) {
-  // const router = useRouter(); // Removed for static localized routes
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   // Handle mounting to avoid hydration mismatch
@@ -69,6 +69,9 @@ export default function Navigation({ translations, locale }: NavigationProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
+
+  // Use the new background system for CTA sections
+  const { classes: ctaClasses } = useCTABackground();
 
   const navItems = [
     {
@@ -133,7 +136,9 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             {/* CTA Button (Desktop) */}
             <div className="hidden md:block">
               <Link href={getLocalizedPath('/contact', locale)}>
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button
+                  className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
+                >
                   Get Started
                 </Button>
               </Link>
@@ -195,7 +200,9 @@ export default function Navigation({ translations, locale }: NavigationProps) {
           <div className="hidden md:flex items-center space-x-4">
             <LocaleSwitcher currentLocale={locale} />
             <Link href={getLocalizedPath('/contact', locale)}>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button
+                className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
+              >
                 {translations.homepage.hero.cta.contact}
               </Button>
             </Link>
@@ -243,7 +250,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 </div>
                 <Link href={getLocalizedPath('/contact', locale)}>
                   <Button
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                    className={`w-full ${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {translations.homepage.hero.cta.contact}

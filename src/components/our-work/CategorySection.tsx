@@ -3,6 +3,8 @@
 import React from 'react';
 import FeatureMediaGrid from './FeatureMediaGrid';
 import { H2, H3, Body, Muted } from '@/components/ui/typography';
+import { useContentBackground } from '@/hooks/useBackground';
+import { useCTABackground } from '@/hooks/useBackground';
 
 interface CategorySectionProps {
   id: string;
@@ -36,10 +38,14 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   media,
   className = '',
 }: CategorySectionProps) => {
+  // Use the new background system for content sections
+  const { classes: contentClasses } = useContentBackground();
+  const { classes: ctaClasses } = useCTABackground();
+
   return (
     <section
       id={`category-${id}`}
-      className={`min-h-screen py-16 bg-background ${className}`}
+      className={`min-h-screen py-16 ${contentClasses.background} ${className}`}
       data-testid="category-section"
     >
       <div className="container mx-auto px-4">
@@ -70,7 +76,9 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               Cada proyecto es único y nos adaptamos a tus necesidades
               específicas
             </Muted>
-            <button className="bg-primary text-primary-foreground px-6 py-3 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
+            <button
+              className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} px-6 py-3 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background`}
+            >
               Consultar Disponibilidad
             </button>
           </div>

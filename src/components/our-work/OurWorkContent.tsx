@@ -11,6 +11,7 @@ import {
 } from '@/constants';
 import { EventType } from '@/types';
 import { useContentBackground } from '@/hooks/useBackground';
+import { useCTABackground } from '@/hooks/useBackground';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -157,6 +158,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
   // Use the new background system for content sections
   const { classes: contentClasses } = useContentBackground();
+  const { classes: ctaClasses } = useCTABackground();
 
   // Determine current locale from content
   const currentLocale = content.locale || 'es';
@@ -513,13 +515,13 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
       )}
 
       {/* CTA Section */}
-      <section className="px-4 md:px-8 lg:px-12">
+      <section className={`${ctaClasses.background} py-20`}>
         <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className={`text-center py-16 ${contentClasses.text}`}
+            className={`text-center ${ctaClasses.text}`}
           >
             <h2 className="text-heading-md font-body font-normal mb-6">
               {uiText.readyTitle}

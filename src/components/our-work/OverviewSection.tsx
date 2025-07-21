@@ -3,6 +3,8 @@
 import React from 'react';
 import { H3 } from '@/components/ui/typography';
 import EditorialGrid from './EditorialGrid';
+import { useContentBackground } from '@/hooks/useBackground';
+import { useCTABackground } from '@/hooks/useBackground';
 
 interface CategoryMedia {
   id: string;
@@ -39,9 +41,13 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
   categories,
   className = '',
 }: OverviewSectionProps) => {
+  // Use the new background system for content sections
+  const { classes: contentClasses } = useContentBackground();
+  const { classes: ctaClasses } = useCTABackground();
+
   return (
     <section
-      className={`min-h-screen py-12 md:py-16 bg-background ${className}`}
+      className={`min-h-screen py-12 md:py-16 ${contentClasses.background} ${className}`}
     >
       <div className="container mx-auto px-8 md:px-16">
         {/* Category Sections - Compact Editorial Spacing */}
@@ -82,7 +88,9 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               Cada proyecto es único y nos adaptamos a tus necesidades
               específicas. Contáctanos para discutir tu proyecto.
             </p>
-            <button className="bg-primary text-primary-foreground px-8 py-4 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background">
+            <button
+              className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} px-8 py-4 rounded-none font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background`}
+            >
               Consultar Disponibilidad
             </button>
           </div>

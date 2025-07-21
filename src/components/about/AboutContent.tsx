@@ -71,7 +71,7 @@ export default function AboutContent({
   const { classes: contentClasses } = useContentBackground();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen ${contentClasses.background}`}>
       <div className="container mx-auto px-4 py-16 space-y-16">
         {/* Hero Section */}
         <div className={`text-center space-y-6 ${contentClasses.text}`}>

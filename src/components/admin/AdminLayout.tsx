@@ -86,7 +86,9 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className={`min-h-screen ${adminClasses.background} ${adminClasses.text}`}
+    >
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div

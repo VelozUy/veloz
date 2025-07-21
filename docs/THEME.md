@@ -9,13 +9,14 @@ _Last updated: 2025-01-20_
 1. [Overview](#overview)
 2. [Theme Architecture](#theme-architecture)
 3. [Color System](#color-system)
-4. [Typography](#typography)
-5. [Usage Guidelines](#usage-guidelines)
-6. [Component Examples](#component-examples)
-7. [Accessibility](#accessibility)
-8. [Best Practices](#best-practices)
-9. [Migration Guide](#migration-guide)
-10. [Testing](#testing)
+4. [Light Gray Background System](#light-gray-background-system)
+5. [Typography](#typography)
+6. [Usage Guidelines](#usage-guidelines)
+7. [Component Examples](#component-examples)
+8. [Accessibility](#accessibility)
+9. [Best Practices](#best-practices)
+10. [Migration Guide](#migration-guide)
+11. [Testing](#testing)
 
 ---
 
@@ -33,6 +34,109 @@ The Veloz theme system is built on a **single, definitive OKLCH-based color syst
 - **Performance Optimized**: Efficient CSS bundle
 - **Accessibility First**: WCAG AA compliance built-in
 - **No Custom Overrides**: No dark mode toggle or custom font colors
+
+---
+
+## 🎨 Light Gray Background System
+
+_Added: 2025-01-27_
+
+The Light Gray Background Color System provides contextual background styling based on section type and priority level. This system ensures visual hierarchy, brand consistency, and improved user experience across the entire application.
+
+### Background System Architecture
+
+```
+src/
+├── lib/
+│   ├── background-utils.ts      # Core background utility functions
+│   └── utils.ts                 # Priority-based styling utilities
+├── hooks/
+│   └── useBackground.ts         # React hooks for background system
+└── types/
+    └── background.ts            # TypeScript definitions
+```
+
+### Section Types
+
+The background system supports different section types with appropriate styling:
+
+- **Hero Sections** (`bg-foreground`): Charcoal backgrounds with light text
+- **Content Sections** (`bg-muted`): Light gray backgrounds with dark text
+- **Form Sections** (`bg-muted`): Light gray backgrounds for forms
+- **CTA Sections** (`bg-primary` or `bg-card`): High-contrast call-to-action areas
+- **Admin Sections** (`bg-muted`): Light gray backgrounds for admin interface
+- **Testimonial Sections** (`bg-card`): White card backgrounds
+- **Meta Sections** (`bg-muted`): Light gray for secondary content
+
+### Priority Levels
+
+Each section type supports three priority levels:
+
+- **High Priority**: Prominent elements with stronger shadows and contrast
+- **Medium Priority**: Standard content with balanced styling
+- **Low Priority**: Subtle elements with minimal visual weight
+
+### Usage Examples
+
+```tsx
+// Using specialized hooks
+import {
+  useHeroBackground,
+  useContentBackground,
+  useCTABackground,
+} from '@/hooks/useBackground';
+
+function MyComponent() {
+  const { classes: heroClasses } = useHeroBackground();
+  const { classes: contentClasses } = useContentBackground();
+  const { classes: ctaClasses } = useCTABackground();
+
+  return (
+    <div>
+      <section className={heroClasses.background}>
+        <h1 className={heroClasses.text}>Hero Content</h1>
+      </section>
+
+      <section className={contentClasses.background}>
+        <p className={contentClasses.text}>Content</p>
+      </section>
+
+      <button className={`${ctaClasses.background} ${ctaClasses.text}`}>
+        Call to Action
+      </button>
+    </div>
+  );
+}
+```
+
+### Background Classes Reference
+
+| Section Type     | Background      | Text                      | Border               | Shadow      |
+| ---------------- | --------------- | ------------------------- | -------------------- | ----------- |
+| Hero             | `bg-foreground` | `text-background`         | `border-transparent` | `shadow-lg` |
+| Content (High)   | `bg-card`       | `text-card-foreground`    | `border-border`      | `shadow-md` |
+| Content (Medium) | `bg-muted`      | `text-foreground`         | `border-transparent` | `shadow-sm` |
+| Form             | `bg-muted`      | `text-foreground`         | `border-border`      | `shadow-sm` |
+| CTA (High)       | `bg-primary`    | `text-primary-foreground` | `border-primary`     | `shadow-lg` |
+| CTA (Medium)     | `bg-card`       | `text-card-foreground`    | `border-primary`     | `shadow-md` |
+| Admin            | `bg-muted`      | `text-foreground`         | `border-border`      | `shadow-sm` |
+
+### Implementation Status
+
+✅ **Completed Phases:**
+
+- Phase 1: Tailwind Color Tokens
+- Phase 2: Global CSS Variables
+- Phase 3: Utility Functions
+- Phase 4: Hero Sections
+- Phase 5: Content Sections
+- Phase 6: Form Sections
+- Phase 7: CTA Sections
+- Phase 8: Admin Panel
+- Phase 9: Testimonial Sections
+- Phase 10: Comprehensive Testing
+- Performance Optimization
+- Documentation Update
 
 ---
 

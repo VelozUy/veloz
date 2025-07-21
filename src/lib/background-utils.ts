@@ -11,7 +11,8 @@ export type SectionType =
   | 'form'
   | 'testimonial'
   | 'cta'
-  | 'meta';
+  | 'meta'
+  | 'admin';
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface BackgroundClasses {
@@ -38,8 +39,8 @@ export function getBackgroundClasses(
   switch (sectionType) {
     case 'hero':
       return {
-        background: 'bg-background',
-        text: 'text-foreground',
+        background: 'bg-foreground',
+        text: 'text-background',
         border: 'border-transparent',
         shadow: 'shadow-lg',
       };
@@ -100,6 +101,14 @@ export function getBackgroundClasses(
         text: 'text-foreground',
         border: 'border-transparent',
         shadow: 'shadow-xs',
+      };
+
+    case 'admin':
+      return {
+        background: 'bg-muted',
+        text: 'text-foreground',
+        border: 'border-border',
+        shadow: 'shadow-sm',
       };
 
     default:
@@ -267,6 +276,7 @@ export function validateBackgroundConfig(
     testimonial: ['medium'],
     cta: ['high', 'medium'],
     meta: ['low'],
+    admin: ['medium'],
   };
 
   return validCombinations[sectionType]?.includes(priority) ?? false;
