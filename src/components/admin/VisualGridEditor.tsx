@@ -1030,7 +1030,7 @@ export default function VisualGridEditor({
       zIndex: mediaBlocks.length + 1,
       title: projectName || 'Título del Proyecto',
       font: 'inter',
-      color: '#000000',
+      color: 'hsl(var(--foreground))',
     };
 
     // Apply constraints to ensure the block is within grid bounds
@@ -1266,7 +1266,7 @@ export default function VisualGridEditor({
                             f => f.value === editingTitleBlock.font
                           )?.fontFamily || 'Inter, sans-serif',
                         fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-                        color: editingTitleBlock.color || '#000000',
+                        color: editingTitleBlock.color || 'hsl(var(--foreground))',
                         minHeight: '2rem',
                         display: 'flex',
                         alignItems: 'center',
@@ -1365,7 +1365,7 @@ export default function VisualGridEditor({
                         <Input
                           id="color"
                           type="color"
-                          value={editingTitleBlock.color || '#000000'}
+                          value={editingTitleBlock.color || 'hsl(var(--foreground))'}
                           onChange={e =>
                             updateTitleBlock(editingTitleBlock.id, {
                               color: e.target.value,
@@ -1374,7 +1374,7 @@ export default function VisualGridEditor({
                           className="w-10 h-8 p-1 bg-muted border-border"
                         />
                         <span className="text-xs text-muted-foreground font-mono">
-                          {editingTitleBlock.color || '#000000'}
+                          {editingTitleBlock.color || 'hsl(var(--foreground))'}
                         </span>
                       </div>
                     </div>
@@ -1823,7 +1823,7 @@ export default function VisualGridEditor({
                                     )?.fontFamily
                                   : 'Inter, sans-serif',
                                 fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                                color: block.color || '#000000',
+                                color: block.color || 'hsl(var(--foreground))',
                               }}
                             >
                               <div className="text-center font-bold break-words w-full h-full flex items-center justify-center px-2">

@@ -124,7 +124,7 @@ const createLightbox = () => {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
+    background: hsl(var(--foreground) / 0.9);
     display: none;
     z-index: 9999;
     align-items: center;
@@ -173,7 +173,7 @@ const createLightbox = () => {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.2);
+    background: hsl(var(--background) / 0.2);
     border: none;
     color: white;
     font-size: 2rem;
@@ -189,10 +189,10 @@ const createLightbox = () => {
     backdrop-filter: blur(10px);
   `;
   prevButton.onmouseover = () => {
-    prevButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+    prevButton.style.backgroundColor = 'hsl(var(--background) / 0.3)';
   };
   prevButton.onmouseout = () => {
-    prevButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    prevButton.style.backgroundColor = 'hsl(var(--background) / 0.2)';
   };
   prevButton.onclick = () => lightboxInstance?.prev();
 
@@ -207,7 +207,7 @@ const createLightbox = () => {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.2);
+    background: hsl(var(--background) / 0.2);
     border: none;
     color: white;
     font-size: 2rem;
@@ -223,10 +223,10 @@ const createLightbox = () => {
     backdrop-filter: blur(10px);
   `;
   nextButton.onmouseover = () => {
-    nextButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+    nextButton.style.backgroundColor = 'hsl(var(--background) / 0.3)';
   };
   nextButton.onmouseout = () => {
-    nextButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    nextButton.style.backgroundColor = 'hsl(var(--background) / 0.2)';
   };
   nextButton.onclick = () => lightboxInstance?.next();
 
@@ -240,7 +240,7 @@ const createLightbox = () => {
     position: fixed;
     top: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.2);
+    background: hsl(var(--background) / 0.2);
     border: none;
     color: white;
     font-size: 2rem;
@@ -255,10 +255,10 @@ const createLightbox = () => {
     backdrop-filter: blur(10px);
   `;
   closeButton.onmouseover = () => {
-    closeButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+    closeButton.style.backgroundColor = 'hsl(var(--background) / 0.3)';
   };
   closeButton.onmouseout = () => {
-    closeButton.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    closeButton.style.backgroundColor = 'hsl(var(--background) / 0.2)';
   };
   closeButton.onclick = () => lightboxInstance?.close();
 
@@ -273,7 +273,7 @@ const createLightbox = () => {
     color: white;
     font-size: 1rem;
     z-index: 10000;
-    background: rgba(0, 0, 0, 0.5);
+    background: hsl(var(--foreground) / 0.5);
     padding: 12px 20px;
     border-radius: 8px 8px 0 0;
     font-weight: 500;

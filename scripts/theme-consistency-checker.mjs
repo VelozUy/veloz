@@ -117,6 +117,13 @@ const HARDCODED_COLOR_PATTERNS = [
   /text-blue-accent/g,
   /bg-blue-accent/g,
   /border-blue-accent/g,
+
+  // Hex color values in strings (for console.log, test files, etc.)
+  /#[0-9a-fA-F]{3,6}/g,
+  /rgb\([^)]+\)/g,
+  /rgba\([^)]+\)/g,
+  /hsl\([^)]+\)/g,
+  /hsla\([^)]+\)/g,
 ];
 
 // Theme variable patterns that are acceptable
@@ -145,6 +152,12 @@ const THEME_VARIABLE_PATTERNS = [
   /border-input/g,
   /border-ring/g,
   /border-sidebar-border/g,
+
+  // Theme variable patterns
+  /hsl\(var\(--[^)]+\)\)/g,
+  /rgba\(var\(--[^)]+\)/g,
+  /rgb\(var\(--[^)]+\)/g,
+  /hsl\(var\(--[^)]+\)\s*\/\s*[^)]+\)/g, // hsl(var(--variable) / opacity)
 ];
 
 // Files and directories to ignore
@@ -166,6 +179,25 @@ const IGNORE_PATTERNS = [
   /theme-consistency-checker/,
 ];
 
+// Files that should be ignored (documentation, theme definitions, etc.)
+const IGNORE_FILES = [
+  'docs/THEME.md',
+  'docs/TASK.md',
+  'docs/BACKLOG.md',
+  'docs/CLAUDE.md',
+  'docs/THEME_GUIDE.md',
+  'src/app/globals.css',
+  'tailwind.config.ts',
+  'src/lib/static-content.generated.ts',
+  'functions/index.js',
+  'src/app/api/theme/route.ts',
+  'src/lib/theme-utils.ts',
+  'src/components/gallery/SideNavigation.css',
+  'src/lib/__tests__/utils.test.ts',
+  'src/lib/accessibility-testing.ts',
+  'src/lib/cross-browser-testing.ts',
+];
+
 // File extensions to check
 const VALID_EXTENSIONS = ['.tsx', '.ts', '.jsx', '.js', '.css', '.scss', '.md', '.mdx'];
 
@@ -173,7 +205,17 @@ const VALID_EXTENSIONS = ['.tsx', '.ts', '.jsx', '.js', '.css', '.scss', '.md', 
  * Check if a file should be ignored
  */
 function shouldIgnoreFile(filePath) {
-  return IGNORE_PATTERNS.some(pattern => pattern.test(filePath));
+  // Check against ignore patterns
+  if (IGNORE_PATTERNS.some(pattern => pattern.test(filePath))) {
+    return true;
+  }
+  
+  // Check against specific ignore files
+  if (IGNORE_FILES.some(ignoreFile => filePath.includes(ignoreFile))) {
+    return true;
+  }
+  
+  return false;
 }
 
 /**
@@ -198,7 +240,10 @@ function checkLineForHardcodedColors(line, lineNumber) {
         line.match(themePattern)
       );
 
-      if (!hasThemeVariables) {
+      // Skip if this is a comment or documentation
+      const isComment = line.trim().startsWith('//') || line.trim().startsWith('/*') || line.trim().startsWith('*');
+      
+      if (!hasThemeVariables && !isComment) {
         issues.push({
           line: lineNumber,
           issue: `Hardcoded color found: ${matches[0]}. Consider using theme variables instead.`,

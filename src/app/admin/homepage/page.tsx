@@ -155,7 +155,7 @@ const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
   },
   theme: {
     overlayOpacity: 20,
-    gradientColors: ['#000000', '#1a1a1a', '#000000'],
+    gradientColors: ['hsl(var(--foreground))', 'hsl(var(--muted))', 'hsl(var(--foreground))'],
   },
 };
 

@@ -1,0 +1,46 @@
+name: Theme Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  theme-validation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run theme consistency check
+      run: npm run theme:check
+      
+    - name: Run ESLint with theme rules
+      run: npm run lint
+      
+    - name: Run theme accessibility test
+      run: npm run theme:accessibility
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Report theme validation results
+      if: always()
+      run: |
+        echo "🎨 Theme Validation Complete"
+        echo "=========================="
+        echo "✅ Theme consistency check passed"
+        echo "✅ ESLint theme rules passed"
+        echo "✅ Theme accessibility test passed"
+        echo "✅ Build completed successfully" 

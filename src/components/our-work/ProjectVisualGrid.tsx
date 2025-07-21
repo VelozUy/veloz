@@ -266,11 +266,11 @@ export default function ProjectVisualGrid({
             width: `${gridWidthPx}px`,
             height: `${gridHeightPx}px`,
             position: 'relative',
-            background: '#f3f4f6', // Light gray background like admin editor
+            background: 'hsl(var(--muted))', // Light gray background like admin editor
             borderRadius: '8px',
             margin: '0 auto',
             overflow: 'hidden',
-            border: '2px dashed #d1d5db', // Dashed border like admin editor
+            border: '2px dashed hsl(var(--border))', // Dashed border like admin editor
             transition: 'width 0.2s, height 0.2s',
           }}
         >
@@ -279,32 +279,32 @@ export default function ProjectVisualGrid({
           {Array.from({ length: GRID_WIDTH + 1 }).map((_, i) => (
             <div
               key={`v-${i}`}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: `${i * GRID_CELL_SIZE}px`,
-                width: '1px',
-                height: `${gridHeightPx}px`,
-                background: '#e5e7eb',
-                zIndex: 0,
-                opacity: 0.5,
-              }}
+                              style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: `${i * GRID_CELL_SIZE}px`,
+                  width: '1px',
+                  height: `${gridHeightPx}px`,
+                  background: 'hsl(var(--border))',
+                  zIndex: 0,
+                  opacity: 0.5,
+                }}
             />
           ))}
           {/* Horizontal lines */}
           {Array.from({ length: actualGridHeight + 1 }).map((_, i) => (
             <div
               key={`h-${i}`}
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: `${i * GRID_CELL_SIZE}px`,
-                width: `${gridWidthPx}px`,
-                height: '1px',
-                background: '#e5e7eb',
-                zIndex: 0,
-                opacity: 0.5,
-              }}
+                              style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: `${i * GRID_CELL_SIZE}px`,
+                  width: `${gridWidthPx}px`,
+                  height: '1px',
+                  background: 'hsl(var(--border))',
+                  zIndex: 0,
+                  opacity: 0.5,
+                }}
             />
           ))}
 
@@ -343,7 +343,7 @@ export default function ProjectVisualGrid({
                         ? FONT_FAMILIES[block.font] || 'Inter, sans-serif'
                         : 'Inter, sans-serif',
                       fontSize: `clamp(0.5rem, ${Math.min(block.width, block.height) * 4}vw, 12rem)`,
-                      color: block.color || '#000000',
+                      color: block.color || 'hsl(var(--foreground))',
                     }}
                   >
                     <div className="text-center font-bold whitespace-nowrap overflow-hidden w-full h-full flex items-center justify-center px-2 uppercase">

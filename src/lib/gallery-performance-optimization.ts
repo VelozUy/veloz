@@ -61,7 +61,7 @@ export function preventCLS(): void {
     
     /* Skeleton loaders to maintain layout */
     .skeleton-loader {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--border)) 50%, hsl(var(--muted)) 75%);
       background-size: 200% 100%;
       animation: loading 1.5s infinite;
     }
@@ -79,7 +79,7 @@ export function preventCLS(): void {
     /* Reserve space for dynamic content */
     .content-placeholder {
       min-height: 200px;
-      background: #f5f5f5;
+      background: hsl(var(--muted));
       border-radius: 8px;
     }
   `;
@@ -103,7 +103,7 @@ export function optimizeFCP(): void {
     
     .gallery-item {
       aspect-ratio: 1;
-      background: #f0f0f0;
+      background: hsl(var(--muted));
       border-radius: 8px;
       overflow: hidden;
     }
@@ -111,7 +111,7 @@ export function optimizeFCP(): void {
     .gallery-skeleton {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--border)) 50%, hsl(var(--muted)) 75%);
       background-size: 200% 100%;
       animation: loading 1.5s infinite;
     }
