@@ -1,174 +1,174 @@
 'use client';
 
 import React from 'react';
-import GalleryItem from './GalleryItem';
+import { ResponsivePicture } from './ResponsivePicture';
+import { cn } from '@/lib/utils';
 
-interface ProjectMedia {
+interface GalleryItem {
   id: string;
-  type: 'photo' | 'video';
-  url: string;
+  src: string;
   alt: string;
   width: number;
   height: number;
-  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
+  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4' | '4:5' | '5:4';
+  category?: string;
+  onClick?: () => void;
+  galleryGroup?: string;
+  dataType?: 'image' | 'video';
+  dataDesc?: string;
 }
 
 interface GalleryRowProps {
-  media: ProjectMedia[];
-  maxItems?: number;
-  gap?: number;
+  items: GalleryItem[];
   className?: string;
-  galleryGroup?: string;
-  onItemClick?: (media: ProjectMedia) => void;
+  gap?: 'sm' | 'md' | 'lg';
+  height?: 'sm' | 'md' | 'lg' | 'xl';
+  aspectRatio?: 'auto' | 'square' | 'video';
+  onItemClick?: (item: GalleryItem) => void;
 }
 
 /**
  * GalleryRow Component
  *
- * Organizes media items in rows with dynamic width calculations
- * based on aspect ratios for optimal visual balance.
- * Creates masonry-style layouts with responsive behavior.
+ * Dynamic row generation with:
+ * - Aspect ratio-based width calculations
+ * - Responsive gap management
+ * - Optimal visual balance across different project sizes
+ * - Support for mixed media (photos and videos) within projects
  */
-export const GalleryRow: React.FC<GalleryRowProps> = ({
-  media,
-  maxItems = 4,
-  gap = 8,
-  className = '',
-  galleryGroup = 'gallery',
+export function GalleryRow({
+  items,
+  className,
+  gap = 'md',
+  height = 'md',
+  aspectRatio = 'auto',
   onItemClick,
-}: GalleryRowProps) => {
-  // Calculate responsive gap classes
-  const getGapClasses = () => {
-    const gapMap = {
-      4: 'gap-1',
-      6: 'gap-1.5',
-      8: 'gap-2',
-      12: 'gap-3',
-      16: 'gap-4',
-      20: 'gap-5',
-      24: 'gap-6',
-    };
-    return gapMap[gap as keyof typeof gapMap] || 'gap-2';
+}: GalleryRowProps) {
+  // Calculate aspect ratio for responsive sizing
+  const calculateAspectRatio = (width: number, height: number) => {
+    const ratio = width / height;
+
+    if (Math.abs(ratio - 1) < 0.1) return '1:1';
+    if (Math.abs(ratio - 16 / 9) < 0.1) return '16:9';
+    if (Math.abs(ratio - 9 / 16) < 0.1) return '9:16';
+    if (Math.abs(ratio - 4 / 3) < 0.1) return '4:3';
+    if (Math.abs(ratio - 3 / 4) < 0.1) return '3:4';
+    if (Math.abs(ratio - 4 / 5) < 0.1) return '4:5';
+    if (Math.abs(ratio - 5 / 4) < 0.1) return '5:4';
+
+    return undefined;
   };
 
-  // Calculate item width based on aspect ratio and available space
-  const calculateItemWidth = (
-    mediaItem: ProjectMedia,
-    index: number,
-    totalItems: number
-  ) => {
-    const aspectRatio =
-      mediaItem.aspectRatio ||
-      (mediaItem.width && mediaItem.height
-        ? mediaItem.width / mediaItem.height > 1.5
-          ? '16:9'
-          : mediaItem.width / mediaItem.height < 0.7
-            ? '9:16'
-            : mediaItem.width / mediaItem.height > 1.2
-              ? '4:3'
-              : '1:1'
-        : '1:1');
+  // Calculate dynamic width based on aspect ratio
+  const getDynamicWidth = (item: GalleryItem) => {
+    const itemAspectRatio =
+      item.aspectRatio || calculateAspectRatio(item.width, item.height);
 
-    // For wide images, they can take more space
-    if (aspectRatio === '16:9') {
-      return 'flex-[2_1_0%]'; // Takes 2x the space of a standard item
+    switch (itemAspectRatio) {
+      case '16:9':
+      case '4:3':
+      case '5:4':
+        return 'flex-[2]'; // Wide images take more space
+      case '9:16':
+      case '3:4':
+      case '4:5':
+        return 'flex-[0.75]'; // Tall images take less space
+      case '1:1':
+      default:
+        return 'flex-1'; // Square images take standard space
     }
-
-    // For tall images, they can take more vertical space
-    if (aspectRatio === '9:16' || aspectRatio === '3:4') {
-      return 'flex-[1_1_0%] min-h-[300px]'; // Standard width but taller
-    }
-
-    // For square or standard images
-    return 'flex-[1_1_0%]';
   };
 
-  // Group media into rows based on aspect ratios and available space
-  const groupMediaIntoRows = (mediaItems: ProjectMedia[]) => {
-    const rows: ProjectMedia[][] = [];
-    let currentRow: ProjectMedia[] = [];
-    let currentRowWidth = 0;
-    const maxRowWidth = 4; // Maximum items per row
-
-    mediaItems.forEach(item => {
-      const aspectRatio =
-        item.aspectRatio ||
-        (item.width && item.height
-          ? item.width / item.height > 1.5
-            ? '16:9'
-            : item.width / item.height < 0.7
-              ? '9:16'
-              : item.width / item.height > 1.2
-                ? '4:3'
-                : '1:1'
-          : '1:1');
-
-      // Calculate item width contribution
-      const itemWidth = aspectRatio === '16:9' ? 2 : 1;
-
-      // If adding this item would exceed row width, start a new row
-      if (currentRowWidth + itemWidth > maxRowWidth && currentRow.length > 0) {
-        rows.push([...currentRow]);
-        currentRow = [item];
-        currentRowWidth = itemWidth;
-      } else {
-        currentRow.push(item);
-        currentRowWidth += itemWidth;
-      }
-    });
-
-    // Add the last row if it has items
-    if (currentRow.length > 0) {
-      rows.push(currentRow);
-    }
-
-    return rows;
+  // Gap classes
+  const gapClasses = {
+    sm: 'gap-2 md:gap-3 lg:gap-4',
+    md: 'gap-4 md:gap-6 lg:gap-8',
+    lg: 'gap-6 md:gap-8 lg:gap-12',
   };
 
-  if (!media || media.length === 0) {
+  // Height classes
+  const heightClasses = {
+    sm: 'h-32 md:h-40 lg:h-48',
+    md: 'h-40 md:h-48 lg:h-56',
+    lg: 'h-48 md:h-56 lg:h-64',
+    xl: 'h-56 md:h-64 lg:h-72',
+  };
+
+  // Aspect ratio classes
+  const aspectRatioClasses = {
+    auto: '',
+    square: 'aspect-square',
+    video: 'aspect-video',
+  };
+
+  const handleItemClick = (item: GalleryItem) => {
+    if (onItemClick) {
+      onItemClick(item);
+    } else if (item.onClick) {
+      item.onClick();
+    }
+  };
+
+  if (!items || items.length === 0) {
     return (
-      <div className={`text-center py-8 ${className}`}>
-        <h3 className="text-lg font-medium text-foreground mb-2">
-          No media available
-        </h3>
-        <p className="text-muted-foreground">
-          No media items to display in this row.
-        </p>
+      <div className={cn('text-center py-8', className)}>
+        <p className="text-muted-foreground">No items to display</p>
       </div>
     );
   }
 
-  // Limit items if maxItems is specified
-  const limitedMedia = maxItems ? media.slice(0, maxItems) : media;
-  const mediaRows = groupMediaIntoRows(limitedMedia);
-
   return (
-    <div className={`space-y-4 ${className}`}>
-      {mediaRows.map((row, rowIndex) => (
+    <div
+      className={cn(
+        'flex',
+        gapClasses[gap],
+        heightClasses[height],
+        aspectRatioClasses[aspectRatio],
+        className
+      )}
+    >
+      {items.map(item => (
         <div
-          key={`row-${rowIndex}`}
-          className={`flex ${getGapClasses()} flex-wrap items-stretch`}
+          key={item.id}
+          className={cn(
+            'relative overflow-hidden',
+            getDynamicWidth(item),
+            item.onClick || onItemClick ? 'cursor-pointer' : ''
+          )}
+          onClick={() => handleItemClick(item)}
+          role={item.onClick || onItemClick ? 'button' : undefined}
+          tabIndex={item.onClick || onItemClick ? 0 : undefined}
+          onKeyDown={e => {
+            if (
+              (item.onClick || onItemClick) &&
+              (e.key === 'Enter' || e.key === ' ')
+            ) {
+              e.preventDefault();
+              handleItemClick(item);
+            }
+          }}
         >
-          {row.map(mediaItem => {
-            const widthClass = calculateItemWidth(mediaItem, 0, row.length);
+          <ResponsivePicture
+            src={item.src}
+            alt={item.alt}
+            width={item.width}
+            height={item.height}
+            aspectRatio={
+              item.aspectRatio || calculateAspectRatio(item.width, item.height)
+            }
+            className="w-full h-full object-cover"
+            onClick={() => handleItemClick(item)}
+            galleryGroup={item.galleryGroup}
+            dataType={item.dataType}
+            dataDesc={item.dataDesc}
+          />
 
-            return (
-              <div
-                key={mediaItem.id}
-                className={`${widthClass} relative group gs-asset min-h-[200px]`}
-              >
-                <GalleryItem
-                  media={mediaItem}
-                  galleryGroup={galleryGroup}
-                  className="w-full h-full"
-                />
-              </div>
-            );
-          })}
+          {/* Hover overlay for clickable items */}
+          {(item.onClick || onItemClick) && (
+            <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300" />
+          )}
         </div>
       ))}
     </div>
   );
-};
-
-export default GalleryRow;
+}

@@ -1,255 +1,282 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { GalleryRow } from '../GalleryRow';
 
-// Mock GalleryItem component
-jest.mock('../GalleryItem', () => {
-  return function MockGalleryItem({ media, className }: any) {
+// Mock ResponsivePicture component
+jest.mock('../ResponsivePicture', () => {
+  return function MockResponsivePicture({ src, alt, onClick, ...props }: any) {
     return (
-      <div className={className} data-testid="gallery-item">
-        <img src={media.url} alt={media.alt} />
-      </div>
+      <img
+        src={src}
+        alt={alt}
+        onClick={onClick}
+        data-testid="responsive-picture"
+        {...props}
+      />
     );
   };
 });
 
 describe('GalleryRow', () => {
-  const mockMedia = [
+  const mockItems = [
     {
-      id: 'image-1',
-      type: 'photo' as const,
-      url: 'https://example.com/image1.jpg',
+      id: '1',
+      src: 'https://example.com/image1.jpg',
       alt: 'Test image 1',
       width: 1200,
       height: 800,
+      aspectRatio: '16:9' as const,
     },
     {
-      id: 'image-2',
-      type: 'photo' as const,
-      url: 'https://example.com/image2.jpg',
+      id: '2',
+      src: 'https://example.com/image2.jpg',
       alt: 'Test image 2',
       width: 800,
       height: 1200,
+      aspectRatio: '3:4' as const,
     },
     {
-      id: 'video-1',
-      type: 'video' as const,
-      url: 'https://example.com/video1.mp4',
-      alt: 'Test video 1',
-      width: 1600,
-      height: 900,
+      id: '3',
+      src: 'https://example.com/image3.jpg',
+      alt: 'Test image 3',
+      width: 1000,
+      height: 1000,
+      aspectRatio: '1:1' as const,
     },
   ];
 
   it('renders with basic props', () => {
-    render(<GalleryRow media={mockMedia} />);
+    render(<GalleryRow items={mockItems} />);
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    expect(galleryItems).toHaveLength(3);
+    const pictures = screen.getAllByTestId('responsive-picture');
+    expect(pictures).toHaveLength(3);
+    expect(pictures[0]).toHaveAttribute(
+      'src',
+      'https://example.com/image1.jpg'
+    );
+    expect(pictures[0]).toHaveAttribute('alt', 'Test image 1');
   });
 
-  it('renders with custom maxItems', () => {
-    render(<GalleryRow media={mockMedia} maxItems={2} />);
+  it('applies custom className', () => {
+    render(<GalleryRow items={mockItems} className="custom-class" />);
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    expect(galleryItems).toHaveLength(2);
+    const row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('custom-class');
   });
 
-  it('renders with custom gap', () => {
-    render(<GalleryRow media={mockMedia} gap={16} />);
+  it('applies different gap sizes', () => {
+    const { rerender } = render(<GalleryRow items={mockItems} gap="sm" />);
 
-    const rowContainer =
-      screen.getAllByTestId('gallery-item')[0].parentElement?.parentElement;
-    expect(rowContainer).toHaveClass('gap-4');
+    let row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('gap-2');
+    expect(row).toHaveClass('md:gap-3');
+    expect(row).toHaveClass('lg:gap-4');
+
+    rerender(<GalleryRow items={mockItems} gap="lg" />);
+    row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('gap-6');
+    expect(row).toHaveClass('md:gap-8');
+    expect(row).toHaveClass('lg:gap-12');
   });
 
-  it('renders with custom className', () => {
-    render(<GalleryRow media={mockMedia} className="custom-row" />);
+  it('applies different height sizes', () => {
+    const { rerender } = render(<GalleryRow items={mockItems} height="sm" />);
 
-    const rowContainer =
-      screen.getAllByTestId('gallery-item')[0].parentElement?.parentElement
-        ?.parentElement;
-    expect(rowContainer).toHaveClass('custom-row');
+    let row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('h-32');
+    expect(row).toHaveClass('md:h-40');
+    expect(row).toHaveClass('lg:h-48');
+
+    rerender(<GalleryRow items={mockItems} height="xl" />);
+    row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('h-56');
+    expect(row).toHaveClass('md:h-64');
+    expect(row).toHaveClass('lg:h-72');
   });
 
-  it('renders with custom gallery group', () => {
-    render(<GalleryRow media={mockMedia} galleryGroup="custom-gallery" />);
+  it('applies aspect ratio classes', () => {
+    const { rerender } = render(
+      <GalleryRow items={mockItems} aspectRatio="square" />
+    );
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    expect(galleryItems).toHaveLength(3);
+    let row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('aspect-square');
+
+    rerender(<GalleryRow items={mockItems} aspectRatio="video" />);
+    row = screen.getAllByTestId('responsive-picture')[0].closest('.flex');
+    expect(row).toHaveClass('aspect-video');
   });
 
-  it('handles empty media array', () => {
-    render(<GalleryRow media={[]} />);
+  it('calculates dynamic width based on aspect ratio', () => {
+    render(<GalleryRow items={mockItems} />);
 
-    expect(screen.getByText('No media available')).toBeInTheDocument();
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+
+    // Wide images should get flex-[2]
+    const wideImageContainer = rowItems[0];
+    expect(wideImageContainer).toHaveClass('flex-[2]');
+
+    // Tall images should get flex-[0.75]
+    const tallImageContainer = rowItems[1];
+    expect(tallImageContainer).toHaveClass('flex-[0.75]');
+
+    // Square images should get flex-1
+    const squareImageContainer = rowItems[2];
+    expect(squareImageContainer).toHaveClass('flex-1');
   });
 
-  it('handles undefined media', () => {
-    render(<GalleryRow media={undefined as any} />);
+  it('handles item click events', () => {
+    const handleItemClick = jest.fn();
+    render(<GalleryRow items={mockItems} onItemClick={handleItemClick} />);
 
-    expect(screen.getByText('No media available')).toBeInTheDocument();
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    fireEvent.click(rowItems[0]!);
+
+    expect(handleItemClick).toHaveBeenCalledWith(mockItems[0]);
   });
 
-  it('calls onItemClick when item is clicked', () => {
-    const mockOnClick = jest.fn();
-    render(<GalleryRow media={mockMedia} onItemClick={mockOnClick} />);
+  it('handles individual item click events', () => {
+    const itemsWithClick = mockItems.map(item => ({
+      ...item,
+      onClick: jest.fn(),
+    }));
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    // The GalleryItem component has its own click handler, so we test that the onClick prop is passed
-    expect(galleryItems).toHaveLength(3);
-    // Note: The actual click handling is done by the GalleryItem component's internal logic
+    render(<GalleryRow items={itemsWithClick} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    fireEvent.click(rowItems[0]!);
+
+    expect(itemsWithClick[0].onClick).toHaveBeenCalled();
   });
 
-  it('calculates aspect ratio correctly for wide images', () => {
-    const wideMedia = [
+  it('applies cursor pointer for clickable items', () => {
+    render(<GalleryRow items={mockItems} onItemClick={() => {}} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    rowItems.forEach(item => {
+      expect(item).toHaveClass('cursor-pointer');
+    });
+  });
+
+  it('does not apply cursor pointer for non-clickable items', () => {
+    render(<GalleryRow items={mockItems} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    rowItems.forEach(item => {
+      expect(item).not.toHaveClass('cursor-pointer');
+    });
+  });
+
+  it('has proper accessibility attributes for clickable items', () => {
+    render(<GalleryRow items={mockItems} onItemClick={() => {}} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    rowItems.forEach(item => {
+      expect(item).toHaveAttribute('role', 'button');
+      expect(item).toHaveAttribute('tabIndex', '0');
+    });
+  });
+
+  it('does not have button role for non-clickable items', () => {
+    render(<GalleryRow items={mockItems} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+    rowItems.forEach(item => {
+      expect(item).not.toHaveAttribute('role', 'button');
+      expect(item).not.toHaveAttribute('tabIndex', '0');
+    });
+  });
+
+  it('handles keyboard navigation', () => {
+    const handleItemClick = jest.fn();
+    render(<GalleryRow items={mockItems} onItemClick={handleItemClick} />);
+
+    const rowItems = screen
+      .getAllByTestId('responsive-picture')
+      .map(pic => pic.closest('.relative'));
+
+    // Test Enter key
+    fireEvent.keyDown(rowItems[0]!, { key: 'Enter' });
+    expect(handleItemClick).toHaveBeenCalledWith(mockItems[0]);
+
+    // Test Space key
+    fireEvent.keyDown(rowItems[1]!, { key: ' ' });
+    expect(handleItemClick).toHaveBeenCalledWith(mockItems[1]);
+  });
+
+  it('calculates aspect ratio correctly', () => {
+    const itemsWithoutAspectRatio = [
       {
-        id: 'wide-image',
-        type: 'photo' as const,
-        url: 'https://example.com/wide.jpg',
-        alt: 'Wide image',
+        id: '1',
+        src: 'https://example.com/image1.jpg',
+        alt: 'Test image 1',
         width: 1600,
         height: 900,
       },
-    ];
-
-    render(<GalleryRow media={wideMedia} />);
-
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
-  });
-
-  it('calculates aspect ratio correctly for tall images', () => {
-    const tallMedia = [
       {
-        id: 'tall-image',
-        type: 'photo' as const,
-        url: 'https://example.com/tall.jpg',
-        alt: 'Tall image',
+        id: '2',
+        src: 'https://example.com/image2.jpg',
+        alt: 'Test image 2',
         width: 900,
         height: 1600,
       },
-    ];
-
-    render(<GalleryRow media={tallMedia} />);
-
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
-  });
-
-  it('calculates aspect ratio correctly for square images', () => {
-    const squareMedia = [
       {
-        id: 'square-image',
-        type: 'photo' as const,
-        url: 'https://example.com/square.jpg',
-        alt: 'Square image',
+        id: '3',
+        src: 'https://example.com/image3.jpg',
+        alt: 'Test image 3',
         width: 1000,
         height: 1000,
       },
     ];
 
-    render(<GalleryRow media={squareMedia} />);
+    render(<GalleryRow items={itemsWithoutAspectRatio} />);
 
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
+    const pictures = screen.getAllByTestId('responsive-picture');
+    expect(pictures).toHaveLength(3);
   });
 
-  it('uses provided aspect ratio when available', () => {
-    const mediaWithAspectRatio = [
-      {
-        id: 'aspect-ratio-image',
-        type: 'photo' as const,
-        url: 'https://example.com/aspect.jpg',
-        alt: 'Aspect ratio image',
-        width: 1200,
-        height: 800,
-        aspectRatio: '16:9' as const,
-      },
-    ];
-
-    render(<GalleryRow media={mediaWithAspectRatio} />);
-
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
-  });
-
-  it('handles video media type', () => {
-    const videoMedia = [
-      {
-        id: 'video-1',
-        type: 'video' as const,
-        url: 'https://example.com/video.mp4',
-        alt: 'Test video',
-        width: 1920,
-        height: 1080,
-      },
-    ];
-
-    render(<GalleryRow media={videoMedia} />);
-
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
-  });
-
-  it('applies responsive row classes', () => {
-    render(<GalleryRow media={mockMedia} />);
-
-    const rowContainer =
-      screen.getAllByTestId('gallery-item')[0].parentElement?.parentElement;
-    expect(rowContainer).toHaveClass('flex');
-    expect(rowContainer).toHaveClass('flex-wrap');
-  });
-
-  it('handles missing width and height gracefully', () => {
-    const mediaWithoutDimensions = [
-      {
-        id: 'no-dimensions',
-        type: 'photo' as const,
-        url: 'https://example.com/no-dimensions.jpg',
-        alt: 'No dimensions',
-        width: 0,
-        height: 0,
-      },
-    ];
-
-    render(<GalleryRow media={mediaWithoutDimensions} />);
-
-    const galleryItem = screen.getByTestId('gallery-item');
-    expect(galleryItem).toBeInTheDocument();
-  });
-
-  it('handles large number of media items', () => {
-    const largeMediaArray = Array.from({ length: 20 }, (_, index) => ({
-      id: `image-${index}`,
-      type: 'photo' as const,
-      url: `https://example.com/image${index}.jpg`,
-      alt: `Test image ${index}`,
-      width: 1200,
-      height: 800,
+  it('passes gallery attributes to ResponsivePicture', () => {
+    const itemsWithGalleryData = mockItems.map(item => ({
+      ...item,
+      galleryGroup: 'test-gallery',
+      dataType: 'image' as const,
+      dataDesc: 'Test description',
     }));
 
-    render(<GalleryRow media={largeMediaArray} />);
+    render(<GalleryRow items={itemsWithGalleryData} />);
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    // The component groups items into rows, so we test that items are rendered
-    expect(galleryItems.length).toBeGreaterThan(0);
-    expect(galleryItems.length).toBeLessThanOrEqual(20);
+    const pictures = screen.getAllByTestId('responsive-picture');
+    expect(pictures[0]).toHaveAttribute('data-gallery-group', 'test-gallery');
+    expect(pictures[0]).toHaveAttribute('data-type', 'image');
+    expect(pictures[0]).toHaveAttribute('data-desc', 'Test description');
   });
 
-  it('respects maxItems limit', () => {
-    const largeMediaArray = Array.from({ length: 10 }, (_, index) => ({
-      id: `image-${index}`,
-      type: 'photo' as const,
-      url: `https://example.com/image${index}.jpg`,
-      alt: `Test image ${index}`,
-      width: 1200,
-      height: 800,
-    }));
+  it('shows empty state when no items', () => {
+    render(<GalleryRow items={[]} />);
 
-    render(<GalleryRow media={largeMediaArray} maxItems={5} />);
+    expect(screen.getByText('No items to display')).toBeInTheDocument();
+  });
 
-    const galleryItems = screen.getAllByTestId('gallery-item');
-    expect(galleryItems).toHaveLength(5);
+  it('renders empty state with custom className', () => {
+    render(<GalleryRow items={[]} className="custom-class" />);
+
+    const emptyState = screen
+      .getByText('No items to display')
+      .closest('.text-center');
+    expect(emptyState).toHaveClass('custom-class');
   });
 });

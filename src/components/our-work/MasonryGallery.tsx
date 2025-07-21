@@ -102,7 +102,7 @@ export default function MasonryGallery({
           return (
             <div
               key={item.id}
-              className="group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:brightness-110 hover:shadow-lg"
+              className="group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:brightness-110"
               style={{
                 width: '100%',
                 position: 'relative',

@@ -156,7 +156,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
           return (
             <div
               key={mediaItem.id}
-              className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan} hover:shadow-xl`}
+              className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan}`}
             >
               {/* Hover Overlay with gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />

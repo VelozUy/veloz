@@ -103,7 +103,7 @@ export default function MeetTheTeamStatic({
           {crewMembers.map(member => (
             <Card
               key={member.id}
-              className="group hover:shadow-lg transition-all duration-300 bg-card border border-border"
+              className="group transition-all duration-300 bg-card border border-border"
             >
               <CardContent className="p-6">
                 {/* Portrait and Basic Info */}
@@ -113,7 +113,7 @@ export default function MeetTheTeamStatic({
                       <img
                         src={member.portrait}
                         alt={member.name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
+                        className="w-20 h-20 object-cover border-2 border-primary/20"
                       />
                     ) : (
                       <Avatar className="w-20 h-20">

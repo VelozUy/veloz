@@ -162,7 +162,9 @@ describe('Accessibility Testing - Editorial Design', () => {
       );
 
       const activeTab = screen.getByRole('tab', { selected: true });
-      expect(activeTab).toHaveClass('text-primary');
+      // Check for editorial styling classes that handle active state
+      expect(activeTab).toHaveClass('data-[state=active]:text-primary');
+      expect(activeTab).toHaveClass('data-[state=active]:border-primary');
 
       const inactiveTabs = screen
         .getAllByRole('tab')

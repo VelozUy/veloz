@@ -1,128 +1,204 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { LazyImage } from './LazyImage';
+import { cn } from '@/lib/utils';
 
 interface ResponsivePictureProps {
-  media: {
-    id: string;
-    type: 'photo' | 'video';
-    url: string;
-    alt: string;
-    width: number;
-    height: number;
-    aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
-  };
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4' | '4:5' | '5:4';
   className?: string;
   priority?: boolean;
   sizes?: string;
   quality?: number;
   placeholder?: 'blur' | 'empty';
   blurDataURL?: string;
+  onLoad?: () => void;
+  onError?: () => void;
+  onClick?: () => void;
+  galleryGroup?: string;
+  dataType?: 'image' | 'video';
+  dataDesc?: string;
 }
 
 /**
  * ResponsivePicture Component
  *
- * Portfolio-quality responsive image component with multiple srcset sources,
- * WebP format optimization, and proper aspect ratio handling for optimal
- * performance across all devices. Enhanced for portfolio-quality presentation.
+ * Portfolio-quality responsive image component with:
+ * - Multiple srcset sources for optimal performance
+ * - WebP format optimization with fallback
+ * - Lazy loading implementation
+ * - Proper aspect ratio handling
+ * - Gallery integration support
+ * - Accessibility features
  */
-export const ResponsivePicture: React.FC<ResponsivePictureProps> = ({
-  media,
-  className = '',
+export function ResponsivePicture({
+  src,
+  alt,
+  width,
+  height,
+  aspectRatio,
+  className,
   priority = false,
-  sizes = '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
   quality = 100,
   placeholder = 'empty',
   blurDataURL,
-}: ResponsivePictureProps) => {
-  // Calculate aspect ratio if not provided
-  const aspectRatio =
-    media.aspectRatio ||
-    (media.width && media.height
-      ? media.width / media.height > 1.5
-        ? '16:9'
-        : media.width / media.height < 0.7
-          ? '9:16'
-          : media.width / media.height > 1.2
-            ? '4:3'
-            : '1:1'
-      : '1:1');
+  onLoad,
+  onError,
+  onClick,
+  galleryGroup,
+  dataType = 'image',
+  dataDesc,
+}: ResponsivePictureProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // Generate responsive sizes based on aspect ratio for optimal performance
-  const getResponsiveSizes = () => {
-    switch (aspectRatio) {
-      case '16:9':
-        return '(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw';
-      case '9:16':
-        return '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw';
-      case '4:3':
-        return '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw';
-      case '3:4':
-        return '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw';
-      default: // 1:1
-        return '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw';
+  // Calculate aspect ratio classes
+  const getAspectRatioClass = () => {
+    if (!aspectRatio) return '';
+
+    const aspectRatioMap = {
+      '1:1': 'aspect-square',
+      '16:9': 'aspect-video',
+      '9:16': 'aspect-[9/16]',
+      '4:3': 'aspect-[4/3]',
+      '3:4': 'aspect-[3/4]',
+      '4:5': 'aspect-[4/5]',
+      '5:4': 'aspect-[5/4]',
+    };
+
+    return aspectRatioMap[aspectRatio] || '';
+  };
+
+  // Generate srcset for responsive images
+  const generateSrcSet = () => {
+    const baseUrl = src;
+    const baseName = baseUrl.substring(0, baseUrl.lastIndexOf('.'));
+    const extension = baseUrl.substring(baseUrl.lastIndexOf('.'));
+
+    // Generate multiple sizes for responsive images
+    const sizes = [
+      { width: 800, suffix: '@2x' },
+      { width: 600, suffix: '@1.5x' },
+      { width: 400, suffix: '@1x' },
+    ];
+
+    return sizes
+      .map(size => `${baseName}${size.suffix}${extension} ${size.width}w`)
+      .join(', ');
+  };
+
+  // Generate WebP srcset
+  const generateWebPSrcSet = () => {
+    const baseUrl = src;
+    const baseName = baseUrl.substring(0, baseUrl.lastIndexOf('.'));
+
+    const sizes = [
+      { width: 800, suffix: '@2x' },
+      { width: 600, suffix: '@1.5x' },
+      { width: 400, suffix: '@1x' },
+    ];
+
+    return sizes
+      .map(size => `${baseName}${size.suffix}.webp ${size.width}w`)
+      .join(', ');
+  };
+
+  const handleLoad = () => {
+    setIsLoaded(true);
+    onLoad?.();
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    onError?.();
+  };
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
     }
   };
 
-  // Generate multiple srcset sources for optimal performance
-  const generateSrcSet = () => {
-    const baseUrl = media.url;
-    const sizes = [400, 600, 800, 1200, 1600];
-
-    // For Firebase Storage URLs, we'll use the original URL
-    // In a production environment, you might want to implement
-    // a CDN or image optimization service
-    return baseUrl;
-  };
-
-  // Generate WebP srcset if supported
-  const generateWebPSrcSet = () => {
-    // For now, return the original URL
-    // In production, you would generate WebP versions
-    return media.url;
-  };
+  // If there's an error, show a fallback
+  if (hasError) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center bg-muted text-muted-foreground',
+          getAspectRatioClass(),
+          className
+        )}
+        onClick={handleClick}
+      >
+        <div className="text-center">
+          <div className="text-4xl mb-2">📷</div>
+          <div className="text-sm">Image unavailable</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={`block ${className}`}>
-      {/* Enhanced picture element with multiple formats */}
-      <picture className="w-full h-full">
-        {/* WebP format with fallback */}
-        <source
-          type="image/webp"
-          srcSet={generateWebPSrcSet()}
-          sizes={getResponsiveSizes()}
-        />
+    <div
+      className={cn(
+        'relative overflow-hidden',
+        getAspectRatioClass(),
+        className
+      )}
+      onClick={handleClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={e => {
+        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+    >
+      {/* WebP source for modern browsers */}
+      <picture>
+        <source type="image/webp" srcSet={generateWebPSrcSet()} sizes={sizes} />
 
-        {/* Fallback JPEG/PNG */}
-        <source
-          type="image/jpeg"
-          srcSet={generateSrcSet()}
-          sizes={getResponsiveSizes()}
-        />
+        {/* Fallback source */}
+        <source srcSet={generateSrcSet()} sizes={sizes} />
 
-        {/* Use LazyImage for progressive loading with enhanced features */}
-        <LazyImage
-          src={media.url}
-          alt={media.alt}
-          width={media.width}
-          height={media.height}
-          className="w-full h-full object-cover"
-          sizes={getResponsiveSizes()}
+        {/* Fallback img element */}
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={cn(
+            'object-cover w-full h-full transition-opacity duration-300',
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          )}
           priority={priority}
           quality={quality}
           placeholder={placeholder}
           blurDataURL={blurDataURL}
-          onLoad={() => {
-            // Add loaded class for smooth transitions
-            // Note: LazyImage handles the loading state internally
-          }}
+          sizes={sizes}
+          onLoad={handleLoad}
+          onError={handleError}
+          data-gallery-group={galleryGroup}
+          data-type={dataType}
+          data-desc={dataDesc}
         />
       </picture>
+
+      {/* Loading skeleton */}
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 bg-muted animate-pulse" />
+      )}
+
+      {/* Gallery overlay for clickable images */}
+      {onClick && (
+        <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 cursor-pointer" />
+      )}
     </div>
   );
-};
-
-export default ResponsivePicture;
+}

@@ -250,55 +250,67 @@ describe('CategoryNavigation', () => {
       );
 
       const activeTab = screen.getByRole('tab', { selected: true });
-      expect(activeTab).toHaveClass('text-primary');
+      // Check for editorial styling classes from TabsTrigger
+      expect(activeTab).toHaveClass('text-base');
+      expect(activeTab).toHaveClass('uppercase');
+      expect(activeTab).toHaveClass('tracking-tight');
+      expect(activeTab).toHaveClass('border-b-2');
+      expect(activeTab).toHaveClass('data-[state=active]:border-primary');
+      expect(activeTab).toHaveClass('data-[state=active]:text-primary');
     });
 
-    it('renders dark underline for active tab', () => {
+    it('has proper editorial styling for tabs', () => {
       render(
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
       const activeTab = screen.getByRole('tab', { selected: true });
+      // Check for editorial styling from TabsTrigger component
+      expect(activeTab).toHaveClass('inline-flex');
+      expect(activeTab).toHaveClass('items-center');
+      expect(activeTab).toHaveClass('px-1');
+      expect(activeTab).toHaveClass('pb-1');
+      expect(activeTab).toHaveClass('text-base');
+      expect(activeTab).toHaveClass('uppercase');
+      expect(activeTab).toHaveClass('tracking-tight');
+      expect(activeTab).toHaveClass('border-b-2');
+      expect(activeTab).toHaveClass('border-transparent');
+      expect(activeTab).toHaveClass('hover:border-primary');
+      expect(activeTab).toHaveClass('hover:text-primary');
+      expect(activeTab).toHaveClass('text-muted-foreground');
+      expect(activeTab).toHaveClass('transition-all');
+      expect(activeTab).toHaveClass('duration-200');
+    });
+
+    it('has proper active state data attributes', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      // Check that the tab has the proper data attributes for active state
+      expect(activeTab).toHaveAttribute('data-state', 'active');
+    });
+
+    it('does not have custom underline spans', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      // With editorial styling, there should be no custom underline spans
       const underline = activeTab.querySelector('span');
-      expect(underline).toBeInTheDocument();
-      expect(underline).toHaveClass('bg-foreground');
+      expect(underline).not.toBeInTheDocument();
     });
 
-    it('has proper underline positioning', () => {
+    it('has proper padding for editorial styling', () => {
       render(
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
       const activeTab = screen.getByRole('tab', { selected: true });
-      const underline = activeTab.querySelector('span');
-      expect(underline).toHaveClass('absolute');
-      expect(underline).toHaveClass('bottom-0');
-      expect(underline).toHaveClass('left-0');
-      expect(underline).toHaveClass('w-full');
-      expect(underline).toHaveClass('h-0.5');
-    });
-
-    it('does not render underline for inactive tabs', () => {
-      render(
-        <CategoryNavigation {...defaultProps} activeCategory="overview" />
-      );
-
-      const inactiveTabs = screen
-        .getAllByRole('tab')
-        .filter(tab => !tab.getAttribute('aria-selected'));
-      inactiveTabs.forEach(tab => {
-        const underline = tab.querySelector('span');
-        expect(underline).not.toBeInTheDocument();
-      });
-    });
-
-    it('has proper padding for underline positioning', () => {
-      render(
-        <CategoryNavigation {...defaultProps} activeCategory="overview" />
-      );
-
-      const activeTab = screen.getByRole('tab', { selected: true });
-      expect(activeTab).toHaveClass('pb-2');
+      // Editorial styling uses pb-1 instead of pb-2
+      expect(activeTab).toHaveClass('pb-1');
     });
   });
 });

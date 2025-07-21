@@ -300,7 +300,7 @@ export default function ProjectTimeline({
                   {/* Timeline Dot */}
                   <div
                     className={cn(
-                      'absolute left-8 md:left-1/2 w-4 h-4 rounded-full border-4 border-background transform -translate-x-1/2',
+                      'absolute left-8 md:left-1/2 w-4 h-4 border-4 border-background transform -translate-x-1/2',
                       getStatusColor(phase.status)
                     )}
                   >
@@ -318,8 +318,8 @@ export default function ProjectTimeline({
                   >
                     <div
                       className={cn(
-                        'bg-card text-card-foreground rounded-lg p-6 shadow-lg border border-border',
-                        'hover:shadow-xl transition-all duration-300',
+                        'bg-card text-card-foreground p-6 border border-border',
+                        'transition-all duration-300',
                         'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
                       )}
                       role="button"
@@ -332,9 +332,7 @@ export default function ProjectTimeline({
                       {/* Phase Header */}
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-3">
-                          <div className="p-2 bg-primary/10 rounded-lg">
-                            {phase.icon}
-                          </div>
+                          <div className="p-2 bg-primary/10">{phase.icon}</div>
                           <div>
                             <h3 className="text-xl font-semibold text-foreground">
                               {phase.title}
@@ -346,7 +344,7 @@ export default function ProjectTimeline({
                         </div>
                         <div
                           className={cn(
-                            'px-3 py-1 rounded-full text-xs font-medium',
+                            'px-3 py-1 text-xs font-medium',
                             getStatusColor(phase.status)
                           )}
                         >
@@ -389,7 +387,7 @@ export default function ProjectTimeline({
                                       delay: detailIndex * 0.1,
                                     }}
                                   >
-                                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
+                                    <span className="w-1.5 h-1.5 bg-primary mt-2 flex-shrink-0" />
                                     <span>{detail}</span>
                                   </motion.li>
                                 ))}

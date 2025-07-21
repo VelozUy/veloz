@@ -94,12 +94,7 @@ export default function GridGallery({
   }
 
   return (
-    <div
-      className={cn(
-        'fixed inset-0 w-screen h-screen z-0 rounded-br-[4rem]',
-        className
-      )}
-    >
+    <div className={cn('fixed inset-0 w-screen h-screen z-0', className)}>
       {/* Desktop Grid Layout */}
       <div className="hidden md:grid grid-cols-12 w-full h-full">
         {gridItems.map((item, index) => {

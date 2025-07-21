@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ResponsivePicture } from '../ResponsivePicture';
 
 // Mock Next.js Image component
@@ -7,8 +7,9 @@ jest.mock('next/image', () => {
   return function MockImage({
     src,
     alt,
-    width,
-    height,
+    onLoad,
+    onError,
+    priority,
     className,
     ...props
   }: any) {
@@ -16,10 +17,11 @@ jest.mock('next/image', () => {
       <img
         src={src}
         alt={alt}
-        width={width}
-        height={height}
-        className={className}
+        onLoad={onLoad}
+        onError={onError}
         data-testid="next-image"
+        className={className}
+        data-priority={priority ? 'true' : 'false'}
         {...props}
       />
     );
@@ -27,157 +29,216 @@ jest.mock('next/image', () => {
 });
 
 describe('ResponsivePicture', () => {
-  const mockMedia = {
-    id: 'test-image-1',
-    type: 'photo' as const,
-    url: 'https://example.com/test-image.jpg',
+  const defaultProps = {
+    src: 'https://example.com/test-image.jpg',
     alt: 'Test image',
     width: 1200,
     height: 800,
   };
 
   it('renders with basic props', () => {
-    render(<ResponsivePicture media={mockMedia} />);
-
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
-    expect(picture).toHaveAttribute('src', mockMedia.url);
-    expect(picture).toHaveAttribute('alt', mockMedia.alt);
-  });
-
-  it('renders with custom className', () => {
-    render(<ResponsivePicture media={mockMedia} className="custom-class" />);
-
-    const picture = screen.getByTestId('next-image');
-    expect(picture).toHaveClass('w-full h-full object-cover');
-  });
-
-  it('renders with priority loading', () => {
-    render(<ResponsivePicture media={mockMedia} priority={true} />);
+    render(<ResponsivePicture {...defaultProps} />);
 
     const image = screen.getByTestId('next-image');
-    expect(image).toHaveAttribute('loading', 'eager');
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('src', defaultProps.src);
+    expect(image).toHaveAttribute('alt', defaultProps.alt);
   });
 
-  it('renders with lazy loading by default', () => {
-    render(<ResponsivePicture media={mockMedia} />);
+  it('applies aspect ratio classes correctly', () => {
+    const { rerender } = render(
+      <ResponsivePicture {...defaultProps} aspectRatio="16:9" />
+    );
+
+    const container = screen.getByTestId('next-image').closest('.relative');
+    expect(container).toHaveClass('aspect-video');
+
+    rerender(<ResponsivePicture {...defaultProps} aspectRatio="1:1" />);
+    expect(container).toHaveClass('aspect-square');
+
+    rerender(<ResponsivePicture {...defaultProps} aspectRatio="9:16" />);
+    expect(container).toHaveClass('aspect-[9/16]');
+  });
+
+  it('handles click events', () => {
+    const handleClick = jest.fn();
+    render(<ResponsivePicture {...defaultProps} onClick={handleClick} />);
+
+    const container = screen.getByTestId('next-image').closest('.relative');
+    fireEvent.click(container!);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles keyboard navigation for clickable images', () => {
+    const handleClick = jest.fn();
+    render(<ResponsivePicture {...defaultProps} onClick={handleClick} />);
+
+    const container = screen.getByTestId('next-image').closest('.relative');
+
+    // Test Enter key
+    fireEvent.keyDown(container!, { key: 'Enter' });
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Test Space key
+    fireEvent.keyDown(container!, { key: ' ' });
+    expect(handleClick).toHaveBeenCalledTimes(2);
+  });
+
+  it('shows loading skeleton initially', () => {
+    render(<ResponsivePicture {...defaultProps} />);
+
+    const skeleton = screen
+      .getByTestId('next-image')
+      .closest('.relative')
+      ?.querySelector('.animate-pulse');
+    expect(skeleton).toBeInTheDocument();
+  });
+
+  it('handles image load events', async () => {
+    const handleLoad = jest.fn();
+    render(<ResponsivePicture {...defaultProps} onLoad={handleLoad} />);
 
     const image = screen.getByTestId('next-image');
-    expect(image).toHaveAttribute('loading', 'lazy');
+    fireEvent.load(image);
+
+    await waitFor(() => {
+      expect(handleLoad).toHaveBeenCalledTimes(1);
+    });
   });
 
-  it('renders with custom quality', () => {
-    render(<ResponsivePicture media={mockMedia} quality={85} />);
+  it('handles image error events', async () => {
+    const handleError = jest.fn();
+    render(<ResponsivePicture {...defaultProps} onError={handleError} />);
 
     const image = screen.getByTestId('next-image');
-    expect(image).toHaveAttribute('quality', '85');
+    fireEvent.error(image);
+
+    await waitFor(() => {
+      expect(handleError).toHaveBeenCalledTimes(1);
+    });
   });
 
-  it('renders with blur placeholder', () => {
-    const blurDataURL = 'data:image/jpeg;base64,test';
+  it('shows error fallback when image fails to load', async () => {
+    const handleError = jest.fn();
+    render(<ResponsivePicture {...defaultProps} onError={handleError} />);
+
+    const image = screen.getByTestId('next-image');
+    fireEvent.error(image);
+
+    await waitFor(() => {
+      expect(screen.getByText('Image unavailable')).toBeInTheDocument();
+      expect(screen.getByText('📷')).toBeInTheDocument();
+    });
+  });
+
+  it('applies custom className', () => {
+    render(<ResponsivePicture {...defaultProps} className="custom-class" />);
+
+    const container = screen.getByTestId('next-image').closest('.relative');
+    expect(container).toHaveClass('custom-class');
+  });
+
+  it('sets priority loading correctly', () => {
+    render(<ResponsivePicture {...defaultProps} priority={true} />);
+
+    const image = screen.getByTestId('next-image');
+    expect(image).toHaveAttribute('data-priority', 'true');
+  });
+
+  it('applies gallery attributes when galleryGroup is provided', () => {
     render(
       <ResponsivePicture
-        media={mockMedia}
-        placeholder="blur"
-        blurDataURL={blurDataURL}
+        {...defaultProps}
+        galleryGroup="test-gallery"
+        dataType="image"
+        dataDesc="Test description"
       />
     );
 
     const image = screen.getByTestId('next-image');
-    expect(image).toHaveAttribute('placeholder', 'blur');
-    expect(image).toHaveAttribute('blurDataURL', blurDataURL);
+    expect(image).toHaveAttribute('data-gallery-group', 'test-gallery');
+    expect(image).toHaveAttribute('data-type', 'image');
+    expect(image).toHaveAttribute('data-desc', 'Test description');
   });
 
-  it('calculates aspect ratio correctly for 16:9 images', () => {
-    const wideMedia = { ...mockMedia, width: 1600, height: 900 };
-    render(<ResponsivePicture media={wideMedia} />);
+  it('renders picture element with WebP source', () => {
+    render(<ResponsivePicture {...defaultProps} />);
 
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
-  });
-
-  it('calculates aspect ratio correctly for 9:16 images', () => {
-    const tallMedia = { ...mockMedia, width: 900, height: 1600 };
-    render(<ResponsivePicture media={tallMedia} />);
-
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
-  });
-
-  it('calculates aspect ratio correctly for 1:1 images', () => {
-    const squareMedia = { ...mockMedia, width: 1000, height: 1000 };
-    render(<ResponsivePicture media={squareMedia} />);
-
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
-  });
-
-  it('uses provided aspect ratio when available', () => {
-    const mediaWithAspectRatio = { ...mockMedia, aspectRatio: '16:9' as const };
-    render(<ResponsivePicture media={mediaWithAspectRatio} />);
-
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
-  });
-
-  it('renders WebP and JPEG sources', () => {
-    render(<ResponsivePicture media={mockMedia} />);
-
-    const picture = screen.getByRole('img').parentElement;
+    const picture = screen.getByTestId('next-image').closest('picture');
     expect(picture).toBeInTheDocument();
 
-    // Check that sources are rendered (they would be inside the picture element)
-    const sources = picture?.querySelectorAll('source');
-    expect(sources).toHaveLength(2); // WebP and JPEG sources
+    const webpSource = picture?.querySelector('source[type="image/webp"]');
+    expect(webpSource).toBeInTheDocument();
   });
 
-  it('handles video media type', () => {
-    const videoMedia = { ...mockMedia, type: 'video' as const };
-    render(<ResponsivePicture media={videoMedia} />);
+  it('renders fallback source', () => {
+    render(<ResponsivePicture {...defaultProps} />);
 
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
+    const picture = screen.getByTestId('next-image').closest('picture');
+    const fallbackSource = picture?.querySelector(
+      'source:not([type="image/webp"])'
+    );
+    expect(fallbackSource).toBeInTheDocument();
   });
 
-  it('applies loaded class on image load', () => {
-    render(<ResponsivePicture media={mockMedia} />);
+  it('applies hover overlay for clickable images', () => {
+    render(<ResponsivePicture {...defaultProps} onClick={() => {}} />);
 
-    const image = screen.getByTestId('next-image');
-
-    // Simulate image load
-    const loadEvent = new Event('load');
-    image.dispatchEvent(loadEvent);
-
-    expect(image).toHaveClass('loaded');
+    const container = screen.getByTestId('next-image').closest('.relative');
+    const overlay = container?.querySelector('.bg-black\\/0');
+    expect(overlay).toBeInTheDocument();
   });
 
-  it('renders with custom sizes', () => {
-    const customSizes = '(max-width: 768px) 100vw, 50vw';
-    render(<ResponsivePicture media={mockMedia} sizes={customSizes} />);
+  it('does not show hover overlay for non-clickable images', () => {
+    render(<ResponsivePicture {...defaultProps} />);
 
-    const image = screen.getByTestId('next-image');
-    // The component uses its own responsive sizes calculation, so we check it uses the default
-    expect(image).toHaveAttribute('sizes');
+    const container = screen.getByTestId('next-image').closest('.relative');
+    const overlay = container?.querySelector('.bg-black\\/0');
+    expect(overlay).not.toBeInTheDocument();
   });
 
-  it('handles missing width and height gracefully', () => {
-    const mediaWithoutDimensions = {
-      ...mockMedia,
-      width: 0,
-      height: 0,
-    };
+  it('has proper accessibility attributes for clickable images', () => {
+    render(<ResponsivePicture {...defaultProps} onClick={() => {}} />);
 
-    render(<ResponsivePicture media={mediaWithoutDimensions} />);
-
-    const picture = screen.getByRole('img');
-    expect(picture).toBeInTheDocument();
+    const container = screen.getByTestId('next-image').closest('.relative');
+    expect(container).toHaveAttribute('role', 'button');
+    expect(container).toHaveAttribute('tabIndex', '0');
   });
 
-  it('handles empty alt text', () => {
-    const mediaWithEmptyAlt = { ...mockMedia, alt: '' };
-    render(<ResponsivePicture media={mediaWithEmptyAlt} />);
+  it('does not have button role for non-clickable images', () => {
+    render(<ResponsivePicture {...defaultProps} />);
 
-    const picture = screen.getByTestId('next-image');
-    expect(picture).toHaveAttribute('alt', '');
+    const container = screen.getByTestId('next-image').closest('.relative');
+    expect(container).not.toHaveAttribute('role', 'button');
+    expect(container).not.toHaveAttribute('tabIndex', '0');
+  });
+
+  it('generates correct srcset for responsive images', () => {
+    render(<ResponsivePicture {...defaultProps} />);
+
+    const fallbackSource = screen
+      .getByTestId('next-image')
+      .closest('picture')
+      ?.querySelector('source:not([type="image/webp"])');
+    const srcset = fallbackSource?.getAttribute('srcset');
+
+    expect(srcset).toContain('@2x.jpg 800w');
+    expect(srcset).toContain('@1.5x.jpg 600w');
+    expect(srcset).toContain('@1x.jpg 400w');
+  });
+
+  it('generates correct WebP srcset', () => {
+    render(<ResponsivePicture {...defaultProps} />);
+
+    const webpSource = screen
+      .getByTestId('next-image')
+      .closest('picture')
+      ?.querySelector('source[type="image/webp"]');
+    const srcset = webpSource?.getAttribute('srcset');
+
+    expect(srcset).toContain('@2x.webp 800w');
+    expect(srcset).toContain('@1.5x.webp 600w');
+    expect(srcset).toContain('@1x.webp 400w');
   });
 });
