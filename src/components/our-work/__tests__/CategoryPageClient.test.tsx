@@ -86,16 +86,17 @@ describe('CategoryPageClient', () => {
       <CategoryPageClient
         projects={mockProjects}
         categories={mockCategories}
-        locale="es"
         categorySlug="casamiento"
+        locale="es"
       />
     );
 
-    // Check that the VelozLogo component is rendered
-    const velozLogo = screen.getByTestId('veloz-logo');
-    expect(velozLogo).toBeInTheDocument();
-    expect(velozLogo).toHaveAttribute('data-variant', 'full');
-    expect(velozLogo).toHaveAttribute('data-size', 'lg');
+    // Check that the VelozLogo is not present since it was removed
+    expect(screen.queryByTestId('veloz-logo')).not.toBeInTheDocument();
+    
+    // Check that the category title is rendered
+    const titleElement = screen.getByText('Casamiento');
+    expect(titleElement).toBeInTheDocument();
   });
 
   it('shows event type as title instead of hardcoded title', () => {
