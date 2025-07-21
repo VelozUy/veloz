@@ -1,216 +1,228 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PerformanceMetrics {
-  fcp: number; // First Contentful Paint
-  lcp: number; // Largest Contentful Paint
-  fid: number; // First Input Delay
-  cls: number; // Cumulative Layout Shift
-  ttfb: number; // Time to First Byte
+  firstContentfulPaint: number | null;
+  largestContentfulPaint: number | null;
+  firstInputDelay: number | null;
+  cumulativeLayoutShift: number | null;
+  totalBlockingTime: number | null;
 }
 
 interface PerformanceMonitorProps {
-  onMetrics?: (metrics: PerformanceMetrics) => void;
-  enabled?: boolean;
+  onMetricsUpdate?: (metrics: PerformanceMetrics) => void;
+  className?: string;
 }
 
-export function PerformanceMonitor({
-  onMetrics,
-  enabled = true,
-}: PerformanceMonitorProps) {
-  useEffect(() => {
-    if (!enabled || typeof window === 'undefined') return;
-
-    let observer: PerformanceObserver | null = null;
-    let clsValue = 0;
-
-    // Track CLS (Cumulative Layout Shift)
-    const trackCLS = () => {
-      observer = new PerformanceObserver(list => {
-        for (const entry of list.getEntries()) {
-          const layoutShiftEntry = entry as PerformanceEntry & {
-            hadRecentInput?: boolean;
-            value?: number;
-          };
-          if (!layoutShiftEntry.hadRecentInput) {
-            clsValue += layoutShiftEntry.value || 0;
-          }
-        }
-      });
-
-      observer.observe({ entryTypes: ['layout-shift'] });
-    };
-
-    // Track LCP (Largest Contentful Paint)
-    const trackLCP = () => {
-      observer = new PerformanceObserver(list => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
-        const lcp = lastEntry.startTime;
-
-        // Send LCP metric
-        sendMetric('lcp', lcp);
-      });
-
-      observer.observe({ entryTypes: ['largest-contentful-paint'] });
-    };
-
-    // Track FID (First Input Delay)
-    const trackFID = () => {
-      observer = new PerformanceObserver(list => {
-        for (const entry of list.getEntries()) {
-          const firstInputEntry = entry as PerformanceEntry & {
-            processingStart?: number;
-          };
-          const fid = (firstInputEntry.processingStart || 0) - entry.startTime;
-          sendMetric('fid', fid);
-        }
-      });
-
-      observer.observe({ entryTypes: ['first-input'] });
-    };
-
-    // Track FCP (First Contentful Paint)
-    const trackFCP = () => {
-      observer = new PerformanceObserver(list => {
-        for (const entry of list.getEntries()) {
-          const fcp = entry.startTime;
-          sendMetric('fcp', fcp);
-        }
-      });
-
-      observer.observe({ entryTypes: ['paint'] });
-    };
-
-    // Track TTFB (Time to First Byte)
-    const trackTTFB = () => {
-      const navigationEntry = performance.getEntriesByType(
-        'navigation'
-      )[0] as PerformanceNavigationTiming;
-      if (navigationEntry) {
-        const ttfb =
-          navigationEntry.responseStart - navigationEntry.requestStart;
-        sendMetric('ttfb', ttfb);
-      }
-    };
-
-    // Send metric to analytics
-    const sendMetric = (metricName: string, value: number) => {
-      // Send to analytics service
-      if (
-        typeof window !== 'undefined' &&
-        (window as unknown as Record<string, unknown>).gtag
-      ) {
-        const gtag = (window as unknown as Record<string, unknown>).gtag as (
-          command: string,
-          eventName: string,
-          params: Record<string, unknown>
-        ) => void;
-        gtag('event', 'web_vitals', {
-          event_category: 'Web Vitals',
-          event_label: metricName,
-          value: Math.round(value),
-          non_interaction: true,
-        });
-      }
-
-      // Log in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Performance Metric - ${metricName}:`, Math.round(value));
-      }
-
-      // Call custom callback
-      if (onMetrics) {
-        onMetrics({
-          fcp: metricName === 'fcp' ? value : 0,
-          lcp: metricName === 'lcp' ? value : 0,
-          fid: metricName === 'fid' ? value : 0,
-          cls: metricName === 'cls' ? value : clsValue,
-          ttfb: metricName === 'ttfb' ? value : 0,
-        });
-      }
-    };
-
-    // Send CLS on page unload
-    const sendCLS = () => {
-      if (clsValue > 0) {
-        sendMetric('cls', clsValue);
-      }
-    };
-
-    // Initialize performance tracking
-    if ('PerformanceObserver' in window) {
-      trackCLS();
-      trackLCP();
-      trackFID();
-      trackFCP();
-      trackTTFB();
-
-      window.addEventListener('beforeunload', sendCLS);
-      window.addEventListener('pagehide', sendCLS);
-    }
-
-    return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-      window.removeEventListener('beforeunload', sendCLS);
-      window.removeEventListener('pagehide', sendCLS);
-    };
-  }, [enabled, onMetrics]);
-
-  return null; // This component doesn't render anything
+interface PerformanceEntryWithValue extends PerformanceEntry {
+  value?: number;
 }
 
-// Hook for performance monitoring
-export function usePerformanceMonitoring(enabled = true) {
+interface PerformanceEntryWithProcessing extends PerformanceEntry {
+  processingStart?: number;
+}
+
+/**
+ * PerformanceMonitor Component
+ *
+ * Monitors key performance metrics for the editorial design:
+ * - First Contentful Paint (FCP)
+ * - Largest Contentful Paint (LCP)
+ * - First Input Delay (FID)
+ * - Cumulative Layout Shift (CLS)
+ * - Total Blocking Time (TBT)
+ *
+ * Provides real-time performance monitoring for editorial design optimization.
+ */
+export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
+  onMetricsUpdate,
+  className = '',
+}) => {
+  const [metrics, setMetrics] = useState<PerformanceMetrics>({
+    firstContentfulPaint: null,
+    largestContentfulPaint: null,
+    firstInputDelay: null,
+    cumulativeLayoutShift: null,
+    totalBlockingTime: null,
+  });
+
   useEffect(() => {
-    if (!enabled || typeof window === 'undefined') return;
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
 
-    // Track page load time
-    const trackPageLoad = () => {
-      const loadTime = performance.now();
+    const observer = new PerformanceObserver(list => {
+      const entries = list.getEntries();
 
-      if (
-        typeof window !== 'undefined' &&
-        (window as unknown as Record<string, unknown>).gtag
-      ) {
-        const gtag = (window as unknown as Record<string, unknown>).gtag as (
-          command: string,
-          eventName: string,
-          params: Record<string, unknown>
-        ) => void;
-        gtag('event', 'timing_complete', {
-          name: 'load',
-          value: Math.round(loadTime),
-        });
-      }
-    };
+      entries.forEach(entry => {
+        switch (entry.entryType) {
+          case 'paint':
+            if (entry.name === 'first-contentful-paint') {
+              setMetrics(prev => ({
+                ...prev,
+                firstContentfulPaint: entry.startTime,
+              }));
+            }
+            break;
 
-    // Track resource loading
-    const trackResourceTiming = () => {
-      const resources = performance.getEntriesByType('resource');
-      resources.forEach(resource => {
-        const duration = resource.duration;
-        const name = resource.name;
+          case 'largest-contentful-paint':
+            setMetrics(prev => ({
+              ...prev,
+              largestContentfulPaint: entry.startTime,
+            }));
+            break;
 
-        if (duration > 1000) {
-          // Log slow resources
-          console.warn(
-            `Slow resource loaded: ${name} (${Math.round(duration)}ms)`
-          );
+          case 'first-input':
+            setMetrics(prev => ({
+              ...prev,
+              firstInputDelay:
+                ((entry as PerformanceEntryWithProcessing).processingStart ||
+                  0) - entry.startTime,
+            }));
+            break;
+
+          case 'layout-shift':
+            setMetrics(prev => ({
+              ...prev,
+              cumulativeLayoutShift:
+                (prev.cumulativeLayoutShift || 0) +
+                ((entry as PerformanceEntryWithValue).value || 0),
+            }));
+            break;
         }
       });
-    };
 
-    window.addEventListener('load', () => {
-      trackPageLoad();
-      trackResourceTiming();
+      // Notify parent component of metrics update
+      if (onMetricsUpdate) {
+        onMetricsUpdate(metrics);
+      }
     });
 
-    return () => {
-      window.removeEventListener('load', trackPageLoad);
+    // Observe performance metrics
+    try {
+      observer.observe({
+        entryTypes: [
+          'paint',
+          'largest-contentful-paint',
+          'first-input',
+          'layout-shift',
+        ],
+      });
+    } catch (error) {
+      console.warn('Performance monitoring not supported:', error);
+    }
+
+    // Calculate Total Blocking Time
+    const calculateTBT = () => {
+      const longTasks = performance.getEntriesByType('longtask');
+      const totalBlockingTime = longTasks.reduce((total, task) => {
+        return total + Math.max(0, task.duration - 50);
+      }, 0);
+
+      setMetrics(prev => ({
+        ...prev,
+        totalBlockingTime,
+      }));
     };
-  }, [enabled]);
-}
+
+    // Calculate TBT after a delay to allow for initial load
+    const tbtTimeout = setTimeout(calculateTBT, 5000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(tbtTimeout);
+    };
+  }, [onMetricsUpdate, metrics]);
+
+  // Performance thresholds for editorial design
+  const getPerformanceGrade = (metrics: PerformanceMetrics): string => {
+    let score = 0;
+    let totalChecks = 0;
+
+    // FCP threshold: < 1.8s is good
+    if (metrics.firstContentfulPaint !== null) {
+      totalChecks++;
+      if (metrics.firstContentfulPaint < 1800) score++;
+    }
+
+    // LCP threshold: < 2.5s is good
+    if (metrics.largestContentfulPaint !== null) {
+      totalChecks++;
+      if (metrics.largestContentfulPaint < 2500) score++;
+    }
+
+    // FID threshold: < 100ms is good
+    if (metrics.firstInputDelay !== null) {
+      totalChecks++;
+      if (metrics.firstInputDelay < 100) score++;
+    }
+
+    // CLS threshold: < 0.1 is good
+    if (metrics.cumulativeLayoutShift !== null) {
+      totalChecks++;
+      if (metrics.cumulativeLayoutShift < 0.1) score++;
+    }
+
+    // TBT threshold: < 200ms is good
+    if (metrics.totalBlockingTime !== null) {
+      totalChecks++;
+      if (metrics.totalBlockingTime < 200) score++;
+    }
+
+    if (totalChecks === 0) return 'N/A';
+
+    const percentage = (score / totalChecks) * 100;
+
+    if (percentage >= 80) return 'A';
+    if (percentage >= 60) return 'B';
+    if (percentage >= 40) return 'C';
+    return 'D';
+  };
+
+  const grade = getPerformanceGrade(metrics);
+
+  return (
+    <div className={`performance-monitor ${className}`}>
+      {/* Performance metrics display (hidden by default, can be enabled for debugging) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 bg-card border border-border p-4 rounded-none shadow-none text-xs text-muted-foreground z-50">
+          <div className="font-semibold mb-2">Performance Grade: {grade}</div>
+          <div className="space-y-1">
+            <div>
+              FCP:{' '}
+              {metrics.firstContentfulPaint
+                ? `${Math.round(metrics.firstContentfulPaint)}ms`
+                : 'N/A'}
+            </div>
+            <div>
+              LCP:{' '}
+              {metrics.largestContentfulPaint
+                ? `${Math.round(metrics.largestContentfulPaint)}ms`
+                : 'N/A'}
+            </div>
+            <div>
+              FID:{' '}
+              {metrics.firstInputDelay
+                ? `${Math.round(metrics.firstInputDelay)}ms`
+                : 'N/A'}
+            </div>
+            <div>
+              CLS:{' '}
+              {metrics.cumulativeLayoutShift
+                ? metrics.cumulativeLayoutShift.toFixed(3)
+                : 'N/A'}
+            </div>
+            <div>
+              TBT:{' '}
+              {metrics.totalBlockingTime
+                ? `${Math.round(metrics.totalBlockingTime)}ms`
+                : 'N/A'}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PerformanceMonitor;
