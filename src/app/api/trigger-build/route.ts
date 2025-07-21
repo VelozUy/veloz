@@ -10,9 +10,8 @@ if (getApps().length === 0) {
     !process.env.FIREBASE_CLIENT_EMAIL ||
     !process.env.FIREBASE_PRIVATE_KEY
   ) {
-    console.warn(
-      'Firebase Admin SDK credentials not configured. Build trigger functionality will be limited.'
-    );
+    // Only show warning when build trigger is actually used (not during build process)
+    // The warning will only appear when someone actually calls the API endpoint
     // Initialize with default credentials (for development)
     initializeApp({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -29,6 +28,27 @@ if (getApps().length === 0) {
 }
 
 export async function POST(request: NextRequest) {
+  // Check if build trigger is properly configured
+  if (
+    !process.env.FIREBASE_PROJECT_ID ||
+    !process.env.FIREBASE_CLIENT_EMAIL ||
+    !process.env.FIREBASE_PRIVATE_KEY
+  ) {
+    // Only show warning in development when the endpoint is actually called
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        'Firebase Admin SDK credentials not configured. Build trigger functionality will be limited.'
+      );
+    }
+    return NextResponse.json(
+      {
+        error:
+          'Build trigger not configured. Please set up Firebase Admin SDK credentials.',
+      },
+      { status: 503 }
+    );
+  }
+
   try {
     // Get the authorization header
     const authHeader = request.headers.get('authorization');
