@@ -71,6 +71,17 @@ export function GalleryContent({ content }: GalleryContentProps) {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
+        {/* Main Title - Eventos */}
+        <div className="text-center py-16">
+          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
+               style={{
+                 fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
+                 lineHeight: '0.9',
+               }}>
+            {content.locale === 'en' ? 'Events' : content.locale === 'pt' ? 'Eventos' : 'Eventos'}
+          </h1>
+        </div>
+
         {/* Projects Display */}
         <div className="mt-12">
           <ProjectsDisplay projects={projects} className="" />

@@ -89,4 +89,34 @@ describe('OurWorkClient', () => {
     expect(screen.queryByText('Veloz')).not.toBeInTheDocument();
     expect(screen.queryByText('Fotografía')).not.toBeInTheDocument();
   });
+
+  it('renders the Eventos title correctly', () => {
+    render(
+      <OurWorkClient
+        projects={mockProjects}
+        categories={mockCategories}
+        locale="es"
+      />
+    );
+
+    // Check that the Eventos title is rendered
+    const titleElement = screen.getByText('Eventos');
+    expect(titleElement).toBeInTheDocument();
+    expect(titleElement).toHaveClass('uppercase');
+    expect(titleElement).toHaveClass('whitespace-nowrap');
+  });
+
+  it('renders the Events title for English locale', () => {
+    render(
+      <OurWorkClient
+        projects={mockProjects}
+        categories={mockCategories}
+        locale="en"
+      />
+    );
+
+    // Check that the Events title is rendered for English
+    const titleElement = screen.getByText('Events');
+    expect(titleElement).toBeInTheDocument();
+  });
 });

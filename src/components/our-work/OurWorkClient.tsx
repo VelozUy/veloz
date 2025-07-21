@@ -41,6 +41,7 @@ interface OurWorkClientProps {
 export default function OurWorkClient({
   projects,
   categories,
+  locale,
 }: OurWorkClientProps) {
   // Group featured media by category
   const categoryMedia = useMemo(() => {
@@ -99,11 +100,20 @@ export default function OurWorkClient({
     <>
       {/* Page Header */}
       <header className="py-16 bg-background">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-8 text-center">
           {/* Page Title */}
           <div className="flex justify-center mb-4">
             <VelozLogo variant="full" size="lg" />
           </div>
+
+          {/* Main Title - Eventos */}
+          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
+               style={{
+                 fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
+                 lineHeight: '0.9',
+               }}>
+            {locale === 'en' ? 'Events' : locale === 'pt' ? 'Eventos' : 'Eventos'}
+          </h1>
         </div>
       </header>
 
