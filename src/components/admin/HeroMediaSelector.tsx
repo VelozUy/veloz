@@ -301,7 +301,7 @@ export default function HeroMediaSelector({
                         parseInt(e.target.value) || 1
                       )
                     }
-                    className="w-16 px-2 py-1 text-sm border rounded"
+                    className="w-16 px-2 py-1 text-sm border rounded-md"
                     disabled={disabled}
                   />
                 </div>
@@ -319,7 +319,7 @@ export default function HeroMediaSelector({
                         parseInt(e.target.value) || 1
                       )
                     }
-                    className="w-16 px-2 py-1 text-sm border rounded"
+                    className="w-16 px-2 py-1 text-sm border rounded-md"
                     disabled={disabled}
                   />
                 </div>

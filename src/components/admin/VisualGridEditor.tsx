@@ -1755,7 +1755,7 @@ export default function VisualGridEditor({
                         {!disabled && (
                           <div className="absolute top-1 left-1 flex gap-1 z-10">
                             <div
-                              className="w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-md flex items-center justify-center"
+                              className="w-6 h-6 bg-primary/80 hover:bg-primary cursor-move rounded-none flex items-center justify-center"
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 handleMouseDown(e, block.id, 'drag');
@@ -1782,7 +1782,7 @@ export default function VisualGridEditor({
                               </svg>
                             </div>
                             <button
-                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-md flex items-center justify-center transition-colors"
+                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-none flex items-center justify-center transition-colors"
                               onClick={e => {
                                 e.stopPropagation();
                                 const updatedBlocks = mediaBlocks.filter(

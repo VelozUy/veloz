@@ -136,7 +136,7 @@ function SortableMediaItem({
         {...listeners}
         className="absolute top-2 right-2 z-10 cursor-grab active:cursor-grabbing"
       >
-        <div className="bg-background/90 p-1 rounded">
+        <div className="bg-background/90 p-1 rounded-none">
           <GripVertical className="w-4 h-4 text-muted-foreground" />
         </div>
       </div>
@@ -159,7 +159,7 @@ function SortableMediaItem({
             fill={viewMode === 'grid'}
             width={viewMode === 'list' ? 80 : undefined}
             height={viewMode === 'list' ? 80 : undefined}
-            className={`object-cover ${viewMode === 'list' ? 'rounded' : ''}`}
+            className={`object-cover ${viewMode === 'list' ? 'rounded-none' : ''}`}
           />
         </div>
       ) : (
@@ -167,7 +167,7 @@ function SortableMediaItem({
           className={`bg-primary/10 flex items-center justify-center ${
             viewMode === 'grid'
               ? 'aspect-square'
-              : 'w-20 h-20 rounded flex-shrink-0'
+              : 'w-20 h-20 rounded-none flex-shrink-0'
           }`}
         >
           <VideoIcon className="w-8 h-8 text-primary" />

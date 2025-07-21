@@ -3560,3 +3560,193 @@ _No tasks completed yet for this Epic_
 - Create rollback plan for each phase
 
 ---
+
+### 🎨 EPIC: Border Radius System Implementation ⭐ **NEW EPIC**
+
+**Objective**: Implement new border radius system with specific guidelines for different component types to create modern, purposeful visual hierarchy
+
+**Reference**: `docs/new_border_radius_guidelines.md` - Complete border radius guidelines and implementation strategy
+**User Intent**: Update all components to use appropriate border radius based on their function and purpose, creating a cohesive visual system
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [~] **Phase 1: Update Tailwind Configuration** - Add new border radius tokens to Tailwind config
+  - **User Intent**: Add specific border radius tokens for different component types
+  - **Acceptance Criteria**:
+    - Add `md: '0.375rem'` for inputs and small interactive elements ✅
+    - Add `lg: '0.5rem'` for cards and forms ✅
+    - Add `full: '9999px'` for badges and pills ✅
+    - Add `tl: '3rem'` for layout curves and hero sections ✅
+    - Add `br: '4rem'` for asymmetrical visual blocks ✅
+    - Remove default `rounded-xl` and `rounded-2xl` usage ✅
+  - **Files**: `tailwind.config.ts`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Implementation Strategy section
+  - **Estimated Time**: 0.5 days
+  - **Status**: 🟡 **IN PROGRESS** - Tailwind config updated with new border radius tokens
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+- [~] **Phase 2: Update Container Components** - Fix all cards, modals, forms, and sections to use square borders
+  - **User Intent**: Ensure all general-purpose containers use square borders to emphasize structure
+  - **Acceptance Criteria**:
+    - All card components use `rounded-none` instead of rounded corners ✅
+    - All modal/dialog components use `rounded-none` ✅
+    - All form containers use `rounded-none` ✅
+    - All section blocks use `rounded-none` ✅
+    - All timeline components use `rounded-none` ✅
+    - All content blocks use `rounded-none` ✅
+  - **Files**: `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`, `src/components/forms/ContactForm.tsx`, all section components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Containers section
+  - **Estimated Time**: 1 day
+  - **Status**: 🟡 **IN PROGRESS** - Most container components already using correct border radius
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+- [~] **Phase 3: Update Tag and Badge Components** - Implement rounded-full for tags, badges, and pills
+  - **User Intent**: Ensure all tags, badges, and status indicators use rounded-full for warmth and clarity
+  - **Acceptance Criteria**:
+    - All category buttons use `rounded-full` ✅
+    - All status indicators use `rounded-full` ✅
+    - All labels use `rounded-full` ✅
+    - All pill components use `rounded-full` ✅
+    - All badge components use `rounded-full` ✅
+  - **Files**: `src/components/ui/badge.tsx`, `src/constants/categories.ts`, all tag/badge components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Tags, Badges, and Pills section
+  - **Estimated Time**: 0.5 days
+  - **Status**: 🟡 **IN PROGRESS** - Badge component already using correct border radius
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+- [~] **Phase 4: Update Input and Interactive Elements** - Fix input fields and buttons to use appropriate border radius
+  - **User Intent**: Ensure input fields and buttons use appropriate border radius for usability
+  - **Acceptance Criteria**:
+    - All input fields use `rounded-md` for usability ✅
+    - All buttons use appropriate border radius based on type ✅
+    - All form elements use consistent border radius ✅
+    - All interactive elements maintain accessibility ✅
+  - **Files**: `src/components/ui/input.tsx`, `src/components/ui/button.tsx`, all form components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Examples section
+  - **Estimated Time**: 0.5 days
+  - **Status**: 🟡 **IN PROGRESS** - Input and textarea components updated to use rounded-md
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+#### 🟧 High Priority Tasks
+
+- [x] **Phase 5: Implement Asymmetrical Border Radius** - Add asymmetrical border radius for hero sections and visual blocks
+  - **User Intent**: Implement asymmetrical border radius for hero sections and featured content to express motion and boldness
+  - **Acceptance Criteria**:
+    - Hero sections use `rounded-tl-[3rem]` or similar asymmetrical patterns ❌ (REVERTED - asymmetrical radius removed)
+    - Featured content blocks use asymmetrical border radius ❌ (REVERTED - asymmetrical radius removed)
+    - Layout cuts use intentional asymmetrical patterns ❌ (REVERTED - asymmetrical radius removed)
+    - Visual blocks express motion without being ornamental ❌ (REVERTED - asymmetrical radius removed)
+  - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/GridGallery.tsx`, hero and visual block components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Blocks and Visual Sections section
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ **COMPLETED** - Asymmetrical border radius reverted, maintaining clean square corners
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: ✅ Approved - asymmetrical radius removed per user feedback
+
+- [~] **Phase 6: Update Structural Elements** - Fix diagrams and structural components to use square corners
+  - **User Intent**: Ensure all structural and diagrammatic elements use square corners for precision
+  - **Acceptance Criteria**:
+    - All diagram components use `rounded-none` ✅
+    - All wireframe elements use `rounded-none` ✅
+    - All edge-glow UI elements use `rounded-none` ✅
+    - All structural components maintain precision and consistency ✅
+  - **Files**: All diagram and structural components
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Structural/Diagrammatic Elements section
+  - **Estimated Time**: 0.5 days
+  - **Status**: 🟡 **IN PROGRESS** - Structural elements updated to use square corners
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+#### 🟨 Medium Priority Tasks
+
+- [~] **Phase 7: Admin Panel Integration** - Update admin interface with new border radius system
+  - **User Intent**: Ensure admin panel follows the new border radius guidelines
+  - **Acceptance Criteria**:
+    - Admin cards use `rounded-none` ✅
+    - Admin forms use appropriate border radius ✅
+    - Admin badges use `rounded-full` ✅
+    - Admin modals use `rounded-none` ✅
+    - All admin components follow border radius guidelines ✅
+  - **Files**: All admin components in `src/app/admin/` and `src/components/admin/`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Element-specific guidelines
+  - **Estimated Time**: 1 day
+  - **Status**: 🟡 **IN PROGRESS** - Admin panel components updated with new border radius system
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
+
+- [ ] **Phase 8: Gallery and Media Components** - Update gallery components with new border radius system
+  - **User Intent**: Ensure gallery and media components follow the new border radius guidelines
+  - **Acceptance Criteria**:
+    - Gallery cards use `rounded-none`
+    - Media containers use appropriate border radius
+    - Lightbox components use `rounded-none`
+    - Filter components use `rounded-full` for tags
+    - All gallery components follow border radius guidelines
+  - **Files**: `src/components/gallery/`, `src/app/gallery/`
+  - **Reference**: `docs/new_border_radius_guidelines.md` - Gallery-specific guidelines
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Cross-browser Testing** - Ensure new border radius system works across all major browsers
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Mobile Responsiveness Testing** - Verify border radius works well on mobile devices
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Performance Testing** - Ensure border radius changes don't impact performance
+  - **Status**: Not started
+  - **Estimated Time**: 0.25 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Visual Consistency**: All components follow new border radius guidelines
+- **Usability**: Input fields and interactive elements maintain proper usability
+- **Brand Alignment**: Border radius system reflects Veloz brand values
+- **Accessibility**: All border radius changes maintain accessibility standards
+
+**Secondary Metrics**:
+
+- **Performance**: No impact on page load times
+- **Maintainability**: Consistent border radius system across all components
+- **User Experience**: Improved visual hierarchy and component clarity
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current component system implementation
+- Access to `docs/new_border_radius_guidelines.md` specifications
+- Understanding of current component structure
+
+**Business Dependencies**:
+
+- User approval of the new border radius system
+- Stakeholder review of the updated visual design
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing functionality while improving visual design
+- Ensure no breaking changes to user interactions
+- Test thoroughly with actual project data
+- Consider impact on all pages and components
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple project types to ensure consistency
+- Maintain feature parity throughout implementation
+
+---

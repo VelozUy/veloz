@@ -132,7 +132,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className={`flex items-center px-3 py-2 rounded-md transition-colors group text-sm ${
+                      className={`flex items-center px-3 py-2 rounded-none transition-colors group text-sm ${
                         isActive
                           ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-sm border border-sidebar-primary/30'
                           : 'text-sidebar-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent'
@@ -160,7 +160,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
 
           {/* User Section - Using theme variables */}
           <div className="p-3 border-t border-sidebar-border">
-            <div className="flex items-center mb-3 p-2 rounded-md bg-muted">
+            <div className="flex items-center mb-3 p-2 rounded-none bg-muted">
               <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center mr-2">
                 <User className="w-3 h-3 text-primary-foreground" />
               </div>

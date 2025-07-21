@@ -112,7 +112,7 @@ function FileMetadataEditor({
             {/* File preview */}
             <div className="flex-shrink-0">
               {uploadFile.file.type.startsWith('video/') ? (
-                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded">
+                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-none">
                   <VideoIcon className="w-6 h-6 text-primary" />
                 </div>
               ) : uploadFile.previewUrl ? (
@@ -124,7 +124,7 @@ function FileMetadataEditor({
                   className="object-cover rounded"
                 />
               ) : (
-                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded">
+                <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-none">
                   <ImageIcon className="w-6 h-6 text-primary" />
                 </div>
               )}

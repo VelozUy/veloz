@@ -111,9 +111,10 @@ const config: Config = {
       borderRadius: {
         DEFAULT: '0rem', // Default border radius from theme
         sm: '0rem', // Small border radius
-        md: '0rem', // Medium border radius
-        lg: '0rem', // Large border radius
-        xl: '0rem', // Extra large border radius
+        md: '0.375rem', // Medium border radius for inputs and small interactive elements
+        lg: '0.5rem', // Large border radius for cards and forms
+        xl: '0rem', // Extra large border radius (removed default rounded-xl)
+        '2xl': '0rem', // Extra extra large border radius (removed default rounded-2xl)
         full: '9999px', // Full rounded (for badges and pills)
       },
 
