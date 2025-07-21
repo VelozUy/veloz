@@ -125,14 +125,14 @@ export default function CategoryPageClient({
     <>
       {/* Page Header */}
       <header className="py-16 bg-background">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-8 text-center">
           {/* Page Title */}
           <div className="flex justify-center mb-4">
             <VelozLogo variant="full" size="lg" />
           </div>
 
           {/* Event Type Title */}
-          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap overflow-hidden uppercase"
+          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
                style={{
                  fontSize: 'clamp(2rem, 8vw, 12rem)',
                  lineHeight: '0.9',

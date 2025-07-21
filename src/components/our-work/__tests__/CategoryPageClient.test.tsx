@@ -156,7 +156,6 @@ describe('CategoryPageClient', () => {
     
     // Check that the title has the correct styling for single-line display
     expect(titleElement).toHaveClass('whitespace-nowrap');
-    expect(titleElement).toHaveClass('overflow-hidden');
     expect(titleElement).toHaveClass('leading-none');
     expect(titleElement).toHaveClass('uppercase');
     

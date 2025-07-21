@@ -154,7 +154,7 @@ export default function ProjectDetailGallery({
       {/* Hero Section with Category Styling */}
       {showHero && (
         <section
-          className={`relative flex flex-col items-end justify-end text-right py-2 px-6 bg-background text-foreground`}
+          className={`relative flex flex-col items-end justify-end text-right py-2 px-8 bg-background text-foreground`}
           role="banner"
           aria-label={`Hero del proyecto ${project.title}`}
         >
@@ -178,7 +178,7 @@ export default function ProjectDetailGallery({
 
           {/* Title */}
           <h1
-            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap overflow-hidden uppercase"
+            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap uppercase"
             id="project-title"
             style={{
               fontSize: 'clamp(2rem, 8vw, 12rem)',
