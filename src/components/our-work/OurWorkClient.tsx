@@ -101,11 +101,6 @@ export default function OurWorkClient({
       {/* Page Header */}
       <header className="py-16 bg-background">
         <div className="container mx-auto px-8 text-center">
-          {/* Page Title */}
-          <div className="flex justify-center mb-4">
-            <VelozLogo variant="full" size="lg" />
-          </div>
-
           {/* Main Title - Eventos */}
           <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
                style={{

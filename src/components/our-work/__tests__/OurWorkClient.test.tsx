@@ -64,16 +64,10 @@ describe('OurWorkClient', () => {
       />
     );
 
-    // Check that the VelozLogo component is rendered
-    const velozLogo = screen.getByTestId('veloz-logo');
-    expect(velozLogo).toBeInTheDocument();
-    expect(velozLogo).toHaveAttribute('data-variant', 'full');
-    expect(velozLogo).toHaveAttribute('data-size', 'lg');
-
-    // Check that the subtitle is not present
-    expect(
-      screen.queryByText('Fotografía y Videografía')
-    ).not.toBeInTheDocument();
+    // Check that the Eventos title is rendered instead of VelozLogo
+    const titleElement = screen.getByText('Eventos');
+    expect(titleElement).toBeInTheDocument();
+    expect(titleElement).toHaveClass('uppercase');
   });
 
   it('does not render the old hardcoded title', () => {
@@ -85,9 +79,8 @@ describe('OurWorkClient', () => {
       />
     );
 
-    // Check that the old hardcoded title is not present
-    expect(screen.queryByText('Veloz')).not.toBeInTheDocument();
-    expect(screen.queryByText('Fotografía')).not.toBeInTheDocument();
+    // Check that the VelozLogo is not present since it was removed
+    expect(screen.queryByTestId('veloz-logo')).not.toBeInTheDocument();
   });
 
   it('renders the Eventos title correctly', () => {
