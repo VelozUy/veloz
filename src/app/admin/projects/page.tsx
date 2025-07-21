@@ -214,7 +214,7 @@ export default function ProjectsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground">Projects</h1>
-            <p className="text-charcoal text-sm">
+            <p className="text-muted-foreground text-sm">
               Manage your photography and videography projects
             </p>
           </div>
@@ -287,11 +287,11 @@ export default function ProjectsPage() {
           <CardContent className="p-0">
             {projects.length === 0 ? (
               <div className="text-center py-8">
-                <FolderOpen className="w-8 h-8 text-charcoal mx-auto mb-3" />
+                <FolderOpen className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
                 <h3 className="text-base font-medium text-foreground mb-1">
                   No projects yet
                 </h3>
-                <p className="text-charcoal text-sm">
+                <p className="text-muted-foreground text-sm">
                   Create your first project to start organizing your work
                 </p>
               </div>
@@ -300,22 +300,22 @@ export default function ProjectsPage() {
                 <table className="w-full">
                   <thead className="border-b">
                     <tr className="text-left">
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Project Name
                       </th>
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Location
                       </th>
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Event Date
                       </th>
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Crew
                       </th>
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Status
                       </th>
-                      <th className="p-3 font-medium text-charcoal text-xs">
+                      <th className="p-3 font-medium text-muted-foreground text-xs">
                         Actions
                       </th>
                     </tr>
@@ -334,7 +334,7 @@ export default function ProjectsPage() {
                                   project.title.es ||
                                   project.title.pt}
                               </div>
-                              <div className="text-xs text-charcoal">
+                              <div className="text-xs text-muted-foreground">
                                 {project.eventType}
                               </div>
                               <div className="flex items-center space-x-1.5 mt-1">
@@ -364,19 +364,21 @@ export default function ProjectsPage() {
                           </div>
                         </td>
                         <td className="p-3">
-                          <div className="flex items-center text-xs text-charcoal">
+                          <div className="flex items-center text-xs text-muted-foreground">
                             {project.location ? (
                               <>
                                 <MapPin className="w-3 h-3 mr-1" />
                                 {project.location}
                               </>
                             ) : (
-                              <span className="text-charcoal">No location</span>
+                              <span className="text-muted-foreground">
+                                No location
+                              </span>
                             )}
                           </div>
                         </td>
                         <td className="p-3">
-                          <div className="flex items-center text-xs text-charcoal">
+                          <div className="flex items-center text-xs text-muted-foreground">
                             {project.eventDate ? (
                               <>
                                 <Calendar className="w-3 h-3 mr-1" />
@@ -385,7 +387,9 @@ export default function ProjectsPage() {
                                 ).toLocaleDateString()}
                               </>
                             ) : (
-                              <span className="text-charcoal">No date</span>
+                              <span className="text-muted-foreground">
+                                No date
+                              </span>
                             )}
                           </div>
                         </td>

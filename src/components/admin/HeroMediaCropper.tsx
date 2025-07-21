@@ -210,7 +210,7 @@ export default function HeroMediaCropper({
             <div className="absolute inset-0 pointer-events-none">
               <div className="w-full h-full grid grid-cols-3 grid-rows-3">
                 {Array.from({ length: 9 }).map((_, i) => (
-                  <div key={i} className="border border-white/20" />
+                  <div key={i} className="border border-foreground/20" />
                 ))}
               </div>
             </div>

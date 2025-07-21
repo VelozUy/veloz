@@ -506,7 +506,7 @@ export default function CrewMemberForm({
                   <div className="text-sm text-muted-foreground space-y-1">
                     <div className="flex justify-between">
                       <span>Optimización:</span>
-                      <span className="font-medium text-green-600">
+                      <span className="font-medium text-primary">
                         {optimizationInfo.compressionRatio.toFixed(1)}x más
                         pequeño
                       </span>

@@ -99,8 +99,8 @@ export default function Navigation({ translations, locale }: NavigationProps) {
               href={getLocalizedPath('/', locale)}
               className="flex items-center space-x-2 group"
             >
-              <Camera className="w-8 h-8 text-white group-hover:text-[#0066ff] transition-colors" />
-              <span className="text-2xl font-logo font-normal text-white">
+              <Camera className="w-8 h-8 text-primary-foreground group-hover:text-primary transition-colors" />
+              <span className="text-2xl font-logo font-normal text-primary-foreground">
                 Veloz
               </span>
             </Link>
@@ -109,21 +109,21 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href={getLocalizedPath('/our-work', locale)}
-                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <ImageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Our Work</span>
               </Link>
               <Link
                 href={getLocalizedPath('/about', locale)}
-                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">About & FAQ</span>
               </Link>
               <Link
                 href={getLocalizedPath('/contact', locale)}
-                className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
+                className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
               >
                 <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Work With Us</span>
@@ -141,7 +141,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-white"
+              className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-primary-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -168,8 +168,8 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             href={getLocalizedPath('/', locale)}
             className="flex items-center space-x-2 group"
           >
-            <Camera className="w-8 h-8 text-white group-hover:text-primary transition-colors" />
-            <span className="text-2xl font-logo font-normal text-white">
+            <Camera className="w-8 h-8 text-primary-foreground group-hover:text-primary transition-colors" />
+            <span className="text-2xl font-logo font-normal text-primary-foreground">
               Veloz
             </span>
           </Link>
@@ -182,7 +182,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
@@ -203,7 +203,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-white"
+            className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-primary-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -228,8 +228,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                     className="flex items-center space-x-3 px-4 py-3 rounded-none hover:bg-muted/20 transition-colors group"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Icon className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
-                    <span className="font-medium text-white">{item.name}</span>
+                    <Icon className="w-5 h-5 text-primary-foreground group-hover:text-primary transition-colors" />
+                    <span className="font-medium text-primary-foreground">
+                      {item.name}
+                    </span>
                   </Link>
                 );
               })}

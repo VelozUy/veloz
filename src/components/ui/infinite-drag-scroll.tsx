@@ -100,7 +100,7 @@ export const GridItem = ({
           default: '',
           masonry: '',
           polaroid:
-            'border-2 border-white shadow-lg hover:shadow-xl transition-shadow',
+            'border-2 border-primary-foreground shadow-lg hover:shadow-xl transition-shadow',
         },
       },
       defaultVariants: {

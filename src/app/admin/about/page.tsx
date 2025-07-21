@@ -1583,7 +1583,7 @@ export default function AboutAdminPage() {
             {hasChanges && (
               <Badge
                 variant="secondary"
-                className="bg-yellow-100 text-yellow-800"
+                className="bg-accent text-accent-foreground"
               >
                 <AlertTriangle className="h-3 w-3 mr-1" />
                 Cambios sin guardar
@@ -1617,9 +1617,9 @@ export default function AboutAdminPage() {
         )}
 
         {success && (
-          <Alert className="bg-green-50 border-green-200">
+          <Alert className="bg-accent/20 border-accent">
             <CheckCircle className="h-4 w-4 text-primary" />
-            <AlertDescription className="text-green-800">
+            <AlertDescription className="text-accent-foreground">
               {success}
             </AlertDescription>
           </Alert>

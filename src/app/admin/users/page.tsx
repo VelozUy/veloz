@@ -275,7 +275,7 @@ export default function UsersPage() {
             <h1 className="text-xl font-bold text-foreground">
               Gestión de Usuarios
             </h1>
-            <p className="text-charcoal text-sm">
+            <p className="text-muted-foreground text-sm">
               Gestionar acceso de administradores al CMS de Veloz
             </p>
           </div>
@@ -393,7 +393,7 @@ export default function UsersPage() {
                   <p className="font-medium text-sm">
                     {OWNER_EMAIL || 'No configurado'}
                   </p>
-                  <p className="text-xs text-charcoal">Propietario</p>
+                  <p className="text-xs text-muted-foreground">Propietario</p>
                 </div>
               </div>
               <Badge variant="default" className="text-xs">
@@ -415,11 +415,11 @@ export default function UsersPage() {
           <CardContent className="pt-0">
             {users.length === 0 ? (
               <div className="text-center py-6">
-                <Mail className="w-8 h-8 text-charcoal mx-auto mb-3" />
+                <Mail className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
                 <h3 className="text-base font-medium text-foreground mb-1">
                   Aún no se han invitado usuarios
                 </h3>
-                <p className="text-charcoal text-sm">
+                <p className="text-muted-foreground text-sm">
                   Comienza invitando administradores para acceder al sistema.
                 </p>
               </div>
@@ -463,13 +463,13 @@ export default function UsersPage() {
                           {adminUser.role || 'editor'}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-charcoal text-xs">
+                      <TableCell className="text-muted-foreground text-xs">
                         {adminUser.invitedBy}
                       </TableCell>
-                      <TableCell className="text-charcoal text-xs">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDate(adminUser.invitedAt)}
                       </TableCell>
-                      <TableCell className="text-charcoal text-xs">
+                      <TableCell className="text-muted-foreground text-xs">
                         {formatDate(adminUser.lastLoginAt)}
                       </TableCell>
                       <TableCell>

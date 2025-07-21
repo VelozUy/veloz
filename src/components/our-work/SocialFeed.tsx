@@ -91,7 +91,7 @@ export default function SocialFeed({
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <Instagram className="w-6 h-6 text-pink-500" />
+          <Instagram className="w-6 h-6 text-accent" />
           <h2 className="text-2xl font-bold">
             {language === 'en'
               ? 'Behind the Scenes'
@@ -115,8 +115,8 @@ export default function SocialFeed({
           <Card key={post.id} className="overflow-hidden">
             {/* Post Header */}
             <div className="flex items-center gap-3 p-4 border-b">
-              <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center">
-                <Instagram className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-br from-accent to-secondary rounded-full flex items-center justify-center">
+                <Instagram className="w-4 h-4 text-primary-foreground" />
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-sm">
@@ -166,8 +166,8 @@ export default function SocialFeed({
                     controls
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                      <Play className="w-6 h-6 text-white ml-1" />
+                    <div className="w-16 h-16 bg-foreground/50 rounded-full flex items-center justify-center">
+                      <Play className="w-6 h-6 text-primary-foreground ml-1" />
                     </div>
                   </div>
                 </div>

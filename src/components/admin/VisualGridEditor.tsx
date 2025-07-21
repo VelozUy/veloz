@@ -1732,7 +1732,7 @@ export default function VisualGridEditor({
                         ref={isSelected ? selectedBlockRef : null}
                         className={`absolute cursor-move transition-all duration-200 ${
                           isSelected
-                            ? 'ring-3 ring-yellow-400 ring-offset-2'
+                            ? 'ring-3 ring-accent ring-offset-2'
                             : 'hover:ring-2 hover:ring-primary/50'
                         } ${disabled ? 'pointer-events-none' : ''}`}
                         style={{
@@ -1771,7 +1771,7 @@ export default function VisualGridEditor({
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className="text-white"
+                                className="text-primary-foreground"
                               >
                                 <circle cx="9" cy="5" r="1" />
                                 <circle cx="9" cy="12" r="1" />
@@ -1782,7 +1782,7 @@ export default function VisualGridEditor({
                               </svg>
                             </div>
                             <button
-                              className="w-6 h-6 bg-red-500 hover:bg-red-600 cursor-pointer rounded-none flex items-center justify-center transition-colors"
+                              className="w-6 h-6 bg-destructive hover:bg-destructive/80 cursor-pointer rounded-none flex items-center justify-center transition-colors"
                               onClick={e => {
                                 e.stopPropagation();
                                 const updatedBlocks = mediaBlocks.filter(
@@ -1801,7 +1801,7 @@ export default function VisualGridEditor({
                                 strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className="text-white"
+                                className="text-primary-foreground"
                               >
                                 <line x1="18" y1="6" x2="6" y2="18" />
                                 <line x1="6" y1="6" x2="18" y2="18" />
@@ -1893,7 +1893,7 @@ export default function VisualGridEditor({
                   })}
 
                   {/* Grid Info */}
-                  <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                  <div className="absolute bottom-2 left-2 bg-foreground/70 text-primary-foreground text-xs px-2 py-1 rounded">
                     {GRID_WIDTH}×{GRID_HEIGHT + additionalRows} Grid •{' '}
                     {mediaBlocks.length} bloques
                   </div>
@@ -1905,19 +1905,19 @@ export default function VisualGridEditor({
                     <button
                       onClick={handleRemoveRow}
                       disabled={additionalRows === 0}
-                      className="px-3 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 py-2 text-sm bg-destructive text-primary-foreground rounded hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       -1 Fila
                     </button>
                     <button
                       onClick={handleAddRow}
-                      className="px-3 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                      className="px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/80 transition-colors"
                     >
                       +1 Fila
                     </button>
                     <button
                       onClick={handleAddNineRows}
-                      className="px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                      className="px-3 py-2 text-sm bg-accent text-accent-foreground rounded hover:bg-accent/80 transition-colors"
                     >
                       +9 Filas
                     </button>
@@ -1933,7 +1933,7 @@ export default function VisualGridEditor({
                     <button
                       onClick={handleAutoPopulate}
                       disabled={disabled}
-                      className="px-6 py-3 text-sm bg-purple-600 text-white rounded-none hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                      className="px-6 py-3 text-sm bg-secondary text-secondary-foreground rounded-none hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                     >
                       🎯 Auto-popular Grid con Todo el Media
                     </button>

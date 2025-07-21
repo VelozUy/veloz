@@ -248,7 +248,7 @@ function SortableMediaItem({
             variant="ghost"
             size="sm"
             onClick={() => onDelete(media.id!)}
-            className="text-red-600 hover:text-red-700"
+            className="text-destructive hover:text-destructive/80"
           >
             <Trash2 className="w-4 h-4" />
           </Button>

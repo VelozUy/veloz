@@ -329,8 +329,8 @@ export default function TranslationReviewDialog({
                             key={showKey}
                             className={`
                               border rounded-none p-4 space-y-3 transition-all
-                              ${translation.isApproved ? 'border-green-500 bg-green-50' : 'border-border'}
-                              ${translation.isEdited ? 'border-blue-500' : ''}
+                              ${translation.isApproved ? 'border-primary bg-primary/10' : 'border-border'}
+                              ${translation.isEdited ? 'border-accent' : ''}
                             `}
                           >
                             {/* Header */}
@@ -357,7 +357,7 @@ export default function TranslationReviewDialog({
                                 {translation.isEdited && (
                                   <Badge
                                     variant="outline"
-                                    className="text-xs bg-blue-50"
+                                    className="text-xs bg-accent/20"
                                   >
                                     <Edit className="w-3 h-3 mr-1" />
                                     Editado
@@ -438,16 +438,16 @@ export default function TranslationReviewDialog({
 
                             {/* Source Text (if showing) */}
                             {showOriginalText[showKey] && (
-                              <div className="bg-gray-50 border rounded p-3 space-y-2">
+                              <div className="bg-muted border rounded p-3 space-y-2">
                                 <div className="flex items-center gap-2">
-                                  <Label className="text-xs font-medium text-gray-600">
+                                  <Label className="text-xs font-medium text-muted-foreground">
                                     Texto Original (
                                     {LANGUAGE_FLAGS[translation.sourceLanguage]}{' '}
                                     {LANGUAGE_NAMES[translation.sourceLanguage]}
                                     )
                                   </Label>
                                 </div>
-                                <p className="text-sm text-gray-700">
+                                <p className="text-sm text-foreground">
                                   {translation.sourceText}
                                 </p>
                               </div>
@@ -473,8 +473,8 @@ export default function TranslationReviewDialog({
                                   }
                                   rows={3}
                                   className={`
-                                    ${translation.isEdited ? 'border-blue-500' : ''}
-                                    ${translation.isApproved ? 'border-green-500' : ''}
+                                    ${translation.isEdited ? 'border-accent' : ''}
+                                    ${translation.isApproved ? 'border-primary' : ''}
                                   `}
                                 />
                               ) : (
@@ -488,8 +488,8 @@ export default function TranslationReviewDialog({
                                     )
                                   }
                                   className={`
-                                    ${translation.isEdited ? 'border-blue-500' : ''}
-                                    ${translation.isApproved ? 'border-green-500' : ''}
+                                    ${translation.isEdited ? 'border-accent' : ''}
+                                    ${translation.isApproved ? 'border-primary' : ''}
                                   `}
                                 />
                               )}

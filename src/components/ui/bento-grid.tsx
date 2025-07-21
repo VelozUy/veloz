@@ -356,19 +356,19 @@ const BentoGrid: React.FC<BentoGridProps> = ({
           <button
             onClick={handleRemoveRow}
             disabled={additionalRows === 0}
-            className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-3 py-1 text-sm bg-destructive text-primary-foreground rounded hover:bg-destructive/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             -1 Fila
           </button>
           <button
             onClick={handleAddRow}
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/80 transition-colors"
           >
             +1 Fila
           </button>
           <button
             onClick={handleAddNineRows}
-            className="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+            className="px-3 py-1 text-sm bg-accent text-accent-foreground rounded hover:bg-accent/80 transition-colors"
           >
             +9 Filas
           </button>

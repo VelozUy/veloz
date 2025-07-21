@@ -140,7 +140,7 @@ export default function MeetTheTeam({
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Users className="w-6 h-6 text-primary" />
-            <h2 className="text-3xl font-bold text-charcoal">
+            <h2 className="text-3xl font-bold text-foreground">
               {language === 'en'
                 ? 'Meet the Team'
                 : language === 'pt'
@@ -148,7 +148,7 @@ export default function MeetTheTeam({
                   : 'Conoce al Equipo'}
             </h2>
           </div>
-          <p className="text-charcoal max-w-2xl mx-auto">
+          <p className="text-foreground max-w-2xl mx-auto">
             {language === 'en'
               ? 'The talented professionals behind this project'
               : language === 'pt'
@@ -186,10 +186,10 @@ export default function MeetTheTeam({
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-lg mb-1 truncate text-charcoal">
+                    <h3 className="font-semibold text-lg mb-1 truncate text-foreground">
                       {getLocalizedText(member.name, language)}
                     </h3>
-                    <p className="text-charcoal text-sm mb-2">
+                    <p className="text-foreground text-sm mb-2">
                       {getLocalizedText(member.role, language)}
                     </p>
 
@@ -218,7 +218,7 @@ export default function MeetTheTeam({
 
                 {/* Bio */}
                 {getLocalizedText(member.bio, language) && (
-                  <p className="text-sm text-charcoal mb-4 line-clamp-3">
+                  <p className="text-sm text-foreground mb-4 line-clamp-3">
                     {getLocalizedText(member.bio, language)}
                   </p>
                 )}

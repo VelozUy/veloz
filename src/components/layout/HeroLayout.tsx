@@ -151,12 +151,12 @@ export default function HeroLayout({
       </div>
 
       {/* Overlay for text readability */}
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-foreground/20" />
 
       {/* Project Title Overlay */}
       {projectTitle && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4">
+          <div className="text-center text-primary-foreground px-4">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
               {projectTitle}
             </h1>

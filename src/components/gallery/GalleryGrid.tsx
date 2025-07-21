@@ -167,7 +167,7 @@ export function GalleryGrid({
 
           {/* Hover overlay for clickable items */}
           {(item.onClick || onItemClick) && (
-            <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-foreground/0 hover:bg-foreground/20 transition-colors duration-300" />
           )}
         </div>
       ))}

@@ -321,10 +321,7 @@ function FileMetadataEditor({
         {/* Upload status */}
         {uploadFile.status === 'uploading' && (
           <div className="mt-3">
-            <Progress
-              value={uploadFile.progress}
-              className="bg-gray-light h-2"
-            />
+            <Progress value={uploadFile.progress} className="bg-muted h-2" />
             <p className="text-xs text-foreground mt-1">
               {uploadFile.progress}% completado
             </p>

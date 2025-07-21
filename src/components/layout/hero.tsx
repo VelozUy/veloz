@@ -151,7 +151,7 @@ export default function Hero({
       )}
 
       {/* Elegant overlay for text readability - reduced opacity for subtlety */}
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-foreground/20" />
 
       {/* Main content */}
       <div

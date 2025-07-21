@@ -221,7 +221,7 @@ export default function HeroMediaSelector({
       case 'compatible':
         return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'stretch':
-        return <AlertTriangle className="w-4 h-4 text-orange-500" />;
+        return <AlertTriangle className="w-4 h-4 text-accent" />;
       default:
         return <XCircle className="w-4 h-4 text-muted-foreground" />;
     }

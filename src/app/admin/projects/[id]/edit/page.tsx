@@ -636,7 +636,7 @@ export default function UnifiedProjectEditPage({
     return (
       <AdminLayout title="Error">
         <div className="text-center py-12">
-          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <AlertTriangle className="w-16 h-16 text-destructive mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-foreground mb-4">
             Error Loading Project
           </h2>
@@ -682,7 +682,7 @@ export default function UnifiedProjectEditPage({
                 {hasUnsavedChanges && (
                   <Badge
                     variant="secondary"
-                    className="bg-yellow-100 text-yellow-800"
+                    className="bg-accent text-accent-foreground"
                   >
                     Unsaved Changes
                   </Badge>
@@ -704,16 +704,16 @@ export default function UnifiedProjectEditPage({
                 <Badge
                   className={`${
                     draftProject.status === 'published'
-                      ? 'bg-green-500'
+                      ? 'bg-primary'
                       : draftProject.status === 'archived'
-                        ? 'bg-gray-500'
-                        : 'bg-yellow-500'
+                        ? 'bg-muted'
+                        : 'bg-accent'
                   }`}
                 >
                   {draftProject.status}
                 </Badge>
                 {draftProject.featured && (
-                  <Badge className="bg-yellow-500">
+                  <Badge className="bg-accent">
                     <Star className="w-3 h-3 mr-1" />
                     Featured
                   </Badge>
@@ -935,7 +935,7 @@ export default function UnifiedProjectEditPage({
                         </div>
 
                         {!draftProject.slug && draftProject.title.es && (
-                          <div className="text-amber-600 text-sm bg-amber-50 p-2 rounded border border-amber-200">
+                          <div className="text-accent-foreground text-sm bg-accent/20 p-2 rounded border border-accent">
                             ⚠️ La URL se generará automáticamente desde el
                             título en español cuando guardes el proyecto.
                           </div>
@@ -943,7 +943,7 @@ export default function UnifiedProjectEditPage({
 
                         {draftProject.slug &&
                           !/^[a-z0-9-]+$/.test(draftProject.slug) && (
-                            <div className="text-red-600 text-sm bg-red-50 p-2 rounded border border-red-200">
+                            <div className="text-destructive text-sm bg-destructive/20 p-2 rounded border border-destructive">
                               ❌ La URL contiene caracteres no válidos. Solo se
                               permiten letras minúsculas, números y guiones.
                             </div>
@@ -1376,7 +1376,7 @@ export default function UnifiedProjectEditPage({
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="flex items-center space-x-2">
-                <AlertTriangle className="w-5 h-5 text-yellow-500" />
+                <AlertTriangle className="w-5 h-5 text-accent" />
                 <span>Cambios Sin Guardar</span>
               </DialogTitle>
               <DialogDescription>
@@ -1415,13 +1415,13 @@ export default function UnifiedProjectEditPage({
         <div className="fixed top-4 right-4 z-50">
           <div
             className={`
-              px-6 py-4 rounded-none shadow-2xl transition-all duration-300 border-2
-              ${
-                hasUnsavedChanges
-                  ? 'bg-yellow-500 border-yellow-600 text-yellow-900 animate-pulse shadow-yellow-500/50'
-                  : 'bg-green-500 border-green-600 text-green-900 shadow-green-500/50'
-              }
-            `}
+                px-6 py-4 rounded-none shadow-2xl transition-all duration-300 border-2
+                ${
+                  hasUnsavedChanges
+                    ? 'bg-accent border-accent text-accent-foreground animate-pulse shadow-accent/50'
+                    : 'bg-primary border-primary text-primary-foreground shadow-primary/50'
+                }
+              `}
           >
             <div className="flex items-center space-x-3">
               {hasUnsavedChanges ? (
@@ -1438,7 +1438,7 @@ export default function UnifiedProjectEditPage({
                 </>
               ) : (
                 <>
-                  <div className="w-6 h-6 bg-green-700 rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-bold text-xs">
                       ✓
                     </span>

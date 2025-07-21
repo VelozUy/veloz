@@ -225,13 +225,13 @@ export default function ProjectDashboard() {
       case 'in-progress':
         return 'bg-muted';
       case 'completed':
-        return 'bg-green-600';
+        return 'bg-primary';
       case 'draft':
-        return 'bg-gray-500';
+        return 'bg-muted';
       case 'archived':
-        return 'bg-gray-600';
+        return 'bg-muted';
       default:
-        return 'bg-gray-500';
+        return 'bg-muted';
     }
   };
 
@@ -517,7 +517,7 @@ export default function ProjectDashboard() {
                             <div
                               className={`w-2 h-2 rounded-full ${
                                 milestone.status === 'completed'
-                                  ? 'bg-green-500'
+                                  ? 'bg-primary'
                                   : milestone.status === 'overdue'
                                     ? 'bg-destructive'
                                     : 'bg-accent'
