@@ -346,7 +346,7 @@ export default function ProjectVisualGrid({
                       color: block.color || '#000000',
                     }}
                   >
-                    <div className="text-center font-bold whitespace-nowrap overflow-hidden w-full h-full flex items-center justify-center px-2">
+                    <div className="text-center font-bold whitespace-nowrap overflow-hidden w-full h-full flex items-center justify-center px-2 uppercase">
                       {block.title || 'Título del Proyecto'}
                     </div>
                   </div>

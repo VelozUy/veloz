@@ -153,12 +153,13 @@ describe('CategoryPageClient', () => {
 
     const titleElement = screen.getByText('Casamiento');
     expect(titleElement).toBeInTheDocument();
-
+    
     // Check that the title has the correct styling for single-line display
     expect(titleElement).toHaveClass('whitespace-nowrap');
     expect(titleElement).toHaveClass('overflow-hidden');
     expect(titleElement).toHaveClass('leading-none');
-
+    expect(titleElement).toHaveClass('uppercase');
+    
     // Check that it uses dynamic font sizing
     expect(titleElement).toHaveStyle({
       fontSize: 'clamp(2rem, 8vw, 12rem)',

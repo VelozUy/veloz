@@ -178,7 +178,7 @@ export default function ProjectDetailGallery({
 
           {/* Title */}
           <h1
-            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap overflow-hidden"
+            className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap overflow-hidden uppercase"
             id="project-title"
             style={{
               fontSize: 'clamp(2rem, 8vw, 12rem)',

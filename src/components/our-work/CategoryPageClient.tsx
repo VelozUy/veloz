@@ -132,13 +132,11 @@ export default function CategoryPageClient({
           </div>
 
           {/* Event Type Title */}
-          <h1
-            className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap overflow-hidden"
-            style={{
-              fontSize: 'clamp(2rem, 8vw, 12rem)',
-              lineHeight: '0.9',
-            }}
-          >
+          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap overflow-hidden uppercase"
+               style={{
+                 fontSize: 'clamp(2rem, 8vw, 12rem)',
+                 lineHeight: '0.9',
+               }}>
             {getCategoryDisplayName(
               currentCategory.name as EventCategory,
               'es'
