@@ -5,6 +5,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory, getCategoryDisplayName } from '@/constants/categories';
 import { useHeroBackground } from '@/hooks/useBackground';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
+import { useGalleryPerformanceMonitor } from '@/lib/gallery-performance-monitor';
 
 import GalleryGrid from './GalleryGrid';
 import MeetTheTeamStatic from '@/components/our-work/MeetTheTeamStatic';
@@ -101,6 +102,10 @@ export default function ProjectDetailGallery({
   const { trackGalleryView, trackTimelineInteraction, trackCrewInteraction } =
     useGalleryAnalytics();
   const { classes: heroClasses } = useHeroBackground();
+  const {
+    initialize: initializePerformanceMonitor,
+    getMetrics: getPerformanceMetrics,
+  } = useGalleryPerformanceMonitor();
   const galleryRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const crewRef = useRef<HTMLDivElement>(null);
@@ -116,6 +121,9 @@ export default function ProjectDetailGallery({
 
       // Track gallery view with analytics
       trackGalleryView(project.id, project.title);
+
+      // Initialize performance monitoring for Phase 3
+      initializePerformanceMonitor();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project?.id]);
@@ -200,6 +208,7 @@ export default function ProjectDetailGallery({
           role="region"
           aria-label="Galería de medios del proyecto"
           aria-describedby="gallery-description"
+          data-gallery-section="true"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
             <div id="gallery-description" className="sr-only">
@@ -224,6 +233,7 @@ export default function ProjectDetailGallery({
           role="region"
           aria-label="Cronología del proyecto"
           aria-describedby="timeline-description"
+          data-timeline-section="true"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
             <div id="timeline-description" className="sr-only">
@@ -249,6 +259,7 @@ export default function ProjectDetailGallery({
           role="region"
           aria-label="Conoce al equipo"
           aria-describedby="crew-description"
+          data-crew-section="true"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
             <div id="crew-description" className="sr-only">
@@ -292,6 +303,21 @@ export default function ProjectDetailGallery({
       >
         Saltar al contenido principal
       </a>
+
+      {/* Performance Metrics Display (Development Only) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 bg-background border border-border p-4 rounded shadow-lg max-w-sm z-50">
+          <h3 className="text-sm font-medium mb-2">
+            Phase 3 Performance Metrics:
+          </h3>
+          <div className="text-xs space-y-1">
+            <p>Gallery Items: {project.media?.length || 0}</p>
+            <p>Timeline Phases: {timelineProject?.timeline?.length || 0}</p>
+            <p>Crew Members: {project.crewMembers?.length || 0}</p>
+            <p>Performance Monitor: Active</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
