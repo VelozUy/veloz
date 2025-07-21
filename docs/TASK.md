@@ -1556,312 +1556,6 @@ _No tasks completed yet for this Epic_
 - **User Experience**: Enhanced visual hierarchy and component clarity
 - **Accessibility**: WCAG AA compliance for all color combinations
 
----
-
-### 🎨 EPIC: Border Radius System Implementation ⭐ **COMPLETED**
-
-**Objective**: Implement comprehensive border radius system across entire application to enhance visual clarity, precision, and modernism while maintaining Veloz brand identity
-
-**Reference**: `docs/new_border_radius_guidelines.md` - Complete border radius guidelines and specifications
-**User Intent**: Update all components to use intentional border radius system that emphasizes structure and hierarchy, with rounded corners used sparingly and purposefully
-
-#### 🟥 Critical Priority Tasks - COMPLETED
-
-- [x] **Phase 1: Update Tailwind Border Radius Tokens** - Add new border radius system tokens (2025-01-27)
-  - **User Intent**: Define the new border radius tokens that align with Veloz brand guidelines
-  - **Acceptance Criteria**:
-    - Add `md: '0.375rem'` for inputs and small interactive elements ✅
-    - Add `lg: '0.5rem'` for cards and forms ✅
-    - Add `full: '9999px'` for badges and pills ✅
-    - Add `tl: '3rem'` for layout curves and hero sections ✅
-    - Add `br: '4rem'` for asymmetrical visual blocks ✅
-    - Remove default `rounded-xl` and `rounded-2xl` usage ✅
-  - **Files**: `tailwind.config.ts`
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Implementation Strategy section
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All border radius tokens properly configured
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-- [x] **Phase 2: Update Container Components** - Fix all cards, modals, forms, and sections to use square borders (2025-01-27)
-  - **User Intent**: Ensure all general-purpose containers use square borders to emphasize structure
-  - **Acceptance Criteria**:
-    - All card components use `rounded-none` instead of rounded corners ✅
-    - All modal/dialog components use `rounded-none` ✅
-    - All form containers use `rounded-none` ✅
-    - All section blocks use `rounded-none` ✅
-    - All timeline components use `rounded-none` ✅
-    - All content blocks use `rounded-none` ✅
-  - **Files**: `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`, `src/components/forms/ContactForm.tsx`, all section components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Containers section
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All container components updated with square borders
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-- [x] **Phase 3: Update Tag and Badge Components** - Implement rounded-full for tags, badges, and pills (2025-01-27)
-  - **User Intent**: Ensure all tags, badges, and status indicators use rounded-full for warmth and clarity
-  - **Acceptance Criteria**:
-    - All category buttons use `rounded-full` ✅
-    - All status indicators use `rounded-full` ✅
-    - All labels use `rounded-full` ✅
-    - All pill components use `rounded-full` ✅
-    - All badge components use `rounded-full` ✅
-  - **Files**: `src/components/ui/badge.tsx`, `src/constants/categories.ts`, all tag/badge components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Tags, Badges, and Pills section
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All tag and badge components use rounded-full
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-#### 🟨 High Priority Tasks - COMPLETED
-
-- [x] **Phase 4: Update Input and Interactive Elements** - Fix input fields and buttons to use appropriate border radius (2025-01-27)
-  - **User Intent**: Ensure input fields and buttons use appropriate border radius for usability
-  - **Acceptance Criteria**:
-    - All input fields use `rounded-md` for usability ✅
-    - All buttons use appropriate border radius based on type ✅
-    - All form elements use consistent border radius ✅
-    - All interactive elements maintain accessibility ✅
-  - **Files**: `src/components/ui/input.tsx`, `src/components/ui/button.tsx`, all form components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Examples section
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All input and interactive elements updated
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-- [x] **Phase 5: Implement Asymmetrical Border Radius** - Add asymmetrical border radius for hero sections and visual blocks (2025-01-27)
-  - **User Intent**: Implement asymmetrical border radius for hero sections and featured content to express motion and boldness
-  - **Acceptance Criteria**:
-    - Hero sections use `rounded-tl-[3rem]` or similar asymmetrical patterns ✅
-    - Featured content blocks use asymmetrical border radius ✅
-    - Layout cuts use intentional asymmetrical patterns ✅
-    - Visual blocks express motion without being ornamental ✅
-  - **Files**: `src/components/layout/hero.tsx`, `src/components/our-work/GridGallery.tsx`, hero and visual block components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Blocks and Visual Sections section
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All hero and visual blocks use asymmetrical border radius
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-- [x] **Phase 6: Update Structural Elements** - Fix diagrams and structural components to use square corners (2025-01-27)
-  - **User Intent**: Ensure all structural and diagrammatic elements use square corners for precision
-  - **Acceptance Criteria**:
-    - All diagram components use `rounded-none` ✅
-    - All wireframe elements use `rounded-none` ✅
-    - All edge-glow UI elements use `rounded-none` ✅
-    - All structural components maintain precision and consistency ✅
-  - **Files**: All diagram and structural components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Structural/Diagrammatic Elements section
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All structural elements use square corners
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-#### 🟩 Medium Priority Tasks - COMPLETED
-
-- [x] **Phase 7: Admin Panel Integration** - Update admin interface with new border radius system (2025-01-27)
-  - **User Intent**: Ensure admin panel follows the new border radius guidelines
-  - **Acceptance Criteria**:
-    - Admin cards use `rounded-none` ✅
-    - Admin forms use appropriate border radius ✅
-    - Admin badges use `rounded-full` ✅
-    - Admin modals use `rounded-none` ✅
-    - All admin components follow border radius guidelines ✅
-  - **Files**: All admin components in `src/app/admin/` and `src/components/admin/`
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Element-specific guidelines
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All admin components updated with new border radius system
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-- [x] **Phase 8: Gallery and Media Components** - Update gallery components with new border radius system (2025-01-27)
-  - **User Intent**: Ensure gallery and media components follow the new border radius guidelines
-  - **Acceptance Criteria**:
-    - Gallery cards use `rounded-none` ✅
-    - Media containers use appropriate border radius ✅
-    - Lightbox components use `rounded-none` ✅
-    - Filter components use `rounded-full` for tags ✅
-    - All gallery components follow border radius guidelines ✅
-  - **Files**: `src/components/gallery/`, `src/app/gallery/`
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Element-specific guidelines
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All gallery and media components updated
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-#### 🟦 Low Priority Tasks - COMPLETED
-
-- [x] **Phase 9: Documentation and Testing** - Create comprehensive documentation and testing (2025-01-27)
-  - **User Intent**: Ensure the new border radius system is well-documented and tested
-  - **Acceptance Criteria**:
-    - Update component documentation with border radius guidelines ✅
-    - Create visual examples of proper border radius usage ✅
-    - Test all components across different screen sizes ✅
-    - Ensure accessibility standards are maintained ✅
-    - Create border radius usage guidelines for future development ✅
-  - **Files**: `docs/`, test files
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Complete guidelines
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - Comprehensive border radius system implemented across entire application
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
-### ✅ Completed
-
-- [x] **Complete Border Radius System Implementation** (2025-01-27)
-  - **Summary**: Successfully implemented comprehensive border radius system across entire application
-  - **Key Achievements**:
-    - Updated all container components to use `rounded-none` for structure emphasis
-    - Implemented `rounded-full` for all tags, badges, and pills
-    - Applied `rounded-md` for interactive elements (inputs, buttons, dropdowns)
-    - Added asymmetrical border radius (`rounded-tl-[3rem]`, `rounded-br-[4rem]`) for hero sections and visual blocks
-    - Updated all admin panel components to follow new guidelines
-    - Updated all gallery and media components for consistency
-    - Ensured all structural elements use square corners for precision
-  - **Files Updated**: 50+ component files across UI, admin, gallery, and layout components
-  - **Reference**: `docs/new_border_radius_guidelines.md` - Complete implementation
-  - **PO Sign-Off**: PO Approved (2025-01-27)
-
----
-
-### 🎨 EPIC: Dynamic Background Color System Implementation ⭐ **HIGH PRIORITY**
-
-**Objective**: Implement contextual background color system based on section type and element priority to improve visual clarity and emotional tone.
-
-**Reference**: `docs/background_color_system_prompt.md` - Complete implementation plan and specifications
-**User Intent**: Improve visual clarity and emotional tone by varying background colors contextually based on section type and element priority
-
-#### 🟥 Critical - START IMMEDIATELY
-
-- [x] **Phase 1: Update Tailwind Color Tokens** - Add new background color system tokens
-  - **User Intent**: Define the new color tokens for the dynamic background system
-  - **Acceptance Criteria**:
-    - Add `charcoal: '#1a1b1f'` for dark base visual/hero blocks ✅
-    - Add `gray-light: '#f0f0f0'` for neutral text sections and forms ✅
-    - Add `gray-medium: '#d2d2d2'` for borders and cards ✅
-    - Add `blue-accent: '#1d7efc'` for CTA and focus elements ✅
-    - Add `white: '#ffffff'` for elevated cards or clean sections ✅
-    - Ensure all tokens are properly integrated with existing theme system ✅
-  - **Files**: `tailwind.config.ts`
-  - **Reference**: `docs/background_color_system_prompt.md` - Tailwind Tokens section
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All new color tokens added and integrated
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-- [x] **Phase 2: Hero/Visual Impact Section Updates** - Implement charcoal backgrounds for hero blocks
-  - **User Intent**: Apply charcoal backgrounds to hero blocks, full-screen galleries, and emotional project intros
-  - **Acceptance Criteria**:
-    - Hero sections use `bg-charcoal` background ✅
-    - Large text uses `text-white` for proper contrast ✅
-    - CTA buttons use `bg-blue-accent` with `text-white` ✅
-    - Icons use `text-white` or `text-blue-accent` ✅
-    - All hero components follow the new color system ✅
-  - **Files**: `src/components/layout/hero.tsx`, `src/components/layout/HeroLayout.tsx`, `src/components/our-work/ProjectDetailClient.tsx`
-  - **Reference**: `docs/background_color_system_prompt.md` - Hero/Visual Impact Sections
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All hero components updated with charcoal backgrounds
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-- [x] **Phase 3: Content/Text Section Updates** - Implement gray-light backgrounds for text sections
-  - **User Intent**: Apply gray-light backgrounds to FAQs, paragraphs, and process steps
-  - **Acceptance Criteria**:
-    - Text sections use `bg-gray-light` background ✅
-    - Text uses `text-charcoal` for proper contrast ✅
-    - Cards use `bg-white` over gray-light backgrounds ✅
-    - Links use `text-blue-accent` ✅
-    - All content components follow the new color system ✅
-  - **Files**: `src/app/about/page.tsx`, `src/components/our-work/OurWorkContent.tsx`, FAQ components
-  - **Reference**: `docs/background_color_system_prompt.md` - Content/Text Sections
-  - **Estimated Time**: 1-2 days
-  - **Status**: Completed - All content sections updated with gray-light backgrounds
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-#### 🟨 High Priority
-
-- [x] **Phase 4: Forms/Inputs/Contact Updates** - Implement proper form styling with new color system
-  - **User Intent**: Apply proper background colors to forms, inputs, and contact sections
-  - **Acceptance Criteria**:
-    - Forms use `bg-gray-light` or white cards over gray-light ✅
-    - Inputs use `bg-white` with `border-gray-medium` ✅
-    - Focus states use `ring-blue-accent` ✅
-    - Buttons use `bg-blue-accent` with `text-white` ✅
-    - All form components follow the new color system ✅
-  - **Files**: `src/app/contact/page.tsx`, `src/components/forms/ContactForm.tsx`, all form components
-  - **Reference**: `docs/background_color_system_prompt.md` - Forms/Inputs/Contact
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All form components updated with new color system
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-- [x] **Phase 5: Testimonials/Crew Section Updates** - Implement white backgrounds for testimonials
-  - **User Intent**: Apply white backgrounds to testimonials and crew sections
-  - **Acceptance Criteria**:
-    - Testimonials use `bg-white` background ✅
-    - Cards use `border-gray-medium` with `text-charcoal` ✅
-    - All testimonial/crew components follow the new color system ✅
-    - Proper contrast maintained throughout ✅
-  - **Files**: `src/components/our-work/MeetTheTeam.tsx`, testimonial components
-  - **Reference**: `docs/background_color_system_prompt.md` - Testimonials/Crew
-  - **Estimated Time**: 0.5 days
-  - **Status**: Completed - All testimonial/crew components updated with white backgrounds
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-- [x] **Phase 6: CTA/Conversion Section Updates** - Implement contextual CTA styling
-  - **User Intent**: Apply contextual backgrounds to CTA and conversion sections
-  - **Acceptance Criteria**:
-    - CTA sections use `bg-charcoal` or `bg-blue-accent` based on context ✅
-    - Buttons use contrast colors (white on blue, or blue on light) ✅
-    - Optional inverted layouts with dark text on light backgrounds ✅
-    - All CTA components follow the new color system ✅
-  - **Files**: `src/components/layout/InteractiveCTAWidget.tsx`, CTA components
-  - **Reference**: `docs/background_color_system_prompt.md` - CTA/Conversion Section
-  - **Estimated Time**: 1 day
-  - **Status**: Completed - All CTA components updated with contextual styling
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-#### 🟩 Medium Priority
-
-- [x] **Phase 7: Component System Integration** - Create utility functions for contextual backgrounds
-  - **User Intent**: Create reusable utility functions for generating contextual background classes
-  - **Acceptance Criteria**:
-    - Create utility functions for section type → background color mapping ✅
-    - Implement responsive className logic for light vs dark backgrounds ✅
-    - Ensure all components can use the new system easily ✅
-    - Document usage patterns for future development ✅
-  - **Files**: `src/lib/utils.ts`, component utility files
-  - **Reference**: `docs/background_color_system_prompt.md` - Output section
-  - **Estimated Time**: 1-2 days
-  - **Status**: Completed - All utility functions created and documented
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-- [x] **Phase 8: Admin Panel Integration** - Update admin interface with new color system
-  - **User Intent**: Apply the new background color system to admin interface
-  - **Acceptance Criteria**:
-    - Admin sections use appropriate contextual backgrounds ✅
-    - Forms use gray-light backgrounds with white inputs ✅
-    - Navigation uses charcoal backgrounds with white text ✅
-    - All admin components follow the new color system ✅
-  - **Files**: `src/app/admin/layout.tsx`, `src/components/admin/AdminLayout.tsx`, all admin components
-  - **Reference**: `docs/background_color_system_prompt.md` - All section types
-  - **Estimated Time**: 2-3 days
-  - **Status**: Completed - Admin panel already properly integrated with new color system
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-#### 🟦 Low Priority
-
-- [x] **Phase 9: Documentation and Testing** - Comprehensive documentation and testing
-  - **User Intent**: Ensure the new background color system is well-documented and tested
-  - **Acceptance Criteria**:
-    - Document all background color usage patterns ✅
-    - Create visual testing checklist for each section type ✅
-    - Test accessibility compliance for all color combinations ✅
-    - Ensure responsive behavior across all devices ✅
-  - **Files**: `docs/BACKGROUND_COLOR_SYSTEM.md`, test files
-  - **Reference**: `docs/background_color_system_prompt.md` - Complete implementation
-  - **Estimated Time**: 1-2 days
-  - **Status**: Completed - Comprehensive documentation and tests created
-  - **PO Sign-Off**: PO Approved (2025-01-20)
-
-### 📊 Epic Metrics & Success Criteria
-
-**Primary Success Metrics**:
-
-- **Visual Clarity**: Improved contrast and readability across all sections
-- **Emotional Tone**: Contextual backgrounds enhance user experience
-- **Brand Consistency**: All sections follow Veloz brand guidelines
-- **Accessibility**: WCAG AA compliance for all color combinations
-
 **Secondary Metrics**:
 
 - **Performance**: No impact on page load times
@@ -1871,21 +1565,6 @@ _No tasks completed yet for this Epic_
 ### 🎯 Epic Dependencies
 
 **Technical Dependencies**:
-
-- Current our-work page implementation
-- Access to `docs/background_color_system_prompt.md` specifications
-- Understanding of existing static content generation
-- Tailwind CSS configuration for dynamic background classes
-
-**Business Dependencies**:
-
-- User approval of dynamic background system
-- Stakeholder review of visual consistency
-- Content team preparation for dynamic content
-
-### 📋 Implementation Notes
-
-**Critical Considerations**:
 
 - **Dynamic Content Generation**: Ensure smooth transitions between background colors
 - **Accessibility**: Maintain WCAG AA compliance for all color combinations
@@ -2408,7 +2087,7 @@ _No tasks completed yet for this Epic_
 
 **Objective**: Implement modern, portfolio-quality gallery system for Veloz project detail pages with static generation at build time, preserving timeline and crew sections while enhancing media presentation
 
-**Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Complete gallery specification and implementation plan
+**Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md`, `docs/NEW_DESIGN_PLAN.md`
 **User Intent**: Transform project detail pages with sophisticated gallery presentation while preserving the timeline/chronology and "Meet the Team" sections that are key differentiators for Veloz
 
 **Scope**: Only the media gallery content will be enhanced. Timeline, crew sections, and overall page structure remain unchanged.
@@ -2756,7 +2435,7 @@ _No tasks completed yet for this Epic_
 
 **Objective**: Transform the /our-work page to show galleries by project category with scroll navigation, displaying only feature media from each category in a single-page layout
 
-**Reference**: Meeting document "Reunión 19_07_25.md" - Category-based gallery navigation requirements
+**Reference**: Meeting document "Reunión 19_07_25.md", `docs/NEW_DESIGN_PLAN.md`
 **User Intent**: Improve gallery organization with scroll navigation showing only feature media grouped by category, making it easier for clients to browse specific types of work in a single-page experience
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
@@ -2848,7 +2527,7 @@ _No tasks completed yet for this Epic_
     - Analyze category popularity
     - Conversion tracking from category views
   - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
-  - **Reference**: Analytics requirements for category navigation
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md`
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 5 completion
 
@@ -3674,5 +3353,210 @@ _No tasks completed yet for this Epic_
     - Tests updated to reflect new display names ✅
   - **Files**: `src/constants/categories.ts`, `src/components/our-work/CategoryNavigation.tsx`, `src/components/our-work/__tests__/CategoryNavigation.test.tsx`
   - **Status**: ✅ Completed - Category display names fixed
+
+---
+
+### 🎨 EPIC: Immersive Fullscreen Category Gallery View ⭐ **HIGH PRIORITY**
+
+**Objective**: Create an immersive fullscreen viewing experience for category gallery items with minimal UI, smooth transitions, and optimized performance for large media collections
+
+**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete design specifications and user experience requirements
+**User Intent**: Provide users with an immersive, distraction-free viewing experience when clicking on category gallery items, allowing them to focus entirely on the media content with intuitive navigation
+
+**Scope**: Fullscreen modal/dialog system for category gallery items only. Separate from project detail page lightbox functionality.
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Fullscreen Modal Component** - Create immersive fullscreen modal for category gallery items
+  - **User Intent**: Build a distraction-free fullscreen viewing experience for category gallery items
+  - **Acceptance Criteria**:
+    - Fullscreen modal that covers entire viewport with minimal UI
+    - Smooth fade-in/fade-out transitions (300ms ease-in-out)
+    - Background overlay with blur effect for focus
+    - Close button positioned in top-right corner
+    - ESC key support for closing modal
+    - Proper z-index management for overlay
+  - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/components/gallery/CategoryGalleryItem.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Immersive viewing specifications
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Media Display Optimization** - Optimize media display for fullscreen viewing
+  - **User Intent**: Ensure media displays optimally in fullscreen mode with proper aspect ratios and quality
+  - **Acceptance Criteria**:
+    - Media fills available viewport while maintaining aspect ratio
+    - High-resolution image loading for crisp display
+    - Video autoplay with controls in fullscreen mode
+    - Proper handling of portrait, landscape, and square media
+    - Loading states with skeleton placeholders
+    - Error handling for failed media loads
+  - **Files**: `src/components/gallery/FullscreenMediaDisplay.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Media optimization guidelines
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Navigation Controls** - Implement intuitive navigation between category gallery items
+  - **User Intent**: Allow users to navigate between items within the same category without closing fullscreen view
+  - **Acceptance Criteria**:
+    - Left/right arrow buttons for navigation (prev/next)
+    - Keyboard arrow key support (left/right arrows)
+    - Touch swipe gestures for mobile devices
+    - Smooth transitions between items (200ms ease-out)
+    - Disabled states for first/last items
+    - Item counter display (e.g., "3 of 12")
+  - **Files**: `src/components/gallery/FullscreenNavigation.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Navigation UX specifications
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 2 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Touch Gesture Support** - Add comprehensive touch gesture support for mobile devices
+  - **User Intent**: Provide intuitive touch interactions for mobile users
+  - **Acceptance Criteria**:
+    - Swipe left/right for navigation between items
+    - Swipe down to close fullscreen modal
+    - Pinch-to-zoom for image details (optional)
+    - Double-tap to zoom in/out
+    - Minimum swipe distance (50px) to prevent accidental navigation
+    - Passive event listeners for performance
+  - **Files**: `src/hooks/useTouchGestures.ts`, `src/components/gallery/FullscreenModal.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Mobile interaction guidelines
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Performance Optimization** - Optimize performance for large media collections
+  - **User Intent**: Ensure smooth performance even with large category galleries
+  - **Acceptance Criteria**:
+    - Lazy loading of adjacent media items
+    - Preloading of next/previous items for smooth navigation
+    - Memory management for loaded media
+    - Efficient DOM manipulation and event handling
+    - Progressive image loading with blur-up effects
+    - Video preloading with metadata only
+  - **Files**: `src/lib/fullscreen-performance.ts`, `src/hooks/useFullscreenPerformance.ts`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Performance optimization guidelines
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Accessibility Enhancement** - Ensure fullscreen view meets accessibility standards
+  - **User Intent**: Make fullscreen view accessible to all users including those with disabilities
+  - **Acceptance Criteria**:
+    - Proper ARIA labels for all interactive elements
+    - Keyboard navigation support (Tab, Enter, Escape, Arrow keys)
+    - Screen reader compatibility with proper announcements
+    - Focus management and trap focus within modal
+    - High contrast mode support
+    - Reduced motion support for users with vestibular disorders
+  - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/hooks/useAccessibility.ts`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Accessibility guidelines
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+- [ ] **Phase 7: Analytics Integration** - Track fullscreen viewing behavior and engagement
+  - **User Intent**: Monitor user engagement with fullscreen viewing experience
+  - **Acceptance Criteria**:
+    - Track fullscreen modal opens and closes
+    - Monitor time spent in fullscreen view per item
+    - Track navigation patterns (prev/next usage)
+    - Measure completion rates (viewing all items in category)
+    - Track user interactions (swipe gestures, keyboard usage)
+    - Conversion tracking from fullscreen view to contact
+  - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Analytics requirements
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 6 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Advanced Features** - Add sophisticated fullscreen viewing features
+  - **User Intent**: Enhance fullscreen experience with professional features
+  - **Acceptance Criteria**:
+    - Slideshow mode with auto-advance timer
+    - Download functionality for high-resolution images
+    - Social sharing integration for individual items
+    - Fullscreen toggle for true fullscreen mode
+    - Background music/soundtrack support for videos
+    - Custom transition effects between items
+  - **Files**: `src/components/gallery/FullscreenAdvancedFeatures.tsx`
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Advanced feature specifications
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+- [ ] **Phase 9: Cross-browser Testing** - Ensure fullscreen view works across all major browsers
+  - **User Intent**: Verify fullscreen functionality works consistently across different browsers
+  - **Acceptance Criteria**:
+    - Test on Chrome, Firefox, Safari, Edge
+    - Verify touch gestures work on iOS Safari and Android Chrome
+    - Test keyboard navigation across all browsers
+    - Ensure proper fullscreen API support
+    - Test performance on different devices and screen sizes
+  - **Files**: Test files, browser compatibility utilities
+  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Cross-browser requirements
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 8 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Memory Management** - Optimize memory usage for large media collections
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Error Recovery** - Graceful handling of failed media loads
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Loading States** - Enhanced loading indicators and skeleton screens
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **User Engagement**: Increased time spent viewing category gallery items
+- **Navigation Efficiency**: Smooth transitions and intuitive controls
+- **Performance**: Fast loading times (< 2 seconds for fullscreen modal)
+- **Accessibility**: WCAG AA compliance for all interactions
+
+**Secondary Metrics**:
+
+- **Mobile Usage**: High engagement on mobile devices
+- **Completion Rates**: Users viewing multiple items per session
+- **Error Rates**: Low error rates for media loading and navigation
+- **Conversion Impact**: Positive impact on contact form submissions
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current category gallery implementation
+- Access to `docs/NEW_DESIGN_PLAN.md` specifications
+- Understanding of existing media loading patterns
+- Touch gesture and keyboard event handling libraries
+
+**Business Dependencies**:
+
+- User approval of immersive fullscreen viewing approach
+- Stakeholder review of enhanced category gallery experience
+- Content team preparation for optimized media assets
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Performance**: Optimize for large media collections without impacting page load
+- **Mobile First**: Ensure excellent experience on mobile devices
+- **Accessibility**: Meet WCAG AA standards for all interactions
+- **SEO**: Maintain SEO benefits while adding fullscreen functionality
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Test thoroughly with different media types and sizes
+- Maintain backward compatibility during development
+- Create rollback plan for each phase
 
 ---
