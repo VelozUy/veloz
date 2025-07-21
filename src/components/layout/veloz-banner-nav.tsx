@@ -162,7 +162,7 @@ export default function VelozBannerNav({
         <div className="absolute inset-0 bg-muted" />
 
         {/* Logo section - positioned on top of gray background */}
-        <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center">
+        <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-10">
           <Link
             href={getLocalizedPath('/', locale)}
             className="flex items-center group"
@@ -176,7 +176,7 @@ export default function VelozBannerNav({
         </div>
 
         {/* Blue section - positioned on top of gray background */}
-        <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem]">
+        <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem] z-10">
           {/* Navigation Items */}
           <div className="flex items-center justify-center h-full px-4">
             <div className="hidden lg:flex items-center space-x-4">
@@ -221,7 +221,7 @@ export default function VelozBannerNav({
       {/* Mobile/Tablet Navigation */}
       <div 
         className={cn(
-          "lg:hidden absolute top-full left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out",
+          "lg:hidden absolute top-full left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-40",
           isMobileMenuOpen 
             ? "opacity-100 translate-y-0" 
             : "opacity-0 -translate-y-4 pointer-events-none"
