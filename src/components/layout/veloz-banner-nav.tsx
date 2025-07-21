@@ -156,70 +156,72 @@ export default function VelozBannerNav({
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
-      {/* Banner Container */}
-      <div className="relative h-16 bg-muted">
-        {/* Logo section - positioned on top of gray background */}
-        <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-20">
-          <Link
-            href={getLocalizedPath('/', locale)}
-            className="flex items-center group"
-          >
-            <VelozLogo
-              variant="full"
-              size="xl"
-              className="text-foreground group-hover:text-primary transition-colors"
-            />
-          </Link>
-        </div>
-
-        {/* Blue section - positioned on top of gray background */}
-        <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem] z-20">
-          {/* Navigation Items */}
-          <div className="flex items-center justify-center h-full px-4">
-            <div className="hidden lg:flex items-center space-x-4">
-              {navItems.map(item => {
-                const active = isActive(item.href);
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      'text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium text-sm',
-                      active && 'text-primary-foreground'
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-
-              {/* Language Switcher */}
-              <div className="ml-4">
-                <LocaleSwitcher currentLocale={locale} />
-              </div>
-            </div>
-
-            {/* Tablet/Desktop menu button */}
-            <button
-              className="lg:hidden p-2 rounded-none hover:bg-primary-foreground/10 transition-colors text-primary-foreground"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle mobile menu"
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50">
+        {/* Banner Container */}
+        <div className="relative h-16 bg-muted">
+          {/* Logo section - positioned on top of gray background */}
+          <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-20">
+            <Link
+              href={getLocalizedPath('/', locale)}
+              className="flex items-center group"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+              <VelozLogo
+                variant="full"
+                size="xl"
+                className="text-foreground group-hover:text-primary transition-colors"
+              />
+            </Link>
+          </div>
+
+          {/* Blue section - positioned on top of gray background */}
+          <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem] z-20">
+            {/* Navigation Items */}
+            <div className="flex items-center justify-center h-full px-4">
+              <div className="hidden lg:flex items-center space-x-4">
+                {navItems.map(item => {
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={cn(
+                        'text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium text-sm',
+                        active && 'text-primary-foreground'
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+
+                {/* Language Switcher */}
+                <div className="ml-4">
+                  <LocaleSwitcher currentLocale={locale} />
+                </div>
+              </div>
+
+              {/* Tablet/Desktop menu button */}
+              <button
+                className="lg:hidden p-2 rounded-none hover:bg-primary-foreground/10 transition-colors text-primary-foreground"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile/Tablet Navigation - positioned outside banner container */}
+      {/* Mobile/Tablet Navigation - completely separate from nav */}
       <div 
         className={cn(
-          "lg:hidden absolute top-16 left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-10",
+          "lg:hidden fixed top-16 left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-40",
           isMobileMenuOpen 
             ? "opacity-100 translate-y-0" 
             : "opacity-0 -translate-y-4 pointer-events-none"
@@ -251,6 +253,6 @@ export default function VelozBannerNav({
           </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 }
