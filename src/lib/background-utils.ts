@@ -1,424 +1,242 @@
-import type {
-  SectionType,
-  PriorityLevel,
-  BackgroundClasses,
-  BackgroundConfig,
-} from '../types/background';
+/**
+ * Background Utility System
+ * 
+ * Provides contextual background classes based on section type and priority
+ * for the Light Gray Background Color System implementation
+ */
+
+export type SectionType = 'hero' | 'content' | 'form' | 'testimonial' | 'cta' | 'meta';
+export type PriorityLevel = 'high' | 'medium' | 'low';
+
+export interface BackgroundClasses {
+  background: string;
+  text: string;
+  border: string;
+  shadow?: string;
+}
 
 /**
  * Get contextual background classes based on section type and priority
- *
- * @param sectionType - The type of section (hero, content, form, etc.)
- * @param priority - The priority level (high, medium, low)
- * @param responsive - Whether to include responsive variants
- * @returns Object with Tailwind classes for background, text, border, and shadow
  */
 export function getBackgroundClasses(
   sectionType: SectionType,
-  priority: PriorityLevel,
-  responsive: boolean = false
+  priority: PriorityLevel = 'medium'
 ): BackgroundClasses {
-  const baseClasses = getBaseClasses(sectionType, priority);
-  const responsiveClasses = responsive
-    ? getResponsiveClasses(sectionType, priority)
-    : {};
+  const baseClasses = {
+    background: '',
+    text: '',
+    border: '',
+    shadow: '',
+  };
+
+  switch (sectionType) {
+    case 'hero':
+      return {
+        background: 'bg-charcoal',
+        text: 'text-white',
+        border: 'border-transparent',
+        shadow: 'shadow-lg',
+      };
+
+    case 'content':
+      if (priority === 'high') {
+        return {
+          background: 'bg-white',
+          text: 'text-charcoal',
+          border: 'border-gray-medium',
+          shadow: 'shadow-md',
+        };
+      } else {
+        return {
+          background: 'bg-gray-light',
+          text: 'text-charcoal',
+          border: 'border-transparent',
+          shadow: 'shadow-sm',
+        };
+      }
+
+    case 'form':
+      return {
+        background: 'bg-gray-light',
+        text: 'text-charcoal',
+        border: 'border-gray-medium',
+        shadow: 'shadow-sm',
+      };
+
+    case 'testimonial':
+      return {
+        background: 'bg-white',
+        text: 'text-charcoal',
+        border: 'border-gray-medium',
+        shadow: 'shadow-md',
+      };
+
+    case 'cta':
+      if (priority === 'high') {
+        return {
+          background: 'bg-blue-accent',
+          text: 'text-white',
+          border: 'border-blue-accent',
+          shadow: 'shadow-lg',
+        };
+      } else {
+        return {
+          background: 'bg-white',
+          text: 'text-charcoal',
+          border: 'border-blue-accent',
+          shadow: 'shadow-md',
+        };
+      }
+
+    case 'meta':
+      return {
+        background: 'bg-gray-light',
+        text: 'text-charcoal',
+        border: 'border-transparent',
+        shadow: 'shadow-xs',
+      };
+
+    default:
+      return {
+        background: 'bg-gray-light',
+        text: 'text-charcoal',
+        border: 'border-transparent',
+        shadow: 'shadow-sm',
+      };
+  }
+}
+
+/**
+ * Get responsive background classes for different screen sizes
+ */
+export function getResponsiveBackgroundClasses(
+  sectionType: SectionType,
+  priority: PriorityLevel = 'medium'
+): Record<string, BackgroundClasses> {
+  const baseClasses = getBackgroundClasses(sectionType, priority);
 
   return {
-    ...baseClasses,
-    ...responsiveClasses,
+    mobile: {
+      ...baseClasses,
+      background: `${baseClasses.background} md:${baseClasses.background}`,
+    },
+    tablet: {
+      ...baseClasses,
+      background: `${baseClasses.background} lg:${baseClasses.background}`,
+    },
+    desktop: {
+      ...baseClasses,
+      background: `${baseClasses.background} xl:${baseClasses.background}`,
+    },
   };
 }
 
 /**
- * Get base background classes without responsive variants
+ * Get focus and hover states for interactive elements
  */
-function getBaseClasses(
-  sectionType: SectionType,
-  priority: PriorityLevel
-): BackgroundClasses {
+export function getInteractiveStates(sectionType: SectionType): {
+  focus: string;
+  hover: string;
+  active: string;
+} {
   switch (sectionType) {
     case 'hero':
-      return getHeroClasses(priority);
-    case 'content':
-      return getContentClasses(priority);
-    case 'form':
-      return getFormClasses(priority);
-    case 'testimonial':
-      return getTestimonialClasses(priority);
+      return {
+        focus: 'focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-charcoal',
+        hover: 'hover:bg-white hover:text-charcoal',
+        active: 'active:bg-gray-light',
+      };
+
     case 'cta':
-      return getCTAClasses(priority);
-    case 'meta':
-      return getMetaClasses(priority);
-    case 'admin':
-      return getAdminClasses(priority);
+      return {
+        focus: 'focus:ring-2 focus:ring-blue-accent focus:ring-offset-2',
+        hover: 'hover:bg-blue-accent/90',
+        active: 'active:bg-blue-accent/80',
+      };
+
     default:
-      return getDefaultClasses(priority);
+      return {
+        focus: 'focus:ring-2 focus:ring-blue-accent focus:ring-offset-2',
+        hover: 'hover:bg-gray-medium/20',
+        active: 'active:bg-gray-medium/30',
+      };
   }
 }
 
 /**
- * Hero section classes - Dark backgrounds for visual impact
+ * Get accessibility classes for proper contrast and readability
  */
-function getHeroClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        shadow: 'shadow-lg',
-      };
-    case 'medium':
-      return {
-        background: 'bg-background/90',
-        text: 'text-foreground',
-        shadow: 'shadow-md',
-      };
-    case 'low':
-      return {
-        background: 'bg-background/75',
-        text: 'text-foreground',
-        shadow: 'shadow-sm',
-      };
+export function getAccessibilityClasses(sectionType: SectionType): string[] {
+  const classes = ['focus-visible:outline-none'];
+
+  switch (sectionType) {
+    case 'hero':
+      classes.push('text-white', 'contrast-200');
+      break;
+    case 'content':
+      classes.push('text-charcoal', 'contrast-150');
+      break;
+    case 'form':
+      classes.push('text-charcoal', 'contrast-150');
+      break;
+    case 'testimonial':
+      classes.push('text-charcoal', 'contrast-150');
+      break;
+    case 'cta':
+      classes.push('text-white', 'contrast-200');
+      break;
     default:
-      // Default to high priority for hero sections
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        shadow: 'shadow-lg',
-      };
+      classes.push('text-charcoal', 'contrast-150');
   }
+
+  return classes;
 }
 
 /**
- * Content section classes - Light gray backgrounds with hierarchy
+ * Get complete background system classes for a component
  */
-function getContentClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-md',
-      };
-    case 'medium':
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-border/50',
-      };
-    case 'low':
-      return {
-        background: 'bg-muted/50',
-        text: 'text-muted-foreground',
-        border: 'border-border/30',
-      };
-    default:
-      // Default to medium priority for unknown priority levels
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-border/50',
-      };
-  }
-}
-
-/**
- * Form section classes - Clean backgrounds for data entry
- */
-function getFormClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-sm',
-      };
-    case 'medium':
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-border/50',
-      };
-    case 'low':
-      return {
-        background: 'bg-muted/75',
-        text: 'text-muted-foreground',
-        border: 'border-border/30',
-      };
-    default:
-      // Default to high priority for form sections
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-sm',
-      };
-  }
-}
-
-/**
- * Testimonial section classes - White backgrounds for emphasis
- */
-function getTestimonialClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-lg',
-      };
-    case 'medium':
-      return {
-        background: 'bg-background/95',
-        text: 'text-foreground',
-        border: 'border-border/70',
-        shadow: 'shadow-md',
-      };
-    case 'low':
-      return {
-        background: 'bg-background/90',
-        text: 'text-muted-foreground',
-        border: 'border-border/50',
-        shadow: 'shadow-sm',
-      };
-    default:
-      // Default to medium priority for testimonial sections
-      return {
-        background: 'bg-background/95',
-        text: 'text-foreground',
-        border: 'border-border/70',
-        shadow: 'shadow-md',
-      };
-  }
-}
-
-/**
- * CTA section classes - Prominent backgrounds for conversion
- */
-function getCTAClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-primary',
-        text: 'text-primary-foreground',
-        shadow: 'shadow-lg',
-      };
-    case 'medium':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-primary',
-        shadow: 'shadow-md',
-      };
-    case 'low':
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-primary/50',
-      };
-    default:
-      // Default to high priority for CTA sections
-      return {
-        background: 'bg-primary',
-        text: 'text-primary-foreground',
-        shadow: 'shadow-lg',
-      };
-  }
-}
-
-/**
- * Admin section classes - Professional interface styling
- */
-function getAdminClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        shadow: 'shadow-lg',
-      };
-    case 'medium':
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-md',
-      };
-    case 'low':
-      return {
-        background: 'bg-background',
-        text: 'text-foreground',
-        border: 'border-border',
-      };
-    default:
-      // Default to medium priority for admin sections
-      return {
-        background: 'bg-muted',
-        text: 'text-foreground',
-        border: 'border-border',
-        shadow: 'shadow-md',
-      };
-  }
-}
-
-/**
- * Meta section classes - Subtle backgrounds for low priority elements
- */
-function getMetaClasses(priority: PriorityLevel): BackgroundClasses {
-  switch (priority) {
-    case 'high':
-      return {
-        background: 'bg-muted',
-        text: 'text-muted-foreground',
-        border: 'border-border/50',
-      };
-    case 'medium':
-      return {
-        background: 'bg-muted/75',
-        text: 'text-muted-foreground',
-        border: 'border-border/30',
-      };
-    case 'low':
-      return {
-        background: 'bg-muted/50',
-        text: 'text-muted-foreground',
-        border: 'border-border/20',
-      };
-    default:
-      // Default to low priority for meta sections
-      return {
-        background: 'bg-muted/50',
-        text: 'text-muted-foreground',
-        border: 'border-border/20',
-      };
-  }
-}
-
-/**
- * Default classes for unknown section types
- */
-function getDefaultClasses(priority: PriorityLevel): BackgroundClasses {
-  // Handle unknown priority levels by defaulting to medium
-  if (priority !== 'high' && priority !== 'medium' && priority !== 'low') {
-    return getContentClasses('medium');
-  }
-  return getContentClasses(priority);
-}
-
-/**
- * Get responsive background classes
- */
-function getResponsiveClasses(
+export function getCompleteBackgroundSystem(
   sectionType: SectionType,
-  priority: PriorityLevel
-): Partial<BackgroundClasses> {
-  // For now, return empty object to avoid conflicts with base classes
-  // Responsive classes can be added later if needed
-  return {};
-}
-
-/**
- * Mobile-specific background classes
- */
-function getMobileClasses(
-  sectionType: SectionType,
-  priority: PriorityLevel
-): Partial<BackgroundClasses> {
-  // Mobile typically uses simpler backgrounds for performance
-  if (sectionType === 'hero' && priority === 'high') {
-    return {
-      background: 'bg-background', // Keep full background on mobile for impact
-      shadow: 'shadow-md', // Lighter shadow on mobile
-    };
-  }
-
-  return {};
-}
-
-/**
- * Tablet-specific background classes
- */
-function getTabletClasses(
-  sectionType: SectionType,
-  priority: PriorityLevel
-): Partial<BackgroundClasses> {
-  // Tablet can use more sophisticated backgrounds
-  if (sectionType === 'hero' && priority === 'high') {
-    return {
-      shadow: 'md:shadow-lg', // Enhanced shadow on tablet
-    };
-  }
-
-  return {};
-}
-
-/**
- * Desktop-specific background classes
- */
-function getDesktopClasses(
-  sectionType: SectionType,
-  priority: PriorityLevel
-): Partial<BackgroundClasses> {
-  // Desktop can use the most sophisticated backgrounds
-  if (sectionType === 'hero' && priority === 'high') {
-    return {
-      shadow: 'lg:shadow-xl', // Maximum shadow on desktop
-    };
-  }
-
-  return {};
-}
-
-/**
- * Get background classes using a configuration object
- */
-export function getBackgroundClassesFromConfig(
-  config: BackgroundConfig
-): BackgroundClasses {
-  return getBackgroundClasses(
-    config.sectionType,
-    config.priority,
-    config.responsive
-  );
-}
-
-/**
- * Get a single background class string for direct use
- */
-export function getBackgroundClassString(
-  sectionType: SectionType,
-  priority: PriorityLevel
+  priority: PriorityLevel = 'medium',
+  isInteractive: boolean = false
 ): string {
-  const classes = getBackgroundClasses(sectionType, priority);
-  const classParts = [
-    classes.background,
-    classes.text,
-    classes.border,
-    classes.shadow,
-  ].filter(Boolean); // Remove empty strings
+  const baseClasses = getBackgroundClasses(sectionType, priority);
+  const accessibilityClasses = getAccessibilityClasses(sectionType);
+  
+  let classes = [
+    baseClasses.background,
+    baseClasses.text,
+    baseClasses.border,
+    baseClasses.shadow,
+    ...accessibilityClasses,
+  ].filter(Boolean);
 
-  return classParts.join(' ');
+  if (isInteractive) {
+    const interactiveStates = getInteractiveStates(sectionType);
+    classes.push(
+      interactiveStates.focus,
+      interactiveStates.hover,
+      interactiveStates.active
+    );
+  }
+
+  return classes.join(' ');
 }
 
 /**
- * Validate section type and priority combination
+ * Validate section type and priority combinations
  */
 export function validateBackgroundConfig(
   sectionType: SectionType,
   priority: PriorityLevel
 ): boolean {
-  // Valid combinations based on design system
   const validCombinations: Record<SectionType, PriorityLevel[]> = {
-    hero: ['high', 'medium', 'low'],
+    hero: ['high'],
     content: ['high', 'medium', 'low'],
-    form: ['high', 'medium', 'low'],
-    testimonial: ['high', 'medium', 'low'],
-    cta: ['high', 'medium', 'low'],
-    meta: ['high', 'medium', 'low'],
-    admin: ['high', 'medium', 'low'],
+    form: ['medium'],
+    testimonial: ['medium'],
+    cta: ['high', 'medium'],
+    meta: ['low'],
   };
 
   return validCombinations[sectionType]?.includes(priority) ?? false;

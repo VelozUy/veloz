@@ -1,20 +1,16 @@
-// Background system types for contextual styling
+/**
+ * Background System Types
+ * 
+ * TypeScript definitions for the Light Gray Background Color System
+ */
 
-export type SectionType =
-  | 'hero'
-  | 'content'
-  | 'form'
-  | 'testimonial'
-  | 'cta'
-  | 'meta'
-  | 'admin';
-
+export type SectionType = 'hero' | 'content' | 'form' | 'testimonial' | 'cta' | 'meta';
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface BackgroundClasses {
   background: string;
   text: string;
-  border?: string;
+  border: string;
   shadow?: string;
 }
 
@@ -22,22 +18,38 @@ export interface BackgroundConfig {
   sectionType: SectionType;
   priority: PriorityLevel;
   responsive?: boolean;
+  interactive?: boolean;
 }
 
-// Section type descriptions for documentation
-export const SECTION_TYPE_DESCRIPTIONS: Record<SectionType, string> = {
-  hero: 'Hero sections with visual impact and primary CTAs',
-  content: 'Text sections, process descriptions, and general content',
-  form: 'Contact forms, input sections, and data entry',
-  testimonial: 'Customer testimonials and quotes',
-  cta: 'Call-to-action sections and conversion elements',
-  meta: 'Meta information, tags, footers, and low-priority elements',
-  admin: 'Admin panel sections with professional interface styling',
-};
+export interface ResponsiveBackgroundClasses {
+  mobile: BackgroundClasses;
+  tablet: BackgroundClasses;
+  desktop: BackgroundClasses;
+}
 
-// Priority level descriptions for documentation
-export const PRIORITY_LEVEL_DESCRIPTIONS: Record<PriorityLevel, string> = {
-  high: 'Top priority elements with maximum visual impact',
-  medium: 'Standard content with balanced hierarchy',
-  low: 'Subtle elements with minimal visual prominence',
-};
+export interface InteractiveStates {
+  focus: string;
+  hover: string;
+  active: string;
+}
+
+export interface BackgroundSystemConfig {
+  sectionType: SectionType;
+  priority: PriorityLevel;
+  isInteractive?: boolean;
+  includeResponsive?: boolean;
+  includeAccessibility?: boolean;
+}
+
+export interface BackgroundValidationResult {
+  isValid: boolean;
+  errors: string[];
+  warnings: string[];
+}
+
+export interface BackgroundSystemMetrics {
+  contrastRatio: number;
+  accessibilityScore: number;
+  performanceImpact: 'low' | 'medium' | 'high';
+  complexityLevel: 'simple' | 'moderate' | 'complex';
+}

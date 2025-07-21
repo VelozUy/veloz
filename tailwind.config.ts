@@ -46,6 +46,12 @@ const config: Config = {
           '4': 'var(--chart-4)',
           '5': 'var(--chart-5)',
         },
+        // Light Gray Background Color System
+        charcoal: '#1a1b1f', // Dark base for visual/hero blocks
+        'gray-light': '#f0f0f0', // Neutral text sections and forms
+        'gray-medium': '#d2d2d2', // Borders and cards
+        'blue-accent': '#1d7efc', // CTA and focus elements
+        white: '#ffffff', // Elevated cards or clean sections
         // Modern shadcn/ui theme colors using OKLCH color space
         // All colors are now defined via CSS variables in globals.css
       },
