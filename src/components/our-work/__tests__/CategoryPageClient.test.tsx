@@ -161,7 +161,7 @@ describe('CategoryPageClient', () => {
     
     // Check that it uses dynamic font sizing
     expect(titleElement).toHaveStyle({
-      fontSize: 'clamp(2rem, 8vw, 12rem)',
+      fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
       lineHeight: '0.9',
     });
   });

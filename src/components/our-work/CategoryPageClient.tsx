@@ -134,7 +134,7 @@ export default function CategoryPageClient({
           {/* Event Type Title */}
           <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
                style={{
-                 fontSize: 'clamp(2rem, 8vw, 12rem)',
+                 fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
                  lineHeight: '0.9',
                }}>
             {getCategoryDisplayName(

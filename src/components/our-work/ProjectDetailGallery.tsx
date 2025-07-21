@@ -181,7 +181,7 @@ export default function ProjectDetailGallery({
             className="font-body tracking-tight text-right w-full text-foreground leading-none whitespace-nowrap uppercase"
             id="project-title"
             style={{
-              fontSize: 'clamp(2rem, 8vw, 12rem)',
+              fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
               lineHeight: '0.9',
             }}
           >
