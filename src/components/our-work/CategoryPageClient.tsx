@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
-import CategoryNavigation from '@/components/our-work/CategoryNavigation';
-import { CategorySection } from '@/components/our-work/CategorySection';
+import React, { useMemo } from 'react';
 import { useScrollNavigation } from '@/hooks/useScrollNavigation';
-import VelozLogo from '@/components/shared/VelozLogo';
-import { getCategoryDisplayName, EventCategory } from '@/constants/categories';
+import CategoryNavigation from './CategoryNavigation';
+import CategorySection from './CategorySection';
+import OurWorkHeader from './OurWorkHeader';
+import { getCategoryDisplayName } from '@/constants/categories';
+import { EventCategory } from '@/constants/categories';
 
 interface Project {
   id: string;
@@ -43,6 +44,7 @@ export default function CategoryPageClient({
   projects,
   categories,
   categorySlug,
+  locale,
 }: CategoryPageClientProps) {
   const categoryIds = categories.map(cat => cat.id);
 
@@ -121,32 +123,20 @@ export default function CategoryPageClient({
     );
   }
 
+  // Get the category display name for the title
+  const categoryTitle = getCategoryDisplayName(
+    currentCategory.name as EventCategory,
+    'es'
+  );
+
   return (
     <>
-      {/* Page Header */}
-      <header className="py-16 bg-background">
-        <div className="container mx-auto px-8 text-center">
-          {/* Event Type Title */}
-          <div className="w-full overflow-hidden">
-            <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
-                 style={{
-                   fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
-                   lineHeight: '0.9',
-                 }}>
-              {getCategoryDisplayName(
-                currentCategory.name as EventCategory,
-                'es'
-              )}
-            </h1>
-          </div>
-        </div>
-      </header>
-
-      {/* Category Navigation */}
-      <CategoryNavigation
+      {/* Shared Header and Navigation */}
+      <OurWorkHeader
         categories={categories}
+        locale={locale}
+        title={categoryTitle}
         activeCategory={effectiveActiveCategory}
-        onCategoryChange={scrollToCategory}
       />
 
       {/* Category Section */}

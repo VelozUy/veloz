@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
-import CategoryNavigation from '@/components/our-work/CategoryNavigation';
-import OverviewSection from '@/components/our-work/OverviewSection';
+import React, { useMemo } from 'react';
 import { useScrollNavigation } from '@/hooks/useScrollNavigation';
-import VelozLogo from '@/components/shared/VelozLogo';
+import CategoryNavigation from './CategoryNavigation';
+import OverviewSection from './OverviewSection';
+import OurWorkHeader from './OurWorkHeader';
 
 interface Project {
   id: string;
@@ -88,35 +88,13 @@ export default function OurWorkClient({
 
   // Only include categories with at least one featured media for sections
   const visibleCategories = categoryMedia.filter(cat => cat.media.length > 0);
-  const categoryIds = categories.map(cat => cat.id); // Always show all categories in navigation
-
-  // useScrollNavigation for scroll-based navigation
-  const { activeCategory, scrollToCategory } = useScrollNavigation({
-    categories: categoryIds,
-    scrollThreshold: 100,
-  });
 
   return (
     <>
-      {/* Page Header */}
-      <header className="py-16 bg-background">
-        <div className="container mx-auto px-8 text-center">
-          {/* Main Title - Eventos */}
-          <h1 className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
-               style={{
-                 fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
-                 lineHeight: '0.9',
-               }}>
-            {locale === 'en' ? 'Events' : locale === 'pt' ? 'Eventos' : 'Eventos'}
-          </h1>
-        </div>
-      </header>
-
-      {/* Category Navigation */}
-      <CategoryNavigation
+      {/* Shared Header and Navigation */}
+      <OurWorkHeader
         categories={categories}
-        activeCategory={activeCategory}
-        onCategoryChange={scrollToCategory}
+        locale={locale}
       />
 
       {/* Overview Section */}
