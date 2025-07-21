@@ -95,7 +95,7 @@ export default function VelozBannerNav({
   if (!mounted) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50">
-        <div className="relative h-16 border border-foreground/20">
+        <div className="relative h-16">
           {/* Base gray background covering entire nav bar */}
           <div className="absolute inset-0 bg-muted" />
 
@@ -157,7 +157,7 @@ export default function VelozBannerNav({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
-      <div className="relative h-16 border border-foreground/20">
+      <div className="relative h-16">
         {/* Base gray background covering entire nav bar */}
         <div className="absolute inset-0 bg-muted" />
 
