@@ -205,7 +205,7 @@ export default function SideNavigation({ projects }: SideNavigationProps) {
                 whileHover={{ x: 0, opacity: 1 }}
                 transition={{ duration: reducedMotion ? 0 : 0.2 }}
               >
-                <div className="bg-background/95 backdrop-blur-md px-3 py-2 rounded-lg shadow-lg border border-border nav-tooltip">
+                <div className="bg-background/95 backdrop-blur-md px-3 py-2 rounded-none shadow-lg border border-border nav-tooltip">
                   <span className="text-sm font-medium text-foreground whitespace-nowrap">
                     {project.title}
                   </span>

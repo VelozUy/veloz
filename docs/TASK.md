@@ -3678,18 +3678,20 @@ _No tasks completed yet for this Epic_
   - **Completion Date**: 2025-01-27
   - **PO Sign-Off**: Ready for PO review
 
-- [ ] **Phase 8: Gallery and Media Components** - Update gallery components with new border radius system
+- [~] **Phase 8: Gallery and Media Components** - Update gallery components with new border radius system
   - **User Intent**: Ensure gallery and media components follow the new border radius guidelines
   - **Acceptance Criteria**:
-    - Gallery cards use `rounded-none`
-    - Media containers use appropriate border radius
-    - Lightbox components use `rounded-none`
-    - Filter components use `rounded-full` for tags
-    - All gallery components follow border radius guidelines
+    - Gallery cards use `rounded-none` ✅
+    - Media containers use appropriate border radius ✅
+    - Lightbox components use `rounded-none` ✅
+    - Filter components use `rounded-full` for tags ✅
+    - All gallery components follow border radius guidelines ✅
   - **Files**: `src/components/gallery/`, `src/app/gallery/`
   - **Reference**: `docs/new_border_radius_guidelines.md` - Gallery-specific guidelines
   - **Estimated Time**: 1 day
-  - **Status**: Ready after Phase 7 completion
+  - **Status**: 🟡 **IN PROGRESS** - Gallery components updated with new border radius system
+  - **Completion Date**: 2025-01-27
+  - **PO Sign-Off**: Ready for PO review
 
 #### 🧠 Discovered During Epic
 

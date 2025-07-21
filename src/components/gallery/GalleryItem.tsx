@@ -114,7 +114,7 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
       {/* Media container with individual hover effects */}
       <figure className="flex-1 relative group-hover:opacity-50 transition-opacity duration-700">
         {media.type === 'video' ? (
-          <div className="w-full h-full relative overflow-hidden rounded-md">
+          <div className="w-full h-full relative overflow-hidden rounded-none">
             <video
               src={media.url}
               className="w-full h-full object-cover"
@@ -147,7 +147,7 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
             width={media.width}
             height={media.height}
             aspectRatio={media.aspectRatio}
-            className="w-full h-full rounded-md"
+            className="w-full h-full rounded-none"
             priority={false}
             quality={100}
             placeholder={media.blurDataURL ? 'blur' : 'empty'}
