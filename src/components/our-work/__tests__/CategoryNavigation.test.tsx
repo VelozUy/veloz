@@ -184,7 +184,8 @@ describe('CategoryNavigation', () => {
       const tabList = screen.getByRole('tablist');
       expect(tabList).toHaveClass('w-full');
       expect(tabList).toHaveClass('justify-center');
-      expect(tabList).toHaveClass('gap-8');
+      expect(tabList).toHaveClass('gap-6');
+      expect(tabList).toHaveClass('md:gap-8');
     });
 
     it('renders both mobile and desktop components', () => {
@@ -239,6 +240,65 @@ describe('CategoryNavigation', () => {
       // Should still render all tabs
       const tabs = screen.getAllByRole('tab');
       expect(tabs).toHaveLength(5);
+    });
+  });
+
+  describe('Active State Styling', () => {
+    it('applies active state styling to selected tab', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      expect(activeTab).toHaveClass('text-primary');
+    });
+
+    it('renders dark underline for active tab', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      const underline = activeTab.querySelector('span');
+      expect(underline).toBeInTheDocument();
+      expect(underline).toHaveClass('bg-foreground');
+    });
+
+    it('has proper underline positioning', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      const underline = activeTab.querySelector('span');
+      expect(underline).toHaveClass('absolute');
+      expect(underline).toHaveClass('bottom-0');
+      expect(underline).toHaveClass('left-0');
+      expect(underline).toHaveClass('w-full');
+      expect(underline).toHaveClass('h-0.5');
+    });
+
+    it('does not render underline for inactive tabs', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const inactiveTabs = screen
+        .getAllByRole('tab')
+        .filter(tab => !tab.getAttribute('aria-selected'));
+      inactiveTabs.forEach(tab => {
+        const underline = tab.querySelector('span');
+        expect(underline).not.toBeInTheDocument();
+      });
+    });
+
+    it('has proper padding for underline positioning', () => {
+      render(
+        <CategoryNavigation {...defaultProps} activeCategory="overview" />
+      );
+
+      const activeTab = screen.getByRole('tab', { selected: true });
+      expect(activeTab).toHaveClass('pb-2');
     });
   });
 });

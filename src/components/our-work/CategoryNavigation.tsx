@@ -102,7 +102,7 @@ export default function CategoryNavigation({
         {/* Desktop Tabs - visible on medium screens and up */}
         <div className="hidden md:block">
           <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-            <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 gap-8">
+            <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8">
               {categories.map(category => (
                 <TabsTrigger
                   key={category.id}
@@ -116,7 +116,10 @@ export default function CategoryNavigation({
                         ? '/our-work'
                         : `/our-work/${category.id}`
                     }
-                    className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
+                    className={cn(
+                      'text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary relative pb-2',
+                      category.id === activeCategory && 'text-primary'
+                    )}
                   >
                     {category.id === 'overview'
                       ? category.name
@@ -124,6 +127,10 @@ export default function CategoryNavigation({
                           category.name as EventCategory,
                           'es'
                         )}
+                    {/* Dark underline for active state */}
+                    {category.id === activeCategory && (
+                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-foreground" />
+                    )}
                   </Link>
                 </TabsTrigger>
               ))}
@@ -160,7 +167,7 @@ export default function CategoryNavigation({
       {/* Desktop Tabs - visible on medium screens and up */}
       <div className="hidden md:block">
         <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 gap-8">
+          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8">
             {categories.map(category => (
               <TabsTrigger
                 key={category.id}
@@ -174,7 +181,10 @@ export default function CategoryNavigation({
                       ? '/our-work'
                       : `/our-work/${category.id}`
                   }
-                  className="text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary data-[state=active]:text-primary"
+                  className={cn(
+                    'text-base uppercase tracking-tight text-muted-foreground transition-all duration-200 hover:text-primary relative pb-2',
+                    category.id === activeCategory && 'text-primary'
+                  )}
                 >
                   {category.id === 'overview'
                     ? category.name
@@ -182,6 +192,10 @@ export default function CategoryNavigation({
                         category.name as EventCategory,
                         'es'
                       )}
+                  {/* Dark underline for active state */}
+                  {category.id === activeCategory && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-foreground" />
+                  )}
                 </Link>
               </TabsTrigger>
             ))}

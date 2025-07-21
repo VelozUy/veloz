@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { H3 } from '@/components/ui/typography';
-import FeatureMediaGrid from './FeatureMediaGrid';
+import EditorialGrid from './EditorialGrid';
 
 interface CategoryMedia {
   id: string;
@@ -31,49 +31,54 @@ interface OverviewSectionProps {
  * OverviewSection Component
  *
  * Displays an editorial overview page with featured media from each category.
- * Features horizontal separators, section headings, and generous spacing.
+ * Features horizontal separators, section headings, and compact spacing.
+ * Uses EditorialGrid for editorial photo showcase style.
+ * Implements editorial spacing patterns closer to reference design.
  */
 export const OverviewSection: React.FC<OverviewSectionProps> = ({
   categories,
   className = '',
 }: OverviewSectionProps) => {
   return (
-    <section className={`min-h-screen py-16 bg-background ${className}`}>
-      <div className="container mx-auto px-4">
-        {/* Category Sections */}
-        {categories.map((category, index) => (
-          <div key={category.id}>
-            {/* Category Section */}
-            <div className="mb-8">
-              {/* Section Heading - Centered */}
-              <H3 className="text-sm uppercase font-semibold text-foreground mb-8 text-center">
-                {category.title}
-              </H3>
+    <section
+      className={`min-h-screen py-12 md:py-16 bg-background ${className}`}
+    >
+      <div className="container mx-auto px-8 md:px-16">
+        {/* Category Sections - Compact Editorial Spacing */}
+        {categories
+          .filter(category => category.id !== 'overview') // Filter out "Eventos" category
+          .map((category, index) => (
+            <div key={category.id} className="mb-12 md:mb-16">
+              {/* Category Section - Compact Spacing */}
+              <div className="mb-8 md:mb-10">
+                {/* Section Heading - Centered with Compact Spacing */}
+                <H3 className="text-sm uppercase font-semibold text-foreground mb-8 md:mb-10 text-center">
+                  {category.title}
+                </H3>
 
-              {/* Featured Media Grid */}
-              <div className="mb-8">
-                <FeatureMediaGrid
-                  media={category.media}
-                  categoryId={category.id}
-                  className="mb-8"
-                />
+                {/* Editorial Media Grid - Compact Margins */}
+                <div className="mb-8 md:mb-10">
+                  <EditorialGrid
+                    media={category.media}
+                    className="mb-8 md:mb-10"
+                  />
+                </div>
               </div>
+
+              {/* Horizontal Separator - Compact Spacing (except for last category) */}
+              {index < categories.length - 1 && (
+                <div className="border-t border-border my-12 md:my-16" />
+              )}
             </div>
+          ))}
 
-            {/* Horizontal Separator (except for last category) */}
-            {index < categories.length - 1 && (
-              <div className="border-t border-border my-12" />
-            )}
-          </div>
-        ))}
-
-        {/* Overview Footer */}
-        <div className="text-center mt-16">
-          <div className="bg-card border border-border rounded-none p-8 max-w-2xl mx-auto">
-            <H3 className="mb-4 text-card-foreground">
+        {/* Overview Footer - Compact Editorial Spacing */}
+        <div className="text-center mt-12 md:mt-16">
+          <div className="bg-card border border-border rounded-none p-8 md:p-12 max-w-2xl mx-auto">
+            <H3 className="mb-6 text-card-foreground">
               ¿Te gustaría un trabajo similar?
             </H3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-8">
               Cada proyecto es único y nos adaptamos a tus necesidades
               específicas. Contáctanos para discutir tu proyecto.
             </p>
