@@ -36,12 +36,14 @@ _Last updated: 2025-01-20_
 **Reference**: Editorial photo showcase style specification from Jonathan Gregson portfolio analysis
 **User Intent**: Apply editorial, minimal design principles to the /our-work page with flat layouts, removed UI ornamentation, and emphasis on photography and typography while maintaining Veloz's brand identity
 
-### 🎨 EPIC: Banner Navigation System Redesign ⭐ **HIGH PRIORITY**
+### 🎨 EPIC: Banner Navigation System Redesign ⭐ **HIGH PRIORITY** ✅ **COMPLETED**
 
 **Objective**: Redesign the top navigation bar to match the reference image design with a horizontal banner layout featuring VELOZ logo and navigation items
 
 **Reference**: Banner navigation design specification with two-tone layout
 **User Intent**: Create a professional, modern navigation that matches the reference design with proper proportions, curved transitions, and responsive behavior
+
+**Status**: ✅ **COMPLETED** - All banner navigation tasks finished including category navigation fix
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 
@@ -98,6 +100,11 @@ _Last updated: 2025-01-20_
 #### ✅ Completed Tasks
 
 - [x] **Banner Navigation System** - Complete horizontal banner navigation implementation (2025-01-20)
+- [x] **Category Navigation Fix** - Fixed category navigation to show underline only for selected category (2025-01-20)
+  - **Issue**: All category items were showing lines under them instead of just the selected one
+  - **Solution**: Removed default `border-b-2` from base className, applied only to active items
+  - **Files**: `src/components/our-work/CategoryNavigation.tsx`
+  - **Result**: Only selected category shows underline, others show on hover only
 - [x] **Font System Enhancement** - REDJOLA font integration (2025-01-20)
 - [x] **Logo Size Enhancement** - Increased logo prominence (2025-01-20)
 - [x] **Mobile Responsive Optimization** - Mobile-optimized proportions (2025-01-20)

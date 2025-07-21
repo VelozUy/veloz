@@ -142,12 +142,19 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           </div>
         ) : (
           <ResponsivePicture
-            media={media}
+            src={media.url}
+            alt={media.alt}
+            width={media.width}
+            height={media.height}
+            aspectRatio={media.aspectRatio}
             className="w-full h-full rounded-md"
             priority={false}
             quality={100}
             placeholder={media.blurDataURL ? 'blur' : 'empty'}
             blurDataURL={media.blurDataURL}
+            galleryGroup={galleryGroup}
+            dataType={media.type === 'photo' ? 'image' : 'video'}
+            dataDesc={media.alt}
           />
         )}
       </figure>

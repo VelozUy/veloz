@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import GalleryGrid from './GalleryGrid';
-import GalleryRow from './GalleryRow';
+import { GalleryGrid } from './GalleryGrid';
+import { GalleryRow } from './GalleryRow';
 import { trackProjectView } from '@/lib/gallery-analytics';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 
@@ -19,6 +19,7 @@ interface Project {
     width: number;
     height: number;
     alt: string;
+    aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
     featured?: boolean;
   }>;
 }
@@ -148,11 +149,23 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
               aria-label={`Galería de medios del proyecto: ${project.title}`}
             >
               <GalleryGrid
-                media={featuredMedia}
-                galleryGroup={`project-${project.id}`}
-                onItemClick={media => handleImageClick(project, media)}
-                projectId={project.id}
-                projectTitle={project.title}
+                items={featuredMedia.map(media => ({
+                  id: media.id,
+                  src: media.url,
+                  alt: media.alt,
+                  width: media.width,
+                  height: media.height,
+                  aspectRatio: media.aspectRatio,
+                  galleryGroup: `project-${project.id}`,
+                  dataType: media.type === 'photo' ? 'image' : 'video',
+                  dataDesc: media.alt,
+                }))}
+                onItemClick={item => {
+                  const media = featuredMedia.find(m => m.id === item.id);
+                  if (media) {
+                    handleImageClick(project, media);
+                  }
+                }}
                 className=""
               />
             </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import {
   Select,
   SelectContent,
@@ -101,28 +101,35 @@ export default function CategoryNavigation({
 
         {/* Desktop Tabs - visible on medium screens and up */}
         <div className="hidden md:block">
-          <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-            <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8">
-              {categories.map(category => (
-                <TabsTrigger key={category.id} value={category.id} asChild>
-                  <Link
-                    href={
-                      category.id === 'overview'
-                        ? '/our-work'
-                        : `/our-work/${category.id}`
-                    }
-                  >
-                    {category.id === 'overview'
-                      ? category.name
-                      : getCategoryDisplayName(
-                          category.name as EventCategory,
-                          'es'
-                        )}
-                  </Link>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
+            {categories.map(category => {
+              const isActive = category.id === activeCategory;
+              return (
+                <Link
+                  key={category.id}
+                  href={
+                    category.id === 'overview'
+                      ? '/our-work'
+                      : `/our-work/${category.id}`
+                  }
+                  className={cn(
+                    'inline-flex items-center px-1 pb-1 text-base uppercase tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                    isActive
+                      ? 'border-b-2 border-primary text-primary'
+                      : 'hover:border-b-2 hover:border-primary hover:text-primary text-muted-foreground'
+                  )}
+                  onClick={() => onCategoryChange(category.id)}
+                >
+                  {category.id === 'overview'
+                    ? category.name
+                    : getCategoryDisplayName(
+                        category.name as EventCategory,
+                        'es'
+                      )}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -153,28 +160,35 @@ export default function CategoryNavigation({
 
       {/* Desktop Tabs - visible on medium screens and up */}
       <div className="hidden md:block">
-        <Tabs value={activeCategory} onValueChange={onCategoryChange}>
-          <TabsList className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8">
-            {categories.map(category => (
-              <TabsTrigger key={category.id} value={category.id} asChild>
-                <Link
-                  href={
-                    category.id === 'overview'
-                      ? '/our-work'
-                      : `/our-work/${category.id}`
-                  }
-                >
-                  {category.id === 'overview'
-                    ? category.name
-                    : getCategoryDisplayName(
-                        category.name as EventCategory,
-                        'es'
-                      )}
-                </Link>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
+          {categories.map(category => {
+            const isActive = category.id === activeCategory;
+            return (
+              <Link
+                key={category.id}
+                href={
+                  category.id === 'overview'
+                    ? '/our-work'
+                    : `/our-work/${category.id}`
+                }
+                className={cn(
+                  'inline-flex items-center px-1 pb-1 text-base uppercase tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  isActive
+                    ? 'border-b-2 border-primary text-primary'
+                    : 'hover:border-b-2 hover:border-primary hover:text-primary text-muted-foreground'
+                )}
+                onClick={() => onCategoryChange(category.id)}
+              >
+                {category.id === 'overview'
+                  ? category.name
+                  : getCategoryDisplayName(
+                      category.name as EventCategory,
+                      'es'
+                    )}
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
