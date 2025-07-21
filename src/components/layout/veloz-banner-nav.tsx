@@ -157,12 +157,10 @@ export default function VelozBannerNav({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
-      <div className="relative h-16">
-        {/* Base gray background covering entire nav bar */}
-        <div className="absolute inset-0 bg-muted" />
-
+      {/* Banner Container */}
+      <div className="relative h-16 bg-muted">
         {/* Logo section - positioned on top of gray background */}
-        <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-10">
+        <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-20">
           <Link
             href={getLocalizedPath('/', locale)}
             className="flex items-center group"
@@ -176,7 +174,7 @@ export default function VelozBannerNav({
         </div>
 
         {/* Blue section - positioned on top of gray background */}
-        <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem] z-10">
+        <div className="absolute right-0 top-0 bottom-0 w-[35%] md:w-[50%] bg-primary rounded-l-[1rem] z-20">
           {/* Navigation Items */}
           <div className="flex items-center justify-center h-full px-4">
             <div className="hidden lg:flex items-center space-x-4">
@@ -218,10 +216,10 @@ export default function VelozBannerNav({
         </div>
       </div>
 
-      {/* Mobile/Tablet Navigation */}
+      {/* Mobile/Tablet Navigation - positioned outside banner container */}
       <div 
         className={cn(
-          "lg:hidden absolute top-full left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-40",
+          "lg:hidden absolute top-16 left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-10",
           isMobileMenuOpen 
             ? "opacity-100 translate-y-0" 
             : "opacity-0 -translate-y-4 pointer-events-none"
