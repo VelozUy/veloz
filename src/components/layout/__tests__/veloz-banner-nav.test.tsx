@@ -37,15 +37,27 @@ describe('VelozBannerNav', () => {
   it('renders navigation items in the right section', () => {
     render(<VelozBannerNav translations={mockTranslations} locale="es" />);
 
-    expect(screen.getByText('Nuestro Trabajo')).toBeInTheDocument();
-    expect(screen.getByText('Sobre Nosotros')).toBeInTheDocument();
-    expect(screen.getByText('Contacto')).toBeInTheDocument();
+    // Check that navigation items appear (both desktop and mobile versions)
+    const navItems = screen.getAllByText('Nuestro Trabajo');
+    expect(navItems).toHaveLength(2); // One in desktop, one in mobile
+    expect(navItems[0]).toBeInTheDocument();
+    
+    const aboutItems = screen.getAllByText('Sobre Nosotros');
+    expect(aboutItems).toHaveLength(2);
+    expect(aboutItems[0]).toBeInTheDocument();
+    
+    const contactItems = screen.getAllByText('Contacto');
+    expect(contactItems).toHaveLength(2);
+    expect(contactItems[0]).toBeInTheDocument();
   });
 
   it('renders the locale switcher', () => {
     render(<VelozBannerNav translations={mockTranslations} locale="es" />);
 
-    expect(screen.getByTestId('locale-switcher')).toBeInTheDocument();
+    // Check that locale switcher appears in desktop version
+    const localeSwitchers = screen.getAllByTestId('locale-switcher');
+    expect(localeSwitchers).toHaveLength(2); // One in desktop, one in mobile
+    expect(localeSwitchers[0]).toBeInTheDocument();
   });
 
   it('applies correct styling classes', () => {
@@ -62,8 +74,7 @@ describe('VelozBannerNav', () => {
   it('handles different locales correctly', () => {
     render(<VelozBannerNav translations={mockTranslations} locale="en" />);
 
-    expect(screen.getByTestId('locale-switcher')).toHaveTextContent(
-      'Locale: en'
-    );
+    const localeSwitchers = screen.getAllByTestId('locale-switcher');
+    expect(localeSwitchers[0]).toHaveTextContent('Locale: en');
   });
 });

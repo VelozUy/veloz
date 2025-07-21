@@ -219,35 +219,40 @@ export default function VelozBannerNav({
       </div>
 
       {/* Mobile/Tablet Navigation */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem]">
-          <div className="px-6 py-6 space-y-4">
-            {navItems.map(item => {
-              const active = isActive(item.href);
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    'block px-4 py-3 text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium',
-                    active && 'text-primary-foreground'
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
+      <div 
+        className={cn(
+          "lg:hidden absolute top-full left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out",
+          isMobileMenuOpen 
+            ? "opacity-100 translate-y-0" 
+            : "opacity-0 -translate-y-4 pointer-events-none"
+        )}
+      >
+        <div className="px-6 py-6 space-y-4">
+          {navItems.map(item => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  'block px-4 py-3 text-primary-foreground/90 hover:text-primary-foreground transition-colors font-medium',
+                  active && 'text-primary-foreground'
+                )}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
 
-            {/* Language Switcher for Mobile/Tablet */}
-            <div className="pt-4 border-t border-primary-foreground/20">
-              <div className="flex justify-center">
-                <LocaleSwitcher currentLocale={locale} />
-              </div>
+          {/* Language Switcher for Mobile/Tablet */}
+          <div className="pt-4 border-t border-primary-foreground/20">
+            <div className="flex justify-center">
+              <LocaleSwitcher currentLocale={locale} />
             </div>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
