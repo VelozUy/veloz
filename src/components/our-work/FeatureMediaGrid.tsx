@@ -4,6 +4,7 @@ import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { trackProjectView } from '@/lib/gallery-analytics';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
+import FullscreenModal from '@/components/gallery/FullscreenModal';
 
 interface FeatureMedia {
   id: string;
@@ -28,14 +29,15 @@ interface FeatureMediaGridProps {
  * FeatureMediaGrid Component
  *
  * Displays only feature media from a specific category in a responsive grid layout.
- * Each media item is clickable for lightbox functionality.
+ * Each media item is clickable for fullscreen viewing experience.
  * Grid adapts to different aspect ratios for optimal visual presentation.
- * Enhanced with lazy loading and performance optimizations.
+ * Enhanced with lazy loading, performance optimizations, and fullscreen modal integration.
  *
  * Performance Optimizations:
  * - CLS prevention with explicit aspect ratio containers
  * - FCP optimization with skeleton loaders
  * - Core Web Vitals improvements
+ * - Fullscreen modal with immersive viewing experience
  */
 export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   media,
@@ -46,6 +48,10 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
     {}
   );
+
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
 
   // Initialize performance optimizations
   useEffect(() => {
@@ -76,6 +82,34 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
       initialStates[item.id] = true;
     });
     setLoadingStates(initialStates);
+  }, [media]);
+
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback((index: number) => {
+    setFullscreenStartIndex(index);
+    setIsFullscreenOpen(true);
+    
+    // Track analytics
+    const mediaItem = media[index];
+    if (mediaItem) {
+      trackProjectView(mediaItem.projectId, mediaItem.projectTitle || 'Proyecto', 'fullscreen_open');
+    }
+  }, [media]);
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+    
+    // Track analytics
+    trackProjectView('fullscreen', 'Vista de Pantalla Completa', 'fullscreen_close');
+  }, []);
+
+  // Handle fullscreen navigation
+  const handleFullscreenNavigate = useCallback((index: number) => {
+    const mediaItem = media[index];
+    if (mediaItem) {
+      trackProjectView(mediaItem.projectId, mediaItem.projectTitle || 'Proyecto', 'fullscreen_navigate');
+    }
   }, [media]);
 
   // Memoize media processing for performance
@@ -150,63 +184,92 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   }
 
   return (
-    <div className={`gallery-container ${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {processedMedia.map((mediaItem, index) => {
-          return (
-            <div
-              key={mediaItem.id}
-              className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan}`}
-            >
-              {/* Hover Overlay with gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
+    <>
+      <div className={`gallery-container ${className}`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          {processedMedia.map((mediaItem, index) => {
+            return (
+              <div
+                key={mediaItem.id}
+                className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan}`}
+                onClick={() => handleOpenFullscreen(index)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Ver ${mediaItem.type === 'video' ? 'video' : 'imagen'} de ${mediaItem.projectTitle || 'proyecto'} en pantalla completa`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleOpenFullscreen(index);
+                  }
+                }}
+              >
+                {/* Hover Overlay with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
 
-              {mediaItem.type === 'video' ? (
-                <div
-                  className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
-                  style={{
-                    aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
-                  }}
-                >
-                  <video
-                    src={mediaItem.url}
-                    className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                    preload={index < 4 ? 'auto' : 'metadata'}
-                    data-testid={`video-${mediaItem.id}`}
-                    onCanPlay={() => handleImageLoad(mediaItem.id)}
-                    onError={() => handleImageError(mediaItem.id)}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
-                  style={{
-                    aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
-                  }}
-                >
-                  <Image
-                    src={mediaItem.url}
-                    alt={mediaItem.alt}
-                    fill
-                    className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority={index < 4}
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                    onLoad={() => handleImageLoad(mediaItem.id)}
-                    onError={() => handleImageError(mediaItem.id)}
-                    quality={85}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
+                {mediaItem.type === 'video' ? (
+                  <div
+                    className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                    style={{
+                      aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
+                    }}
+                  >
+                    <video
+                      src={mediaItem.url}
+                      className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      preload={index < 4 ? 'auto' : 'metadata'}
+                      data-testid={`video-${mediaItem.id}`}
+                      onCanPlay={() => handleImageLoad(mediaItem.id)}
+                      onError={() => handleImageError(mediaItem.id)}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                    style={{
+                      aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
+                    }}
+                  >
+                    <Image
+                      src={mediaItem.url}
+                      alt={mediaItem.alt}
+                      fill
+                      className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={index < 4}
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                      onLoad={() => handleImageLoad(mediaItem.id)}
+                      onError={() => handleImageError(mediaItem.id)}
+                      quality={85}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={media.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: item.projectTitle,
+        }))}
+        startIndex={fullscreenStartIndex}
+        onNavigate={handleFullscreenNavigate}
+      />
+    </>
   );
 };
 
