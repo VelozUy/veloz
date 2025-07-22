@@ -164,45 +164,22 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         // Update the current media ID ref
         currentMediaIdRef.current = currentMedia.id;
         
-        // Clear any existing loading states first
-        setMediaLoadingStates({});
-        setIsLoading(false);
-        
-        // Small delay to prevent double loading during fast navigation
-        const timer = setTimeout(() => {
-          // Only set loading state if this is still the current media
-          if (currentMediaIdRef.current === currentMedia.id) {
-            setMediaLoadingStates(prev => ({
-              ...prev,
-              [currentMedia.id]: true,
-            }));
-            setIsLoading(true);
-          }
-        }, 50);
-        
-        return () => clearTimeout(timer);
+        // Set loading state immediately for current media only
+        setMediaLoadingStates(prev => ({
+          ...prev,
+          [currentMedia.id]: true,
+        }));
+        setIsLoading(true);
       }
     }
   }, [currentIndex, media]);
 
   // Start progress loading when current media changes
   useEffect(() => {
-    let isActive = true;
-    
     if (currentMedia && !isMediaPreloaded(currentIndex)) {
-      // Small delay to prevent double loading during fast navigation
-      const timer = setTimeout(() => {
-        if (isActive && currentMediaIdRef.current === currentMedia.id) {
-          setShowProgress(true);
-          loadingStartTimeRef.current = Date.now();
-          loadMediaWithProgress();
-        }
-      }, 100);
-      
-      return () => {
-        isActive = false;
-        clearTimeout(timer);
-      };
+      setShowProgress(true);
+      loadingStartTimeRef.current = Date.now();
+      loadMediaWithProgress();
     } else {
       // If media is preloaded, don't show progress
       setShowProgress(false);
@@ -457,12 +434,6 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             isTransitioning ? 'opacity-50' : 'opacity-100'
           }`}
         >
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center z-20 bg-background/20 rounded-lg">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
-            </div>
-          )}
-          
           {/* Loading Skeleton with Progress */}
           {(mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading) && (
             <div 
@@ -485,8 +456,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
                   <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-foreground"></div>
                   
-                  {/* Progress Bar - show immediately when loading */}
-                  {(showProgress || isProgressLoading) && (
+                  {/* Progress Bar - show only when progress is actively loading */}
+                  {isProgressLoading && (
                     <div className="w-64 max-w-full px-4">
                       <ProgressBar
                         progress={progress}
