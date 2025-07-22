@@ -486,6 +486,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             </div>
           )}
 
+          {/* Background overlay to hide any media during transitions */}
+          {isInLoadingTransition && (
+            <div className="absolute inset-0 bg-background z-10" />
+          )}
+
           {currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
@@ -501,6 +506,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
                 zIndex: isInLoadingTransition ? -1 : 'auto',
+                visibility: isInLoadingTransition ? 'hidden' : 'visible',
               }}
               data-testid={`video-${currentMedia.id}`}
               onLoadedData={() => {
@@ -525,6 +531,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
                 zIndex: isInLoadingTransition ? -1 : 'auto',
+                visibility: isInLoadingTransition ? 'hidden' : 'visible',
               }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => {
