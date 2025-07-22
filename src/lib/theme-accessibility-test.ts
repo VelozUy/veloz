@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /**
  * Theme Accessibility Testing Utility
  *
@@ -36,6 +37,12 @@ function oklchToRgb(oklch: string): { r: number; g: number; b: number } {
     'oklch(0.8576 0 0)': { r: 209, g: 213, b: 219 }, // Border
     'oklch(0.9067 0 0)': { r: 241, g: 245, b: 249 }, // Secondary background
     'oklch(0.8078 0 0)': { r: 226, g: 232, b: 240 }, // Accent background
+
+    // New accent colors
+    'oklch(0.84 0.09 100)': { r: 255, g: 248, b: 220 }, // Accent soft gold
+    'oklch(0.82 0.12 220)': { r: 186, g: 230, b: 253 }, // Accent sky
+    'oklch(0.80 0.14 20)': { r: 254, g: 205, b: 211 }, // Accent rose
+    'oklch(0.84 0.16 120)': { r: 220, g: 252, b: 231 }, // Accent lime
   };
 
   return colorMap[oklch] || { r: 128, g: 128, b: 128 };
@@ -134,6 +141,27 @@ export function testThemeAccessibility(): ThemeAccessibilityReport {
       name: 'Accent Background to Accent Foreground',
       foreground: 'oklch(0.3211 0 0)',
       background: 'oklch(0.8078 0 0)',
+    },
+    // New accent color tests
+    {
+      name: 'Accent Soft Gold to Foreground',
+      foreground: 'oklch(0.3211 0 0)',
+      background: 'oklch(0.84 0.09 100)',
+    },
+    {
+      name: 'Accent Sky to Foreground',
+      foreground: 'oklch(0.3211 0 0)',
+      background: 'oklch(0.82 0.12 220)',
+    },
+    {
+      name: 'Accent Rose to Foreground',
+      foreground: 'oklch(0.3211 0 0)',
+      background: 'oklch(0.80 0.14 20)',
+    },
+    {
+      name: 'Accent Lime to Foreground',
+      foreground: 'oklch(0.3211 0 0)',
+      background: 'oklch(0.84 0.16 120)',
     },
   ];
 

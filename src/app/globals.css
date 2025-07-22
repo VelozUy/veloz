@@ -19,32 +19,38 @@
 /* Definitive Veloz Theme System - Comprehensive OKLCH Color System */
 :root {
   /* Base color palette using OKLCH */
-  --base-50: oklch(0.9816 0.0017 247.84);
-  --base-100: oklch(0.968 0.0019 248.88);
-  --base-200: oklch(0.9289 0.0024 249.49);
-  --base-300: oklch(0.869 0.0027 250.86);
-  --base-400: oklch(0.7041 0.0031 253.71);
-  --base-500: oklch(0.554 0.0033 254.36);
-  --base-600: oklch(0.446 0.0032 254.25);
-  --base-700: oklch(0.372 0.003 254.23);
-  --base-800: oklch(0.2788 0.0025 255.92);
-  --base-900: oklch(0.2081 0.0024 257.61);
-  --base-950: oklch(0.1293 0.0022 258.51);
-  --base-1000: oklch(0.0784 0.002 258.82);
+  --base-50: oklch(0.9847 0 0);
+  --base-100: oklch(0.9698 0 0);
+  --base-200: oklch(0.9219 0 0);
+  --base-300: oklch(0.8853 0 0);
+  --base-400: oklch(0.7079 0 0);
+  --base-500: oklch(0.5559 0 0);
+  --base-600: oklch(0.4388 0 0);
+  --base-700: oklch(0.3708 0 0);
+  --base-800: oklch(0.2688 0 0);
+  --base-900: oklch(0.2049 0 0);
+  --base-950: oklch(0.1449 0 0);
+  --base-1000: oklch(0.1059 0 0);
 
   /* Primary color palette using OKLCH */
-  --primary-50: oklch(0.9716 0.013 249.32);
-  --primary-100: oklch(0.9372 0.0286 250.08);
-  --primary-200: oklch(0.8873 0.0556 248.48);
-  --primary-300: oklch(0.8144 0.1011 246.68);
-  --primary-400: oklch(0.7184 0.1548 249.35);
-  --primary-500: oklch(0.652 0.1901 253.21);
-  --primary-600: oklch(0.5582 0.2078 256.15);
-  --primary-700: oklch(0.4914 0.1998 257.44);
-  --primary-800: oklch(0.4295 0.1637 258.63);
-  --primary-900: oklch(0.3823 0.1227 258.87);
-  --primary-950: oklch(0.285 0.0792 260.66);
-  --primary-1000: oklch(0.2218 0.0506 262.2);
+  --primary-50: oklch(0.9727 0.0145 253.55);
+  --primary-100: oklch(0.9351 0.0347 254.49);
+  --primary-200: oklch(0.8848 0.063 253.01);
+  --primary-300: oklch(0.8114 0.1068 250.79);
+  --primary-400: oklch(0.7103 0.1673 253.58);
+  --primary-500: oklch(0.6273 0.2172 258.5);
+  --primary-600: oklch(0.5489 0.2676 261.54);
+  --primary-700: oklch(0.489 0.3028 263);
+  --primary-800: oklch(0.4252 0.2941 264.25);
+  --primary-900: oklch(0.3644 0.2281 264.2);
+  --primary-950: oklch(0.2827 0.1431 266.49);
+  --primary-1000: oklch(0.2197 0.0874 268.05);
+
+  /* New accent colors for enhanced UX */
+  --accent-soft-gold: oklch(0.84 0.09 100);
+  --accent-sky: oklch(0.82 0.12 220);
+  --accent-rose: oklch(0.8 0.14 20);
+  --accent-lime: oklch(0.84 0.16 120);
 
   /* Semantic color assignments */
   --background: var(--base-50);
@@ -79,16 +85,16 @@
   --sidebar-accent-foreground: var(--base-800);
   --sidebar-border: var(--base-200);
   --sidebar-ring: var(--primary-500);
-  
+
   /* Font definitions */
-  --font-sans: "Roboto", "sans-serif";
-  --font-serif: "Roboto", "sans-serif";
-  --font-mono: "Roboto", "sans-serif";
+  --font-sans: 'Roboto', 'sans-serif';
+  --font-serif: 'Roboto', 'sans-serif';
+  --font-mono: 'Roboto', 'sans-serif';
   --font-logo:
     REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
   --display-weight: 500;
   --text-weight: 400;
-  
+
   /* Shadow system */
   --shadow-2xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
   --shadow-xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
@@ -174,6 +180,12 @@
   --color-primary-900: var(--primary-900);
   --color-primary-950: var(--primary-950);
   --color-primary-1000: var(--primary-1000);
+
+  /* Accent colors for enhanced UX */
+  --color-accent-soft-gold: var(--accent-soft-gold);
+  --color-accent-sky: var(--accent-sky);
+  --color-accent-rose: var(--accent-rose);
+  --color-accent-lime: var(--accent-lime);
 
   /* Semantic colors */
   --color-background: var(--background);

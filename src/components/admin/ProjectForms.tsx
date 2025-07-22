@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable no-restricted-syntax */
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -75,12 +76,12 @@ const enhancedProjectSchema = z.object({
     'Otros',
   ]),
   status: z.enum(['draft', 'shooting_scheduled', 'in_editing', 'delivered']),
-  featured: z.boolean().default(false),
-  
+  featured: z.boolean(),
+
   // Location and date
   location: z.string().min(1, 'Ubicación es requerida'),
   eventDate: z.string().min(1, 'Fecha del evento es requerida'),
-  
+
   // Client information
   client: z.object({
     name: z.string().min(1, 'Nombre del cliente es requerido'),
@@ -88,39 +89,41 @@ const enhancedProjectSchema = z.object({
     phone: z.string().optional(),
     company: z.string().optional(),
     notes: z.string().optional(),
-    isConfidential: z.boolean().default(true),
+    isConfidential: z.boolean(),
   }),
-  
+
   // Team and crew
-  crewMembers: z.array(z.string()).default([]),
+  crewMembers: z.array(z.string()),
   assignedPhotographer: z.string().optional(),
   assignedVideographer: z.string().optional(),
   assignedEditor: z.string().optional(),
-  
+
   // Budget and pricing
   budget: z.object({
     total: z.number().min(0, 'Presupuesto debe ser mayor a 0'),
-    currency: z.string().default('USD'),
+    currency: z.string(),
     deposit: z.number().min(0).optional(),
-    depositPaid: z.boolean().default(false),
+    depositPaid: z.boolean(),
   }),
-  
+
   // Timeline and milestones
   timeline: z.object({
     startDate: z.string().min(1, 'Fecha de inicio es requerida'),
     endDate: z.string().min(1, 'Fecha de finalización es requerida'),
-    milestones: z.array(z.object({
-      id: z.string(),
-      title: z.string().min(1, 'Título del hito es requerido'),
-      date: z.string().min(1, 'Fecha del hito es requerida'),
-      status: z.enum(['pending', 'in_progress', 'completed', 'overdue']),
-      description: z.string().optional(),
-      assignee: z.string().optional(),
-    })),
+    milestones: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1, 'Título del hito es requerido'),
+        date: z.string().min(1, 'Fecha del hito es requerida'),
+        status: z.enum(['pending', 'in_progress', 'completed', 'overdue']),
+        description: z.string().optional(),
+        assignee: z.string().optional(),
+      })
+    ),
   }),
-  
+
   // Additional fields
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
   notes: z.string().optional(),
   coverImage: z.string().optional(),
 });
@@ -198,9 +201,9 @@ export default function ProjectForms({
   const [showClientDialog, setShowClientDialog] = useState(false);
   const [showMilestoneDialog, setShowMilestoneDialog] = useState(false);
   const [editingMilestone, setEditingMilestone] = useState<any>(null);
-  
+
   const totalSteps = 5;
-  
+
   const form = useForm<EnhancedProjectFormData>({
     resolver: zodResolver(enhancedProjectSchema),
     defaultValues: {
@@ -237,7 +240,12 @@ export default function ProjectForms({
     },
   });
 
-  const { handleSubmit, watch, setValue, formState: { errors, isValid } } = form;
+  const {
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = form;
   const watchedValues = watch();
 
   // Calculate form completion percentage
@@ -264,7 +272,7 @@ export default function ProjectForms({
       description: '',
       assignee: '',
     };
-    
+
     const currentMilestones = watchedValues.timeline?.milestones || [];
     setValue('timeline.milestones', [...currentMilestones, newMilestone]);
   };
@@ -279,7 +287,9 @@ export default function ProjectForms({
 
   const removeMilestone = (id: string) => {
     const currentMilestones = watchedValues.timeline?.milestones || [];
-    const filteredMilestones = currentMilestones.filter(milestone => milestone.id !== id);
+    const filteredMilestones = currentMilestones.filter(
+      milestone => milestone.id !== id
+    );
     setValue('timeline.milestones', filteredMilestones);
   };
 
@@ -321,7 +331,9 @@ export default function ProjectForms({
             <CardContent className="space-y-4">
               {/* Project Title */}
               <div className="space-y-2">
-                <Label htmlFor="title.es">Título del Proyecto (Español) *</Label>
+                <Label htmlFor="title.es">
+                  Título del Proyecto (Español) *
+                </Label>
                 <Input
                   id="title.es"
                   {...form.register('title.es')}
@@ -329,7 +341,9 @@ export default function ProjectForms({
                 />
                 {errors.title?.es && (
                   <Alert variant="destructive">
-                    <AlertDescription>{errors.title.es.message}</AlertDescription>
+                    <AlertDescription>
+                      {errors.title.es.message}
+                    </AlertDescription>
                   </Alert>
                 )}
               </div>
@@ -359,7 +373,7 @@ export default function ProjectForms({
                   <Label htmlFor="eventType">Tipo de Evento *</Label>
                   <Select
                     value={watchedValues.eventType}
-                    onValueChange={(value) => setValue('eventType', value as any)}
+                    onValueChange={value => setValue('eventType', value as any)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar tipo de evento" />
@@ -367,7 +381,9 @@ export default function ProjectForms({
                     <SelectContent>
                       <SelectItem value="Casamiento">Casamiento</SelectItem>
                       <SelectItem value="Corporativos">Corporativos</SelectItem>
-                      <SelectItem value="Culturales y artísticos">Culturales y artísticos</SelectItem>
+                      <SelectItem value="Culturales y artísticos">
+                        Culturales y artísticos
+                      </SelectItem>
                       <SelectItem value="Photoshoot">Photoshoot</SelectItem>
                       <SelectItem value="Prensa">Prensa</SelectItem>
                       <SelectItem value="Otros">Otros</SelectItem>
@@ -378,14 +394,16 @@ export default function ProjectForms({
                   <Label htmlFor="status">Estado del Proyecto *</Label>
                   <Select
                     value={watchedValues.status}
-                    onValueChange={(value) => setValue('status', value as any)}
+                    onValueChange={value => setValue('status', value as any)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar estado" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="draft">Borrador</SelectItem>
-                      <SelectItem value="shooting_scheduled">Shooting Programado</SelectItem>
+                      <SelectItem value="shooting_scheduled">
+                        Shooting Programado
+                      </SelectItem>
                       <SelectItem value="in_editing">En Edición</SelectItem>
                       <SelectItem value="delivered">Entregado</SelectItem>
                     </SelectContent>
@@ -404,7 +422,9 @@ export default function ProjectForms({
                   />
                   {errors.location && (
                     <Alert variant="destructive">
-                      <AlertDescription>{errors.location.message}</AlertDescription>
+                      <AlertDescription>
+                        {errors.location.message}
+                      </AlertDescription>
                     </Alert>
                   )}
                 </div>
@@ -417,7 +437,9 @@ export default function ProjectForms({
                   />
                   {errors.eventDate && (
                     <Alert variant="destructive">
-                      <AlertDescription>{errors.eventDate.message}</AlertDescription>
+                      <AlertDescription>
+                        {errors.eventDate.message}
+                      </AlertDescription>
                     </Alert>
                   )}
                 </div>
@@ -428,7 +450,9 @@ export default function ProjectForms({
                 <Checkbox
                   id="featured"
                   checked={watchedValues.featured}
-                  onCheckedChange={(checked) => setValue('featured', checked as boolean)}
+                  onCheckedChange={checked =>
+                    setValue('featured', checked as boolean)
+                  }
                 />
                 <Label htmlFor="featured">Proyecto Destacado</Label>
               </div>
@@ -456,7 +480,9 @@ export default function ProjectForms({
                   />
                   {errors.client?.name && (
                     <Alert variant="destructive">
-                      <AlertDescription>{errors.client.name.message}</AlertDescription>
+                      <AlertDescription>
+                        {errors.client.name.message}
+                      </AlertDescription>
                     </Alert>
                   )}
                 </div>
@@ -470,7 +496,9 @@ export default function ProjectForms({
                   />
                   {errors.client?.email && (
                     <Alert variant="destructive">
-                      <AlertDescription>{errors.client.email.message}</AlertDescription>
+                      <AlertDescription>
+                        {errors.client.email.message}
+                      </AlertDescription>
                     </Alert>
                   )}
                 </div>
@@ -509,9 +537,13 @@ export default function ProjectForms({
                 <Checkbox
                   id="client.isConfidential"
                   checked={watchedValues.client?.isConfidential}
-                  onCheckedChange={(checked) => setValue('client.isConfidential', checked as boolean)}
+                  onCheckedChange={checked =>
+                    setValue('client.isConfidential', checked as boolean)
+                  }
                 />
-                <Label htmlFor="client.isConfidential">Información Confidencial</Label>
+                <Label htmlFor="client.isConfidential">
+                  Información Confidencial
+                </Label>
               </div>
             </CardContent>
           </Card>
@@ -529,17 +561,23 @@ export default function ProjectForms({
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="assignedPhotographer">Fotógrafo Principal</Label>
+                  <Label htmlFor="assignedPhotographer">
+                    Fotógrafo Principal
+                  </Label>
                   <Select
                     value={watchedValues.assignedPhotographer}
-                    onValueChange={(value) => setValue('assignedPhotographer', value)}
+                    onValueChange={value =>
+                      setValue('assignedPhotographer', value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar fotógrafo" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="photographer1">Ana García</SelectItem>
-                      <SelectItem value="photographer2">Carlos López</SelectItem>
+                      <SelectItem value="photographer2">
+                        Carlos López
+                      </SelectItem>
                       <SelectItem value="photographer3">María Silva</SelectItem>
                     </SelectContent>
                   </Select>
@@ -548,14 +586,20 @@ export default function ProjectForms({
                   <Label htmlFor="assignedVideographer">Videógrafo</Label>
                   <Select
                     value={watchedValues.assignedVideographer}
-                    onValueChange={(value) => setValue('assignedVideographer', value)}
+                    onValueChange={value =>
+                      setValue('assignedVideographer', value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar videógrafo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="videographer1">Roberto Pérez</SelectItem>
-                      <SelectItem value="videographer2">Laura Martínez</SelectItem>
+                      <SelectItem value="videographer1">
+                        Roberto Pérez
+                      </SelectItem>
+                      <SelectItem value="videographer2">
+                        Laura Martínez
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -563,7 +607,7 @@ export default function ProjectForms({
                   <Label htmlFor="assignedEditor">Editor</Label>
                   <Select
                     value={watchedValues.assignedEditor}
-                    onValueChange={(value) => setValue('assignedEditor', value)}
+                    onValueChange={value => setValue('assignedEditor', value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar editor" />
@@ -579,21 +623,31 @@ export default function ProjectForms({
               <div className="space-y-2">
                 <Label>Miembros del Equipo Adicionales</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {['Asistente 1', 'Asistente 2', 'Iluminador', 'Sonidista'].map((member) => (
+                  {[
+                    'Asistente 1',
+                    'Asistente 2',
+                    'Iluminador',
+                    'Sonidista',
+                  ].map(member => (
                     <div key={member} className="flex items-center space-x-2">
                       <Checkbox
                         id={`crew-${member}`}
                         checked={watchedValues.crewMembers?.includes(member)}
-                        onCheckedChange={(checked) => {
+                        onCheckedChange={checked => {
                           const current = watchedValues.crewMembers || [];
                           if (checked) {
                             setValue('crewMembers', [...current, member]);
                           } else {
-                            setValue('crewMembers', current.filter(m => m !== member));
+                            setValue(
+                              'crewMembers',
+                              current.filter(m => m !== member)
+                            );
                           }
                         }}
                       />
-                      <Label htmlFor={`crew-${member}`} className="text-sm">{member}</Label>
+                      <Label htmlFor={`crew-${member}`} className="text-sm">
+                        {member}
+                      </Label>
                     </div>
                   ))}
                 </div>
@@ -621,12 +675,16 @@ export default function ProjectForms({
                     <Input
                       id="budget.total"
                       type="number"
-                      {...form.register('budget.total', { valueAsNumber: true })}
+                      {...form.register('budget.total', {
+                        valueAsNumber: true,
+                      })}
                       placeholder="0"
                     />
                     {errors.budget?.total && (
                       <Alert variant="destructive">
-                        <AlertDescription>{errors.budget.total.message}</AlertDescription>
+                        <AlertDescription>
+                          {errors.budget.total.message}
+                        </AlertDescription>
                       </Alert>
                     )}
                   </div>
@@ -634,7 +692,9 @@ export default function ProjectForms({
                     <Label htmlFor="budget.currency">Moneda</Label>
                     <Select
                       value={watchedValues.budget?.currency}
-                      onValueChange={(value) => setValue('budget.currency', value)}
+                      onValueChange={value =>
+                        setValue('budget.currency', value)
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -651,7 +711,9 @@ export default function ProjectForms({
                     <Input
                       id="budget.deposit"
                       type="number"
-                      {...form.register('budget.deposit', { valueAsNumber: true })}
+                      {...form.register('budget.deposit', {
+                        valueAsNumber: true,
+                      })}
                       placeholder="0"
                     />
                   </div>
@@ -660,7 +722,9 @@ export default function ProjectForms({
                   <Checkbox
                     id="budget.depositPaid"
                     checked={watchedValues.budget?.depositPaid}
-                    onCheckedChange={(checked) => setValue('budget.depositPaid', checked as boolean)}
+                    onCheckedChange={checked =>
+                      setValue('budget.depositPaid', checked as boolean)
+                    }
                   />
                   <Label htmlFor="budget.depositPaid">Depósito Pagado</Label>
                 </div>
@@ -673,7 +737,9 @@ export default function ProjectForms({
                 <h3 className="text-lg font-semibold">Cronograma</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="timeline.startDate">Fecha de Inicio *</Label>
+                    <Label htmlFor="timeline.startDate">
+                      Fecha de Inicio *
+                    </Label>
                     <Input
                       id="timeline.startDate"
                       type="date"
@@ -681,12 +747,16 @@ export default function ProjectForms({
                     />
                     {errors.timeline?.startDate && (
                       <Alert variant="destructive">
-                        <AlertDescription>{errors.timeline.startDate.message}</AlertDescription>
+                        <AlertDescription>
+                          {errors.timeline.startDate.message}
+                        </AlertDescription>
                       </Alert>
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="timeline.endDate">Fecha de Finalización *</Label>
+                    <Label htmlFor="timeline.endDate">
+                      Fecha de Finalización *
+                    </Label>
                     <Input
                       id="timeline.endDate"
                       type="date"
@@ -694,7 +764,9 @@ export default function ProjectForms({
                     />
                     {errors.timeline?.endDate && (
                       <Alert variant="destructive">
-                        <AlertDescription>{errors.timeline.endDate.message}</AlertDescription>
+                        <AlertDescription>
+                          {errors.timeline.endDate.message}
+                        </AlertDescription>
                       </Alert>
                     )}
                   </div>
@@ -729,19 +801,34 @@ export default function ProjectForms({
 
               <div className="space-y-3">
                 {watchedValues.timeline?.milestones?.map((milestone, index) => (
-                  <div key={milestone.id} className="border rounded-lg p-4 space-y-3">
+                  <div
+                    key={milestone.id}
+                    className="border rounded-lg p-4 space-y-3"
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Badge variant={
-                          milestone.status === 'completed' ? 'default' :
-                          milestone.status === 'in_progress' ? 'secondary' :
-                          milestone.status === 'overdue' ? 'destructive' : 'outline'
-                        }>
-                          {milestone.status === 'completed' ? 'Completado' :
-                           milestone.status === 'in_progress' ? 'En Progreso' :
-                           milestone.status === 'overdue' ? 'Atrasado' : 'Pendiente'}
+                        <Badge
+                          variant={
+                            milestone.status === 'completed'
+                              ? 'default'
+                              : milestone.status === 'in_progress'
+                                ? 'secondary'
+                                : milestone.status === 'overdue'
+                                  ? 'destructive'
+                                  : 'outline'
+                          }
+                        >
+                          {milestone.status === 'completed'
+                            ? 'Completado'
+                            : milestone.status === 'in_progress'
+                              ? 'En Progreso'
+                              : milestone.status === 'overdue'
+                                ? 'Atrasado'
+                                : 'Pendiente'}
                         </Badge>
-                        <span className="text-sm text-muted-foreground">Hito {index + 1}</span>
+                        <span className="text-sm text-muted-foreground">
+                          Hito {index + 1}
+                        </span>
                       </div>
                       <Button
                         type="button"
@@ -752,13 +839,17 @@ export default function ProjectForms({
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div className="space-y-2">
                         <Label>Título</Label>
                         <Input
                           value={milestone.title}
-                          onChange={(e) => updateMilestone(milestone.id, { title: e.target.value })}
+                          onChange={e =>
+                            updateMilestone(milestone.id, {
+                              title: e.target.value,
+                            })
+                          }
                           placeholder="Título del hito"
                         />
                       </div>
@@ -767,33 +858,45 @@ export default function ProjectForms({
                         <Input
                           type="date"
                           value={milestone.date}
-                          onChange={(e) => updateMilestone(milestone.id, { date: e.target.value })}
+                          onChange={e =>
+                            updateMilestone(milestone.id, {
+                              date: e.target.value,
+                            })
+                          }
                         />
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Descripción</Label>
                       <Textarea
                         value={milestone.description || ''}
-                        onChange={(e) => updateMilestone(milestone.id, { description: e.target.value })}
+                        onChange={e =>
+                          updateMilestone(milestone.id, {
+                            description: e.target.value,
+                          })
+                        }
                         placeholder="Descripción del hito..."
                         rows={2}
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label>Estado</Label>
                       <Select
                         value={milestone.status}
-                        onValueChange={(value) => updateMilestone(milestone.id, { status: value })}
+                        onValueChange={value =>
+                          updateMilestone(milestone.id, { status: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="pending">Pendiente</SelectItem>
-                          <SelectItem value="in_progress">En Progreso</SelectItem>
+                          <SelectItem value="in_progress">
+                            En Progreso
+                          </SelectItem>
                           <SelectItem value="completed">Completado</SelectItem>
                           <SelectItem value="overdue">Atrasado</SelectItem>
                         </SelectContent>
@@ -828,7 +931,7 @@ export default function ProjectForms({
           >
             Cancelar
           </Button>
-          
+
           <div className="flex items-center space-x-2">
             {currentStep > 1 && (
               <Button
@@ -841,24 +944,17 @@ export default function ProjectForms({
                 Anterior
               </Button>
             )}
-            
+
             {currentStep < totalSteps ? (
-              <Button
-                type="button"
-                onClick={nextStep}
-                disabled={loading}
-              >
+              <Button type="button" onClick={nextStep} disabled={loading}>
                 Siguiente
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (
-              <Button
-                type="submit"
-                disabled={loading || !isValid}
-              >
+              <Button type="submit" disabled={loading || !isValid}>
                 {loading ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
                     Guardando...
                   </>
                 ) : (
@@ -874,4 +970,4 @@ export default function ProjectForms({
       </form>
     </div>
   );
-} 
+}

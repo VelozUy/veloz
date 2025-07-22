@@ -189,6 +189,12 @@ The theme system uses CSS custom properties organized into logical groups. This 
   --accent: oklch(0.8078 0 0);
   --accent-foreground: oklch(0.3211 0 0);
 
+  /* New UX accent colors for enhanced user experience */
+  --accent-soft-gold: oklch(0.84 0.09 100);
+  --accent-sky: oklch(0.82 0.12 220);
+  --accent-rose: oklch(0.8 0.14 20);
+  --accent-lime: oklch(0.84 0.16 120);
+
   /* Destructive colors */
   --destructive: oklch(0.5594 0.19 25.8625);
   --destructive-foreground: oklch(1 0 0);
@@ -300,6 +306,13 @@ The theme uses OKLCH color space for:
 
 - **Accent**: Highlighting and focus states
 - **Accent Foreground**: Text on accent backgrounds
+
+#### New UX Accent Colors
+
+- **Accent Soft Gold** (`--accent-soft-gold`): Subtle highlights in headings, metadata, timeline dots, and passive status labels (e.g., "Reserved", "Optional")
+- **Accent Sky** (`--accent-sky`): Navigation hover states, links, or underlines in content-heavy views
+- **Accent Rose** (`--accent-rose`): Attention-grabbing alerts, error-friendly notices, or emotional storytelling accents (e.g., testimonials, memories)
+- **Accent Lime** (`--accent-lime`): Checklist items marked as complete, confirmations, success messages, and small affirmative badges
 
 #### Destructive Colors
 

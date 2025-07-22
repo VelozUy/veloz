@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable no-restricted-syntax */
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -53,7 +54,7 @@ import {
 import { crewMemberService } from '@/services/crew-member';
 import type { CrewMember } from '@/types';
 
-interface TeamMember extends CrewMember {
+interface TeamMember extends Omit<CrewMember, 'skills'> {
   workload: {
     currentProjects: number;
     completedProjects: number;
@@ -90,7 +91,9 @@ interface TeamManagementProps {
   className?: string;
 }
 
-export default function TeamManagement({ className = '' }: TeamManagementProps) {
+export default function TeamManagement({
+  className = '',
+}: TeamManagementProps) {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
@@ -111,7 +114,7 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
       const result = await crewMemberService.getAllCrewMembers();
       if (result.success) {
         const crewData = (result.data as CrewMember[]) || [];
-        
+
         // Enhance crew data with workload and performance metrics
         const enhancedTeamMembers: TeamMember[] = crewData.map(crew => ({
           ...crew,
@@ -119,7 +122,9 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
             currentProjects: Math.floor(Math.random() * 5) + 1,
             completedProjects: Math.floor(Math.random() * 20) + 5,
             totalHours: Math.floor(Math.random() * 200) + 50,
-            availability: ['available', 'busy', 'unavailable'][Math.floor(Math.random() * 3)] as any,
+            availability: ['available', 'busy', 'unavailable'][
+              Math.floor(Math.random() * 3)
+            ] as any,
           },
           performance: {
             rating: Math.floor(Math.random() * 20) + 80, // 80-100
@@ -130,7 +135,11 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
           skills: {
             primary: crew.skills.slice(0, 3),
             secondary: crew.skills.slice(3, 6),
-            certifications: ['Adobe Certified', 'Canon Professional', 'Sony Alpha'],
+            certifications: [
+              'Adobe Certified',
+              'Canon Professional',
+              'Sony Alpha',
+            ],
           },
           schedule: {
             availability: {
@@ -144,7 +153,7 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
             },
           },
         }));
-        
+
         setTeamMembers(enhancedTeamMembers);
       }
     } catch (error) {
@@ -157,13 +166,13 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
   const getAvailabilityColor = (availability: string) => {
     switch (availability) {
       case 'available':
-        return 'bg-green-500';
+        return 'bg-accent-lime';
       case 'busy':
-        return 'bg-yellow-500';
+        return 'bg-accent-soft-gold';
       case 'unavailable':
-        return 'bg-red-500';
+        return 'bg-accent-rose';
       default:
-        return 'bg-gray-500';
+        return 'bg-muted';
     }
   };
 
@@ -181,11 +190,20 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
   };
 
   const getRoleIcon = (role: string) => {
-    if (role.toLowerCase().includes('fotógrafo') || role.toLowerCase().includes('photographer')) {
+    if (
+      role.toLowerCase().includes('fotógrafo') ||
+      role.toLowerCase().includes('photographer')
+    ) {
       return <Camera className="w-4 h-4" />;
-    } else if (role.toLowerCase().includes('videógrafo') || role.toLowerCase().includes('videographer')) {
+    } else if (
+      role.toLowerCase().includes('videógrafo') ||
+      role.toLowerCase().includes('videographer')
+    ) {
       return <Video className="w-4 h-4" />;
-    } else if (role.toLowerCase().includes('editor') || role.toLowerCase().includes('edición')) {
+    } else if (
+      role.toLowerCase().includes('editor') ||
+      role.toLowerCase().includes('edición')
+    ) {
       return <Scissors className="w-4 h-4" />;
     } else {
       return <Briefcase className="w-4 h-4" />;
@@ -193,31 +211,40 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
   };
 
   const filteredTeamMembers = teamMembers.filter(member => {
-    const matchesSearch = 
+    const matchesSearch =
       member.name.es?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.name.en?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.role.es?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.role.en?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesRole = roleFilter === 'all' || 
+
+    const matchesRole =
+      roleFilter === 'all' ||
       member.role.es?.toLowerCase().includes(roleFilter.toLowerCase()) ||
       member.role.en?.toLowerCase().includes(roleFilter.toLowerCase());
-    
-    const matchesAvailability = availabilityFilter === 'all' || 
+
+    const matchesAvailability =
+      availabilityFilter === 'all' ||
       member.workload.availability === availabilityFilter;
-    
+
     return matchesSearch && matchesRole && matchesAvailability;
   });
 
   const teamStats = {
     total: teamMembers.length,
-    available: teamMembers.filter(m => m.workload.availability === 'available').length,
+    available: teamMembers.filter(m => m.workload.availability === 'available')
+      .length,
     busy: teamMembers.filter(m => m.workload.availability === 'busy').length,
-    unavailable: teamMembers.filter(m => m.workload.availability === 'unavailable').length,
+    unavailable: teamMembers.filter(
+      m => m.workload.availability === 'unavailable'
+    ).length,
     averageRating: Math.round(
-      teamMembers.reduce((sum, m) => sum + m.performance.rating, 0) / teamMembers.length
+      teamMembers.reduce((sum, m) => sum + m.performance.rating, 0) /
+        teamMembers.length
     ),
-    totalProjects: teamMembers.reduce((sum, m) => sum + m.workload.currentProjects, 0),
+    totalProjects: teamMembers.reduce(
+      (sum, m) => sum + m.workload.currentProjects,
+      0
+    ),
   };
 
   return (
@@ -249,21 +276,19 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{teamStats.total}</div>
-            <p className="text-xs text-muted-foreground">
-              Miembros activos
-            </p>
+            <p className="text-xs text-muted-foreground">Miembros activos</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Disponibles
-            </CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
+            <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
+            <CheckCircle className="h-4 w-4 text-accent-lime" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{teamStats.available}</div>
+            <div className="text-2xl font-bold text-accent-lime">
+              {teamStats.available}
+            </div>
             <p className="text-xs text-muted-foreground">
               Listos para proyectos
             </p>
@@ -279,9 +304,7 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{teamStats.totalProjects}</div>
-            <p className="text-xs text-muted-foreground">
-              En progreso
-            </p>
+            <p className="text-xs text-muted-foreground">En progreso</p>
           </CardContent>
         </Card>
 
@@ -290,10 +313,12 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
             <CardTitle className="text-sm font-medium">
               Calificación Promedio
             </CardTitle>
-            <Star className="h-4 w-4 text-yellow-500" />
+            <Star className="h-4 w-4 text-accent-soft-gold" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{teamStats.averageRating}%</div>
+            <div className="text-2xl font-bold text-accent-soft-gold">
+              {teamStats.averageRating}%
+            </div>
             <p className="text-xs text-muted-foreground">
               Satisfacción del cliente
             </p>
@@ -329,7 +354,10 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
                 <SelectItem value="asistente">Asistentes</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={availabilityFilter} onValueChange={setAvailabilityFilter}>
+            <Select
+              value={availabilityFilter}
+              onValueChange={setAvailabilityFilter}
+            >
               <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Filtrar por disponibilidad" />
               </SelectTrigger>
@@ -345,7 +373,11 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
       </Card>
 
       {/* Team Management Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-4"
+      >
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Vista General</TabsTrigger>
           <TabsTrigger value="workload">Carga de Trabajo</TabsTrigger>
@@ -357,14 +389,18 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredTeamMembers.map(member => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={member.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-12 w-12">
                         <AvatarImage src={member.portrait} />
                         <AvatarFallback>
-                          {member.name.es?.charAt(0) || member.name.en?.charAt(0)}
+                          {member.name.es?.charAt(0) ||
+                            member.name.en?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div>
@@ -379,9 +415,9 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
                         </div>
                       </div>
                     </div>
-                    <Badge 
-                      variant="secondary" 
-                      className={`${getAvailabilityColor(member.workload.availability)} text-white`}
+                    <Badge
+                      variant="secondary"
+                      className={`${getAvailabilityColor(member.workload.availability)} text-foreground`}
                     >
                       {getAvailabilityText(member.workload.availability)}
                     </Badge>
@@ -392,29 +428,48 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Calificación</span>
-                      <span className="font-medium">{member.performance.rating}%</span>
+                      <span className="font-medium">
+                        {member.performance.rating}%
+                      </span>
                     </div>
-                    <Progress value={member.performance.rating} className="h-2" />
+                    <Progress
+                      value={member.performance.rating}
+                      className="h-2"
+                    />
                   </div>
 
                   {/* Workload Info */}
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Proyectos activos:</span>
-                      <span className="font-medium ml-1">{member.workload.currentProjects}</span>
+                      <span className="text-muted-foreground">
+                        Proyectos activos:
+                      </span>
+                      <span className="font-medium ml-1">
+                        {member.workload.currentProjects}
+                      </span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Completados:</span>
-                      <span className="font-medium ml-1">{member.workload.completedProjects}</span>
+                      <span className="text-muted-foreground">
+                        Completados:
+                      </span>
+                      <span className="font-medium ml-1">
+                        {member.workload.completedProjects}
+                      </span>
                     </div>
                   </div>
 
                   {/* Skills */}
                   <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">Habilidades principales:</p>
+                    <p className="text-xs text-muted-foreground">
+                      Habilidades principales:
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {member.skills.primary.slice(0, 3).map((skill, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs"
+                        >
                           {skill}
                         </Badge>
                       ))}
@@ -454,35 +509,57 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
             <CardContent>
               <div className="space-y-4">
                 {filteredTeamMembers.map(member => (
-                  <div key={member.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
                     <div className="flex items-center space-x-4">
                       <Avatar>
                         <AvatarImage src={member.portrait} />
                         <AvatarFallback>
-                          {member.name.es?.charAt(0) || member.name.en?.charAt(0)}
+                          {member.name.es?.charAt(0) ||
+                            member.name.en?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h4 className="font-medium">{member.name.es || member.name.en}</h4>
-                        <p className="text-sm text-muted-foreground">{member.role.es || member.role.en}</p>
+                        <h4 className="font-medium">
+                          {member.name.es || member.name.en}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {member.role.es || member.role.en}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-6">
                       <div className="text-center">
-                        <div className="text-lg font-bold">{member.workload.currentProjects}</div>
-                        <div className="text-xs text-muted-foreground">Proyectos activos</div>
+                        <div className="text-lg font-bold">
+                          {member.workload.currentProjects}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Proyectos activos
+                        </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-lg font-bold">{member.workload.totalHours}h</div>
-                        <div className="text-xs text-muted-foreground">Horas este mes</div>
+                        <div className="text-lg font-bold">
+                          {member.workload.totalHours}h
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Horas este mes
+                        </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-lg font-bold">{member.workload.completedProjects}</div>
-                        <div className="text-xs text-muted-foreground">Completados</div>
+                        <div className="text-lg font-bold">
+                          {member.workload.completedProjects}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Completados
+                        </div>
                       </div>
-                      <Badge 
-                        variant="secondary" 
-                        className={getAvailabilityColor(member.workload.availability)}
+                      <Badge
+                        variant="secondary"
+                        className={getAvailabilityColor(
+                          member.workload.availability
+                        )}
                       >
                         {getAvailabilityText(member.workload.availability)}
                       </Badge>
@@ -509,39 +586,71 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
                         <Avatar>
                           <AvatarImage src={member.portrait} />
                           <AvatarFallback>
-                            {member.name.es?.charAt(0) || member.name.en?.charAt(0)}
+                            {member.name.es?.charAt(0) ||
+                              member.name.en?.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <h4 className="font-medium">{member.name.es || member.name.en}</h4>
-                          <p className="text-sm text-muted-foreground">{member.role.es || member.role.en}</p>
+                          <h4 className="font-medium">
+                            {member.name.es || member.name.en}
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            {member.role.es || member.role.en}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="font-medium">{member.performance.rating}%</span>
+                        <Star className="h-4 w-4 text-accent-soft-gold" />
+                        <span className="font-medium">
+                          {member.performance.rating}%
+                        </span>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Satisfacción del Cliente</div>
-                        <Progress value={member.performance.clientSatisfaction} className="h-2" />
-                        <div className="text-xs text-muted-foreground mt-1">{member.performance.clientSatisfaction}%</div>
+                        <div className="text-sm text-muted-foreground mb-1">
+                          Satisfacción del Cliente
+                        </div>
+                        <Progress
+                          value={member.performance.clientSatisfaction}
+                          className="h-2"
+                        />
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {member.performance.clientSatisfaction}%
+                        </div>
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Entrega a Tiempo</div>
-                        <Progress value={member.performance.onTimeDelivery} className="h-2" />
-                        <div className="text-xs text-muted-foreground mt-1">{member.performance.onTimeDelivery}%</div>
+                        <div className="text-sm text-muted-foreground mb-1">
+                          Entrega a Tiempo
+                        </div>
+                        <Progress
+                          value={member.performance.onTimeDelivery}
+                          className="h-2"
+                        />
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {member.performance.onTimeDelivery}%
+                        </div>
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Calidad</div>
-                        <Progress value={member.performance.qualityScore} className="h-2" />
-                        <div className="text-xs text-muted-foreground mt-1">{member.performance.qualityScore}%</div>
+                        <div className="text-sm text-muted-foreground mb-1">
+                          Calidad
+                        </div>
+                        <Progress
+                          value={member.performance.qualityScore}
+                          className="h-2"
+                        />
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {member.performance.qualityScore}%
+                        </div>
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground mb-1">Proyectos Completados</div>
-                        <div className="text-lg font-bold">{member.workload.completedProjects}</div>
+                        <div className="text-sm text-muted-foreground mb-1">
+                          Proyectos Completados
+                        </div>
+                        <div className="text-lg font-bold">
+                          {member.workload.completedProjects}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -566,46 +675,78 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
                         <Avatar>
                           <AvatarImage src={member.portrait} />
                           <AvatarFallback>
-                            {member.name.es?.charAt(0) || member.name.en?.charAt(0)}
+                            {member.name.es?.charAt(0) ||
+                              member.name.en?.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <h4 className="font-medium">{member.name.es || member.name.en}</h4>
-                          <p className="text-sm text-muted-foreground">{member.role.es || member.role.en}</p>
+                          <h4 className="font-medium">
+                            {member.name.es || member.name.en}
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            {member.role.es || member.role.en}
+                          </p>
                         </div>
                       </div>
-                      <Badge 
-                        variant="secondary" 
-                        className={getAvailabilityColor(member.workload.availability)}
+                      <Badge
+                        variant="secondary"
+                        className={getAvailabilityColor(
+                          member.workload.availability
+                        )}
                       >
                         {getAvailabilityText(member.workload.availability)}
                       </Badge>
                     </div>
-                    
+
                     <div className="grid grid-cols-7 gap-2">
-                      {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((day, index) => {
-                        const isAvailable = member.schedule.availability[
-                          ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'][index] as keyof typeof member.schedule.availability
-                        ];
-                        return (
-                          <div key={day} className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1">{day}</div>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
-                              isAvailable ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'
-                            }`}>
-                              {isAvailable ? '✓' : '✗'}
+                      {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(
+                        (day, index) => {
+                          const isAvailable =
+                            member.schedule.availability[
+                              [
+                                'monday',
+                                'tuesday',
+                                'wednesday',
+                                'thursday',
+                                'friday',
+                                'saturday',
+                                'sunday',
+                              ][
+                                index
+                              ] as keyof typeof member.schedule.availability
+                            ];
+                          return (
+                            <div key={day} className="text-center">
+                              <div className="text-xs text-muted-foreground mb-1">
+                                {day}
+                              </div>
+                              <div
+                                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
+                                  isAvailable
+                                    ? 'bg-accent-lime text-foreground'
+                                    : 'bg-muted text-muted-foreground'
+                                }`}
+                              >
+                                {isAvailable ? '✓' : '✗'}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        }
+                      )}
                     </div>
-                    
+
                     {member.schedule.nextProject && (
                       <div className="mt-4 p-3 bg-muted rounded-lg">
-                        <div className="text-sm font-medium">Próximo proyecto:</div>
-                        <div className="text-sm text-muted-foreground">{member.schedule.nextProject}</div>
+                        <div className="text-sm font-medium">
+                          Próximo proyecto:
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {member.schedule.nextProject}
+                        </div>
                         {member.schedule.nextProjectDate && (
-                          <div className="text-xs text-muted-foreground">{member.schedule.nextProjectDate}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {member.schedule.nextProjectDate}
+                          </div>
                         )}
                       </div>
                     )}
@@ -622,22 +763,27 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              {selectedMember ? 'Editar Miembro del Equipo' : 'Agregar Miembro del Equipo'}
+              {selectedMember
+                ? 'Editar Miembro del Equipo'
+                : 'Agregar Miembro del Equipo'}
             </DialogTitle>
             <DialogDescription>
-              {selectedMember 
+              {selectedMember
                 ? 'Modifica la información del miembro del equipo'
-                : 'Agrega un nuevo miembro al equipo'
-              }
+                : 'Agrega un nuevo miembro al equipo'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             {/* This would integrate with the existing CrewMemberForm component */}
             <p className="text-muted-foreground">
-              Formulario de miembro del equipo (integrado con el sistema existente)
+              Formulario de miembro del equipo (integrado con el sistema
+              existente)
             </p>
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setShowMemberDialog(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setShowMemberDialog(false)}
+              >
                 Cancelar
               </Button>
               <Button>
@@ -649,4 +795,4 @@ export default function TeamManagement({ className = '' }: TeamManagementProps) 
       </Dialog>
     </div>
   );
-} 
+}

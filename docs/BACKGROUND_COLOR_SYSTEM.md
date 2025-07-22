@@ -92,27 +92,27 @@ function CTAButton() {
 
 ### Background Colors
 
-| Section Type | High Priority | Medium Priority | Low Priority |
-|--------------|---------------|-----------------|--------------|
-| `hero` | `bg-foreground` (charcoal) | N/A | N/A |
-| `content` | `bg-card` (white) | `bg-muted` (light gray) | `bg-muted` (light gray) |
-| `form` | N/A | `bg-muted` (light gray) | N/A |
-| `testimonial` | N/A | `bg-card` (white) | N/A |
-| `cta` | `bg-primary` (blue) | `bg-card` (white) | N/A |
-| `meta` | N/A | N/A | `bg-muted` (light gray) |
-| `admin` | N/A | `bg-muted` (light gray) | N/A |
+| Section Type  | High Priority              | Medium Priority         | Low Priority            |
+| ------------- | -------------------------- | ----------------------- | ----------------------- |
+| `hero`        | `bg-foreground` (charcoal) | N/A                     | N/A                     |
+| `content`     | `bg-card` (white)          | `bg-muted` (light gray) | `bg-muted` (light gray) |
+| `form`        | N/A                        | `bg-muted` (light gray) | N/A                     |
+| `testimonial` | N/A                        | `bg-card` (white)       | N/A                     |
+| `cta`         | `bg-primary` (blue)        | `bg-card` (white)       | N/A                     |
+| `meta`        | N/A                        | N/A                     | `bg-muted` (light gray) |
+| `admin`       | N/A                        | `bg-muted` (light gray) | N/A                     |
 
 ### Text Colors
 
-| Section Type | High Priority | Medium Priority | Low Priority |
-|--------------|---------------|-----------------|--------------|
-| `hero` | `text-background` (light) | N/A | N/A |
-| `content` | `text-card-foreground` (charcoal) | `text-foreground` (charcoal) | `text-foreground` (charcoal) |
-| `form` | N/A | `text-foreground` (charcoal) | N/A |
-| `testimonial` | N/A | `text-card-foreground` (charcoal) | N/A |
-| `cta` | `text-primary-foreground` (white) | `text-card-foreground` (charcoal) | N/A |
-| `meta` | N/A | N/A | `text-foreground` (charcoal) |
-| `admin` | N/A | `text-foreground` (charcoal) | N/A |
+| Section Type  | High Priority                     | Medium Priority                   | Low Priority                 |
+| ------------- | --------------------------------- | --------------------------------- | ---------------------------- |
+| `hero`        | `text-background` (light)         | N/A                               | N/A                          |
+| `content`     | `text-card-foreground` (charcoal) | `text-foreground` (charcoal)      | `text-foreground` (charcoal) |
+| `form`        | N/A                               | `text-foreground` (charcoal)      | N/A                          |
+| `testimonial` | N/A                               | `text-card-foreground` (charcoal) | N/A                          |
+| `cta`         | `text-primary-foreground` (white) | `text-card-foreground` (charcoal) | N/A                          |
+| `meta`        | N/A                               | N/A                               | `text-foreground` (charcoal) |
+| `admin`       | N/A                               | `text-foreground` (charcoal)      | N/A                          |
 
 ## Accessibility Features
 
@@ -129,7 +129,7 @@ All color combinations meet WCAG AA contrast requirements:
 All interactive elements include proper focus indicators:
 
 ```css
-.focus-visible:outline-none
+.focus-visible: outline-none;
 ```
 
 ### Color Blindness Support
@@ -158,7 +158,7 @@ interface BackgroundClasses {
 Returns accessibility-focused classes for a section type.
 
 ```typescript
-function getAccessibilityClasses(sectionType: SectionType): string[]
+function getAccessibilityClasses(sectionType: SectionType): string[];
 ```
 
 ### `validateBackgroundConfig(sectionType, priority)`
@@ -166,7 +166,10 @@ function getAccessibilityClasses(sectionType: SectionType): string[]
 Validates that a section type and priority combination is supported.
 
 ```typescript
-function validateBackgroundConfig(sectionType: SectionType, priority: PriorityLevel): boolean
+function validateBackgroundConfig(
+  sectionType: SectionType,
+  priority: PriorityLevel
+): boolean;
 ```
 
 ## Best Practices
@@ -199,13 +202,13 @@ function validateBackgroundConfig(sectionType: SectionType, priority: PriorityLe
 ### From Hard-coded Colors
 
 **Before:**
+
 ```tsx
-<div className="bg-gray-100 text-gray-900 border border-gray-200">
-  Content
-</div>
+<div className="bg-muted text-foreground border border-border">Content</div>
 ```
 
 **After:**
+
 ```tsx
 <Card sectionType="content" priority="medium">
   Content
@@ -215,13 +218,13 @@ function validateBackgroundConfig(sectionType: SectionType, priority: PriorityLe
 ### From Custom Background Classes
 
 **Before:**
+
 ```tsx
-<div className="bg-primary text-white shadow-lg">
-  CTA Button
-</div>
+<div className="bg-primary text-white shadow-lg">CTA Button</div>
 ```
 
 **After:**
+
 ```tsx
 <Button sectionType="cta" priority="high">
   CTA Button
@@ -298,4 +301,4 @@ When adding new section types or modifying existing ones:
 - [WCAG 2.1 AA Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [Veloz Theme System](docs/THEME.md)
 - [Component Library](src/components/ui/)
-- [Background Utils](src/lib/background-utils.ts) 
+- [Background Utils](src/lib/background-utils.ts)
