@@ -485,7 +485,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <video
               src={currentMedia.url}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                mediaLoadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               } transition-all duration-500 ease-out`}
               controls
               autoPlay
@@ -511,7 +511,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               src={currentMedia.url}
               alt={currentMedia.alt}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                mediaLoadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               } transition-all duration-500 ease-out`}
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
