@@ -166,24 +166,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         // Update the current media ID ref
         currentMediaIdRef.current = currentMedia.id;
         
-        // Only set loading state if media is not preloaded
-        if (!isMediaPreloaded(currentIndex)) {
-          setMediaLoadingStates(prev => ({
-            ...prev,
-            [currentMedia.id]: true,
-          }));
-          setIsLoading(true);
-        } else {
-          // If media is preloaded, don't show loading skeleton
-          setMediaLoadingStates(prev => ({
-            ...prev,
-            [currentMedia.id]: false,
-          }));
-          setIsLoading(false);
-        }
+        // Always set loading state for new media during navigation
+        // The media will be hidden by isInLoadingTransition until it loads
+        setMediaLoadingStates(prev => ({
+          ...prev,
+          [currentMedia.id]: true,
+        }));
+        setIsLoading(true);
       }
     }
-  }, [currentIndex, media, isMediaPreloaded]);
+  }, [currentIndex, media]);
 
   // Start progress loading when current media changes
   useEffect(() => {
@@ -440,7 +432,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
       {/* Media container */}
       <div className={`relative z-10 max-w-full max-h-full p-4 animate-in fade-in-0 duration-500 ${
-        (isInLoadingTransition && !isMediaPreloaded(currentIndex)) ? 'opacity-0' : 'opacity-100'
+        isInLoadingTransition ? 'opacity-0' : 'opacity-100'
       } transition-opacity duration-300`}>
         <div
           className={`transition-all duration-500 ease-out relative ${
@@ -448,7 +440,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           }`}
         >
           {/* Loading Skeleton with Progress */}
-          {(mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading) && !isMediaPreloaded(currentIndex) && (
+          {(mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isInLoadingTransition) && (
             <div 
               className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer animate-in fade-in-0 slide-in-from-bottom-4 duration-500"
               onClick={() => {
@@ -498,8 +490,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <video
               src={currentMedia.url}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || (isInLoadingTransition && !isMediaPreloaded(currentIndex)) || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-              } transition-all duration-500 ease-out ${(isInLoadingTransition && !isMediaPreloaded(currentIndex)) ? 'pointer-events-none' : ''}`}
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out ${isInLoadingTransition ? 'pointer-events-none' : ''}`}
               controls
               autoPlay
               muted
@@ -508,7 +500,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
-                zIndex: (isInLoadingTransition && !isMediaPreloaded(currentIndex)) ? -1 : 'auto',
+                zIndex: isInLoadingTransition ? -1 : 'auto',
               }}
               data-testid={`video-${currentMedia.id}`}
               onLoadedData={() => {
@@ -527,12 +519,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               src={currentMedia.url}
               alt={currentMedia.alt}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || (isInLoadingTransition && !isMediaPreloaded(currentIndex)) || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-              } transition-all duration-500 ease-out ${(isInLoadingTransition && !isMediaPreloaded(currentIndex)) ? 'pointer-events-none' : ''}`}
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out ${isInLoadingTransition ? 'pointer-events-none' : ''}`}
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
-                zIndex: (isInLoadingTransition && !isMediaPreloaded(currentIndex)) ? -1 : 'auto',
+                zIndex: isInLoadingTransition ? -1 : 'auto',
               }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => {
