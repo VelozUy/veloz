@@ -87,15 +87,15 @@ export default function Reports({ projectId }: ReportsProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-primary/10 text-primary';
       case 'in-progress':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/10 text-primary';
       case 'draft':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
       case 'overdue':
-        return 'bg-red-100 text-red-800';
+        return 'bg-destructive/10 text-destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -115,7 +115,7 @@ export default function Reports({ projectId }: ReportsProps) {
       <div className="space-y-6">
         <Card>
           <CardContent className="pt-6">
-            <div className="text-center text-red-600">
+            <div className="text-center text-destructive">
               <AlertTriangle className="w-8 h-8 mx-auto mb-4" />
               <p>{error}</p>
               <Button onClick={loadMetrics} className="mt-4">
@@ -142,19 +142,19 @@ export default function Reports({ projectId }: ReportsProps) {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{businessMetrics.totalProjects}</div>
+                <div className="text-2xl font-bold text-primary">{businessMetrics.totalProjects}</div>
                 <div className="text-sm text-muted-foreground">Total Projects</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{businessMetrics.activeProjects}</div>
+                <div className="text-2xl font-bold text-primary">{businessMetrics.activeProjects}</div>
                 <div className="text-sm text-muted-foreground">Active Projects</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">{formatCurrency(businessMetrics.totalRevenue)}</div>
+                <div className="text-2xl font-bold text-primary">{formatCurrency(businessMetrics.totalRevenue)}</div>
                 <div className="text-sm text-muted-foreground">Total Revenue</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600">{formatPercentage(businessMetrics.clientRetentionRate)}</div>
+                <div className="text-2xl font-bold text-primary">{formatPercentage(businessMetrics.clientRetentionRate)}</div>
                 <div className="text-sm text-muted-foreground">Client Retention</div>
               </div>
             </div>
@@ -192,9 +192,9 @@ export default function Reports({ projectId }: ReportsProps) {
                   <div className="text-sm text-muted-foreground">Timeline</div>
                   <div className="text-sm">
                     {projectMetrics.timelinePerformance.onTime ? (
-                      <span className="text-green-600">On Time</span>
+                      <span className="text-primary">On Time</span>
                     ) : (
-                      <span className="text-red-600">{projectMetrics.timelinePerformance.daysOverdue} days overdue</span>
+                      <span className="text-destructive">{projectMetrics.timelinePerformance.daysOverdue} days overdue</span>
                     )}
                   </div>
                 </div>
@@ -254,8 +254,8 @@ export default function Reports({ projectId }: ReportsProps) {
                           key={i}
                           className={`w-4 h-4 ${
                             i < projectMetrics.clientSatisfaction.rating! 
-                              ? 'text-yellow-400 fill-current' 
-                              : 'text-gray-300'
+                              ? 'text-primary fill-current' 
+                              : 'text-muted-foreground'
                           }`}
                         />
                       ))}
@@ -291,7 +291,7 @@ export default function Reports({ projectId }: ReportsProps) {
                 <div>
                   <div className="text-sm text-muted-foreground">Variance</div>
                   <div className={`text-2xl font-bold ${
-                    timelineAnalysis.overallTimeline.variance >= 0 ? 'text-green-600' : 'text-red-600'
+                    timelineAnalysis.overallTimeline.variance >= 0 ? 'text-primary' : 'text-destructive'
                   }`}>
                     {timelineAnalysis.overallTimeline.variance >= 0 ? '+' : ''}{formatPercentage(timelineAnalysis.overallTimeline.variance)}
                   </div>
@@ -311,7 +311,7 @@ export default function Reports({ projectId }: ReportsProps) {
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {milestone.delayDays && milestone.delayDays > 0 && (
-                          <span className="text-red-600">+{milestone.delayDays} days</span>
+                          <span className="text-destructive">+{milestone.delayDays} days</span>
                         )}
                       </div>
                     </div>
@@ -341,7 +341,7 @@ export default function Reports({ projectId }: ReportsProps) {
                   {revenueAnalysis.projectTypeRevenue.slice(0, 5).map((type) => (
                     <div key={type.eventType} className="flex items-center justify-between p-2 border rounded">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-primary rounded-full"></div>
                         <span className="text-sm">{type.eventType}</span>
                       </div>
                       <div className="text-sm font-medium">{formatCurrency(type.revenue)}</div>
@@ -357,7 +357,7 @@ export default function Reports({ projectId }: ReportsProps) {
                   {revenueAnalysis.clientValueAnalysis.slice(0, 5).map((client) => (
                     <div key={client.clientName} className="flex items-center justify-between p-2 border rounded">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-primary rounded-full"></div>
                         <span className="text-sm">{client.clientName}</span>
                       </div>
                       <div className="text-sm font-medium">{formatCurrency(client.totalValue)}</div>
@@ -373,7 +373,7 @@ export default function Reports({ projectId }: ReportsProps) {
                   {revenueAnalysis.monthlyRevenue.slice(-6).map((month) => (
                     <div key={month.month} className="flex items-center justify-between p-2 border rounded">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-primary rounded-full"></div>
                         <span className="text-sm">{month.month}</span>
                       </div>
                       <div className="text-sm font-medium">{formatCurrency(month.revenue)}</div>

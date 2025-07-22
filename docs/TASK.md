@@ -1509,6 +1509,218 @@ _No tasks completed yet for this Epic_
 
 ---
 
+### 🔐 EPIC: Client Invite Admin Page Simplification ⭐ **HIGH PRIORITY**
+
+**Objective**: Simplify the client invite admin page to focus on core functionality: allowed emails management, signup tracking, access control, and public link management
+
+**User Intent**: Streamline the client invite admin interface to only include essential features for managing client access and public invite links
+
+**Tags**: `#admin-simplification` `#client-management` `#access-control` `#public-links`
+
+**Scope**: Focus on four core functions: allowed emails setup, signup tracking, access removal, and public link management
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Allowed Emails Management** - Create simple interface for managing allowed email addresses
+  - **User Intent**: Provide easy way to add, view, and remove allowed email addresses
+  - **Acceptance Criteria**:
+    - Simple form to add new allowed email addresses
+    - List view of all currently allowed emails
+    - Ability to remove individual emails with confirmation
+    - Bulk import functionality for multiple emails
+    - Email validation and duplicate prevention
+    - Clear visual feedback for successful/failed operations
+  - **Files**: `src/components/admin/ClientInviteManager.tsx`, `src/app/admin/client-invites/page.tsx`
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Signup Tracking Dashboard** - Display list of emails that have signed up
+  - **User Intent**: Show which allowed emails have actually created client accounts
+  - **Acceptance Criteria**:
+    - Table view of all emails that have signed up
+    - Display signup date and last login information
+    - Show status (active/inactive) for each client
+    - Search and filter functionality
+    - Export functionality for signup data
+    - Clear distinction between allowed emails and actual signups
+  - **Files**: `src/components/admin/ClientSignupTracker.tsx`, `src/app/admin/client-invites/page.tsx`
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 1 completion
+
+- [ ] **Phase 3: Access Removal System** - Allow removal of client access
+  - **User Intent**: Provide ability to revoke access for specific clients
+  - **Acceptance Criteria**:
+    - List of all clients with active access
+    - Individual client removal with confirmation dialog
+    - Bulk removal functionality for multiple clients
+    - Immediate access revocation (no grace period)
+    - Clear audit trail of removal actions
+    - Notification system for removed clients
+  - **Files**: `src/components/admin/ClientAccessManager.tsx`, `src/app/admin/client-invites/page.tsx`
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Public Link Management** - Create and revoke public invite links
+  - **User Intent**: Manage public invite links for client signup
+  - **Acceptance Criteria**:
+    - Generate new public invite links with custom settings
+    - Display all active public links with creation date and usage stats
+    - Ability to revoke individual links with immediate effect
+    - Link expiration settings (optional)
+    - Copy-to-clipboard functionality for easy sharing
+    - Usage analytics for each link
+  - **Files**: `src/components/admin/PublicLinkManager.tsx`, `src/app/admin/client-invites/page.tsx`
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 5: Unified Admin Interface** - Create simplified admin page layout
+  - **User Intent**: Organize all client invite functionality in one clean interface
+  - **Acceptance Criteria**:
+    - Single page with four main sections (Allowed Emails, Signups, Access Control, Public Links)
+    - Tab-based navigation between sections
+    - Consistent styling with admin design system
+    - Mobile-responsive layout
+    - Clear section headers and descriptions
+    - Quick action buttons for common operations
+  - **Files**: `src/app/admin/client-invites/page.tsx`, `src/components/admin/ClientInviteDashboard.tsx`
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Data Validation and Security** - Ensure data integrity and security
+  - **User Intent**: Protect against data corruption and unauthorized access
+  - **Acceptance Criteria**:
+    - Input validation for all email addresses
+    - CSRF protection for all admin actions
+    - Rate limiting for bulk operations
+    - Audit logging for all admin actions
+    - Proper error handling and user feedback
+    - Data backup before destructive operations
+  - **Files**: `src/lib/validation-schemas.ts`, `src/services/admin-security.ts`
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 7: Analytics and Reporting** - Add basic analytics for client management
+  - **User Intent**: Track effectiveness of client invite system
+  - **Acceptance Criteria**:
+    - Signup conversion rates (allowed emails vs actual signups)
+    - Public link usage statistics
+    - Client activity tracking
+    - Export functionality for reports
+    - Simple dashboard with key metrics
+  - **Files**: `src/components/admin/ClientAnalytics.tsx`, `src/services/client-analytics.ts`
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Notification System** - Implement admin notifications
+  - **User Intent**: Keep admins informed of important client activities
+  - **Acceptance Criteria**:
+    - Email notifications for new client signups
+    - In-app notifications for admin actions
+    - Configurable notification preferences
+    - Notification history and management
+  - **Files**: `src/components/admin/AdminNotifications.tsx`, `src/services/notification-service.ts`
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 7 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 9: Advanced Features** - Add optional advanced functionality
+  - **User Intent**: Provide additional tools for power users
+  - **Acceptance Criteria**:
+    - Email templates for client communications
+    - Bulk email functionality for announcements
+    - Client grouping and categorization
+    - Advanced filtering and search options
+    - API endpoints for external integrations
+  - **Files**: `src/components/admin/AdvancedClientFeatures.tsx`
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 8 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Client Communication History** - Track all communications with clients
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Client Project Association** - Link clients to specific projects
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Client Feedback System** - Collect and manage client feedback
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Simplicity**: Reduced admin interface complexity by 60%
+- **Efficiency**: 50% faster client management operations
+- **Accuracy**: Zero data entry errors with proper validation
+- **Security**: 100% secure access control and audit trail
+
+**Secondary Metrics**:
+
+- **User Satisfaction**: Improved admin user experience
+- **Data Quality**: Clean, validated client data
+- **System Reliability**: Stable client invite system
+- **Compliance**: Proper data handling and privacy protection
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Current client invite system implementation
+- Admin authentication and authorization system
+- Firestore database structure for client data
+- Email service integration
+
+**Business Dependencies**:
+
+- Admin user approval of simplified interface
+- Stakeholder review of core functionality requirements
+- Content team preparation for new admin workflows
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- Maintain existing client data and functionality
+- Ensure no breaking changes to current client portal
+- Preserve all existing client accounts and access
+- Test thoroughly with actual client data
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase
+- Create rollback plan for each phase
+- Test with multiple admin users
+- Maintain backup of all client data
+
+**Core Functions Focus**:
+
+1. **Allowed Emails**: Add, view, remove allowed email addresses
+2. **Signup Tracking**: See which emails have actually signed up
+3. **Access Removal**: Remove client access when needed
+4. **Public Links**: Create and revoke public invite links
+
+**Removed Complexity**:
+
+- Advanced client management features
+- Complex permission systems
+- Detailed client profiles
+- Advanced analytics (moved to optional features)
+
+### ✅ Completed
+
+_No tasks completed yet for this Epic_
+
+---
+
 ### 🎨 EPIC: Modern shadcn/ui Theme Implementation ⭐ **NEW PRIORITY**
 
 **Objective**: Implement modern shadcn/ui theme system with OKLCH color space, comprehensive design tokens, and enhanced visual hierarchy for improved user experience and developer productivity
@@ -3087,6 +3299,7 @@ _No tasks completed yet for this Epic_
 **Completion Date**: 2025-01-27
 
 **Key Achievements**:
+
 - ✅ **Admin Project Management Interface**: Complete project dashboard with overview, communication logs, file management, and notifications
 - ✅ **Client Portal Implementation**: Secure client authentication and project access with invite-based system
 - ✅ **Notification System**: Automated email, SMS, and in-app notifications for project milestones and updates
@@ -3094,6 +3307,7 @@ _No tasks completed yet for this Epic_
 - ✅ **Client Invite Management**: Admin-controlled client access with secure invite links and project association
 
 **Technical Implementation**:
+
 - ✅ **Database Schema**: Enhanced Firestore collections for projects, clients, communications, files, and notifications
 - ✅ **Authentication**: Secure client login with localStorage persistence and project-specific access control
 - ✅ **Notification Service**: Template-based notification system with email, SMS, and in-app delivery
@@ -3101,6 +3315,7 @@ _No tasks completed yet for this Epic_
 - ✅ **Admin Interface**: Integrated tabs for project management, client invites, notifications, and reporting
 
 **Business Value**:
+
 - ✅ **Improved Client Communication**: Automated notifications keep clients informed of project progress
 - ✅ **Enhanced Project Management**: Comprehensive tracking of milestones, timelines, and team performance
 - ✅ **Data-Driven Insights**: Business analytics provide valuable insights for decision making

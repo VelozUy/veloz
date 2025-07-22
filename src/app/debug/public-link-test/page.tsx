@@ -66,7 +66,7 @@ export default function PublicLinkTestPage() {
         ))}
       </div>
       
-      <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded">
+      <div className="mt-8 p-4 bg-muted border border-border rounded">
         <h3 className="font-medium mb-2">What to Look For:</h3>
         <ul className="text-sm space-y-1">
           <li>✅ <strong>Public Link:</strong> Should show blue debug box + toggle buttons</li>
@@ -76,7 +76,7 @@ export default function PublicLinkTestPage() {
         </ul>
       </div>
       
-      <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded">
+      <div className="mt-4 p-4 bg-destructive/10 border border-destructive/20 rounded">
         <h3 className="font-medium mb-2">If you see "Login failed":</h3>
         <ul className="text-sm space-y-1">
           <li>❌ You're seeing the Sign In form instead of Sign Up</li>

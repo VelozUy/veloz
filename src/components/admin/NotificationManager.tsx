@@ -159,32 +159,32 @@ export default function NotificationManager({
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'milestone_update':
-        return <CheckCircle className="w-4 h-4 text-green-600" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'deadline_alert':
-        return <Clock className="w-4 h-4 text-orange-600" />;
+        return <Clock className="w-4 h-4 text-primary" />;
       case 'status_change':
-        return <Settings className="w-4 h-4 text-blue-600" />;
+        return <Settings className="w-4 h-4 text-primary" />;
       case 'file_upload':
-        return <Mail className="w-4 h-4 text-purple-600" />;
+        return <Mail className="w-4 h-4 text-primary" />;
       case 'reminder':
-        return <AlertTriangle className="w-4 h-4 text-red-600" />;
+        return <AlertTriangle className="w-4 h-4 text-destructive" />;
       default:
-        return <Bell className="w-4 h-4 text-gray-600" />;
+        return <Bell className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return 'bg-red-100 text-red-800';
+        return 'bg-destructive/10 text-destructive';
       case 'high':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-primary/10 text-primary';
       case 'medium':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/10 text-primary';
       case 'low':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -342,7 +342,7 @@ export default function NotificationManager({
           {loading ? (
             <div className="text-center py-4">Loading notifications...</div>
           ) : error ? (
-            <div className="text-red-600 py-4">{error}</div>
+            <div className="text-destructive py-4">{error}</div>
           ) : notifications.length === 0 ? (
             <div className="text-center py-4 text-muted-foreground">
               No notifications yet
