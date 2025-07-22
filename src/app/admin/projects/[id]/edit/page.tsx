@@ -63,6 +63,7 @@ import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
 import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
 import ProjectHeroPreview from '@/components/admin/ProjectHeroPreview';
 import SocialFeedManager from '@/components/admin/SocialFeedManager';
+import ClientInviteManager from '@/components/admin/ClientInviteManager';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
@@ -777,7 +778,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-7">
+              <TabsList className="grid w-full grid-cols-8">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -800,6 +801,7 @@ export default function UnifiedProjectEditPage({
                 </TabsTrigger>
                 <TabsTrigger value="our-work">Bloque Our-Work</TabsTrigger>
                 <TabsTrigger value="detail-page">Página de Detalle</TabsTrigger>
+                <TabsTrigger value="clients">Clientes</TabsTrigger>
               </TabsList>
 
               {/* Project Details Tab */}
@@ -1364,6 +1366,22 @@ export default function UnifiedProjectEditPage({
                           }
                         : undefined
                     }
+                  />
+                </div>
+              </TabsContent>
+
+              {/* Clients Tab */}
+              <TabsContent value="clients" className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Gestión de Invitaciones de Clientes</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Genera enlaces de invitación para que los clientes puedan acceder a su proyecto específico.
+                    </p>
+                  </div>
+                  <ClientInviteManager
+                    projectId={draftProject.id}
+                    projectTitle={draftProject.title.es || draftProject.title.en || draftProject.title.pt}
                   />
                 </div>
               </TabsContent>

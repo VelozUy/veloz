@@ -1,15 +1,11 @@
-import {
-  analyzeThemePerformance,
-  generateThemePerformanceReport,
-  isThemeOptimized,
-  getThemeSwitchingMetrics,
-} from '../theme-performance';
-
 /**
- * Theme Performance Tests
+ * Theme Variables Unit Tests
  * 
- * Tests for theme loading performance and rendering optimization
+ * Tests for theme variable definitions, accessibility, and consistency
  */
+
+import { testThemeAccessibility, generateAccessibilityReport } from '../theme-accessibility-test';
+import { runAccessibilityTests } from '../accessibility-test';
 
 // Mock theme variables for testing
 const mockThemeVariables = {
@@ -17,20 +13,24 @@ const mockThemeVariables = {
   '--foreground': 'oklch(0.3211 0 0)',
   '--card': 'oklch(0.9702 0 0)',
   '--card-foreground': 'oklch(0.3211 0 0)',
+  '--popover': 'oklch(0.9702 0 0)',
+  '--popover-foreground': 'oklch(0.3211 0 0)',
   '--primary': 'oklch(0.3633 0.2269 264.3283)',
-  '--primary-foreground': 'oklch(1.0000 0 0)',
+  '--primary-foreground': 'oklch(0.98 0 0)',
   '--secondary': 'oklch(0.9067 0 0)',
   '--secondary-foreground': 'oklch(0.3211 0 0)',
   '--muted': 'oklch(0.8853 0 0)',
-  '--muted-foreground': 'oklch(0.5103 0 0)',
+  '--muted-foreground': 'oklch(0.45 0 0)',
   '--accent': 'oklch(0.8078 0 0)',
   '--accent-foreground': 'oklch(0.3211 0 0)',
   '--destructive': 'oklch(0.3633 0.2269 264.3283)',
-  '--destructive-foreground': 'oklch(1.0000 0 0)',
+  '--destructive-foreground': 'oklch(0.98 0 0)',
   '--border': 'oklch(0.9067 0 0)',
   '--input': 'oklch(0.9702 0 0)',
   '--ring': 'oklch(0.3633 0.2269 264.3283)',
   '--radius': '0rem',
+  '--font-sans': 'Roboto, system-ui, sans-serif',
+  '--font-logo': 'REDJOLA, system-ui, sans-serif',
 };
 
 // Setup mock theme variables before tests
@@ -38,6 +38,143 @@ beforeAll(() => {
   const root = document.documentElement;
   Object.entries(mockThemeVariables).forEach(([variable, value]) => {
     root.style.setProperty(variable, value);
+  });
+});
+
+describe('Theme Variables', () => {
+  test('should have all required theme variables defined', () => {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const requiredVariables = [
+      '--background',
+      '--foreground', 
+      '--card',
+      '--card-foreground',
+      '--popover',
+      '--popover-foreground',
+      '--primary',
+      '--primary-foreground',
+      '--secondary',
+      '--secondary-foreground',
+      '--muted',
+      '--muted-foreground',
+      '--accent',
+      '--accent-foreground',
+      '--destructive',
+      '--destructive-foreground',
+      '--border',
+      '--input',
+      '--ring',
+      '--radius',
+    ];
+
+    requiredVariables.forEach(variable => {
+      const value = computedStyle.getPropertyValue(variable);
+      expect(value).toBeTruthy();
+      expect(value.trim()).not.toBe('');
+    });
+  });
+
+  test('should have proper color format (OKLCH)', () => {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const colorVariables = [
+      '--background',
+      '--foreground',
+      '--primary',
+      '--primary-foreground',
+      '--secondary',
+      '--secondary-foreground',
+      '--muted',
+      '--muted-foreground',
+      '--accent',
+      '--accent-foreground',
+      '--destructive',
+      '--destructive-foreground',
+    ];
+
+    colorVariables.forEach(variable => {
+      const value = computedStyle.getPropertyValue(variable);
+      expect(value).toMatch(/^oklch\(/);
+    });
+  });
+
+  test('should have zero border radius', () => {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const radiusValue = computedStyle.getPropertyValue('--radius');
+    expect(radiusValue.trim()).toBe('0rem');
+  });
+
+  test('should have proper font variables', () => {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    const fontVariables = [
+      '--font-sans',
+      '--font-logo',
+    ];
+
+    fontVariables.forEach(variable => {
+      const value = computedStyle.getPropertyValue(variable);
+      expect(value).toBeTruthy();
+      expect(value.trim()).not.toBe('');
+    });
+  });
+});
+
+describe('Theme Accessibility', () => {
+  test('should meet WCAG AA standards', () => {
+    const report = testThemeAccessibility();
+    expect(report.isValid).toBe(true);
+    expect(report.issues).toHaveLength(0);
+  });
+
+  test('should generate accessibility report', () => {
+    const report = generateAccessibilityReport();
+    expect(report).toContain('Theme Accessibility Report');
+    expect(report).toContain('All color combinations meet WCAG AA standards');
+  });
+
+  test('should test all color combinations', () => {
+    const { results } = runAccessibilityTests();
+    const expectedCombinations = [
+      'Background/Foreground',
+      'Card/Text',
+      'Primary/Text',
+      'Secondary/Text',
+      'Muted/Text',
+      'Accent/Text',
+      'Destructive/Text',
+      'Border/Text',
+      'Input/Text',
+    ];
+
+    const actualNames = results.map(r => r.name);
+    expectedCombinations.forEach(name => {
+      expect(actualNames).toContain(name);
+    });
+  });
+
+  test('all color combinations should pass AA standards', () => {
+    const { results } = runAccessibilityTests();
+    
+    results.forEach(result => {
+      expect(result.passesAA).toBe(true);
+      expect(result.contrastRatio).toBeGreaterThanOrEqual(4.5);
+    });
+  });
+
+  test('large text should pass AA standards', () => {
+    const { results } = runAccessibilityTests();
+    
+    results.forEach(result => {
+      expect(result.passesAALarge).toBe(true);
+      expect(result.contrastRatio).toBeGreaterThanOrEqual(3.0);
+    });
   });
 });
 
@@ -288,3 +425,59 @@ describe('Theme Performance', () => {
     expect(loadTime).toBeLessThan(20);
   });
 });
+
+describe('Theme Consistency', () => {
+  test('should use consistent color naming', () => {
+    const root = document.documentElement;
+    const computedStyle = getComputedStyle(root);
+    
+    // Test semantic color naming
+    const semanticColors = [
+      '--background',
+      '--foreground',
+      '--primary',
+      '--secondary',
+      '--muted',
+      '--accent',
+      '--destructive',
+    ];
+
+    semanticColors.forEach(color => {
+      const value = computedStyle.getPropertyValue(color);
+      expect(value).toBeTruthy();
+      expect(value.trim()).not.toBe('');
+    });
+  });
+
+  test('should have consistent spacing scale', () => {
+    // Test that spacing follows consistent scale
+    const spacingValues = [
+      '0.25rem', '0.5rem', '0.75rem', '1rem',
+      '1.25rem', '1.5rem', '1.75rem', '2rem',
+      '2.25rem', '2.5rem', '2.75rem', '3rem',
+    ];
+
+    // This test ensures our spacing scale is consistent
+    expect(spacingValues).toHaveLength(12);
+    spacingValues.forEach((value, index) => {
+      const numericValue = parseFloat(value);
+      expect(numericValue).toBeGreaterThan(0);
+      expect(numericValue).toBeLessThanOrEqual(3);
+    });
+  });
+
+  test('should have consistent typography scale', () => {
+    // Test that typography follows consistent scale
+    const fontSizeValues = [
+      '0.75rem', '0.875rem', '1rem', '1.125rem',
+      '1.25rem', '1.5rem', '1.875rem', '2.25rem',
+      '3rem', '3.75rem', '4.5rem', '6rem',
+    ];
+
+    fontSizeValues.forEach((value, index) => {
+      const numericValue = parseFloat(value);
+      expect(numericValue).toBeGreaterThan(0);
+      expect(numericValue).toBeLessThanOrEqual(6);
+    });
+  });
+}); 

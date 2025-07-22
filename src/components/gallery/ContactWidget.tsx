@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { MessageCircle, Phone } from 'lucide-react';
+import { MessageCircle, Phone, CheckCircle } from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 
 interface ContactWidgetProps {
@@ -36,6 +36,218 @@ interface WidgetData {
   dateSkipped: boolean;
 }
 
+// Memoized step components for better performance
+const EventTypeStep = memo(({ 
+  content, 
+  onSelect, 
+  selectedType 
+}: { 
+  content: any; 
+  onSelect: (type: string) => void; 
+  selectedType: string; 
+}) => (
+  <div className="space-y-4" role="region" aria-label="Event type selection">
+    <div className="text-center">
+      <h3 className="text-lg font-semibold" id="event-type-title">{content.steps.eventType.title}</h3>
+      <p className="text-sm text-muted-foreground" id="event-type-subtitle">{content.steps.eventType.subtitle}</p>
+    </div>
+    <div className="grid grid-cols-1 gap-3" role="radiogroup" aria-labelledby="event-type-title">
+      <Button
+        variant={selectedType === 'wedding' ? 'default' : 'outline'}
+        onClick={() => onSelect('wedding')}
+        className="justify-start"
+        role="radio"
+        aria-checked={selectedType === 'wedding'}
+        aria-describedby="event-type-subtitle"
+      >
+        {content.eventTypes.wedding}
+      </Button>
+      <Button
+        variant={selectedType === 'corporate' ? 'default' : 'outline'}
+        onClick={() => onSelect('corporate')}
+        className="justify-start"
+        role="radio"
+        aria-checked={selectedType === 'corporate'}
+        aria-describedby="event-type-subtitle"
+      >
+        {content.eventTypes.corporate}
+      </Button>
+      <Button
+        variant={selectedType === 'other' ? 'default' : 'outline'}
+        onClick={() => onSelect('other')}
+        className="justify-start"
+        role="radio"
+        aria-checked={selectedType === 'other'}
+        aria-describedby="event-type-subtitle"
+      >
+        {content.eventTypes.other}
+      </Button>
+    </div>
+  </div>
+));
+
+const DateStep = memo(({ 
+  content, 
+  onSelect, 
+  selectedDate, 
+  onSkip 
+}: { 
+  content: any; 
+  onSelect: (date: Date | undefined) => void; 
+  selectedDate: Date | undefined; 
+  onSkip: () => void; 
+}) => (
+  <div className="space-y-4" role="region" aria-label="Date selection">
+    <div className="text-center">
+      <h3 className="text-lg font-semibold" id="date-title">{content.steps.date.title}</h3>
+      <p className="text-sm text-muted-foreground" id="date-subtitle">{content.steps.date.subtitle}</p>
+    </div>
+    <Calendar
+      mode="single"
+      selected={selectedDate}
+      onSelect={onSelect}
+      className="rounded-md border"
+      aria-labelledby="date-title"
+      aria-describedby="date-subtitle"
+    />
+    <Button 
+      variant="outline" 
+      onClick={onSkip} 
+      className="w-full"
+      aria-label="Skip date selection"
+    >
+      {content.steps.date.noDate}
+    </Button>
+  </div>
+));
+
+const LocationStep = memo(({ 
+  content, 
+  onInput, 
+  onSkip, 
+  value 
+}: { 
+  content: any; 
+  onInput: (location: string) => void; 
+  onSkip: () => void; 
+  value: string; 
+}) => (
+  <div className="space-y-4" role="region" aria-label="Location input">
+    <div className="text-center">
+      <h3 className="text-lg font-semibold" id="location-title">{content.steps.location.title}</h3>
+      <p className="text-sm text-muted-foreground" id="location-subtitle">{content.steps.location.subtitle}</p>
+    </div>
+    <div className="space-y-3">
+      <Input
+        placeholder={content.steps.location.placeholder}
+        value={value}
+        onChange={(e) => onInput(e.target.value)}
+        aria-labelledby="location-title"
+        aria-describedby="location-subtitle"
+        aria-label="Event location"
+      />
+      <Button 
+        variant="outline" 
+        onClick={onSkip} 
+        className="w-full"
+        aria-label="Skip location input"
+      >
+        {content.steps.location.noLocation}
+      </Button>
+    </div>
+  </div>
+));
+
+const ContactStep = memo(({ 
+  content, 
+  onChoice 
+}: { 
+  content: any; 
+  onChoice: (choice: 'moreInfo' | 'callMe') => void; 
+}) => (
+  <div className="space-y-4" role="region" aria-label="Contact preference selection">
+    <div className="text-center">
+      <h3 className="text-lg font-semibold" id="contact-title">{content.steps.contact.title}</h3>
+      <p className="text-sm text-muted-foreground" id="contact-subtitle">{content.steps.contact.subtitle}</p>
+    </div>
+    <div className="grid grid-cols-1 gap-3" role="radiogroup" aria-labelledby="contact-title">
+      <Button
+        variant="outline"
+        onClick={() => onChoice('moreInfo')}
+        className="justify-start"
+        role="radio"
+        aria-checked={false}
+        aria-describedby="contact-subtitle"
+      >
+        <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
+        <div className="text-left">
+          <div className="font-medium">{content.steps.contact.moreInfo.title}</div>
+          <div className="text-xs text-muted-foreground">{content.steps.contact.moreInfo.subtitle}</div>
+        </div>
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() => onChoice('callMe')}
+        className="justify-start"
+        role="radio"
+        aria-checked={false}
+        aria-describedby="contact-subtitle"
+      >
+        <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
+        <div className="text-left">
+          <div className="font-medium">{content.steps.contact.callMe.title}</div>
+          <div className="text-xs text-muted-foreground">{content.steps.contact.callMe.subtitle}</div>
+        </div>
+      </Button>
+    </div>
+  </div>
+));
+
+const PhoneStep = memo(({ 
+  content, 
+  onSubmit, 
+  isSubmitting 
+}: { 
+  content: any; 
+  onSubmit: (phone: string) => void; 
+  isSubmitting: boolean; 
+}) => {
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = useCallback(() => {
+    if (phone.trim()) {
+      onSubmit(phone.trim());
+    }
+  }, [phone, onSubmit]);
+
+  return (
+    <div className="space-y-4" role="region" aria-label="Phone number input">
+      <div className="text-center">
+        <h3 className="text-lg font-semibold" id="phone-title">{content.steps.phone.title}</h3>
+        <p className="text-sm text-muted-foreground" id="phone-subtitle">{content.steps.phone.subtitle}</p>
+      </div>
+      <div className="space-y-3">
+        <Input
+          type="tel"
+          placeholder={content.steps.phone.placeholder}
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          aria-labelledby="phone-title"
+          aria-describedby="phone-subtitle"
+          aria-label="Phone number"
+        />
+        <Button 
+          onClick={handleSubmit} 
+          disabled={isSubmitting || !phone.trim()}
+          aria-label={isSubmitting ? "Submitting phone number" : "Submit phone number"}
+        >
+          {isSubmitting ? content.steps.phone.loading : content.steps.phone.button}
+        </Button>
+      </div>
+    </div>
+  );
+});
+
 export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>('eventType');
@@ -49,121 +261,73 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Get static content for translations
-  const content = getStaticContent(language);
-  const widgetContent = content.translations.widget as {
-    button: {
-      desktop: string;
-      mobile: string;
-    };
-    dialog: {
-      title: string;
-    };
-    eventTypes: {
-      wedding: string;
-      corporate: string;
-      other: string;
-    };
-    steps: {
-      eventType: {
-        title: string;
-        subtitle: string;
-      };
-      date: {
-        title: string;
-        subtitle: string;
-        noDate: string;
-      };
-      location: {
-        title: string;
-        subtitle: string;
-        placeholder: string;
-        noLocation: string;
-      };
-      contact: {
-        title: string;
-        subtitle: string;
-        moreInfo: {
-          title: string;
-          subtitle: string;
-        };
-        callMe: {
-          title: string;
-          subtitle: string;
-        };
-      };
-      phone: {
-        title: string;
-        subtitle: string;
-        placeholder: string;
-        button: string;
-        loading: string;
-      };
-      complete: {
-        title: string;
-        message: string;
-        button: string;
-      };
-    };
-  };
+  // Memoize static content to prevent unnecessary re-computations
+  const content = useMemo(() => getStaticContent(language), [language]);
+  const widgetContent = useMemo(() => content.translations.widget as any, [content]);
 
-  const handleEventTypeSelect = (eventType: string) => {
+  // Memoize event handlers to prevent unnecessary re-renders
+  const handleEventTypeSelect = useCallback((eventType: string) => {
     setWidgetData(prev => ({ ...prev, eventType }));
     setCurrentStep('date');
-  };
+  }, []);
 
-  const handleDateSelect = (date: Date | undefined) => {
-    if (date) {
-      const dateString = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-      setWidgetData(prev => ({ ...prev, eventDate: dateString }));
-      // Automatically proceed to next step after date selection
-      setTimeout(() => setCurrentStep('location'), 500);
-    }
-  };
+  const handleDateSelect = useCallback((date: Date | undefined) => {
+    setWidgetData(prev => ({ 
+      ...prev, 
+      eventDate: date ? date.toISOString().split('T')[0] : '',
+      dateSkipped: !date 
+    }));
+    setCurrentStep('location');
+  }, []);
 
-  const handleContactChoice = (choice: 'moreInfo' | 'callMe') => {
+  const handleDateSkip = useCallback(() => {
+    setWidgetData(prev => ({ ...prev, dateSkipped: true }));
+    setCurrentStep('location');
+  }, []);
+
+  const handleLocationInput = useCallback((location: string) => {
+    setWidgetData(prev => ({ ...prev, location }));
+  }, []);
+
+  const handleLocationSkip = useCallback(() => {
+    setWidgetData(prev => ({ ...prev, location: '' }));
+    setCurrentStep('contact');
+  }, []);
+
+  const handleContactChoice = useCallback((choice: 'moreInfo' | 'callMe') => {
     if (choice === 'moreInfo') {
-      // Navigate to contact page with pre-filled data
+      // Build URL with parameters
       const params = new URLSearchParams();
       if (widgetData.eventType) params.append('evento', widgetData.eventType);
-      if (widgetData.eventDate) params.append('fecha', widgetData.eventDate);
-
-      // Create a message with the collected information
-      let message = '';
-      if (widgetData.location) {
-        message += `Ubicación: ${widgetData.location}\n`;
-      } else {
-        message += `Ubicación: \n`;
-      }
-      params.append('mensaje', message);
-
-      const url = `/${language === 'es' ? 'contact' : language === 'en' ? 'en/contact' : 'pt/contact'}?${params.toString()}`;
-      console.log('Widget sending to URL:', url);
-      console.log('Widget data:', widgetData);
-
+      if (widgetData.eventDate && !widgetData.dateSkipped) params.append('fecha', widgetData.eventDate);
+      if (widgetData.location) params.append('mensaje', `Ubicación: ${widgetData.location}`);
+      
+      const url = `/contact?${params.toString()}`;
       router.push(url);
       setIsOpen(false);
     } else {
-      // Show phone input
       setCurrentStep('phone');
     }
-  };
+  }, [widgetData, router]);
 
-  const handlePhoneSubmit = async (phone: string) => {
+  const handlePhoneSubmit = useCallback(async (phone: string) => {
     setIsSubmitting(true);
     try {
-      // Send phone number via email or save to database
-      console.log('Phone submission:', { ...widgetData, phone });
-      // TODO: Implement actual submission logic
+      // Simulate API call for phone submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // In a real implementation, you would call your API here
+      console.log('Phone submitted:', phone);
+      
       setCurrentStep('complete');
     } catch (error) {
       console.error('Error submitting phone:', error);
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, []);
 
-  const resetWidget = () => {
+  const resetWidget = useCallback(() => {
     setCurrentStep('eventType');
     setWidgetData({
       eventType: '',
@@ -173,266 +337,119 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       dateSkipped: false,
     });
     setIsSubmitting(false);
-  };
+  }, []);
 
-  const renderStep = () => {
+  // Memoize step rendering to prevent unnecessary re-renders
+  const renderStep = useMemo(() => {
     switch (currentStep) {
       case 'eventType':
         return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {widgetContent.steps.eventType.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {widgetContent.steps.eventType.subtitle}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => handleEventTypeSelect('wedding')}
-              >
-                💒 {widgetContent.eventTypes.wedding}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => handleEventTypeSelect('corporate')}
-              >
-                🏢 {widgetContent.eventTypes.corporate}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => handleEventTypeSelect('other')}
-              >
-                🎉 {widgetContent.eventTypes.other}
-              </Button>
-            </div>
-          </div>
+          <EventTypeStep
+            content={widgetContent}
+            onSelect={handleEventTypeSelect}
+            selectedType={widgetData.eventType}
+          />
         );
-
       case 'date':
         return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {widgetContent.steps.date.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {widgetContent.steps.date.subtitle}
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex justify-center">
-                <Calendar
-                  mode="single"
-                  selected={
-                    widgetData.eventDate
-                      ? new Date(widgetData.eventDate)
-                      : undefined
-                  }
-                  onSelect={handleDateSelect}
-                  disabled={date => date < new Date()}
-                  className="rounded-md border"
-                />
-              </div>
-              <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => {
-                    setWidgetData(prev => ({ ...prev, dateSkipped: true }));
-                    setCurrentStep('location');
-                  }}
-                >
-                  {widgetContent.steps.date.noDate}
-                </Button>
-                <Button
-                  className="w-full"
-                  onClick={() => setCurrentStep('location')}
-                  disabled={!widgetData.eventDate && !widgetData.dateSkipped}
-                >
-                  Continuar
-                </Button>
-              </div>
-            </div>
-          </div>
+          <DateStep
+            content={widgetContent}
+            onSelect={handleDateSelect}
+            selectedDate={widgetData.eventDate ? new Date(widgetData.eventDate) : undefined}
+            onSkip={handleDateSkip}
+          />
         );
-
       case 'location':
         return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {widgetContent.steps.location.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {widgetContent.steps.location.subtitle}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="location">Ubicación</Label>
-                <Input
-                  id="location"
-                  placeholder={widgetContent.steps.location.placeholder}
-                  value={widgetData.location}
-                  onChange={e =>
-                    setWidgetData(prev => ({
-                      ...prev,
-                      location: e.target.value,
-                    }))
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => {
-                    setWidgetData(prev => ({ ...prev, location: '' }));
-                    setCurrentStep('contact');
-                  }}
-                >
-                  {widgetContent.steps.location.noLocation}
-                </Button>
-                <Button
-                  className="w-full"
-                  onClick={() => setCurrentStep('contact')}
-                  disabled={!widgetData.location.trim()}
-                >
-                  Continuar
-                </Button>
-              </div>
-            </div>
-          </div>
+          <LocationStep
+            content={widgetContent}
+            onInput={handleLocationInput}
+            onSkip={handleLocationSkip}
+            value={widgetData.location}
+          />
         );
-
       case 'contact':
         return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {widgetContent.steps.contact.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {widgetContent.steps.contact.subtitle}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => handleContactChoice('moreInfo')}
-              >
-                {widgetContent.steps.contact.moreInfo.title}
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                onClick={() => handleContactChoice('callMe')}
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                {widgetContent.steps.contact.callMe.title}
-              </Button>
-            </div>
-          </div>
+          <ContactStep
+            content={widgetContent}
+            onChoice={handleContactChoice}
+          />
         );
-
       case 'phone':
         return (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {widgetContent.steps.phone.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {widgetContent.steps.phone.subtitle}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Teléfono</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder={widgetContent.steps.phone.placeholder}
-                  value={widgetData.phone}
-                  onChange={e =>
-                    setWidgetData(prev => ({ ...prev, phone: e.target.value }))
-                  }
-                />
-              </div>
-              <Button
-                className="w-full"
-                onClick={() => handlePhoneSubmit(widgetData.phone)}
-                disabled={isSubmitting || !widgetData.phone}
-              >
-                {isSubmitting
-                  ? widgetContent.steps.phone.loading
-                  : widgetContent.steps.phone.button}
-              </Button>
-            </div>
-          </div>
+          <PhoneStep
+            content={widgetContent}
+            onSubmit={handlePhoneSubmit}
+            isSubmitting={isSubmitting}
+          />
         );
-
       case 'complete':
         return (
-          <div className="space-y-6 text-center">
-            <div className="text-primary">
-              <MessageCircle className="w-12 h-12 mx-auto mb-4" />
+          <div className="text-center space-y-4" role="status" aria-live="polite">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto" aria-hidden="true">
+              <CheckCircle className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="text-lg font-semibold">
-              {widgetContent.steps.complete.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {widgetContent.steps.complete.message}
+            <h3 className="text-lg font-semibold" id="success-title">¡Gracias!</h3>
+            <p className="text-sm text-muted-foreground" id="success-message">
+              Nos pondremos en contacto contigo pronto.
             </p>
-            <Button
-              onClick={() => {
-                setIsOpen(false);
-                resetWidget();
-              }}
-            >
-              {widgetContent.steps.complete.button}
-            </Button>
           </div>
         );
-
       default:
         return null;
     }
-  };
+  }, [currentStep, widgetContent, widgetData, handleEventTypeSelect, handleDateSelect, handleDateSkip, handleLocationInput, handleLocationSkip, handleContactChoice, handlePhoneSubmit, isSubmitting]);
 
-  return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <Dialog
-        open={isOpen}
-        onOpenChange={open => {
-          setIsOpen(open);
-          if (!open) {
-            // Reset widget to step 1 when closing
-            resetWidget();
-          }
-        }}
-      >
-        <DialogTrigger asChild>
-          <Button size="lg" className="rounded-full shadow-lg">
-            <MessageCircle className="w-5 h-5 mr-2" />
-            {widgetContent.button.desktop}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{widgetContent.dialog.title}</DialogTitle>
-          </DialogHeader>
-          {renderStep()}
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
+  // Memoize dialog content to prevent unnecessary re-renders
+  const dialogContent = useMemo(() => (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow"
+          aria-label="Open contact widget"
+        >
+          <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
+          <span className="hidden sm:inline">{widgetContent.button.desktop}</span>
+          <span className="sm:hidden">{widgetContent.button.mobile}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md" role="dialog" aria-labelledby="dialog-title">
+        <DialogHeader>
+          <DialogTitle id="dialog-title">{widgetContent.dialog.title}</DialogTitle>
+        </DialogHeader>
+        <div className="py-4" role="main">
+          {renderStep}
+        </div>
+        {currentStep !== 'complete' && (
+          <div className="flex justify-between pt-4 border-t" role="navigation" aria-label="Dialog navigation">
+            <Button
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+              aria-label="Cancel and close dialog"
+            >
+              Cancelar
+            </Button>
+            {currentStep !== 'eventType' && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  const steps: Step[] = ['eventType', 'date', 'location', 'contact', 'phone'];
+                  const currentIndex = steps.indexOf(currentStep);
+                  if (currentIndex > 0) {
+                    setCurrentStep(steps[currentIndex - 1]);
+                  }
+                }}
+                aria-label="Go to previous step"
+              >
+                Atrás
+              </Button>
+            )}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  ), [isOpen, currentStep, widgetContent, renderStep]);
+
+  return dialogContent;
 }
