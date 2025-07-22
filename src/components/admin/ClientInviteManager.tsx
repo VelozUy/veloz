@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -94,16 +94,12 @@ export default function ClientInviteManager({
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    loadData();
-  }, [projectId]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       const db = await getFirestoreService();
       if (!db) {
-        setError('Service not available');
+        setError('Servicio no disponible');
         return;
       }
 
@@ -137,11 +133,15 @@ export default function ClientInviteManager({
 
     } catch (err) {
       console.error('Error loading data:', err);
-      setError('Error loading data');
+      setError('Error al cargar datos');
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Public Link Management
   const generatePublicLink = async () => {
@@ -160,56 +160,56 @@ export default function ClientInviteManager({
       };
 
       await addDoc(collection(db, 'public_access'), linkData);
-      setSuccess('Public link generated successfully');
+      setSuccess('Enlace público generado exitosamente');
       loadData();
       
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('Error generating public link:', err);
-      setError('Error generating public link');
+      setError('Error al generar enlace público');
     }
   };
 
   const revokePublicLink = async (linkId: string) => {
-    if (!confirm('Are you sure you want to revoke this link?')) return;
+    if (!confirm('¿Estás seguro de que quieres revocar este enlace?')) return;
     
     try {
       const db = await getFirestoreService();
       if (!db) return;
 
       await deleteDoc(doc(db, 'public_access', linkId));
-      setSuccess('Public link revoked successfully');
+      setSuccess('Enlace público revocado exitosamente');
       loadData();
       
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('Error revoking link:', err);
-      setError('Error revoking link');
+      setError('Error al revocar enlace');
     }
   };
 
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      setSuccess('Copied to clipboard');
+      setSuccess('Copiado al portapapeles');
       setTimeout(() => setSuccess(''), 2000);
     } catch (err) {
       console.error('Error copying to clipboard:', err);
-      setError('Failed to copy to clipboard');
+      setError('Error al copiar al portapapeles');
     }
   };
 
   const exportClientList = () => {
     try {
       // Create CSV content
-      const headers = ['Name', 'Email', 'Signup Date', 'Last Login', 'Status'];
+      const headers = ['Nombre', 'Email', 'Fecha de Registro', 'Último Acceso', 'Estado'];
       const csvContent = [
         headers.join(','),
         ...clientSignups.map(client => [
           `"${client.name}"`,
           `"${client.email}"`,
           `"${client.signupDate ? client.signupDate.toDate().toLocaleDateString() : 'N/A'}"`,
-          `"${client.lastLogin ? client.lastLogin.toDate().toLocaleDateString() : 'Never'}"`,
+          `"${client.lastLogin ? client.lastLogin.toDate().toLocaleDateString() : 'Nunca'}"`,
           `"${client.status}"`
         ].join(','))
       ].join('\n');
@@ -219,17 +219,17 @@ export default function ClientInviteManager({
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
       link.setAttribute('href', url);
-      link.setAttribute('download', `client-list-${projectTitle}-${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute('download', `lista-clientes-${projectTitle}-${new Date().toISOString().split('T')[0]}.csv`);
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      setSuccess('Client list exported successfully');
+      setSuccess('Lista de clientes exportada exitosamente');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       console.error('Error exporting client list:', err);
-      setError('Failed to export client list');
+      setError('Error al exportar lista de clientes');
     }
   };
 
@@ -275,12 +275,12 @@ export default function ClientInviteManager({
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="signups" className="flex items-center space-x-2">
             <User className="w-4 h-4" />
-            <span>Client Signups</span>
+            <span>Registros de Clientes</span>
             <Badge variant="secondary">{clientSignups.length}</Badge>
           </TabsTrigger>
           <TabsTrigger value="public-links" className="flex items-center space-x-2">
             <Link className="w-4 h-4" />
-            <span>Public Links</span>
+            <span>Enlaces Públicos</span>
             <Badge variant="secondary">{publicLinks.length}</Badge>
           </TabsTrigger>
         </TabsList>
@@ -288,9 +288,9 @@ export default function ClientInviteManager({
             {/* Client Signups Tab */}
             <TabsContent value="signups" className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold">Client Signups</h3>
+                <h3 className="text-lg font-semibold">Registros de Clientes</h3>
                 <p className="text-sm text-muted-foreground">
-                  Track which clients have created accounts for this project. These emails will be visible to all clients on their portal page.
+                  Rastrea qué clientes han creado cuentas para este proyecto. Estos emails serán visibles para todos los clientes en su página de portal.
                 </p>
               </div>
 
@@ -299,7 +299,7 @@ export default function ClientInviteManager({
                 <div className="flex items-center space-x-2">
                   <Search className="w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search clients..."
+                    placeholder="Buscar clientes..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="max-w-sm"
@@ -311,7 +311,7 @@ export default function ClientInviteManager({
                   disabled={clientSignups.length === 0}
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Export Client List
+                  Exportar Lista de Clientes
                 </Button>
               </div>
 
@@ -320,12 +320,12 @@ export default function ClientInviteManager({
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
+                      <TableHead>Nombre</TableHead>
                       <TableHead>Email</TableHead>
-                      <TableHead>Signup Date</TableHead>
-                      <TableHead>Last Login</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>Fecha de Registro</TableHead>
+                      <TableHead>Último Acceso</TableHead>
+                      <TableHead>Estado</TableHead>
+                      <TableHead>Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -333,9 +333,9 @@ export default function ClientInviteManager({
                       <TableRow>
                         <TableCell colSpan={6} className="text-center py-8">
                           <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                          <h3 className="text-lg font-medium mb-2">No client signups</h3>
+                          <h3 className="text-lg font-medium mb-2">No hay registros de clientes</h3>
                           <p className="text-muted-foreground">
-                            Clients will appear here once they create accounts for this project
+                            Los clientes aparecerán aquí una vez que creen cuentas para este proyecto
                           </p>
                         </TableCell>
                       </TableRow>
@@ -348,11 +348,11 @@ export default function ClientInviteManager({
                             {client.signupDate ? client.signupDate.toDate().toLocaleDateString() : 'N/A'}
                           </TableCell>
                           <TableCell>
-                            {client.lastLogin ? client.lastLogin.toDate().toLocaleDateString() : 'Never'}
+                            {client.lastLogin ? client.lastLogin.toDate().toLocaleDateString() : 'Nunca'}
                           </TableCell>
                           <TableCell>
                             <Badge variant={client.status === 'active' ? 'default' : 'secondary'}>
-                              {client.status}
+                              {client.status === 'active' ? 'Activo' : 'Inactivo'}
                             </Badge>
                           </TableCell>
                           <TableCell>
@@ -372,14 +372,14 @@ export default function ClientInviteManager({
             <TabsContent value="public-links" className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Public Access Links</h3>
+                  <h3 className="text-lg font-semibold">Enlaces de Acceso Público</h3>
                   <p className="text-sm text-muted-foreground">
-                    Manage public links for client signup to this project. Anyone with these links can create accounts.
+                    Gestiona enlaces públicos para el registro de clientes en este proyecto. Cualquiera con estos enlaces puede crear cuentas.
                   </p>
                 </div>
                 <Button onClick={generatePublicLink}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Generate New Link
+                  Generar Nuevo Enlace
                 </Button>
               </div>
 
@@ -388,11 +388,11 @@ export default function ClientInviteManager({
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Link</TableHead>
-                      <TableHead>Created Date</TableHead>
-                      <TableHead>Usage Count</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>Enlace</TableHead>
+                      <TableHead>Fecha de Creación</TableHead>
+                      <TableHead>Contador de Uso</TableHead>
+                      <TableHead>Estado</TableHead>
+                      <TableHead>Acciones</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -400,9 +400,9 @@ export default function ClientInviteManager({
                       <TableRow>
                         <TableCell colSpan={5} className="text-center py-8">
                           <Link className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                          <h3 className="text-lg font-medium mb-2">No public links</h3>
+                          <h3 className="text-lg font-medium mb-2">No hay enlaces públicos</h3>
                           <p className="text-muted-foreground">
-                            Generate a public link to allow client signups for this project
+                            Genera un enlace público para permitir registros de clientes para este proyecto
                           </p>
                         </TableCell>
                       </TableRow>
@@ -418,7 +418,7 @@ export default function ClientInviteManager({
                           <TableCell>{link.usageCount}</TableCell>
                           <TableCell>
                             <Badge variant={link.status === 'active' ? 'default' : 'secondary'}>
-                              {link.status}
+                              {link.status === 'active' ? 'Activo' : 'Revocado'}
                             </Badge>
                           </TableCell>
                           <TableCell>
