@@ -488,12 +488,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
 
 
-          {currentMedia.type === 'video' ? (
+          {!isInLoadingTransition && currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-              } transition-all duration-500 ease-out ${isInLoadingTransition ? 'pointer-events-none' : ''}`}
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out`}
               controls
               autoPlay
               muted
@@ -502,8 +502,6 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
-                zIndex: isInLoadingTransition ? -1 : 'auto',
-                visibility: isInLoadingTransition ? 'hidden' : 'visible',
               }}
               data-testid={`video-${currentMedia.id}`}
               onLoadedData={() => {
@@ -517,18 +515,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 handleMediaError(currentMedia.id);
               }}
             />
-          ) : (
+          ) : !isInLoadingTransition ? (
             <img
               src={currentMedia.url}
               alt={currentMedia.alt}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-              } transition-all duration-500 ease-out ${isInLoadingTransition ? 'pointer-events-none' : ''}`}
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out`}
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
-                zIndex: isInLoadingTransition ? -1 : 'auto',
-                visibility: isInLoadingTransition ? 'hidden' : 'visible',
               }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => {
@@ -542,7 +538,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 handleMediaError(currentMedia.id);
               }}
             />
-          )}
+          ) : null}
         </div>
       </div>
 
