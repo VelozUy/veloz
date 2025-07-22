@@ -17,7 +17,7 @@ export class MediaProgressLoader {
   private static readonly PROGRESS_UPDATE_INTERVAL = 100; // ms
 
   /**
-   * Loads media with progress tracking using multiple fallback methods
+   * Loads media with progress tracking using CSP-compliant methods
    */
   static async loadWithProgress(
     url: string,
@@ -27,23 +27,9 @@ export class MediaProgressLoader {
     const {
       timeout = this.DEFAULT_TIMEOUT,
       retries = this.DEFAULT_RETRIES,
-      useBlob = true,
+      useBlob = false, // Disable blob for CSP compliance
       fallbackToDirect = true
     } = options;
-
-    // Try XMLHttpRequest first (most accurate)
-    try {
-      return await this.loadWithXHR(url, timeout, callbacks, useBlob);
-    } catch (error) {
-      console.warn('XHR loading failed, trying fetch:', error);
-    }
-
-    // Try Fetch API with streaming
-    try {
-      return await this.loadWithFetch(url, timeout, callbacks, useBlob);
-    } catch (error) {
-      console.warn('Fetch loading failed, trying native:', error);
-    }
 
     // Try native Image/Video loading with progress events
     try {
@@ -61,141 +47,7 @@ export class MediaProgressLoader {
   }
 
   /**
-   * XMLHttpRequest method - most accurate progress tracking
-   */
-  private static async loadWithXHR(
-    url: string,
-    timeout: number,
-    callbacks: MediaProgressCallback,
-    useBlob: boolean
-  ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      let timeoutId: NodeJS.Timeout;
-
-      const cleanup = () => {
-        if (timeoutId) clearTimeout(timeoutId);
-        xhr.abort();
-      };
-
-      timeoutId = setTimeout(() => {
-        cleanup();
-        reject(new Error('XHR timeout'));
-      }, timeout);
-
-      xhr.open('GET', url, true);
-      xhr.responseType = 'blob';
-
-      xhr.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const percent = Math.round((event.loaded / event.total) * 100);
-          callbacks.onProgress(percent);
-        }
-      };
-
-      xhr.onload = () => {
-        cleanup();
-        if (xhr.status >= 200 && xhr.status < 300) {
-          try {
-            const blob = xhr.response;
-            if (useBlob) {
-              const objectUrl = URL.createObjectURL(blob);
-              callbacks.onComplete(objectUrl);
-              resolve(objectUrl);
-            } else {
-              callbacks.onComplete(url);
-              resolve(url);
-            }
-          } catch (error) {
-            reject(error);
-          }
-        } else {
-          reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
-        }
-      };
-
-      xhr.onerror = () => {
-        cleanup();
-        reject(new Error('XHR network error'));
-      };
-
-      xhr.ontimeout = () => {
-        cleanup();
-        reject(new Error('XHR timeout'));
-      };
-
-      xhr.send();
-    });
-  }
-
-  /**
-   * Fetch API method with ReadableStream
-   */
-  private static async loadWithFetch(
-    url: string,
-    timeout: number,
-    callbacks: MediaProgressCallback,
-    useBlob: boolean
-  ): Promise<string> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    try {
-      const response = await fetch(url, {
-        signal: controller.signal
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const contentLength = response.headers.get('content-length');
-      const reader = response.body?.getReader();
-
-      if (!reader) {
-        throw new Error('No readable stream available');
-      }
-
-      let receivedLength = 0;
-      const chunks: Uint8Array[] = [];
-
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        chunks.push(value);
-        receivedLength += value.length;
-
-        if (contentLength) {
-          const percent = Math.round((receivedLength / parseInt(contentLength)) * 100);
-          callbacks.onProgress(percent);
-        } else {
-          // Simulate progress for unknown content length
-          const simulatedPercent = Math.min(95, Math.round((receivedLength / 1024 / 1024) * 10));
-          callbacks.onProgress(simulatedPercent);
-        }
-      }
-
-      clearTimeout(timeoutId);
-
-      if (useBlob) {
-        const blob = new Blob(chunks);
-        const objectUrl = URL.createObjectURL(blob);
-        callbacks.onComplete(objectUrl);
-        return objectUrl;
-      } else {
-        callbacks.onComplete(url);
-        return url;
-      }
-    } catch (error) {
-      clearTimeout(timeoutId);
-      throw error;
-    }
-  }
-
-  /**
-   * Native Image/Video loading with progress events
+   * Native Image/Video loading with progress events (CSP-compliant)
    */
   private static async loadWithNative(
     url: string,
@@ -255,7 +107,7 @@ export class MediaProgressLoader {
   }
 
   /**
-   * Fallback method with simulated progress
+   * Fallback method with simulated progress (CSP-compliant)
    */
   private static async loadWithSimulatedProgress(
     url: string,
@@ -297,22 +149,6 @@ export class MediaProgressLoader {
   }
 
   /**
-   * Cleanup blob URLs to prevent memory leaks
-   */
-  static revokeObjectURL(url: string): void {
-    if (url.startsWith('blob:')) {
-      URL.revokeObjectURL(url);
-    }
-  }
-
-  /**
-   * Batch cleanup multiple blob URLs
-   */
-  static revokeObjectURLs(urls: string[]): void {
-    urls.forEach(url => this.revokeObjectURL(url));
-  }
-
-  /**
    * Check if a URL is a blob URL
    */
   static isBlobURL(url: string): boolean {
@@ -320,14 +156,31 @@ export class MediaProgressLoader {
   }
 
   /**
-   * Get file size from headers (if available)
+   * Revoke a blob object URL
+   */
+  static revokeObjectURL(url: string): void {
+    if (this.isBlobURL(url)) {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  /**
+   * Revoke multiple blob object URLs
+   */
+  static revokeObjectURLs(urls: string[]): void {
+    urls.forEach(url => this.revokeObjectURL(url));
+  }
+
+  /**
+   * Get file size from URL (CSP-compliant version)
    */
   static async getFileSize(url: string): Promise<number | null> {
     try {
-      const response = await fetch(url, { method: 'HEAD' });
-      const contentLength = response.headers.get('content-length');
-      return contentLength ? parseInt(contentLength) : null;
-    } catch {
+      // For CSP compliance, we can't make HEAD requests
+      // Return null to indicate unknown size
+      return null;
+    } catch (error) {
+      console.warn('Could not get file size:', error);
       return null;
     }
   }

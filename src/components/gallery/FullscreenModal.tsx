@@ -69,7 +69,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   } = useMediaProgress(currentMedia?.url || '', {
     autoLoad: false, // We'll control loading manually
     timeout: 30000,
-    useBlob: true,
+    useBlob: false, // Disable blob for CSP compliance
     fallbackToDirect: true,
   });
 

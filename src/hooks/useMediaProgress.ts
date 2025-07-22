@@ -165,15 +165,6 @@ export const useMediaProgress = (
     }
   }, [autoLoad, url, loadMedia]);
 
-  // Cleanup blob URLs on unmount
-  useEffect(() => {
-    return () => {
-      if (state.loadedUrl && MediaProgressLoader.isBlobURL(state.loadedUrl)) {
-        MediaProgressLoader.revokeObjectURL(state.loadedUrl);
-      }
-    };
-  }, [state.loadedUrl]);
-
   return {
     ...state,
     loadMedia,
