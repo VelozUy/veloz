@@ -122,6 +122,8 @@ const config: Config = {
         xl: '0rem', // Extra large border radius (removed default rounded-xl)
         '2xl': '0rem', // Extra extra large border radius (removed default rounded-2xl)
         full: '9999px', // Full rounded (for badges and pills)
+        tl: '3rem', // Top-left for asymmetrical hero sections
+        br: '4rem', // Bottom-right for asymmetrical layout blocks
       },
 
       // Box shadows using CSS variables

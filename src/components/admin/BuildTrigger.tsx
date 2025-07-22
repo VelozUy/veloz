@@ -119,7 +119,7 @@ export default function BuildTrigger({
 
       {notification.type && (
         <div
-          className={`text-sm p-2 rounded-md ${
+          className={`text-sm p-2 rounded-none ${
             notification.type === 'success'
               ? 'bg-success/10 text-success border border-success/20'
               : 'bg-destructive/10 text-destructive border border-destructive/20'

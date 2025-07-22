@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -117,10 +117,6 @@ export default function ProjectDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
-
   const loadProjects = async () => {
     try {
       setLoading(true);
@@ -152,6 +148,10 @@ export default function ProjectDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
 
   const calculateStats = (projectList: Project[]) => {
     const now = new Date();
@@ -472,7 +472,7 @@ export default function ProjectDashboard() {
                       }
                       className="flex-1"
                     >
-                      <Edit className="h-3 w-3 mr-1" />
+                      <Edit className="h-3 w-3 me-1" />
                       Edit
                     </Button>
                     <Button
@@ -481,7 +481,7 @@ export default function ProjectDashboard() {
                       onClick={() => router.push(`/our-work/${project.id}`)}
                       className="flex-1"
                     >
-                      <Eye className="h-3 w-3 mr-1" />
+                      <Eye className="h-3 w-3 me-1" />
                       View
                     </Button>
                   </div>
@@ -549,7 +549,7 @@ export default function ProjectDashboard() {
                   .map(project => (
                     <div
                       key={project.id}
-                      className="flex items-center justify-between p-4 border rounded-lg"
+                      className="flex items-center justify-between p-4 border rounded-none"
                     >
                       <div className="flex items-center gap-3">
                         <Avatar>
@@ -598,7 +598,7 @@ export default function ProjectDashboard() {
                 {projects
                   .filter(p => p.crewMembers && p.crewMembers.length > 0)
                   .map(project => (
-                    <div key={project.id} className="p-4 border rounded-lg">
+                    <div key={project.id} className="p-4 border rounded-none">
                       <h4 className="font-medium mb-2">
                         {project.title.es || project.title.en}
                       </h4>
@@ -611,7 +611,7 @@ export default function ProjectDashboard() {
                           </Avatar>
                         ))}
                         <Button variant="outline" size="sm">
-                          <Plus className="h-4 w-4 mr-1" />
+                          <Plus className="h-4 w-4 me-1" />
                           Assign
                         </Button>
                       </div>

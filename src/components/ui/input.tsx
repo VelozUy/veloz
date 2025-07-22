@@ -1,15 +1,19 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
+import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
 
 function Input({
   className,
   type,
-  priority = 'top',
+  priority = 'medium',
+  sectionType = 'form',
   ...props
-}: React.ComponentProps<'input'> & { priority?: 'top' | 'mid' | 'low' }) {
-  const priorityClasses = getPriorityClasses(priority);
+}: React.ComponentProps<'input'> & { 
+  priority?: PriorityLevel;
+  sectionType?: SectionType;
+}) {
+  const backgroundClasses = getBackgroundClasses(sectionType, priority);
   return (
     <input
       type={type}
@@ -19,9 +23,10 @@ function Input({
         'placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground',
         'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
-        priorityClasses.bg,
-        priorityClasses.text,
-        priorityClasses.border,
+        backgroundClasses.background,
+        backgroundClasses.text,
+        backgroundClasses.border,
+        backgroundClasses.shadow,
         className
       )}
       {...props}

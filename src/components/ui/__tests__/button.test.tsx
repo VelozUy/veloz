@@ -10,10 +10,9 @@ describe('Button Component', () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('shadow-none');
     expect(button).toHaveClass('rounded-none');
-    // Priority classes override variant classes
-    expect(button).toHaveClass('bg-card');
-    expect(button).toHaveClass('text-card-foreground');
-    expect(button).toHaveClass('border-border');
+    // Default variant classes
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
   });
 
   it('renders with different variants', () => {
@@ -22,28 +21,24 @@ describe('Button Component', () => {
     expect(button).toHaveClass('border');
     expect(button).toHaveClass('shadow-none');
     expect(button).toHaveClass('rounded-none');
-    // Priority classes override variant classes
-    expect(button).toHaveClass('bg-card');
-    expect(button).toHaveClass('text-card-foreground');
-    expect(button).toHaveClass('border-border');
+    // Outline variant classes
+    expect(button).toHaveClass('bg-transparent');
+    expect(button).toHaveClass('text-foreground');
 
     rerender(<Button variant="secondary">Secondary</Button>);
     button = screen.getByRole('button');
     expect(button).toHaveClass('border');
     expect(button).toHaveClass('shadow-none');
     expect(button).toHaveClass('rounded-none');
-    // Priority classes override variant classes
-    expect(button).toHaveClass('bg-card');
-    expect(button).toHaveClass('text-card-foreground');
-    expect(button).toHaveClass('border-border');
+    // Secondary variant classes
+    expect(button).toHaveClass('bg-transparent');
+    expect(button).toHaveClass('text-foreground');
 
     rerender(<Button variant="ghost">Ghost</Button>);
     button = screen.getByRole('button');
     expect(button).toHaveClass('rounded-none');
-    // Priority classes override variant classes
-    expect(button).toHaveClass('bg-card');
-    expect(button).toHaveClass('text-card-foreground');
-    expect(button).toHaveClass('border-border');
+    // Ghost variant classes
+    expect(button).toHaveClass('text-foreground');
   });
 
   it('renders with different sizes', () => {
@@ -66,23 +61,50 @@ describe('Button Component', () => {
   });
 
   it('renders with different priorities', () => {
-    const { rerender } = render(<Button priority="top">Top Priority</Button>);
+    const { rerender } = render(<Button priority="high">High Priority</Button>);
     let button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-card');
-    expect(button).toHaveClass('text-card-foreground');
-    expect(button).toHaveClass('border-border');
+    // Default variant classes still apply
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
 
-    rerender(<Button priority="mid">Mid Priority</Button>);
+    rerender(<Button priority="medium">Medium Priority</Button>);
     button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-muted');
-    expect(button).toHaveClass('text-muted-foreground');
-    expect(button).toHaveClass('border-border');
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
 
     rerender(<Button priority="low">Low Priority</Button>);
     button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-transparent');
-    expect(button).toHaveClass('text-muted-foreground');
-    expect(button).toHaveClass('border-border');
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
+  });
+
+  it('renders with different section types', () => {
+    const { rerender } = render(<Button sectionType="hero">Hero Button</Button>);
+    let button = screen.getByRole('button');
+    // Hero section overrides default variant
+    expect(button).toHaveClass('bg-foreground');
+    expect(button).toHaveClass('text-background');
+    expect(button).toHaveClass('border-transparent');
+
+    rerender(<Button sectionType="cta">CTA Button</Button>);
+    button = screen.getByRole('button');
+    // CTA section with medium priority uses bg-card
+    expect(button).toHaveClass('bg-card');
+    expect(button).toHaveClass('text-card-foreground');
+    expect(button).toHaveClass('border-primary');
+
+    rerender(<Button sectionType="cta" priority="high">High Priority CTA</Button>);
+    button = screen.getByRole('button');
+    // CTA section with high priority uses bg-primary
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
+    expect(button).toHaveClass('border-primary');
+
+    rerender(<Button sectionType="form">Form Button</Button>);
+    button = screen.getByRole('button');
+    // Form section uses default variant (no override)
+    expect(button).toHaveClass('bg-primary');
+    expect(button).toHaveClass('text-primary-foreground');
   });
 
   it('handles disabled state', () => {
@@ -102,9 +124,8 @@ describe('Button Component', () => {
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/test');
-    expect(link).toHaveClass('bg-card');
-    expect(link).toHaveClass('text-card-foreground');
-    expect(link).toHaveClass('border-border');
+    expect(link).toHaveClass('bg-primary');
+    expect(link).toHaveClass('text-primary-foreground');
   });
 
   it('handles user interactions', async () => {

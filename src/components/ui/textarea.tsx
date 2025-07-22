@@ -1,24 +1,30 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
+import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
 
 function Textarea({
   className,
-  priority = 'top',
+  priority = 'medium',
+  sectionType = 'form',
   ...props
-}: React.ComponentProps<'textarea'> & { priority?: 'top' | 'mid' | 'low' }) {
-  const priorityClasses = getPriorityClasses(priority);
+}: React.ComponentProps<'textarea'> & {
+  priority?: PriorityLevel;
+  sectionType?: SectionType;
+}) {
+  const backgroundClasses = getBackgroundClasses(sectionType, priority);
   return (
     <textarea
       data-slot="textarea"
       className={cn(
-        'flex field-sizing-content min-h-16 w-full rounded-md border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-        'placeholder:text-muted-foreground',
+        'flex min-h-[60px] w-full min-w-0 rounded-md border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+        'selection:bg-primary selection:text-primary-foreground',
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
-        priorityClasses.bg,
-        priorityClasses.text,
-        priorityClasses.border,
+        backgroundClasses.background,
+        backgroundClasses.text,
+        backgroundClasses.border,
+        backgroundClasses.shadow,
         className
       )}
       {...props}

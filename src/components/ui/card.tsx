@@ -1,13 +1,28 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
+function Card({ 
+  className, 
+  sectionType = 'content',
+  priority = 'medium',
+  ...props 
+}: React.ComponentProps<'div'> & {
+  sectionType?: SectionType;
+  priority?: PriorityLevel;
+}) {
+  const backgroundClasses = getBackgroundClasses(sectionType, priority);
+  
   return (
     <div
       data-slot="card"
       className={cn(
-        'flex flex-col gap-6 rounded-none border bg-card text-card-foreground border-border py-6 shadow-none',
+        'flex flex-col gap-6 rounded-none border py-6 shadow-none',
+        backgroundClasses.background,
+        backgroundClasses.text,
+        backgroundClasses.border,
+        backgroundClasses.shadow,
         className
       )}
       {...props}

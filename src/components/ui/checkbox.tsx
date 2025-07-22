@@ -2,39 +2,37 @@
 
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { CheckIcon } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
+import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
 
-function Checkbox({
-  className,
-  priority = 'top',
-  ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root> & {
-  priority?: 'top' | 'mid' | 'low';
-}) {
-  const priorityClasses = getPriorityClasses(priority);
+const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
+    priority?: PriorityLevel;
+    sectionType?: SectionType;
+  }
+>(({ className, priority = 'medium', sectionType = 'form', ...props }, ref) => {
+  const backgroundClasses = getBackgroundClasses(sectionType, priority);
   return (
     <CheckboxPrimitive.Root
-      data-slot="checkbox"
+      ref={ref}
       className={cn(
-        "peer h-4 w-4 shrink-0 rounded-md border ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:not([class*='size-']):size-4",
-        priorityClasses.bg,
-        priorityClasses.text,
-        priorityClasses.border,
+        'peer h-4 w-4 shrink-0 rounded-sm border shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
+        backgroundClasses.border,
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        data-slot="checkbox-indicator"
-        className="flex items-center justify-center text-current transition-none"
+        className={cn('flex items-center justify-center text-current')}
       >
-        <CheckIcon className="size-3.5" />
+        <Check className="size-4" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
-}
+});
+Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export { Checkbox };

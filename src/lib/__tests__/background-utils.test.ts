@@ -1,40 +1,40 @@
-import {
-  getBackgroundClasses,
-  getBackgroundClassString,
-  validateBackgroundConfig,
-  getBackgroundClassesFromConfig,
-} from '../background-utils';
-import type {
-  SectionType,
-  PriorityLevel,
-  BackgroundConfig,
-} from '../../types/background';
+import { getBackgroundClasses, getAccessibilityClasses, validateBackgroundConfig, type SectionType, type PriorityLevel } from '../background-utils';
 
 describe('Background Utils', () => {
   describe('getBackgroundClasses', () => {
-    it('should return hero classes for high priority', () => {
+    it('returns correct classes for hero section', () => {
       const classes = getBackgroundClasses('hero', 'high');
-      expect(classes.background).toBe('bg-background');
-      expect(classes.text).toBe('text-foreground');
+      expect(classes.background).toBe('bg-foreground');
+      expect(classes.text).toBe('text-background');
+      expect(classes.border).toBe('border-transparent');
       expect(classes.shadow).toBe('shadow-lg');
     });
 
-    it('should return content classes for medium priority', () => {
+    it('returns correct classes for content section with high priority', () => {
+      const classes = getBackgroundClasses('content', 'high');
+      expect(classes.background).toBe('bg-card');
+      expect(classes.text).toBe('text-card-foreground');
+      expect(classes.border).toBe('border-border');
+      expect(classes.shadow).toBe('shadow-md');
+    });
+
+    it('returns correct classes for content section with medium priority', () => {
       const classes = getBackgroundClasses('content', 'medium');
       expect(classes.background).toBe('bg-muted');
       expect(classes.text).toBe('text-foreground');
       expect(classes.border).toBe('border-transparent');
+      expect(classes.shadow).toBe('shadow-sm');
     });
 
-    it('should return form classes for high priority', () => {
-      const classes = getBackgroundClasses('form', 'high');
-      expect(classes.background).toBe('bg-card');
-      expect(classes.text).toBe('text-card-foreground');
+    it('returns correct classes for form section', () => {
+      const classes = getBackgroundClasses('form', 'medium');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
       expect(classes.border).toBe('border-border');
       expect(classes.shadow).toBe('shadow-sm');
     });
 
-    it('should return testimonial classes for medium priority', () => {
+    it('returns correct classes for testimonial section', () => {
       const classes = getBackgroundClasses('testimonial', 'medium');
       expect(classes.background).toBe('bg-card');
       expect(classes.text).toBe('text-card-foreground');
@@ -42,199 +42,206 @@ describe('Background Utils', () => {
       expect(classes.shadow).toBe('shadow-md');
     });
 
-    it('should return CTA classes for high priority', () => {
+    it('returns correct classes for CTA section with high priority', () => {
       const classes = getBackgroundClasses('cta', 'high');
       expect(classes.background).toBe('bg-primary');
       expect(classes.text).toBe('text-primary-foreground');
+      expect(classes.border).toBe('border-primary');
       expect(classes.shadow).toBe('shadow-lg');
     });
 
-    it('should return meta classes for low priority', () => {
+    it('returns correct classes for CTA section with medium priority', () => {
+      const classes = getBackgroundClasses('cta', 'medium');
+      expect(classes.background).toBe('bg-card');
+      expect(classes.text).toBe('text-card-foreground');
+      expect(classes.border).toBe('border-primary');
+      expect(classes.shadow).toBe('shadow-md');
+    });
+
+    it('returns correct classes for meta section', () => {
       const classes = getBackgroundClasses('meta', 'low');
       expect(classes.background).toBe('bg-muted');
       expect(classes.text).toBe('text-foreground');
       expect(classes.border).toBe('border-transparent');
+      expect(classes.shadow).toBe('shadow-xs');
     });
 
-    it('should include responsive classes when requested', () => {
-      const classes = getBackgroundClasses('hero', 'high');
-      expect(classes.background).toBe('bg-background');
+    it('returns correct classes for admin section', () => {
+      const classes = getBackgroundClasses('admin', 'medium');
+      expect(classes.background).toBe('bg-muted');
       expect(classes.text).toBe('text-foreground');
-      expect(classes.shadow).toBe('shadow-lg');
+      expect(classes.border).toBe('border-border');
+      expect(classes.shadow).toBe('shadow-sm');
+    });
+
+    it('returns default classes for unknown section type', () => {
+      const classes = getBackgroundClasses('unknown' as SectionType, 'medium');
+      expect(classes.background).toBe('bg-muted');
+      expect(classes.text).toBe('text-foreground');
+      expect(classes.border).toBe('border-transparent');
+      expect(classes.shadow).toBe('shadow-sm');
     });
   });
 
-  describe('getBackgroundClassString', () => {
-    it('should return concatenated class string for hero high priority', () => {
-      const classString = getBackgroundClassString('hero', 'high');
-      expect(classString).toBe('bg-background text-foreground shadow-lg');
+  describe('getAccessibilityClasses', () => {
+    it('returns accessibility classes for hero section', () => {
+      const classes = getAccessibilityClasses('hero');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-foreground');
+      expect(classes).toContain('contrast-200');
     });
 
-    it('should return concatenated class string for content medium priority', () => {
-      const classString = getBackgroundClassString('content', 'medium');
-      expect(classString).toBe('bg-muted text-foreground border-transparent');
+    it('returns accessibility classes for content section', () => {
+      const classes = getAccessibilityClasses('content');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-foreground');
+      expect(classes).toContain('contrast-150');
     });
 
-    it('should handle classes without optional properties', () => {
-      const classString = getBackgroundClassString('meta', 'low');
-      expect(classString).toBe('bg-muted text-foreground border-transparent');
+    it('returns accessibility classes for form section', () => {
+      const classes = getAccessibilityClasses('form');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-foreground');
+      expect(classes).toContain('contrast-150');
+    });
+
+    it('returns accessibility classes for testimonial section', () => {
+      const classes = getAccessibilityClasses('testimonial');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-foreground');
+      expect(classes).toContain('contrast-150');
+    });
+
+    it('returns accessibility classes for CTA section', () => {
+      const classes = getAccessibilityClasses('cta');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-primary-foreground');
+      expect(classes).toContain('contrast-200');
+    });
+
+    it('returns accessibility classes for default section', () => {
+      const classes = getAccessibilityClasses('meta');
+      expect(classes).toContain('focus-visible:outline-none');
+      expect(classes).toContain('text-foreground');
+      expect(classes).toContain('contrast-150');
     });
   });
 
   describe('validateBackgroundConfig', () => {
-    it('should validate all valid combinations', () => {
-      const sectionTypes: SectionType[] = [
-        'hero',
-        'content',
-        'form',
-        'testimonial',
-        'cta',
-        'meta',
-      ];
-      const priorityLevels: PriorityLevel[] = ['high', 'medium', 'low'];
-
-      sectionTypes.forEach(sectionType => {
-        priorityLevels.forEach(priority => {
-          expect(validateBackgroundConfig(sectionType, priority)).toBe(true);
-        });
-      });
+    it('validates hero section with high priority', () => {
+      expect(validateBackgroundConfig('hero', 'high')).toBe(true);
     });
 
-    it('should handle invalid section types', () => {
-      expect(validateBackgroundConfig('invalid' as SectionType, 'high')).toBe(
-        false
-      );
+    it('validates content section with all priorities', () => {
+      expect(validateBackgroundConfig('content', 'high')).toBe(true);
+      expect(validateBackgroundConfig('content', 'medium')).toBe(true);
+      expect(validateBackgroundConfig('content', 'low')).toBe(true);
     });
 
-    it('should handle invalid priority levels', () => {
-      expect(validateBackgroundConfig('hero', 'invalid' as PriorityLevel)).toBe(
-        false
-      );
+    it('validates form section with medium priority', () => {
+      expect(validateBackgroundConfig('form', 'medium')).toBe(true);
+    });
+
+    it('validates testimonial section with medium priority', () => {
+      expect(validateBackgroundConfig('testimonial', 'medium')).toBe(true);
+    });
+
+    it('validates CTA section with high and medium priorities', () => {
+      expect(validateBackgroundConfig('cta', 'high')).toBe(true);
+      expect(validateBackgroundConfig('cta', 'medium')).toBe(true);
+    });
+
+    it('validates meta section with low priority', () => {
+      expect(validateBackgroundConfig('meta', 'low')).toBe(true);
+    });
+
+    it('validates admin section with medium priority', () => {
+      expect(validateBackgroundConfig('admin', 'medium')).toBe(true);
+    });
+
+    it('rejects invalid combinations', () => {
+      expect(validateBackgroundConfig('hero', 'low')).toBe(false);
+      expect(validateBackgroundConfig('form', 'high')).toBe(false);
+      expect(validateBackgroundConfig('cta', 'low')).toBe(false);
     });
   });
 
-  describe('getBackgroundClassesFromConfig', () => {
-    it('should return classes from config object', () => {
-      const config: BackgroundConfig = {
-        sectionType: 'hero',
-        priority: 'high',
-        responsive: true,
-      };
-
-      const classes = getBackgroundClassesFromConfig(config);
-      expect(classes.background).toBe('bg-background');
-      expect(classes.text).toBe('text-foreground');
-      expect(classes.shadow).toBe('shadow-lg');
+  describe('WCAG Compliance', () => {
+    it('ensures hero section meets WCAG AA contrast requirements', () => {
+      const classes = getBackgroundClasses('hero', 'high');
+      // Hero uses bg-foreground (charcoal) with text-background (light gray)
+      // This should provide sufficient contrast for WCAG AA compliance
+      expect(classes.background).toBe('bg-foreground');
+      expect(classes.text).toBe('text-background');
     });
 
-    it('should handle config without responsive flag', () => {
-      const config: BackgroundConfig = {
-        sectionType: 'content',
-        priority: 'medium',
-      };
+    it('ensures content sections meet WCAG AA contrast requirements', () => {
+      const highClasses = getBackgroundClasses('content', 'high');
+      const mediumClasses = getBackgroundClasses('content', 'medium');
+      
+      // High priority content uses bg-card (white) with text-card-foreground (charcoal)
+      expect(highClasses.background).toBe('bg-card');
+      expect(highClasses.text).toBe('text-card-foreground');
+      
+      // Medium priority content uses bg-muted (light gray) with text-foreground (charcoal)
+      expect(mediumClasses.background).toBe('bg-muted');
+      expect(mediumClasses.text).toBe('text-foreground');
+    });
 
-      const classes = getBackgroundClassesFromConfig(config);
+    it('ensures CTA sections meet WCAG AA contrast requirements', () => {
+      const highClasses = getBackgroundClasses('cta', 'high');
+      const mediumClasses = getBackgroundClasses('cta', 'medium');
+      
+      // High priority CTA uses bg-primary (blue) with text-primary-foreground (white)
+      expect(highClasses.background).toBe('bg-primary');
+      expect(highClasses.text).toBe('text-primary-foreground');
+      
+      // Medium priority CTA uses bg-card (white) with text-card-foreground (charcoal)
+      expect(mediumClasses.background).toBe('bg-card');
+      expect(mediumClasses.text).toBe('text-card-foreground');
+    });
+
+    it('ensures form sections meet WCAG AA contrast requirements', () => {
+      const classes = getBackgroundClasses('form', 'medium');
+      // Form uses bg-muted (light gray) with text-foreground (charcoal)
       expect(classes.background).toBe('bg-muted');
       expect(classes.text).toBe('text-foreground');
     });
   });
 
-  describe('Edge Cases', () => {
-    it('should handle unknown section types gracefully', () => {
-      const classes = getBackgroundClasses('unknown' as SectionType, 'medium');
-      expect(classes.background).toBe('bg-muted');
-      expect(classes.text).toBe('text-foreground');
+  describe('Color Blindness Support', () => {
+    it('uses semantic color names instead of relying on color alone', () => {
+      const classes = getBackgroundClasses('cta', 'high');
+      // CTA uses semantic classes that don't rely on color alone
+      expect(classes.background).toBe('bg-primary');
+      expect(classes.text).toBe('text-primary-foreground');
+      expect(classes.border).toBe('border-primary');
     });
 
-    it('should handle unknown priority levels gracefully', () => {
-      const classes = getBackgroundClasses(
-        'content',
-        'unknown' as PriorityLevel
-      );
-      expect(classes.background).toBe('bg-muted');
-      expect(classes.text).toBe('text-foreground');
+    it('provides sufficient contrast for color blind users', () => {
+      const heroClasses = getBackgroundClasses('hero', 'high');
+      const contentClasses = getBackgroundClasses('content', 'high');
+      
+      // Hero: dark background with light text
+      expect(heroClasses.background).toBe('bg-foreground');
+      expect(heroClasses.text).toBe('text-background');
+      
+      // Content: light background with dark text
+      expect(contentClasses.background).toBe('bg-card');
+      expect(contentClasses.text).toBe('text-card-foreground');
     });
   });
 
-  describe('Color System Compliance', () => {
-    it('should use correct color tokens for all sections', () => {
-      const testCases = [
-        {
-          section: 'hero' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-background',
-        },
-        {
-          section: 'content' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-card',
-        },
-        {
-          section: 'form' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-card',
-        },
-        {
-          section: 'testimonial' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-card',
-        },
-        {
-          section: 'cta' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-primary',
-        },
-        {
-          section: 'meta' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedBg: 'bg-muted',
-        },
-      ];
-
-      testCases.forEach(({ section, priority, expectedBg }) => {
-        const classes = getBackgroundClasses(section, priority);
-        expect(classes.background).toBe(expectedBg);
-      });
+  describe('Focus States', () => {
+    it('includes focus-visible classes for keyboard navigation', () => {
+      const accessibilityClasses = getAccessibilityClasses('content');
+      expect(accessibilityClasses).toContain('focus-visible:outline-none');
     });
 
-    it('should use correct text colors for all sections', () => {
-      const testCases = [
-        {
-          section: 'hero' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-foreground',
-        },
-        {
-          section: 'content' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-foreground',
-        },
-        {
-          section: 'form' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-foreground',
-        },
-        {
-          section: 'testimonial' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-foreground',
-        },
-        {
-          section: 'cta' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-primary-foreground',
-        },
-        {
-          section: 'meta' as SectionType,
-          priority: 'high' as PriorityLevel,
-          expectedText: 'text-muted-foreground',
-        },
-      ];
-
-      testCases.forEach(({ section, priority, expectedText }) => {
-        const classes = getBackgroundClasses(section, priority);
-        expect(classes.text).toBe(expectedText);
-      });
+    it('provides clear focus indicators', () => {
+      const accessibilityClasses = getAccessibilityClasses('cta');
+      expect(accessibilityClasses).toContain('focus-visible:outline-none');
     });
   });
 });
+

@@ -5,7 +5,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
+import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
 
 function Dialog({
   ...props
@@ -51,13 +51,15 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  priority = 'top',
+  priority = 'medium',
+  sectionType = 'content',
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
-  priority?: 'top' | 'mid' | 'low';
+  priority?: PriorityLevel;
+  sectionType?: SectionType;
 }) {
-  const priorityClasses = getPriorityClasses(priority);
+  const backgroundClasses = getBackgroundClasses(sectionType, priority);
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -65,9 +67,10 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-none border p-6 shadow-none duration-200 sm:max-w-lg',
-          priorityClasses.bg,
-          priorityClasses.text,
-          priorityClasses.border,
+          backgroundClasses.background,
+          backgroundClasses.text,
+          backgroundClasses.border,
+          backgroundClasses.shadow,
           className
         )}
         {...props}
