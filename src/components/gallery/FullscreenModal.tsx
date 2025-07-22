@@ -486,10 +486,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             </div>
           )}
 
-          {/* Background overlay to hide any media during transitions */}
-          {isInLoadingTransition && (
-            <div className="absolute inset-0 bg-background z-10" />
-          )}
+
 
           {currentMedia.type === 'video' ? (
             <video
