@@ -473,9 +473,9 @@ export function getPriorityClasses(priority: 'top' | 'mid' | 'low') {
   switch (priority) {
     case 'top':
       return {
-        bg: 'bg-card',
-        text: 'text-card-foreground',
-        border: 'border-border',
+        bg: 'bg-transparent',
+        text: 'text-foreground',
+        border: 'border-transparent',
       };
     case 'mid':
       return {
@@ -487,7 +487,7 @@ export function getPriorityClasses(priority: 'top' | 'mid' | 'low') {
       return {
         bg: 'bg-transparent',
         text: 'text-muted-foreground',
-        border: 'border-border',
+        border: 'border-transparent',
       };
     default:
       return {

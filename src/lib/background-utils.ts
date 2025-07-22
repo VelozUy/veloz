@@ -64,8 +64,8 @@ export function getBackgroundClasses(
 
     case 'form':
       return {
-        background: 'bg-muted',
-        text: 'text-foreground',
+        background: 'bg-card',
+        text: 'text-card-foreground',
         border: 'border-border',
         shadow: 'shadow-sm',
       };

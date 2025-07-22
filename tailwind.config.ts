@@ -8,8 +8,37 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Theme-based colors using CSS variables only
+      // Comprehensive color system using CSS variables
       colors: {
+        // Base color palette
+        base: {
+          50: 'var(--base-50)',
+          100: 'var(--base-100)',
+          200: 'var(--base-200)',
+          300: 'var(--base-300)',
+          400: 'var(--base-400)',
+          500: 'var(--base-500)',
+          600: 'var(--base-600)',
+          700: 'var(--base-700)',
+          800: 'var(--base-800)',
+          900: 'var(--base-900)',
+          950: 'var(--base-950)',
+          1000: 'var(--base-1000)',
+        },
+        // Primary color palette
+        'primary-50': 'var(--primary-50)',
+        'primary-100': 'var(--primary-100)',
+        'primary-200': 'var(--primary-200)',
+        'primary-300': 'var(--primary-300)',
+        'primary-400': 'var(--primary-400)',
+        'primary-500': 'var(--primary-500)',
+        'primary-600': 'var(--primary-600)',
+        'primary-700': 'var(--primary-700)',
+        'primary-800': 'var(--primary-800)',
+        'primary-900': 'var(--primary-900)',
+        'primary-950': 'var(--primary-950)',
+        'primary-1000': 'var(--primary-1000)',
+        // Semantic colors
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         card: 'var(--card)',
@@ -46,14 +75,12 @@ const config: Config = {
           '4': 'var(--chart-4)',
           '5': 'var(--chart-5)',
         },
-        // Light Gray Background Color System
-        charcoal: '#1a1b1f', // Dark base for visual/hero blocks
-        'gray-light': '#f0f0f0', // Neutral text sections and forms
-        'gray-medium': '#d2d2d2', // Borders and cards
-        'blue-accent': '#1d7efc', // CTA and focus elements
-        white: '#ffffff', // Elevated cards or clean sections
-        // Modern shadcn/ui theme colors using OKLCH color space
-        // All colors are now defined via CSS variables in globals.css
+        // Legacy colors for backward compatibility
+        charcoal: '#1a1b1f',
+        'gray-light': '#f0f0f0',
+        'gray-medium': '#d2d2d2',
+        'blue-accent': '#1d7efc',
+        white: '#ffffff',
       },
 
       // Typography for Veloz brand - REDJOLA only for logo, Roboto for everything else
@@ -72,6 +99,14 @@ const config: Config = {
         ],
         // Roboto for all other text
         body: ['Roboto', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: 'var(--font-display)',
+        text: 'var(--font-text)',
+      },
+
+      // Font weights for display and text
+      fontWeight: {
+        display: 'var(--display-weight)',
+        text: 'var(--text-weight)',
       },
 
       // Spacing system for optimization
