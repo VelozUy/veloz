@@ -445,7 +445,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 }
               }}
             >
-              <div className="bg-muted rounded-lg animate-pulse animate-in fade-in-0 slide-in-from-scale-95 duration-700" style={{
+              <div className="bg-gradient-to-br from-background/10 to-background/30 backdrop-blur-sm rounded-lg animate-in fade-in-0 slide-in-from-scale-95 duration-700 border border-foreground/10" style={{
                 width: 'min(calc(100vw - 8rem), 600px)',
                 height: 'min(calc(100vh - 8rem), 600px)',
                 minWidth: '400px',
@@ -454,7 +454,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 maxHeight: '600px',
               }}>
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
-                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-foreground"></div>
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-foreground/60"></div>
                   
                   {/* Progress Bar - show only when progress is actively loading */}
                   {isProgressLoading && (
@@ -465,7 +465,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                         variant={progressError ? 'error' : 'default'}
                         animated={!progressError}
                         showPercentage={true}
-                        className="bg-muted"
+                        className="bg-background/30"
                       />
                     </div>
                   )}
