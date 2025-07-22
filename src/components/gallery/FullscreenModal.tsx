@@ -76,6 +76,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   // Track loading time to show percentage only after 2 seconds
   const [showProgress, setShowProgress] = useState(false);
   const loadingStartTimeRef = useRef<number | null>(null);
+  const currentMediaIdRef = useRef<string | null>(null);
 
   // Handle mounting for portal
   useEffect(() => {
@@ -126,14 +127,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     // Abort any current progress loading
     abortProgress();
     
-    // Reset progress display state
+    // Reset all loading states to prevent double loading
     setShowProgress(false);
+    setIsLoading(false);
+    setMediaLoadingStates({});
     loadingStartTimeRef.current = null;
-    
-    // Check if the target media is preloaded
-    if (!isMediaPreloaded(index)) {
-      setIsLoading(true);
-    }
     
     setCurrentIndex(index);
     
@@ -145,9 +143,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     // Reset transition state after animation
     setTimeout(() => {
       setIsTransitioning(false);
-      // Don't reset loading state here - let the media load events handle it
     }, 200);
-  }, [media.length, onNavigate, isMediaPreloaded, abortProgress]);
+  }, [media.length, onNavigate, abortProgress]);
 
   // Initialize modal with correct index when it opens
   useEffect(() => {
@@ -164,26 +161,48 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     if (currentIndex >= 0 && currentIndex < media.length) {
       const currentMedia = media[currentIndex];
       if (currentMedia) {
-        // Set loading state immediately for better UX
-        setMediaLoadingStates(prev => ({
-          ...prev,
-          [currentMedia.id]: true,
-        }));
+        // Update the current media ID ref
+        currentMediaIdRef.current = currentMedia.id;
         
-        // Also set global loading state
-        setIsLoading(true);
+        // Clear any existing loading states first
+        setMediaLoadingStates({});
+        setIsLoading(false);
+        
+        // Small delay to prevent double loading during fast navigation
+        const timer = setTimeout(() => {
+          // Only set loading state if this is still the current media
+          if (currentMediaIdRef.current === currentMedia.id) {
+            setMediaLoadingStates(prev => ({
+              ...prev,
+              [currentMedia.id]: true,
+            }));
+            setIsLoading(true);
+          }
+        }, 50);
+        
+        return () => clearTimeout(timer);
       }
     }
   }, [currentIndex, media]);
 
   // Start progress loading when current media changes
   useEffect(() => {
+    let isActive = true;
+    
     if (currentMedia && !isMediaPreloaded(currentIndex)) {
-      // Show progress immediately for better UX
-      setShowProgress(true);
-      loadingStartTimeRef.current = Date.now();
+      // Small delay to prevent double loading during fast navigation
+      const timer = setTimeout(() => {
+        if (isActive && currentMediaIdRef.current === currentMedia.id) {
+          setShowProgress(true);
+          loadingStartTimeRef.current = Date.now();
+          loadMediaWithProgress();
+        }
+      }, 100);
       
-      loadMediaWithProgress();
+      return () => {
+        isActive = false;
+        clearTimeout(timer);
+      };
     } else {
       // If media is preloaded, don't show progress
       setShowProgress(false);
