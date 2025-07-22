@@ -253,15 +253,7 @@ export default function ClientInviteManager({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold">Client Access Management</h2>
-          <p className="text-muted-foreground">
-            Manage client access for: {projectTitle}
-          </p>
-        </div>
-      </div>
+
 
       {/* Success/Error messages */}
       {error && (
@@ -278,28 +270,20 @@ export default function ClientInviteManager({
         </div>
       )}
 
-      {/* Main Interface */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Client Management Dashboard</CardTitle>
-          <CardDescription>
-            Track client signups and manage public access links
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-                      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signups" className="flex items-center space-x-2">
-                  <User className="w-4 h-4" />
-                  <span>Client Signups</span>
-                  <Badge variant="secondary">{clientSignups.length}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="public-links" className="flex items-center space-x-2">
-                  <Link className="w-4 h-4" />
-                  <span>Public Links</span>
-                  <Badge variant="secondary">{publicLinks.length}</Badge>
-                </TabsTrigger>
-              </TabsList>
+            {/* Main Interface */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="signups" className="flex items-center space-x-2">
+            <User className="w-4 h-4" />
+            <span>Client Signups</span>
+            <Badge variant="secondary">{clientSignups.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="public-links" className="flex items-center space-x-2">
+            <Link className="w-4 h-4" />
+            <span>Public Links</span>
+            <Badge variant="secondary">{publicLinks.length}</Badge>
+          </TabsTrigger>
+        </TabsList>
 
             {/* Client Signups Tab */}
             <TabsContent value="signups" className="space-y-6">
@@ -472,10 +456,7 @@ export default function ClientInviteManager({
               </div>
             </TabsContent>
 
-
           </Tabs>
-        </CardContent>
-      </Card>
     </div>
   );
 } 

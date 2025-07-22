@@ -1373,11 +1373,7 @@ export default function UnifiedProjectEditPage({
               {/* Clients Tab */}
               <TabsContent value="clients" className="space-y-6">
                 <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Gestión de Invitaciones de Clientes</h3>
-                    <p className="text-muted-foreground mb-6">
-                      Genera enlaces de invitación para que los clientes puedan acceder a su proyecto específico.
-                    </p>
+                                      <div>
                   </div>
                   <ClientInviteManager
                     projectId={draftProject.id}
