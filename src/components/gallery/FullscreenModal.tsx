@@ -364,7 +364,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 animate-in slide-in-from-top-4 duration-500"
         aria-label="Cerrar vista de pantalla completa"
       >
         <svg
@@ -387,7 +387,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-foreground/50 animate-in slide-in-from-left-4 duration-500"
             aria-label="Anterior"
           >
             <svg
@@ -407,7 +407,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-foreground/50 animate-in slide-in-from-right-4 duration-500"
             aria-label="Siguiente"
           >
             <svg
@@ -428,16 +428,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       )}
 
       {/* Media container */}
-      <div className="relative z-10 max-w-full max-h-full p-4">
+      <div className="relative z-10 max-w-full max-h-full p-4 animate-in fade-in-0 duration-500">
         <div
-          className={`transition-opacity duration-200 relative ${
-            isTransitioning ? 'opacity-50' : 'opacity-100'
+          className={`transition-all duration-500 ease-out relative ${
+            isTransitioning ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
           }`}
         >
           {/* Loading Skeleton with Progress */}
           {(mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading) && (
             <div 
-              className="absolute inset-0 flex items-center justify-center z-10 cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center z-10 cursor-pointer animate-in fade-in-0 slide-in-from-bottom-4 duration-500"
               onClick={() => {
                 if (progressError) {
                   resetProgress();
@@ -445,7 +445,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 }
               }}
             >
-              <div className="bg-muted rounded-lg animate-pulse" style={{
+              <div className="bg-muted rounded-lg animate-pulse animate-in fade-in-0 slide-in-from-scale-95 duration-700" style={{
                 width: 'min(calc(100vw - 8rem), 600px)',
                 height: 'min(calc(100vh - 8rem), 600px)',
                 minWidth: '400px',
@@ -484,9 +484,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
-              className={`max-w-full max-h-full object-contain ${
-                mediaLoadingStates[currentMedia.id] ? 'opacity-0' : 'opacity-100'
-              } transition-opacity duration-300`}
+              className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
+                mediaLoadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out`}
               controls
               autoPlay
               muted
@@ -510,9 +510,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <img
               src={currentMedia.url}
               alt={currentMedia.alt}
-              className={`max-w-full max-h-full object-contain ${
-                mediaLoadingStates[currentMedia.id] ? 'opacity-0' : 'opacity-100'
-              } transition-opacity duration-300`}
+              className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
+                mediaLoadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+              } transition-all duration-500 ease-out`}
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
                 maxWidth: 'calc(100vw - 8rem)',
@@ -533,7 +533,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
       {/* Item counter - positioned relative to modal, not media container */}
       {media.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 rounded-full bg-background/50 text-foreground text-sm">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 rounded-full bg-background/50 text-foreground text-sm animate-in slide-in-from-bottom-4 duration-500">
           {currentIndex + 1} de {media.length}
         </div>
       )}
