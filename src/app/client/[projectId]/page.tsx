@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -122,6 +122,15 @@ interface ClientUser {
   lastLogin: Date;
 }
 
+interface ProjectClient {
+  id: string;
+  name: string;
+  email: string;
+  signupDate: { toDate: () => Date } | null;
+  lastLogin?: { toDate: () => Date } | null;
+  status: 'active' | 'inactive';
+}
+
 export default function ProjectClientPortal() {
   const params = useParams();
   const router = useRouter();
@@ -132,6 +141,7 @@ export default function ProjectClientPortal() {
   const [client, setClient] = useState<ClientUser | null>(null);
   const [projectFiles, setProjectFiles] = useState<ProjectFile[]>([]);
   const [messages, setMessages] = useState<ProjectMessage[]>([]);
+  const [projectClients, setProjectClients] = useState<ProjectClient[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -150,6 +160,7 @@ export default function ProjectClientPortal() {
     if (project) {
       loadProjectFiles();
       loadProjectMessages();
+      loadProjectClients();
     }
   }, [project]);
 
@@ -310,6 +321,40 @@ export default function ProjectClientPortal() {
       setMessages(messagesData);
     } catch (error) {
       console.error('Error loading project messages:', error);
+    }
+  };
+
+  const loadProjectClients = async () => {
+    if (!project) return;
+    
+    try {
+      const db = await getFirestoreService();
+      if (!db) return;
+
+      const clientsRef = collection(db, 'clients');
+      const clientsQuery = query(
+        clientsRef,
+        where('projects', 'array-contains', project.id),
+        orderBy('signupDate', 'desc')
+      );
+      const clientsSnapshot = await getDocs(clientsQuery);
+
+      const clientsData: ProjectClient[] = [];
+      clientsSnapshot.forEach(doc => {
+        const clientData = doc.data() as any;
+        clientsData.push({
+          id: doc.id,
+          name: clientData.fullName || `${clientData.firstName} ${clientData.lastName}`,
+          email: clientData.email,
+          signupDate: clientData.signupDate,
+          lastLogin: clientData.lastLogin,
+          status: clientData.status || 'active',
+        });
+      });
+
+      setProjectClients(clientsData);
+    } catch (error) {
+      console.error('Error loading project clients:', error);
     }
   };
 
@@ -495,6 +540,13 @@ export default function ProjectClientPortal() {
                 >
                   Calendar
                 </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => setActiveTab('clients')}
+                >
+                  Other Clients
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -502,11 +554,12 @@ export default function ProjectClientPortal() {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="files">Files</TabsTrigger>
                 <TabsTrigger value="messages">Messages</TabsTrigger>
                 <TabsTrigger value="calendar">Calendar</TabsTrigger>
+                <TabsTrigger value="clients">Other Clients</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6">
@@ -773,6 +826,67 @@ export default function ProjectClientPortal() {
                         Calendar functionality will be implemented here
                       </p>
                     </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="clients" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Other Project Clients</CardTitle>
+                    <CardDescription>
+                      View all clients who have signed up for this project. This information is visible to all project participants.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {projectClients.length === 0 ? (
+                      <div className="text-center py-8">
+                        <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium mb-2">No other clients yet</h3>
+                        <p className="text-muted-foreground">
+                          Other clients will appear here once they sign up for this project
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-lg font-medium">
+                            {projectClients.length} client{projectClients.length !== 1 ? 's' : ''} signed up
+                          </h3>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          {projectClients.map((projectClient) => (
+                            <div key={projectClient.id} className="flex items-center justify-between p-4 border rounded-lg">
+                              <div className="flex items-center space-x-3">
+                                <Avatar>
+                                  <AvatarFallback>
+                                    {projectClient.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <p className="font-medium">{projectClient.name}</p>
+                                  <p className="text-sm text-muted-foreground">{projectClient.email}</p>
+                                  <p className="text-xs text-muted-foreground">
+                                    Signed up: {projectClient.signupDate ? projectClient.signupDate.toDate().toLocaleDateString() : 'N/A'}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Badge variant={projectClient.status === 'active' ? 'default' : 'secondary'}>
+                                  {projectClient.status}
+                                </Badge>
+                                {projectClient.lastLogin && (
+                                  <span className="text-xs text-muted-foreground">
+                                    Last login: {projectClient.lastLogin.toDate().toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
