@@ -146,6 +146,7 @@ export default function UnifiedProjectEditPage({
   const [pendingNavigation, setPendingNavigation] = useState<string | null>(
     null
   );
+  const [showSavedStatus, setShowSavedStatus] = useState(false);
 
   // Refs
   const isNavigatingRef = useRef(false);
@@ -248,7 +249,7 @@ export default function UnifiedProjectEditPage({
         }
       } catch (error) {
         console.error('Error loading project:', error);
-        setError('Failed to load project');
+        setError('Error al cargar el proyecto');
       } finally {
         setLoading(false);
       }
@@ -492,7 +493,7 @@ export default function UnifiedProjectEditPage({
         setOriginalProject(updatedProject);
         setOriginalMedia([]);
 
-        setSuccess('Project created successfully! You can now upload media.');
+        setSuccess('¡Proyecto creado exitosamente! Ahora puedes subir medios.');
 
         // Switch to media tab
         setTimeout(() => {
@@ -542,8 +543,12 @@ export default function UnifiedProjectEditPage({
         setOriginalProject({ ...draftProject });
         setOriginalMedia([...projectMedia]);
 
-        setSuccess('Project saved successfully!');
+        setSuccess('¡Proyecto guardado exitosamente!');
         setTimeout(() => setSuccess(''), 3000);
+
+        // Show saved status popup
+        setShowSavedStatus(true);
+        setTimeout(() => setShowSavedStatus(false), 2000);
 
         // If there was pending navigation, execute it now
         if (pendingNavigation) {
@@ -560,8 +565,8 @@ export default function UnifiedProjectEditPage({
       console.error('Error saving project:', error);
       setError(
         isCreateMode
-          ? 'Failed to create project'
-          : 'Failed to save project changes'
+          ? 'Error al crear el proyecto'
+          : 'Error al guardar los cambios del proyecto'
       );
     } finally {
       setSaving(false);
@@ -587,11 +592,11 @@ export default function UnifiedProjectEditPage({
       if (result.success) {
         setProjectMedia(prev => prev.filter(m => m.id !== mediaId));
       } else {
-        setError(result.error || 'Failed to delete media');
+        setError(result.error || 'Error al eliminar el medio');
       }
     } catch (error) {
       console.error('Error deleting media:', error);
-      setError('Failed to delete media');
+      setError('Error al eliminar el medio');
     }
   }, []);
 
@@ -1425,15 +1430,17 @@ export default function UnifiedProjectEditPage({
           </DialogContent>
         </Dialog>
 
-        {/* Floating Unsaved Changes Notice - Always Visible */}
+        {/* Floating Unsaved Changes Notice */}
         <div className="fixed top-4 right-4 z-50">
           <div
             className={`
                 px-6 py-4 rounded-none shadow-2xl transition-all duration-300 border-2
                 ${
                   hasUnsavedChanges
-                    ? 'bg-accent border-accent text-accent-foreground animate-pulse shadow-accent/50'
-                    : 'bg-primary border-primary text-primary-foreground shadow-primary/50'
+                    ? 'bg-accent border-accent text-accent-foreground animate-pulse'
+                    : showSavedStatus
+                    ? 'bg-primary border-primary text-primary-foreground'
+                    : 'hidden'
                 }
               `}
           >
@@ -1443,14 +1450,14 @@ export default function UnifiedProjectEditPage({
                   <AlertTriangle className="w-6 h-6 animate-bounce" />
                   <div className="flex flex-col">
                     <span className="font-bold text-lg">
-                      ⚠️ UNSAVED CHANGES
+                      ⚠️ CAMBIOS SIN GUARDAR
                     </span>
                     <span className="text-sm opacity-90">
-                      Don&apos;t forget to save your work!
+                      ¡No olvides guardar tu trabajo!
                     </span>
                   </div>
                 </>
-              ) : (
+              ) : showSavedStatus ? (
                 <>
                   <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                     <span className="text-primary-foreground font-bold text-xs">
@@ -1458,13 +1465,13 @@ export default function UnifiedProjectEditPage({
                     </span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-bold text-lg">All Changes Saved</span>
+                    <span className="font-bold text-lg">Cambios Guardados</span>
                     <span className="text-sm opacity-90">
-                      Your work is secure
+                      Tu trabajo está seguro
                     </span>
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
