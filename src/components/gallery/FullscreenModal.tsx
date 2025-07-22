@@ -77,6 +77,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [showProgress, setShowProgress] = useState(false);
   const loadingStartTimeRef = useRef<number | null>(null);
   const currentMediaIdRef = useRef<string | null>(null);
+  const [isInLoadingTransition, setIsInLoadingTransition] = useState(false);
 
   // Handle mounting for portal
   useEffect(() => {
@@ -127,10 +128,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     // Abort any current progress loading
     abortProgress();
     
-    // Reset all loading states to prevent double loading
+    // Hide ALL media immediately during transition
     setShowProgress(false);
-    setIsLoading(false);
-    setMediaLoadingStates({});
+    setIsLoading(true); // Keep loading true to hide all media
+    setMediaLoadingStates({}); // Clear specific media states
+    setIsInLoadingTransition(true); // Mark as in loading transition
     loadingStartTimeRef.current = null;
     
     setCurrentIndex(index);
@@ -485,7 +487,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <video
               src={currentMedia.url}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               } transition-all duration-500 ease-out`}
               controls
               autoPlay
@@ -499,10 +501,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               data-testid={`video-${currentMedia.id}`}
               onLoadedData={() => {
                 setIsLoading(false);
+                setIsInLoadingTransition(false);
                 handleMediaLoad(currentMedia.id);
               }}
               onError={() => {
                 setIsLoading(false);
+                setIsInLoadingTransition(false);
                 handleMediaError(currentMedia.id);
               }}
             />
@@ -511,7 +515,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               src={currentMedia.url}
               alt={currentMedia.alt}
               className={`max-w-full max-h-full object-contain animate-in fade-in-0 slide-in-from-scale-95 duration-700 ${
-                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                (mediaLoadingStates[currentMedia.id] || isProgressLoading || isLoading || isTransitioning || isInLoadingTransition || !currentMedia) ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               } transition-all duration-500 ease-out`}
               style={{
                 maxHeight: 'calc(100vh - 8rem)',
@@ -520,10 +524,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => {
                 setIsLoading(false);
+                setIsInLoadingTransition(false);
                 handleMediaLoad(currentMedia.id);
               }}
               onError={() => {
                 setIsLoading(false);
+                setIsInLoadingTransition(false);
                 handleMediaError(currentMedia.id);
               }}
             />
