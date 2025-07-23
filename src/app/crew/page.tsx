@@ -2,6 +2,12 @@ import { Metadata } from 'next';
 import { crewMemberService } from '@/services/crew-member';
 import CrewListing from '@/components/crew/CrewListing';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 export const metadata: Metadata = {
   title: 'Nuestro Equipo - Veloz',
   description:

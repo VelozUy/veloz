@@ -3,6 +3,12 @@ import { getStaticContent } from '@/lib/utils';
 import ContactForm from '@/components/forms/ContactForm';
 import type { Metadata } from 'next';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
   return {

@@ -7,6 +7,12 @@ interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 // Generate static params at build time
 export async function generateStaticParams() {
   const content = getStaticContent('es');

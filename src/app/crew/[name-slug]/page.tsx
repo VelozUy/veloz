@@ -10,6 +10,12 @@ interface CrewProfilePageProps {
   }>;
 }
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 export async function generateMetadata({
   params,
 }: CrewProfilePageProps): Promise<Metadata> {

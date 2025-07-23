@@ -1,5 +1,11 @@
 import { Metadata } from 'next';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 export const metadata: Metadata = {
   title: 'Privacy Policy | Veloz',
   description:

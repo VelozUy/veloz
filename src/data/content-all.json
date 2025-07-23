@@ -255,14 +255,14 @@
       "homepage": {
         "headline": "Capturamos lo irrepetible",
         "logo": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
+          "enabled": true
         },
         "backgroundVideo": {
           "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "about": {
@@ -353,13 +353,13 @@
           ]
         },
         {
-          "id": "culturales-y-artsticos",
-          "name": "Culturales y artísticos",
-          "label": "Culturales y artísticos",
-          "title": "Culturales y artísticos",
-          "description": "Proyectos de culturales y artísticos",
+          "id": "culturales",
+          "name": "Culturales",
+          "label": "Culturales",
+          "title": "Culturales",
+          "description": "Proyectos de culturales",
           "eventTypes": [
-            "Culturales y artísticos"
+            "Culturales"
           ]
         },
         {
@@ -387,296 +387,296 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 7,
-              "mediaOffsetY": 6.693989071038249,
-              "type": "image",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 0,
+              "zIndex": 1,
               "y": 0,
-              "mediaOffsetX": -8.021077283372364,
-              "id": "block-1751483402659",
               "height": 6,
-              "zIndex": 1
+              "x": 0,
+              "width": 7,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "id": "block-1751483402659",
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
+              "y": 4,
               "zIndex": 3,
               "height": 5,
-              "y": 4,
-              "width": 7,
-              "id": "block-1751483411676",
+              "type": "video",
               "mediaOffsetX": 10.675916515693812,
-              "mediaId": "6h63m4y2XnApEjJBBl2D"
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "width": 7,
+              "mediaOffsetY": 6.639344262295083,
+              "id": "block-1751483411676"
             },
             {
-              "height": 9,
-              "zIndex": 4,
-              "id": "block-1751483421758",
               "mediaOffsetY": 0.8896965322885589,
               "width": 5,
-              "mediaOffsetX": -25,
-              "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "height": 9,
               "x": 11,
+              "y": 0,
+              "mediaOffsetX": -25,
+              "id": "block-1751483421758",
               "type": "video"
             },
             {
-              "width": 4,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "id": "block-1751483440728",
+              "height": 9,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
+              "x": 7,
               "y": 0,
               "mediaOffsetY": 8.854005567584286,
-              "height": 9,
-              "x": 7,
-              "type": "image",
-              "zIndex": 2
+              "id": "block-1751483440728",
+              "zIndex": 2,
+              "width": 4
             },
             {
-              "title": "Ciclismo",
               "width": 16,
-              "x": 0,
-              "font": "quicksand",
               "color": "#ffffff",
-              "id": "title-1751488350641",
-              "type": "title",
-              "y": 2,
+              "x": 0,
               "height": 4,
-              "zIndex": 5
+              "y": 2,
+              "zIndex": 5,
+              "id": "title-1751488350641",
+              "title": "Ciclismo",
+              "type": "title",
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "y": 0,
-              "id": "auto-0",
               "x": 0,
               "height": 5,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "type": "video",
-              "width": 8
+              "zIndex": 0,
+              "width": 8,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "id": "auto-0",
+              "y": 0
             },
             {
               "zIndex": 1,
-              "x": 8,
-              "y": 0,
-              "height": 8,
               "id": "auto-1",
+              "type": "image",
+              "height": 8,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "width": 5,
-              "type": "image",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
-            },
-            {
-              "width": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "type": "image",
               "y": 0,
-              "id": "auto-2",
-              "x": 13,
-              "zIndex": 2,
-              "height": 3
+              "x": 8
             },
             {
+              "type": "image",
+              "x": 13,
+              "id": "auto-2",
+              "y": 0,
+              "zIndex": 2,
+              "height": 3,
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "width": 3
+            },
+            {
+              "id": "auto-3",
               "zIndex": 3,
               "height": 8,
               "width": 5,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
-              "id": "auto-3",
-              "y": 1,
               "x": 0,
-              "type": "image"
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "type": "image",
+              "y": 1
             },
             {
-              "y": 1,
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
               "type": "image",
-              "id": "auto-4",
+              "zIndex": 4,
+              "y": 1,
               "height": 8,
+              "width": 5,
+              "id": "auto-4",
+              "x": 5,
               "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "width": 6,
               "height": 6,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
               "x": 10,
-              "type": "image",
               "y": 3,
               "id": "auto-5",
+              "width": 6,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "type": "image",
               "zIndex": 5
             },
             {
               "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "zIndex": 6,
               "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "height": 6,
               "x": 0,
               "width": 6,
-              "height": 6
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c"
             },
             {
-              "width": 5,
               "type": "image",
-              "x": 6,
-              "id": "auto-7",
               "zIndex": 7,
               "height": 8,
               "y": 1,
+              "id": "auto-7",
+              "x": 6,
+              "width": 5,
               "mediaId": "dtsBBRanqbKQUVZEwh2k"
             },
             {
+              "height": 8,
               "x": 11,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "zIndex": 8,
-              "height": 8,
-              "width": 5,
               "y": 1,
               "type": "video",
+              "zIndex": 8,
+              "width": 5,
               "id": "auto-8"
             },
             {
               "height": 5,
-              "x": 0,
-              "y": 4,
               "mediaId": "FadSTZIEfDPweyIGgz7b",
+              "y": 4,
+              "id": "auto-9",
               "type": "image",
+              "x": 0,
               "width": 8,
-              "zIndex": 9,
-              "id": "auto-9"
+              "zIndex": 9
             },
             {
-              "type": "image",
               "height": 8,
-              "zIndex": 10,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "x": 8,
+              "width": 5,
+              "type": "image",
               "id": "auto-10",
-              "y": 1
+              "x": 8,
+              "y": 1,
+              "zIndex": 10
             },
             {
-              "zIndex": 11,
-              "height": 3,
-              "type": "image",
               "width": 3,
+              "x": 13,
+              "height": 3,
+              "id": "auto-11",
+              "type": "image",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "x": 13,
-              "id": "auto-11"
+              "zIndex": 11
             },
             {
+              "type": "image",
               "id": "auto-12",
-              "x": 0,
-              "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
+              "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
-              "zIndex": 12
-            },
-            {
-              "height": 5,
               "y": 4,
-              "type": "image",
-              "zIndex": 13,
-              "width": 8,
-              "id": "auto-13",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 8
-            },
-            {
-              "height": 6,
-              "id": "auto-14",
-              "type": "image",
-              "zIndex": 14,
               "x": 0,
-              "y": 3,
-              "width": 6,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M"
-            },
-            {
               "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "id": "auto-15",
-              "y": 4,
-              "x": 6,
-              "width": 8,
-              "type": "image",
-              "zIndex": 15
-            },
-            {
-              "y": 7,
-              "id": "auto-16",
-              "width": 2,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "type": "image",
-              "zIndex": 16,
-              "x": 14
-            },
-            {
-              "width": 5,
-              "height": 8,
-              "x": 0,
-              "type": "image",
-              "y": 1,
-              "zIndex": 17,
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
-            },
-            {
-              "height": 5,
-              "width": 8,
-              "id": "auto-18",
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "type": "image",
-              "x": 5,
-              "y": 4,
-              "zIndex": 18
-            },
-            {
-              "zIndex": 19,
-              "height": 3,
-              "y": 6,
-              "width": 3,
-              "id": "auto-19",
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "type": "image",
-              "x": 13
-            },
-            {
-              "width": 6,
-              "height": 6,
-              "type": "image",
-              "id": "auto-20",
-              "zIndex": 20,
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "x": 0,
-              "y": 3
-            },
-            {
-              "height": 5,
-              "y": 4,
-              "type": "image",
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "id": "auto-21",
-              "x": 6,
               "width": 8
             },
             {
-              "zIndex": 22,
-              "height": 2,
+              "zIndex": 13,
+              "height": 5,
+              "id": "auto-13",
+              "type": "image",
+              "x": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "y": 4,
+              "width": 8
+            },
+            {
+              "type": "image",
+              "width": 6,
+              "y": 3,
+              "zIndex": 14,
+              "height": 6,
+              "id": "auto-14",
+              "mediaId": "O7IlGWX72PxKPNZfWc0M",
+              "x": 0
+            },
+            {
+              "type": "image",
+              "y": 4,
+              "width": 8,
+              "id": "auto-15",
+              "x": 6,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "height": 5
+            },
+            {
               "width": 2,
               "x": 14,
+              "id": "auto-16",
               "y": 7,
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "zIndex": 16,
+              "height": 2,
+              "type": "image"
+            },
+            {
+              "zIndex": 17,
+              "x": 0,
+              "width": 5,
+              "height": 8,
+              "y": 1,
+              "id": "auto-17",
               "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT"
+            },
+            {
+              "height": 5,
+              "x": 5,
+              "zIndex": 18,
+              "y": 4,
+              "type": "image",
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "width": 8
+            },
+            {
+              "height": 3,
+              "id": "auto-19",
+              "type": "image",
+              "y": 6,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
+              "zIndex": 19
+            },
+            {
+              "id": "auto-20",
+              "y": 3,
+              "height": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "type": "image",
+              "zIndex": 20,
+              "width": 6,
+              "x": 0
+            },
+            {
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "id": "auto-21",
+              "width": 8,
+              "x": 6,
+              "y": 4,
+              "zIndex": 21,
+              "height": 5,
+              "type": "image"
+            },
+            {
+              "height": 2,
+              "type": "image",
+              "id": "auto-22",
+              "zIndex": 22,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
-              "id": "auto-22"
+              "x": 14,
+              "width": 2,
+              "y": 7
             }
           ],
           "detailPageGridHeight": 59,
@@ -721,8 +721,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -790,8 +790,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -807,8 +807,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -840,9 +840,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -857,8 +857,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -874,9 +874,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -892,8 +892,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -908,9 +908,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -925,8 +925,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -942,8 +942,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -960,8 +960,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -976,9 +976,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -993,9 +993,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1010,9 +1010,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1027,8 +1027,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1061,9 +1061,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1090,63 +1090,63 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 10,
               "zIndex": 1,
-              "y": 0,
-              "x": 0,
-              "type": "video",
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
               "id": "block-1751903375015",
-              "height": 9
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
+              "type": "video",
+              "y": 0,
+              "width": 10,
+              "x": 0
             },
             {
+              "zIndex": 2,
+              "y": 0,
+              "type": "video",
               "mediaOffsetY": -18.148148148148145,
+              "height": 9,
+              "x": 10,
+              "mediaOffsetX": -21.111111111111107,
               "width": 6,
               "id": "block-1751903380017",
-              "x": 10,
-              "type": "video",
-              "mediaOffsetX": -21.111111111111107,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
-              "height": 9,
-              "zIndex": 2
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd"
             },
             {
-              "x": 3,
+              "title": "JONA l'oreal",
               "id": "title-1751903383860",
-              "font": "inter",
-              "zIndex": 3,
               "height": 5,
-              "width": 10,
-              "color": "#ffffff",
+              "zIndex": 3,
               "type": "title",
+              "font": "inter",
+              "color": "#ffffff",
+              "width": 10,
               "y": 3,
-              "title": "JONA l'oreal"
+              "x": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "x": 0,
-              "y": 0,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "height": 9,
-              "mediaOffsetY": 0.3703703703703704,
               "type": "video",
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
               "width": 10,
-              "zIndex": 0,
               "mediaOffsetX": 0,
-              "id": "auto-0"
+              "id": "auto-0",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "zIndex": 0,
+              "height": 9,
+              "y": 0
             },
             {
-              "zIndex": 1,
               "mediaOffsetX": 0,
               "y": 0,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "mediaOffsetY": -3.888888888888893,
-              "id": "auto-1",
-              "height": 9,
               "width": 6,
               "x": 10,
+              "height": 9,
+              "id": "auto-1",
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
               "type": "video"
             }
           ],
@@ -1176,8 +1176,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1212,9 +1212,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1229,9 +1229,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1246,9 +1246,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1263,9 +1263,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1280,9 +1280,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1297,9 +1297,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1348,8 +1348,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -1365,8 +1365,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1383,8 +1383,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1399,9 +1399,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1416,8 +1416,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -1433,9 +1433,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1450,9 +1450,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1467,9 +1467,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1484,9 +1484,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1506,7 +1506,7 @@
           "title": "Concierto",
           "description": "",
           "tags": [],
-          "eventType": "Culturales y artísticos",
+          "eventType": "Culturales",
           "location": "",
           "eventDate": "",
           "featured": false,
@@ -1544,9 +1544,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -1596,200 +1596,200 @@
           "status": "published",
           "mediaBlocks": [
             {
+              "x": 0,
               "type": "image",
-              "height": 9,
-              "width": 16,
-              "mediaOffsetY": 0,
-              "zIndex": 1,
+              "y": 0,
               "mediaId": "edrQjkSUX2pOlyXleUXb",
               "id": "block-1752176726619",
-              "x": 0,
               "mediaOffsetX": 0,
-              "y": 0
+              "mediaOffsetY": 0,
+              "height": 9,
+              "width": 16,
+              "zIndex": 1
             },
             {
-              "height": 5,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "zIndex": 2,
-              "x": 0,
-              "id": "title-1752176729459",
-              "width": 16,
               "font": "inter",
               "y": 2,
-              "color": "#000000"
+              "color": "#000000",
+              "type": "title",
+              "height": 5,
+              "width": 16,
+              "x": 0,
+              "id": "title-1752176729459",
+              "title": "Casamiento de Paco y Margarita",
+              "zIndex": 2
             }
           ],
           "detailPageBlocks": [
             {
+              "x": 0,
+              "zIndex": 0,
               "width": 8,
-              "height": 5,
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
               "type": "image",
-              "zIndex": 0,
               "y": 0,
               "id": "auto-0",
-              "x": 0
+              "height": 5
             },
             {
               "x": 8,
-              "zIndex": 1,
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "y": 0,
               "id": "auto-1",
+              "y": 0,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "width": 6,
+              "type": "image",
               "height": 6,
-              "type": "image"
+              "zIndex": 1
             },
             {
-              "x": 14,
-              "zIndex": 2,
               "id": "auto-2",
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "type": "image",
+              "x": 14,
+              "y": 0,
+              "zIndex": 2,
               "height": 2,
-              "width": 2,
-              "y": 0
-            },
-            {
-              "id": "auto-3",
-              "mediaId": "9pFVXpDET7jWxDq7RoNh",
               "type": "image",
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "x": 0,
-              "zIndex": 3
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "width": 2
             },
             {
+              "height": 5,
+              "zIndex": 3,
+              "y": 4,
+              "id": "auto-3",
+              "type": "image",
+              "x": 0,
+              "width": 8,
+              "mediaId": "9pFVXpDET7jWxDq7RoNh"
+            },
+            {
+              "id": "auto-4",
+              "width": 8,
+              "type": "image",
               "zIndex": 4,
               "x": 8,
               "y": 4,
-              "id": "auto-4",
-              "width": 8,
               "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image",
               "height": 5
             },
             {
-              "width": 8,
+              "height": 5,
               "zIndex": 5,
+              "width": 8,
               "id": "auto-5",
               "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "height": 5
-            },
-            {
-              "x": 8,
-              "zIndex": 6,
-              "width": 8,
-              "id": "auto-6",
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
               "y": 4
             },
             {
-              "id": "auto-7",
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "x": 0,
-              "zIndex": 7,
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "type": "image"
-            },
-            {
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "id": "auto-6",
               "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
-              "height": 5,
-              "zIndex": 8,
-              "width": 8,
-              "y": 4,
-              "id": "auto-8",
-              "type": "image"
-            },
-            {
-              "height": 5,
-              "id": "auto-9",
               "type": "image",
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "x": 0
-            },
-            {
-              "id": "auto-10",
-              "zIndex": 10,
-              "type": "image",
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "y": 4,
               "width": 8,
-              "x": 8,
+              "zIndex": 6,
               "height": 5
             },
             {
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
               "y": 4,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
+              "id": "auto-7",
+              "zIndex": 7,
+              "x": 0,
+              "height": 5,
+              "width": 8
+            },
+            {
+              "x": 8,
+              "type": "image",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
+              "zIndex": 8,
+              "width": 8,
+              "y": 4,
+              "height": 5
+            },
+            {
               "width": 8,
               "x": 0,
+              "type": "image",
+              "y": 4,
+              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
+              "height": 5,
+              "zIndex": 9,
+              "id": "auto-9"
+            },
+            {
+              "y": 4,
+              "width": 8,
+              "x": 8,
+              "id": "auto-10",
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "type": "image",
+              "zIndex": 10,
+              "height": 5
+            },
+            {
+              "width": 8,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
               "id": "auto-11",
               "zIndex": 11,
+              "y": 4,
               "height": 5,
-              "type": "image"
+              "x": 0
             },
             {
-              "width": 5,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
-              "id": "auto-12",
-              "height": 8,
-              "type": "image",
-              "x": 8,
               "y": 1,
-              "zIndex": 12
-            },
-            {
-              "id": "auto-13",
-              "x": 13,
-              "zIndex": 13,
-              "width": 3,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
+              "id": "auto-12",
+              "zIndex": 12,
+              "x": 8,
+              "height": 8,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "width": 5,
               "type": "image"
             },
             {
-              "zIndex": 14,
+              "width": 3,
+              "type": "image",
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "zIndex": 13,
+              "x": 13,
+              "id": "auto-13",
+              "y": 6,
+              "height": 3
+            },
+            {
+              "type": "image",
               "height": 5,
-              "width": 8,
+              "id": "auto-14",
+              "y": 4,
               "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "id": "auto-14"
-            },
-            {
-              "height": 5,
               "width": 8,
-              "zIndex": 15,
-              "x": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV"
+              "zIndex": 14
             },
             {
-              "height": 8,
-              "zIndex": 16,
-              "y": 1,
+              "x": 8,
+              "y": 4,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "zIndex": 15,
+              "height": 5,
               "type": "image",
-              "id": "auto-16",
+              "id": "auto-15",
+              "width": 8
+            },
+            {
+              "zIndex": 16,
               "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "x": 0,
+              "type": "image",
               "width": 5,
-              "x": 0
+              "y": 1,
+              "height": 8,
+              "id": "auto-16"
             }
           ],
           "detailPageGridHeight": 47,
@@ -1800,8 +1800,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -1817,9 +1817,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1834,9 +1834,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1868,9 +1868,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1885,8 +1885,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -1937,8 +1937,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1971,8 +1971,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1987,8 +1987,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -2004,9 +2004,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2021,9 +2021,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -2055,8 +2055,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -2072,8 +2072,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -2116,7 +2116,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-07-23T22:47:32.676Z",
+    "lastUpdated": "2025-07-23T22:56:50.602Z",
     "buildTime": true
   },
   "en": {
@@ -2375,14 +2375,14 @@
       "homepage": {
         "headline": "Capturing the Unrepeatable",
         "logo": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
+          "enabled": true
         },
         "backgroundVideo": {
           "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "about": {
@@ -2473,13 +2473,13 @@
           ]
         },
         {
-          "id": "culturales-y-artsticos",
-          "name": "Culturales y artísticos",
-          "label": "Culturales y artísticos",
-          "title": "Culturales y artísticos",
-          "description": "Proyectos de culturales y artísticos",
+          "id": "culturales",
+          "name": "Culturales",
+          "label": "Culturales",
+          "title": "Culturales",
+          "description": "Proyectos de culturales",
           "eventTypes": [
-            "Culturales y artísticos"
+            "Culturales"
           ]
         },
         {
@@ -2507,296 +2507,296 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 7,
-              "mediaOffsetY": 6.693989071038249,
-              "type": "image",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 0,
+              "zIndex": 1,
               "y": 0,
-              "mediaOffsetX": -8.021077283372364,
-              "id": "block-1751483402659",
               "height": 6,
-              "zIndex": 1
+              "x": 0,
+              "width": 7,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "id": "block-1751483402659",
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
+              "y": 4,
               "zIndex": 3,
               "height": 5,
-              "y": 4,
-              "width": 7,
-              "id": "block-1751483411676",
+              "type": "video",
               "mediaOffsetX": 10.675916515693812,
-              "mediaId": "6h63m4y2XnApEjJBBl2D"
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "width": 7,
+              "mediaOffsetY": 6.639344262295083,
+              "id": "block-1751483411676"
             },
             {
-              "height": 9,
-              "zIndex": 4,
-              "id": "block-1751483421758",
               "mediaOffsetY": 0.8896965322885589,
               "width": 5,
-              "mediaOffsetX": -25,
-              "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "height": 9,
               "x": 11,
+              "y": 0,
+              "mediaOffsetX": -25,
+              "id": "block-1751483421758",
               "type": "video"
             },
             {
-              "width": 4,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "id": "block-1751483440728",
+              "height": 9,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
+              "x": 7,
               "y": 0,
               "mediaOffsetY": 8.854005567584286,
-              "height": 9,
-              "x": 7,
-              "type": "image",
-              "zIndex": 2
+              "id": "block-1751483440728",
+              "zIndex": 2,
+              "width": 4
             },
             {
-              "title": "Ciclismo",
               "width": 16,
-              "x": 0,
-              "font": "quicksand",
               "color": "#ffffff",
-              "id": "title-1751488350641",
-              "type": "title",
-              "y": 2,
+              "x": 0,
               "height": 4,
-              "zIndex": 5
+              "y": 2,
+              "zIndex": 5,
+              "id": "title-1751488350641",
+              "title": "Ciclismo",
+              "type": "title",
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "y": 0,
-              "id": "auto-0",
               "x": 0,
               "height": 5,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "type": "video",
-              "width": 8
+              "zIndex": 0,
+              "width": 8,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "id": "auto-0",
+              "y": 0
             },
             {
               "zIndex": 1,
-              "x": 8,
-              "y": 0,
-              "height": 8,
               "id": "auto-1",
+              "type": "image",
+              "height": 8,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "width": 5,
-              "type": "image",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
-            },
-            {
-              "width": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "type": "image",
               "y": 0,
-              "id": "auto-2",
-              "x": 13,
-              "zIndex": 2,
-              "height": 3
+              "x": 8
             },
             {
+              "type": "image",
+              "x": 13,
+              "id": "auto-2",
+              "y": 0,
+              "zIndex": 2,
+              "height": 3,
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "width": 3
+            },
+            {
+              "id": "auto-3",
               "zIndex": 3,
               "height": 8,
               "width": 5,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
-              "id": "auto-3",
-              "y": 1,
               "x": 0,
-              "type": "image"
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "type": "image",
+              "y": 1
             },
             {
-              "y": 1,
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
               "type": "image",
-              "id": "auto-4",
+              "zIndex": 4,
+              "y": 1,
               "height": 8,
+              "width": 5,
+              "id": "auto-4",
+              "x": 5,
               "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "width": 6,
               "height": 6,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
               "x": 10,
-              "type": "image",
               "y": 3,
               "id": "auto-5",
+              "width": 6,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "type": "image",
               "zIndex": 5
             },
             {
               "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "zIndex": 6,
               "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "height": 6,
               "x": 0,
               "width": 6,
-              "height": 6
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c"
             },
             {
-              "width": 5,
               "type": "image",
-              "x": 6,
-              "id": "auto-7",
               "zIndex": 7,
               "height": 8,
               "y": 1,
+              "id": "auto-7",
+              "x": 6,
+              "width": 5,
               "mediaId": "dtsBBRanqbKQUVZEwh2k"
             },
             {
+              "height": 8,
               "x": 11,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "zIndex": 8,
-              "height": 8,
-              "width": 5,
               "y": 1,
               "type": "video",
+              "zIndex": 8,
+              "width": 5,
               "id": "auto-8"
             },
             {
               "height": 5,
-              "x": 0,
-              "y": 4,
               "mediaId": "FadSTZIEfDPweyIGgz7b",
+              "y": 4,
+              "id": "auto-9",
               "type": "image",
+              "x": 0,
               "width": 8,
-              "zIndex": 9,
-              "id": "auto-9"
+              "zIndex": 9
             },
             {
-              "type": "image",
               "height": 8,
-              "zIndex": 10,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "x": 8,
+              "width": 5,
+              "type": "image",
               "id": "auto-10",
-              "y": 1
+              "x": 8,
+              "y": 1,
+              "zIndex": 10
             },
             {
-              "zIndex": 11,
-              "height": 3,
-              "type": "image",
               "width": 3,
+              "x": 13,
+              "height": 3,
+              "id": "auto-11",
+              "type": "image",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "x": 13,
-              "id": "auto-11"
+              "zIndex": 11
             },
             {
+              "type": "image",
               "id": "auto-12",
-              "x": 0,
-              "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
+              "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
-              "zIndex": 12
-            },
-            {
-              "height": 5,
               "y": 4,
-              "type": "image",
-              "zIndex": 13,
-              "width": 8,
-              "id": "auto-13",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 8
-            },
-            {
-              "height": 6,
-              "id": "auto-14",
-              "type": "image",
-              "zIndex": 14,
               "x": 0,
-              "y": 3,
-              "width": 6,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M"
-            },
-            {
               "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "id": "auto-15",
-              "y": 4,
-              "x": 6,
-              "width": 8,
-              "type": "image",
-              "zIndex": 15
-            },
-            {
-              "y": 7,
-              "id": "auto-16",
-              "width": 2,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "type": "image",
-              "zIndex": 16,
-              "x": 14
-            },
-            {
-              "width": 5,
-              "height": 8,
-              "x": 0,
-              "type": "image",
-              "y": 1,
-              "zIndex": 17,
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
-            },
-            {
-              "height": 5,
-              "width": 8,
-              "id": "auto-18",
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "type": "image",
-              "x": 5,
-              "y": 4,
-              "zIndex": 18
-            },
-            {
-              "zIndex": 19,
-              "height": 3,
-              "y": 6,
-              "width": 3,
-              "id": "auto-19",
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "type": "image",
-              "x": 13
-            },
-            {
-              "width": 6,
-              "height": 6,
-              "type": "image",
-              "id": "auto-20",
-              "zIndex": 20,
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "x": 0,
-              "y": 3
-            },
-            {
-              "height": 5,
-              "y": 4,
-              "type": "image",
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "id": "auto-21",
-              "x": 6,
               "width": 8
             },
             {
-              "zIndex": 22,
-              "height": 2,
+              "zIndex": 13,
+              "height": 5,
+              "id": "auto-13",
+              "type": "image",
+              "x": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "y": 4,
+              "width": 8
+            },
+            {
+              "type": "image",
+              "width": 6,
+              "y": 3,
+              "zIndex": 14,
+              "height": 6,
+              "id": "auto-14",
+              "mediaId": "O7IlGWX72PxKPNZfWc0M",
+              "x": 0
+            },
+            {
+              "type": "image",
+              "y": 4,
+              "width": 8,
+              "id": "auto-15",
+              "x": 6,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "height": 5
+            },
+            {
               "width": 2,
               "x": 14,
+              "id": "auto-16",
               "y": 7,
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "zIndex": 16,
+              "height": 2,
+              "type": "image"
+            },
+            {
+              "zIndex": 17,
+              "x": 0,
+              "width": 5,
+              "height": 8,
+              "y": 1,
+              "id": "auto-17",
               "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT"
+            },
+            {
+              "height": 5,
+              "x": 5,
+              "zIndex": 18,
+              "y": 4,
+              "type": "image",
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "width": 8
+            },
+            {
+              "height": 3,
+              "id": "auto-19",
+              "type": "image",
+              "y": 6,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
+              "zIndex": 19
+            },
+            {
+              "id": "auto-20",
+              "y": 3,
+              "height": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "type": "image",
+              "zIndex": 20,
+              "width": 6,
+              "x": 0
+            },
+            {
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "id": "auto-21",
+              "width": 8,
+              "x": 6,
+              "y": 4,
+              "zIndex": 21,
+              "height": 5,
+              "type": "image"
+            },
+            {
+              "height": 2,
+              "type": "image",
+              "id": "auto-22",
+              "zIndex": 22,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
-              "id": "auto-22"
+              "x": 14,
+              "width": 2,
+              "y": 7
             }
           ],
           "detailPageGridHeight": 59,
@@ -2841,8 +2841,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -2910,8 +2910,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2927,8 +2927,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2960,9 +2960,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -2977,8 +2977,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -2994,9 +2994,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3012,8 +3012,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3028,9 +3028,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3045,8 +3045,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -3062,8 +3062,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -3080,8 +3080,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3096,9 +3096,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3113,9 +3113,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3130,9 +3130,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3147,8 +3147,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -3181,9 +3181,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3210,63 +3210,63 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 10,
               "zIndex": 1,
-              "y": 0,
-              "x": 0,
-              "type": "video",
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
               "id": "block-1751903375015",
-              "height": 9
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
+              "type": "video",
+              "y": 0,
+              "width": 10,
+              "x": 0
             },
             {
+              "zIndex": 2,
+              "y": 0,
+              "type": "video",
               "mediaOffsetY": -18.148148148148145,
+              "height": 9,
+              "x": 10,
+              "mediaOffsetX": -21.111111111111107,
               "width": 6,
               "id": "block-1751903380017",
-              "x": 10,
-              "type": "video",
-              "mediaOffsetX": -21.111111111111107,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
-              "height": 9,
-              "zIndex": 2
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd"
             },
             {
-              "x": 3,
+              "title": "JONA l'oreal",
               "id": "title-1751903383860",
-              "font": "inter",
-              "zIndex": 3,
               "height": 5,
-              "width": 10,
-              "color": "#ffffff",
+              "zIndex": 3,
               "type": "title",
+              "font": "inter",
+              "color": "#ffffff",
+              "width": 10,
               "y": 3,
-              "title": "JONA l'oreal"
+              "x": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "x": 0,
-              "y": 0,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "height": 9,
-              "mediaOffsetY": 0.3703703703703704,
               "type": "video",
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
               "width": 10,
-              "zIndex": 0,
               "mediaOffsetX": 0,
-              "id": "auto-0"
+              "id": "auto-0",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "zIndex": 0,
+              "height": 9,
+              "y": 0
             },
             {
-              "zIndex": 1,
               "mediaOffsetX": 0,
               "y": 0,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "mediaOffsetY": -3.888888888888893,
-              "id": "auto-1",
-              "height": 9,
               "width": 6,
               "x": 10,
+              "height": 9,
+              "id": "auto-1",
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
               "type": "video"
             }
           ],
@@ -3296,8 +3296,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3332,9 +3332,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3349,9 +3349,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3366,9 +3366,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3383,9 +3383,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3400,9 +3400,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3417,9 +3417,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3468,8 +3468,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -3485,8 +3485,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -3503,8 +3503,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3519,9 +3519,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3536,8 +3536,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -3553,9 +3553,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3570,9 +3570,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3587,9 +3587,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3604,9 +3604,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3626,7 +3626,7 @@
           "title": "Concierto",
           "description": "",
           "tags": [],
-          "eventType": "Culturales y artísticos",
+          "eventType": "Culturales",
           "location": "",
           "eventDate": "",
           "featured": false,
@@ -3664,9 +3664,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -3716,200 +3716,200 @@
           "status": "published",
           "mediaBlocks": [
             {
+              "x": 0,
               "type": "image",
-              "height": 9,
-              "width": 16,
-              "mediaOffsetY": 0,
-              "zIndex": 1,
+              "y": 0,
               "mediaId": "edrQjkSUX2pOlyXleUXb",
               "id": "block-1752176726619",
-              "x": 0,
               "mediaOffsetX": 0,
-              "y": 0
+              "mediaOffsetY": 0,
+              "height": 9,
+              "width": 16,
+              "zIndex": 1
             },
             {
-              "height": 5,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "zIndex": 2,
-              "x": 0,
-              "id": "title-1752176729459",
-              "width": 16,
               "font": "inter",
               "y": 2,
-              "color": "#000000"
+              "color": "#000000",
+              "type": "title",
+              "height": 5,
+              "width": 16,
+              "x": 0,
+              "id": "title-1752176729459",
+              "title": "Casamiento de Paco y Margarita",
+              "zIndex": 2
             }
           ],
           "detailPageBlocks": [
             {
+              "x": 0,
+              "zIndex": 0,
               "width": 8,
-              "height": 5,
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
               "type": "image",
-              "zIndex": 0,
               "y": 0,
               "id": "auto-0",
-              "x": 0
+              "height": 5
             },
             {
               "x": 8,
-              "zIndex": 1,
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "y": 0,
               "id": "auto-1",
+              "y": 0,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "width": 6,
+              "type": "image",
               "height": 6,
-              "type": "image"
+              "zIndex": 1
             },
             {
-              "x": 14,
-              "zIndex": 2,
               "id": "auto-2",
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "type": "image",
+              "x": 14,
+              "y": 0,
+              "zIndex": 2,
               "height": 2,
-              "width": 2,
-              "y": 0
-            },
-            {
-              "id": "auto-3",
-              "mediaId": "9pFVXpDET7jWxDq7RoNh",
               "type": "image",
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "x": 0,
-              "zIndex": 3
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "width": 2
             },
             {
+              "height": 5,
+              "zIndex": 3,
+              "y": 4,
+              "id": "auto-3",
+              "type": "image",
+              "x": 0,
+              "width": 8,
+              "mediaId": "9pFVXpDET7jWxDq7RoNh"
+            },
+            {
+              "id": "auto-4",
+              "width": 8,
+              "type": "image",
               "zIndex": 4,
               "x": 8,
               "y": 4,
-              "id": "auto-4",
-              "width": 8,
               "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image",
               "height": 5
             },
             {
-              "width": 8,
+              "height": 5,
               "zIndex": 5,
+              "width": 8,
               "id": "auto-5",
               "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "height": 5
-            },
-            {
-              "x": 8,
-              "zIndex": 6,
-              "width": 8,
-              "id": "auto-6",
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
               "y": 4
             },
             {
-              "id": "auto-7",
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "x": 0,
-              "zIndex": 7,
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "type": "image"
-            },
-            {
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "id": "auto-6",
               "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
-              "height": 5,
-              "zIndex": 8,
-              "width": 8,
-              "y": 4,
-              "id": "auto-8",
-              "type": "image"
-            },
-            {
-              "height": 5,
-              "id": "auto-9",
               "type": "image",
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "x": 0
-            },
-            {
-              "id": "auto-10",
-              "zIndex": 10,
-              "type": "image",
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "y": 4,
               "width": 8,
-              "x": 8,
+              "zIndex": 6,
               "height": 5
             },
             {
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
               "y": 4,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
+              "id": "auto-7",
+              "zIndex": 7,
+              "x": 0,
+              "height": 5,
+              "width": 8
+            },
+            {
+              "x": 8,
+              "type": "image",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
+              "zIndex": 8,
+              "width": 8,
+              "y": 4,
+              "height": 5
+            },
+            {
               "width": 8,
               "x": 0,
+              "type": "image",
+              "y": 4,
+              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
+              "height": 5,
+              "zIndex": 9,
+              "id": "auto-9"
+            },
+            {
+              "y": 4,
+              "width": 8,
+              "x": 8,
+              "id": "auto-10",
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "type": "image",
+              "zIndex": 10,
+              "height": 5
+            },
+            {
+              "width": 8,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
               "id": "auto-11",
               "zIndex": 11,
+              "y": 4,
               "height": 5,
-              "type": "image"
+              "x": 0
             },
             {
-              "width": 5,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
-              "id": "auto-12",
-              "height": 8,
-              "type": "image",
-              "x": 8,
               "y": 1,
-              "zIndex": 12
-            },
-            {
-              "id": "auto-13",
-              "x": 13,
-              "zIndex": 13,
-              "width": 3,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
+              "id": "auto-12",
+              "zIndex": 12,
+              "x": 8,
+              "height": 8,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "width": 5,
               "type": "image"
             },
             {
-              "zIndex": 14,
+              "width": 3,
+              "type": "image",
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "zIndex": 13,
+              "x": 13,
+              "id": "auto-13",
+              "y": 6,
+              "height": 3
+            },
+            {
+              "type": "image",
               "height": 5,
-              "width": 8,
+              "id": "auto-14",
+              "y": 4,
               "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "id": "auto-14"
-            },
-            {
-              "height": 5,
               "width": 8,
-              "zIndex": 15,
-              "x": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV"
+              "zIndex": 14
             },
             {
-              "height": 8,
-              "zIndex": 16,
-              "y": 1,
+              "x": 8,
+              "y": 4,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "zIndex": 15,
+              "height": 5,
               "type": "image",
-              "id": "auto-16",
+              "id": "auto-15",
+              "width": 8
+            },
+            {
+              "zIndex": 16,
               "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "x": 0,
+              "type": "image",
               "width": 5,
-              "x": 0
+              "y": 1,
+              "height": 8,
+              "id": "auto-16"
             }
           ],
           "detailPageGridHeight": 47,
@@ -3920,8 +3920,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -3937,9 +3937,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3954,9 +3954,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3988,9 +3988,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4005,8 +4005,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -4057,8 +4057,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4091,8 +4091,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4107,8 +4107,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -4124,9 +4124,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4141,9 +4141,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -4175,8 +4175,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -4192,8 +4192,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -4236,7 +4236,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-07-23T22:47:32.676Z",
+    "lastUpdated": "2025-07-23T22:56:50.611Z",
     "buildTime": true
   },
   "pt": {
@@ -4495,14 +4495,14 @@
       "homepage": {
         "headline": "Capturamos lo irrepetible",
         "logo": {
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
           "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
-          "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
+          "enabled": true
         },
         "backgroundVideo": {
           "enabled": true,
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
         }
       },
       "about": {
@@ -4593,13 +4593,13 @@
           ]
         },
         {
-          "id": "culturales-y-artsticos",
-          "name": "Culturales y artísticos",
-          "label": "Culturales y artísticos",
-          "title": "Culturales y artísticos",
-          "description": "Proyectos de culturales y artísticos",
+          "id": "culturales",
+          "name": "Culturales",
+          "label": "Culturales",
+          "title": "Culturales",
+          "description": "Proyectos de culturales",
           "eventTypes": [
-            "Culturales y artísticos"
+            "Culturales"
           ]
         },
         {
@@ -4627,296 +4627,296 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 7,
-              "mediaOffsetY": 6.693989071038249,
-              "type": "image",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 0,
+              "zIndex": 1,
               "y": 0,
-              "mediaOffsetX": -8.021077283372364,
-              "id": "block-1751483402659",
               "height": 6,
-              "zIndex": 1
+              "x": 0,
+              "width": 7,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "id": "block-1751483402659",
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
+              "y": 4,
               "zIndex": 3,
               "height": 5,
-              "y": 4,
-              "width": 7,
-              "id": "block-1751483411676",
+              "type": "video",
               "mediaOffsetX": 10.675916515693812,
-              "mediaId": "6h63m4y2XnApEjJBBl2D"
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "width": 7,
+              "mediaOffsetY": 6.639344262295083,
+              "id": "block-1751483411676"
             },
             {
-              "height": 9,
-              "zIndex": 4,
-              "id": "block-1751483421758",
               "mediaOffsetY": 0.8896965322885589,
               "width": 5,
-              "mediaOffsetX": -25,
-              "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "height": 9,
               "x": 11,
+              "y": 0,
+              "mediaOffsetX": -25,
+              "id": "block-1751483421758",
               "type": "video"
             },
             {
-              "width": 4,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "id": "block-1751483440728",
+              "height": 9,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
+              "x": 7,
               "y": 0,
               "mediaOffsetY": 8.854005567584286,
-              "height": 9,
-              "x": 7,
-              "type": "image",
-              "zIndex": 2
+              "id": "block-1751483440728",
+              "zIndex": 2,
+              "width": 4
             },
             {
-              "title": "Ciclismo",
               "width": 16,
-              "x": 0,
-              "font": "quicksand",
               "color": "#ffffff",
-              "id": "title-1751488350641",
-              "type": "title",
-              "y": 2,
+              "x": 0,
               "height": 4,
-              "zIndex": 5
+              "y": 2,
+              "zIndex": 5,
+              "id": "title-1751488350641",
+              "title": "Ciclismo",
+              "type": "title",
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "y": 0,
-              "id": "auto-0",
               "x": 0,
               "height": 5,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "type": "video",
-              "width": 8
+              "zIndex": 0,
+              "width": 8,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "id": "auto-0",
+              "y": 0
             },
             {
               "zIndex": 1,
-              "x": 8,
-              "y": 0,
-              "height": 8,
               "id": "auto-1",
+              "type": "image",
+              "height": 8,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "width": 5,
-              "type": "image",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
-            },
-            {
-              "width": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "type": "image",
               "y": 0,
-              "id": "auto-2",
-              "x": 13,
-              "zIndex": 2,
-              "height": 3
+              "x": 8
             },
             {
+              "type": "image",
+              "x": 13,
+              "id": "auto-2",
+              "y": 0,
+              "zIndex": 2,
+              "height": 3,
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "width": 3
+            },
+            {
+              "id": "auto-3",
               "zIndex": 3,
               "height": 8,
               "width": 5,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
-              "id": "auto-3",
-              "y": 1,
               "x": 0,
-              "type": "image"
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "type": "image",
+              "y": 1
             },
             {
-              "y": 1,
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
               "type": "image",
-              "id": "auto-4",
+              "zIndex": 4,
+              "y": 1,
               "height": 8,
+              "width": 5,
+              "id": "auto-4",
+              "x": 5,
               "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "width": 6,
               "height": 6,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
               "x": 10,
-              "type": "image",
               "y": 3,
               "id": "auto-5",
+              "width": 6,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "type": "image",
               "zIndex": 5
             },
             {
               "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "zIndex": 6,
               "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "height": 6,
               "x": 0,
               "width": 6,
-              "height": 6
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c"
             },
             {
-              "width": 5,
               "type": "image",
-              "x": 6,
-              "id": "auto-7",
               "zIndex": 7,
               "height": 8,
               "y": 1,
+              "id": "auto-7",
+              "x": 6,
+              "width": 5,
               "mediaId": "dtsBBRanqbKQUVZEwh2k"
             },
             {
+              "height": 8,
               "x": 11,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "zIndex": 8,
-              "height": 8,
-              "width": 5,
               "y": 1,
               "type": "video",
+              "zIndex": 8,
+              "width": 5,
               "id": "auto-8"
             },
             {
               "height": 5,
-              "x": 0,
-              "y": 4,
               "mediaId": "FadSTZIEfDPweyIGgz7b",
+              "y": 4,
+              "id": "auto-9",
               "type": "image",
+              "x": 0,
               "width": 8,
-              "zIndex": 9,
-              "id": "auto-9"
+              "zIndex": 9
             },
             {
-              "type": "image",
               "height": 8,
-              "zIndex": 10,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "x": 8,
+              "width": 5,
+              "type": "image",
               "id": "auto-10",
-              "y": 1
+              "x": 8,
+              "y": 1,
+              "zIndex": 10
             },
             {
-              "zIndex": 11,
-              "height": 3,
-              "type": "image",
               "width": 3,
+              "x": 13,
+              "height": 3,
+              "id": "auto-11",
+              "type": "image",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "x": 13,
-              "id": "auto-11"
+              "zIndex": 11
             },
             {
+              "type": "image",
               "id": "auto-12",
-              "x": 0,
-              "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
+              "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
-              "zIndex": 12
-            },
-            {
-              "height": 5,
               "y": 4,
-              "type": "image",
-              "zIndex": 13,
-              "width": 8,
-              "id": "auto-13",
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "x": 8
-            },
-            {
-              "height": 6,
-              "id": "auto-14",
-              "type": "image",
-              "zIndex": 14,
               "x": 0,
-              "y": 3,
-              "width": 6,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M"
-            },
-            {
               "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "id": "auto-15",
-              "y": 4,
-              "x": 6,
-              "width": 8,
-              "type": "image",
-              "zIndex": 15
-            },
-            {
-              "y": 7,
-              "id": "auto-16",
-              "width": 2,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "type": "image",
-              "zIndex": 16,
-              "x": 14
-            },
-            {
-              "width": 5,
-              "height": 8,
-              "x": 0,
-              "type": "image",
-              "y": 1,
-              "zIndex": 17,
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
-            },
-            {
-              "height": 5,
-              "width": 8,
-              "id": "auto-18",
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "type": "image",
-              "x": 5,
-              "y": 4,
-              "zIndex": 18
-            },
-            {
-              "zIndex": 19,
-              "height": 3,
-              "y": 6,
-              "width": 3,
-              "id": "auto-19",
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "type": "image",
-              "x": 13
-            },
-            {
-              "width": 6,
-              "height": 6,
-              "type": "image",
-              "id": "auto-20",
-              "zIndex": 20,
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "x": 0,
-              "y": 3
-            },
-            {
-              "height": 5,
-              "y": 4,
-              "type": "image",
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "id": "auto-21",
-              "x": 6,
               "width": 8
             },
             {
-              "zIndex": 22,
-              "height": 2,
+              "zIndex": 13,
+              "height": 5,
+              "id": "auto-13",
+              "type": "image",
+              "x": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "y": 4,
+              "width": 8
+            },
+            {
+              "type": "image",
+              "width": 6,
+              "y": 3,
+              "zIndex": 14,
+              "height": 6,
+              "id": "auto-14",
+              "mediaId": "O7IlGWX72PxKPNZfWc0M",
+              "x": 0
+            },
+            {
+              "type": "image",
+              "y": 4,
+              "width": 8,
+              "id": "auto-15",
+              "x": 6,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "height": 5
+            },
+            {
               "width": 2,
               "x": 14,
+              "id": "auto-16",
               "y": 7,
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "zIndex": 16,
+              "height": 2,
+              "type": "image"
+            },
+            {
+              "zIndex": 17,
+              "x": 0,
+              "width": 5,
+              "height": 8,
+              "y": 1,
+              "id": "auto-17",
               "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT"
+            },
+            {
+              "height": 5,
+              "x": 5,
+              "zIndex": 18,
+              "y": 4,
+              "type": "image",
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "width": 8
+            },
+            {
+              "height": 3,
+              "id": "auto-19",
+              "type": "image",
+              "y": 6,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
+              "zIndex": 19
+            },
+            {
+              "id": "auto-20",
+              "y": 3,
+              "height": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "type": "image",
+              "zIndex": 20,
+              "width": 6,
+              "x": 0
+            },
+            {
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "id": "auto-21",
+              "width": 8,
+              "x": 6,
+              "y": 4,
+              "zIndex": 21,
+              "height": 5,
+              "type": "image"
+            },
+            {
+              "height": 2,
+              "type": "image",
+              "id": "auto-22",
+              "zIndex": 22,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
-              "id": "auto-22"
+              "x": 14,
+              "width": 2,
+              "y": 7
             }
           ],
           "detailPageGridHeight": 59,
@@ -4961,8 +4961,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -5030,8 +5030,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5047,8 +5047,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
                 "pt": "",
-                "en": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5080,9 +5080,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5097,8 +5097,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5114,9 +5114,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5132,8 +5132,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5148,9 +5148,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5165,8 +5165,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -5182,8 +5182,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -5200,8 +5200,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5216,9 +5216,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5233,9 +5233,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5250,9 +5250,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5267,8 +5267,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5301,9 +5301,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5330,63 +5330,63 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 10,
               "zIndex": 1,
-              "y": 0,
-              "x": 0,
-              "type": "video",
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
               "id": "block-1751903375015",
-              "height": 9
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
+              "type": "video",
+              "y": 0,
+              "width": 10,
+              "x": 0
             },
             {
+              "zIndex": 2,
+              "y": 0,
+              "type": "video",
               "mediaOffsetY": -18.148148148148145,
+              "height": 9,
+              "x": 10,
+              "mediaOffsetX": -21.111111111111107,
               "width": 6,
               "id": "block-1751903380017",
-              "x": 10,
-              "type": "video",
-              "mediaOffsetX": -21.111111111111107,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
-              "height": 9,
-              "zIndex": 2
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd"
             },
             {
-              "x": 3,
+              "title": "JONA l'oreal",
               "id": "title-1751903383860",
-              "font": "inter",
-              "zIndex": 3,
               "height": 5,
-              "width": 10,
-              "color": "#ffffff",
+              "zIndex": 3,
               "type": "title",
+              "font": "inter",
+              "color": "#ffffff",
+              "width": 10,
               "y": 3,
-              "title": "JONA l'oreal"
+              "x": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "x": 0,
-              "y": 0,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "height": 9,
-              "mediaOffsetY": 0.3703703703703704,
               "type": "video",
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
               "width": 10,
-              "zIndex": 0,
               "mediaOffsetX": 0,
-              "id": "auto-0"
+              "id": "auto-0",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "zIndex": 0,
+              "height": 9,
+              "y": 0
             },
             {
-              "zIndex": 1,
               "mediaOffsetX": 0,
               "y": 0,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "mediaOffsetY": -3.888888888888893,
-              "id": "auto-1",
-              "height": 9,
               "width": 6,
               "x": 10,
+              "height": 9,
+              "id": "auto-1",
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
               "type": "video"
             }
           ],
@@ -5416,8 +5416,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5452,9 +5452,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5469,9 +5469,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5486,9 +5486,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5503,9 +5503,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058348864-_MG_1884.jpg?alt=media&token=7cf40598-eade-4db3-b4f9-fc04879a66b3",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5520,9 +5520,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5537,9 +5537,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5588,8 +5588,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -5605,8 +5605,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5623,8 +5623,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5639,9 +5639,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5656,8 +5656,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -5673,9 +5673,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5690,9 +5690,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058474526-_MG_1919.jpg?alt=media&token=292cfbdf-7ffa-4af6-896c-7ad006eab738",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5707,9 +5707,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5724,9 +5724,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5746,7 +5746,7 @@
           "title": "Concierto",
           "description": "",
           "tags": [],
-          "eventType": "Culturales y artísticos",
+          "eventType": "Culturales",
           "location": "",
           "eventDate": "",
           "featured": false,
@@ -5784,9 +5784,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -5836,200 +5836,200 @@
           "status": "published",
           "mediaBlocks": [
             {
+              "x": 0,
               "type": "image",
-              "height": 9,
-              "width": 16,
-              "mediaOffsetY": 0,
-              "zIndex": 1,
+              "y": 0,
               "mediaId": "edrQjkSUX2pOlyXleUXb",
               "id": "block-1752176726619",
-              "x": 0,
               "mediaOffsetX": 0,
-              "y": 0
+              "mediaOffsetY": 0,
+              "height": 9,
+              "width": 16,
+              "zIndex": 1
             },
             {
-              "height": 5,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "zIndex": 2,
-              "x": 0,
-              "id": "title-1752176729459",
-              "width": 16,
               "font": "inter",
               "y": 2,
-              "color": "#000000"
+              "color": "#000000",
+              "type": "title",
+              "height": 5,
+              "width": 16,
+              "x": 0,
+              "id": "title-1752176729459",
+              "title": "Casamiento de Paco y Margarita",
+              "zIndex": 2
             }
           ],
           "detailPageBlocks": [
             {
+              "x": 0,
+              "zIndex": 0,
               "width": 8,
-              "height": 5,
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
               "type": "image",
-              "zIndex": 0,
               "y": 0,
               "id": "auto-0",
-              "x": 0
+              "height": 5
             },
             {
               "x": 8,
-              "zIndex": 1,
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "y": 0,
               "id": "auto-1",
+              "y": 0,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "width": 6,
+              "type": "image",
               "height": 6,
-              "type": "image"
+              "zIndex": 1
             },
             {
-              "x": 14,
-              "zIndex": 2,
               "id": "auto-2",
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "type": "image",
+              "x": 14,
+              "y": 0,
+              "zIndex": 2,
               "height": 2,
-              "width": 2,
-              "y": 0
-            },
-            {
-              "id": "auto-3",
-              "mediaId": "9pFVXpDET7jWxDq7RoNh",
               "type": "image",
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "x": 0,
-              "zIndex": 3
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "width": 2
             },
             {
+              "height": 5,
+              "zIndex": 3,
+              "y": 4,
+              "id": "auto-3",
+              "type": "image",
+              "x": 0,
+              "width": 8,
+              "mediaId": "9pFVXpDET7jWxDq7RoNh"
+            },
+            {
+              "id": "auto-4",
+              "width": 8,
+              "type": "image",
               "zIndex": 4,
               "x": 8,
               "y": 4,
-              "id": "auto-4",
-              "width": 8,
               "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image",
               "height": 5
             },
             {
-              "width": 8,
+              "height": 5,
               "zIndex": 5,
+              "width": 8,
               "id": "auto-5",
               "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "height": 5
-            },
-            {
-              "x": 8,
-              "zIndex": 6,
-              "width": 8,
-              "id": "auto-6",
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
               "y": 4
             },
             {
-              "id": "auto-7",
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "x": 0,
-              "zIndex": 7,
-              "height": 5,
-              "width": 8,
-              "y": 4,
-              "type": "image"
-            },
-            {
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "id": "auto-6",
               "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
-              "height": 5,
-              "zIndex": 8,
-              "width": 8,
-              "y": 4,
-              "id": "auto-8",
-              "type": "image"
-            },
-            {
-              "height": 5,
-              "id": "auto-9",
               "type": "image",
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "x": 0
-            },
-            {
-              "id": "auto-10",
-              "zIndex": 10,
-              "type": "image",
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "y": 4,
               "width": 8,
-              "x": 8,
+              "zIndex": 6,
               "height": 5
             },
             {
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
               "y": 4,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
+              "id": "auto-7",
+              "zIndex": 7,
+              "x": 0,
+              "height": 5,
+              "width": 8
+            },
+            {
+              "x": 8,
+              "type": "image",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
+              "zIndex": 8,
+              "width": 8,
+              "y": 4,
+              "height": 5
+            },
+            {
               "width": 8,
               "x": 0,
+              "type": "image",
+              "y": 4,
+              "mediaId": "gj9s56ogFiZXgZuXTiwQ",
+              "height": 5,
+              "zIndex": 9,
+              "id": "auto-9"
+            },
+            {
+              "y": 4,
+              "width": 8,
+              "x": 8,
+              "id": "auto-10",
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "type": "image",
+              "zIndex": 10,
+              "height": 5
+            },
+            {
+              "width": 8,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "type": "image",
               "id": "auto-11",
               "zIndex": 11,
+              "y": 4,
               "height": 5,
-              "type": "image"
+              "x": 0
             },
             {
-              "width": 5,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
-              "id": "auto-12",
-              "height": 8,
-              "type": "image",
-              "x": 8,
               "y": 1,
-              "zIndex": 12
-            },
-            {
-              "id": "auto-13",
-              "x": 13,
-              "zIndex": 13,
-              "width": 3,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
+              "id": "auto-12",
+              "zIndex": 12,
+              "x": 8,
+              "height": 8,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "width": 5,
               "type": "image"
             },
             {
-              "zIndex": 14,
+              "width": 3,
+              "type": "image",
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "zIndex": 13,
+              "x": 13,
+              "id": "auto-13",
+              "y": 6,
+              "height": 3
+            },
+            {
+              "type": "image",
               "height": 5,
-              "width": 8,
+              "id": "auto-14",
+              "y": 4,
               "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "x": 0,
-              "y": 4,
-              "type": "image",
-              "id": "auto-14"
-            },
-            {
-              "height": 5,
               "width": 8,
-              "zIndex": 15,
-              "x": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV"
+              "zIndex": 14
             },
             {
-              "height": 8,
-              "zIndex": 16,
-              "y": 1,
+              "x": 8,
+              "y": 4,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "zIndex": 15,
+              "height": 5,
               "type": "image",
-              "id": "auto-16",
+              "id": "auto-15",
+              "width": 8
+            },
+            {
+              "zIndex": 16,
               "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "x": 0,
+              "type": "image",
               "width": 5,
-              "x": 0
+              "y": 1,
+              "height": 8,
+              "id": "auto-16"
             }
           ],
           "detailPageGridHeight": 47,
@@ -6040,8 +6040,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -6057,9 +6057,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6074,9 +6074,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6108,9 +6108,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "pt": "",
+                "es": "",
                 "en": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6125,8 +6125,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -6177,8 +6177,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6211,8 +6211,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6227,8 +6227,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -6244,9 +6244,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6261,9 +6261,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -6295,8 +6295,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -6312,8 +6312,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -6356,7 +6356,7 @@
         }
       ]
     },
-    "lastUpdated": "2025-07-23T22:47:32.677Z",
+    "lastUpdated": "2025-07-23T22:56:50.618Z",
     "buildTime": true
   }
 }

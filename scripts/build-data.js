@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable */
 
 /**
  * Build-time data fetching script for Static Localized Routes
@@ -1477,17 +1477,30 @@ function generateCategories(projects, locale = 'es') {
   });
 
   // Create categories from event types that have featured media
-  const categories = Array.from(eventTypesWithFeaturedMedia).map(eventType => ({
-    id: eventType
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, ''),
-    name: eventType,
-    label: eventType,
-    title: eventType,
-    description: `Proyectos de ${eventType.toLowerCase()}`,
-    eventTypes: [eventType], // Each category only includes its own event type
-  }));
+  const categories = Array.from(eventTypesWithFeaturedMedia).map(eventType => {
+    // Special handling for "Culturales y artísticos" -> "Culturales"
+    let categoryId, displayName;
+    
+    if (eventType === 'Culturales y artísticos') {
+      categoryId = 'culturales';
+      displayName = 'Culturales';
+    } else {
+      categoryId = eventType
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+      displayName = eventType;
+    }
+
+    return {
+      id: categoryId,
+      name: displayName,
+      label: displayName,
+      title: displayName,
+      description: `Proyectos de ${displayName.toLowerCase()}`,
+      eventTypes: [eventType], // Each category only includes its own event type
+    };
+  });
 
   // Always include overview category if there are any projects with featured media
   if (categories.length > 0) {

@@ -2,6 +2,12 @@ import { getStaticContent, getContent } from '@/lib/utils';
 import Hero from '@/components/layout/hero';
 import type { Metadata } from 'next';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 // This function will be replaced with proper locale handling when we set up static routes
 function getCurrentLocale(): string {
   // For now, default to Spanish until we implement proper locale detection

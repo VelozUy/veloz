@@ -17,7 +17,7 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
 export const EVENT_TYPES: EventType[] = [
   'casamiento',
   'corporativos',
-  'culturales-artisticos',
+  'culturales',
   'photoshoot',
   'prensa',
   'otros',
