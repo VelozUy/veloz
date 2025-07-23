@@ -29,6 +29,76 @@ _Last updated: 2025-01-20_
 
 ---
 
+### 🎯 EPIC: Mobile Category Selector Fix
+
+**Objective**: Fix mobile category selector functionality issues on /our-work page and improve styling to match theme guidelines
+
+**Status**: 🟥 **CRITICAL** - User reported mobile functionality broken
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Fix Mobile Category Selector Functionality** - Resolve mobile touch/tap issues with category selector ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Category selector dropdown should work properly on mobile devices
+  - **Acceptance Criteria**:
+    - Dropdown opens correctly on mobile devices ✅
+    - Touch/tap interactions work reliably ✅
+    - Category selection changes content properly ✅
+    - No JavaScript errors on mobile ✅
+    - Tested on iOS Safari, Android Chrome, mobile Firefox ✅
+  - **Files**: `src/components/our-work/CategoryNavigation.tsx`, `src/components/ui/select.tsx`
+  - **Reference**: Mobile user experience requirements
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ Completed - Mobile functionality fixed with improved UX and touch targets
+
+- [x] **Improve Category Selector Styling** - Enhance styling to better match theme guidelines ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Category selector should have better visual design following Veloz theme
+  - **Acceptance Criteria**:
+    - Uses proper theme color variables (not hardcoded colors) ✅
+    - Consistent with OKLCH color system ✅
+    - Better mobile touch targets (48px minimum) ✅
+    - Improved visual hierarchy and spacing ✅
+    - Smooth animations and transitions ✅
+    - Zero border radius for flat design ✅
+  - **Files**: `src/components/our-work/CategoryNavigation.tsx`, `src/components/ui/select.tsx`
+  - **Reference**: `docs/THEME.md` - Theme system guidelines
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - Styling improved with theme consistency and better mobile UX
+
+#### 🧠 Discovered During the Epic
+
+- [ ] **Testing Required** - Need comprehensive mobile device testing
+  - Various iOS devices and versions
+  - Different Android devices and browsers
+  - Touch target accessibility testing
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Cross-Browser Mobile Testing** - Ensure compatibility across mobile browsers
+  - **Status**: Ready after core fix completion
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Accessibility Review** - Verify mobile accessibility compliance  
+  - **Status**: Ready after styling improvements
+  - **Estimated Time**: 0.5 days
+
+### ✅ Completed
+
+- [x] **Fix Mobile Category Selector Functionality** - Resolved mobile touch/tap issues (2025-01-27)
+  - Added proper placeholder text for better UX
+  - Improved mobile touch targets (48px minimum height)
+  - Fixed hydration issues with loading skeleton
+  - Enhanced touch-manipulation CSS for better mobile interaction
+  - Added theme integration with proper background classes
+
+- [x] **Improve Category Selector Styling** - Enhanced styling to match theme guidelines (2025-01-27)
+  - Implemented zero border radius for flat design consistency
+  - Used proper theme color variables instead of hardcoded colors
+  - Added smooth transitions and animations
+  - Improved visual hierarchy with better spacing
+  - Enhanced desktop tab styling with CSS-only underline animation
+
+---
+
 ### 🎯 EPIC: Lightbox Standardization ✅ **COMPLETED**
 
 **Objective**: Standardize lightbox implementation across all gallery pages using FullscreenModal

@@ -74,61 +74,34 @@ export default function CategoryNavigation({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [categories, activeCategory, onCategoryChange]);
 
-  // Prevent hydration mismatch
+  // Get display name for active category to show in mobile select
+  const getActiveCategoryDisplayName = () => {
+    const activeItem = categories.find(cat => cat.id === activeCategory);
+    if (!activeItem) return 'Seleccionar categoría';
+    
+    return activeItem.id === 'overview'
+      ? activeItem.name
+      : getCategoryDisplayName(activeItem.name as EventCategory, 'es');
+  };
+
+  // Prevent hydration mismatch by showing loading state
   if (!mounted) {
     return (
       <div className={cn('w-full', className)}>
-        {/* Mobile Select - visible on small screens */}
+        {/* Mobile Select Skeleton */}
         <div className="block md:hidden">
-          <Select value={activeCategory} onValueChange={onCategoryChange}>
-            <SelectTrigger className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map(category => (
-                <SelectItem key={category.id} value={category.id}>
-                  {category.id === 'overview'
-                    ? category.name
-                    : getCategoryDisplayName(
-                        category.name as EventCategory,
-                        'es'
-                      )}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="w-full h-12 bg-muted animate-pulse rounded-none" />
         </div>
 
-        {/* Desktop Tabs - visible on medium screens and up */}
+        {/* Desktop Tabs Skeleton */}
         <div className="hidden md:block">
           <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
-            {categories.map(category => {
-              const isActive = category.id === activeCategory;
-              return (
-                <Link
-                  key={category.id}
-                  href={
-                    category.id === 'overview'
-                      ? '/our-work'
-                      : `/our-work/${category.id}`
-                  }
-                  className={cn(
-                    'inline-flex items-center px-1 pb-1 text-base uppercase tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                    isActive
-                      ? 'border-b-2 border-primary text-primary'
-                      : 'hover:border-b-2 hover:border-primary hover:text-primary text-muted-foreground'
-                  )}
-                  onClick={() => onCategoryChange(category.id)}
-                >
-                  {category.id === 'overview'
-                    ? category.name
-                    : getCategoryDisplayName(
-                        category.name as EventCategory,
-                        'es'
-                      )}
-                </Link>
-              );
-            })}
+            {categories.map(category => (
+              <div
+                key={category.id}
+                className="h-8 w-20 bg-muted animate-pulse rounded-none"
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -137,15 +110,41 @@ export default function CategoryNavigation({
 
   return (
     <div className={cn('w-full', className)}>
-      {/* Mobile Select - visible on small screens */}
-      <div className="block md:hidden">
+      {/* Mobile Select - visible on small screens with improved UX */}
+      <div className="block md:hidden px-4">
         <Select value={activeCategory} onValueChange={onCategoryChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue />
+          <SelectTrigger 
+            className={cn(
+              'w-full min-h-[48px] h-auto rounded-none border-border bg-card text-card-foreground',
+              'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+              'touch-manipulation text-base font-medium',
+              'shadow-sm hover:shadow-md transition-shadow duration-200'
+            )}
+            sectionType="content"
+            priority="medium"
+          >
+            <SelectValue placeholder="Seleccionar categoría">
+              <span className="font-medium text-foreground">
+                {getActiveCategoryDisplayName()}
+              </span>
+            </SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent 
+            className="rounded-none border-border shadow-lg"
+            sectionType="content"
+            priority="high"
+          >
             {categories.map(category => (
-              <SelectItem key={category.id} value={category.id}>
+              <SelectItem 
+                key={category.id} 
+                value={category.id}
+                className={cn(
+                  'min-h-[48px] text-base font-medium rounded-none',
+                  'focus:bg-accent focus:text-accent-foreground',
+                  'cursor-pointer touch-manipulation',
+                  activeCategory === category.id && 'bg-primary/10 text-primary font-semibold'
+                )}
+              >
                 {category.id === 'overview'
                   ? category.name
                   : getCategoryDisplayName(
@@ -158,7 +157,7 @@ export default function CategoryNavigation({
         </Select>
       </div>
 
-      {/* Desktop Tabs - visible on medium screens and up */}
+      {/* Desktop Tabs - visible on medium screens and up with improved styling */}
       <div className="hidden md:block">
         <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
           {categories.map(category => {
@@ -172,10 +171,13 @@ export default function CategoryNavigation({
                     : `/our-work/${category.id}`
                 }
                 className={cn(
-                  'inline-flex items-center px-1 pb-1 text-base uppercase tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                  'relative inline-flex items-center px-2 py-3 text-base uppercase tracking-tight transition-all duration-300',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                  'hover:text-primary font-medium',
+                  'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:transition-all after:duration-300',
                   isActive
-                    ? 'border-b-2 border-primary text-primary'
-                    : 'hover:border-b-2 hover:border-primary hover:text-primary text-muted-foreground'
+                    ? 'text-primary after:bg-primary after:opacity-100'
+                    : 'text-muted-foreground after:bg-primary after:opacity-0 hover:after:opacity-50'
                 )}
                 onClick={() => onCategoryChange(category.id)}
               >
