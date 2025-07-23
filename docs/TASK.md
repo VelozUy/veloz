@@ -66,6 +66,12 @@ _Last updated: 2025-01-20_
 
 #### 🧠 Discovered During the Epic
 
+- [x] **Navigation Bug Fix** - Mobile category selector wasn't navigating to URLs ✅ **COMPLETED** (2025-01-27)
+  - Issue: Mobile select only called scroll function, didn't navigate URLs
+  - Solution: Added Next.js router navigation with `handleMobileSelectChange` function
+  - Enhanced keyboard navigation to also handle URL navigation
+  - Maintained backward compatibility with existing scroll-based logic
+
 - [ ] **Testing Required** - Need comprehensive mobile device testing
   - Various iOS devices and versions
   - Different Android devices and browsers
@@ -96,6 +102,13 @@ _Last updated: 2025-01-20_
   - Added smooth transitions and animations
   - Improved visual hierarchy with better spacing
   - Enhanced desktop tab styling with CSS-only underline animation
+
+- [x] **Fix Navigation Bug** - Resolved mobile category selector not navigating (2025-01-27)
+  - Added Next.js router import and proper URL navigation logic
+  - Created handleMobileSelectChange function for mobile dropdown navigation
+  - Enhanced keyboard navigation to navigate URLs instead of just scrolling
+  - Maintained backward compatibility with scroll-based navigation
+  - Mobile category selector now properly navigates between /our-work pages
 
 ---
 
