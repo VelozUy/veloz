@@ -45,7 +45,7 @@ _Last updated: 2025-01-20_
     - GalleryClientWrapper component removed ✅
     - GalleryItem component removed ✅
     - GalleryLightbox component removed ✅
-  - **Files**: `src/lib/lightbox.ts`, `src/components/our-work/LightboxInitializer.tsx`, `src/components/gallery/GalleryClientWrapper.tsx`, `src/components/gallery/GalleryItem.tsx`, `src/components/our-work/GalleryLightbox.tsx`
+  - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/components/our-work/EditorialGrid.tsx`, `src/components/our-work/FeatureMediaGrid.tsx`
   - **Reference**: Lightbox standardization requirements
   - **Estimated Time**: 1 day
   - **Status**: ✅ Completed - Custom lightbox system completely removed

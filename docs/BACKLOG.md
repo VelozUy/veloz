@@ -489,7 +489,7 @@ This file contains unprioritized ideas and future features that have been identi
     - Gallery grouping per category (gallery-1, gallery-2, etc.)
     - Video autoplay support
     - Loop functionality
-  - **Files**: `src/components/gallery/GalleryItem.tsx`, `src/lib/lightbox.ts`
+  - **Files**: `src/components/gallery/FullscreenModal.tsx`
   - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Phase 3 (Lightbox Integration)
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 2 completion
