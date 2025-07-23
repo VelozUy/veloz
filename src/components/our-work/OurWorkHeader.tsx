@@ -20,17 +20,12 @@ interface OurWorkHeaderProps {
   activeCategory?: string; // Optional active category override
 }
 
-// Responsive Static Title Component - Consistent across all pages, scales for mobile
+// Responsive Static Title Component - Fixed sizes for mobile and desktop
 const StaticTitle: React.FC<{ text: string }> = ({ text }) => {
   return (
     <div className="container mx-auto px-4 sm:px-8 md:px-16 text-center">
       <h1
-        className="font-body tracking-tight text-center w-full text-foreground leading-none whitespace-nowrap uppercase"
-        style={{
-          // Responsive font sizes using CSS custom properties
-          fontSize: 'clamp(2.5rem, 8vw, 8rem)',
-          lineHeight: '0.9',
-        }}
+        className="font-body tracking-tight text-center w-full text-foreground leading-none whitespace-nowrap uppercase text-5xl md:text-8xl"
       >
         {text}
       </h1>
