@@ -110,13 +110,16 @@ _Last updated: 2025-01-20_
   - Maintained backward compatibility with scroll-based navigation
   - Mobile category selector now properly navigates between /our-work pages
 
-- [x] **Dynamic Title Sizing** - Implemented smart font sizing to maximize container space usage (2025-01-27)
-  - Created DynamicTitle component with automatic font size calculation
-  - Used binary search algorithm to find optimal font size based on text content and container width
+- [x] **Dynamic Title Sizing** - Fixed rescaling issue with consistent font sizing (2025-01-27)
+  - **ISSUE**: Page titles were rescaling after loading, causing jarring UX when navigating between pages
+  - **SOLUTION**: Calculate consistent font size based on longest possible title across all pages
+  - Created ConsistentTitle component replacing per-page dynamic calculation
+  - Used binary search algorithm to find optimal font size based on longest title ("CULTURALES Y ARTÍSTICOS")
   - Implemented ResizeObserver for responsive container size monitoring
-  - Added smooth transitions with 300ms duration for font size changes
+  - Added opacity transition to prevent flash during font size calculation
+  - Removed text dependency from useEffect to prevent recalculation on text changes
+  - All our-work pages now use same consistent font size (8rem) - no more rescaling
   - Support minimum (1.5rem) and maximum (12rem) font size bounds
-  - Ensured both short and long titles use maximum available space efficiently
   - Maintained theme consistency with existing font family and styling
 
 ---
