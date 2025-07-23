@@ -3,6 +3,10 @@ import { GalleryContent } from '@/components/gallery/GalleryContent';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export const metadata: Metadata = {
   title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
   description:

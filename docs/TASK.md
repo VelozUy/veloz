@@ -5204,3 +5204,315 @@ _No tasks completed yet for this Epic_
 - Create comprehensive test coverage for new features
 
 ---
+
+### 🎨 EPIC: Tiled Gallery Implementation ✅ **CORE COMPLETED**
+
+**Objective**: Implement modern tiled gallery component based on WordPress Jetpack tiled-gallery module investigation, providing masonry-style layout with responsive design, performance optimization, and accessibility compliance
+
+**Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Complete investigation report and technical specifications
+**User Intent**: Create a sophisticated tiled gallery system that provides portfolio-quality presentation with masonry layout algorithm, responsive grid system, and seamless integration with existing gallery components
+
+**Tags**: `#tiled-gallery` `#masonry-layout` `#responsive-grid` `#performance` `#accessibility`
+
+**Scope**: Implement tiled gallery as an alternative layout option for existing gallery system, maintaining static generation and integrating with current image optimization pipeline
+
+**Status**: ✅ **CORE COMPLETED** - TiledGallery successfully implemented and standardized across all gallery pages
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Phase 1: Core Tiled Gallery Algorithm** - Implement masonry-style layout calculation ✅ **COMPLETED**
+  - **User Intent**: Build the foundation tiled gallery layout algorithm based on WordPress Jetpack investigation
+  - **Acceptance Criteria**:
+    - Create `calculateTileLayout()` function for optimal image positioning ✅
+    - Implement aspect ratio-based width and height calculations ✅
+    - Support dynamic row generation based on container width ✅
+    - Handle mixed image sizes (portrait, landscape, square) ✅
+    - Maintain visual balance across different aspect ratios ✅
+    - **DESIGN FOR CURRENT ANIMATIONS**: Ensure algorithm supports existing hover and transition effects ✅
+    - Include TypeScript types for TileLayout and GalleryImage interfaces ✅
+  - **Files**: `src/lib/gallery-layout.ts`, `src/types/gallery.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 2 (Technical Implementation)
+  - **Estimated Time**: 2-3 days
+  - **Status**: ✅ **COMPLETED** - Core algorithm and types implemented successfully
+
+- [x] **Phase 2: TiledGallery Component** - Create reusable React component with CSS Grid ✅ **COMPLETED**
+  - **User Intent**: Implement the main TiledGallery component using modern CSS Grid and React best practices
+  - **Acceptance Criteria**:
+    - TiledGallery component with configurable props (columns, gap, aspectRatio, lazyLoad) ✅
+    - CSS Grid implementation with responsive breakpoints ✅
+    - Support for different aspect ratio modes ('square', '16:9', '4:3', 'auto') ✅
+    - Integration with existing GalleryImage type definitions ✅
+    - Progressive enhancement for older browsers with flexbox fallback ✅
+    - **PRESERVE ALL CURRENT ANIMATIONS**: Maintain existing hover effects, loading states, and transitions ✅
+    - **PRESERVE ALL CURRENT INTERACTIONS**: Keep cursor states, focus indicators, and keyboard navigation ✅
+    - Comprehensive TypeScript interface for component props ✅
+  - **Files**: `src/components/gallery/TiledGallery.tsx`, `src/hooks/useResponsiveGrid.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 5.1 (React/Next.js Adaptation)
+  - **Estimated Time**: 3-4 days
+  - **Status**: ✅ **COMPLETED** - Main React component with all animations and interactions preserved
+
+- [x] **Phase 3: Responsive Grid System** - Implement adaptive column counts and responsive design ✅ **COMPLETED**
+  - **User Intent**: Create responsive grid that adapts to different screen sizes with optimal column counts
+  - **Acceptance Criteria**:
+    - Mobile-first approach with adaptive column counts (1→2→3→4 columns) ✅
+    - Responsive breakpoints at 480px, 768px, 1024px, 1280px ✅
+    - Dynamic gap management (4px mobile, 6px tablet, 8px desktop) ✅
+    - Touch gesture support for mobile devices ✅
+    - Proper handling of viewport changes and orientation switches ✅
+    - Performance optimization for resize events with debounced handlers ✅
+  - **Files**: `src/hooks/useResponsiveGrid.ts`, integrated into `src/components/gallery/TiledGallery.tsx`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 6.4 (Responsive Design)
+  - **Estimated Time**: 2-3 days
+  - **Status**: ✅ **COMPLETED** - Responsive grid system with mobile-first approach implemented
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Performance Optimization** - Implement lazy loading and image optimization
+  - **User Intent**: Ensure tiled gallery loads quickly and efficiently with large image sets
+  - **Acceptance Criteria**:
+    - **PRESERVE CURRENT LAZY LOADING**: Maintain existing Intersection Observer patterns
+    - **PRESERVE LOADING ANIMATIONS**: Keep current progressive loading with blur-up effects
+    - **PRESERVE LOADING STATES**: Maintain existing skeleton loaders and fade-in transitions
+    - Virtual scrolling for galleries with 100+ images
+    - Memory management for image objects to prevent memory leaks
+    - **PRESERVE IMAGE PRELOADING**: Maintain current preloading strategy for critical images
+    - Performance budgets: Initial load < 2s for 50 images, scroll at 60fps
+  - **Files**: `src/hooks/useTiledGalleryLazyLoad.ts`, `src/lib/image-optimization.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 3 (Performance Considerations)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+- [ ] **Phase 5: Accessibility Implementation** - Add comprehensive accessibility features
+  - **User Intent**: Ensure tiled gallery meets WCAG AA compliance and supports all users
+  - **Acceptance Criteria**:
+    - ARIA labels and roles for screen readers
+    - **PRESERVE CURRENT KEYBOARD NAVIGATION**: Maintain existing Enter/Space key handling
+    - **PRESERVE CURRENT FOCUS STATES**: Keep existing focus rings (`focus-within:ring-2 focus-within:ring-primary`)
+    - High contrast mode support
+    - Screen reader announcements for image loading states
+    - Proper semantic HTML structure with headings hierarchy
+    - **MAINTAIN CURRENT ACCESSIBILITY PATTERNS**: Follow existing component accessibility implementations
+  - **Files**: `src/components/gallery/AccessibleTiledGallery.tsx`, `src/hooks/useKeyboardNavigation.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 4 (User Experience Features)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Modal Integration** - Integrate with existing FullscreenModal system
+  - **User Intent**: Seamlessly integrate tiled gallery with existing lightbox functionality
+  - **Acceptance Criteria**:
+    - **PRESERVE CURRENT LIGHTBOX EXPERIENCE**: Maintain exact same FullscreenModal behavior
+    - **PRESERVE GLightbox INTEGRATION**: Keep existing GLightbox data attributes and functionality
+    - **PRESERVE MODAL ANIMATIONS**: Maintain current button fade behavior (100% → 20% opacity)
+    - **PRESERVE TOUCH INTERACTIONS**: Keep existing touch/swipe gestures for mobile navigation
+    - **PRESERVE KEYBOARD NAVIGATION**: Maintain current left/right arrows, escape key handling
+    - Zoom functionality for detailed image viewing
+    - Preserve gallery context when navigating between images
+    - **MAINTAIN ALL EXISTING MODAL FEATURES**: Download, share, metadata, and navigation
+  - **Files**: `src/components/gallery/TiledGalleryModal.tsx`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 4 (Interaction Patterns)
+  - **Estimated Time**: 2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [x] **Phase 7: Replace GalleryContent with Tiled Gallery** - Direct replacement of current GalleryContent component ✅ **COMPLETED**
+  - **User Intent**: Replace the current GalleryContent component with tiled gallery layout while maintaining identical functionality
+  - **Acceptance Criteria**:
+    - **REPLACE GalleryContent.tsx**: Update existing component to use tiled gallery layout by default ✅
+    - **PRESERVE ALL CURRENT FEATURES**: Keep ProjectsDisplay, SideNavigation, and all existing functionality ✅
+    - **MAINTAIN IDENTICAL PAGE STRUCTURE**: Same localized pages continue to work exactly as before ✅
+    - **PRESERVE BEHAVIORAL CONSISTENCY**: Same hover, click, and navigation patterns throughout ✅
+    - **TARGET SPECIFIC USAGE LOCATIONS**: ✅
+      - `src/app/en/our-work/page.tsx` - English gallery page ✅
+      - `src/app/pt/our-work/page.tsx` - Portuguese gallery page ✅
+      - Any other pages importing GalleryContent component ✅
+    - **ZERO BREAKING CHANGES**: All existing imports and usage patterns remain identical ✅
+    - **SAME COMPONENT API**: Maintain exact same props interface for backward compatibility ✅
+  - **Files**: `src/components/gallery/GalleryContent.tsx`, `src/components/gallery/ProjectsDisplay.tsx`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 8 (Integration with Existing Codebase)
+  - **Estimated Time**: 2-3 days
+  - **Status**: ✅ **COMPLETED** - Successfully replaced GalleryGrid with TiledGallery while preserving all existing functionality
+
+- [ ] **Phase 8: Advanced Features** - Add sophisticated gallery features
+  - **User Intent**: Enhance tiled gallery with advanced features for professional presentation
+  - **Acceptance Criteria**:
+    - Image filtering and sorting options (date, name, size, aspect ratio)
+    - Category-based image organization
+    - Drag-and-drop reordering in admin interface
+    - Image metadata display (EXIF data, captions, alt text)
+    - Social sharing for individual images
+    - Batch selection and operations
+  - **Files**: `src/components/gallery/AdvancedTiledGallery.tsx`, `src/hooks/useGalleryFiltering.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 7.1 (Core Features)
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 9: Testing and Quality Assurance** - Comprehensive testing suite
+  - **User Intent**: Ensure tiled gallery works reliably across all scenarios and devices
+  - **Acceptance Criteria**:
+    - Unit tests for layout calculation algorithms
+    - Integration tests for component interactions
+    - Visual regression tests for layout consistency
+    - Cross-browser testing (Chrome, Firefox, Safari, Edge)
+    - Mobile device testing with various screen sizes
+    - Performance testing with large image sets (1000+ images)
+    - Accessibility testing with screen readers and keyboard navigation
+  - **Files**: `src/components/gallery/__tests__/TiledGallery.test.tsx`, `src/lib/__tests__/gallery-layout.test.ts`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 9 (Testing Strategy)
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 8 completion
+
+- [ ] **Phase 10: Documentation and Examples** - Create comprehensive documentation
+  - **User Intent**: Provide clear documentation and examples for future development and usage
+  - **Acceptance Criteria**:
+    - Component API documentation with all props and methods
+    - Usage examples for different gallery configurations
+    - Integration guide for existing projects
+    - Performance optimization guidelines
+    - Troubleshooting guide for common issues
+    - Accessibility best practices documentation
+  - **Files**: `docs/TILED_GALLERY_USAGE.md`, `src/components/gallery/examples/`
+  - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 10 (Next Steps)
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 9 completion
+
+#### 🧠 Discovered During Epic
+
+- [x] **Standardize TiledGallery Usage Across All Gallery Pages** - Replace FeatureMediaGrid with TiledGallery on category pages ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Ensure consistent tiled gallery experience across all gallery pages
+  - **Acceptance Criteria**:
+    - **REPLACE FeatureMediaGrid**: Update CategorySection to use TiledGallery instead ✅
+    - **MAINTAIN IDENTICAL FUNCTIONALITY**: Preserve all existing animations, interactions, and lightbox behavior ✅
+    - **CONSISTENT USER EXPERIENCE**: Same masonry layout on overview and category pages ✅
+    - **PROPER MEDIA TRANSFORMATION**: Convert project media format to GalleryImage interface ✅
+    - **UNIQUE GALLERY GROUPS**: Each category gets its own lightbox group (`category-${id}`) ✅
+    - **BUILD SUCCESS**: All pages build successfully as static content ✅
+  - **Files**: `src/components/our-work/CategorySection.tsx`
+  - **Reference**: Gallery standardization requirements
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ **COMPLETED** - All gallery pages now use TiledGallery for consistent experience
+
+- [ ] **Cross-browser Layout Consistency** - Ensure tiled layout works identically across browsers
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Memory Usage Optimization** - Optimize for large galleries to prevent memory issues
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **SSR Compatibility** - Ensure tiled gallery works with server-side rendering
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Performance**: < 2 seconds initial load for 50 images, 60fps scrolling
+- **Accessibility**: WCAG AA compliance score > 95%
+- **Cross-browser Compatibility**: Consistent layout across Chrome, Firefox, Safari, Edge
+- **Mobile Experience**: Smooth touch interactions and responsive layout
+- **Memory Efficiency**: < 100MB memory usage for 1000 images
+- **Bundle Size**: < 50KB for tiled gallery components
+
+**Secondary Metrics**:
+
+- **User Engagement**: Increased time spent viewing galleries
+- **Admin Efficiency**: Faster gallery creation and management
+- **Development Experience**: Clean component API and comprehensive documentation
+- **Integration Success**: Seamless integration with existing gallery system
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- ✅ Current gallery components and functionality (`src/components/gallery/`)
+- ✅ Access to `docs/TILED_GALLERY_INVESTIGATION.md` specifications
+- ✅ Understanding of existing static content generation pattern
+- ✅ Next.js Image component for optimization
+- ✅ Existing FullscreenModal component for lightbox integration
+
+**Business Dependencies**:
+
+- ⏳ User approval of tiled gallery design approach
+- ⏳ Stakeholder review of masonry layout presentation
+- ⏳ Content team preparation for optimal image asset organization
+- ⏳ Admin user testing of new gallery management features
+
+**Timeline**:
+
+- **Phase 1-3**: 7-10 days (Critical - Core functionality)
+- **Phase 4-6**: 6-8 days (High Priority - Performance & UX)
+- **Phase 7-8**: 5-7 days (Medium Priority - Integration & Features)
+- **Phase 9-10**: 3-5 days (Low Priority - Testing & Documentation)
+- **Total Estimated**: 21-30 days (4-6 weeks)
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Static Build-Time Generation**: All components MUST work with existing static content generation
+- **No Client-Side Fetching**: Zero real-time data fetching or Firestore listeners
+- **SEO Optimization**: Server-side rendered content for optimal search engine crawlability
+- **Performance First**: Pre-generated HTML for fastest possible loading
+- **Accessibility Compliance**: WCAG AA standards from day one
+- **Brand Consistency**: Integration with Veloz theme system and design language
+- **PRESERVE CURRENT USER EXPERIENCE**: All existing animations and interactions must be maintained exactly
+
+**Current Animations & Interactions to Preserve**:
+
+- **Hover Effects**: `hover:brightness-110` brightness increase on hover
+- **Overlay Transitions**: `group-hover:bg-foreground/20` overlay opacity changes
+- **Smooth Transitions**: `transition-all duration-300 ease-out` or `duration-700 ease-out`
+- **Gradient Overlays**: Subtle gradient overlays that appear on hover with opacity transitions
+- **Progressive Loading**: Fade-in animations with opacity transitions (`opacity-0` to `opacity-100`)
+- **Blur Placeholders**: Progressive image loading with blur-up effects
+- **Motion Animations**: Framer Motion with `initial={{ opacity: 0, y: 20 }}` and `animate={{ opacity: 1, y: 0 }}`
+- **Staggered Delays**: Item entrance animations with `delay: index * 0.05` or `index * 0.1`
+- **Interactive States**: Cursor pointer, focus rings (`focus-within:ring-2 focus-within:ring-primary`)
+- **Keyboard Navigation**: Enter/Space key handling for accessibility
+- **Touch Gestures**: Touch/swipe support for mobile devices
+- **GLightbox Integration**: Existing lightbox functionality with data attributes
+- **Loading States**: Skeleton loaders and loading spinners where appropriate
+
+**Risk Mitigation**:
+
+- Implement changes incrementally by phase to minimize disruption
+- Test each phase with existing static content files before proceeding
+- Maintain backward compatibility with current gallery system
+- Create rollback plan for each phase in case of issues
+- Monitor performance metrics throughout development
+- Ensure thorough testing across all supported browsers and devices
+
+**WordPress Jetpack Learnings**:
+
+- **Algorithm Efficiency**: The masonry layout algorithm is well-optimized for various image sizes
+- **Progressive Enhancement**: Graceful degradation for older browsers with flexbox fallback
+- **Accessibility First**: Built-in support for screen readers and keyboard navigation
+- **Performance Focus**: Lazy loading and efficient rendering patterns are essential
+- **Extensibility**: Modular design allows for easy customization and enhancement
+
+**Integration Strategy**:
+
+1. **Phase 1-2**: Build core algorithm and component in isolation
+2. **Phase 3-4**: Add responsive design and performance optimization
+3. **Phase 5-6**: Integrate accessibility and modal functionality
+4. **Phase 7-8**: Direct replacement of GalleryContent component with tiled gallery layout
+5. **Phase 9-10**: Comprehensive testing and documentation
+
+**Target Integration Points**:
+
+- **Primary Target**: `src/components/gallery/GalleryContent.tsx` (main component)
+- **Usage Locations**: 
+  - `src/app/en/our-work/page.tsx` - English gallery page
+  - `src/app/pt/our-work/page.tsx` - Portuguese gallery page
+  - Any component importing GalleryContent
+- **Preservation Strategy**: Maintain identical component API and functionality while switching to tiled layout
+
+### ✅ Completed
+
+_No tasks completed yet for this Epic_
+
+---

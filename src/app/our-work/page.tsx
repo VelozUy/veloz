@@ -3,6 +3,10 @@ import { getStaticContent } from '@/lib/utils';
 import OurWorkClient from '@/components/our-work/OurWorkClient';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 export const metadata: Metadata = {
   title: 'Nuestro Trabajo | Veloz Fotografía y Videografía',
   description:

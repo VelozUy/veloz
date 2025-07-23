@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory, getCategoryDisplayName } from '@/constants/categories';
 import { getStaticContent } from '@/lib/utils';
@@ -172,12 +173,12 @@ export default function ProjectDetailGallery({
               className="absolute inset-0 overflow-hidden -z-10 opacity-10"
               aria-hidden="true"
             >
-              <img
+              <Image
                 src={project.media[0].url}
-                className="w-full h-full object-cover blur-md scale-110"
                 alt={`Imagen de fondo para ${project.title}`}
-                loading="eager"
-                decoding="async"
+                fill
+                className="object-cover blur-md scale-110"
+                priority
                 style={{ willChange: 'transform' }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
@@ -303,20 +304,7 @@ export default function ProjectDetailGallery({
         Saltar al contenido principal
       </a>
 
-      {/* Performance Metrics Display (Development Only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 bg-background border border-border p-4 rounded shadow-lg max-w-sm z-50">
-          <h3 className="text-sm font-medium mb-2">
-            Phase 3 Performance Metrics:
-          </h3>
-          <div className="text-xs space-y-1">
-            <p>Gallery Items: {project.media?.length || 0}</p>
-            <p>Timeline Phases: {timelineProject?.timeline?.length || 0}</p>
-            <p>Crew Members: {project.crewMembers?.length || 0}</p>
-            <p>Performance Monitor: Active</p>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

@@ -4,6 +4,10 @@ import { getStaticContent } from '@/lib/utils';
 import CategoryPageClient from '@/components/our-work/CategoryPageClient';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+export const revalidate = false;
+
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }

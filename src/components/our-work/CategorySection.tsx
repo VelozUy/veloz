@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
-import FeatureMediaGrid from './FeatureMediaGrid';
+import React, { useMemo } from 'react';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { GalleryImage } from '@/types/gallery';
 import { H2, H3, Body, Muted } from '@/components/ui/typography';
 import { useContentBackground } from '@/hooks/useBackground';
 import { useCTABackground } from '@/hooks/useBackground';
@@ -42,6 +43,23 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   const { classes: contentClasses } = useContentBackground();
   const { classes: ctaClasses } = useCTABackground();
 
+  // Transform media to GalleryImage format for TiledGallery
+  const galleryImages = useMemo((): GalleryImage[] => {
+    return media.map(item => ({
+      id: item.id,
+      src: item.url,
+      alt: item.alt,
+      width: item.width,
+      height: item.height,
+      type: item.type,
+      url: item.url, // For compatibility with FullscreenModal
+      aspectRatio: item.aspectRatio,
+      projectTitle: item.projectTitle,
+      featured: item.featured,
+      galleryGroup: `category-${id}`, // Group images for lightbox
+    }));
+  }, [media, id]);
+
   return (
     <section
       id={`category-${id}`}
@@ -61,9 +79,16 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
           </div>
         )}
 
-        {/* Feature Media Grid */}
+        {/* Tiled Gallery */}
         <div>
-          <FeatureMediaGrid media={media} categoryId={id} className="mb-8" />
+          <TiledGallery 
+            images={galleryImages}
+            galleryGroup={`category-${id}`}
+            projectTitle={title}
+            className="mb-8"
+            enableAnimations={true}
+            lazyLoad={true}
+          />
         </div>
 
         {/* Category Footer */}

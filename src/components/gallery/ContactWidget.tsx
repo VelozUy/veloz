@@ -86,6 +86,8 @@ const EventTypeStep = memo(({
   </div>
 ));
 
+EventTypeStep.displayName = 'EventTypeStep';
+
 const DateStep = memo(({ 
   content, 
   onSelect, 
@@ -120,6 +122,8 @@ const DateStep = memo(({
     </Button>
   </div>
 ));
+
+DateStep.displayName = 'DateStep';
 
 const LocationStep = memo(({ 
   content, 
@@ -157,6 +161,8 @@ const LocationStep = memo(({
     </div>
   </div>
 ));
+
+LocationStep.displayName = 'LocationStep';
 
 const ContactStep = memo(({ 
   content, 
@@ -203,6 +209,8 @@ const ContactStep = memo(({
   </div>
 ));
 
+ContactStep.displayName = 'ContactStep';
+
 const PhoneStep = memo(({ 
   content, 
   onSubmit, 
@@ -247,6 +255,8 @@ const PhoneStep = memo(({
     </div>
   );
 });
+
+PhoneStep.displayName = 'PhoneStep';
 
 export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -317,7 +327,6 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // In a real implementation, you would call your API here
-      console.log('Phone submitted:', phone);
       
       setCurrentStep('complete');
     } catch (error) {

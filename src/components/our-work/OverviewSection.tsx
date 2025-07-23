@@ -67,6 +67,8 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                   <EditorialGrid
                     media={category.media}
                     className="mb-8 md:mb-10"
+                    categoryId={category.id}
+                    categoryTitle={category.title}
                   />
                 </div>
               </div>

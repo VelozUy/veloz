@@ -3,6 +3,8 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import FullscreenModal from '@/components/gallery/FullscreenModal';
 
 interface EditorialMedia {
@@ -21,6 +23,8 @@ interface EditorialMedia {
 interface EditorialGridProps {
   media: EditorialMedia[];
   className?: string;
+  categoryId?: string;
+  categoryTitle?: string;
 }
 
 /**
@@ -39,6 +43,8 @@ interface EditorialGridProps {
 export const EditorialGrid: React.FC<EditorialGridProps> = ({
   media,
   className = '',
+  categoryId = 'editorial',
+  categoryTitle = 'Category Gallery',
 }: EditorialGridProps) => {
   // Fullscreen modal state
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
@@ -82,62 +88,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
     setIsFullscreenOpen(false);
   }, []);
 
-  // Process media items for editorial layout
-  const processedMedia = useMemo(() => {
-    return media.map((mediaItem, index) => {
-      // Calculate aspect ratio for responsive sizing
-      let aspectRatio = 1;
-      let cssAspectRatio = 100; // Default to square (1:1)
-
-      // Always prioritize actual dimensions if available
-      if (mediaItem.width && mediaItem.height) {
-        aspectRatio = mediaItem.width / mediaItem.height;
-        cssAspectRatio = (mediaItem.height / mediaItem.width) * 100;
-      } else if (mediaItem.aspectRatio) {
-        // Fallback to aspectRatio string from database
-        const ratioMap = {
-          '1:1': { aspectRatio: 1, cssAspectRatio: 100 },
-          '16:9': { aspectRatio: 16 / 9, cssAspectRatio: (9 / 16) * 100 },
-          '9:16': { aspectRatio: 9 / 16, cssAspectRatio: (16 / 9) * 100 },
-          '4:5': { aspectRatio: 4 / 5, cssAspectRatio: (5 / 4) * 100 },
-        };
-
-        const ratio = ratioMap[mediaItem.aspectRatio as keyof typeof ratioMap];
-        if (ratio) {
-          aspectRatio = ratio.aspectRatio;
-          cssAspectRatio = ratio.cssAspectRatio;
-        }
-      }
-
-      // Determine grid span based on aspect ratio for editorial layout
-      let gridSpan = 'col-span-1';
-      let rowSpan = 'row-span-1';
-
-      if (aspectRatio > 1.5) {
-        // Very wide images span 2 columns
-        gridSpan = 'col-span-1 md:col-span-2';
-        rowSpan = 'row-span-1';
-      } else if (aspectRatio < 0.7) {
-        // Very tall images span 2 rows
-        gridSpan = 'col-span-1';
-        rowSpan = 'row-span-1 md:row-span-2';
-      } else if (aspectRatio > 1.2) {
-        // Wide images span 2 columns on larger screens
-        gridSpan = 'col-span-1 lg:col-span-2';
-        rowSpan = 'row-span-1';
-      }
-
-      return {
-        ...mediaItem,
-        gridSpan,
-        rowSpan,
-        cssAspectRatio,
-        aspectRatio,
-        animationDelay: index * 0.1,
-        isPreloaded: preloadedImages.has(mediaItem.id),
-      };
-    });
-  }, [media, preloadedImages]);
+  // Note: Media processing is now handled by TiledGallery component
 
   if (!media.length) {
     return (
@@ -149,77 +100,36 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
 
   return (
     <div className={cn('editorial-grid-container', className)}>
-      {/* Editorial Grid Layout - Compact Spacing */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
-        {processedMedia.map((mediaItem, index) => {
-          return (
-            <div
-              key={mediaItem.id}
-              className={cn(
-                'editorial-grid-item relative group cursor-pointer overflow-hidden',
-                mediaItem.gridSpan,
-                mediaItem.rowSpan,
-                'transition-all duration-700 ease-out',
-                'hover:brightness-110'
-              )}
-              style={{
-                aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label={`Open ${mediaItem.alt} in fullscreen`}
-              onClick={() => handleOpenFullscreen(index)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleOpenFullscreen(index);
-                }
-              }}
-            >
-              {/* Subtle gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
-
-              {mediaItem.type === 'video' ? (
-                <video
-                  src={mediaItem.url}
-                  className={cn(
-                    'absolute inset-0 w-full h-full object-cover',
-                    'transition-all duration-700 ease-out'
-                  )}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  preload={index < 4 ? 'auto' : 'metadata'}
-                  data-testid={`video-${mediaItem.id}`}
-                />
-              ) : (
-                <Image
-                  src={mediaItem.url}
-                  alt={mediaItem.alt}
-                  fill
-                  className={cn(
-                    'object-cover transition-all duration-700 ease-out'
-                  )}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority={index < 8}
-                  loading={index < 8 ? 'eager' : 'lazy'}
-                  quality={85}
-                  // Optimize for faster fullscreen modal by preloading
-                  onLoad={() => {
-                    if (!preloadedImages.has(mediaItem.id)) {
-                      setPreloadedImages(prev => new Set([...prev, mediaItem.id]));
-                    }
-                  }}
-                  // Add blur placeholder for instant visual feedback
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {/* Tiled Gallery - Using new masonry-style layout */}
+      <TiledGallery
+        images={convertProjectMediaBatch(
+          media.map(item => ({
+            id: item.id,
+            url: item.url,
+            src: item.url, // For compatibility
+            alt: item.alt,
+            width: item.width,
+            height: item.height,
+            type: item.type,
+            aspectRatio: item.aspectRatio,
+            featured: item.featured,
+            order: 0, // All featured media at same level
+          })),
+                     categoryTitle,
+           categoryId
+        )}
+        onImageClick={(image, index) => {
+          handleOpenFullscreen(index);
+        }}
+        galleryGroup={`gallery-${categoryId}`}
+        projectTitle={categoryTitle}
+        ariaLabel={`${categoryTitle} photo gallery`}
+        className="editorial-tiled-gallery"
+        enableAnimations={true}
+        lazyLoad={true}
+        preloadCount={8}
+        gap={8}
+      />
 
       {/* Fullscreen Modal */}
       <FullscreenModal

@@ -317,34 +317,18 @@ export default function GalleryGrid({
               {/* Enhanced Image/Video Display with Progressive Loading */}
               <div className="absolute inset-0">
                 {item.type === 'video' ? (
-                  // Video with enhanced poster and loading
+                  // Video with autoplay muted
                   <div className="relative w-full h-full">
-                    {item.poster && (
-                      <Image
-                        src={item.poster}
-                        alt={`Poster del video ${projectTitle}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={index < 4} // Priority for first 4 items
-                        onLoad={() => handleImageLoad(item.id, loadStartTime)}
-                        onError={() => handleImageError(item.id)}
-                        quality={85}
-                        placeholder={item.blurDataURL ? 'blur' : 'empty'}
-                        blurDataURL={item.blurDataURL}
-                      />
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-muted/20 group-hover:bg-muted/10 transition-colors duration-300">
-                      <div className="w-16 h-16 bg-card/90 flex items-center justify-center transition-transform duration-300">
-                        <svg
-                          className="w-8 h-8 text-foreground ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
+                    <video
+                      src={item.url}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      onLoadedData={() => handleImageLoad(item.id, loadStartTime)}
+                      onError={() => handleImageError(item.id)}
+                    />
                   </div>
                 ) : (
                   // Enhanced Image with Progressive Loading
@@ -404,50 +388,13 @@ export default function GalleryGrid({
                 )}
               </div>
 
-              {/* Enhanced Hover Overlay */}
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-background/90 backdrop-blur-sm px-4 py-2 transition-transform duration-300">
-                    <span className="text-sm font-medium text-foreground">
-                      {item.type === 'video'
-                        ? 'Reproducir Video'
-                        : 'Ver Imagen'}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              {/* Enhanced Hover Overlay - Button removed */}
             </motion.div>
           );
         })}
       </div>
 
-      {/* Performance Metrics Display (Development Only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-8 p-4 bg-muted">
-          <h3 className="text-sm font-medium mb-2">Performance Metrics:</h3>
-          <div className="text-xs space-y-1">
-            <p>
-              Visible Items: {visibleItems.size}/{sortedMedia.length}
-            </p>
-            <p>
-              Loaded Images: {loadedImages.size}/{sortedMedia.length}
-            </p>
-            <p>
-              Error Images: {errorImages.size}/{sortedMedia.length}
-            </p>
-            <p>
-              Average Load Time:{' '}
-              {Object.values(imageLoadTimes).length > 0
-                ? Math.round(
-                    Object.values(imageLoadTimes).reduce((a, b) => a + b, 0) /
-                      Object.values(imageLoadTimes).length
-                  )
-                : 0}
-              ms
-            </p>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

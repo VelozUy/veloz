@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { GalleryGrid } from './GalleryGrid';
+import { TiledGallery } from './TiledGallery';
+import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { trackProjectView } from '@/lib/gallery-analytics';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 
@@ -76,12 +77,6 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
 
     // The lightbox will be handled by GLightbox automatically
     // since we have the proper data-gallery attributes
-    console.log(
-      'Image clicked:',
-      media.url,
-      'Gallery group:',
-      `project-${project.id}`
-    );
   };
 
   return (
@@ -141,31 +136,42 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
               </div>
             </div>
 
-            {/* Project Featured Media Grid - Now using GalleryGrid */}
+            {/* Project Featured Media Grid - Now using TiledGallery */}
             <div
               className="space-y-8 md:space-y-6"
               role="region"
               aria-label={`Galería de medios del proyecto: ${project.title}`}
             >
-              <GalleryGrid
-                items={featuredMedia.map(media => ({
-                  id: media.id,
-                  src: media.url,
-                  alt: media.alt,
-                  width: media.width,
-                  height: media.height,
-                  aspectRatio: media.aspectRatio,
-                  galleryGroup: `project-${project.id}`,
-                  dataType: media.type === 'photo' ? 'image' : 'video',
-                  dataDesc: media.alt,
-                }))}
-                onItemClick={item => {
-                  const media = featuredMedia.find(m => m.id === item.id);
+              <TiledGallery
+                images={convertProjectMediaBatch(
+                  featuredMedia.map(media => ({
+                    id: media.id,
+                    url: media.url,
+                    src: media.url, // For compatibility
+                    alt: media.alt,
+                    width: media.width,
+                    height: media.height,
+                    type: media.type,
+                    aspectRatio: media.aspectRatio,
+                    featured: media.featured,
+                    order: 0, // Featured media in display order
+                  })),
+                  project.title,
+                  project.id
+                )}
+                onImageClick={(image, index) => {
+                  const media = featuredMedia.find(m => m.id === image.id);
                   if (media) {
                     handleImageClick(project, media);
                   }
                 }}
-                className=""
+                galleryGroup={`project-${project.id}`}
+                projectTitle={project.title}
+                ariaLabel={`Galería de medios del proyecto: ${project.title}`}
+                className="tiled-gallery-project-media"
+                enableAnimations={true}
+                lazyLoad={true}
+                preloadCount={4}
               />
             </div>
 
