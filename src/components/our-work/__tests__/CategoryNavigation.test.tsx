@@ -31,88 +31,107 @@ describe('CategoryNavigation', () => {
     jest.clearAllMocks();
   });
 
-  describe('Tabs Navigation', () => {
-    it('renders all category tabs', () => {
+  describe('Navigation Links', () => {
+    it('renders all category links', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Should render 5 categories in the desktop tabs
-      const desktopTabs = screen.getAllByRole('tab');
-      expect(desktopTabs).toHaveLength(5);
+      // Should render 5 categories in the desktop navigation
+      const desktopLinks = screen.getAllByRole('link');
+      expect(desktopLinks).toHaveLength(5);
 
-      // Check that all category names are present in the tabs by checking the tab elements
-      const tabTexts = desktopTabs.map(tab => tab.textContent);
-      expect(tabTexts).toContain('Eventos');
-      expect(tabTexts).toContain('Casamientos');
-      expect(tabTexts).toContain('Photoshoot');
-      expect(tabTexts).toContain('Culturales');
-      expect(tabTexts).toContain('Corporativos');
+      // Check that all category names are present in the links by checking the link elements
+      const linkTexts = desktopLinks.map(link => link.textContent);
+      expect(linkTexts).toContain('Eventos');
+      expect(linkTexts).toContain('Casamientos');
+      expect(linkTexts).toContain('Photoshoot');
+      expect(linkTexts).toContain('Culturales');
+      expect(linkTexts).toContain('Corporativos');
     });
 
     it('highlights active category', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Find the active tab specifically in the desktop tabs
-      const activeTab = screen.getByRole('tab', { selected: true });
-      expect(activeTab).toHaveClass('data-[state=active]:border-primary');
+      // Find the active link in the desktop navigation
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      expect(activeLink).toHaveClass('text-primary');
     });
 
-    it('renders tabs with correct values', () => {
+    it('renders links with correct href values', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const tabs = screen.getAllByRole('tab');
-      const tabValues = tabs.map(tab => tab.getAttribute('data-state'));
+      const links = screen.getAllByRole('link');
+      const hrefs = links.map(link => link.getAttribute('href'));
 
-      // Should have 5 tabs: overview (active) + 4 categories (inactive)
-      expect(tabValues).toEqual([
-        'active',
-        'inactive',
-        'inactive',
-        'inactive',
-        'inactive',
+      // Should have 5 links with correct href values
+      expect(hrefs).toEqual([
+        '/our-work',
+        '/our-work/casamiento',
+        '/our-work/photoshoot',
+        '/our-work/culturales',
+        '/our-work/corporativos',
       ]);
     });
 
     it('applies editorial styling classes', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const tabs = screen.getAllByRole('tab');
-      tabs.forEach(tab => {
-        expect(tab).toHaveClass('text-base');
-        expect(tab).toHaveClass('uppercase');
-        expect(tab).toHaveClass('tracking-tight');
+      const links = screen.getAllByRole('link');
+      links.forEach(link => {
+        expect(link).toHaveClass('text-xl');
+        expect(link).toHaveClass('uppercase');
+        expect(link).toHaveClass('tracking-tight');
       });
     });
   });
 
-  describe('Mobile Select', () => {
-    it('renders select component for mobile', () => {
+  describe('Mobile Custom Navigation', () => {
+    it('renders custom mobile button', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Check that the select trigger is present
-      const selectTrigger = screen.getByRole('combobox');
-      expect(selectTrigger).toBeInTheDocument();
+      // Check that the mobile button is present using class selector
+      const mobileButton = document.querySelector('.block.md\\:hidden button');
+      expect(mobileButton).toBeInTheDocument();
 
-      // Check that the select shows the active category
-      expect(selectTrigger).toHaveTextContent('Eventos');
+      // Check that the button shows the active category
+      expect(mobileButton).toHaveTextContent('Eventos');
+      
+      // Check that it has the chevron icon
+      const chevronIcon = mobileButton?.querySelector('svg');
+      expect(chevronIcon).toBeInTheDocument();
     });
 
-    it('select component has all categories as options', () => {
+    it('opens drawer when mobile button is clicked', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Open the select dropdown
-      const selectTrigger = screen.getByRole('combobox');
-      fireEvent.click(selectTrigger);
+      // Find and click the mobile button using class selector
+      const mobileButton = document.querySelector('.block.md\\:hidden button');
+      fireEvent.click(mobileButton!);
 
-      // Check that all categories are available as options by looking for select items
-      const selectItems = screen.getAllByRole('option');
-      expect(selectItems).toHaveLength(5);
+      // Check that the dropdown opens with categories
+      // Check that all categories are present in the dropdown
+      expect(screen.getAllByText('Eventos')).toHaveLength(3); // One in button, one in desktop nav, one in dropdown
+      expect(screen.getAllByText('Casamientos')).toHaveLength(2); // One in desktop nav, one in dropdown
+      expect(screen.getAllByText('Photoshoot')).toHaveLength(2); // One in desktop nav, one in dropdown
+      expect(screen.getAllByText('Culturales')).toHaveLength(2); // One in desktop nav, one in dropdown
+      expect(screen.getAllByText('Corporativos')).toHaveLength(2); // One in desktop nav, one in dropdown
+    });
 
-      const itemTexts = selectItems.map(item => item.textContent);
-      expect(itemTexts).toContain('Eventos');
-      expect(itemTexts).toContain('Casamientos');
-      expect(itemTexts).toContain('Photoshoot');
-      expect(itemTexts).toContain('Culturales');
-      expect(itemTexts).toContain('Corporativos');
+    it('closes dropdown when clicking outside', () => {
+      render(<CategoryNavigation {...defaultProps} />);
+
+      // Open the dropdown
+      const mobileButton = document.querySelector('.block.md\\:hidden button');
+      fireEvent.click(mobileButton!);
+
+      // Check dropdown is open by verifying categories are visible
+      expect(screen.getAllByText('Casamientos')).toHaveLength(2);
+
+      // Close the dropdown by clicking the overlay
+      const overlay = document.querySelector('.fixed.inset-0.bg-transparent');
+      fireEvent.click(overlay!);
+
+      // Check dropdown closes (only desktop nav categories should remain)
+      expect(screen.getAllByText('Casamientos')).toHaveLength(1); // Only in desktop nav
     });
   });
 
@@ -149,31 +168,38 @@ describe('CategoryNavigation', () => {
   });
 
   describe('Accessibility', () => {
-    it('has proper tab role attributes', () => {
+    it('has proper link role attributes', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const tabs = screen.getAllByRole('tab');
-      // Should have 5 tabs
-      expect(tabs).toHaveLength(5);
+      const links = screen.getAllByRole('link');
+      // Should have 5 links
+      expect(links).toHaveLength(5);
 
-      tabs.forEach(tab => {
-        expect(tab).toHaveAttribute('role', 'tab');
+      links.forEach(link => {
+        // Links have implicit role="link", no need to check explicit attribute
+        expect(link.tagName.toLowerCase()).toBe('a');
+        expect(link).toHaveAttribute('href');
       });
     });
 
-    it('has proper tablist role', () => {
+    it('has proper navigation structure', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const tabList = screen.getByRole('tablist');
-      expect(tabList).toBeInTheDocument();
+      const links = screen.getAllByRole('link');
+      expect(links.length).toBeGreaterThan(0);
+      // Check that all links have valid href attributes
+      links.forEach(link => {
+        expect(link.getAttribute('href')).toMatch(/^\/our-work/);
+      });
     });
 
-    it('has proper select accessibility', () => {
+    it('has proper mobile button accessibility', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const selectTrigger = screen.getByRole('combobox');
-      expect(selectTrigger).toBeInTheDocument();
-      expect(selectTrigger).toHaveAttribute('aria-expanded');
+      const mobileButton = document.querySelector('.block.md\\:hidden button');
+      expect(mobileButton).toBeInTheDocument();
+      expect(mobileButton).toHaveClass('focus-visible:outline-none');
+      expect(mobileButton).toHaveClass('focus-visible:ring-2');
     });
   });
 
@@ -181,22 +207,22 @@ describe('CategoryNavigation', () => {
     it('applies correct classes for horizontal navigation', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      const tabList = screen.getByRole('tablist');
-      expect(tabList).toHaveClass('w-full');
-      expect(tabList).toHaveClass('justify-center');
-      expect(tabList).toHaveClass('gap-6');
-      expect(tabList).toHaveClass('md:gap-8');
+      const navigationContainer = document.querySelector('.hidden.md\\:block .flex');
+      expect(navigationContainer).toHaveClass('w-full');
+      expect(navigationContainer).toHaveClass('justify-center');
+      expect(navigationContainer).toHaveClass('gap-6');
+      expect(navigationContainer).toHaveClass('md:gap-8');
     });
 
     it('renders both mobile and desktop components', () => {
       render(<CategoryNavigation {...defaultProps} />);
 
-      // Check that both mobile select and desktop tabs are present
-      const selectTrigger = screen.getByRole('combobox');
-      const tabList = screen.getByRole('tablist');
+      // Check that both mobile button and desktop navigation links are present
+      const mobileButton = document.querySelector('.block.md\\:hidden button'); 
+      const navigationLinks = screen.getAllByRole('link');
 
-      expect(selectTrigger).toBeInTheDocument();
-      expect(tabList).toBeInTheDocument();
+      expect(mobileButton).toBeInTheDocument();
+      expect(navigationLinks.length).toBeGreaterThan(0);
     });
   });
 
@@ -210,8 +236,8 @@ describe('CategoryNavigation', () => {
         />
       );
 
-      const tabs = screen.queryAllByRole('tab');
-      expect(tabs).toHaveLength(0);
+      const links = screen.queryAllByRole('link');
+      expect(links).toHaveLength(0);
     });
 
     it('handles single category', () => {
@@ -223,13 +249,13 @@ describe('CategoryNavigation', () => {
         />
       );
 
-      // Should have 1 tab in desktop view
-      const tabs = screen.getAllByRole('tab');
-      expect(tabs).toHaveLength(1);
+      // Should have 1 link in desktop view
+      const links = screen.getAllByRole('link');
+      expect(links).toHaveLength(1);
 
-      // Should also have the select component
-      const selectTrigger = screen.getByRole('combobox');
-      expect(selectTrigger).toBeInTheDocument();
+      // Should also have the mobile button
+      const mobileButton = document.querySelector('.block.md\\:hidden button');
+      expect(mobileButton).toBeInTheDocument();
     });
 
     it('handles active category not in list', () => {
@@ -237,59 +263,55 @@ describe('CategoryNavigation', () => {
         <CategoryNavigation {...defaultProps} activeCategory="nonexistent" />
       );
 
-      // Should still render all tabs
-      const tabs = screen.getAllByRole('tab');
-      expect(tabs).toHaveLength(5);
+      // Should still render all links
+      const links = screen.getAllByRole('link');
+      expect(links).toHaveLength(5);
     });
   });
 
   describe('Active State Styling', () => {
-    it('applies active state styling to selected tab', () => {
+    it('applies active state styling to selected link', () => {
       render(
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
-      // Check for editorial styling classes from TabsTrigger
-      expect(activeTab).toHaveClass('text-base');
-      expect(activeTab).toHaveClass('uppercase');
-      expect(activeTab).toHaveClass('tracking-tight');
-      expect(activeTab).toHaveClass('border-b-2');
-      expect(activeTab).toHaveClass('data-[state=active]:border-primary');
-      expect(activeTab).toHaveClass('data-[state=active]:text-primary');
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      // Check for editorial styling classes from navigation links
+      expect(activeLink).toHaveClass('text-xl');
+      expect(activeLink).toHaveClass('uppercase');
+      expect(activeLink).toHaveClass('tracking-tight');
+      expect(activeLink).toHaveClass('text-primary');
+      expect(activeLink).toHaveClass('after:bg-primary');
+      expect(activeLink).toHaveClass('after:opacity-100');
     });
 
-    it('has proper editorial styling for tabs', () => {
+    it('has proper editorial styling for navigation links', () => {
       render(
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
-      // Check for editorial styling from TabsTrigger component
-      expect(activeTab).toHaveClass('inline-flex');
-      expect(activeTab).toHaveClass('items-center');
-      expect(activeTab).toHaveClass('px-1');
-      expect(activeTab).toHaveClass('pb-1');
-      expect(activeTab).toHaveClass('text-base');
-      expect(activeTab).toHaveClass('uppercase');
-      expect(activeTab).toHaveClass('tracking-tight');
-      expect(activeTab).toHaveClass('border-b-2');
-      expect(activeTab).toHaveClass('border-transparent');
-      expect(activeTab).toHaveClass('hover:border-primary');
-      expect(activeTab).toHaveClass('hover:text-primary');
-      expect(activeTab).toHaveClass('text-muted-foreground');
-      expect(activeTab).toHaveClass('transition-all');
-      expect(activeTab).toHaveClass('duration-200');
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      // Check for editorial styling from navigation links
+      expect(activeLink).toHaveClass('inline-flex');
+      expect(activeLink).toHaveClass('items-center');
+      expect(activeLink).toHaveClass('px-2');
+      expect(activeLink).toHaveClass('py-3');
+      expect(activeLink).toHaveClass('text-xl');
+      expect(activeLink).toHaveClass('uppercase');
+      expect(activeLink).toHaveClass('tracking-tight');
+      expect(activeLink).toHaveClass('hover:text-primary');
+      expect(activeLink).toHaveClass('transition-all');
+      expect(activeLink).toHaveClass('duration-300');
     });
 
-    it('has proper active state data attributes', () => {
+    it('has proper href attribute for navigation', () => {
       render(
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
-      // Check that the tab has the proper data attributes for active state
-      expect(activeTab).toHaveAttribute('data-state', 'active');
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      // Check that the link has the proper href attribute
+      expect(activeLink).toHaveAttribute('href', '/our-work');
     });
 
     it('does not have custom underline spans', () => {
@@ -297,9 +319,9 @@ describe('CategoryNavigation', () => {
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
       // With editorial styling, there should be no custom underline spans
-      const underline = activeTab.querySelector('span');
+      const underline = activeLink.querySelector('span');
       expect(underline).not.toBeInTheDocument();
     });
 
@@ -308,9 +330,10 @@ describe('CategoryNavigation', () => {
         <CategoryNavigation {...defaultProps} activeCategory="overview" />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
-      // Editorial styling uses pb-1 instead of pb-2
-      expect(activeTab).toHaveClass('pb-1');
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      // Editorial styling uses px-2 py-3 for proper spacing
+      expect(activeLink).toHaveClass('px-2');
+      expect(activeLink).toHaveClass('py-3');
     });
   });
 });

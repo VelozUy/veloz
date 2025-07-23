@@ -4,14 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { ChevronDownIcon } from 'lucide-react';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { getCategoryDisplayName, EventCategory } from '@/constants/categories';
 
 interface Category {
@@ -34,14 +28,18 @@ export default function CategoryNavigation({
   className,
 }: CategoryNavigationProps) {
   const [mounted, setMounted] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Handle mobile select change with proper URL navigation
-  const handleMobileSelectChange = (categoryId: string) => {
+  // Handle mobile drawer category selection
+  const handleMobileCategorySelect = (categoryId: string) => {
+    // Close the drawer
+    setDrawerOpen(false);
+    
     // Navigate to the appropriate URL
     if (categoryId === 'overview') {
       router.push('/our-work');
@@ -124,12 +122,12 @@ export default function CategoryNavigation({
   if (!mounted) {
     return (
       <div className={cn('w-full', className)}>
-        {/* Mobile Select Skeleton */}
-        <div className="block md:hidden">
-          <div className="w-full h-12 bg-muted animate-pulse rounded-none" />
+        {/* Mobile Button Skeleton */}
+        <div className="block md:hidden px-4">
+          <div className="w-full h-12 bg-muted animate-pulse border border-border" />
         </div>
 
-        {/* Desktop Tabs Skeleton */}
+        {/* Desktop Navigation Skeleton */}
         <div className="hidden md:block">
           <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
             {categories.map(category => (
@@ -146,51 +144,85 @@ export default function CategoryNavigation({
 
   return (
     <div className={cn('w-full', className)}>
-      {/* Mobile Select - visible on small screens with improved UX */}
+      {/* Mobile Custom Button - visible on small screens */}
       <div className="block md:hidden px-4">
-        <Select value={activeCategory} onValueChange={handleMobileSelectChange}>
-          <SelectTrigger 
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className={cn(
+            'relative w-full flex items-center justify-center px-4 py-3',
+            'bg-background text-foreground',
+            'text-lg uppercase tracking-tight font-medium',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+            'transition-all duration-300',
+            'after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:transition-all after:duration-300',
+            'after:bg-primary after:opacity-100'
+          )}
+        >
+          <span className="text-primary">
+            {getActiveCategoryDisplayName()}
+          </span>
+          <ChevronDownIcon 
             className={cn(
-              'w-full min-h-[48px] h-auto rounded-none border-border bg-card text-card-foreground',
-              'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
-              'touch-manipulation text-base font-medium',
-              'shadow-sm hover:shadow-md transition-shadow duration-200'
-            )}
-            sectionType="content"
-            priority="medium"
+              'absolute right-4 w-5 h-5 text-muted-foreground transition-transform duration-300',
+              drawerOpen && 'rotate-180'
+            )} 
+          />
+        </button>
+
+        {/* Custom Dropdown Overlay */}
+        {drawerOpen && (
+          <div 
+            className="fixed inset-0 z-50 bg-transparent"
+            onClick={() => setDrawerOpen(false)}
           >
-            <SelectValue placeholder="Seleccionar categoría">
-              <span className="font-medium text-foreground">
-                {getActiveCategoryDisplayName()}
-              </span>
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent 
-            className="rounded-none border-border shadow-lg"
-            sectionType="content"
-            priority="high"
-          >
-            {categories.map(category => (
-              <SelectItem 
-                key={category.id} 
-                value={category.id}
-                className={cn(
-                  'min-h-[48px] text-base font-medium rounded-none',
-                  'focus:bg-accent focus:text-accent-foreground',
-                  'cursor-pointer touch-manipulation',
-                  activeCategory === category.id && 'bg-primary/10 text-primary font-semibold'
-                )}
-              >
-                {category.id === 'overview'
-                  ? category.name
-                  : getCategoryDisplayName(
-                      category.name as EventCategory,
-                      'es'
-                    )}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            {/* Dropdown Content - positioned below the button */}
+            <div 
+              className={cn(
+                "absolute left-4 right-4 top-[88px] z-50 bg-background border border-border shadow-xl rounded-none",
+                "animate-in slide-in-from-top-2 zoom-in-95 fade-in-0 duration-300 ease-out",
+                "transform-gpu"
+              )}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                transformOrigin: 'top center'
+              }}
+            >
+              {/* Category Links */}
+              <div className="py-2 max-h-[50vh] overflow-y-auto bg-background">
+                {categories.map((category, index) => {
+                  const isActive = category.id === activeCategory;
+                  const displayName = category.id === 'overview'
+                    ? category.name
+                    : getCategoryDisplayName(category.name as EventCategory, 'es');
+                  
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => handleMobileCategorySelect(category.id)}
+                      className={cn(
+                        'relative w-full flex items-center justify-center px-4 py-3',
+                        'text-lg uppercase tracking-tight font-medium transition-all duration-300',
+                        'hover:bg-accent/20 focus-visible:outline-none focus-visible:bg-accent/20',
+                        'border-b border-border/50 last:border-b-0',
+                        'after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:transition-all after:duration-300',
+                        'animate-in slide-in-from-top-2 fade-in-0 duration-300 ease-out',
+                        isActive 
+                          ? 'text-primary after:bg-primary after:opacity-100' 
+                          : 'text-muted-foreground after:bg-primary after:opacity-0 hover:text-primary hover:after:opacity-50'
+                      )}
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                        animationFillMode: 'both'
+                      }}
+                    >
+                      {displayName}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Desktop Tabs - visible on medium screens and up with improved styling */}
@@ -207,7 +239,7 @@ export default function CategoryNavigation({
                     : `/our-work/${category.id}`
                 }
                 className={cn(
-                  'relative inline-flex items-center px-2 py-3 text-base uppercase tracking-tight transition-all duration-300',
+                  'relative inline-flex items-center px-2 py-3 text-xl uppercase tracking-tight transition-all duration-300',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   'hover:text-primary font-medium',
                   'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:transition-all after:duration-300',

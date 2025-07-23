@@ -57,11 +57,6 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
             <div key={category.id} className="mb-12 md:mb-16">
               {/* Category Section - Compact Spacing */}
               <div className="mb-8 md:mb-10">
-                {/* Section Heading - Centered with Compact Spacing */}
-                <H3 className="text-sm uppercase font-semibold text-foreground mb-8 md:mb-10 text-center">
-                  {category.title}
-                </H3>
-
                 {/* Editorial Media Grid - Compact Margins */}
                 <div className="mb-8 md:mb-10">
                   <EditorialGrid

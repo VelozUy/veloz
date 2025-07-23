@@ -69,13 +69,8 @@ export default function OurWorkHeader({
 
   return (
     <>
-      {/* Main title section */}
-      <header className="py-8 sm:py-12 md:py-16 bg-background">
-        <StaticTitle text={displayTitle} />
-      </header>
-
       {/* Category navigation */}
-      <div className="py-4 md:py-6 bg-background">
+      <div className="py-8 md:py-12 bg-background">
         <CategoryNavigation
           categories={categories}
           activeCategory={activeCategory || 'overview'}

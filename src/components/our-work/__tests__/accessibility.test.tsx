@@ -116,15 +116,15 @@ describe('Accessibility Testing - Editorial Design', () => {
         />
       );
 
-      const tabs = screen.getAllByRole('tab');
-      expect(tabs).toHaveLength(mockCategories.length);
+      const links = screen.getAllByRole('link');
+      expect(links).toHaveLength(mockCategories.length);
 
-      const activeTab = screen.getByRole('tab', { selected: true });
-      expect(activeTab).toBeInTheDocument();
-      expect(activeTab).toHaveAttribute('aria-selected', 'true');
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
+      expect(activeLink).toBeInTheDocument();
+      expect(activeLink).toHaveAttribute('href', '/our-work');
     });
 
-    it('has proper tablist role', () => {
+    it('has proper navigation structure', () => {
       render(
         <CategoryNavigation
           categories={mockCategories}
@@ -133,8 +133,12 @@ describe('Accessibility Testing - Editorial Design', () => {
         />
       );
 
-      const tablists = screen.getAllByRole('tablist');
-      expect(tablists.length).toBeGreaterThan(0);
+      const links = screen.getAllByRole('link');
+      expect(links.length).toBeGreaterThan(0);
+      // Check that links have proper href attributes
+      links.forEach(link => {
+        expect(link).toHaveAttribute('href');
+      });
     });
 
     it('has keyboard navigation support', () => {
@@ -146,9 +150,9 @@ describe('Accessibility Testing - Editorial Design', () => {
         />
       );
 
-      const tabs = screen.getAllByRole('tab');
-      tabs.forEach(tab => {
-        expect(tab).toHaveAttribute('tabIndex');
+      const links = screen.getAllByRole('link');
+      links.forEach(link => {
+        expect(link).toHaveAttribute('href');
       });
     });
 
@@ -161,16 +165,16 @@ describe('Accessibility Testing - Editorial Design', () => {
         />
       );
 
-      const activeTab = screen.getByRole('tab', { selected: true });
+      const activeLink = screen.getByRole('link', { name: 'Eventos' });
       // Check for editorial styling classes that handle active state
-      expect(activeTab).toHaveClass('data-[state=active]:text-primary');
-      expect(activeTab).toHaveClass('data-[state=active]:border-primary');
+      expect(activeLink).toHaveClass('text-primary');
+      expect(activeLink).toHaveClass('after:bg-primary');
 
-      const inactiveTabs = screen
-        .getAllByRole('tab')
-        .filter(tab => !tab.getAttribute('aria-selected'));
-      inactiveTabs.forEach(tab => {
-        expect(tab).toHaveClass('text-muted-foreground');
+      const inactiveLinks = screen
+        .getAllByRole('link')
+        .filter(link => link !== activeLink);
+      inactiveLinks.forEach(link => {
+        expect(link).toHaveClass('text-muted-foreground');
       });
     });
   });
@@ -265,17 +269,18 @@ describe('Accessibility Testing - Editorial Design', () => {
       );
 
       // Check that all interactive elements have proper focus management
-      const tabs = screen.getAllByRole('tab');
-      tabs.forEach(tab => {
-        expect(tab).toHaveAttribute('tabIndex');
+      const links = screen.getAllByRole('link');
+      links.forEach(link => {
+        expect(link).toHaveAttribute('href');
       });
 
-      const comboboxes = screen.getAllByRole('combobox');
-      comboboxes.forEach(combobox => {
-        // Check that comboboxes have proper accessibility attributes
-        expect(combobox).toHaveAttribute('role', 'combobox');
-        expect(combobox).toHaveAttribute('aria-expanded');
+      // Check mobile button accessibility
+      const mobileButtons = screen.getAllByRole('button');
+      mobileButtons.forEach(button => {
+        expect(button).toHaveAttribute('type', 'button');
       });
+
+              // Mobile navigation no longer uses combobox, uses custom button with drawer
     });
 
     it('uses consistent theme tokens for colors', () => {
@@ -336,10 +341,10 @@ describe('Accessibility Testing - Editorial Design', () => {
       );
 
       // Check for proper ARIA attributes
-      const tabs = screen.getAllByRole('tab');
-      tabs.forEach(tab => {
-        expect(tab).toHaveAttribute('aria-selected');
-        expect(tab).toHaveAttribute('role', 'tab');
+      const links = screen.getAllByRole('link');
+      links.forEach(link => {
+        expect(link.tagName.toLowerCase()).toBe('a');
+        expect(link).toHaveAttribute('href');
       });
 
       const tablists = screen.getAllByRole('tablist');
