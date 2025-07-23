@@ -182,9 +182,13 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 **Mobile Experience**:
 
-- **Dropdown Selector**: Radix UI Select component for better mobile UX
-- **Touch-Friendly**: Larger touch targets for mobile interaction
-- **Consistent Styling**: Maintains theme system consistency
+- **Custom Dropdown Selector**: Clean, minimalist dropdown without blur background or header
+- **Centered Text**: Both title and dropdown items are perfectly centered for professional appearance
+- **Borderless Design**: Removed button border for clean, modern look
+- **Full-Width Underline**: Extended underline spans entire button width including arrow area
+- **Perfect Positioning**: Fine-tuned positioning at 88px for seamless connection to button
+- **Consistent Heights**: Dropdown items match button height for visual harmony
+- **Touch-Friendly**: Larger touch targets with smooth animations
 - **Responsive Breakpoint**: Switches at md (768px) breakpoint
 
 **Layout Improvements**:

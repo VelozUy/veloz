@@ -83,7 +83,7 @@ _Last updated: 2025-01-20_
   - **Status**: Ready after core fix completion
   - **Estimated Time**: 0.5 days
 
-- [ ] **Accessibility Review** - Verify mobile accessibility compliance  
+- [ ] **Accessibility Review** - Verify mobile accessibility compliance
   - **Status**: Ready after styling improvements
   - **Estimated Time**: 0.5 days
 
@@ -3435,7 +3435,7 @@ _No tasks completed yet for this Epic_
   - **User Intent**: Make CategoryNavigation component become a selector (dropdown) on mobile screen sizes
   - **Acceptance Criteria**:
     - Desktop: Horizontal tabs with editorial styling ✅
-    - Mobile: Radix UI Select dropdown for better mobile UX ✅
+    - Mobile: Custom dropdown selector for better mobile UX ✅
     - Responsive breakpoint at md (768px) ✅
     - Consistent styling with theme system ✅
     - Proper active state handling for both desktop and mobile ✅
@@ -3458,6 +3458,22 @@ _No tasks completed yet for this Epic_
   - **Reference**: Editorial layout requirements
   - **Estimated Time**: 30 minutes
   - **Status**: ✅ Completed - Clean layout with even spacing and no underline
+
+- [x] **Mobile Navigation Design Polish** - Enhanced mobile dropdown with clean, professional design ✅ **COMPLETED** (2025-01-20)
+  - **User Intent**: Create a clean, native-like mobile dropdown selector
+  - **Acceptance Criteria**:
+    - Custom dropdown without blur background or header ✅
+    - Centered text for both title and dropdown items ✅
+    - Borderless button design for minimalist appearance ✅
+    - Full-width underline spanning entire button including arrow ✅
+    - Perfect positioning at 88px for seamless connection ✅
+    - Consistent heights matching button and dropdown items ✅
+    - Smooth staggered animations with proper timing ✅
+    - Updated tests to reflect new mobile navigation structure ✅
+  - **Files**: `src/components/our-work/CategoryNavigation.tsx`, `src/components/our-work/__tests__/CategoryNavigation.test.tsx`
+  - **Reference**: Mobile UX best practices and native selector design
+  - **Estimated Time**: 2 hours
+  - **Status**: ✅ Completed - Professional mobile dropdown with native-like feel
 
 - [x] **Category Content Localization Update** - Rename "Overview" to "Events"/"Eventos" ✅ **COMPLETED** (2025-01-20)
   - **User Intent**: Rename "Overview" category to "Events" in English and "Eventos" in Spanish/Portuguese
@@ -5598,7 +5614,7 @@ _No tasks completed yet for this Epic_
 **Target Integration Points**:
 
 - **Primary Target**: `src/components/gallery/GalleryContent.tsx` (main component)
-- **Usage Locations**: 
+- **Usage Locations**:
   - `src/app/en/our-work/page.tsx` - English gallery page
   - `src/app/pt/our-work/page.tsx` - Portuguese gallery page
   - Any component importing GalleryContent
