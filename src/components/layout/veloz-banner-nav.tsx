@@ -101,18 +101,20 @@ export default function VelozBannerNav({
 
           {/* Logo section - positioned on top of gray background */}
           <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center">
-            <Link
-              href={getLocalizedPath('/', locale)}
-              className="flex items-center group"
-            >
-              <VelozLogo
-                variant="full"
-                size="sm"
-                logoSize="sm"
-                logoVariant="dark"
-                className="text-foreground group-hover:text-primary transition-colors"
-              />
-            </Link>
+            <div className="flex items-center justify-center w-full">
+              <Link
+                href={getLocalizedPath('/', locale)}
+                className="flex items-center justify-center group"
+              >
+                <VelozLogo
+                  variant="full"
+                  size="sm"
+                  logoSize="sm"
+                  logoVariant="dark"
+                  className="text-foreground group-hover:text-primary transition-colors"
+                />
+              </Link>
+            </div>
           </div>
 
           {/* Blue section - positioned on top of gray background */}
@@ -164,18 +166,20 @@ export default function VelozBannerNav({
         <div className="relative h-16 bg-muted">
           {/* Logo section - positioned on top of gray background */}
           <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-20">
-            <Link
-              href={getLocalizedPath('/', locale)}
-              className="flex items-center group"
-            >
-              <VelozLogo
-                variant="full"
-                size="sm"
-                logoSize="sm"
-                logoVariant="dark"
-                className="text-foreground group-hover:text-primary transition-colors"
-              />
-            </Link>
+            <div className="flex items-center justify-center w-full">
+              <Link
+                href={getLocalizedPath('/', locale)}
+                className="flex items-center justify-center group"
+              >
+                <VelozLogo
+                  variant="full"
+                  size="sm"
+                  logoSize="sm"
+                  logoVariant="dark"
+                  className="text-foreground group-hover:text-primary transition-colors"
+                />
+              </Link>
+            </div>
           </div>
 
           {/* Blue section - positioned on top of gray background */}

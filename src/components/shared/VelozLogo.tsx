@@ -57,13 +57,13 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center space-x-2',
+        'flex items-center justify-center',
         sizeClasses[size],
         className
       )}
     >
       {/* Logo Image */}
-      <div className={cn("relative w-auto flex-shrink-0", logoSize ? logoSizeClasses[logoSize] : sizeClasses[size])}>
+      <div className={cn("relative w-auto flex-shrink-0 mr-1", logoSize ? logoSizeClasses[logoSize] : sizeClasses[size])}>
         <img
           src={getLogoPath()}
           alt="Veloz Logo"
