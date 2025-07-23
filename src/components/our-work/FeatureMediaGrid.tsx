@@ -208,14 +208,14 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
                 {mediaItem.type === 'video' ? (
                   <div
-                    className="aspect-ratio-container transition-transform duration-700 ease-out"
+                    className="aspect-ratio-container transition-all duration-700 ease-out"
                     style={{
                       aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
                     }}
                   >
                     <video
                       src={mediaItem.url}
-                      className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
+                      className={`absolute inset-0 w-full h-full ${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 transition-all duration-700 ease-out`}
                       muted
                       loop
                       playsInline
@@ -228,7 +228,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   </div>
                 ) : (
                   <div
-                    className="aspect-ratio-container transition-transform duration-700 ease-out"
+                    className="aspect-ratio-container transition-all duration-700 ease-out"
                     style={{
                       aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
                     }}
@@ -237,7 +237,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                       src={mediaItem.url}
                       alt={mediaItem.alt}
                       fill
-                      className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 group-hover:contrast-105 transition-all duration-700 ease-out`}
+                      className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 transition-all duration-700 ease-out`}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       priority={index < 4}
                       loading={index < 4 ? 'eager' : 'lazy'}

@@ -119,7 +119,7 @@ export default function ProjectTaskList({
           completed: data.completed || false,
           completedAt: data.completedAt
             ? new Date(data.completedAt.toDate())
-            : null,
+            : undefined,
           priority: data.priority || 'medium',
           assignee: data.assignee,
           notes: data.notes,

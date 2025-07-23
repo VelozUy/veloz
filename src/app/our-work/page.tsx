@@ -7,26 +7,21 @@ export const metadata: Metadata = {
   title: 'Nuestro Trabajo | Veloz Fotografía y Videografía',
   description:
     'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Descubre por qué los clientes eligen Veloz para sus momentos especiales.',
+  keywords: [
+    'portafolio fotografía',
+    'galería de trabajos',
+    'bodas Veloz',
+    'eventos corporativos',
+    'fotografía profesional',
+    'videografía',
+    'momentos especiales',
+  ],
   openGraph: {
     title: 'Nuestro Trabajo | Veloz Fotografía y Videografía',
     description:
-      'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Descubre por qué los clientes eligen Veloz para sus momentos especiales.',
-    images: [
-      {
-        url: '/og-gallery.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Portafolio de Veloz Fotografía y Videografía',
-      },
-    ],
-  },
-  alternates: {
-    canonical: '/our-work',
-    languages: {
-      es: '/our-work',
-      en: '/en/our-work',
-      pt: '/pt/our-work',
-    },
+      'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más.',
+    type: 'website',
+    locale: 'es_ES',
   },
 };
 
@@ -45,7 +40,7 @@ export default function OurWorkPage() {
         locale={content.locale}
       />
 
-      {/* CTA Widget */}
+      {/* Contact Widget (client) */}
       <ContactWidget language={content.locale} />
     </div>
   );

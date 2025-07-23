@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { GalleryGrid } from './GalleryGrid';
-import { GalleryRow } from './GalleryRow';
 import { trackProjectView } from '@/lib/gallery-analytics';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 

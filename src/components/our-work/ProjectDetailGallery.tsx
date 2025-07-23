@@ -12,7 +12,7 @@ import GalleryGrid from './GalleryGrid';
 import MeetTheTeamStatic from '@/components/our-work/MeetTheTeamStatic';
 import SocialFeed from '@/components/our-work/SocialFeed';
 import ProjectTimeline from '@/components/our-work/ProjectTimeline';
-import GalleryLightbox from '@/components/our-work/GalleryLightbox';
+
 
 interface ProjectMedia {
   id: string;
@@ -293,8 +293,7 @@ export default function ProjectDetailGallery({
         </div>
       </section>
 
-      {/* Gallery Lightbox Initialization */}
-      <GalleryLightbox projectId={project.id} />
+
 
       {/* Skip to content link for accessibility */}
       <a

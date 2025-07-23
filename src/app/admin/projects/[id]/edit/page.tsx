@@ -93,6 +93,10 @@ interface Project {
     videos: number;
   };
   crewMembers?: string[]; // Array of crew member IDs
+  detailPageBlocks?: MediaBlock[]; // Detail page media blocks
+  mediaBlocks?: MediaBlock[]; // Media blocks for the project
+  detailPageGridHeight?: number; // Grid height for detail page
+  heroMediaConfig?: HeroMediaConfig;
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
   media?: ProjectMedia[];

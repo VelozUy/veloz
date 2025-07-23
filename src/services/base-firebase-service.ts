@@ -18,6 +18,7 @@ import {
   QueryConstraint,
   DocumentData,
   QueryDocumentSnapshot,
+  DocumentSnapshot,
   Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreService } from '@/lib/firebase';
@@ -152,8 +153,13 @@ export abstract class BaseFirebaseService<T = unknown> {
   }
 
   // Document processing
-  protected processDocument<R>(doc: QueryDocumentSnapshot<DocumentData>): R {
+  protected processDocument<R>(doc: QueryDocumentSnapshot<DocumentData>): R;
+  protected processDocument<R>(doc: DocumentSnapshot<DocumentData>): R;
+  protected processDocument<R>(doc: QueryDocumentSnapshot<DocumentData> | DocumentSnapshot<DocumentData>): R {
     const data = doc.data();
+    if (!data) {
+      throw new Error(`Document ${doc.id} has no data`);
+    }
     return {
       id: doc.id,
       ...this.convertTimestamp(data),

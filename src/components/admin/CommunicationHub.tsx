@@ -86,8 +86,8 @@ export default function CommunicationHub() {
     clientId: '',
     subject: '',
     content: '',
-    type: 'email' as const,
-    priority: 'medium' as const,
+    type: 'email' as 'email' | 'sms',
+    priority: 'medium' as 'low' | 'medium' | 'high',
   });
 
   useEffect(() => {

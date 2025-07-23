@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import FullscreenModal from '@/components/gallery/FullscreenModal';
 
 interface EditorialMedia {
   id: string;
@@ -33,11 +34,54 @@ interface EditorialGridProps {
  * - Compact spacing via gap utilities
  * - Editorial aesthetic with minimal ornamentation
  * - Editorial spacing patterns closer to reference design
+ * - Optimized image preloading for faster fullscreen modal
  */
 export const EditorialGrid: React.FC<EditorialGridProps> = ({
   media,
   className = '',
 }: EditorialGridProps) => {
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+
+  // Preload images for faster fullscreen modal performance
+  useEffect(() => {
+    const preloadImage = (url: string, id: string) => {
+      const img = new window.Image();
+      img.onload = () => {
+        setPreloadedImages(prev => new Set([...prev, id]));
+      };
+      img.src = url;
+    };
+
+    // Preload ALL images for immediate fullscreen access
+    media.forEach(item => {
+      if (item.type === 'photo') {
+        preloadImage(item.url, item.id);
+      }
+    });
+  }, [media]);
+
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback((index: number) => {
+    setFullscreenStartIndex(index);
+    setIsFullscreenOpen(true);
+    
+    // Aggressively preload all images when modal opens
+    media.forEach(item => {
+      if (item.type === 'photo' && !preloadedImages.has(item.id)) {
+        const img = new window.Image();
+        img.src = item.url;
+      }
+    });
+  }, [media, preloadedImages]);
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+  }, []);
+
   // Process media items for editorial layout
   const processedMedia = useMemo(() => {
     return media.map((mediaItem, index) => {
@@ -90,9 +134,10 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
         cssAspectRatio,
         aspectRatio,
         animationDelay: index * 0.1,
+        isPreloaded: preloadedImages.has(mediaItem.id),
       };
     });
-  }, [media]);
+  }, [media, preloadedImages]);
 
   if (!media.length) {
     return (
@@ -119,6 +164,16 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
               )}
               style={{
                 aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open ${mediaItem.alt} in fullscreen`}
+              onClick={() => handleOpenFullscreen(index)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenFullscreen(index);
+                }
               }}
             >
               {/* Subtle gradient overlay on hover */}
@@ -147,15 +202,40 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
                     'object-cover transition-all duration-700 ease-out'
                   )}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority={index < 4}
-                  loading={index < 4 ? 'eager' : 'lazy'}
+                  priority={index < 8}
+                  loading={index < 8 ? 'eager' : 'lazy'}
                   quality={85}
+                  // Optimize for faster fullscreen modal by preloading
+                  onLoad={() => {
+                    if (!preloadedImages.has(mediaItem.id)) {
+                      setPreloadedImages(prev => new Set([...prev, mediaItem.id]));
+                    }
+                  }}
+                  // Add blur placeholder for instant visual feedback
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
               )}
             </div>
           );
         })}
       </div>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={media.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: item.projectTitle,
+        }))}
+        startIndex={fullscreenStartIndex}
+      />
     </div>
   );
 };
