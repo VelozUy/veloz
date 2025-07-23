@@ -28,8 +28,8 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
   const variantClasses = {
     default: 'bg-primary',
-    success: 'bg-green-500',
-    warning: 'bg-yellow-500',
+    success: 'bg-primary',
+    warning: 'bg-accent',
     error: 'bg-destructive',
   };
 

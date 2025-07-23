@@ -1111,6 +1111,108 @@ _No tasks completed yet for this Epic_
 
 ---
 
+### 🎨 EPIC: Gallery Loading & Fullscreen Modal UX Enhancement ✅ **COMPLETED**
+
+**Objective**: Refine the loading and animation experience for gallery media on the `/our-work/<slug>` page, specifically within the `FullscreenModal` and related gallery components
+
+**Reference**: Gallery loading and fullscreen modal requirements
+**User Intent**: Improve the user experience by removing distracting skeleton colors, optimizing loading states, removing bounce animations, and enhancing mobile fullscreen experience
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Remove Skeleton Background Colors** - Remove skeleton background colors while keeping loading spinners ✅
+- **User Intent**: Remove distracting skeleton background colors while maintaining functional loading indicators
+- **Acceptance Criteria**:
+  - Skeleton background colors removed from all gallery components ✅
+  - Loading spinners remain visible and functional ✅
+  - Loading progress bars maintained ✅
+  - No visual regression in loading experience ✅
+- **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/components/gallery/LazyImage.tsx`, `src/components/our-work/GalleryGrid.tsx`, `src/lib/gallery-performance-optimization.ts`, `src/app/globals.css`
+- **Reference**: Gallery loading requirements
+- **Estimated Time**: 1 day
+- **Status**: ✅ Completed - Skeleton background colors removed while maintaining loading functionality
+
+- [x] **Remove Bounce/Scale Animations** - Remove bounce and scale effects from gallery items ✅
+- **User Intent**: Remove distracting bounce and scale animations while keeping smooth fade transitions
+- **Acceptance Criteria**:
+  - Bounce/scale animations removed from all gallery components ✅
+  - Fade in/out transitions maintained ✅
+  - Brightness hover effects preserved ✅
+  - Smooth user experience maintained ✅
+- **Files**: `src/components/our-work/GalleryGrid.tsx`, `src/components/our-work/MasonryGallery.tsx`, `src/components/our-work/FeatureMediaGrid.tsx`, `src/components/our-work/EditorialGrid.tsx`
+- **Reference**: Animation refinement requirements
+- **Estimated Time**: 1 day
+- **Status**: ✅ Completed - Bounce animations removed while preserving smooth transitions
+
+- [x] **Enhance Fullscreen Modal for Mobile** - Make images truly fullscreen on mobile devices ✅
+- **User Intent**: Provide true fullscreen experience on mobile devices with improved button positioning
+- **Acceptance Criteria**:
+  - Images display truly fullscreen on mobile (no padding) ✅
+  - Navigation buttons positioned for easy thumb access ✅
+  - Button fade behavior implemented (100% → 20% opacity) ✅
+  - Touch interaction restores button visibility ✅
+  - Image counter positioned appropriately for mobile ✅
+- **Files**: `src/components/gallery/FullscreenModal.tsx`
+- **Reference**: Mobile fullscreen requirements
+- **Estimated Time**: 1 day
+- **Status**: ✅ Completed - Mobile fullscreen experience enhanced with improved UX
+
+- [x] **Fix Mobile Button Clickability** - Resolve z-index and touch target issues ✅
+- **User Intent**: Ensure all buttons are easily clickable on mobile devices
+- **Acceptance Criteria**:
+  - All buttons have proper z-index values ✅
+  - Touch targets increased for better accessibility ✅
+  - No clickability issues on mobile devices ✅
+  - Proper touch event handling implemented ✅
+- **Files**: `src/components/gallery/FullscreenModal.tsx`
+- **Reference**: Mobile accessibility requirements
+- **Estimated Time**: 1 day
+- **Status**: ✅ Completed - Mobile button clickability issues resolved
+
+#### 🟧 High Priority Tasks
+
+- [x] **Remove Loading Spinner from FullscreenModal** - Keep only "Cargando..." text ✅
+- **User Intent**: Simplify loading state by removing spinner and keeping only text
+- **Acceptance Criteria**:
+  - Loading spinner removed from FullscreenModal ✅
+  - "Cargando..." text maintained ✅
+  - Clean, minimal loading experience ✅
+- **Files**: `src/components/gallery/FullscreenModal.tsx`
+- **Reference**: Loading state simplification requirements
+- **Estimated Time**: 0.5 days
+- **Status**: ✅ Completed - Loading spinner removed, text-only loading state implemented
+
+#### ✅ Completed
+
+- [x] **Remove Skeleton Background Colors** (2025-01-20)
+- [x] **Remove Bounce/Scale Animations** (2025-01-20)
+- [x] **Enhance Fullscreen Modal for Mobile** (2025-01-20)
+- [x] **Fix Mobile Button Clickability** (2025-01-20)
+- [x] **Remove Loading Spinner from FullscreenModal** (2025-01-20)
+
+**Status**: ✅ **COMPLETED** - Gallery loading and fullscreen modal UX enhanced
+
+**Key Achievements**:
+
+- ✅ Skeleton background colors removed while maintaining loading functionality
+- ✅ Bounce/scale animations removed while preserving smooth transitions
+- ✅ True fullscreen experience on mobile devices
+- ✅ Button fade behavior with touch interaction
+- ✅ Navigation buttons positioned for optimal thumb access
+- ✅ Mobile button clickability issues resolved
+- ✅ Loading spinner removed for cleaner experience
+- ✅ Image counter positioned appropriately for mobile
+
+**Technical Implementation**:
+
+- **Loading State Optimization**: Removed distracting skeleton colors while keeping functional loading indicators
+- **Animation Refinement**: Removed bounce effects while maintaining smooth fade transitions
+- **Mobile UX Enhancement**: True fullscreen display with improved button positioning and touch interaction
+- **Accessibility Improvements**: Increased touch targets and proper z-index values
+- **Performance**: Cleaner loading states with reduced visual noise
+
+---
+
 ### 🎨 EPIC: Gallery Page Migration to shadcn/ui Components ⭐ **HIGH PRIORITY**
 
 **Objective**: Migrate the gallery page to use only shadcn/ui components and blocks, removing all custom components for consistency, maintainability, and better integration with the design system
@@ -4212,6 +4314,7 @@ _No tasks completed yet for this Epic_
 **Status**: ✅ **COMPLETED** - All phases successfully implemented
 
 **Key Achievements**:
+
 - ✅ Fullscreen modal with immersive viewing experience
 - ✅ Smooth transitions and animations (300ms ease-in-out)
 - ✅ Touch gesture support for mobile devices
@@ -4221,6 +4324,7 @@ _No tasks completed yet for this Epic_
 - ✅ 26 comprehensive tests with 100% pass rate
 
 **Files Created/Modified**:
+
 - `src/components/gallery/FullscreenModal.tsx` - Main fullscreen modal component
 - `src/hooks/useTouchGestures.ts` - Touch gesture handling
 - `src/lib/fullscreen-performance.ts` - Performance optimization
@@ -4228,6 +4332,7 @@ _No tasks completed yet for this Epic_
 - `src/components/gallery/__tests__/FullscreenModal.test.tsx` - Comprehensive test suite
 
 **Next Steps**: The epic is complete and ready for production deployment. The fullscreen gallery view provides an immersive, accessible, and performant viewing experience for category gallery items.
+
 - **Accessibility**: WCAG AA compliance for all interactions
 
 **Secondary Metrics**:
