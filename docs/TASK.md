@@ -4729,7 +4729,28 @@ _No tasks completed yet for this Epic_
 
 #### 🟧 High Priority Tasks
 
-- [x] **Phase 3: Admin Crew Management Enhancement** - Build on existing crew management system ✅ **COMPLETED**
+- [~] **Phase 3: Project Template System Enhancement** - Enhance existing task template system
+  - **User Intent**: Improve and expand the project template system for better project management
+  - **Acceptance Criteria**:
+    - Add more default templates (Quinceañeras, Birthdays, etc.) ✅
+    - Enhance template management interface ✅
+    - Add template preview functionality
+    - Add template duplication and customization
+    - Improve template application workflow
+  - **Files**: `src/components/admin/TaskTemplateManager.tsx`, `src/components/admin/ProjectTaskList.tsx`
+  - **Reference**: Existing task template system implementation
+  - **Estimated Time**: 1-2 days
+  - **Status**: [~] **IN PROGRESS** - Basic templates implemented, enhancement needed
+  - **Technical Details**:
+    - Already implemented: Wedding and Corporate event templates
+    - Already implemented: Template CRUD operations
+    - Already implemented: Template application in project task lists
+    - Need to add: More event type templates
+    - Need to add: Template preview and duplication features
+    - Need to add: Enhanced template management interface
+  - **PO Sign-Off**: Pending
+
+- [x] **Phase 4: Admin Crew Management Enhancement** - Build on existing crew management system ✅ **COMPLETED**
   - **User Intent**: Enhance existing crew management with portfolio features and profile management
   - **Acceptance Criteria**:
     - Extend existing crew management with portfolio features ✅
@@ -4993,11 +5014,6 @@ _No tasks completed yet for this Epic_
   - **Status**: Ready after Phase 5 completion
 
 #### 🧠 Discovered During Epic
-
-- [ ] **Project Template System** - Create reusable project templates
-  - **Status**: Not started
-  - **Estimated Time**: 1-2 days
-  - **Notes**: Allow admins to create project templates for common event types
 
 - [ ] **Automated Task Reminders** - Email/SMS reminders for upcoming tasks
   - **Status**: Not started
