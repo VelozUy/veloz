@@ -47,12 +47,8 @@ export default function Home() {
     ? homepageContent.backgroundVideo.url
     : undefined;
 
-  // Fallback images for when video is not available
-  const fallbackImages = [
-    '/api/placeholder/1920/1080?text=Event+Photo+1',
-    '/api/placeholder/1920/1080?text=Event+Photo+2',
-    '/api/placeholder/1920/1080?text=Event+Photo+3',
-  ];
+  // Remove broken placeholder images - let the hero use the brand background instead
+  const fallbackImages: string[] = [];
 
   return (
     <main>
@@ -60,7 +56,7 @@ export default function Home() {
         headline={headline}
         backgroundVideo={backgroundVideo}
         logoUrl={logoUrl}
-        backgroundImages={!backgroundVideo ? fallbackImages : undefined}
+        backgroundImages={fallbackImages.length > 0 ? fallbackImages : undefined}
         isLogoLoading={false} // Static content, no loading needed
       />
     </main>

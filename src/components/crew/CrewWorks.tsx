@@ -28,9 +28,9 @@ const mockRecentWorks = [
     rating: 5,
     review: 'Excelente trabajo, muy profesional y creativo',
     images: [
-      '/api/placeholder/400/300',
-      '/api/placeholder/400/300',
-      '/api/placeholder/400/300',
+      '/veloz-logo-blue.png',
+      '/veloz-logo-blue.png',
+      '/veloz-logo-blue.png',
     ],
     crewRole: 'Fotógrafo Principal',
   },
@@ -55,7 +55,7 @@ const mockRecentWorks = [
     status: 'completed',
     rating: 5,
     review: 'Resultados espectaculares, muy satisfechos',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: ['/veloz-logo-blue.png', '/veloz-logo-blue.png'],
     crewRole: 'Fotógrafo',
   },
 ];

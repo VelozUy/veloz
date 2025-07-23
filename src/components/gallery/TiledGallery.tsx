@@ -54,6 +54,7 @@ export function TiledGallery({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1200);
   const [layout, setLayout] = useState<TiledGalleryLayout | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Animation and loading states - preserving current patterns
   const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set());
@@ -63,6 +64,17 @@ export function TiledGallery({
   
   // Intersection Observer for lazy loading - preserving current implementation
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Memoized responsive configuration
   const responsiveConfig = useMemo(() => {
@@ -74,6 +86,55 @@ export function TiledGallery({
   const calculatedLayout = useMemo(() => {
     if (!images.length || !containerWidth) return null;
 
+    // For mobile, use simple single-column layout
+    if (isMobile) {
+      const mobileTiles = images.map((image, index) => ({
+        id: `tile-${image.id}`,
+        image,
+        row: index,
+        column: 0,
+        width: 100,
+        height: (image.height || 1) / (image.width || 1) * 100,
+        aspectRatio: (image.width || 1) / (image.height || 1),
+        gridSpan: 'col-span-1',
+        rowSpan: 'row-span-1',
+        animationDelay: index * staggerDelay,
+        cssStyles: {
+          width: '100%',
+          height: 'auto',
+          aspectRatio: `${image.width || 1} / ${image.height || 1}`,
+        },
+      }));
+
+      return {
+        totalHeight: images.length * 300, // Approximate height
+        containerWidth,
+        config: {
+          containerWidth,
+          targetRowHeight: 300,
+          maxRowHeight: 400,
+          gap: gap || 4,
+          columns: 1,
+          preserveAspectRatio: true,
+        },
+        metadata: {
+          imageCount: images.length,
+          averageAspectRatio: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0) / images.length,
+          rowCount: images.length,
+          calculationTime: 0,
+        },
+        tiles: mobileTiles,
+        rows: [{
+          id: 'mobile-row',
+          tiles: mobileTiles,
+          targetHeight: 300,
+          actualHeight: 300,
+          totalWidth: containerWidth,
+          aspectRatioSum: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0),
+        }],
+      };
+    }
+
     const config = {
       targetRowHeight: responsiveConfig.targetRowHeight,
       maxRowHeight: responsiveConfig.targetRowHeight * 1.3,
@@ -84,7 +145,7 @@ export function TiledGallery({
 
     const baseLayout = calculateTileLayout(images, containerWidth, config);
     return optimizeLayout(baseLayout);
-  }, [images, containerWidth, columns, gap, responsiveConfig]);
+  }, [images, containerWidth, columns, gap, responsiveConfig, isMobile, staggerDelay]);
 
   // Update layout state
   useEffect(() => {
@@ -223,6 +284,156 @@ export function TiledGallery({
     );
   }
 
+  // Mobile layout - simple single column
+  if (isMobile) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          'tiled-gallery-container relative w-full',
+          className
+        )}
+        role="region"
+        aria-label={ariaLabel}
+        style={{ contain: 'layout style' }}
+      >
+        {/* Mobile Single Column Layout */}
+        <div className="space-y-4">
+          {images.map((image, index) => {
+            const isVisible = visibleItems.has(image.id);
+            const isLoaded = loadedImages.has(image.id);
+            const hasError = errorImages.has(image.id);
+
+            return (
+              <motion.div
+                key={image.id}
+                data-item-id={image.id}
+                className={cn(
+                  'tiled-gallery-item group cursor-pointer relative overflow-hidden w-full',
+                  // PRESERVE CURRENT ANIMATIONS: hover and transition effects
+                  'transition-all duration-300 ease-out hover:brightness-110',
+                  'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
+                )}
+                style={{
+                  aspectRatio: `${image.width || 1} / ${image.height || 1}`,
+                  contain: 'layout style',
+                }}
+                // PRESERVE CURRENT ANIMATIONS: Framer Motion with staggered delays
+                initial={enableAnimations ? { opacity: 0, y: 20 } : undefined}
+                animate={enableAnimations ? {
+                  opacity: isVisible ? 1 : 0,
+                  y: isVisible ? 0 : 20,
+                } : undefined}
+                transition={enableAnimations ? {
+                  duration: 0.5,
+                  delay: index * staggerDelay,
+                  ease: 'easeOut',
+                } : undefined}
+                onKeyDown={e => handleKeyDown(e, image, index)}
+                tabIndex={0}
+                role="button"
+                aria-label={`Ver ${image.type === 'video' ? 'video' : 'imagen'} de ${image.projectTitle || 'proyecto'}`}
+                onClick={() => handleImageClick(image, index)}
+              >
+                {/* GLightbox link - preserving current lightbox integration */}
+                <a
+                  href={image.url}
+                  className="absolute inset-0 glightbox z-10 focus:outline-none"
+                  data-gallery={image.galleryGroup || galleryGroup || 'tiled-gallery'}
+                  data-type={image.dataType || (image.type === 'video' ? 'video' : 'image')}
+                  data-effect="fade"
+                  data-desc={image.dataDesc || image.alt}
+                  aria-label={`Abrir ${image.type === 'video' ? 'video' : 'imagen'} en pantalla completa`}
+                  tabIndex={-1}
+                >
+                  <span className="sr-only">
+                    Abrir {image.type === 'video' ? 'video' : 'imagen'} en pantalla completa
+                  </span>
+                </a>
+
+                {/* Image/Video Display - preserving current loading patterns */}
+                <div className="absolute inset-0">
+                  {image.type === 'video' ? (
+                    // Video display with autoplay muted
+                    <div className="relative w-full h-full">
+                      <video
+                        src={image.src}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        onLoadedData={() => handleImageLoad(image.id)}
+                        onError={() => handleImageError(image.id)}
+                      />
+                    </div>
+                  ) : (
+                    // Image display - preserving current progressive loading
+                    <div className="relative w-full h-full">
+                      {isVisible && (
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className={cn(
+                            'object-cover transition-opacity duration-500',
+                            isLoaded ? 'opacity-100' : 'opacity-0'
+                          )}
+                          sizes="100vw"
+                          priority={index < 4}
+                          onLoad={() => handleImageLoad(image.id)}
+                          onError={() => handleImageError(image.id)}
+                          quality={85}
+                          placeholder={image.blurDataURL ? 'blur' : 'empty'}
+                          blurDataURL={image.blurDataURL}
+                          loading={index < 4 ? 'eager' : 'lazy'}
+                        />
+                      )}
+
+                      {/* Blur placeholder - preserving current progressive loading */}
+                      {image.blurDataURL && !isLoaded && !hasError && (
+                        <Image
+                          src={image.blurDataURL}
+                          alt=""
+                          fill
+                          className="object-cover opacity-100"
+                          sizes="100vw"
+                          priority={false}
+                          quality={10}
+                          placeholder="empty"
+                        />
+                      )}
+
+                      {/* Loading spinner - preserving current pattern */}
+                      {!isLoaded && !hasError && !image.blurDataURL && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
+                        </div>
+                      )}
+
+                      {/* Error fallback - preserving current pattern */}
+                      {hasError && (
+                        <div className="absolute inset-0 bg-muted flex items-center justify-center">
+                          <div className="text-muted-foreground text-sm">
+                            Error loading image
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* PRESERVE CURRENT ANIMATIONS: Hover overlay with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop layout - complex masonry
   return (
     <div
       ref={containerRef}

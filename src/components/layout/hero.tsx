@@ -139,12 +139,27 @@ export default function Hero({
           />
         </>
       ) : backgroundImages.length > 0 ? (
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000"
-          style={{
-            backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
-          }}
-        />
+        // Replace CSS background with proper responsive Image components
+        <div className="absolute inset-0 w-full h-full">
+          {backgroundImages.map((imageUrl, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <Image
+                src={imageUrl}
+                alt={`Background image ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="100vw"
+                priority={index === 0}
+                quality={85}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         // Veloz brand background - elegant and minimal
         <div className="absolute inset-0 bg-background" />
