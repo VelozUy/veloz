@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 import {
@@ -33,10 +34,24 @@ export default function CategoryNavigation({
   className,
 }: CategoryNavigationProps) {
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Handle mobile select change with proper URL navigation
+  const handleMobileSelectChange = (categoryId: string) => {
+    // Navigate to the appropriate URL
+    if (categoryId === 'overview') {
+      router.push('/our-work');
+    } else {
+      router.push(`/our-work/${categoryId}`);
+    }
+    
+    // Also call the original onCategoryChange for any scroll-based logic
+    onCategoryChange(categoryId);
+  };
 
   // Keyboard navigation for desktop tabs
   useEffect(() => {
@@ -50,29 +65,50 @@ export default function CategoryNavigation({
         case 'ArrowDown':
           e.preventDefault();
           const nextIndex = (currentIndex + 1) % categories.length;
-          onCategoryChange(categories[nextIndex].id);
+          const nextCategory = categories[nextIndex];
+          // Navigate to URL instead of just calling onCategoryChange
+          if (nextCategory.id === 'overview') {
+            router.push('/our-work');
+          } else {
+            router.push(`/our-work/${nextCategory.id}`);
+          }
+          onCategoryChange(nextCategory.id);
           break;
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
           const prevIndex =
             currentIndex === 0 ? categories.length - 1 : currentIndex - 1;
-          onCategoryChange(categories[prevIndex].id);
+          const prevCategory = categories[prevIndex];
+          // Navigate to URL instead of just calling onCategoryChange
+          if (prevCategory.id === 'overview') {
+            router.push('/our-work');
+          } else {
+            router.push(`/our-work/${prevCategory.id}`);
+          }
+          onCategoryChange(prevCategory.id);
           break;
         case 'Home':
           e.preventDefault();
+          router.push('/our-work');
           onCategoryChange(categories[0].id);
           break;
         case 'End':
           e.preventDefault();
-          onCategoryChange(categories[categories.length - 1].id);
+          const lastCategory = categories[categories.length - 1];
+          if (lastCategory.id === 'overview') {
+            router.push('/our-work');
+          } else {
+            router.push(`/our-work/${lastCategory.id}`);
+          }
+          onCategoryChange(lastCategory.id);
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [categories, activeCategory, onCategoryChange]);
+  }, [categories, activeCategory, onCategoryChange, router]);
 
   // Get display name for active category to show in mobile select
   const getActiveCategoryDisplayName = () => {
@@ -112,7 +148,7 @@ export default function CategoryNavigation({
     <div className={cn('w-full', className)}>
       {/* Mobile Select - visible on small screens with improved UX */}
       <div className="block md:hidden px-4">
-        <Select value={activeCategory} onValueChange={onCategoryChange}>
+        <Select value={activeCategory} onValueChange={handleMobileSelectChange}>
           <SelectTrigger 
             className={cn(
               'w-full min-h-[48px] h-auto rounded-none border-border bg-card text-card-foreground',
