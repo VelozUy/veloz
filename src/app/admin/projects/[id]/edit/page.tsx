@@ -38,6 +38,7 @@ import {
   MapPin,
   Upload,
   Instagram,
+  FileText,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import {
@@ -59,11 +60,9 @@ import {
 import MediaUpload from '@/components/admin/MediaUpload';
 import MediaManager from '@/components/admin/MediaManager';
 import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
-import LayoutTemplateSelector from '@/components/admin/LayoutTemplateSelector';
-import HeroMediaSelector from '@/components/admin/HeroMediaSelector';
-import ProjectHeroPreview from '@/components/admin/ProjectHeroPreview';
 import SocialFeedManager from '@/components/admin/SocialFeedManager';
 import ClientInviteManager from '@/components/admin/ClientInviteManager';
+import ProjectTaskList from '@/components/admin/ProjectTaskList';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
@@ -94,13 +93,9 @@ interface Project {
     videos: number;
   };
   crewMembers?: string[]; // Array of crew member IDs
-  mediaBlocks?: MediaBlock[]; // Visual grid editor blocks for our-work page
-  detailPageBlocks?: MediaBlock[]; // Visual grid editor blocks for project detail page
-  heroMediaConfig?: HeroMediaConfig; // Hero media configuration
   createdAt: { toDate: () => Date } | null;
   updatedAt: { toDate: () => Date } | null;
   media?: ProjectMedia[];
-  detailPageGridHeight?: number;
 }
 
 const EVENT_TYPES = [
@@ -188,13 +183,6 @@ export default function UnifiedProjectEditPage({
             status: 'draft',
             mediaCount: { photos: 0, videos: 0 },
             crewMembers: [],
-            mediaBlocks: [], // Empty media blocks for new projects
-            heroMediaConfig: {
-              aspectRatio: '16:9',
-              autoplay: true,
-              muted: true,
-              loop: true,
-            },
             createdAt: null,
             updatedAt: null,
           };
@@ -240,11 +228,6 @@ export default function UnifiedProjectEditPage({
             const mediaData = mediaResult.data || [];
             setProjectMedia([...mediaData]);
             setOriginalMedia([...mediaData]);
-          }
-
-          // Set detailPageGridHeight from the loaded data
-          if (migratedProjectData.detailPageGridHeight) {
-            setDetailPageGridHeight(migratedProjectData.detailPageGridHeight);
           }
         }
       } catch (error) {
@@ -783,29 +766,27 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-8">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
-                  className="flex items-center space-x-2"
+                  className="flex flex-col items-center space-y-0"
                 >
-                  <span>Media</span>
-                  <Badge variant="secondary" className="ml-1">
-                    {photos.length + videos.length}
-                  </Badge>
+                  <div className="flex items-center space-x-1">
+                    <span>Media</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {photos.length + videos.length}
+                    </Badge>
+                  </div>
                   {isCreateMode && (
-                    <Badge variant="outline" className="ml-1 text-xs">
-                      Auto-guardado al subir
+                    <Badge variant="outline" className="text-xs">
+                      Auto-save
                     </Badge>
                   )}
                 </TabsTrigger>
+                <TabsTrigger value="tasks">Tareas</TabsTrigger>
                 <TabsTrigger value="crew">Equipo</TabsTrigger>
                 <TabsTrigger value="social-feed">Feed Social</TabsTrigger>
-                <TabsTrigger value="project-design">
-                  Diseño de Página
-                </TabsTrigger>
-                <TabsTrigger value="our-work">Bloque Our-Work</TabsTrigger>
-                <TabsTrigger value="detail-page">Página de Detalle</TabsTrigger>
                 <TabsTrigger value="clients">Clientes</TabsTrigger>
               </TabsList>
 
@@ -1182,6 +1163,75 @@ export default function UnifiedProjectEditPage({
                 )}
               </TabsContent>
 
+              {/* Tasks Tab */}
+              <TabsContent value="tasks" className="space-y-6">
+                {isCreateMode ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <FileText className="w-8 h-8 text-primary-foreground" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">
+                        Gestión de Tareas del Proyecto
+                      </h3>
+                      <p className="text-muted-foreground mb-4">
+                        {draftProject.title.en ||
+                        draftProject.title.es ||
+                        draftProject.title.pt
+                          ? 'Guarda el proyecto primero, luego podrás gestionar las tareas.'
+                          : 'Por favor agrega un título al proyecto en la pestaña Detalles primero.'}
+                      </p>
+                      {draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt ? (
+                        <Button onClick={handleSaveChanges} disabled={saving}>
+                          {saving ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Guardando Proyecto...
+                            </>
+                          ) : (
+                            <>
+                              <Save className="w-4 h-4 mr-2" />
+                              Guardar Proyecto y Habilitar Gestión de Tareas
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          onClick={() => setActiveTab('details')}
+                        >
+                          Ir a Detalles del Proyecto
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Gestión de Tareas del Proyecto
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Gestiona las tareas y actividades relacionadas con este
+                        proyecto.
+                      </p>
+                    </div>
+
+                    <ProjectTaskList
+                      projectId={projectId || ''}
+                      projectStartDate={
+                        draftProject.eventDate
+                          ? new Date(draftProject.eventDate)
+                          : undefined
+                      }
+                      crewMembers={[]} // TODO: Load crew members for assignment
+                    />
+                  </div>
+                )}
+              </TabsContent>
+
               {/* Crew Members Tab */}
               <TabsContent value="crew" className="space-y-6">
                 <CrewMemberAssignment
@@ -1263,116 +1313,6 @@ export default function UnifiedProjectEditPage({
                     />
                   </div>
                 )}
-              </TabsContent>
-
-              {/* Project Design Tab - Hero Media for Project Page */}
-              <TabsContent value="project-design" className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">
-                      Diseño de la Página del Proyecto
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Configura el media hero que se mostrará en la página
-                      individual del proyecto.
-                    </p>
-                  </div>
-
-                  {/* Unified Preview */}
-                  <ProjectHeroPreview
-                    projectTitle={
-                      draftProject.title.en ||
-                      draftProject.title.es ||
-                      draftProject.title.pt
-                    }
-                    projectMedia={projectMedia}
-                    heroConfig={draftProject.heroMediaConfig}
-                  />
-
-                  {/* Hero Media Selection */}
-                  <HeroMediaSelector
-                    projectMedia={projectMedia}
-                    heroConfig={draftProject.heroMediaConfig}
-                    onHeroConfigChange={(config: HeroMediaConfig) => {
-                      updateDraftProject({ heroMediaConfig: config });
-                    }}
-                    disabled={saving}
-                  />
-                </div>
-              </TabsContent>
-
-              {/* Our-Work Block Tab - Visual Grid for Our-Work Page */}
-              <TabsContent value="our-work" className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">
-                      Bloque para Página Our-Work
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Configura cómo se mostrará este proyecto en la página de
-                      nuestros trabajos.
-                    </p>
-                  </div>
-
-                  {/* Visual Grid Editor */}
-                  <LayoutTemplateSelector
-                    projectMedia={projectMedia}
-                    mediaBlocks={draftProject.mediaBlocks || []}
-                    onMediaBlocksChange={(blocks: MediaBlock[]) => {
-                      updateDraftProject({ mediaBlocks: blocks });
-                    }}
-                    disabled={saving}
-                    projectName={
-                      draftProject.title.en ||
-                      draftProject.title.es ||
-                      draftProject.title.pt
-                    }
-                  />
-                </div>
-              </TabsContent>
-
-              {/* Project Detail Page Tab - Visual Grid for Project Detail Page */}
-              <TabsContent value="detail-page" className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">
-                      Página de Detalle del Proyecto
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Configura el diseño completo de la página individual del
-                      proyecto. El grid se cargará automáticamente con todo el
-                      contenido subido, intentando coincidir con las
-                      proporciones de los medios.
-                    </p>
-                  </div>
-
-                  {/* Visual Grid Editor for Detail Page */}
-                  <LayoutTemplateSelector
-                    projectMedia={projectMedia}
-                    mediaBlocks={draftProject.detailPageBlocks || []}
-                    onMediaBlocksChange={(
-                      blocks: MediaBlock[],
-                      gridConfig?: { width: number; height: number }
-                    ) => {
-                      handleDetailPageBlocksChange(blocks, gridConfig);
-                    }}
-                    disabled={saving}
-                    projectName={
-                      draftProject.title.en ||
-                      draftProject.title.es ||
-                      draftProject.title.pt
-                    }
-                    expandable={true}
-                    initialGridConfig={
-                      draftProject.detailPageGridHeight
-                        ? {
-                            width: 16,
-                            height: draftProject.detailPageGridHeight,
-                          }
-                        : undefined
-                    }
-                  />
-                </div>
               </TabsContent>
 
               {/* Clients Tab */}

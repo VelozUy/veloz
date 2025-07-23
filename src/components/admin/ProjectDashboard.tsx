@@ -38,6 +38,7 @@ import {
   getDocs,
   where,
 } from 'firebase/firestore';
+import DashboardUpcomingTasks from './DashboardUpcomingTasks';
 
 interface Project {
   id: string;
@@ -361,9 +362,10 @@ export default function ProjectDashboard() {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
+          <TabsTrigger value="tasks">Tasks</TabsTrigger>
           <TabsTrigger value="clients">Clients</TabsTrigger>
           <TabsTrigger value="team">Team</TabsTrigger>
         </TabsList>
@@ -535,6 +537,10 @@ export default function ProjectDashboard() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="tasks" className="space-y-4">
+          <DashboardUpcomingTasks limit={20} />
         </TabsContent>
 
         <TabsContent value="clients" className="space-y-4">
