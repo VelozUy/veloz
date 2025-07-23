@@ -16,9 +16,9 @@ const defaultProps = {
     { id: 'casamiento', name: 'Casamiento', label: 'Casamientos' },
     { id: 'photoshoot', name: 'Photoshoot', label: 'Photoshoot' },
     {
-      id: 'culturales-y-artsticos',
-      name: 'Culturales y artísticos',
-      label: 'Culturales y artísticos',
+      id: 'culturales',
+      name: 'Culturales',
+      label: 'Culturales',
     },
     { id: 'corporativos', name: 'Corporativos', label: 'Corporativos' },
   ],
@@ -44,7 +44,7 @@ describe('CategoryNavigation', () => {
       expect(tabTexts).toContain('Eventos');
       expect(tabTexts).toContain('Casamientos');
       expect(tabTexts).toContain('Photoshoot');
-      expect(tabTexts).toContain('Culturales y artísticos');
+      expect(tabTexts).toContain('Culturales');
       expect(tabTexts).toContain('Corporativos');
     });
 
@@ -111,7 +111,7 @@ describe('CategoryNavigation', () => {
       expect(itemTexts).toContain('Eventos');
       expect(itemTexts).toContain('Casamientos');
       expect(itemTexts).toContain('Photoshoot');
-      expect(itemTexts).toContain('Culturales y artísticos');
+      expect(itemTexts).toContain('Culturales');
       expect(itemTexts).toContain('Corporativos');
     });
   });

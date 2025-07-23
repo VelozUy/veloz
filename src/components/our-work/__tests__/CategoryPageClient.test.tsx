@@ -25,7 +25,7 @@ jest.mock('@/constants/categories', () => ({
     const displayNames: Record<string, string> = {
       Casamientos: 'Casamientos',
       Corporativos: 'Corporativos',
-      'Culturales y artísticos': 'Culturales y artísticos',
+      'Culturales': 'Culturales',
       Photoshoot: 'Photoshoot',
       Prensa: 'Prensa',
       Otros: 'Otros',

@@ -153,7 +153,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 - **Overview** - Shows all projects with featured media
 - **Photoshoot** - Projects with eventType "Photoshoot" and featured media
-- **Culturales y artísticos** - Projects with eventType "Culturales y artísticos" and featured media
+- **Culturales** - Projects with eventType "Culturales" and featured media
 - **Casamientos** - Projects with eventType "Casamiento" and featured media (displays as "Casamientos")
 
 **URL Structure**:

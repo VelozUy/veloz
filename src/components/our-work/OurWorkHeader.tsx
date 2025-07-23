@@ -20,6 +20,17 @@ interface OurWorkHeaderProps {
   activeCategory?: string; // Optional active category override
 }
 
+// All possible titles that could appear in the header
+const POSSIBLE_TITLES = [
+  'EVENTOS',
+  'CASAMIENTOS', 
+  'CORPORATIVOS',
+  'CULTURALES',
+  'PHOTOSHOOT',
+  'PRENSA',
+  'OTROS',
+];
+
 // Responsive Static Title Component - Fixed sizes for mobile and desktop
 const StaticTitle: React.FC<{ text: string }> = ({ text }) => {
   return (

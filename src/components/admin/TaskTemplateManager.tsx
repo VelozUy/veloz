@@ -447,8 +447,8 @@ export default function TaskTemplateManager({
                 <SelectContent>
                   <SelectItem value="Casamiento">Casamiento</SelectItem>
                   <SelectItem value="Corporativos">Corporativos</SelectItem>
-                  <SelectItem value="Culturales y artísticos">
-                    Culturales y artísticos
+                  <SelectItem value="Culturales">
+                    Culturales
                   </SelectItem>
                   <SelectItem value="Photoshoot">Photoshoot</SelectItem>
                   <SelectItem value="Prensa">Prensa</SelectItem>

@@ -47,7 +47,7 @@ export const contactFormSchema = z.object({
     .enum([
       'casamientos',
       'corporativos',
-      'culturales-artisticos',
+      'culturales',
       'photoshoot',
       'prensa',
       'otros',
@@ -109,7 +109,7 @@ export const projectSchema = baseSchema.extend({
   eventType: z.enum([
     'casamientos',
     'corporativos',
-    'culturales-artisticos',
+    'culturales',
     'photoshoot',
     'prensa',
     'otros',
@@ -372,7 +372,7 @@ export const searchQuerySchema = z.object({
     .enum([
       'casamientos',
       'corporativos',
-      'culturales-artisticos',
+      'culturales',
       'photoshoot',
       'prensa',
       'otros',

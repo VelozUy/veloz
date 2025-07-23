@@ -2,7 +2,7 @@ export type EventCategory =
   | 'Casamiento'
   | 'Casamientos'
   | 'Corporativos'
-  | 'Culturales y artísticos'
+  | 'Culturales'
   | 'Photoshoot'
   | 'Prensa'
   | 'Otros';
@@ -141,12 +141,12 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Eventos empresariais e profissionais',
     },
   },
-  'Culturales y artísticos': {
-    name: 'Culturales y artísticos',
+  Culturales: {
+    name: 'Culturales',
     displayName: {
-      es: 'Culturales y artísticos',
-      en: 'Cultural & Artistic',
-      pt: 'Culturais e artísticos',
+      es: 'Culturales',
+      en: 'Cultural',
+      pt: 'Cultural',
     },
     typography: {
       fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
@@ -169,9 +169,9 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
     },
     icon: '🎨',
     description: {
-      es: 'Eventos culturales y artísticos',
-      en: 'Cultural and artistic events',
-      pt: 'Eventos culturais e artísticos',
+      es: 'Eventos culturales',
+      en: 'Cultural events',
+      pt: 'Eventos culturais',
     },
   },
   Photoshoot: {

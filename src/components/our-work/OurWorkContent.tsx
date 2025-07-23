@@ -265,7 +265,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     const eventTypeMap: Record<string, EventCategory> = {
       casamientos: 'Casamientos',
       corporativos: 'Corporativos',
-      'culturales-artisticos': 'Culturales y artísticos',
+      'culturales': 'Culturales',
       photoshoot: 'Photoshoot',
       prensa: 'Prensa',
       otros: 'Otros',

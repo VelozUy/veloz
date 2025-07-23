@@ -108,7 +108,7 @@ export interface Video {
 export type EventType =
   | 'casamiento'
   | 'corporativos'
-  | 'culturales-artisticos'
+  | 'culturales'
   | 'photoshoot'
   | 'prensa'
   | 'otros';

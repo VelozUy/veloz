@@ -105,7 +105,7 @@ interface Project {
 const EVENT_TYPES = [
   'Casamiento',
   'Corporativos',
-  'Culturales y artísticos',
+  'Culturales',
   'Photoshoot',
   'Prensa',
   'Otros',

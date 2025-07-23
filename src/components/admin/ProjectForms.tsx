@@ -70,7 +70,7 @@ const enhancedProjectSchema = z.object({
   eventType: z.enum([
     'Casamiento',
     'Corporativos',
-    'Culturales y artísticos',
+    'Culturales',
     'Photoshoot',
     'Prensa',
     'Otros',
@@ -442,9 +442,7 @@ export default function ProjectForms({
                     <SelectContent>
                       <SelectItem value="Casamiento">Casamiento</SelectItem>
                       <SelectItem value="Corporativos">Corporativos</SelectItem>
-                      <SelectItem value="Culturales y artísticos">
-                        Culturales y artísticos
-                      </SelectItem>
+                      <SelectItem value="Culturales">Culturales</SelectItem>
                       <SelectItem value="Photoshoot">Photoshoot</SelectItem>
                       <SelectItem value="Prensa">Prensa</SelectItem>
                       <SelectItem value="Otros">Otros</SelectItem>

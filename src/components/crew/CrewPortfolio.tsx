@@ -60,7 +60,7 @@ const categories = [
   { value: 'corporativos', label: 'Corporativos' },
   { value: 'moda', label: 'Moda' },
   { value: 'producto', label: 'Producto' },
-  { value: 'culturales-artisticos', label: 'Culturales & Artísticos' },
+  { value: 'culturales', label: 'Culturales' },
   { value: 'photoshoot', label: 'Photoshoot' },
   { value: 'prensa', label: 'Prensa' },
   { value: 'otros', label: 'Otros' },
