@@ -32,6 +32,7 @@ const navigation = [
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
   { name: 'Gestión de Equipo', href: '/admin/crew', icon: Users },
   { name: 'Gestión Avanzada de Equipo', href: '/admin/team', icon: Users },
+  { name: 'Comunicaciones', href: '/admin/communications', icon: Mail },
   { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
   { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },

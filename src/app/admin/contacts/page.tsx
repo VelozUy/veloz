@@ -45,7 +45,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { contactMessageService } from '@/services/firebase';
+import { contactMessageService } from '@/services/contact-messages';
 import { ContactMessage } from '@/types';
 
 export default function ContactMessagesPage() {
