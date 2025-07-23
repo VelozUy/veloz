@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 interface FullscreenMedia {
@@ -38,6 +38,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
+  const [mediaAspectRatios, setMediaAspectRatios] = useState<Record<string, number>>({});
 
   // Handle mounting for portal
   useEffect(() => {
@@ -65,10 +66,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   
   // Handle media loading
   const handleMediaLoad = useCallback((mediaId: string) => {
-    setLoadingStates(prev => ({
-      ...prev,
-      [mediaId]: false,
-    }));
+    // Delay the loading state change to allow for smooth transition
+    setTimeout(() => {
+      setLoadingStates(prev => ({
+        ...prev,
+        [mediaId]: false,
+      }));
+    }, 200); // Small delay to allow media to start appearing first
   }, []);
 
   const handleMediaError = useCallback((mediaId: string) => {
@@ -77,6 +81,19 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       [mediaId]: false,
     }));
   }, []);
+
+  // Calculate and store aspect ratio for current media
+  const currentAspectRatio = useMemo(() => {
+    if (!currentMedia) return 1;
+    
+    const aspectRatio = currentMedia.width / currentMedia.height;
+    setMediaAspectRatios(prev => ({
+      ...prev,
+      [currentMedia.id]: aspectRatio,
+    }));
+    
+    return aspectRatio;
+  }, [currentMedia]);
 
   // Handle navigation
   const navigateTo = useCallback((index: number) => {
@@ -281,7 +298,18 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {/* Loading skeleton */}
           {loadingStates[currentMedia.id] && (
             <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div className="bg-gradient-to-br from-background/10 to-background/30 backdrop-blur-sm rounded-lg border border-border w-full h-full max-w-[600px] max-h-[600px] min-w-[400px] min-h-[400px]">
+              <div 
+                className="bg-gradient-to-br from-background/10 to-background/30 backdrop-blur-sm rounded-lg border border-border transition-all duration-700 ease-out"
+                style={{
+                  width: 'min(calc(100vw - 8rem), 600px)',
+                  height: 'min(calc(100vh - 8rem), 600px)',
+                  minWidth: '400px',
+                  minHeight: '400px',
+                  maxWidth: '600px',
+                  maxHeight: '600px',
+                  aspectRatio: currentAspectRatio,
+                }}
+              >
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
                   <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-muted-foreground"></div>
                   <div className="text-muted-foreground text-sm">Cargando...</div>
@@ -293,9 +321,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
-              className={`max-w-full max-h-full object-contain transition-opacity duration-300 ${
-                loadingStates[currentMedia.id] ? 'opacity-0' : 'opacity-100'
+              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out ${
+                loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
+              style={{
+                aspectRatio: currentAspectRatio,
+              }}
               controls
               autoPlay
               muted
@@ -310,9 +341,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <img
               src={currentMedia.url}
               alt={currentMedia.alt}
-              className={`max-w-full max-h-full object-contain transition-opacity duration-300 ${
-                loadingStates[currentMedia.id] ? 'opacity-0' : 'opacity-100'
+              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out ${
+                loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
+              style={{
+                aspectRatio: currentAspectRatio,
+              }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => handleMediaLoad(currentMedia.id)}
               onError={() => handleMediaError(currentMedia.id)}
