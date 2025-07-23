@@ -166,6 +166,22 @@ service cloud.firestore {
       allow list: if isActiveAdmin(); // Only admins can list all messages
     }
     
+    // Project Tasks Collection - Admin management, public read for project tasks
+    match /projectTasks/{taskId} {
+      allow read: if true; // Allow public read for project tasks
+      allow write, delete: if isActiveAdmin(); // Only admins can manage tasks
+      allow create: if isActiveAdmin(); // Only admins can create tasks
+      allow list: if isActiveAdmin(); // Only admins can list all tasks
+    }
+    
+    // Project Status History Collection - Admin management, public read for status history
+    match /projectStatusHistory/{changeId} {
+      allow read: if true; // Allow public read for status history
+      allow write, delete: if isActiveAdmin(); // Only admins can manage status history
+      allow create: if isActiveAdmin(); // Only admins can create status changes
+      allow list: if isActiveAdmin(); // Only admins can list all status changes
+    }
+    
     // Legacy Contact Form Submissions (Optional) - Allow writes for contact forms
     match /contacts/{document} {
       allow create: if true; // Allow anyone to submit contact forms

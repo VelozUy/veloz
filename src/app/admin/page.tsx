@@ -20,6 +20,9 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import Link from 'next/link';
+import DashboardUpcomingTasks from '@/components/admin/DashboardUpcomingTasks';
+import DashboardActions from '@/components/admin/DashboardActions';
+import ProjectStatusDashboard from '@/components/admin/ProjectStatusDashboard';
 
 export default function AdminDashboardPage() {
   return (
@@ -115,6 +118,7 @@ export default function AdminDashboardPage() {
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-2">
+                  {/* eslint-disable-next-line jsx-a11y/alt-text */}
                   <Image className="h-5 w-5 text-primary" />
                   <CardTitle className="text-body-lg">Galería</CardTitle>
                 </div>
@@ -161,6 +165,22 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
           </Link>
+        </div>
+
+        {/* Upcoming Tasks Summary */}
+        <div className="mb-8">
+          {/* Compact summary of upcoming tasks */}
+          <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            Tareas Urgentes
+          </h2>
+          {/* Reuse DashboardUpcomingTasks with limit=3 for summary */}
+          <DashboardUpcomingTasks limit={3} compactMode={true} showQuickActions={false} />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <DashboardActions compact={true} showTitle={true} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -217,6 +237,7 @@ export default function AdminDashboardPage() {
                   size="sm"
                   className="w-full justify-start"
                 >
+                  {/* eslint-disable-next-line jsx-a11y/alt-text */}
                   <Image className="h-4 w-4 mr-2" />
                   Subir contenido
                 </Button>
@@ -231,6 +252,15 @@ export default function AdminDashboardPage() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Project Status Overview */}
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-primary" />
+            Estado de Proyectos
+          </h2>
+          <ProjectStatusDashboard compactMode={true} />
         </div>
       </div>
     </AdminLayout>
