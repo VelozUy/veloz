@@ -39,6 +39,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [mounted, setMounted] = useState(false);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [mediaAspectRatios, setMediaAspectRatios] = useState<Record<string, number>>({});
+  const [skeletonAspectRatio, setSkeletonAspectRatio] = useState(1); // Start with square
 
   // Handle mounting for portal
   useEffect(() => {
@@ -94,6 +95,21 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     
     return aspectRatio;
   }, [currentMedia]);
+
+  // Animate skeleton aspect ratio
+  useEffect(() => {
+    if (currentMedia) {
+      // Reset to square immediately when media changes
+      setSkeletonAspectRatio(1);
+      
+      // After a brief delay, animate to the media's aspect ratio
+      const timer = setTimeout(() => {
+        setSkeletonAspectRatio(currentAspectRatio);
+      }, 200); // Slightly longer delay to ensure reset is visible
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentMedia, currentAspectRatio]);
 
   // Handle navigation
   const navigateTo = useCallback((index: number) => {
@@ -220,7 +236,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       aria-label="Vista de pantalla completa"
     >
       {/* Background overlay */}
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
       {/* Close button */}
       <button
@@ -299,15 +315,19 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {loadingStates[currentMedia.id] && (
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <div 
+                key={`skeleton-${currentMedia.id}`}
                 className="bg-gradient-to-br from-background/10 to-background/30 backdrop-blur-sm rounded-lg border border-border transition-all duration-700 ease-out"
                 style={{
-                  width: 'min(calc(100vw - 8rem), 600px)',
-                  height: 'min(calc(100vh - 8rem), 600px)',
+                  width: skeletonAspectRatio >= 1 
+                    ? `min(calc(100vw - 8rem), 600px)` 
+                    : `${Math.min(600, (400 * skeletonAspectRatio))}px`,
+                  height: skeletonAspectRatio <= 1 
+                    ? `min(calc(100vh - 8rem), 600px)` 
+                    : `${Math.min(600, (400 / skeletonAspectRatio))}px`,
                   minWidth: '400px',
                   minHeight: '400px',
                   maxWidth: '600px',
                   maxHeight: '600px',
-                  aspectRatio: currentAspectRatio,
                 }}
               >
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
@@ -325,7 +345,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
               style={{
-                aspectRatio: currentAspectRatio,
+                maxHeight: 'calc(100vh - 8rem)',
+                maxWidth: 'calc(100vw - 8rem)',
               }}
               controls
               autoPlay
@@ -345,7 +366,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
               style={{
-                aspectRatio: currentAspectRatio,
+                maxHeight: 'calc(100vh - 8rem)',
+                maxWidth: 'calc(100vw - 8rem)',
               }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => handleMediaLoad(currentMedia.id)}
