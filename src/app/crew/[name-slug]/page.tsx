@@ -5,15 +5,15 @@ import CrewProfile from '@/components/crew/CrewProfile';
 import type { CrewMember } from '@/types';
 
 interface CrewProfilePageProps {
-  params: {
+  params: Promise<{
     'name-slug': string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: CrewProfilePageProps): Promise<Metadata> {
-  const { 'name-slug': nameSlug } = params;
+  const { 'name-slug': nameSlug } = await params;
 
   try {
     const result = await crewMemberService.getAllCrewMembers();
@@ -59,7 +59,7 @@ export async function generateMetadata({
 export default async function CrewProfilePage({
   params,
 }: CrewProfilePageProps) {
-  const { 'name-slug': nameSlug } = params;
+  const { 'name-slug': nameSlug } = await params;
 
   try {
     const result = await crewMemberService.getAllCrewMembers();

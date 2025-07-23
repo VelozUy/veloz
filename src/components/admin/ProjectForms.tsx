@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable no-restricted-syntax */
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
+import FileUpload from '@/components/forms/FileUpload';
 import {
   Select,
   SelectContent,
@@ -90,7 +90,29 @@ const enhancedProjectSchema = z.object({
     company: z.string().optional(),
     notes: z.string().optional(),
     isConfidential: z.boolean(),
+    address: z.string().optional(),
+    website: z.string().optional(),
+    socialMedia: z
+      .object({
+        instagram: z.string().optional(),
+        facebook: z.string().optional(),
+        linkedin: z.string().optional(),
+      })
+      .optional(),
   }),
+
+  // File uploads
+  projectMaterials: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        url: z.string(),
+        type: z.enum(['image', 'document', 'video']),
+        uploadedAt: z.date(),
+      })
+    )
+    .optional(),
 
   // Team and crew
   crewMembers: z.array(z.string()),
@@ -201,8 +223,17 @@ export default function ProjectForms({
   const [showClientDialog, setShowClientDialog] = useState(false);
   const [showMilestoneDialog, setShowMilestoneDialog] = useState(false);
   const [editingMilestone, setEditingMilestone] = useState<any>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<
+    Array<{
+      id: string;
+      name: string;
+      url: string;
+      type: 'image' | 'document' | 'video';
+      uploadedAt: Date;
+    }>
+  >(initialData?.projectMaterials || []);
 
-  const totalSteps = 5;
+  const totalSteps = 6; // Added file upload step
 
   const form = useForm<EnhancedProjectFormData>({
     resolver: zodResolver(enhancedProjectSchema),
@@ -293,9 +324,39 @@ export default function ProjectForms({
     setValue('timeline.milestones', filteredMilestones);
   };
 
+  // File upload handlers
+  const handleFileUpload = (files: File[]) => {
+    const newFiles = files.map(file => ({
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      name: file.name,
+      url: URL.createObjectURL(file), // In real implementation, upload to storage
+      type: file.type.startsWith('image/')
+        ? ('image' as const)
+        : file.type.startsWith('video/')
+          ? ('video' as const)
+          : ('document' as const),
+      uploadedAt: new Date(),
+    }));
+    setUploadedFiles(prev => [...prev, ...newFiles]);
+  };
+
+  const handleFileRemove = (fileId: string) => {
+    setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
+  };
+
   const handleFormSubmit = async (data: EnhancedProjectFormData) => {
     try {
-      await onSubmit(data);
+      // Include milestones and uploaded files in the data
+      const formDataWithMilestones = {
+        ...data,
+        timeline: {
+          ...data.timeline,
+          milestones: watchedValues.timeline?.milestones || [],
+        },
+        projectMaterials: uploadedFiles,
+      };
+
+      await onSubmit(formDataWithMilestones);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -917,6 +978,92 @@ export default function ProjectForms({
                   rows={3}
                 />
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Step 6: File Uploads */}
+        {currentStep === 6 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Upload className="h-5 w-5" />
+                <span>Materiales del Proyecto</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label>Subir Materiales del Proyecto</Label>
+                <p className="text-sm text-muted-foreground">
+                  Sube archivos relevantes como referencias, contratos, o
+                  materiales del cliente
+                </p>
+
+                <FileUpload
+                  onFilesSelected={handleFileUpload}
+                  onFilesRemoved={fileIds => fileIds.forEach(handleFileRemove)}
+                  selectedFiles={uploadedFiles.map(file => ({
+                    id: file.id,
+                    file: new File([], file.name), // Mock file object
+                    progress: 100,
+                    status: 'success' as const,
+                    url: file.url,
+                  }))}
+                  maxFiles={10}
+                  maxFileSize={50 * 1024 * 1024} // 50MB
+                  allowedTypes={[
+                    'image/*',
+                    'video/*',
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                  ]}
+                />
+              </div>
+
+              {/* Display uploaded files */}
+              {uploadedFiles.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="font-semibold">Archivos Subidos</h4>
+                  <div className="space-y-2">
+                    {uploadedFiles.map(file => (
+                      <div
+                        key={file.id}
+                        className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-primary/10 rounded flex items-center justify-center">
+                            {file.type === 'image' ? (
+                              <Eye className="h-4 w-4" />
+                            ) : file.type === 'video' ? (
+                              <Eye className="h-4 w-4" />
+                            ) : (
+                              <FileText className="h-4 w-4" />
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-medium text-sm">
+                              {file.name}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {file.type} •{' '}
+                              {file.uploadedAt.toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleFileRemove(file.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}

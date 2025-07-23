@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Calendar, RefreshCw } from 'lucide-react';
 import { getAnalyticsSummaries } from '@/services/analytics-data';
 import type { AnalyticsSummary } from '@/services/analytics-data';
+import { analyticsService } from '@/lib/analytics';
+import type { CrewAnalyticsSummary } from '@/lib/analytics';
 import {
   MetricCardGrid,
   ViewsMetricCard,
@@ -63,6 +65,8 @@ export default function AnalyticsDashboardPage() {
   });
   const [dateRange, setDateRange] = useState('7d'); // 7d, 30d, 90d, custom
   const [summaries, setSummaries] = useState<AnalyticsSummary[]>([]);
+  const [crewAnalytics, setCrewAnalytics] =
+    useState<CrewAnalyticsSummary | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   const loadAnalyticsData = useCallback(async () => {
@@ -93,6 +97,11 @@ export default function AnalyticsDashboardPage() {
         dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90
       );
       setSummaries(summaries);
+
+      // Get crew analytics
+      const crewAnalyticsData =
+        await analyticsService.getCrewAnalyticsSummary();
+      setCrewAnalytics(crewAnalyticsData);
 
       // Aggregate metrics
       const aggregatedMetrics: DashboardMetrics = {
@@ -310,7 +319,7 @@ export default function AnalyticsDashboardPage() {
 
       {/* Detailed Analytics Tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview" className="text-xs">
             Resumen
           </TabsTrigger>
@@ -322,6 +331,9 @@ export default function AnalyticsDashboardPage() {
           </TabsTrigger>
           <TabsTrigger value="conversions" className="text-xs">
             Conversiones
+          </TabsTrigger>
+          <TabsTrigger value="crew" className="text-xs">
+            Equipo
           </TabsTrigger>
         </TabsList>
 
@@ -446,6 +458,145 @@ export default function AnalyticsDashboardPage() {
               <p className="text-muted-foreground text-sm">
                 Los análisis de conversión se implementarán próximamente.
               </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="crew" className="space-y-3">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Analytics del Equipo</CardTitle>
+              <CardDescription className="text-sm">
+                Rendimiento y engagement de los miembros del equipo
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {crewAnalytics ? (
+                <div className="space-y-6">
+                  {/* Overall Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">
+                        {crewAnalytics.totalCrewMembers}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Miembros del Equipo
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">
+                        {crewAnalytics.overallEngagement.totalProfileViews.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Vistas de Perfiles
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">
+                        {crewAnalytics.overallEngagement.totalPortfolioViews.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Vistas de Portfolio
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">
+                        {crewAnalytics.overallEngagement.totalInquiries}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Consultas Recibidas
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Top Performing Crew */}
+                  <div>
+                    <h4 className="font-semibold mb-3">Mejores Rendimientos</h4>
+                    <div className="space-y-2">
+                      {crewAnalytics.topPerformingCrew.map((crew, index) => (
+                        <div
+                          key={crew.id}
+                          className="flex items-center justify-between p-3 bg-muted/50 rounded-none"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm font-medium">
+                              {index + 1}
+                            </div>
+                            <div>
+                              <div className="font-medium">{crew.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {crew.projectsCompleted} proyectos completados
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium">
+                              {crew.profileViews.toLocaleString()}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              vistas
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Category Popularity */}
+                  <div>
+                    <h4 className="font-semibold mb-3">
+                      Popularidad por Categoría
+                    </h4>
+                    <div className="space-y-2">
+                      {crewAnalytics.categoryPopularity.map(category => (
+                        <div
+                          key={category.category}
+                          className="flex items-center justify-between p-3 bg-muted/50 rounded-none"
+                        >
+                          <div>
+                            <div className="font-medium capitalize">
+                              {category.category}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {category.crewMembers} miembros del equipo
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium">
+                              {category.totalViews.toLocaleString()}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              vistas
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Response Time */}
+                  <div>
+                    <h4 className="font-semibold mb-3">
+                      Tiempo de Respuesta Promedio
+                    </h4>
+                    <div className="text-center p-4 bg-muted/50 rounded-none">
+                      <div className="text-3xl font-bold text-primary">
+                        {crewAnalytics.overallEngagement.averageResponseTime.toFixed(
+                          1
+                        )}
+                        h
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Horas promedio de respuesta a consultas
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  Cargando analytics del equipo...
+                </p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

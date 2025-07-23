@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -17,7 +18,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { X, Upload, User, Loader2 } from 'lucide-react';
+import { X, Upload, User, Loader2, Plus, Tag } from 'lucide-react';
 import { crewMemberService, crewMemberSchema } from '@/services/crew-member';
 import { FileUploadService } from '@/services/file-upload';
 import type { CrewMember } from '@/types';
@@ -35,6 +36,7 @@ const crewMemberFormSchema = crewMemberSchema.partial().pick({
   bio: true,
   portrait: true,
   socialLinks: true,
+  skills: true,
 });
 
 type FormData = z.infer<typeof crewMemberFormSchema>;
@@ -63,6 +65,7 @@ export default function CrewMemberForm({
     optimizedSize: number;
     compressionRatio: number;
   } | null>(null);
+  const [newSkill, setNewSkill] = useState('');
 
   const fileUploadService = new FileUploadService();
 
@@ -102,6 +105,7 @@ export default function CrewMemberForm({
       socialLinks: {
         instagram: crewMember?.socialLinks?.instagram || '',
       },
+      skills: crewMember?.skills || [],
     },
   });
 
@@ -569,6 +573,116 @@ export default function CrewMemberForm({
                 />
               </div>
             )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Skills and Specialties */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Habilidades y Especialidades</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label>Especialidades del Miembro del Equipo</Label>
+            <p className="text-sm text-muted-foreground mb-3">
+              Agrega las habilidades y especialidades que mejor describan el
+              trabajo de este miembro del equipo
+            </p>
+
+            {/* Skills Display */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {Array.isArray(watchedValues.skills)
+                ? watchedValues.skills.map((skill, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
+                      <Tag className="w-3 h-3" />
+                      {skill}
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-auto p-0 ml-1 hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => {
+                          const currentSkills = Array.isArray(
+                            watchedValues.skills
+                          )
+                            ? watchedValues.skills
+                            : [];
+                          const updatedSkills = currentSkills.filter(
+                            (_, i) => i !== index
+                          );
+                          setValue('skills', updatedSkills, {
+                            shouldDirty: true,
+                          });
+                        }}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </Badge>
+                  ))
+                : null}
+            </div>
+
+            {/* Add New Skill */}
+            <div className="flex gap-2">
+              <Input
+                placeholder="Agregar especialidad (ej: Fotografía de bodas, Video corporativo, Edición...)"
+                value={newSkill}
+                onChange={e => setNewSkill(e.target.value)}
+                onKeyPress={e => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const currentSkills = Array.isArray(watchedValues.skills)
+                      ? watchedValues.skills
+                      : [];
+                    if (
+                      newSkill.trim() &&
+                      !currentSkills.includes(newSkill.trim())
+                    ) {
+                      const updatedSkills = [...currentSkills, newSkill.trim()];
+                      setValue('skills', updatedSkills, { shouldDirty: true });
+                      setNewSkill('');
+                    }
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  const currentSkills = Array.isArray(watchedValues.skills)
+                    ? watchedValues.skills
+                    : [];
+                  if (
+                    newSkill.trim() &&
+                    !currentSkills.includes(newSkill.trim())
+                  ) {
+                    const updatedSkills = [...currentSkills, newSkill.trim()];
+                    setValue('skills', updatedSkills, { shouldDirty: true });
+                    setNewSkill('');
+                  }
+                }}
+                disabled={
+                  !newSkill.trim() ||
+                  (Array.isArray(watchedValues.skills)
+                    ? watchedValues.skills
+                    : []
+                  ).includes(newSkill.trim())
+                }
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+
+            <p className="text-sm text-muted-foreground mt-2">
+              Estas especialidades aparecerán en el perfil público del miembro
+              del equipo
+            </p>
           </div>
         </CardContent>
       </Card>
