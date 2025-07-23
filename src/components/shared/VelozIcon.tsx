@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface VelozIconProps {
@@ -29,9 +30,11 @@ const VelozIcon: React.FC<VelozIconProps> = ({
 
   return (
     <div className={cn('flex-shrink-0', sizeClasses[size], className)}>
-      <img
+      <Image
         src={getIconPath()}
         alt="Veloz Icon"
+        width={parseInt(sizeClasses[size].split(' ')[0].replace('h-', ''))}
+        height={parseInt(sizeClasses[size].split(' ')[0].replace('h-', ''))}
         className="h-full w-full object-contain"
       />
     </div>

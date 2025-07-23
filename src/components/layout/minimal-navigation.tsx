@@ -63,7 +63,7 @@ export default function MinimalNavigation({
   if (!mounted) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/90 to-transparent backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-transparent backdrop-blur-sm"></div>
         <div className="relative px-6">
           <div className="flex items-center h-16">
             {/* Logo */}

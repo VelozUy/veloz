@@ -188,16 +188,16 @@ export default function ProjectsPage() {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
       case 'published':
-        return 'bg-primary';
+        return 'default';
       case 'draft':
-        return 'bg-muted';
+        return 'secondary';
       case 'archived':
-        return 'bg-muted-foreground';
+        return 'outline';
       default:
-        return 'bg-muted-foreground';
+        return 'outline';
     }
   };
 
@@ -406,7 +406,8 @@ export default function ProjectsPage() {
                         </td>
                         <td className="p-3">
                           <Badge
-                            className={`text-primary-foreground text-xs ${getStatusColor(project.status)}`}
+                            variant={getStatusVariant(project.status)}
+                            className="text-xs"
                           >
                             {project.status}
                           </Badge>

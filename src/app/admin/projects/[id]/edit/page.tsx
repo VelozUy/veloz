@@ -708,18 +708,18 @@ export default function UnifiedProjectEditPage({
                   </div>
                 )}
                 <Badge
-                  className={`${
+                  variant={
                     draftProject.status === 'published'
-                      ? 'bg-primary'
+                      ? 'default'
                       : draftProject.status === 'archived'
-                        ? 'bg-muted'
-                        : 'bg-accent'
-                  }`}
+                        ? 'secondary'
+                        : 'outline'
+                  }
                 >
                   {draftProject.status}
                 </Badge>
                 {draftProject.featured && (
-                  <Badge className="bg-accent">
+                  <Badge variant="outline">
                     <Star className="w-3 h-3 mr-1" />
                     Featured
                   </Badge>
@@ -1462,10 +1462,8 @@ export default function UnifiedProjectEditPage({
                 </>
               ) : showSavedStatus ? (
                 <>
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground font-bold text-xs">
-                      ✓
-                    </span>
+                  <div className="w-6 h-6 bg-foreground rounded-full flex items-center justify-center">
+                    <span className="text-background font-bold text-xs">✓</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-lg">Cambios Guardados</span>

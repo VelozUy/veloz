@@ -334,8 +334,8 @@ export default function GalleryGrid({
                         blurDataURL={item.blurDataURL}
                       />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 group-hover:bg-foreground/10 transition-colors duration-300">
-                      <div className="w-16 h-16 bg-background/90 flex items-center justify-center transition-transform duration-300">
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted/20 group-hover:bg-muted/10 transition-colors duration-300">
+                      <div className="w-16 h-16 bg-card/90 flex items-center justify-center transition-transform duration-300">
                         <svg
                           className="w-8 h-8 text-foreground ml-1"
                           fill="currentColor"

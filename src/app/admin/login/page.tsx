@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
         className={`min-h-screen ${adminClasses.background} ${adminClasses.text} flex items-center justify-center`}
       >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-border mx-auto mb-3"></div>
           <p className="text-muted-foreground text-sm">
             Verificando autenticación...
           </p>
@@ -207,8 +207,8 @@ export default function AdminLoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <Shield className="w-8 h-8 text-primary mr-2" />
-            <h1 className="text-2xl font-bold text-primary">
+            <Shield className="w-8 h-8 text-foreground mr-2" />
+            <h1 className="text-2xl font-bold text-foreground">
               Administración Veloz
             </h1>
           </div>

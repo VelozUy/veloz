@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Loader2, Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LoadingSpinnerProps {
@@ -79,7 +80,7 @@ export function ProgressLoader({
     <div className={cn('space-y-3', className)}>
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{message}</span>
-        <span className="text-sm font-medium text-primary">{progress}%</span>
+        <span className="text-sm font-medium text-foreground">{progress}%</span>
       </div>
       <div className="w-full bg-muted rounded-full h-2">
         <div

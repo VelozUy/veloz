@@ -88,7 +88,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
           className="absolute inset-0 flex items-center justify-center"
           data-testid="loading-placeholder"
         >
-          <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-border rounded-full animate-spin" />
         </div>
       )}
 
@@ -132,7 +132,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 
       {/* Error fallback */}
       {hasError && (
-        <div className="absolute inset-0 bg-muted flex items-center justify-center">
+        <div className="absolute inset-0 bg-background flex items-center justify-center">
           <div
             className="text-muted-foreground text-sm"
             data-testid="error-fallback"
