@@ -107,7 +107,9 @@ export default function VelozBannerNav({
             >
               <VelozLogo
                 variant="full"
-                size="xl"
+                size="sm"
+                logoSize="sm"
+                logoVariant="dark"
                 className="text-foreground group-hover:text-primary transition-colors"
               />
             </Link>
@@ -168,7 +170,9 @@ export default function VelozBannerNav({
             >
               <VelozLogo
                 variant="full"
-                size="xl"
+                size="sm"
+                logoSize="sm"
+                logoVariant="dark"
                 className="text-foreground group-hover:text-primary transition-colors"
               />
             </Link>

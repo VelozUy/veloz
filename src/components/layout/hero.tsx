@@ -205,7 +205,8 @@ export default function Hero({
           >
             <VelozLogo
               variant="full"
-              size="lg" // Keep consistent large size
+              size="sm"
+              logoSize="sm"
               className="text-primary-foreground"
             />
           </div>
