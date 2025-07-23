@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react';
+import React, {
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import { createPortal } from 'react-dom';
 
 interface FullscreenMedia {
@@ -37,8 +43,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
-  const [mediaAspectRatios, setMediaAspectRatios] = useState<Record<string, number>>({});
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [mediaAspectRatios, setMediaAspectRatios] = useState<
+    Record<string, number>
+  >({});
   const [skeletonAspectRatio, setSkeletonAspectRatio] = useState(1); // Start with square
   const [buttonOpacity, setButtonOpacity] = useState(100); // Button opacity state
   const [lastTouchTime, setLastTouchTime] = useState(0); // Track last touch time
@@ -66,7 +76,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       }));
     }
   }, [currentMedia]);
-  
+
   // Handle media loading
   const handleMediaLoad = useCallback((mediaId: string) => {
     // Delay the loading state change to allow for smooth transition
@@ -90,7 +100,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     if (isOpen) {
       // Show buttons at 100% opacity initially
       setButtonOpacity(100);
-      
+
       // After 1 second, fade to 20% opacity
       const fadeTimer = setTimeout(() => {
         setButtonOpacity(20);
@@ -105,7 +115,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     const now = Date.now();
     setLastTouchTime(now);
     setButtonOpacity(100);
-    
+
     // Fade back to 20% after 2 seconds of no touch
     setTimeout(() => {
       if (Date.now() - now >= 2000) {
@@ -117,13 +127,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   // Calculate and store aspect ratio for current media
   const currentAspectRatio = useMemo(() => {
     if (!currentMedia) return 1;
-    
+
     const aspectRatio = currentMedia.width / currentMedia.height;
     setMediaAspectRatios(prev => ({
       ...prev,
       [currentMedia.id]: aspectRatio,
     }));
-    
+
     return aspectRatio;
   }, [currentMedia]);
 
@@ -132,33 +142,36 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     if (currentMedia) {
       // Reset to square immediately when media changes
       setSkeletonAspectRatio(1);
-      
+
       // After a brief delay, animate to the media's aspect ratio
       const timer = setTimeout(() => {
         setSkeletonAspectRatio(currentAspectRatio);
       }, 200); // Slightly longer delay to ensure reset is visible
-      
+
       return () => clearTimeout(timer);
     }
   }, [currentMedia, currentAspectRatio]);
 
   // Handle navigation
-  const navigateTo = useCallback((index: number) => {
-    if (index < 0 || index >= media.length) return;
-    
-    setIsTransitioning(true);
-    setCurrentIndex(index);
-    
-    // Call onNavigate callback if provided
-    if (onNavigate) {
-      onNavigate(index);
-    }
-    
-    // Reset transition state after animation
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 200);
-  }, [media.length, onNavigate]);
+  const navigateTo = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= media.length) return;
+
+      setIsTransitioning(true);
+      setCurrentIndex(index);
+
+      // Call onNavigate callback if provided
+      if (onNavigate) {
+        onNavigate(index);
+      }
+
+      // Reset transition state after animation
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 200);
+    },
+    [media.length, onNavigate]
+  );
 
   // Handle next/previous navigation
   const handleNext = useCallback(() => {
@@ -170,17 +183,20 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   }, [currentIndex, media.length, navigateTo]);
 
   // Handle keyboard navigation
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      handlePrev();
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      handleNext();
-    }
-  }, [onClose, handlePrev, handleNext]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handlePrev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        handleNext();
+      }
+    },
+    [onClose, handlePrev, handleNext]
+  );
 
   // Add/remove event listeners
   useEffect(() => {
@@ -209,45 +225,54 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     };
   }, []);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (!touchStartRef.current) return;
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (!touchStartRef.current) return;
 
-    touchEndRef.current = {
-      x: e.changedTouches[0].clientX,
-      y: e.changedTouches[0].clientY,
-    };
+      touchEndRef.current = {
+        x: e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY,
+      };
 
-    const start = touchStartRef.current;
-    const end = touchEndRef.current;
-    const deltaX = start.x - end.x;
-    const deltaY = start.y - end.y;
-    const minSwipeDistance = 50;
+      const start = touchStartRef.current;
+      const end = touchEndRef.current;
+      const deltaX = start.x - end.x;
+      const deltaY = start.y - end.y;
+      const minSwipeDistance = 50;
 
-    // Determine swipe direction
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-      // Horizontal swipe
-      if (deltaX > 0) {
-        // Swipe left - next
-        handleNext();
-      } else {
-        // Swipe right - previous
-        handlePrev();
+      // Determine swipe direction
+      if (
+        Math.abs(deltaX) > Math.abs(deltaY) &&
+        Math.abs(deltaX) > minSwipeDistance
+      ) {
+        // Horizontal swipe
+        if (deltaX > 0) {
+          // Swipe left - next
+          handleNext();
+        } else {
+          // Swipe right - previous
+          handlePrev();
+        }
+      } else if (Math.abs(deltaY) > minSwipeDistance) {
+        // Vertical swipe
+        if (deltaY > 0) {
+          // Swipe up - close modal
+          onClose();
+        }
       }
-    } else if (Math.abs(deltaY) > minSwipeDistance) {
-      // Vertical swipe
-      if (deltaY > 0) {
-        // Swipe up - close modal
-        onClose();
-      }
-    }
-  }, [handleNext, handlePrev, onClose]);
+    },
+    [handleNext, handlePrev, onClose]
+  );
 
   // Handle background click to close
-  const handleBackgroundClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  }, [onClose]);
+  const handleBackgroundClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   if (!mounted || !isOpen) return null;
 
@@ -267,7 +292,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       aria-label="Vista de pantalla completa"
     >
       {/* Background overlay */}
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
 
       {/* Close button */}
       <button
@@ -342,7 +367,10 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       )}
 
       {/* Media container */}
-      <div className="relative z-10 w-full h-full p-0 md:p-4" onTouchStart={handleTouch}>
+      <div
+        className="relative z-10 w-full h-full p-0 md:p-4"
+        onTouchStart={handleTouch}
+      >
         <div
           className={`transition-all duration-500 ease-out relative w-full h-full ${
             isTransitioning ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
@@ -351,16 +379,18 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {/* Loading skeleton */}
           {loadingStates[currentMedia.id] && (
             <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div 
+              <div
                 key={`skeleton-${currentMedia.id}`}
                 className="rounded-lg transition-all duration-700 ease-out"
                 style={{
-                  width: skeletonAspectRatio >= 1 
-                    ? `min(calc(100vw - 8rem), 600px)` 
-                    : `${Math.min(600, (400 * skeletonAspectRatio))}px`,
-                  height: skeletonAspectRatio <= 1 
-                    ? `min(calc(100vh - 8rem), 600px)` 
-                    : `${Math.min(600, (400 / skeletonAspectRatio))}px`,
+                  width:
+                    skeletonAspectRatio >= 1
+                      ? `min(calc(100vw - 8rem), 600px)`
+                      : `${Math.min(600, 400 * skeletonAspectRatio)}px`,
+                  height:
+                    skeletonAspectRatio <= 1
+                      ? `min(calc(100vh - 8rem), 600px)`
+                      : `${Math.min(600, 400 / skeletonAspectRatio)}px`,
                   minWidth: '400px',
                   minHeight: '400px',
                   maxWidth: '600px',
@@ -368,7 +398,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 }}
               >
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
-                  <div className="text-muted-foreground text-sm">Cargando...</div>
+                  <div className="text-muted-foreground text-sm">
+                    Cargando...
+                  </div>
                 </div>
               </div>
             </div>
@@ -378,7 +410,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <video
               src={currentMedia.url}
               className={`w-full h-full object-contain transition-all duration-700 ease-out ${
-                loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                loadingStates[currentMedia.id]
+                  ? 'opacity-0 scale-95'
+                  : 'opacity-100 scale-100'
               }`}
               style={{
                 maxHeight: '100vh',
@@ -399,7 +433,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               src={currentMedia.url}
               alt={currentMedia.alt}
               className={`w-full h-full object-contain transition-all duration-700 ease-out ${
-                loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                loadingStates[currentMedia.id]
+                  ? 'opacity-0 scale-95'
+                  : 'opacity-100 scale-100'
               }`}
               style={{
                 maxHeight: '100vh',
@@ -415,7 +451,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
       {/* Item counter */}
       {media.length > 1 && (
-        <div 
+        <div
           className="absolute bottom-4 left-4 md:left-1/2 md:transform md:-translate-x-1/2 z-50 px-4 py-2 rounded-full bg-background/50 text-foreground text-sm"
           style={{ opacity: `${buttonOpacity}%` }}
           onTouchStart={handleTouch}
@@ -428,4 +464,4 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   );
 };
 
-export default FullscreenModal; 
+export default FullscreenModal;

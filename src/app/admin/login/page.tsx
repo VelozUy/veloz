@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
       }
 
       if (!auth) {
-        setError('Firebase Auth not available');
+        setError('Firebase Auth no está disponible');
         return;
       }
 

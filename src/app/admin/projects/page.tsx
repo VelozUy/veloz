@@ -20,6 +20,10 @@ import {
   Loader2,
   Star,
 } from 'lucide-react';
+import {
+  FullPageLoader,
+  CardSkeletonLoader,
+} from '@/components/admin/LoadingStates';
 import CrewMemberDisplay from '@/components/admin/CrewMemberDisplay';
 import { getFirestoreService } from '@/lib/firebase';
 import {
@@ -101,7 +105,7 @@ export default function ProjectsPage() {
         setLoading(true);
         const db = await getFirestoreService();
         if (!db) {
-          setError('Firestore not available');
+          setError('Firestore no está disponible');
           setLoading(false);
           return;
         }
@@ -167,7 +171,7 @@ export default function ProjectsPage() {
     try {
       const db = await getFirestoreService();
       if (!db) {
-        setError('Firestore not available');
+        setError('Firestore no está disponible');
         return;
       }
 
@@ -199,23 +203,23 @@ export default function ProjectsPage() {
 
   if (loading) {
     return (
-      <AdminLayout title="Projects">
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-primary" />
-        </div>
+      <AdminLayout title="Gestión de Proyectos">
+        <FullPageLoader message="Cargando proyectos..." />
       </AdminLayout>
     );
   }
 
   return (
-    <AdminLayout title="Projects">
+    <AdminLayout title="Gestión de Proyectos">
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Projects</h1>
+            <h1 className="text-xl font-bold text-foreground">
+              Gestión de Proyectos
+            </h1>
             <p className="text-muted-foreground text-sm">
-              Manage your photography and videography projects
+              Administra tus proyectos de fotografía y videografía
             </p>
           </div>
 
@@ -224,7 +228,7 @@ export default function ProjectsPage() {
             size="sm"
           >
             <Plus className="w-3 h-3 mr-1.5" />
-            New Project
+            Nuevo Proyecto
           </Button>
         </div>
 
@@ -233,7 +237,7 @@ export default function ProjectsPage() {
           <Card>
             <CardHeader className="pb-2 px-4 py-3">
               <CardTitle className="text-xs font-medium">
-                Total Projects
+                Total de Proyectos
               </CardTitle>
             </CardHeader>
             <CardContent className="px-4 pb-3">
@@ -242,7 +246,7 @@ export default function ProjectsPage() {
           </Card>
           <Card>
             <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">Published</CardTitle>
+              <CardTitle className="text-xs font-medium">Publicados</CardTitle>
             </CardHeader>
             <CardContent className="px-4 pb-3">
               <div className="text-xl font-bold">{stats.published}</div>
@@ -250,7 +254,7 @@ export default function ProjectsPage() {
           </Card>
           <Card>
             <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">Featured</CardTitle>
+              <CardTitle className="text-xs font-medium">Destacados</CardTitle>
             </CardHeader>
             <CardContent className="px-4 pb-3">
               <div className="text-xl font-bold">{stats.featured}</div>
@@ -258,7 +262,7 @@ export default function ProjectsPage() {
           </Card>
           <Card>
             <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">This Month</CardTitle>
+              <CardTitle className="text-xs font-medium">Este Mes</CardTitle>
             </CardHeader>
             <CardContent className="px-4 pb-3">
               <div className="text-xl font-bold">{stats.thisMonth}</div>
@@ -282,17 +286,17 @@ export default function ProjectsPage() {
         {/* Projects List */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Projects</CardTitle>
+            <CardTitle className="text-lg">Proyectos</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {projects.length === 0 ? (
               <div className="text-center py-8">
                 <FolderOpen className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
                 <h3 className="text-base font-medium text-foreground mb-1">
-                  No projects yet
+                  Aún no hay proyectos
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Create your first project to start organizing your work
+                  Crea tu primer proyecto para comenzar a organizar tu trabajo
                 </p>
               </div>
             ) : (

@@ -24,7 +24,7 @@ This file contains unprioritized ideas and future features that have been identi
 - [Client Portal & Public Access System](#-epic-client-portal--public-access-system--completed) ✅ **COMPLETED**
 - [Client Project Tracking System](#-epic-client-project-tracking-system--completed) ✅ **COMPLETED**
 - [Enhanced Admin Project Management](#-epic-enhanced-admin-project-management--high-priority) ⭐ **HIGH PRIORITY**
-- [Crew Portfolio System](#-epic-crew-portfolio-system--medium-priority) 🟧 **MEDIUM PRIORITY**
+- [Crew Portfolio System](#-epic-crew-portfolio-system--high-priority) ⭐ **HIGH PRIORITY**
 - [Remove Individual Project Pages](#-epic-remove-individual-project-pages--low-priority) 🟩 **LOW PRIORITY**
 
 ### **📱 Performance & UX Epics**
@@ -70,8 +70,8 @@ This file contains unprioritized ideas and future features that have been identi
 
 | Priority               | Count | Status                                                                                                 |
 | ---------------------- | ----- | ------------------------------------------------------------------------------------------------------ |
-| ⭐ **HIGH PRIORITY**   | 6     | Ready to start or in progress                                                                          |
-| 🟧 **MEDIUM PRIORITY** | 8     | Future development                                                                                     |
+| ⭐ **HIGH PRIORITY**   | 7     | Ready to start or in progress                                                                          |
+| 🟧 **MEDIUM PRIORITY** | 7     | Future development                                                                                     |
 | 🟩 **LOW PRIORITY**    | 2     | Backlog items                                                                                          |
 | ✅ **COMPLETED**       | 7     | Category system, banner nav, navigation fix, client tracking, client portal, gallery loading completed |
 
@@ -2760,7 +2760,7 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
-## 🧑‍🎨 **EPIC: Crew Portfolio System** ⭐ **MEDIUM PRIORITY**
+## 🧑‍🎨 **EPIC: Crew Portfolio System** ⭐ **HIGH PRIORITY**
 
 ### 🎯 Objective: Create individual profile pages for each crew member with photo, bio, category focus, and recent works
 

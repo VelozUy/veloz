@@ -207,7 +207,7 @@ export default function UnifiedProjectEditPage({
         } else {
           // Edit mode - load existing project
           if (!db) {
-            setError('Database not initialized');
+            setError('Base de datos no inicializada');
             return;
           }
           const projectDoc = await withFirestoreRecovery(() =>
@@ -218,7 +218,7 @@ export default function UnifiedProjectEditPage({
           );
 
           if (!projectDoc.exists()) {
-            setError('Project not found');
+            setError('Proyecto no encontrado');
             return;
           }
 
@@ -395,7 +395,7 @@ export default function UnifiedProjectEditPage({
 
     try {
       if (!db) {
-        setError('Database not initialized');
+        setError('Base de datos no inicializada');
         return;
       }
 
@@ -436,7 +436,7 @@ export default function UnifiedProjectEditPage({
       if (isCreateMode) {
         // Create new project with retry mechanism
         if (!db) {
-          setError('Database not initialized');
+          setError('Base de datos no inicializada');
           return;
         }
 
@@ -1378,11 +1378,14 @@ export default function UnifiedProjectEditPage({
               {/* Clients Tab */}
               <TabsContent value="clients" className="space-y-6">
                 <div className="space-y-4">
-                                      <div>
-                  </div>
+                  <div></div>
                   <ClientInviteManager
                     projectId={draftProject.id}
-                    projectTitle={draftProject.title.es || draftProject.title.en || draftProject.title.pt}
+                    projectTitle={
+                      draftProject.title.es ||
+                      draftProject.title.en ||
+                      draftProject.title.pt
+                    }
                   />
                 </div>
               </TabsContent>
@@ -1439,8 +1442,8 @@ export default function UnifiedProjectEditPage({
                   hasUnsavedChanges
                     ? 'bg-accent border-accent text-accent-foreground animate-pulse'
                     : showSavedStatus
-                    ? 'bg-primary border-primary text-primary-foreground'
-                    : 'hidden'
+                      ? 'bg-primary border-primary text-primary-foreground'
+                      : 'hidden'
                 }
               `}
           >

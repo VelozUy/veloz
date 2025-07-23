@@ -41,6 +41,10 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
+import {
+  FullPageLoader,
+  TableSkeletonLoader,
+} from '@/components/admin/LoadingStates';
 import { db } from '@/lib/firebase';
 import {
   collection,
@@ -256,12 +260,7 @@ export default function UsersPage() {
   if (loading) {
     return (
       <AdminLayout title="Gestión de Usuarios">
-        <div className="flex items-center justify-center py-8">
-          <div role="status" className="flex items-center space-x-2">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-            <span className="sr-only">Cargando...</span>
-          </div>
-        </div>
+        <FullPageLoader message="Cargando usuarios..." />
       </AdminLayout>
     );
   }
@@ -339,7 +338,7 @@ export default function UsersPage() {
                     {inviteLoading ? (
                       <>
                         <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
-                        Invitando...
+                        Enviando invitación...
                       </>
                     ) : (
                       <>

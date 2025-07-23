@@ -388,13 +388,7 @@ export default function GalleryGrid({
                     {/* Skeleton loader for better FCP */}
                     {!isLoaded && !hasError && !item.blurDataURL && (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div 
-                          className="w-8 h-8 rounded-full animate-spin"
-                          style={{
-                            border: '2px solid transparent',
-                            borderRight: '2px solid hsl(var(--muted-foreground))'
-                          }}
-                        />
+                        <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
                       </div>
                     )}
 

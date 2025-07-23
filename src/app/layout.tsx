@@ -150,6 +150,11 @@ export const metadata: Metadata = {
   },
   description:
     'Professional event photography and videography with our unique team-based production model. Experience excellence, warmth, and agility in every shot.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   keywords: [
     'event photography',
     'event videography',
