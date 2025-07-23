@@ -85,10 +85,16 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       {/* Loading placeholder */}
       {!isLoaded && !hasError && (
         <div
-          className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center"
+          className="absolute inset-0 flex items-center justify-center"
           data-testid="loading-placeholder"
         >
-          <div className="w-8 h-8 border-2 border-border rounded-full animate-spin" />
+          <div 
+            className="w-8 h-8 rounded-full animate-spin"
+            style={{
+              border: '2px solid transparent',
+              borderRight: '2px solid hsl(var(--muted-foreground))'
+            }}
+          />
         </div>
       )}
 

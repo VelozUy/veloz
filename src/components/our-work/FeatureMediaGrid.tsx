@@ -208,7 +208,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
                 {mediaItem.type === 'video' ? (
                   <div
-                    className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="aspect-ratio-container transition-transform duration-700 ease-out"
                     style={{
                       aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
                     }}
@@ -228,7 +228,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                   </div>
                 ) : (
                   <div
-                    className="aspect-ratio-container group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="aspect-ratio-container transition-transform duration-700 ease-out"
                     style={{
                       aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
                     }}

@@ -350,24 +350,10 @@ html {
 
 /* Gallery skeleton loader */
 .gallery-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--muted) 25%,
-    var(--accent) 50%,
-    var(--muted) 75%
-  );
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
+  /* Removed background color and animation - now invisible */
 }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
+/* Removed loading keyframes - no longer needed */
 
 /* Animation keyframes */
 @keyframes breathe {

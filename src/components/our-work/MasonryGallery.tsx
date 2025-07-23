@@ -102,7 +102,7 @@ export default function MasonryGallery({
           return (
             <div
               key={item.id}
-              className="group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:brightness-110"
+              className="group cursor-pointer transition-all duration-300 ease-out hover:brightness-110"
               style={{
                 width: '100%',
                 position: 'relative',
@@ -114,7 +114,7 @@ export default function MasonryGallery({
               {item.type === 'video' ? (
                 <video
                   src={item.url}
-                  className="absolute top-0 left-0 w-full h-full object-cover transition-all duration-300 ease-out group-hover:scale-105"
+                  className="absolute top-0 left-0 w-full h-full object-cover transition-all duration-300 ease-out"
                   muted
                   loop
                   playsInline
@@ -127,7 +127,7 @@ export default function MasonryGallery({
                   src={item.url}
                   alt={item.description?.es || projectTitle}
                   fill
-                  className="object-cover transition-all duration-300 ease-out group-hover:scale-105"
+                  className="object-cover transition-all duration-300 ease-out"
                   style={{ borderRadius: 0, background: 'black' }}
                   sizes="100vw"
                 />

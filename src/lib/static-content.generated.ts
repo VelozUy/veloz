@@ -1,5 +1,5 @@
 // Auto-generated at build time for static localized routes - do not edit manually
-// Generated on: 2025-07-23T01:21:43.171Z
+// Generated on: 2025-07-23T01:40:19.900Z
 
 export type Locale = 'es' | 'en' | 'pt';
 
@@ -442,8 +442,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
         "backgroundVideo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
         }
       },
       "about": {
@@ -568,296 +568,296 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "type": "image",
-              "mediaOffsetX": -8.021077283372364,
-              "y": 0,
-              "height": 6,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "id": "block-1751483402659",
-              "x": 0,
               "width": 7,
+              "y": 0,
+              "id": "block-1751483402659",
               "zIndex": 1,
-              "mediaOffsetY": 6.693989071038249
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "height": 6,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "x": 0,
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "zIndex": 3,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "width": 7,
-              "height": 5,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "zIndex": 3,
               "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
-              "y": 4,
               "id": "block-1751483411676",
+              "x": 0,
+              "type": "video",
+              "height": 5,
+              "y": 4,
               "mediaOffsetX": 10.675916515693812
             },
             {
-              "height": 9,
               "width": 5,
+              "zIndex": 4,
+              "id": "block-1751483421758",
+              "mediaOffsetY": 0.8896965322885589,
               "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "mediaOffsetY": 0.8896965322885589,
               "mediaOffsetX": -25,
               "type": "video",
               "x": 11,
-              "id": "block-1751483421758",
-              "zIndex": 4
+              "height": 9
             },
             {
-              "y": 0,
               "x": 7,
               "width": 4,
-              "id": "block-1751483440728",
-              "height": 9,
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "mediaOffsetY": 8.854005567584286,
-              "type": "image",
               "zIndex": 2,
-              "mediaOffsetX": -14.754098360655737
+              "id": "block-1751483440728",
+              "mediaOffsetX": -14.754098360655737,
+              "height": 9,
+              "type": "image",
+              "mediaOffsetY": 8.854005567584286,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO"
             },
             {
-              "font": "quicksand",
-              "height": 4,
-              "y": 2,
-              "type": "title",
-              "id": "title-1751488350641",
+              "title": "Ciclismo",
               "width": 16,
-              "zIndex": 5,
+              "id": "title-1751488350641",
               "x": 0,
               "color": "#ffffff",
-              "title": "Ciclismo"
+              "height": 4,
+              "type": "title",
+              "y": 2,
+              "zIndex": 5,
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "y": 0,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "id": "auto-0",
+              "width": 8,
+              "zIndex": 0,
               "type": "video",
               "x": 0,
-              "width": 8,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "height": 5
             },
             {
-              "height": 8,
-              "zIndex": 1,
+              "id": "auto-1",
               "x": 8,
-              "y": 0,
-              "width": 5,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 8,
+              "width": 5,
               "type": "image",
-              "id": "auto-1"
-            },
-            {
-              "id": "auto-2",
-              "zIndex": 2,
-              "type": "image",
-              "height": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
-              "x": 13,
+              "zIndex": 1,
               "y": 0
             },
             {
-              "y": 1,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0,
+              "id": "auto-2",
+              "x": 13,
               "type": "image",
-              "width": 5,
-              "zIndex": 3,
-              "id": "auto-3",
-              "x": 0,
-              "height": 8
+              "zIndex": 2,
+              "height": 3,
+              "width": 3
             },
             {
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
-              "type": "image",
+              "y": 1,
               "height": 8,
-              "y": 1,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
-              "id": "auto-4"
-            },
-            {
+              "width": 5,
               "type": "image",
-              "width": 6,
-              "x": 10,
-              "zIndex": 5,
-              "y": 3,
-              "height": 6,
-              "id": "auto-5",
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5"
-            },
-            {
-              "type": "image",
-              "height": 6,
-              "y": 3,
-              "id": "auto-6",
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "x": 0,
+              "id": "auto-3",
+              "zIndex": 3
+            },
+            {
+              "y": 1,
+              "zIndex": 4,
+              "x": 5,
+              "height": 8,
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
+              "id": "auto-4",
+              "width": 5,
+              "type": "image"
+            },
+            {
+              "x": 10,
+              "y": 3,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "id": "auto-5",
+              "type": "image",
+              "zIndex": 5,
+              "width": 6,
+              "height": 6
+            },
+            {
               "width": 6,
               "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "height": 6,
+              "type": "image",
+              "x": 0,
+              "id": "auto-6",
+              "y": 3,
               "zIndex": 6
             },
             {
+              "height": 8,
+              "width": 5,
+              "type": "image",
               "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "id": "auto-7",
-              "height": 8,
-              "x": 6,
-              "type": "image",
+              "zIndex": 7,
               "y": 1,
-              "width": 5,
-              "zIndex": 7
+              "x": 6
             },
             {
-              "y": 1,
-              "type": "video",
+              "width": 5,
               "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
               "zIndex": 8,
               "x": 11,
-              "width": 5,
-              "height": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "y": 1,
+              "type": "video",
+              "height": 8
             },
             {
+              "height": 5,
               "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
-              "id": "auto-9",
               "x": 0,
-              "zIndex": 9,
               "width": 8,
-              "height": 5,
-              "y": 4
+              "id": "auto-9",
+              "y": 4,
+              "zIndex": 9
             },
             {
-              "id": "auto-10",
-              "height": 8,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "type": "image",
+              "height": 8,
               "y": 1,
               "width": 5,
+              "type": "image",
               "x": 8,
+              "id": "auto-10",
               "zIndex": 10
             },
             {
               "height": 3,
-              "y": 6,
-              "width": 3,
-              "zIndex": 11,
-              "x": 13,
-              "id": "auto-11",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
-              "type": "image"
+              "zIndex": 11,
+              "id": "auto-11",
+              "y": 6,
+              "type": "image",
+              "width": 3,
+              "x": 13
             },
             {
-              "zIndex": 12,
-              "x": 0,
-              "height": 5,
               "type": "image",
               "id": "auto-12",
+              "zIndex": 12,
+              "height": 5,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "width": 8,
-              "y": 4
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "id": "auto-13",
-              "x": 8,
-              "height": 5,
               "y": 4,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "zIndex": 13
-            },
-            {
-              "height": 6,
-              "y": 3,
-              "id": "auto-14",
-              "type": "image",
-              "x": 0,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "width": 6,
-              "zIndex": 14
-            },
-            {
-              "width": 8,
-              "height": 5,
-              "zIndex": 15,
-              "id": "auto-15",
-              "type": "image",
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "x": 6,
-              "y": 4
-            },
-            {
-              "y": 7,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "zIndex": 16,
-              "x": 14,
-              "type": "image",
-              "width": 2,
-              "id": "auto-16"
-            },
-            {
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "x": 0,
-              "id": "auto-17",
-              "width": 5,
-              "zIndex": 17,
-              "height": 8,
-              "type": "image",
-              "y": 1
-            },
-            {
-              "zIndex": 18,
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "x": 5,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "id": "auto-18",
-              "height": 5
-            },
-            {
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19",
-              "x": 13,
-              "width": 3,
-              "height": 3,
-              "y": 6,
-              "type": "image",
-              "zIndex": 19
-            },
-            {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "y": 3,
-              "height": 6,
-              "zIndex": 20,
-              "width": 6,
-              "type": "image",
-              "id": "auto-20",
               "x": 0
             },
             {
-              "id": "auto-21",
-              "x": 6,
-              "width": 8,
               "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
               "height": 5,
-              "type": "image"
+              "width": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "type": "image",
+              "x": 8,
+              "zIndex": 13,
+              "id": "auto-13"
             },
             {
-              "height": 2,
-              "width": 2,
-              "zIndex": 22,
+              "width": 6,
+              "x": 0,
+              "y": 3,
+              "height": 6,
+              "id": "auto-14",
               "type": "image",
-              "y": 7,
-              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "zIndex": 14,
+              "mediaId": "O7IlGWX72PxKPNZfWc0M"
+            },
+            {
+              "height": 5,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "y": 4,
+              "id": "auto-15",
+              "type": "image",
+              "width": 8,
+              "x": 6
+            },
+            {
+              "width": 2,
+              "height": 2,
+              "zIndex": 16,
               "x": 14,
-              "id": "auto-22"
+              "y": 7,
+              "type": "image",
+              "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE"
+            },
+            {
+              "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "id": "auto-17",
+              "x": 0,
+              "height": 8,
+              "y": 1,
+              "zIndex": 17,
+              "width": 5
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "width": 8,
+              "x": 5,
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "zIndex": 18,
+              "y": 4
+            },
+            {
+              "width": 3,
+              "id": "auto-19",
+              "type": "image",
+              "height": 3,
+              "zIndex": 19,
+              "y": 6,
+              "x": 13,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU"
+            },
+            {
+              "zIndex": 20,
+              "x": 0,
+              "height": 6,
+              "type": "image",
+              "y": 3,
+              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20"
+            },
+            {
+              "zIndex": 21,
+              "width": 8,
+              "type": "image",
+              "height": 5,
+              "x": 6,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "y": 4,
+              "id": "auto-21"
+            },
+            {
+              "id": "auto-22",
+              "width": 2,
+              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "type": "image",
+              "height": 2,
+              "y": 7,
+              "zIndex": 22,
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -868,9 +868,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -885,9 +885,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "es": "",
                 "pt": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -902,9 +902,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -919,9 +919,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -936,9 +936,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -953,9 +953,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -970,8 +970,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -987,8 +987,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -1004,8 +1004,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -1021,9 +1021,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1038,8 +1038,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -1055,9 +1055,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1073,8 +1073,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1106,9 +1106,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1123,8 +1123,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1141,8 +1141,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1157,9 +1157,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1174,9 +1174,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1191,9 +1191,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1208,8 +1208,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -1271,63 +1271,63 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "height": 9,
+              "id": "block-1751903375015",
               "width": 10,
-              "y": 0,
               "type": "video",
-              "x": 0,
               "zIndex": 1,
-              "id": "block-1751903375015"
-            },
-            {
-              "mediaOffsetX": -21.111111111111107,
               "y": 0,
-              "width": 6,
-              "zIndex": 2,
-              "type": "video",
-              "mediaOffsetY": -18.148148148148145,
-              "height": 9,
-              "x": 10,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "id": "block-1751903380017"
+              "x": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9
             },
             {
-              "id": "title-1751903383860",
-              "y": 3,
-              "height": 5,
-              "title": "JONA l'oreal",
-              "type": "title",
-              "color": "#ffffff",
-              "width": 10,
-              "x": 3,
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "type": "video",
+              "y": 0,
+              "id": "block-1751903380017",
+              "width": 6,
+              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
+              "zIndex": 2,
+              "mediaOffsetX": -21.111111111111107,
+              "x": 10
+            },
+            {
+              "zIndex": 3,
               "font": "inter",
-              "zIndex": 3
+              "width": 10,
+              "id": "title-1751903383860",
+              "type": "title",
+              "height": 5,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "x": 3,
+              "y": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "mediaOffsetY": 0.3703703703703704,
-              "mediaOffsetX": 0,
-              "height": 9,
               "id": "auto-0",
-              "type": "video",
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
               "zIndex": 0,
               "width": 10,
-              "x": 0
+              "mediaOffsetX": 0,
+              "height": 9,
+              "mediaOffsetY": 0.3703703703703704,
+              "type": "video",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "x": 0,
+              "y": 0
             },
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaOffsetX": 0,
               "type": "video",
-              "x": 10,
+              "mediaOffsetX": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
               "width": 6,
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
+              "x": 10,
+              "id": "auto-1",
               "y": 0
             }
           ],
@@ -1339,9 +1339,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1394,8 +1394,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1411,8 +1411,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1461,9 +1461,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1478,9 +1478,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1495,8 +1495,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -1512,9 +1512,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1529,9 +1529,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1546,9 +1546,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1564,8 +1564,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1580,9 +1580,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1597,8 +1597,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -1614,8 +1614,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1648,9 +1648,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1702,9 +1702,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
               "description": {
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival.",
                 "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival."
+                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
+                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
               },
               "tags": [
                 "event photographer",
@@ -1725,9 +1725,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
+                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
                 "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting."
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -1748,9 +1748,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1777,200 +1777,200 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 16,
-              "x": 0,
-              "y": 0,
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 9,
-              "mediaOffsetY": 0,
-              "mediaOffsetX": 0,
               "id": "block-1752176726619",
-              "zIndex": 1
+              "mediaOffsetX": 0,
+              "height": 9,
+              "y": 0,
+              "x": 0,
+              "zIndex": 1,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "width": 16,
+              "mediaOffsetY": 0,
+              "type": "image"
             },
             {
-              "height": 5,
-              "type": "title",
-              "id": "title-1752176729459",
-              "title": "Casamiento de Paco y Margarita",
-              "font": "inter",
-              "width": 16,
-              "y": 2,
-              "x": 0,
               "zIndex": 2,
-              "color": "#000000"
+              "font": "inter",
+              "x": 0,
+              "type": "title",
+              "y": 2,
+              "width": 16,
+              "id": "title-1752176729459",
+              "height": 5,
+              "color": "#000000",
+              "title": "Casamiento de Paco y Margarita"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "y": 0,
-              "width": 8,
-              "zIndex": 0,
+              "height": 5,
               "x": 0,
+              "y": 0,
+              "mediaId": "48cCo1kJoAFeOM2iWWBI",
+              "zIndex": 0,
+              "width": 8,
               "id": "auto-0",
-              "height": 5
-            },
-            {
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "id": "auto-1",
-              "type": "image",
-              "height": 6,
-              "zIndex": 1,
-              "width": 6,
-              "y": 0,
-              "x": 8
-            },
-            {
-              "id": "auto-2",
-              "x": 14,
-              "height": 2,
-              "width": 2,
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "y": 0,
-              "zIndex": 2,
               "type": "image"
             },
             {
-              "height": 5,
-              "y": 4,
+              "y": 0,
+              "height": 6,
+              "zIndex": 1,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "type": "image",
+              "id": "auto-1",
+              "width": 6,
+              "x": 8
+            },
+            {
+              "x": 14,
+              "y": 0,
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "type": "image",
+              "zIndex": 2,
+              "id": "auto-2",
+              "height": 2,
+              "width": 2
+            },
+            {
+              "y": 4,
               "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
+              "height": 5,
               "zIndex": 3,
+              "type": "image",
               "id": "auto-3",
               "x": 0
             },
             {
               "y": 4,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
               "id": "auto-4",
+              "x": 8,
+              "height": 5,
+              "type": "image",
               "zIndex": 4,
-              "type": "image",
-              "width": 8,
-              "x": 8,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-5",
-              "zIndex": 5,
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "height": 5
-            },
-            {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
-              "type": "image",
-              "y": 4,
-              "zIndex": 6,
-              "x": 8,
-              "id": "auto-6",
               "width": 8
             },
             {
-              "x": 0,
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "zIndex": 7,
-              "id": "auto-7",
-              "y": 4,
-              "type": "image",
               "width": 8,
-              "height": 5
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "height": 5,
+              "x": 0,
+              "type": "image",
+              "y": 4,
+              "zIndex": 5,
+              "id": "auto-5"
+            },
+            {
+              "id": "auto-6",
+              "width": 8,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "height": 5,
+              "type": "image",
+              "zIndex": 6,
+              "x": 8,
+              "y": 4
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "y": 4,
+              "zIndex": 7,
+              "x": 0,
+              "width": 8,
+              "id": "auto-7"
             },
             {
               "id": "auto-8",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
               "width": 8,
+              "x": 8,
+              "type": "image",
               "zIndex": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D"
+              "y": 4
             },
             {
-              "id": "auto-9",
-              "x": 0,
-              "zIndex": 9,
               "width": 8,
+              "x": 0,
+              "id": "auto-9",
+              "zIndex": 9,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
               "height": 5,
               "type": "image",
               "y": 4
             },
             {
-              "id": "auto-10",
-              "width": 8,
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "zIndex": 10,
               "height": 5,
-              "x": 8,
+              "width": 8,
+              "id": "auto-10",
+              "y": 4,
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "type": "image",
-              "y": 4
+              "x": 8
             },
             {
-              "width": 8,
-              "zIndex": 11,
               "x": 0,
-              "y": 4,
-              "id": "auto-11",
+              "zIndex": 11,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "width": 8,
               "type": "image",
               "height": 5,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN"
+              "y": 4,
+              "id": "auto-11"
             },
             {
-              "width": 5,
-              "id": "auto-12",
-              "y": 1,
               "zIndex": 12,
-              "height": 8,
               "type": "image",
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "id": "auto-12",
               "x": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi"
+              "width": 5,
+              "height": 8
             },
             {
-              "type": "image",
-              "height": 3,
-              "id": "auto-13",
-              "width": 3,
-              "y": 6,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
               "zIndex": 13,
+              "id": "auto-13",
+              "y": 6,
+              "width": 3,
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "height": 3,
+              "type": "image",
               "x": 13
             },
             {
-              "width": 8,
               "height": 5,
-              "zIndex": 14,
-              "id": "auto-14",
-              "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "width": 8,
               "y": 4,
+              "id": "auto-14",
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "x": 0,
+              "zIndex": 14,
               "type": "image"
             },
             {
-              "y": 4,
               "id": "auto-15",
-              "type": "image",
               "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "zIndex": 15,
-              "height": 5,
               "x": 8,
-              "width": 8
+              "y": 4,
+              "height": 5,
+              "width": 8,
+              "type": "image"
             },
             {
-              "x": 0,
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "id": "auto-16",
               "type": "image",
+              "y": 1,
+              "x": 0,
+              "id": "auto-16",
               "height": 8,
-              "zIndex": 16,
               "width": 5,
-              "y": 1
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "zIndex": 16
             }
           ],
           "detailPageGridHeight": 47,
@@ -1982,8 +1982,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1999,8 +1999,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2032,8 +2032,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -2049,8 +2049,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -2066,9 +2066,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2083,9 +2083,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -2100,8 +2100,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -2118,8 +2118,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2134,9 +2134,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -2151,9 +2151,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2168,8 +2168,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -2185,8 +2185,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -2202,9 +2202,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -2236,9 +2236,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2297,7 +2297,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         }
       ]
     },
-    "lastUpdated": "2025-07-23T01:21:43.156Z",
+    "lastUpdated": "2025-07-23T01:40:19.892Z",
     "buildTime": true
   },
   "en": {
@@ -2562,8 +2562,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
         "backgroundVideo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
         }
       },
       "about": {
@@ -2688,296 +2688,296 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "type": "image",
-              "mediaOffsetX": -8.021077283372364,
-              "y": 0,
-              "height": 6,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "id": "block-1751483402659",
-              "x": 0,
               "width": 7,
+              "y": 0,
+              "id": "block-1751483402659",
               "zIndex": 1,
-              "mediaOffsetY": 6.693989071038249
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "height": 6,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "x": 0,
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "zIndex": 3,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "width": 7,
-              "height": 5,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "zIndex": 3,
               "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
-              "y": 4,
               "id": "block-1751483411676",
+              "x": 0,
+              "type": "video",
+              "height": 5,
+              "y": 4,
               "mediaOffsetX": 10.675916515693812
             },
             {
-              "height": 9,
               "width": 5,
+              "zIndex": 4,
+              "id": "block-1751483421758",
+              "mediaOffsetY": 0.8896965322885589,
               "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "mediaOffsetY": 0.8896965322885589,
               "mediaOffsetX": -25,
               "type": "video",
               "x": 11,
-              "id": "block-1751483421758",
-              "zIndex": 4
+              "height": 9
             },
             {
-              "y": 0,
               "x": 7,
               "width": 4,
-              "id": "block-1751483440728",
-              "height": 9,
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "mediaOffsetY": 8.854005567584286,
-              "type": "image",
               "zIndex": 2,
-              "mediaOffsetX": -14.754098360655737
+              "id": "block-1751483440728",
+              "mediaOffsetX": -14.754098360655737,
+              "height": 9,
+              "type": "image",
+              "mediaOffsetY": 8.854005567584286,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO"
             },
             {
-              "font": "quicksand",
-              "height": 4,
-              "y": 2,
-              "type": "title",
-              "id": "title-1751488350641",
+              "title": "Ciclismo",
               "width": 16,
-              "zIndex": 5,
+              "id": "title-1751488350641",
               "x": 0,
               "color": "#ffffff",
-              "title": "Ciclismo"
+              "height": 4,
+              "type": "title",
+              "y": 2,
+              "zIndex": 5,
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "y": 0,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "id": "auto-0",
+              "width": 8,
+              "zIndex": 0,
               "type": "video",
               "x": 0,
-              "width": 8,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "height": 5
             },
             {
-              "height": 8,
-              "zIndex": 1,
+              "id": "auto-1",
               "x": 8,
-              "y": 0,
-              "width": 5,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 8,
+              "width": 5,
               "type": "image",
-              "id": "auto-1"
-            },
-            {
-              "id": "auto-2",
-              "zIndex": 2,
-              "type": "image",
-              "height": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
-              "x": 13,
+              "zIndex": 1,
               "y": 0
             },
             {
-              "y": 1,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0,
+              "id": "auto-2",
+              "x": 13,
               "type": "image",
-              "width": 5,
-              "zIndex": 3,
-              "id": "auto-3",
-              "x": 0,
-              "height": 8
+              "zIndex": 2,
+              "height": 3,
+              "width": 3
             },
             {
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
-              "type": "image",
+              "y": 1,
               "height": 8,
-              "y": 1,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
-              "id": "auto-4"
-            },
-            {
+              "width": 5,
               "type": "image",
-              "width": 6,
-              "x": 10,
-              "zIndex": 5,
-              "y": 3,
-              "height": 6,
-              "id": "auto-5",
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5"
-            },
-            {
-              "type": "image",
-              "height": 6,
-              "y": 3,
-              "id": "auto-6",
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "x": 0,
+              "id": "auto-3",
+              "zIndex": 3
+            },
+            {
+              "y": 1,
+              "zIndex": 4,
+              "x": 5,
+              "height": 8,
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
+              "id": "auto-4",
+              "width": 5,
+              "type": "image"
+            },
+            {
+              "x": 10,
+              "y": 3,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "id": "auto-5",
+              "type": "image",
+              "zIndex": 5,
+              "width": 6,
+              "height": 6
+            },
+            {
               "width": 6,
               "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "height": 6,
+              "type": "image",
+              "x": 0,
+              "id": "auto-6",
+              "y": 3,
               "zIndex": 6
             },
             {
+              "height": 8,
+              "width": 5,
+              "type": "image",
               "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "id": "auto-7",
-              "height": 8,
-              "x": 6,
-              "type": "image",
+              "zIndex": 7,
               "y": 1,
-              "width": 5,
-              "zIndex": 7
+              "x": 6
             },
             {
-              "y": 1,
-              "type": "video",
+              "width": 5,
               "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
               "zIndex": 8,
               "x": 11,
-              "width": 5,
-              "height": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "y": 1,
+              "type": "video",
+              "height": 8
             },
             {
+              "height": 5,
               "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
-              "id": "auto-9",
               "x": 0,
-              "zIndex": 9,
               "width": 8,
-              "height": 5,
-              "y": 4
+              "id": "auto-9",
+              "y": 4,
+              "zIndex": 9
             },
             {
-              "id": "auto-10",
-              "height": 8,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "type": "image",
+              "height": 8,
               "y": 1,
               "width": 5,
+              "type": "image",
               "x": 8,
+              "id": "auto-10",
               "zIndex": 10
             },
             {
               "height": 3,
-              "y": 6,
-              "width": 3,
-              "zIndex": 11,
-              "x": 13,
-              "id": "auto-11",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
-              "type": "image"
+              "zIndex": 11,
+              "id": "auto-11",
+              "y": 6,
+              "type": "image",
+              "width": 3,
+              "x": 13
             },
             {
-              "zIndex": 12,
-              "x": 0,
-              "height": 5,
               "type": "image",
               "id": "auto-12",
+              "zIndex": 12,
+              "height": 5,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "width": 8,
-              "y": 4
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "id": "auto-13",
-              "x": 8,
-              "height": 5,
               "y": 4,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "zIndex": 13
-            },
-            {
-              "height": 6,
-              "y": 3,
-              "id": "auto-14",
-              "type": "image",
-              "x": 0,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "width": 6,
-              "zIndex": 14
-            },
-            {
-              "width": 8,
-              "height": 5,
-              "zIndex": 15,
-              "id": "auto-15",
-              "type": "image",
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "x": 6,
-              "y": 4
-            },
-            {
-              "y": 7,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "zIndex": 16,
-              "x": 14,
-              "type": "image",
-              "width": 2,
-              "id": "auto-16"
-            },
-            {
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "x": 0,
-              "id": "auto-17",
-              "width": 5,
-              "zIndex": 17,
-              "height": 8,
-              "type": "image",
-              "y": 1
-            },
-            {
-              "zIndex": 18,
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "x": 5,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "id": "auto-18",
-              "height": 5
-            },
-            {
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19",
-              "x": 13,
-              "width": 3,
-              "height": 3,
-              "y": 6,
-              "type": "image",
-              "zIndex": 19
-            },
-            {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "y": 3,
-              "height": 6,
-              "zIndex": 20,
-              "width": 6,
-              "type": "image",
-              "id": "auto-20",
               "x": 0
             },
             {
-              "id": "auto-21",
-              "x": 6,
-              "width": 8,
               "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
               "height": 5,
-              "type": "image"
+              "width": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "type": "image",
+              "x": 8,
+              "zIndex": 13,
+              "id": "auto-13"
             },
             {
-              "height": 2,
-              "width": 2,
-              "zIndex": 22,
+              "width": 6,
+              "x": 0,
+              "y": 3,
+              "height": 6,
+              "id": "auto-14",
               "type": "image",
-              "y": 7,
-              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "zIndex": 14,
+              "mediaId": "O7IlGWX72PxKPNZfWc0M"
+            },
+            {
+              "height": 5,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "y": 4,
+              "id": "auto-15",
+              "type": "image",
+              "width": 8,
+              "x": 6
+            },
+            {
+              "width": 2,
+              "height": 2,
+              "zIndex": 16,
               "x": 14,
-              "id": "auto-22"
+              "y": 7,
+              "type": "image",
+              "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE"
+            },
+            {
+              "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "id": "auto-17",
+              "x": 0,
+              "height": 8,
+              "y": 1,
+              "zIndex": 17,
+              "width": 5
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "width": 8,
+              "x": 5,
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "zIndex": 18,
+              "y": 4
+            },
+            {
+              "width": 3,
+              "id": "auto-19",
+              "type": "image",
+              "height": 3,
+              "zIndex": 19,
+              "y": 6,
+              "x": 13,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU"
+            },
+            {
+              "zIndex": 20,
+              "x": 0,
+              "height": 6,
+              "type": "image",
+              "y": 3,
+              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20"
+            },
+            {
+              "zIndex": 21,
+              "width": 8,
+              "type": "image",
+              "height": 5,
+              "x": 6,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "y": 4,
+              "id": "auto-21"
+            },
+            {
+              "id": "auto-22",
+              "width": 2,
+              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "type": "image",
+              "height": 2,
+              "y": 7,
+              "zIndex": 22,
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -2988,9 +2988,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3005,9 +3005,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "es": "",
                 "pt": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3022,9 +3022,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3039,9 +3039,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3056,9 +3056,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3073,9 +3073,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3090,8 +3090,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -3107,8 +3107,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -3124,8 +3124,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -3141,9 +3141,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3158,8 +3158,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -3175,9 +3175,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3193,8 +3193,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3226,9 +3226,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3243,8 +3243,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -3261,8 +3261,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3277,9 +3277,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3294,9 +3294,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3311,9 +3311,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -3328,8 +3328,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -3391,63 +3391,63 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "height": 9,
+              "id": "block-1751903375015",
               "width": 10,
-              "y": 0,
               "type": "video",
-              "x": 0,
               "zIndex": 1,
-              "id": "block-1751903375015"
-            },
-            {
-              "mediaOffsetX": -21.111111111111107,
               "y": 0,
-              "width": 6,
-              "zIndex": 2,
-              "type": "video",
-              "mediaOffsetY": -18.148148148148145,
-              "height": 9,
-              "x": 10,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "id": "block-1751903380017"
+              "x": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9
             },
             {
-              "id": "title-1751903383860",
-              "y": 3,
-              "height": 5,
-              "title": "JONA l'oreal",
-              "type": "title",
-              "color": "#ffffff",
-              "width": 10,
-              "x": 3,
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "type": "video",
+              "y": 0,
+              "id": "block-1751903380017",
+              "width": 6,
+              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
+              "zIndex": 2,
+              "mediaOffsetX": -21.111111111111107,
+              "x": 10
+            },
+            {
+              "zIndex": 3,
               "font": "inter",
-              "zIndex": 3
+              "width": 10,
+              "id": "title-1751903383860",
+              "type": "title",
+              "height": 5,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "x": 3,
+              "y": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "mediaOffsetY": 0.3703703703703704,
-              "mediaOffsetX": 0,
-              "height": 9,
               "id": "auto-0",
-              "type": "video",
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
               "zIndex": 0,
               "width": 10,
-              "x": 0
+              "mediaOffsetX": 0,
+              "height": 9,
+              "mediaOffsetY": 0.3703703703703704,
+              "type": "video",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "x": 0,
+              "y": 0
             },
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaOffsetX": 0,
               "type": "video",
-              "x": 10,
+              "mediaOffsetX": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
               "width": 6,
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
+              "x": 10,
+              "id": "auto-1",
               "y": 0
             }
           ],
@@ -3459,9 +3459,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3514,8 +3514,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3531,8 +3531,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3581,9 +3581,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3598,9 +3598,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3615,8 +3615,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -3632,9 +3632,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3649,9 +3649,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3666,9 +3666,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3684,8 +3684,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3700,9 +3700,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3717,8 +3717,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -3734,8 +3734,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -3768,9 +3768,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -3822,9 +3822,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
               "description": {
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival.",
                 "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival."
+                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
+                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
               },
               "tags": [
                 "event photographer",
@@ -3845,9 +3845,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
+                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
                 "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting."
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -3868,9 +3868,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -3897,200 +3897,200 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 16,
-              "x": 0,
-              "y": 0,
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 9,
-              "mediaOffsetY": 0,
-              "mediaOffsetX": 0,
               "id": "block-1752176726619",
-              "zIndex": 1
+              "mediaOffsetX": 0,
+              "height": 9,
+              "y": 0,
+              "x": 0,
+              "zIndex": 1,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "width": 16,
+              "mediaOffsetY": 0,
+              "type": "image"
             },
             {
-              "height": 5,
-              "type": "title",
-              "id": "title-1752176729459",
-              "title": "Casamiento de Paco y Margarita",
-              "font": "inter",
-              "width": 16,
-              "y": 2,
-              "x": 0,
               "zIndex": 2,
-              "color": "#000000"
+              "font": "inter",
+              "x": 0,
+              "type": "title",
+              "y": 2,
+              "width": 16,
+              "id": "title-1752176729459",
+              "height": 5,
+              "color": "#000000",
+              "title": "Casamiento de Paco y Margarita"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "y": 0,
-              "width": 8,
-              "zIndex": 0,
+              "height": 5,
               "x": 0,
+              "y": 0,
+              "mediaId": "48cCo1kJoAFeOM2iWWBI",
+              "zIndex": 0,
+              "width": 8,
               "id": "auto-0",
-              "height": 5
-            },
-            {
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "id": "auto-1",
-              "type": "image",
-              "height": 6,
-              "zIndex": 1,
-              "width": 6,
-              "y": 0,
-              "x": 8
-            },
-            {
-              "id": "auto-2",
-              "x": 14,
-              "height": 2,
-              "width": 2,
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "y": 0,
-              "zIndex": 2,
               "type": "image"
             },
             {
-              "height": 5,
-              "y": 4,
+              "y": 0,
+              "height": 6,
+              "zIndex": 1,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "type": "image",
+              "id": "auto-1",
+              "width": 6,
+              "x": 8
+            },
+            {
+              "x": 14,
+              "y": 0,
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "type": "image",
+              "zIndex": 2,
+              "id": "auto-2",
+              "height": 2,
+              "width": 2
+            },
+            {
+              "y": 4,
               "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
+              "height": 5,
               "zIndex": 3,
+              "type": "image",
               "id": "auto-3",
               "x": 0
             },
             {
               "y": 4,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
               "id": "auto-4",
+              "x": 8,
+              "height": 5,
+              "type": "image",
               "zIndex": 4,
-              "type": "image",
-              "width": 8,
-              "x": 8,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-5",
-              "zIndex": 5,
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "height": 5
-            },
-            {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
-              "type": "image",
-              "y": 4,
-              "zIndex": 6,
-              "x": 8,
-              "id": "auto-6",
               "width": 8
             },
             {
-              "x": 0,
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "zIndex": 7,
-              "id": "auto-7",
-              "y": 4,
-              "type": "image",
               "width": 8,
-              "height": 5
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "height": 5,
+              "x": 0,
+              "type": "image",
+              "y": 4,
+              "zIndex": 5,
+              "id": "auto-5"
+            },
+            {
+              "id": "auto-6",
+              "width": 8,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "height": 5,
+              "type": "image",
+              "zIndex": 6,
+              "x": 8,
+              "y": 4
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "y": 4,
+              "zIndex": 7,
+              "x": 0,
+              "width": 8,
+              "id": "auto-7"
             },
             {
               "id": "auto-8",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
               "width": 8,
+              "x": 8,
+              "type": "image",
               "zIndex": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D"
+              "y": 4
             },
             {
-              "id": "auto-9",
-              "x": 0,
-              "zIndex": 9,
               "width": 8,
+              "x": 0,
+              "id": "auto-9",
+              "zIndex": 9,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
               "height": 5,
               "type": "image",
               "y": 4
             },
             {
-              "id": "auto-10",
-              "width": 8,
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "zIndex": 10,
               "height": 5,
-              "x": 8,
+              "width": 8,
+              "id": "auto-10",
+              "y": 4,
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "type": "image",
-              "y": 4
+              "x": 8
             },
             {
-              "width": 8,
-              "zIndex": 11,
               "x": 0,
-              "y": 4,
-              "id": "auto-11",
+              "zIndex": 11,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "width": 8,
               "type": "image",
               "height": 5,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN"
+              "y": 4,
+              "id": "auto-11"
             },
             {
-              "width": 5,
-              "id": "auto-12",
-              "y": 1,
               "zIndex": 12,
-              "height": 8,
               "type": "image",
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "id": "auto-12",
               "x": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi"
+              "width": 5,
+              "height": 8
             },
             {
-              "type": "image",
-              "height": 3,
-              "id": "auto-13",
-              "width": 3,
-              "y": 6,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
               "zIndex": 13,
+              "id": "auto-13",
+              "y": 6,
+              "width": 3,
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "height": 3,
+              "type": "image",
               "x": 13
             },
             {
-              "width": 8,
               "height": 5,
-              "zIndex": 14,
-              "id": "auto-14",
-              "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "width": 8,
               "y": 4,
+              "id": "auto-14",
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "x": 0,
+              "zIndex": 14,
               "type": "image"
             },
             {
-              "y": 4,
               "id": "auto-15",
-              "type": "image",
               "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "zIndex": 15,
-              "height": 5,
               "x": 8,
-              "width": 8
+              "y": 4,
+              "height": 5,
+              "width": 8,
+              "type": "image"
             },
             {
-              "x": 0,
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "id": "auto-16",
               "type": "image",
+              "y": 1,
+              "x": 0,
+              "id": "auto-16",
               "height": 8,
-              "zIndex": 16,
               "width": 5,
-              "y": 1
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "zIndex": 16
             }
           ],
           "detailPageGridHeight": 47,
@@ -4102,8 +4102,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4119,8 +4119,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4152,8 +4152,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -4169,8 +4169,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -4186,9 +4186,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4203,9 +4203,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -4220,8 +4220,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -4238,8 +4238,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4254,9 +4254,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -4271,9 +4271,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4288,8 +4288,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -4305,8 +4305,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -4322,9 +4322,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -4356,9 +4356,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -4417,7 +4417,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         }
       ]
     },
-    "lastUpdated": "2025-07-23T01:21:43.160Z",
+    "lastUpdated": "2025-07-23T01:40:19.895Z",
     "buildTime": true
   },
   "pt": {
@@ -4682,8 +4682,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         },
         "backgroundVideo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc",
-          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4"
+          "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Fvideos%2F1750775497979-veloz-landing-loop-temp.mp4?alt=media&token=d7e2785b-5391-4421-8582-ce17b7bf1cbc"
         }
       },
       "about": {
@@ -4808,296 +4808,296 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "type": "image",
-              "mediaOffsetX": -8.021077283372364,
-              "y": 0,
-              "height": 6,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "id": "block-1751483402659",
-              "x": 0,
               "width": 7,
+              "y": 0,
+              "id": "block-1751483402659",
               "zIndex": 1,
-              "mediaOffsetY": 6.693989071038249
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "height": 6,
+              "type": "image",
+              "mediaOffsetY": 6.693989071038249,
+              "x": 0,
+              "mediaOffsetX": -8.021077283372364
             },
             {
-              "zIndex": 3,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "width": 7,
-              "height": 5,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "zIndex": 3,
               "mediaOffsetY": 6.639344262295083,
-              "type": "video",
-              "x": 0,
-              "y": 4,
               "id": "block-1751483411676",
+              "x": 0,
+              "type": "video",
+              "height": 5,
+              "y": 4,
               "mediaOffsetX": 10.675916515693812
             },
             {
-              "height": 9,
               "width": 5,
+              "zIndex": 4,
+              "id": "block-1751483421758",
+              "mediaOffsetY": 0.8896965322885589,
               "y": 0,
               "mediaId": "evM72UydC452ixuXMAVn",
-              "mediaOffsetY": 0.8896965322885589,
               "mediaOffsetX": -25,
               "type": "video",
               "x": 11,
-              "id": "block-1751483421758",
-              "zIndex": 4
+              "height": 9
             },
             {
-              "y": 0,
               "x": 7,
               "width": 4,
-              "id": "block-1751483440728",
-              "height": 9,
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
-              "mediaOffsetY": 8.854005567584286,
-              "type": "image",
               "zIndex": 2,
-              "mediaOffsetX": -14.754098360655737
+              "id": "block-1751483440728",
+              "mediaOffsetX": -14.754098360655737,
+              "height": 9,
+              "type": "image",
+              "mediaOffsetY": 8.854005567584286,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO"
             },
             {
-              "font": "quicksand",
-              "height": 4,
-              "y": 2,
-              "type": "title",
-              "id": "title-1751488350641",
+              "title": "Ciclismo",
               "width": 16,
-              "zIndex": 5,
+              "id": "title-1751488350641",
               "x": 0,
               "color": "#ffffff",
-              "title": "Ciclismo"
+              "height": 4,
+              "type": "title",
+              "y": 2,
+              "zIndex": 5,
+              "font": "quicksand"
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "y": 0,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "id": "auto-0",
+              "width": 8,
+              "zIndex": 0,
               "type": "video",
               "x": 0,
-              "width": 8,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "height": 5
             },
             {
-              "height": 8,
-              "zIndex": 1,
+              "id": "auto-1",
               "x": 8,
-              "y": 0,
-              "width": 5,
               "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 8,
+              "width": 5,
               "type": "image",
-              "id": "auto-1"
-            },
-            {
-              "id": "auto-2",
-              "zIndex": 2,
-              "type": "image",
-              "height": 3,
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
-              "x": 13,
+              "zIndex": 1,
               "y": 0
             },
             {
-              "y": 1,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0,
+              "id": "auto-2",
+              "x": 13,
               "type": "image",
-              "width": 5,
-              "zIndex": 3,
-              "id": "auto-3",
-              "x": 0,
-              "height": 8
+              "zIndex": 2,
+              "height": 3,
+              "width": 3
             },
             {
-              "zIndex": 4,
-              "width": 5,
-              "x": 5,
-              "type": "image",
+              "y": 1,
               "height": 8,
-              "y": 1,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
-              "id": "auto-4"
-            },
-            {
+              "width": 5,
               "type": "image",
-              "width": 6,
-              "x": 10,
-              "zIndex": 5,
-              "y": 3,
-              "height": 6,
-              "id": "auto-5",
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5"
-            },
-            {
-              "type": "image",
-              "height": 6,
-              "y": 3,
-              "id": "auto-6",
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "x": 0,
+              "id": "auto-3",
+              "zIndex": 3
+            },
+            {
+              "y": 1,
+              "zIndex": 4,
+              "x": 5,
+              "height": 8,
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
+              "id": "auto-4",
+              "width": 5,
+              "type": "image"
+            },
+            {
+              "x": 10,
+              "y": 3,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "id": "auto-5",
+              "type": "image",
+              "zIndex": 5,
+              "width": 6,
+              "height": 6
+            },
+            {
               "width": 6,
               "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "height": 6,
+              "type": "image",
+              "x": 0,
+              "id": "auto-6",
+              "y": 3,
               "zIndex": 6
             },
             {
+              "height": 8,
+              "width": 5,
+              "type": "image",
               "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "id": "auto-7",
-              "height": 8,
-              "x": 6,
-              "type": "image",
+              "zIndex": 7,
               "y": 1,
-              "width": 5,
-              "zIndex": 7
+              "x": 6
             },
             {
-              "y": 1,
-              "type": "video",
+              "width": 5,
               "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
               "zIndex": 8,
               "x": 11,
-              "width": 5,
-              "height": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "y": 1,
+              "type": "video",
+              "height": 8
             },
             {
+              "height": 5,
               "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
-              "id": "auto-9",
               "x": 0,
-              "zIndex": 9,
               "width": 8,
-              "height": 5,
-              "y": 4
+              "id": "auto-9",
+              "y": 4,
+              "zIndex": 9
             },
             {
-              "id": "auto-10",
-              "height": 8,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
-              "type": "image",
+              "height": 8,
               "y": 1,
               "width": 5,
+              "type": "image",
               "x": 8,
+              "id": "auto-10",
               "zIndex": 10
             },
             {
               "height": 3,
-              "y": 6,
-              "width": 3,
-              "zIndex": 11,
-              "x": 13,
-              "id": "auto-11",
               "mediaId": "FSOslPFFgsgYZfvgbI64",
-              "type": "image"
+              "zIndex": 11,
+              "id": "auto-11",
+              "y": 6,
+              "type": "image",
+              "width": 3,
+              "x": 13
             },
             {
-              "zIndex": 12,
-              "x": 0,
-              "height": 5,
               "type": "image",
               "id": "auto-12",
+              "zIndex": 12,
+              "height": 5,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "width": 8,
-              "y": 4
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "id": "auto-13",
-              "x": 8,
-              "height": 5,
               "y": 4,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "zIndex": 13
-            },
-            {
-              "height": 6,
-              "y": 3,
-              "id": "auto-14",
-              "type": "image",
-              "x": 0,
-              "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "width": 6,
-              "zIndex": 14
-            },
-            {
-              "width": 8,
-              "height": 5,
-              "zIndex": 15,
-              "id": "auto-15",
-              "type": "image",
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
-              "x": 6,
-              "y": 4
-            },
-            {
-              "y": 7,
-              "height": 2,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
-              "zIndex": 16,
-              "x": 14,
-              "type": "image",
-              "width": 2,
-              "id": "auto-16"
-            },
-            {
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "x": 0,
-              "id": "auto-17",
-              "width": 5,
-              "zIndex": 17,
-              "height": 8,
-              "type": "image",
-              "y": 1
-            },
-            {
-              "zIndex": 18,
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "x": 5,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "id": "auto-18",
-              "height": 5
-            },
-            {
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19",
-              "x": 13,
-              "width": 3,
-              "height": 3,
-              "y": 6,
-              "type": "image",
-              "zIndex": 19
-            },
-            {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "y": 3,
-              "height": 6,
-              "zIndex": 20,
-              "width": 6,
-              "type": "image",
-              "id": "auto-20",
               "x": 0
             },
             {
-              "id": "auto-21",
-              "x": 6,
-              "width": 8,
               "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
               "height": 5,
-              "type": "image"
+              "width": 8,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
+              "type": "image",
+              "x": 8,
+              "zIndex": 13,
+              "id": "auto-13"
             },
             {
-              "height": 2,
-              "width": 2,
-              "zIndex": 22,
+              "width": 6,
+              "x": 0,
+              "y": 3,
+              "height": 6,
+              "id": "auto-14",
               "type": "image",
-              "y": 7,
-              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "zIndex": 14,
+              "mediaId": "O7IlGWX72PxKPNZfWc0M"
+            },
+            {
+              "height": 5,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
+              "zIndex": 15,
+              "y": 4,
+              "id": "auto-15",
+              "type": "image",
+              "width": 8,
+              "x": 6
+            },
+            {
+              "width": 2,
+              "height": 2,
+              "zIndex": 16,
               "x": 14,
-              "id": "auto-22"
+              "y": 7,
+              "type": "image",
+              "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE"
+            },
+            {
+              "type": "image",
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "id": "auto-17",
+              "x": 0,
+              "height": 8,
+              "y": 1,
+              "zIndex": 17,
+              "width": 5
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "width": 8,
+              "x": 5,
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "zIndex": 18,
+              "y": 4
+            },
+            {
+              "width": 3,
+              "id": "auto-19",
+              "type": "image",
+              "height": 3,
+              "zIndex": 19,
+              "y": 6,
+              "x": 13,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU"
+            },
+            {
+              "zIndex": 20,
+              "x": 0,
+              "height": 6,
+              "type": "image",
+              "y": 3,
+              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20"
+            },
+            {
+              "zIndex": 21,
+              "width": 8,
+              "type": "image",
+              "height": 5,
+              "x": 6,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb",
+              "y": 4,
+              "id": "auto-21"
+            },
+            {
+              "id": "auto-22",
+              "width": 2,
+              "mediaId": "ZXo05IpIGfgXYvanLgbC",
+              "type": "image",
+              "height": 2,
+              "y": 7,
+              "zIndex": 22,
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -5108,9 +5108,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5125,9 +5125,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "es": "",
                 "pt": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5142,9 +5142,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5159,9 +5159,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5176,9 +5176,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062776683-_MG_2772-min.jpg?alt=media&token=968109ff-899c-4427-9fda-1398dfe4811a",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5193,9 +5193,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062783593-_MG_2773-min.jpg?alt=media&token=1c8b9039-8d2b-4fd5-a301-788ec978c223",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5210,8 +5210,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5227,8 +5227,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -5244,8 +5244,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -5261,9 +5261,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5278,8 +5278,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -5295,9 +5295,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5313,8 +5313,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5346,9 +5346,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5363,8 +5363,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5381,8 +5381,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5397,9 +5397,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5414,9 +5414,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5431,9 +5431,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -5448,8 +5448,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -5511,63 +5511,63 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "height": 9,
+              "id": "block-1751903375015",
               "width": 10,
-              "y": 0,
               "type": "video",
-              "x": 0,
               "zIndex": 1,
-              "id": "block-1751903375015"
-            },
-            {
-              "mediaOffsetX": -21.111111111111107,
               "y": 0,
-              "width": 6,
-              "zIndex": 2,
-              "type": "video",
-              "mediaOffsetY": -18.148148148148145,
-              "height": 9,
-              "x": 10,
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "id": "block-1751903380017"
+              "x": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9
             },
             {
-              "id": "title-1751903383860",
-              "y": 3,
-              "height": 5,
-              "title": "JONA l'oreal",
-              "type": "title",
-              "color": "#ffffff",
-              "width": 10,
-              "x": 3,
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "type": "video",
+              "y": 0,
+              "id": "block-1751903380017",
+              "width": 6,
+              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
+              "zIndex": 2,
+              "mediaOffsetX": -21.111111111111107,
+              "x": 10
+            },
+            {
+              "zIndex": 3,
               "font": "inter",
-              "zIndex": 3
+              "width": 10,
+              "id": "title-1751903383860",
+              "type": "title",
+              "height": 5,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "x": 3,
+              "y": 3
             }
           ],
           "detailPageBlocks": [
             {
-              "mediaOffsetY": 0.3703703703703704,
-              "mediaOffsetX": 0,
-              "height": 9,
               "id": "auto-0",
-              "type": "video",
-              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "y": 0,
               "zIndex": 0,
               "width": 10,
-              "x": 0
+              "mediaOffsetX": 0,
+              "height": 9,
+              "mediaOffsetY": 0.3703703703703704,
+              "type": "video",
+              "mediaId": "2u8GsCVp4JdWJB4HYMxd",
+              "x": 0,
+              "y": 0
             },
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaOffsetX": 0,
               "type": "video",
-              "x": 10,
+              "mediaOffsetX": 0,
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "height": 9,
               "width": 6,
+              "mediaOffsetY": -3.888888888888893,
+              "zIndex": 1,
+              "x": 10,
+              "id": "auto-1",
               "y": 0
             }
           ],
@@ -5579,9 +5579,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -5634,8 +5634,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5651,8 +5651,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5701,9 +5701,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058364585-_MG_1885.jpg?alt=media&token=9b8348ab-b69c-4a01-9dc2-4d7ca6e45b19",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5718,9 +5718,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5735,8 +5735,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058397898-_MG_1894.jpg?alt=media&token=e1c2bf59-49fb-45dd-8dda-e8201efd15a6",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -5752,9 +5752,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058407941-_MG_1897.jpg?alt=media&token=01ad1a8f-af83-4f82-b003-fc0241f3f732",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5769,9 +5769,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5786,9 +5786,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5804,8 +5804,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058436398-_MG_1905.jpg?alt=media&token=e38f3330-be35-44e8-b48f-f64fd374aa24",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5820,9 +5820,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5837,8 +5837,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058455591-_MG_1913.jpg?alt=media&token=e0d3a4ca-f42f-4b7f-9d67-d328e856f6e8",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -5854,8 +5854,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -5888,9 +5888,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -5942,9 +5942,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057581459-premium_photo-1664302640663-811dab17b471.jpg?alt=media&token=f314afcd-28df-4ba5-897b-5e546a5bb335",
               "description": {
-                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival.",
                 "es": "Contrata un fotógrafo de eventos en Montevideo para capturar la energía de tu concierto o festival.",
-                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival."
+                "pt": "Contrate um fotógrafo de eventos em Montevidéu para capturar a energia do seu show ou festival.",
+                "en": "Hire an event photographer in Montevideo to capture the energy of your concert or festival."
               },
               "tags": [
                 "event photographer",
@@ -5965,9 +5965,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
+                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
                 "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "en": "Event photographer in Montevideo capturing a live music performance with professional lighting."
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
               },
               "tags": [
                 "event photographer",
@@ -5988,9 +5988,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057586776-premium_photo-1682265676364-5838a427dee2.jpg?alt=media&token=9d8e0a03-18f6-4543-81fe-12092cd75180",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -6017,200 +6017,200 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
           "status": "published",
           "mediaBlocks": [
             {
-              "width": 16,
-              "x": 0,
-              "y": 0,
-              "type": "image",
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 9,
-              "mediaOffsetY": 0,
-              "mediaOffsetX": 0,
               "id": "block-1752176726619",
-              "zIndex": 1
+              "mediaOffsetX": 0,
+              "height": 9,
+              "y": 0,
+              "x": 0,
+              "zIndex": 1,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "width": 16,
+              "mediaOffsetY": 0,
+              "type": "image"
             },
             {
-              "height": 5,
-              "type": "title",
-              "id": "title-1752176729459",
-              "title": "Casamiento de Paco y Margarita",
-              "font": "inter",
-              "width": 16,
-              "y": 2,
-              "x": 0,
               "zIndex": 2,
-              "color": "#000000"
+              "font": "inter",
+              "x": 0,
+              "type": "title",
+              "y": 2,
+              "width": 16,
+              "id": "title-1752176729459",
+              "height": 5,
+              "color": "#000000",
+              "title": "Casamiento de Paco y Margarita"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "y": 0,
-              "width": 8,
-              "zIndex": 0,
+              "height": 5,
               "x": 0,
+              "y": 0,
+              "mediaId": "48cCo1kJoAFeOM2iWWBI",
+              "zIndex": 0,
+              "width": 8,
               "id": "auto-0",
-              "height": 5
-            },
-            {
-              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
-              "id": "auto-1",
-              "type": "image",
-              "height": 6,
-              "zIndex": 1,
-              "width": 6,
-              "y": 0,
-              "x": 8
-            },
-            {
-              "id": "auto-2",
-              "x": 14,
-              "height": 2,
-              "width": 2,
-              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "y": 0,
-              "zIndex": 2,
               "type": "image"
             },
             {
-              "height": 5,
-              "y": 4,
+              "y": 0,
+              "height": 6,
+              "zIndex": 1,
+              "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "type": "image",
+              "id": "auto-1",
+              "width": 6,
+              "x": 8
+            },
+            {
+              "x": 14,
+              "y": 0,
+              "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+              "type": "image",
+              "zIndex": 2,
+              "id": "auto-2",
+              "height": 2,
+              "width": 2
+            },
+            {
+              "y": 4,
               "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
+              "height": 5,
               "zIndex": 3,
+              "type": "image",
               "id": "auto-3",
               "x": 0
             },
             {
               "y": 4,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
               "id": "auto-4",
+              "x": 8,
+              "height": 5,
+              "type": "image",
               "zIndex": 4,
-              "type": "image",
-              "width": 8,
-              "x": 8,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
-            },
-            {
-              "width": 8,
-              "type": "image",
-              "y": 4,
-              "id": "auto-5",
-              "zIndex": 5,
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "height": 5
-            },
-            {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "height": 5,
-              "type": "image",
-              "y": 4,
-              "zIndex": 6,
-              "x": 8,
-              "id": "auto-6",
               "width": 8
             },
             {
-              "x": 0,
-              "mediaId": "f9qFLMkKrowonoJvyLaU",
-              "zIndex": 7,
-              "id": "auto-7",
-              "y": 4,
-              "type": "image",
               "width": 8,
-              "height": 5
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "height": 5,
+              "x": 0,
+              "type": "image",
+              "y": 4,
+              "zIndex": 5,
+              "id": "auto-5"
+            },
+            {
+              "id": "auto-6",
+              "width": 8,
+              "mediaId": "edrQjkSUX2pOlyXleUXb",
+              "height": 5,
+              "type": "image",
+              "zIndex": 6,
+              "x": 8,
+              "y": 4
+            },
+            {
+              "type": "image",
+              "height": 5,
+              "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "y": 4,
+              "zIndex": 7,
+              "x": 0,
+              "width": 8,
+              "id": "auto-7"
             },
             {
               "id": "auto-8",
+              "mediaId": "fq7VpJxz2h7X01o3Bv8D",
               "width": 8,
+              "x": 8,
+              "type": "image",
               "zIndex": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "x": 8,
-              "mediaId": "fq7VpJxz2h7X01o3Bv8D"
+              "y": 4
             },
             {
-              "id": "auto-9",
-              "x": 0,
-              "zIndex": 9,
               "width": 8,
+              "x": 0,
+              "id": "auto-9",
+              "zIndex": 9,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
               "height": 5,
               "type": "image",
               "y": 4
             },
             {
-              "id": "auto-10",
-              "width": 8,
-              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "zIndex": 10,
               "height": 5,
-              "x": 8,
+              "width": 8,
+              "id": "auto-10",
+              "y": 4,
+              "mediaId": "LMPz9UuWrFXArz4Q5HJN",
               "type": "image",
-              "y": 4
+              "x": 8
             },
             {
-              "width": 8,
-              "zIndex": 11,
               "x": 0,
-              "y": 4,
-              "id": "auto-11",
+              "zIndex": 11,
+              "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "width": 8,
               "type": "image",
               "height": 5,
-              "mediaId": "lP8MCk0xqg0uSkCnvpaN"
+              "y": 4,
+              "id": "auto-11"
             },
             {
-              "width": 5,
-              "id": "auto-12",
-              "y": 1,
               "zIndex": 12,
-              "height": 8,
               "type": "image",
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "id": "auto-12",
               "x": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi"
+              "width": 5,
+              "height": 8
             },
             {
-              "type": "image",
-              "height": 3,
-              "id": "auto-13",
-              "width": 3,
-              "y": 6,
-              "mediaId": "OodOx8NGStI3PD1KIO8E",
               "zIndex": 13,
+              "id": "auto-13",
+              "y": 6,
+              "width": 3,
+              "mediaId": "OodOx8NGStI3PD1KIO8E",
+              "height": 3,
+              "type": "image",
               "x": 13
             },
             {
-              "width": 8,
               "height": 5,
-              "zIndex": 14,
-              "id": "auto-14",
-              "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "width": 8,
               "y": 4,
+              "id": "auto-14",
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+              "x": 0,
+              "zIndex": 14,
               "type": "image"
             },
             {
-              "y": 4,
               "id": "auto-15",
-              "type": "image",
               "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "zIndex": 15,
-              "height": 5,
               "x": 8,
-              "width": 8
+              "y": 4,
+              "height": 5,
+              "width": 8,
+              "type": "image"
             },
             {
-              "x": 0,
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "id": "auto-16",
               "type": "image",
+              "y": 1,
+              "x": 0,
+              "id": "auto-16",
               "height": 8,
-              "zIndex": 16,
               "width": 5,
-              "y": 1
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
+              "zIndex": 16
             }
           ],
           "detailPageGridHeight": 47,
@@ -6222,8 +6222,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6239,8 +6239,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6272,8 +6272,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -6289,8 +6289,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -6306,9 +6306,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057372211-bride-5317728.jpg?alt=media&token=5866c5dc-7232-4952-82e9-fc93980d6e40",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6323,9 +6323,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -6340,8 +6340,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -6358,8 +6358,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
                 "en": "",
-                "es": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6374,9 +6374,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -6391,9 +6391,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6408,8 +6408,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -6425,8 +6425,8 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -6442,9 +6442,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -6476,9 +6476,9 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057447527-wedding-1836315.jpg?alt=media&token=6efc3661-27d1-4720-aa31-42a60f460f8e",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -6537,7 +6537,7 @@ export const STATIC_CONTENT: Record<Locale, LocalizedContent> = {
         }
       ]
     },
-    "lastUpdated": "2025-07-23T01:21:43.164Z",
+    "lastUpdated": "2025-07-23T01:40:19.896Z",
     "buildTime": true
   }
 };

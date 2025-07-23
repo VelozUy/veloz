@@ -115,7 +115,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
                 mediaItem.gridSpan,
                 mediaItem.rowSpan,
                 'transition-all duration-700 ease-out',
-                'hover:scale-[1.02] hover:brightness-110'
+                'hover:brightness-110'
               )}
               style={{
                 aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
@@ -129,8 +129,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
                   src={mediaItem.url}
                   className={cn(
                     'absolute inset-0 w-full h-full object-cover',
-                    'transition-all duration-700 ease-out',
-                    'group-hover:scale-105'
+                    'transition-all duration-700 ease-out'
                   )}
                   muted
                   loop
@@ -145,8 +144,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
                   alt={mediaItem.alt}
                   fill
                   className={cn(
-                    'object-cover transition-all duration-700 ease-out',
-                    'group-hover:scale-105'
+                    'object-cover transition-all duration-700 ease-out'
                   )}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={index < 4}

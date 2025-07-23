@@ -61,15 +61,10 @@ export function preventCLS(): void {
     
     /* Skeleton loaders to maintain layout */
     .skeleton-loader {
-      background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--border)) 50%, hsl(var(--muted)) 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
+      /* Removed background color and animation - now invisible */
     }
     
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+    /* Removed loading keyframes - no longer needed */
     
     /* Prevent font loading layout shifts */
     .font-loading {
@@ -111,15 +106,10 @@ export function optimizeFCP(): void {
     .gallery-skeleton {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--border)) 50%, hsl(var(--muted)) 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
+      /* Removed background color and animation - now invisible */
     }
     
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+    /* Removed loading keyframes - no longer needed */
   `;
 
   const style = document.createElement('style');

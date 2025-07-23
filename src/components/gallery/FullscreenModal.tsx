@@ -40,6 +40,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [mediaAspectRatios, setMediaAspectRatios] = useState<Record<string, number>>({});
   const [skeletonAspectRatio, setSkeletonAspectRatio] = useState(1); // Start with square
+  const [buttonOpacity, setButtonOpacity] = useState(100); // Button opacity state
+  const [lastTouchTime, setLastTouchTime] = useState(0); // Track last touch time
 
   // Handle mounting for portal
   useEffect(() => {
@@ -81,6 +83,35 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       ...prev,
       [mediaId]: false,
     }));
+  }, []);
+
+  // Handle button fade behavior
+  useEffect(() => {
+    if (isOpen) {
+      // Show buttons at 100% opacity initially
+      setButtonOpacity(100);
+      
+      // After 1 second, fade to 20% opacity
+      const fadeTimer = setTimeout(() => {
+        setButtonOpacity(20);
+      }, 1000);
+
+      return () => clearTimeout(fadeTimer);
+    }
+  }, [isOpen, currentIndex]);
+
+  // Handle touch to show buttons
+  const handleTouch = useCallback(() => {
+    const now = Date.now();
+    setLastTouchTime(now);
+    setButtonOpacity(100);
+    
+    // Fade back to 20% after 2 seconds of no touch
+    setTimeout(() => {
+      if (Date.now() - now >= 2000) {
+        setButtonOpacity(20);
+      }
+    }, 2000);
   }, []);
 
   // Calculate and store aspect ratio for current media
@@ -241,7 +272,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-foreground/50"
+        onTouchStart={handleTouch}
+        className="absolute top-4 right-4 z-50 p-3 md:p-2 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50"
+        style={{ opacity: `${buttonOpacity}%` }}
         aria-label="Cerrar vista de pantalla completa"
       >
         <svg
@@ -264,7 +297,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            onTouchStart={handleTouch}
+            className="absolute left-4 bottom-8 transform -translate-y-1/2 z-50 p-4 md:p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            style={{ opacity: `${buttonOpacity}%` }}
             aria-label="Anterior"
           >
             <svg
@@ -284,7 +319,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out hover:scale-110 focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            onTouchStart={handleTouch}
+            className="absolute right-4 bottom-8 transform -translate-y-1/2 z-50 p-4 md:p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            style={{ opacity: `${buttonOpacity}%` }}
             aria-label="Siguiente"
           >
             <svg
@@ -305,9 +342,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       )}
 
       {/* Media container */}
-      <div className="relative z-10 max-w-full max-h-full p-4">
+      <div className="relative z-10 w-full h-full p-0 md:p-4" onTouchStart={handleTouch}>
         <div
-          className={`transition-all duration-500 ease-out relative ${
+          className={`transition-all duration-500 ease-out relative w-full h-full ${
             isTransitioning ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
           }`}
         >
@@ -316,7 +353,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <div 
                 key={`skeleton-${currentMedia.id}`}
-                className="bg-gradient-to-br from-background/10 to-background/30 backdrop-blur-sm rounded-lg border border-border transition-all duration-700 ease-out"
+                className="rounded-lg transition-all duration-700 ease-out"
                 style={{
                   width: skeletonAspectRatio >= 1 
                     ? `min(calc(100vw - 8rem), 600px)` 
@@ -331,7 +368,6 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 }}
               >
                 <div className="flex flex-col items-center justify-center h-full space-y-6">
-                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-muted-foreground"></div>
                   <div className="text-muted-foreground text-sm">Cargando...</div>
                 </div>
               </div>
@@ -341,12 +377,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
-              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out ${
+              className={`w-full h-full object-contain transition-all duration-700 ease-out ${
                 loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
               style={{
-                maxHeight: 'calc(100vh - 8rem)',
-                maxWidth: 'calc(100vw - 8rem)',
+                maxHeight: '100vh',
+                maxWidth: '100vw',
               }}
               controls
               autoPlay
@@ -362,12 +398,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             <img
               src={currentMedia.url}
               alt={currentMedia.alt}
-              className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out ${
+              className={`w-full h-full object-contain transition-all duration-700 ease-out ${
                 loadingStates[currentMedia.id] ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
               }`}
               style={{
-                maxHeight: 'calc(100vh - 8rem)',
-                maxWidth: 'calc(100vw - 8rem)',
+                maxHeight: '100vh',
+                maxWidth: '100vw',
               }}
               data-testid={`image-${currentMedia.id}`}
               onLoad={() => handleMediaLoad(currentMedia.id)}
@@ -379,7 +415,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
       {/* Item counter */}
       {media.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 rounded-full bg-background/50 text-foreground text-sm">
+        <div 
+          className="absolute bottom-4 left-4 md:left-1/2 md:transform md:-translate-x-1/2 z-50 px-4 py-2 rounded-full bg-background/50 text-foreground text-sm"
+          style={{ opacity: `${buttonOpacity}%` }}
+          onTouchStart={handleTouch}
+        >
           {currentIndex + 1} de {media.length}
         </div>
       )}

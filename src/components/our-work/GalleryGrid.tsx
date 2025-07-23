@@ -271,7 +271,7 @@ export default function GalleryGrid({
             <motion.div
               key={item.id}
               data-item-id={item.id}
-              className={`group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:brightness-110 ${gridSpan} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
+              className={`group cursor-pointer transition-all duration-300 ease-out hover:brightness-110 ${gridSpan} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
               style={{
                 width: '100%',
                 position: 'relative',
@@ -335,7 +335,7 @@ export default function GalleryGrid({
                       />
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-foreground/20 group-hover:bg-foreground/10 transition-colors duration-300">
-                      <div className="w-16 h-16 bg-background/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-16 h-16 bg-background/90 flex items-center justify-center transition-transform duration-300">
                         <svg
                           className="w-8 h-8 text-foreground ml-1"
                           fill="currentColor"
@@ -387,8 +387,14 @@ export default function GalleryGrid({
 
                     {/* Skeleton loader for better FCP */}
                     {!isLoaded && !hasError && !item.blurDataURL && (
-                      <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                        <div className="w-8 h-8 border-2 border-border animate-spin" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div 
+                          className="w-8 h-8 rounded-full animate-spin"
+                          style={{
+                            border: '2px solid transparent',
+                            borderRight: '2px solid hsl(var(--muted-foreground))'
+                          }}
+                        />
                       </div>
                     )}
 
@@ -407,7 +413,7 @@ export default function GalleryGrid({
               {/* Enhanced Hover Overlay */}
               <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-all duration-300 ease-out opacity-0 group-hover:opacity-100">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-background/90 backdrop-blur-sm px-4 py-2 transform scale-95 group-hover:scale-100 transition-transform duration-300">
+                  <div className="bg-background/90 backdrop-blur-sm px-4 py-2 transition-transform duration-300">
                     <span className="text-sm font-medium text-foreground">
                       {item.type === 'video'
                         ? 'Reproducir Video'

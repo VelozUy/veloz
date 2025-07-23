@@ -192,7 +192,7 @@ export function ResponsivePicture({
 
       {/* Loading skeleton */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-muted animate-pulse" />
+        <div className="absolute inset-0" />
       )}
 
       {/* Gallery overlay for clickable images */}
