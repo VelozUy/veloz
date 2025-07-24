@@ -295,7 +295,6 @@ describe('CategoryNavigation', () => {
       expect(activeLink).toHaveClass('inline-flex');
       expect(activeLink).toHaveClass('items-center');
       expect(activeLink).toHaveClass('px-2');
-      expect(activeLink).toHaveClass('py-3');
       expect(activeLink).toHaveClass('text-xl');
       expect(activeLink).toHaveClass('uppercase');
       expect(activeLink).toHaveClass('tracking-tight');
@@ -331,9 +330,8 @@ describe('CategoryNavigation', () => {
       );
 
       const activeLink = screen.getByRole('link', { name: 'Eventos' });
-      // Editorial styling uses px-2 py-3 for proper spacing
+      // Editorial styling uses px-2 for proper spacing (vertical padding handled by container)
       expect(activeLink).toHaveClass('px-2');
-      expect(activeLink).toHaveClass('py-3');
     });
   });
 });

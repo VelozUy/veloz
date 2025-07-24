@@ -47,7 +47,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
 
   return (
     <section
-      className={`min-h-screen py-12 md:py-16 ${contentClasses.background} ${className}`}
+      className={`min-h-screen pb-12 md:pb-16 ${contentClasses.background} ${className}`}
     >
       <div className="container mx-auto px-8 md:px-16">
         {/* Category Sections - Compact Editorial Spacing */}
@@ -76,9 +76,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
               </div>
 
               {/* Horizontal Separator - Compact Spacing (except for last category) */}
-              {index < categories.length - 1 && (
-                <div className="border-t border-border my-12 md:my-16" />
-              )}
+              {/* Removed separator line for cleaner design */}
             </div>
           ))}
 

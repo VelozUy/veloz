@@ -37,12 +37,15 @@ export default function OurWorkHeader({
   return (
     <>
       {/* Category navigation */}
-      <div className={`py-8 md:py-12 ${contentClasses.background}`}>
-        <CategoryNavigation
-          categories={categories}
-          activeCategory={activeCategory || 'overview'}
-          onCategoryChange={scrollToCategory}
-        />
+      <div className={`${contentClasses.background} h-24 md:h-28 flex items-center`}>
+        <div className="container mx-auto px-4">
+          <CategoryNavigation
+            categories={categories}
+            activeCategory={activeCategory || 'overview'}
+            onCategoryChange={scrollToCategory}
+            backgroundClass={contentClasses.background}
+          />
+        </div>
       </div>
     </>
   );

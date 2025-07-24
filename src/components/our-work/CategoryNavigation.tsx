@@ -19,6 +19,7 @@ interface CategoryNavigationProps {
   activeCategory: string;
   onCategoryChange: (categoryId: string) => void;
   className?: string;
+  backgroundClass?: string;
 }
 
 export default function CategoryNavigation({
@@ -26,6 +27,7 @@ export default function CategoryNavigation({
   activeCategory,
   onCategoryChange,
   className,
+  backgroundClass,
 }: CategoryNavigationProps) {
   const [mounted, setMounted] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -128,8 +130,8 @@ export default function CategoryNavigation({
         </div>
 
         {/* Desktop Navigation Skeleton */}
-        <div className="hidden md:block">
-          <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
+        <div className="hidden md:block h-full">
+          <div className="w-full justify-center items-center bg-transparent rounded-none p-0 h-full px-4 md:px-8 gap-6 md:gap-8 flex">
             {categories.map(category => (
               <div
                 key={category.id}
@@ -150,7 +152,8 @@ export default function CategoryNavigation({
           onClick={() => setDrawerOpen(true)}
           className={cn(
             'relative w-full flex items-center justify-center px-4 py-3',
-            'bg-background text-foreground',
+            backgroundClass || 'bg-background',
+            'text-foreground',
             'text-lg uppercase tracking-tight font-medium',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
             'transition-all duration-300',
@@ -226,8 +229,8 @@ export default function CategoryNavigation({
       </div>
 
       {/* Desktop Tabs - visible on medium screens and up with improved styling */}
-      <div className="hidden md:block">
-        <div className="w-full justify-center bg-transparent rounded-none p-0 h-auto px-4 md:px-8 gap-6 md:gap-8 flex">
+      <div className="hidden md:block h-full">
+        <div className="w-full justify-center items-center bg-transparent rounded-none p-0 h-full px-4 md:px-8 gap-6 md:gap-8 flex">
           {categories.map(category => {
             const isActive = category.id === activeCategory;
             return (
@@ -239,7 +242,7 @@ export default function CategoryNavigation({
                     : `/our-work/${category.id}`
                 }
                 className={cn(
-                  'relative inline-flex items-center px-2 py-3 text-xl uppercase tracking-tight transition-all duration-300',
+                  'relative inline-flex items-center px-2 text-xl uppercase tracking-tight transition-all duration-300',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                   'hover:text-primary font-medium',
                   'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:transition-all after:duration-300',

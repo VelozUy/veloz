@@ -63,7 +63,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   return (
     <section
       id={`category-${id}`}
-      className={`min-h-screen py-16 ${contentClasses.background} ${className}`}
+      className={`min-h-screen pt-8 pb-16 ${contentClasses.background} ${className}`}
       data-testid="category-section"
     >
       <div className="container mx-auto px-4">
