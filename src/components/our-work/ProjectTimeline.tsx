@@ -342,7 +342,7 @@ export default function ProjectTimeline({
                       className={cn(
                         'bg-card text-card-foreground p-6 border border-border',
                         'transition-all duration-300',
-                        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
+                        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:animate-veloz-hover' // Animation System Enhancement: micro-interaction
                       )}
                       role="button"
                       tabIndex={0}

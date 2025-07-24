@@ -123,6 +123,7 @@ const config: Config = {
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'bounce-gentle': 'bounceGentle 0.6s ease-in-out',
+        'veloz-hover': 'velozHover 0.35s cubic-bezier(0.4,0,0.2,1)',
       },
 
       keyframes: {
@@ -145,6 +146,11 @@ const config: Config = {
         bounceGentle: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
+        },
+        velozHover: {
+          '0%': { transform: 'scale(1)', filter: 'brightness(1)' },
+          '60%': { transform: 'scale(1.045)', filter: 'brightness(1.08)' },
+          '100%': { transform: 'scale(1.025)', filter: 'brightness(1.04)' },
         },
       },
 

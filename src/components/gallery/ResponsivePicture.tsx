@@ -148,7 +148,8 @@ export function ResponsivePicture({
       className={cn(
         'relative overflow-hidden',
         getAspectRatioClass(),
-        className
+        className,
+        onClick ? 'hover:animate-veloz-hover' : '' // Animation System Enhancement: micro-interaction
       )}
       onClick={handleClick}
       role={onClick ? 'button' : undefined}
@@ -191,9 +192,7 @@ export function ResponsivePicture({
       </picture>
 
       {/* Loading skeleton */}
-      {!isLoaded && !hasError && (
-        <div className="absolute inset-0" />
-      )}
+      {!isLoaded && !hasError && <div className="absolute inset-0" />}
 
       {/* Gallery overlay for clickable images */}
       {onClick && (

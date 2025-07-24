@@ -265,7 +265,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     const eventTypeMap: Record<string, EventCategory> = {
       casamientos: 'Casamientos',
       corporativos: 'Corporativos',
-      'culturales': 'Culturales',
+      culturales: 'Culturales',
       photoshoot: 'Photoshoot',
       prensa: 'Prensa',
       otros: 'Otros',
@@ -470,7 +470,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                   className="block"
                 >
                   <div
-                    className={`w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer ${contentClasses.background}`}
+                    className={`w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer ${contentClasses.background} hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
                   >
                     {/* Project Content - Full Width */}
                     <div className="w-full px-4 md:px-8 lg:px-12 py-8">

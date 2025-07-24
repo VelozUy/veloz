@@ -236,7 +236,7 @@ export default function Hero({
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
             <Link href="/about">Sobre Nosotros</Link>
@@ -244,7 +244,7 @@ export default function Hero({
 
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
             <Link href="/our-work">Nuestro Trabajo</Link>
@@ -252,7 +252,7 @@ export default function Hero({
 
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300"
+            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
             <Link href="/contact">Trabaja con Nosotros</Link>

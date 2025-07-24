@@ -113,7 +113,8 @@ export const GridItem = ({
     <motion.div
       className={cn(
         gridItemStyles({ variant, className }),
-        getGridSpan(aspectRatio)
+        getGridSpan(aspectRatio),
+        'hover:animate-veloz-hover' // Animation System Enhancement: micro-interaction
       )}
       variants={rowVariants}
       initial="initial"

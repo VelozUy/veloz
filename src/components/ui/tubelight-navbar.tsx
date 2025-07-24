@@ -150,7 +150,7 @@ export function TubelightNavBar({
               onClick={() => setActiveTab(item.name.toLowerCase())}
               className={cn(
                 'relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors',
-                'text-foreground/80 hover:text-primary',
+                'text-foreground/80 hover:text-primary hover:animate-veloz-hover', // Animation System Enhancement: micro-interaction
                 isActive && 'bg-muted/50 text-primary'
               )}
             >

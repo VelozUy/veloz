@@ -111,7 +111,7 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
           >
             {/* Project Title Section - Clickable for navigation */}
             <div
-              className="text-center mb-8 cursor-pointer hover:opacity-80 transition-opacity"
+              className="text-center mb-8 cursor-pointer hover:opacity-80 transition-opacity hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
               onClick={() => handleProjectClick(project)}
               onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {

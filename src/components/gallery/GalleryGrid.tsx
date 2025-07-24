@@ -135,7 +135,9 @@ export function GalleryGrid({
           className={cn(
             'relative overflow-hidden',
             getDynamicWidth(item),
-            item.onClick || onItemClick ? 'cursor-pointer' : ''
+            item.onClick || onItemClick
+              ? 'cursor-pointer hover:animate-veloz-hover'
+              : '' // Animation System Enhancement: micro-interaction
           )}
           onClick={() => handleItemClick(item)}
           role={item.onClick || onItemClick ? 'button' : undefined}

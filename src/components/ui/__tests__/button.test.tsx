@@ -79,7 +79,9 @@ describe('Button Component', () => {
   });
 
   it('renders with different section types', () => {
-    const { rerender } = render(<Button sectionType="hero">Hero Button</Button>);
+    const { rerender } = render(
+      <Button sectionType="hero">Hero Button</Button>
+    );
     let button = screen.getByRole('button');
     // Hero section overrides default variant
     expect(button).toHaveClass('bg-foreground');
@@ -93,7 +95,11 @@ describe('Button Component', () => {
     expect(button).toHaveClass('text-card-foreground');
     expect(button).toHaveClass('border-primary');
 
-    rerender(<Button sectionType="cta" priority="high">High Priority CTA</Button>);
+    rerender(
+      <Button sectionType="cta" priority="high">
+        High Priority CTA
+      </Button>
+    );
     button = screen.getByRole('button');
     // CTA section with high priority uses bg-primary
     expect(button).toHaveClass('bg-primary');
@@ -126,6 +132,12 @@ describe('Button Component', () => {
     expect(link).toHaveAttribute('href', '/test');
     expect(link).toHaveClass('bg-primary');
     expect(link).toHaveClass('text-primary-foreground');
+  });
+
+  it('applies veloz-hover animation for micro-interactions', () => {
+    render(<Button>Animated Button</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('hover:animate-veloz-hover');
   });
 
   it('handles user interactions', async () => {

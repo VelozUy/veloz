@@ -247,7 +247,7 @@ const BentoItem: React.FC<BentoItemProps> = ({
       <motion.div
         className={cn(
           'relative w-full h-full cursor-pointer overflow-hidden rounded-md bg-card',
-          'border border-border/30'
+          'border border-border/30 hover:animate-veloz-hover' // Animation System Enhancement: micro-interaction
         )}
         onClick={onClick}
       >

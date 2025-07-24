@@ -271,7 +271,7 @@ export default function GalleryGrid({
             <motion.div
               key={item.id}
               data-item-id={item.id}
-              className={`group cursor-pointer transition-all duration-300 ease-out hover:brightness-110 ${gridSpan} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
+              className={`group cursor-pointer transition-all duration-300 ease-out hover:brightness-110 ${gridSpan} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
               style={{
                 width: '100%',
                 position: 'relative',
@@ -326,7 +326,9 @@ export default function GalleryGrid({
                       muted
                       loop
                       playsInline
-                      onLoadedData={() => handleImageLoad(item.id, loadStartTime)}
+                      onLoadedData={() =>
+                        handleImageLoad(item.id, loadStartTime)
+                      }
                       onError={() => handleImageError(item.id)}
                     />
                   </div>
@@ -393,8 +395,6 @@ export default function GalleryGrid({
           );
         })}
       </div>
-
-
     </div>
   );
 }

@@ -85,32 +85,50 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   }, [media]);
 
   // Handle fullscreen modal open
-  const handleOpenFullscreen = useCallback((index: number) => {
-    setFullscreenStartIndex(index);
-    setIsFullscreenOpen(true);
-    
-    // Track analytics
-    const mediaItem = media[index];
-    if (mediaItem) {
-      trackProjectView(mediaItem.projectId, mediaItem.projectTitle || 'Proyecto', 'fullscreen_open');
-    }
-  }, [media]);
+  const handleOpenFullscreen = useCallback(
+    (index: number) => {
+      setFullscreenStartIndex(index);
+      setIsFullscreenOpen(true);
+
+      // Track analytics
+      const mediaItem = media[index];
+      if (mediaItem) {
+        trackProjectView(
+          mediaItem.projectId,
+          mediaItem.projectTitle || 'Proyecto',
+          'fullscreen_open'
+        );
+      }
+    },
+    [media]
+  );
 
   // Handle fullscreen modal close
   const handleCloseFullscreen = useCallback(() => {
     setIsFullscreenOpen(false);
-    
+
     // Track analytics
-    trackProjectView('fullscreen', 'Vista de Pantalla Completa', 'fullscreen_close');
+    trackProjectView(
+      'fullscreen',
+      'Vista de Pantalla Completa',
+      'fullscreen_close'
+    );
   }, []);
 
   // Handle fullscreen navigation
-  const handleFullscreenNavigate = useCallback((index: number) => {
-    const mediaItem = media[index];
-    if (mediaItem) {
-      trackProjectView(mediaItem.projectId, mediaItem.projectTitle || 'Proyecto', 'fullscreen_navigate');
-    }
-  }, [media]);
+  const handleFullscreenNavigate = useCallback(
+    (index: number) => {
+      const mediaItem = media[index];
+      if (mediaItem) {
+        trackProjectView(
+          mediaItem.projectId,
+          mediaItem.projectTitle || 'Proyecto',
+          'fullscreen_navigate'
+        );
+      }
+    },
+    [media]
+  );
 
   // Memoize media processing for performance
   const processedMedia = useMemo(() => {
@@ -191,12 +209,12 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
             return (
               <div
                 key={mediaItem.id}
-                className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan}`}
+                className={`gallery-item relative text-center group cursor-pointer overflow-hidden ${mediaItem.gridSpan} hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
                 onClick={() => handleOpenFullscreen(index)}
                 role="button"
                 tabIndex={0}
                 aria-label={`Ver ${mediaItem.type === 'video' ? 'video' : 'imagen'} de ${mediaItem.projectTitle || 'proyecto'} en pantalla completa`}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     handleOpenFullscreen(index);

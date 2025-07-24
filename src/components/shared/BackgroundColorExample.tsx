@@ -65,12 +65,17 @@ export function BackgroundColorExample({
           />
 
           <div className="flex gap-2">
-            <button className={cn('px-4 py-2 rounded text-sm', buttonClasses)}>
+            <button
+              className={cn(
+                'px-4 py-2 rounded text-sm hover:animate-veloz-hover',
+                buttonClasses
+              )}
+            >
               Primary Action
             </button>
             <button
               className={cn(
-                'px-4 py-2 rounded text-sm',
+                'px-4 py-2 rounded text-sm hover:animate-veloz-hover',
                 getButtonClasses(sectionType, 'secondary')
               )}
             >

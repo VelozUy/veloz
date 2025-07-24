@@ -187,7 +187,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
@@ -201,7 +201,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             <LocaleSwitcher currentLocale={locale} />
             <Link href={getLocalizedPath('/contact', locale)}>
               <Button
-                className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
+                className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300 hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
               >
                 {translations.homepage.hero.cta.contact}
               </Button>
