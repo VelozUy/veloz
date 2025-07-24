@@ -426,6 +426,8 @@ export default function ContactForm({ translations }: ContactFormProps) {
           <Button
             onClick={handleSendAnotherMessage}
             size="lg"
+            sectionType="form"
+            priority="high"
             className="font-semibold px-8 py-6"
           >
             {t.success.action}
@@ -802,7 +804,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   type="submit"
                   disabled={isSubmitting || uploadingFiles}
                   size="lg"
-                  className="font-semibold px-8 lg:px-12 py-4 lg:py-6 text-body-lg w-full lg:w-auto"
+                  sectionType="form"
+                  priority="high"
+                  className="font-semibold px-8 lg:px-12 py-4 lg:py-6 w-full lg:w-auto"
                 >
                   {isSubmitting || uploadingFiles ? (
                     <>

@@ -531,8 +531,10 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             </p>
             <Button
               size="lg"
+              sectionType="cta"
+              priority="high"
               onClick={() => handleCTAClick('general')}
-              className="text-lg px-8 py-4"
+              className="px-8 py-4"
             >
               {uiText.startConversation}
             </Button>

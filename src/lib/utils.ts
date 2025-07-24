@@ -329,7 +329,7 @@ export function getButtonClasses(
       tertiary: 'bg-muted text-foreground hover:bg-muted',
     },
     cta: {
-      primary: 'bg-card text-card-foreground hover:bg-muted',
+      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
       secondary: 'bg-background text-foreground hover:bg-background/90',
       tertiary:
         'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',

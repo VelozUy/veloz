@@ -129,8 +129,8 @@ export default function VelozBannerNav({
                       key={item.name}
                       href={item.href}
                       className={cn(
-                        'text-muted-foreground hover:text-primary transition-colors font-medium text-sm',
-                        active && 'text-primary'
+                        'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
+                        active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
                       )}
                     >
                       {item.name}
@@ -140,13 +140,16 @@ export default function VelozBannerNav({
 
                 {/* Language Switcher */}
                 <div className="ml-4">
-                  <LocaleSwitcher currentLocale={locale} />
+                  <LocaleSwitcher 
+                    currentLocale={locale} 
+                    className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
+                  />
                 </div>
               </div>
 
               {/* Tablet/Desktop menu button */}
               <button
-                className="lg:hidden p-2 rounded-none hover:bg-muted-foreground/10 transition-colors text-muted-foreground"
+                className="lg:hidden p-2 rounded-none hover:bg-[var(--accent-soft-gold)]/10 transition-colors text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle mobile menu"
               >
@@ -194,8 +197,8 @@ export default function VelozBannerNav({
                       key={item.name}
                       href={item.href}
                       className={cn(
-                        'text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium text-sm px-2',
-                        active && 'border-b-2 border-[var(--base-800)] pb-0.5'
+                        'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
+                        active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
                       )}
                     >
                       {item.name}
@@ -207,14 +210,14 @@ export default function VelozBannerNav({
                 <div className="ml-4">
                   <LocaleSwitcher 
                     currentLocale={locale} 
-                    className="text-[var(--background)] hover:text-[var(--base-800)]"
+                    className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                   />
                 </div>
               </div>
 
               {/* Tablet/Desktop menu button */}
               <button
-                className="lg:hidden p-2 rounded-none hover:bg-[var(--background)]/10 transition-colors text-[var(--background)]"
+                className="lg:hidden p-2 rounded-none hover:bg-[var(--accent-soft-gold)]/10 transition-colors text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Toggle mobile menu"
               >
@@ -247,14 +250,14 @@ export default function VelozBannerNav({
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'block px-4 py-3 text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium',
-                    active && 'text-[var(--base-800)]'
+                    'block px-4 py-3 text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium',
+                    active && 'text-[var(--accent-soft-gold)]'
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span className={cn(
                     'inline-block',
-                    active && 'border-b-2 border-[var(--base-800)]'
+                    active && 'border-b-2 border-[var(--accent-soft-gold)]'
                   )}>
                     {item.name}
                   </span>
@@ -267,7 +270,7 @@ export default function VelozBannerNav({
           <div className="flex justify-center">
             <LocaleSwitcher 
               currentLocale={locale} 
-              className="text-[var(--background)] hover:text-[var(--base-800)]"
+              className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
             />
           </div>
         </div>

@@ -60,7 +60,7 @@
   --popover: #ffffff;
   --popover-foreground: var(--base-800);
   --primary: var(--primary-900);
-  --primary-foreground: #000000;
+  --primary-foreground: var(--base-50);
   --secondary: var(--base-200);
   --secondary-foreground: var(--base-950);
   --muted: var(--base-100);
@@ -126,7 +126,7 @@
   --popover: var(--base-900);
   --popover-foreground: var(--base-200);
   --primary: var(--primary-900);
-  --primary-foreground: #000000;
+  --primary-foreground: var(--base-50);
   --secondary: var(--base-700);
   --secondary-foreground: var(--base-50);
   --muted: var(--base-800);
