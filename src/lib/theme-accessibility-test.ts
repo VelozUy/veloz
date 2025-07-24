@@ -30,7 +30,7 @@ function oklchToRgb(oklch: string): { r: number; g: number; b: number } {
   const colorMap: { [key: string]: { r: number; g: number; b: number } } = {
     'oklch(0.9551 0 0)': { r: 255, g: 255, b: 255 }, // Light background
     'oklch(0.3211 0 0)': { r: 51, g: 51, b: 51 }, // Dark text
-    'oklch(0.3633 0.2269 264.3283)': { r: 59, g: 130, b: 246 }, // Primary blue
+    'oklch(0.3644 0.2281 264.2)': { r: 59, g: 130, b: 246 }, // Primary blue
     'oklch(0.9702 0 0)': { r: 249, g: 250, b: 251 }, // Card background
     'oklch(0.8853 0 0)': { r: 229, g: 231, b: 235 }, // Muted background
     'oklch(0.5103 0 0)': { r: 107, g: 114, b: 128 }, // Muted text
@@ -125,7 +125,7 @@ export function testThemeAccessibility(): ThemeAccessibilityReport {
     {
       name: 'Primary to Primary Foreground',
       foreground: 'oklch(1.0000 0 0)',
-      background: 'oklch(0.3633 0.2269 264.3283)',
+      background: 'oklch(0.3644 0.2281 264.2)',
     },
     {
       name: 'Muted Background to Muted Foreground',

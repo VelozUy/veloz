@@ -59,7 +59,7 @@
   --card-foreground: var(--base-800);
   --popover: #ffffff;
   --popover-foreground: var(--base-800);
-  --primary: var(--primary-500);
+  --primary: var(--primary-900);
   --primary-foreground: #000000;
   --secondary: var(--base-200);
   --secondary-foreground: var(--base-950);
@@ -125,7 +125,7 @@
   --card-foreground: var(--base-200);
   --popover: var(--base-900);
   --popover-foreground: var(--base-200);
-  --primary: var(--primary-500);
+  --primary: var(--primary-900);
   --primary-foreground: #000000;
   --secondary: var(--base-700);
   --secondary-foreground: var(--base-50);

@@ -58,7 +58,7 @@ export const themeConfig: ThemeConfig = {
     cardForeground: 'oklch(0.3211 0 0)',
     popover: 'oklch(0.9702 0 0)',
     popoverForeground: 'oklch(0.3211 0 0)',
-    primary: 'oklch(0.3633 0.2269 264.3283)',
+    primary: 'oklch(0.3644 0.2281 264.2)',
     primaryForeground: 'oklch(1.0000 0 0)',
     secondary: 'oklch(0.9067 0 0)',
     secondaryForeground: 'oklch(0.3211 0 0)',

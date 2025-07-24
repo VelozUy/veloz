@@ -17,7 +17,7 @@ const mockThemeVariables = {
   '--foreground': 'oklch(0.3211 0 0)',
   '--card': 'oklch(0.9702 0 0)',
   '--card-foreground': 'oklch(0.3211 0 0)',
-  '--primary': 'oklch(0.3633 0.2269 264.3283)',
+  '--primary': 'oklch(0.3644 0.2281 264.2)',
   '--primary-foreground': 'oklch(1.0000 0 0)',
   '--secondary': 'oklch(0.9067 0 0)',
   '--secondary-foreground': 'oklch(0.3211 0 0)',
@@ -25,11 +25,11 @@ const mockThemeVariables = {
   '--muted-foreground': 'oklch(0.5103 0 0)',
   '--accent': 'oklch(0.8078 0 0)',
   '--accent-foreground': 'oklch(0.3211 0 0)',
-  '--destructive': 'oklch(0.3633 0.2269 264.3283)',
+  '--destructive': 'oklch(0.3644 0.2281 264.2)',
   '--destructive-foreground': 'oklch(1.0000 0 0)',
   '--border': 'oklch(0.9067 0 0)',
   '--input': 'oklch(0.9702 0 0)',
-  '--ring': 'oklch(0.3633 0.2269 264.3283)',
+  '--ring': 'oklch(0.3644 0.2281 264.2)',
   '--radius': '0rem',
 };
 

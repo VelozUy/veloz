@@ -174,7 +174,7 @@ The theme system uses CSS custom properties organized into logical groups. This 
   --popover-foreground: oklch(0.3211 0 0);
 
   /* Primary colors */
-  --primary: oklch(0.3633 0.2269 264.3283);
+  --primary: oklch(0.3644 0.2281 264.2);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary colors */
@@ -348,7 +348,7 @@ The application uses the light theme by default:
   /* This is the definitive theme - no overrides allowed */
   --background: oklch(0.9551 0 0);
   --foreground: oklch(0.3211 0 0);
-  --primary: oklch(0.3633 0.2269 264.3283);
+  --primary: oklch(0.3644 0.2281 264.2);
   --primary-foreground: oklch(1 0 0);
   /* ... all other theme variables */
 }
