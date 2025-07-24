@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { H3 } from '@/components/ui/typography';
+import { H2, H3 } from '@/components/ui/typography';
 import EditorialGrid from './EditorialGrid';
 import { useContentBackground } from '@/hooks/useBackground';
 import { useCTABackground } from '@/hooks/useBackground';
@@ -57,6 +57,13 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
             <div key={category.id} className="mb-12 md:mb-16">
               {/* Category Section - Compact Spacing */}
               <div className="mb-8 md:mb-10">
+                {/* Category Header - Only show if title is provided */}
+                {category.title && (
+                  <div className="text-center mb-8 md:mb-10">
+                    <H2 className="mb-6">{category.title}</H2>
+                  </div>
+                )}
+
                 {/* Editorial Media Grid - Compact Margins */}
                 <div className="mb-8 md:mb-10">
                   <EditorialGrid

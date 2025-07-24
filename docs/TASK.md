@@ -734,6 +734,31 @@ _Last updated: 2025-01-20_
 
 #### 🧠 Discovered During Epic
 
+- [x] **Fix Missing Category Titles in EditorialGrid** - Add category title display to OverviewSection ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: EditorialGrid on /our-work page was missing category titles (event types)
+  - **Acceptance Criteria**:
+    - Category titles displayed above each EditorialGrid ✅
+    - Consistent styling with H2 headings ✅
+    - Proper spacing and typography ✅
+    - Filter out 'overview' category as expected ✅
+    - Clean minimal design without descriptions ✅
+  - **Files**: `src/components/our-work/OverviewSection.tsx`, `src/components/our-work/__tests__/OverviewSection.test.tsx`
+  - **Reference**: CategorySection component pattern for title display
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - Category titles now displayed correctly with comprehensive tests
+
+- [x] **Remove Category Descriptions from OverviewSection** - Simplify to show only titles ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Remove category descriptions (subtitles) for cleaner minimal design
+  - **Acceptance Criteria**:
+    - Only category titles displayed (no descriptions) ✅
+    - Clean minimal design maintained ✅
+    - Tests updated to verify descriptions are not shown ✅
+    - Build successful with no errors ✅
+  - **Files**: `src/components/our-work/OverviewSection.tsx`, `src/components/our-work/__tests__/OverviewSection.test.tsx`
+  - **Reference**: Minimal editorial design requirements
+  - **Estimated Time**: 0.25 days
+  - **Status**: ✅ Completed - Clean minimal design with only category titles
+
 - [ ] **Cross-browser Testing** - Ensure editorial design works across all major browsers
   - **Status**: Not started
   - **Estimated Time**: 1 day
