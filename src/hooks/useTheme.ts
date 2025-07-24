@@ -5,7 +5,7 @@ import {
   validateThemeAccessibility,
 } from '@/lib/theme-utils';
 
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light';
 
 interface ThemeState {
   mode: ThemeMode;
@@ -22,7 +22,7 @@ interface UseThemeReturn extends ThemeState {
 
 /**
  * React hook for single theme management
- * Provides theme state and utility methods for the fixed theme
+ * Provides theme state and utility methods for the fixed light theme
  */
 export function useTheme(mode: ThemeMode = 'light'): UseThemeReturn {
   const state = useMemo<ThemeState>(() => {
@@ -74,7 +74,7 @@ export function useTheme(mode: ThemeMode = 'light'): UseThemeReturn {
 
 /**
  * Hook for theme-aware styling
- * Returns theme-aware class names and styles
+ * Returns theme-aware class names and styles for light theme
  */
 export function useThemeStyles(mode: ThemeMode = 'light') {
   const { colors } = useTheme(mode);
@@ -122,6 +122,7 @@ export function useThemeStyles(mode: ThemeMode = 'light') {
 
 /**
  * Hook for theme validation and accessibility
+ * Validates the light theme for accessibility compliance
  */
 export function useThemeValidation(mode: ThemeMode = 'light') {
   const { isValid, accessibilityIssues } = useTheme(mode);

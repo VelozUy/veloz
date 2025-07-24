@@ -2544,13 +2544,14 @@ _No tasks completed yet for this Epic_
 
 #### 🟩 Low
 
-- [ ] Add dark mode toggle
+- [ ] Add dark mode toggle (REMOVED)
   - **User Intent**: Improve user experience with theme preference
   - **Acceptance Criteria**:
     - Dark/light theme toggle
     - Persistent theme preference
     - Smooth theme transitions
     - All components support both themes
+  - **Status**: Removed - Single light theme only for brand consistency
 
 ### ✅ Completed
 
@@ -3112,19 +3113,7 @@ _No tasks completed yet for this Epic_
 
 #### 🟨 Medium Priority Tasks
 
-- [ ] **Phase 5: Advanced Features** - Add sophisticated gallery features
-  - **User Intent**: Enhance gallery with advanced features for professional presentation
-  - **Acceptance Criteria**:
-    - Social sharing integration for gallery items
-    - Download functionality for high-resolution images
-    - Keyboard navigation for accessibility
-    - Touch gestures for mobile devices
-    - Gallery filters and sorting options
-    - Full-screen mode with zoom capabilities
-  - **Files**: Gallery components, `src/lib/gallery-features.ts`
-  - **Reference**: `docs/GALLERY_PORTFOLIO_SPEC.md` - Advanced Features
-  - **Estimated Time**: 2-3 days
-  - **Status**: Ready after Phase 4 completion
+
 
 #### 🟩 Low Priority Tasks
 
@@ -4542,7 +4531,7 @@ _No tasks completed yet for this Epic_
     - Fullscreen toggle for true fullscreen mode
     - Background music/soundtrack support for videos
     - Custom transition effects between items
-  - **Files**: `src/components/gallery/FullscreenAdvancedFeatures.tsx`
+  - **Files**: Gallery components (REMOVED - Advanced features removed)
   - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Advanced feature specifications
   - **Estimated Time**: 3-4 days
   - **Status**: Ready after Phase 7 completion

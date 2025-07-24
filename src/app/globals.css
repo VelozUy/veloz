@@ -118,39 +118,7 @@
   --spacing: 0.25rem;
 }
 
-.dark {
-  --background: var(--base-950);
-  --foreground: var(--base-200);
-  --card: var(--base-900);
-  --card-foreground: var(--base-200);
-  --popover: var(--base-900);
-  --popover-foreground: var(--base-200);
-  --primary: var(--primary-900);
-  --primary-foreground: var(--base-50);
-  --secondary: var(--base-700);
-  --secondary-foreground: var(--base-50);
-  --muted: var(--base-800);
-  --muted-foreground: var(--base-300);
-  --accent: var(--base-800);
-  --accent-foreground: var(--base-200);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: var(--base-800);
-  --input: var(--base-800);
-  --ring: var(--primary-500);
-  --chart-1: var(--primary-500);
-  --chart-2: var(--primary-200);
-  --chart-3: var(--primary-400);
-  --chart-4: var(--primary-300);
-  --chart-5: var(--primary-100);
-  --sidebar: var(--base-900);
-  --sidebar-foreground: var(--base-200);
-  --sidebar-primary: var(--primary-500);
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: var(--base-800);
-  --sidebar-accent-foreground: var(--base-200);
-  --sidebar-border: var(--base-800);
-  --sidebar-ring: var(--primary-500);
-}
+
 
 @theme inline {
   /* Base colors */

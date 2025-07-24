@@ -37,7 +37,6 @@ export interface ThemeColors {
 
 export interface ThemeConfig {
   light: ThemeColors;
-  dark: ThemeColors;
   fonts: {
     sans: string;
     serif: string;
@@ -143,15 +142,15 @@ export const themeConfig: ThemeConfig = {
 /**
  * Get theme colors for a specific mode
  */
-export function getThemeColors(mode: 'light' | 'dark' = 'light'): ThemeColors {
-  return themeConfig[mode];
+export function getThemeColors(mode: 'light' = 'light'): ThemeColors {
+  return themeConfig.light;
 }
 
 /**
  * Get CSS custom properties for theme colors
  */
 export function getThemeCSSVariables(
-  mode: 'light' | 'dark' = 'light'
+  mode: 'light' = 'light'
 ): Record<string, string> {
   const colors = getThemeColors(mode);
   const variables: Record<string, string> = {};
@@ -168,7 +167,7 @@ export function getThemeCSSVariables(
  */
 export function applyThemeToElement(
   element: HTMLElement,
-  mode: 'light' | 'dark' = 'light'
+  mode: 'light' = 'light'
 ): void {
   const variables = getThemeCSSVariables(mode);
 
@@ -181,7 +180,7 @@ export function applyThemeToElement(
  * Generate Tailwind CSS classes for theme colors
  */
 export function getThemeClasses(
-  mode: 'light' | 'dark' = 'light'
+  mode: 'light' = 'light'
 ): Record<string, string> {
   const colors = getThemeColors(mode);
 
@@ -203,7 +202,7 @@ export function getThemeClasses(
 /**
  * Validate theme colors for accessibility
  */
-export function validateThemeAccessibility(mode: 'light' | 'dark' = 'light'): {
+export function validateThemeAccessibility(mode: 'light' = 'light'): {
   isValid: boolean;
   issues: string[];
 } {
@@ -230,7 +229,7 @@ function calculateContrastRatio(color1: string, color2: string): number {
  */
 export function getComponentStyles(
   component: string,
-  mode: 'light' | 'dark' = 'light'
+  mode: 'light' = 'light'
 ): Record<string, string> {
   const colors = getThemeColors(mode);
 
@@ -274,18 +273,15 @@ ${Object.entries(themeConfig.light)
   .map(([key, value]) => `- ${key}: ${value}`)
   .join('\n')}
 
-### Dark Mode
-${Object.entries(themeConfig.dark)
-  .map(([key, value]) => `- ${key}: ${value}`)
-  .join('\n')}
+
 
 ## Usage Guidelines
 
 1. Always use theme variables instead of hardcoded colors
-2. Test both light and dark modes
-3. Ensure proper contrast ratios for accessibility
-4. Use semantic color names (primary, secondary, etc.)
-5. Apply consistent spacing and typography
+2. Ensure proper contrast ratios for accessibility
+3. Use semantic color names (primary, secondary, etc.)
+4. Apply consistent spacing and typography
+5. Single light theme only - no dark mode support
 
 ## Component Examples
 

@@ -20,7 +20,15 @@
     "migrate:slugs": "node scripts/migrate-slugs.mjs",
     "theme:check": "node scripts/theme-consistency-checker.mjs",
     "theme:accessibility": "node scripts/theme-accessibility-test.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "type-check": "tsc --noEmit",
+    "theme:docs": "node scripts/theme-doc-generator.js",
+    "theme:migrate": "node scripts/theme-migration-helper.js",
+    "theme:migrate:apply": "node scripts/theme-migration-helper.js --apply",
+    "theme:validate": "node scripts/theme-validation.js",
+    "theme:validate:strict": "node scripts/theme-validation.js --strict",
+    "theme:validate:report": "node scripts/theme-validation.js --report",
+    "theme:preview": "echo 'Visit http://localhost:3000/debug/theme-preview to see theme preview'"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -50,7 +58,6 @@
     "firebase": "^11.9.1",
     "framer-motion": "^12.23.6",
     "glightbox": "^3.3.1",
-    "glob": "^11.0.3",
     "isomorphic-dompurify": "^2.26.0",
     "lucide-react": "^0.522.0",
     "motion": "^12.19.1",
@@ -80,6 +87,7 @@
     "eslint-plugin-prettier": "^5.5.0",
     "firebase-admin": "^13.4.0",
     "firebase-tools": "^14.9.0",
+    "glob": "^11.0.3",
     "husky": "^9.1.7",
     "jest": "^30.0.3",
     "jest-environment-jsdom": "^30.0.2",

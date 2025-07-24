@@ -702,17 +702,7 @@ This file contains unprioritized ideas and future features that have been identi
 
 #### 🟨 Medium Priority Tasks
 
-- [ ] **Phase 5: Advanced Features** - Add advanced gallery features for client project detail pages only
-  - **User Intent**: Enhance project detail galleries with professional features
-  - **Acceptance Criteria**:
-    - Social sharing integration for project detail gallery items
-    - Download functionality for high-resolution images/videos in project detail galleries
-    - Keyboard navigation for accessibility
-    - Touch gestures for mobile devices
-  - **Files**: Project detail gallery components, `src/lib/gallery-features.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md`
-  - **Estimated Time**: 2-3 days
-  - **Status**: Ready after Phase 4 completion
+
 
 #### 🟩 Low Priority Tasks
 
@@ -1470,8 +1460,8 @@ This file contains unprioritized ideas and future features that have been identi
 
 #### 🟨 Medium Priority Ideas
 
-- [ ] **Dark mode toggle** - User preference for dark/light theme
-- [ ] **Advanced gallery filters** - Filter by date, location, event type, crew member
+- [ ] **Dark mode toggle** - User preference for dark/light theme (REMOVED - Single light theme only)
+- [ ] **Advanced gallery filters** - Filter by date, location, event type, crew member (REMOVED - Advanced features removed)
 - [ ] **Image download functionality** - Allow users to download watermarked previews
 - [ ] **Social sharing enhancements** - One-click sharing to social media platforms
 - [ ] **Accessibility improvements** - Enhanced screen reader support and keyboard navigation
@@ -3151,7 +3141,7 @@ This file contains unprioritized ideas and future features that have been identi
     - Fullscreen toggle for true fullscreen mode
     - Background music/soundtrack support for videos
     - Custom transition effects between items
-  - **Files**: `src/components/gallery/FullscreenAdvancedFeatures.tsx`
+  - **Files**: Gallery components (REMOVED - Advanced features removed)
   - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Advanced feature specifications
   - **Estimated Time**: 3-4 days
   - **Status**: Ready after Phase 7 completion

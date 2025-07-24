@@ -196,6 +196,8 @@ const IGNORE_FILES = [
   'src/lib/__tests__/utils.test.ts',
   'src/lib/accessibility-testing.ts',
   'src/lib/cross-browser-testing.ts',
+  'scripts/theme-migration-helper.js',
+  'docs/THEME_TOKENS.md',
 ];
 
 // File extensions to check
