@@ -146,7 +146,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-primary-foreground"
+              className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -187,7 +187,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
+                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group"
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
@@ -210,7 +210,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-primary-foreground"
+            className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -235,8 +235,8 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                     className="flex items-center space-x-3 px-4 py-3 rounded-none hover:bg-muted/20 transition-colors group"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Icon className="w-5 h-5 text-primary-foreground group-hover:text-primary transition-colors" />
-                    <span className="font-medium text-primary-foreground">
+                    <Icon className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+                    <span className="font-medium text-foreground">
                       {item.name}
                     </span>
                   </Link>
