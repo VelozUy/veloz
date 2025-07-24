@@ -276,10 +276,91 @@ export function TiledGallery({
     }
   }, [handleImageClick]);
 
-  if (!layout || !layout.tiles.length) {
+  // Create fallback layout for SSR and initial render
+  const fallbackLayout = useMemo(() => {
+    if (!images.length) return null;
+    
+    // Simple fallback layout - single column for SSR compatibility
+    const fallbackTiles = images.map((image, index) => ({
+      id: `fallback-tile-${image.id}`,
+      image,
+      row: index,
+      column: 0,
+      width: 100,
+      height: (image.height || 1) / (image.width || 1) * 100,
+      aspectRatio: (image.width || 1) / (image.height || 1),
+      gridSpan: 'col-span-1',
+      rowSpan: 'row-span-1',
+      animationDelay: index * staggerDelay,
+      cssStyles: {
+        width: '100%',
+        height: 'auto',
+        aspectRatio: `${image.width || 1} / ${image.height || 1}`,
+      },
+    }));
+
+    return {
+      totalHeight: images.length * 300,
+      containerWidth: containerWidth || 1200,
+      config: {
+        containerWidth: containerWidth || 1200,
+        targetRowHeight: 300,
+        maxRowHeight: 400,
+        gap: gap || 4,
+        columns: 1,
+        preserveAspectRatio: true,
+      },
+      metadata: {
+        imageCount: images.length,
+        averageAspectRatio: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0) / images.length,
+        rowCount: images.length,
+        calculationTime: 0,
+      },
+      tiles: fallbackTiles,
+      rows: [{
+        id: 'fallback-row',
+        tiles: fallbackTiles,
+        targetHeight: 300,
+        actualHeight: 300,
+        totalWidth: containerWidth || 1200,
+        aspectRatioSum: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0),
+      }],
+    };
+  }, [images, containerWidth, gap, staggerDelay]);
+
+  // Use layout or fallback, but never show "No images" if we have images
+  const activeLayout = layout || fallbackLayout;
+
+  if (!images.length) {
     return (
       <div className={cn('text-center py-16', className)}>
         <p className="text-muted-foreground">No images to display</p>
+      </div>
+    );
+  }
+
+  if (!activeLayout || !activeLayout.tiles.length) {
+    // This should rarely happen now, but keep as final fallback
+    return (
+      <div className={cn('w-full', className)}>
+        <div className="space-y-4">
+          {images.map((image, index) => (
+            <div
+              key={image.id}
+              className="w-full relative overflow-hidden"
+              style={{ aspectRatio: `${image.width || 1} / ${image.height || 1}` }}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="object-cover"
+                sizes="100vw"
+                priority={index < 4}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -452,10 +533,10 @@ export function TiledGallery({
           display: 'flex',
           flexDirection: 'column',
           gap: `${gap}px`,
-          minHeight: `${layout.totalHeight}px`,
+          minHeight: `${activeLayout.totalHeight}px`,
         }}
       >
-        {layout.rows.map((row, rowIndex) => (
+        {activeLayout.rows.map((row, rowIndex) => (
           <div
             key={row.id}
             className="tiled-gallery-row"

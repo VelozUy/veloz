@@ -25,6 +25,9 @@ const {
 const fs = require('fs');
 const path = require('path');
 
+// Import gallery layout generator
+const { generateAllGalleryLayouts } = require('./gallery-layout-generator');
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -1238,7 +1241,8 @@ function generateLocaleContent(
   faqs,
   projects,
   aboutContent,
-  crewMembers
+  crewMembers,
+  galleryLayouts = null
 ) {
   // Generate categories from project event types
   const categories = generateCategories(projects, locale);
@@ -1454,6 +1458,8 @@ function generateLocaleContent(
         order: crew.order || 0,
       })),
     },
+    // Include pre-calculated gallery layouts
+    galleryLayouts: galleryLayouts || null,
     lastUpdated: new Date().toISOString(),
     buildTime: true,
   };
@@ -1554,6 +1560,11 @@ async function buildStaticContent() {
       fs.mkdirSync(dataDir, { recursive: true });
     }
 
+    // Generate gallery layouts for all projects and categories
+    console.log('🎨 Generating gallery layouts...');
+    const sampleCategories = generateCategories(projects, 'es'); // Use Spanish for layout generation
+    const galleryLayouts = generateAllGalleryLayouts(projects, sampleCategories);
+
     // Generate content for each locale
     const allContent = {};
     for (const locale of LOCALES) {
@@ -1564,7 +1575,8 @@ async function buildStaticContent() {
         faqs,
         projects,
         aboutContent,
-        crewMembers
+        crewMembers,
+        galleryLayouts // Pass gallery layouts to locale content generation
       );
       allContent[locale] = localeContent;
 
@@ -1759,8 +1771,88 @@ export interface LocalizedContent {
       order: number;
     }>;
   };
+  galleryLayouts?: {
+    categories: Record<string, {
+      mobile: GalleryLayout;
+      tablet: GalleryLayout;
+      desktop: GalleryLayout;
+      large: GalleryLayout;
+      metadata: {
+        imageCount: number;
+        projectCount: number;
+      };
+    }>;
+    projects: Record<string, {
+      mobile: GalleryLayout;
+      tablet: GalleryLayout;
+      desktop: GalleryLayout;
+      large: GalleryLayout;
+      metadata: {
+        imageCount: number;
+        featuredCount: number;
+      };
+    }>;
+    metadata: {
+      generatedAt: string;
+      totalLayouts: number;
+    };
+  } | null;
   lastUpdated: string;
   buildTime: boolean;
+}
+
+interface GalleryLayout {
+  rows: Array<{
+    id: string;
+    tiles: Array<{
+      image: {
+        id: string;
+        url: string;
+        src: string;
+        alt: string;
+        width: number;
+        height: number;
+        type: string;
+        aspectRatio?: string;
+        projectId: string;
+        projectTitle: string;
+        featured: boolean;
+      };
+      width: number;
+      height: number;
+      x: number;
+      y: number;
+      aspectRatio: number;
+      cssStyles: {
+        width: string;
+        height: string;
+        aspectRatio: string;
+      };
+    }>;
+    actualHeight: number;
+    targetHeight: number;
+    totalWidth: number;
+    aspectRatioSum: number;
+  }>;
+  tiles: Array<{
+    id: string;
+    row: number;
+    animationDelay: number;
+    image: any;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    aspectRatio: number;
+    cssStyles: any;
+  }>;
+  totalHeight: number;
+  containerWidth: number;
+  metadata: {
+    imageCount: number;
+    rowCount: number;
+    averageAspectRatio: number;
+  };
 }
 
 export const STATIC_CONTENT: Record<Locale, LocalizedContent> = ${JSON.stringify(allContent, null, 2)};
