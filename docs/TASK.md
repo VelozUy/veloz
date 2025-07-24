@@ -2115,6 +2115,22 @@ _No tasks completed yet for this Epic_
   - Status: Completed - Navigation banner now uses elegant grey color scheme
   - PO Sign-Off: PO Approved (2025-01-27)
 
+- [x] **Navigation Color Consistency Enhancement** (2025-01-27)
+  - Notes: Enhanced navigation banner with accent-soft-gold hover colors for better visual distinction
+  - User Intent: Improve hover visibility and ensure consistent colors between desktop and mobile navigation
+  - Acceptance Criteria:
+    - Navigation links use accent-soft-gold (`text-[var(--accent-soft-gold)]`) for hover states ✅
+    - Active links use accent-soft-gold text with gold underline ✅
+    - Language switcher uses consistent gold hover color ✅
+    - Mobile menu button uses gold hover with subtle background tint ✅
+    - Both mounted and unmounted navigation states use identical colors ✅
+    - Desktop and mobile navigation have consistent color behavior ✅
+    - Updated comprehensive test coverage for color consistency ✅
+    - Updated THEME.md documentation with new color specifications ✅
+  - Files: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/__tests__/veloz-banner-nav.test.tsx`, `docs/THEME.md`
+  - Status: Completed - Navigation banner now uses warm gold hover colors for excellent user feedback
+  - PO Sign-Off: PO Approved (2025-01-27)
+
 ### ✅ Completed
 
 - [x] **Phase 1: Core Theme System Setup** (2025-01-27)

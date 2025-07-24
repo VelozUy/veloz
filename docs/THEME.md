@@ -375,8 +375,8 @@ The navigation banner consists of two sections:
 #### Navigation Links (Blue Banner Section)
 
 - **Default State**: `text-[var(--background)]` - Light grey matching the main background
-- **Hover State**: `text-[var(--base-800)]` - Dark grey for interaction feedback
-- **Active State**: `text-[var(--base-800)]` with `border-b-2 border-[var(--base-800)]` - Dark grey text with underline
+- **Hover State**: `text-[var(--accent-soft-gold)]` - Warm gold for clear interaction feedback
+- **Active State**: `text-[var(--accent-soft-gold)]` with `border-b-2 border-[var(--accent-soft-gold)]` - Gold text with underline
 - **Language Switcher**: Same color scheme as navigation links
 
 #### Logo (Grey Section)
@@ -386,9 +386,10 @@ The navigation banner consists of two sections:
 
 #### Mobile Navigation
 
-- **Links**: Same color scheme as desktop (light grey default, dark grey hover/active)
+- **Links**: Same color scheme as desktop (light grey default, gold hover/active)
+- **Menu Button**: Light grey default with gold hover and subtle gold background tint
 - **Layout**: Centered links with no separator between navigation and language switcher
-- **Active Link**: Dark grey text with underline spanning only the text width
+- **Active Link**: Gold text with underline spanning only the text width
 
 ### Implementation Details
 
@@ -396,8 +397,8 @@ The navigation banner consists of two sections:
 // Desktop navigation links
 <Link
   className={cn(
-    'text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium text-sm px-2',
-    active && 'border-b-2 border-[var(--base-800)] pb-0.5'
+    'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
+    active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
   )}
 >
   {item.name}
@@ -406,32 +407,43 @@ The navigation banner consists of two sections:
 // Language switcher
 <LocaleSwitcher 
   currentLocale={locale} 
-  className="text-[var(--background)] hover:text-[var(--base-800)]"
+  className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
 />
 
 // Mobile navigation links
 <Link
   className={cn(
-    'block px-4 py-3 text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium',
-    active && 'text-[var(--base-800)]'
+    'block px-4 py-3 text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium',
+    active && 'text-[var(--accent-soft-gold)]'
   )}
 >
   <span className={cn(
     'inline-block',
-    active && 'border-b-2 border-[var(--base-800)]'
+    active && 'border-b-2 border-[var(--accent-soft-gold)]'
   )}>
     {item.name}
   </span>
 </Link>
+
+// Mobile menu button
+<button
+  className="lg:hidden p-2 rounded-none hover:bg-[var(--accent-soft-gold)]/10 transition-colors text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
+  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+  aria-label="Toggle mobile menu"
+>
+  <Menu className="w-6 h-6" />
+</button>
 ```
 
 ### Design Rationale
 
 - **Subtle Elegance**: Light grey text on blue background creates sophisticated contrast
-- **Clear Hierarchy**: Active links use dark grey with underline for clear indication
-- **Consistent Interaction**: Hover states use the same dark grey for predictable feedback
-- **Accessibility**: High contrast ratios maintained for WCAG AA compliance
-- **Brand Cohesion**: Colors align with the overall theme system
+- **Clear Hierarchy**: Active links use warm gold with underline for clear indication
+- **Distinct Interaction**: Hover states use accent-soft-gold for highly visible feedback
+- **Accessibility**: High contrast ratios maintained for WCAG AA compliance (4.5:1 minimum)
+- **Brand Cohesion**: Colors align with the overall theme system's accent palette
+- **Consistency**: Both desktop and mobile navigation use identical color schemes
+- **Visual Distinction**: Gold hover color provides clear differentiation from default state
 
 ---
 
