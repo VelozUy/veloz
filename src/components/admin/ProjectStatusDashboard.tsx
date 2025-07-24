@@ -4,24 +4,33 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  BarChart3, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
-  Camera, 
-  Edit, 
-  Package, 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  BarChart3,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Camera,
+  Edit,
+  Package,
   FileText,
   TrendingUp,
   Calendar,
-  Users
+  Users,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { ProjectStatus } from './ProjectStatusManager';
-import { projectStatusService, EnhancedProject } from '@/services/project-status';
+import {
+  projectStatusService,
+  EnhancedProject,
+} from '@/services/project-status';
 
 interface ProjectStatusDashboardProps {
   compactMode?: boolean;
@@ -32,54 +41,58 @@ const STATUS_CONFIG = {
     label: 'Borrador',
     icon: FileText,
     color: 'bg-muted text-muted-foreground',
-    description: 'Proyectos en planificación'
+    description: 'Proyectos en planificación',
   },
   shooting_scheduled: {
     label: 'Shooting Programado',
     icon: Calendar,
-    color: 'bg-blue-100 text-blue-800 border-blue-200',
-    description: 'Shootings programados'
+    color: 'bg-primary/10 text-primary border-primary/20',
+    description: 'Shootings programados',
   },
   shooting_completed: {
     label: 'Shooting Completado',
     icon: Camera,
-    color: 'bg-green-100 text-green-800 border-green-200',
-    description: 'Shootings realizados'
+    color: 'bg-success/10 text-success border-success/20',
+    description: 'Shootings realizados',
   },
   in_editing: {
     label: 'En Edición',
     icon: Edit,
-    color: 'bg-purple-100 text-purple-800 border-purple-200',
-    description: 'Proyectos en edición'
+    color: 'bg-accent/10 text-accent border-accent/20',
+    description: 'Proyectos en edición',
   },
   editing_completed: {
     label: 'Edición Completada',
     icon: CheckCircle,
-    color: 'bg-orange-100 text-orange-800 border-orange-200',
-    description: 'Edición finalizada'
+    color: 'bg-warning/10 text-warning border-warning/20',
+    description: 'Edición finalizada',
   },
   delivered: {
     label: 'Entregado',
     icon: Package,
-    color: 'bg-green-100 text-green-800 border-green-200',
-    description: 'Proyectos entregados'
+    color: 'bg-success/10 text-success border-success/20',
+    description: 'Proyectos entregados',
   },
   completed: {
     label: 'Completado',
     icon: CheckCircle,
     color: 'bg-success/10 text-success border-success/20',
-    description: 'Proyectos completados'
-  }
+    description: 'Proyectos completados',
+  },
 };
 
 export default function ProjectStatusDashboard({
-  compactMode = false
+  compactMode = false,
 }: ProjectStatusDashboardProps) {
-  const [statusStats, setStatusStats] = useState<Record<ProjectStatus, number>>({} as Record<ProjectStatus, number>);
+  const [statusStats, setStatusStats] = useState<Record<ProjectStatus, number>>(
+    {} as Record<ProjectStatus, number>
+  );
   const [projects, setProjects] = useState<EnhancedProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedStatus, setSelectedStatus] = useState<ProjectStatus | 'all'>('all');
+  const [selectedStatus, setSelectedStatus] = useState<ProjectStatus | 'all'>(
+    'all'
+  );
   const [recentChanges, setRecentChanges] = useState<any[]>([]);
 
   useEffect(() => {
@@ -101,7 +114,6 @@ export default function ProjectStatusDashboard({
 
       // Load projects for selected status
       await loadProjectsForStatus(selectedStatus);
-
     } catch (error) {
       console.error('Error loading dashboard data:', error);
       setError('Error al cargar los datos del dashboard');
@@ -114,11 +126,17 @@ export default function ProjectStatusDashboard({
     try {
       if (status === 'all') {
         // Load projects in active statuses
-        const activeStatuses: ProjectStatus[] = ['draft', 'shooting_scheduled', 'in_editing'];
-        const activeProjects = await projectStatusService.getProjectsByStatusRange(activeStatuses);
+        const activeStatuses: ProjectStatus[] = [
+          'draft',
+          'shooting_scheduled',
+          'in_editing',
+        ];
+        const activeProjects =
+          await projectStatusService.getProjectsByStatusRange(activeStatuses);
         setProjects(activeProjects);
       } else {
-        const statusProjects = await projectStatusService.getProjectsByStatus(status);
+        const statusProjects =
+          await projectStatusService.getProjectsByStatus(status);
         setProjects(statusProjects);
       }
     } catch (error) {
@@ -146,20 +164,32 @@ export default function ProjectStatusDashboard({
   };
 
   const getActiveProjects = (): number => {
-    const activeStatuses: ProjectStatus[] = ['draft', 'shooting_scheduled', 'in_editing'];
-    return activeStatuses.reduce((sum, status) => sum + (statusStats[status] || 0), 0);
+    const activeStatuses: ProjectStatus[] = [
+      'draft',
+      'shooting_scheduled',
+      'in_editing',
+    ];
+    return activeStatuses.reduce(
+      (sum, status) => sum + (statusStats[status] || 0),
+      0
+    );
   };
 
   const getCompletedProjects = (): number => {
     const completedStatuses: ProjectStatus[] = ['delivered', 'completed'];
-    return completedStatuses.reduce((sum, status) => sum + (statusStats[status] || 0), 0);
+    return completedStatuses.reduce(
+      (sum, status) => sum + (statusStats[status] || 0),
+      0
+    );
   };
 
   if (loading) {
     return (
       <Card>
         <CardContent className="p-6">
-          <div className="text-center">Cargando estadísticas de proyectos...</div>
+          <div className="text-center">
+            Cargando estadísticas de proyectos...
+          </div>
         </CardContent>
       </Card>
     );
@@ -185,19 +215,25 @@ export default function ProjectStatusDashboard({
         <div className="grid grid-cols-3 gap-3">
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{getTotalProjects()}</div>
+              <div className="text-2xl font-bold text-primary">
+                {getTotalProjects()}
+              </div>
               <div className="text-xs text-muted-foreground">Total</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-2xl font-bold text-warning">{getActiveProjects()}</div>
+              <div className="text-2xl font-bold text-warning">
+                {getActiveProjects()}
+              </div>
               <div className="text-xs text-muted-foreground">Activos</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-2xl font-bold text-success">{getCompletedProjects()}</div>
+              <div className="text-2xl font-bold text-success">
+                {getCompletedProjects()}
+              </div>
               <div className="text-xs text-muted-foreground">Completados</div>
             </CardContent>
           </Card>
@@ -206,7 +242,12 @@ export default function ProjectStatusDashboard({
         {/* Status Filter */}
         <Card>
           <CardContent className="p-3">
-            <Select value={selectedStatus} onValueChange={(value: ProjectStatus | 'all') => handleStatusFilterChange(value)}>
+            <Select
+              value={selectedStatus}
+              onValueChange={(value: ProjectStatus | 'all') =>
+                handleStatusFilterChange(value)
+              }
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -234,7 +275,9 @@ export default function ProjectStatusDashboard({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Estado de Proyectos</h2>
-          <p className="text-muted-foreground">Vista general del estado de todos los proyectos</p>
+          <p className="text-muted-foreground">
+            Vista general del estado de todos los proyectos
+          </p>
         </div>
         <Button onClick={loadDashboardData}>
           <TrendingUp className="h-4 w-4 mr-2" />
@@ -246,7 +289,9 @@ export default function ProjectStatusDashboard({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Proyectos</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Proyectos
+            </CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -259,14 +304,16 @@ export default function ProjectStatusDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Proyectos Activos</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Proyectos Activos
+            </CardTitle>
             <Clock className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">{getActiveProjects()}</div>
-            <p className="text-xs text-muted-foreground">
-              En progreso
-            </p>
+            <div className="text-2xl font-bold text-warning">
+              {getActiveProjects()}
+            </div>
+            <p className="text-xs text-muted-foreground">En progreso</p>
           </CardContent>
         </Card>
 
@@ -276,7 +323,9 @@ export default function ProjectStatusDashboard({
             <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">{getCompletedProjects()}</div>
+            <div className="text-2xl font-bold text-success">
+              {getCompletedProjects()}
+            </div>
             <p className="text-xs text-muted-foreground">
               Entregados y finalizados
             </p>
@@ -285,12 +334,19 @@ export default function ProjectStatusDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tasa de Completación</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Tasa de Completación
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {getTotalProjects() > 0 ? Math.round((getCompletedProjects() / getTotalProjects()) * 100) : 0}%
+              {getTotalProjects() > 0
+                ? Math.round(
+                    (getCompletedProjects() / getTotalProjects()) * 100
+                  )
+                : 0}
+              %
             </div>
             <p className="text-xs text-muted-foreground">
               Proyectos completados
@@ -312,14 +368,16 @@ export default function ProjectStatusDashboard({
             {Object.entries(STATUS_CONFIG).map(([status, config]) => {
               const IconComponent = config.icon;
               const count = statusStats[status as ProjectStatus] || 0;
-              
+
               return (
                 <div key={status} className="text-center">
                   <div className="flex items-center justify-center w-12 h-12 mx-auto mb-2 rounded-lg bg-muted">
                     <IconComponent className="h-6 w-6" />
                   </div>
                   <div className="text-2xl font-bold">{count}</div>
-                  <div className="text-sm text-muted-foreground">{config.label}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {config.label}
+                  </div>
                 </div>
               );
             })}
@@ -335,7 +393,12 @@ export default function ProjectStatusDashboard({
               <Users className="h-5 w-5" />
               <span>Proyectos</span>
             </CardTitle>
-            <Select value={selectedStatus} onValueChange={(value: ProjectStatus | 'all') => handleStatusFilterChange(value)}>
+            <Select
+              value={selectedStatus}
+              onValueChange={(value: ProjectStatus | 'all') =>
+                handleStatusFilterChange(value)
+              }
+            >
               <SelectTrigger className="w-48">
                 <SelectValue />
               </SelectTrigger>
@@ -360,11 +423,14 @@ export default function ProjectStatusDashboard({
             </div>
           ) : (
             <div className="space-y-3">
-              {projects.slice(0, 10).map((project) => {
+              {projects.slice(0, 10).map(project => {
                 const statusConfig = getStatusConfig(project.status);
-                
+
                 return (
-                  <div key={project.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div
+                    key={project.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
                     <div className="flex items-center space-x-3">
                       {getStatusIcon(project.status)}
                       <div>
@@ -401,12 +467,15 @@ export default function ProjectStatusDashboard({
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {recentChanges.map((change) => {
+              {recentChanges.map(change => {
                 const fromConfig = getStatusConfig(change.fromStatus);
                 const toConfig = getStatusConfig(change.toStatus);
-                
+
                 return (
-                  <div key={change.id} className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+                  <div
+                    key={change.id}
+                    className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg"
+                  >
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="text-xs">
                         {fromConfig.label}
@@ -417,7 +486,8 @@ export default function ProjectStatusDashboard({
                       </Badge>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {format(change.timestamp, 'PPP p', { locale: es })} • {change.changedBy}
+                      {format(change.timestamp, 'PPP p', { locale: es })} •{' '}
+                      {change.changedBy}
                     </div>
                   </div>
                 );
@@ -428,4 +498,4 @@ export default function ProjectStatusDashboard({
       )}
     </div>
   );
-} 
+}

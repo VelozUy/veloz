@@ -35,8 +35,12 @@ export default function ContactsPage() {
   const [contacts, setContacts] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'new' | 'in_progress' | 'completed' | 'archived'>('all');
-  const [selectedContact, setSelectedContact] = useState<ContactMessage | null>(null);
+  const [filterStatus, setFilterStatus] = useState<
+    'all' | 'new' | 'in_progress' | 'completed' | 'archived'
+  >('all');
+  const [selectedContact, setSelectedContact] = useState<ContactMessage | null>(
+    null
+  );
 
   useEffect(() => {
     loadContacts();
@@ -61,10 +65,11 @@ export default function ContactsPage() {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(contact =>
-        contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.eventType?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        contact =>
+          contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contact.eventType?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -76,14 +81,15 @@ export default function ContactsPage() {
     return filtered;
   };
 
-  const handleStatusUpdate = async (contactId: string, newStatus: ContactMessage['status']) => {
+  const handleStatusUpdate = async (
+    contactId: string,
+    newStatus: ContactMessage['status']
+  ) => {
     try {
       await contactMessageService.update(contactId, { status: newStatus });
-      setContacts(prev => 
-        prev.map(contact => 
-          contact.id === contactId 
-            ? { ...contact, status: newStatus }
-            : contact
+      setContacts(prev =>
+        prev.map(contact =>
+          contact.id === contactId ? { ...contact, status: newStatus } : contact
         )
       );
     } catch (error) {
@@ -94,15 +100,15 @@ export default function ContactsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'new':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/10 text-primary';
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-warning/10 text-warning';
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-success/10 text-success';
       case 'archived':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -173,14 +179,17 @@ export default function ContactsPage() {
                         id="search"
                         placeholder="Buscar por nombre, email o tipo de evento..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={e => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="status-filter">Filtrar por estado</Label>
-                    <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+                    <Select
+                      value={filterStatus}
+                      onValueChange={(value: any) => setFilterStatus(value)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -200,7 +209,10 @@ export default function ContactsPage() {
             {/* Contacts List */}
             <div className="space-y-4">
               {filteredContacts.map(contact => (
-                <Card key={contact.id} className="hover:shadow-md transition-shadow">
+                <Card
+                  key={contact.id}
+                  className="hover:shadow-md transition-shadow"
+                >
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-3 flex-1">
@@ -219,7 +231,7 @@ export default function ContactsPage() {
                               <Badge variant="destructive">Nuevo</Badge>
                             )}
                           </div>
-                          
+
                           <div className="space-y-1 text-sm text-muted-foreground">
                             <div className="flex items-center space-x-2">
                               <MessageSquare className="h-3 w-3" />
@@ -235,13 +247,20 @@ export default function ContactsPage() {
                               <MessageSquare className="h-3 w-3" />
                               <span>{contact.eventType}</span>
                               {contact.eventDate && (
-                                <span>- {new Date(contact.eventDate).toLocaleDateString()}</span>
+                                <span>
+                                  -{' '}
+                                  {new Date(
+                                    contact.eventDate
+                                  ).toLocaleDateString()}
+                                </span>
                               )}
                             </div>
                             {contact.message && (
                               <div className="flex items-start space-x-2">
                                 <MessageSquare className="h-3 w-3 mt-0.5" />
-                                <span className="line-clamp-2">{contact.message}</span>
+                                <span className="line-clamp-2">
+                                  {contact.message}
+                                </span>
                               </div>
                             )}
                           </div>
@@ -260,7 +279,9 @@ export default function ContactsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStatusUpdate(contact.id, 'in_progress')}
+                          onClick={() =>
+                            handleStatusUpdate(contact.id, 'in_progress')
+                          }
                           disabled={contact.status === 'in_progress'}
                         >
                           <Reply className="h-4 w-4 mr-1" />
@@ -269,7 +290,9 @@ export default function ContactsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStatusUpdate(contact.id, 'completed')}
+                          onClick={() =>
+                            handleStatusUpdate(contact.id, 'completed')
+                          }
                           disabled={contact.status === 'completed'}
                         >
                           <MessageSquare className="h-4 w-4 mr-1" />
@@ -278,7 +301,9 @@ export default function ContactsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStatusUpdate(contact.id, 'archived')}
+                          onClick={() =>
+                            handleStatusUpdate(contact.id, 'archived')
+                          }
                           disabled={contact.status === 'archived'}
                         >
                           <Archive className="h-4 w-4 mr-1" />
@@ -301,13 +326,18 @@ export default function ContactsPage() {
           </TabsContent>
 
           <TabsContent value="assignment" className="space-y-4">
-            <ContactProjectAssignment 
+            <ContactProjectAssignment
               onAssignmentChange={(contactId, projectId) => {
-                console.log('Contact assigned:', contactId, 'to project:', projectId);
+                console.log(
+                  'Contact assigned:',
+                  contactId,
+                  'to project:',
+                  projectId
+                );
                 // Optionally reload contacts to show updated assignment
                 loadContacts();
               }}
-              onProjectCreated={(projectId) => {
+              onProjectCreated={projectId => {
                 console.log('New project created:', projectId);
                 // Optionally navigate to the new project
                 window.open(`/admin/projects/${projectId}/edit`, '_blank');

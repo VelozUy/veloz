@@ -522,7 +522,7 @@ export default function CommunicationHub() {
                             {[...Array(5)].map((_, i) => (
                               <span
                                 key={i}
-                                className={`text-lg ${i < item.rating ? 'text-yellow-500' : 'text-muted-foreground'}`}
+                                className={`text-lg ${i < item.rating ? 'text-warning' : 'text-muted-foreground'}`}
                               >
                                 ★
                               </span>

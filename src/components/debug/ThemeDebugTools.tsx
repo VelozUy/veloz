@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 
@@ -45,17 +45,24 @@ export class ThemeDebugger {
       /hsla\([^)]+\)/, // HSLA colors
     ];
 
-    elements.forEach((element) => {
+    elements.forEach(element => {
       const style = window.getComputedStyle(element);
       const backgroundColor = style.backgroundColor;
       const color = style.color;
       const borderColor = style.borderColor;
 
-      const hasHardcodedColor = [backgroundColor, color, borderColor].some((value) => {
-        return hardcodedColorPatterns.some((pattern) => pattern.test(value));
-      });
+      const hasHardcodedColor = [backgroundColor, color, borderColor].some(
+        value => {
+          return hardcodedColorPatterns.some(pattern => pattern.test(value));
+        }
+      );
 
-      if (hasHardcodedColor && !this.isThemeVariable(backgroundColor) && !this.isThemeVariable(color) && !this.isThemeVariable(borderColor)) {
+      if (
+        hasHardcodedColor &&
+        !this.isThemeVariable(backgroundColor) &&
+        !this.isThemeVariable(color) &&
+        !this.isThemeVariable(borderColor)
+      ) {
         this.highlightElement(element);
         console.warn('🎨 Hardcoded color detected:', {
           element: element.tagName,
@@ -69,7 +76,12 @@ export class ThemeDebugger {
   }
 
   private isThemeVariable(value: string): boolean {
-    return value.includes('var(--') || value.includes('oklch(') || value === 'transparent' || value === 'inherit';
+    return (
+      value.includes('var(--') ||
+      value.includes('oklch(') ||
+      value === 'transparent' ||
+      value === 'inherit'
+    );
   }
 
   private highlightElement(element: Element): void {
@@ -82,7 +94,7 @@ export class ThemeDebugger {
   }
 
   private clearHighlights(): void {
-    this.highlightedElements.forEach((element) => {
+    this.highlightedElements.forEach(element => {
       element.removeAttribute('data-theme-debug');
       (element as HTMLElement).style.outline = '';
       (element as HTMLElement).style.outlineOffset = '';
@@ -115,29 +127,22 @@ export const ThemeDebugTools: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 20, right: 20, zIndex: 9999, background: '#fff', border: '1px solid #ccc', borderRadius: 8, padding: 16, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <div className="fixed top-5 right-5 z-50 bg-background border border-border rounded-lg p-4 shadow-lg">
+      <div className="flex items-center gap-3">
         <button
           onClick={handleToggle}
-          style={{
-            padding: '8px 16px',
-            background: isEnabled ? '#dc2626' : '#059669',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 600,
-          }}
+          className={`px-4 py-2 text-primary-foreground border-none rounded cursor-pointer text-sm font-semibold ${
+            isEnabled ? 'bg-destructive' : 'bg-success'
+          }`}
         >
           {isEnabled ? 'Disable' : 'Enable'} Theme Debug
         </button>
-        <div style={{ fontSize: 12, color: '#666' }}>
+        <div className="text-xs text-muted-foreground">
           {isEnabled ? '🔍 Active' : '⚪ Inactive'}
         </div>
       </div>
       {isEnabled && (
-        <div style={{ marginTop: 12, fontSize: 12, color: '#666' }}>
+        <div className="mt-3 text-xs text-muted-foreground">
           <div>• Red outlines = hardcoded colors</div>
           <div>• Check console for warnings</div>
           <div>• Add ?theme-debug=true to URL</div>
@@ -147,4 +152,4 @@ export const ThemeDebugTools: React.FC = () => {
   );
 };
 
-export default ThemeDebugTools; 
+export default ThemeDebugTools;

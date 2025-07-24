@@ -4,35 +4,47 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
-  Camera, 
-  Edit, 
-  Package, 
+import {
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Camera,
+  Edit,
+  Package,
   FileText,
   History,
   Bell,
   Calendar,
   User,
-  MessageSquare
+  MessageSquare,
 } from 'lucide-react';
 import { format, isAfter, isBefore, addDays } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 // Project status types
-export type ProjectStatus = 
-  | 'draft' 
-  | 'shooting_scheduled' 
-  | 'shooting_completed' 
-  | 'in_editing' 
-  | 'editing_completed' 
-  | 'delivered' 
+export type ProjectStatus =
+  | 'draft'
+  | 'shooting_scheduled'
+  | 'shooting_completed'
+  | 'in_editing'
+  | 'editing_completed'
+  | 'delivered'
   | 'completed';
 
 // Status change record
@@ -73,51 +85,51 @@ const STATUS_CONFIG = {
     label: 'Borrador',
     color: 'bg-muted text-muted-foreground',
     icon: FileText,
-    description: 'Proyecto en fase de planificación'
+    description: 'Proyecto en fase de planificación',
   },
   shooting_scheduled: {
     label: 'Shooting Programado',
-    color: 'bg-blue-100 text-blue-800 border-blue-200',
+    color: 'bg-primary/10 text-primary border-primary/20',
     icon: Calendar,
-    description: 'Shooting programado y confirmado'
+    description: 'Shooting programado y confirmado',
   },
   shooting_completed: {
     label: 'Shooting Completado',
-    color: 'bg-green-100 text-green-800 border-green-200',
+    color: 'bg-success/10 text-success border-success/20',
     icon: Camera,
-    description: 'Shooting realizado, listo para edición'
+    description: 'Shooting realizado, listo para edición',
   },
   in_editing: {
     label: 'En Edición',
-    color: 'bg-purple-100 text-purple-800 border-purple-200',
+    color: 'bg-accent/10 text-accent border-accent/20',
     icon: Edit,
-    description: 'Proyecto en fase de edición'
+    description: 'Proyecto en fase de edición',
   },
   editing_completed: {
     label: 'Edición Completada',
-    color: 'bg-orange-100 text-orange-800 border-orange-200',
+    color: 'bg-warning/10 text-warning border-warning/20',
     icon: CheckCircle,
-    description: 'Edición finalizada, listo para entrega'
+    description: 'Edición finalizada, listo para entrega',
   },
   delivered: {
     label: 'Entregado',
-    color: 'bg-green-100 text-green-800 border-green-200',
+    color: 'bg-success/10 text-success border-success/20',
     icon: Package,
-    description: 'Proyecto entregado al cliente'
+    description: 'Proyecto entregado al cliente',
   },
   completed: {
     label: 'Completado',
     color: 'bg-success/10 text-success border-success/20',
     icon: CheckCircle,
-    description: 'Proyecto completamente finalizado'
-  }
+    description: 'Proyecto completamente finalizado',
+  },
 };
 
 export default function ProjectStatusManager({
   projectId,
   compactMode = false,
   showHistory = true,
-  onStatusChange
+  onStatusChange,
 }: ProjectStatusManagerProps) {
   const [project, setProject] = useState<EnhancedProject | null>(null);
   const [loading, setLoading] = useState(true);
@@ -137,10 +149,10 @@ export default function ProjectStatusManager({
     try {
       setLoading(true);
       setError(null);
-      
+
       // TODO: Replace with actual service call
       // const projectData = await getProjectService().getProject(projectId);
-      
+
       // Mock data for now
       const mockProject: EnhancedProject = {
         id: projectId || 'mock-project',
@@ -153,7 +165,7 @@ export default function ProjectStatusManager({
             toStatus: 'shooting_scheduled',
             timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
             changedBy: 'admin',
-            notes: 'Shooting programado para el 15 de enero'
+            notes: 'Shooting programado para el 15 de enero',
           },
           {
             id: '2',
@@ -161,7 +173,7 @@ export default function ProjectStatusManager({
             toStatus: 'shooting_completed',
             timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
             changedBy: 'admin',
-            notes: 'Shooting realizado exitosamente'
+            notes: 'Shooting realizado exitosamente',
           },
           {
             id: '3',
@@ -169,8 +181,8 @@ export default function ProjectStatusManager({
             toStatus: 'in_editing',
             timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
             changedBy: 'admin',
-            notes: 'Iniciando proceso de edición'
-          }
+            notes: 'Iniciando proceso de edición',
+          },
         ],
         shootingDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
         deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -179,9 +191,9 @@ export default function ProjectStatusManager({
         assignee: 'admin',
         priority: 'high',
         createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
-      
+
       setProject(mockProject);
     } catch (error) {
       console.error('Error loading project:', error);
@@ -201,19 +213,23 @@ export default function ProjectStatusManager({
         toStatus: newStatus,
         timestamp: new Date(),
         changedBy: currentUser,
-        notes: statusNotes
+        notes: statusNotes,
       };
 
       // TODO: Update project status via service
       // await updateProjectStatus(project.id, newStatus, statusChange);
 
       // Update local state
-      setProject(prev => prev ? {
-        ...prev,
-        status: newStatus,
-        statusHistory: [statusChange, ...prev.statusHistory],
-        updatedAt: new Date()
-      } : null);
+      setProject(prev =>
+        prev
+          ? {
+              ...prev,
+              status: newStatus,
+              statusHistory: [statusChange, ...prev.statusHistory],
+              updatedAt: new Date(),
+            }
+          : null
+      );
 
       // Call callback if provided
       if (onStatusChange) {
@@ -234,12 +250,22 @@ export default function ProjectStatusManager({
   };
 
   const shouldSendNotification = (status: ProjectStatus): boolean => {
-    return ['shooting_scheduled', 'shooting_completed', 'delivered', 'completed'].includes(status);
+    return [
+      'shooting_scheduled',
+      'shooting_completed',
+      'delivered',
+      'completed',
+    ].includes(status);
   };
 
-  const sendStatusNotification = async (project: EnhancedProject, status: ProjectStatus) => {
+  const sendStatusNotification = async (
+    project: EnhancedProject,
+    status: ProjectStatus
+  ) => {
     // TODO: Implement notification service
-    console.log(`Sending notification for project ${project.id} status change to ${status}`);
+    console.log(
+      `Sending notification for project ${project.id} status change to ${status}`
+    );
   };
 
   const getStatusIcon = (status: ProjectStatus) => {
@@ -260,13 +286,21 @@ export default function ProjectStatusManager({
       in_editing: ['editing_completed', 'shooting_completed'],
       editing_completed: ['delivered', 'in_editing'],
       delivered: ['completed', 'editing_completed'],
-      completed: ['delivered']
+      completed: ['delivered'],
     };
     return statusFlow[currentStatus] || [];
   };
 
   const getStatusProgress = (status: ProjectStatus): number => {
-    const statusOrder = ['draft', 'shooting_scheduled', 'shooting_completed', 'in_editing', 'editing_completed', 'delivered', 'completed'];
+    const statusOrder = [
+      'draft',
+      'shooting_scheduled',
+      'shooting_completed',
+      'in_editing',
+      'editing_completed',
+      'delivered',
+      'completed',
+    ];
     const index = statusOrder.indexOf(status);
     return index >= 0 ? ((index + 1) / statusOrder.length) * 100 : 0;
   };
@@ -316,7 +350,9 @@ export default function ProjectStatusManager({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             {getStatusIcon(project.status)}
-            <span className="text-sm font-medium">{currentStatusConfig.label}</span>
+            <span className="text-sm font-medium">
+              {currentStatusConfig.label}
+            </span>
           </div>
           <Dialog open={showStatusDialog} onOpenChange={setShowStatusDialog}>
             <DialogTrigger asChild>
@@ -331,7 +367,12 @@ export default function ProjectStatusManager({
               <div className="space-y-4">
                 <div>
                   <Label>Nuevo Estado</Label>
-                  <Select value={newStatus} onValueChange={(value: ProjectStatus) => setNewStatus(value)}>
+                  <Select
+                    value={newStatus}
+                    onValueChange={(value: ProjectStatus) =>
+                      setNewStatus(value)
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -354,26 +395,27 @@ export default function ProjectStatusManager({
                   <Label>Notas (opcional)</Label>
                   <Textarea
                     value={statusNotes}
-                    onChange={(e) => setStatusNotes(e.target.value)}
+                    onChange={e => setStatusNotes(e.target.value)}
                     placeholder="Agregar notas sobre el cambio de estado..."
                   />
                 </div>
                 <div className="flex justify-end space-x-2">
-                  <Button variant="outline" onClick={() => setShowStatusDialog(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowStatusDialog(false)}
+                  >
                     Cancelar
                   </Button>
-                  <Button onClick={handleStatusChange}>
-                    Confirmar Cambio
-                  </Button>
+                  <Button onClick={handleStatusChange}>Confirmar Cambio</Button>
                 </div>
               </div>
             </DialogContent>
           </Dialog>
         </div>
-        
+
         {/* Progress bar */}
         <div className="w-full bg-muted rounded-full h-2">
-          <div 
+          <div
             className="bg-primary h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
@@ -405,11 +447,12 @@ export default function ProjectStatusManager({
                   </div>
                 </div>
               </div>
-              <Dialog open={showStatusDialog} onOpenChange={setShowStatusDialog}>
+              <Dialog
+                open={showStatusDialog}
+                onOpenChange={setShowStatusDialog}
+              >
                 <DialogTrigger asChild>
-                  <Button>
-                    Cambiar Estado
-                  </Button>
+                  <Button>Cambiar Estado</Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
@@ -418,7 +461,12 @@ export default function ProjectStatusManager({
                   <div className="space-y-4">
                     <div>
                       <Label>Nuevo Estado</Label>
-                      <Select value={newStatus} onValueChange={(value: ProjectStatus) => setNewStatus(value)}>
+                      <Select
+                        value={newStatus}
+                        onValueChange={(value: ProjectStatus) =>
+                          setNewStatus(value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -441,13 +489,16 @@ export default function ProjectStatusManager({
                       <Label>Notas (opcional)</Label>
                       <Textarea
                         value={statusNotes}
-                        onChange={(e) => setStatusNotes(e.target.value)}
+                        onChange={e => setStatusNotes(e.target.value)}
                         placeholder="Agregar notas sobre el cambio de estado..."
                         rows={3}
                       />
                     </div>
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" onClick={() => setShowStatusDialog(false)}>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowStatusDialog(false)}
+                      >
                         Cancelar
                       </Button>
                       <Button onClick={handleStatusChange}>
@@ -466,7 +517,7 @@ export default function ProjectStatusManager({
                 <span>{Math.round(progress)}%</span>
               </div>
               <div className="w-full bg-muted rounded-full h-3">
-                <div 
+                <div
                   className="bg-primary h-3 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
@@ -476,23 +527,39 @@ export default function ProjectStatusManager({
             {/* Project Details */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t">
               <div>
-                <div className="text-sm font-medium text-muted-foreground">Cliente</div>
-                <div className="text-sm">{project.clientName || 'No especificado'}</div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Cliente
+                </div>
+                <div className="text-sm">
+                  {project.clientName || 'No especificado'}
+                </div>
               </div>
               <div>
-                <div className="text-sm font-medium text-muted-foreground">Asignado a</div>
-                <div className="text-sm">{project.assignee || 'No asignado'}</div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Asignado a
+                </div>
+                <div className="text-sm">
+                  {project.assignee || 'No asignado'}
+                </div>
               </div>
               {project.shootingDate && (
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Fecha de Shooting</div>
-                  <div className="text-sm">{format(project.shootingDate, 'PPP', { locale: es })}</div>
+                  <div className="text-sm font-medium text-muted-foreground">
+                    Fecha de Shooting
+                  </div>
+                  <div className="text-sm">
+                    {format(project.shootingDate, 'PPP', { locale: es })}
+                  </div>
                 </div>
               )}
               {project.deliveryDate && (
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Fecha de Entrega</div>
-                  <div className="text-sm">{format(project.deliveryDate, 'PPP', { locale: es })}</div>
+                  <div className="text-sm font-medium text-muted-foreground">
+                    Fecha de Entrega
+                  </div>
+                  <div className="text-sm">
+                    {format(project.deliveryDate, 'PPP', { locale: es })}
+                  </div>
                 </div>
               )}
             </div>
@@ -514,9 +581,12 @@ export default function ProjectStatusManager({
               {project.statusHistory.map((change, index) => {
                 const fromConfig = getStatusConfig(change.fromStatus);
                 const toConfig = getStatusConfig(change.toStatus);
-                
+
                 return (
-                  <div key={change.id} className="flex items-start space-x-3 p-3 bg-muted/50 rounded-lg">
+                  <div
+                    key={change.id}
+                    className="flex items-start space-x-3 p-3 bg-muted/50 rounded-lg"
+                  >
                     <div className="mt-1">
                       <div className="w-2 h-2 bg-primary rounded-full" />
                     </div>
@@ -531,7 +601,8 @@ export default function ProjectStatusManager({
                         </Badge>
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {format(change.timestamp, 'PPP p', { locale: es })} • {change.changedBy}
+                        {format(change.timestamp, 'PPP p', { locale: es })} •{' '}
+                        {change.changedBy}
                       </div>
                       {change.notes && (
                         <div className="text-sm mt-1 p-2 bg-background rounded border">
@@ -548,4 +619,4 @@ export default function ProjectStatusManager({
       )}
     </div>
   );
-} 
+}

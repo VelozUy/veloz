@@ -62,11 +62,16 @@ export default function ContactProjectAssignment({
   const [projects, setProjects] = useState<EnhancedProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'assigned' | 'unassigned'>('all');
-  const [selectedContact, setSelectedContact] = useState<ContactWithProject | null>(null);
-  const [selectedProject, setSelectedProject] = useState<EnhancedProject | null>(null);
+  const [filterStatus, setFilterStatus] = useState<
+    'all' | 'assigned' | 'unassigned'
+  >('all');
+  const [selectedContact, setSelectedContact] =
+    useState<ContactWithProject | null>(null);
+  const [selectedProject, setSelectedProject] =
+    useState<EnhancedProject | null>(null);
   const [isAssignmentDialogOpen, setIsAssignmentDialogOpen] = useState(false);
-  const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] = useState(false);
+  const [isCreateProjectDialogOpen, setIsCreateProjectDialogOpen] =
+    useState(false);
 
   useEffect(() => {
     loadData();
@@ -75,7 +80,7 @@ export default function ContactProjectAssignment({
   const loadData = async () => {
     try {
       setLoading(true);
-      
+
       // Load contacts and projects in parallel
       const [contactsResponse, projectsResponse] = await Promise.all([
         contactMessageService.getAll(),
@@ -101,10 +106,11 @@ export default function ContactProjectAssignment({
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(contact =>
-        contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.eventType?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        contact =>
+          contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contact.eventType?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -128,13 +134,11 @@ export default function ContactProjectAssignment({
     try {
       // Update contact with project assignment
       await contactMessageService.update(contactId, { projectId });
-      
+
       // Update local state
-      setContacts(prev => 
-        prev.map(contact => 
-          contact.id === contactId 
-            ? { ...contact, projectId }
-            : contact
+      setContacts(prev =>
+        prev.map(contact =>
+          contact.id === contactId ? { ...contact, projectId } : contact
         )
       );
 
@@ -149,11 +153,11 @@ export default function ContactProjectAssignment({
     try {
       // Remove project assignment from contact
       await contactMessageService.update(contactId, { projectId: null });
-      
+
       // Update local state
-      setContacts(prev => 
-        prev.map(contact => 
-          contact.id === contactId 
+      setContacts(prev =>
+        prev.map(contact =>
+          contact.id === contactId
             ? { ...contact, projectId: undefined }
             : contact
         )
@@ -165,7 +169,9 @@ export default function ContactProjectAssignment({
     }
   };
 
-  const handleCreateProjectFromContact = async (contact: ContactWithProject) => {
+  const handleCreateProjectFromContact = async (
+    contact: ContactWithProject
+  ) => {
     try {
       // Create new project from contact data
       const projectData = {
@@ -177,7 +183,9 @@ export default function ContactProjectAssignment({
         description: {
           es: contact.message || 'Proyecto creado desde formulario de contacto',
           en: contact.message || 'Project created from contact form',
-          pt: contact.message || 'Projeto criado a partir do formulário de contato',
+          pt:
+            contact.message ||
+            'Projeto criado a partir do formulário de contato',
         },
         eventType: contact.eventType || 'other',
         eventDate: contact.eventDate || new Date().toISOString(),
@@ -214,10 +222,10 @@ export default function ContactProjectAssignment({
       };
 
       const projectId = await projectTrackingService.createProject(projectData);
-      
+
       // Assign contact to the new project
       await handleAssignContact(contact.id, projectId);
-      
+
       onProjectCreated?.(projectId);
       setIsCreateProjectDialogOpen(false);
     } catch (error) {
@@ -228,15 +236,15 @@ export default function ContactProjectAssignment({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'new':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/10 text-primary';
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-warning/10 text-warning';
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-success/10 text-success';
       case 'archived':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -290,20 +298,25 @@ export default function ContactProjectAssignment({
                   id="search"
                   placeholder="Buscar por nombre, email o tipo de evento..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="flex-1">
               <Label htmlFor="status-filter">Filtrar por estado</Label>
-              <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+              <Select
+                value={filterStatus}
+                onValueChange={(value: any) => setFilterStatus(value)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos los contactos</SelectItem>
-                  <SelectItem value="assigned">Asignados a proyectos</SelectItem>
+                  <SelectItem value="assigned">
+                    Asignados a proyectos
+                  </SelectItem>
                   <SelectItem value="unassigned">Sin asignar</SelectItem>
                 </SelectContent>
               </Select>
@@ -335,7 +348,7 @@ export default function ContactProjectAssignment({
                         </Badge>
                       )}
                     </div>
-                    
+
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
                         <Mail className="h-3 w-3" />
@@ -351,13 +364,17 @@ export default function ContactProjectAssignment({
                         <Calendar className="h-3 w-3" />
                         <span>{contact.eventType}</span>
                         {contact.eventDate && (
-                          <span>- {new Date(contact.eventDate).toLocaleDateString()}</span>
+                          <span>
+                            - {new Date(contact.eventDate).toLocaleDateString()}
+                          </span>
                         )}
                       </div>
                       {contact.message && (
                         <div className="flex items-start space-x-2">
                           <MessageSquare className="h-3 w-3 mt-0.5" />
-                          <span className="line-clamp-2">{contact.message}</span>
+                          <span className="line-clamp-2">
+                            {contact.message}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -367,7 +384,8 @@ export default function ContactProjectAssignment({
                         <div className="flex items-center space-x-2">
                           <FolderOpen className="h-3 w-3 text-primary" />
                           <span className="text-sm font-medium">
-                            Proyecto: {contact.project?.title?.es || 'Proyecto asignado'}
+                            Proyecto:{' '}
+                            {contact.project?.title?.es || 'Proyecto asignado'}
                           </span>
                         </div>
                       </div>
@@ -398,7 +416,7 @@ export default function ContactProjectAssignment({
                       Asignar
                     </Button>
                   )}
-                  
+
                   <Button
                     variant="outline"
                     size="sm"
@@ -426,22 +444,28 @@ export default function ContactProjectAssignment({
       </div>
 
       {/* Assignment Dialog */}
-      <Dialog open={isAssignmentDialogOpen} onOpenChange={setIsAssignmentDialogOpen}>
+      <Dialog
+        open={isAssignmentDialogOpen}
+        onOpenChange={setIsAssignmentDialogOpen}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Asignar Contacto a Proyecto</DialogTitle>
             <DialogDescription>
-              Selecciona un proyecto para asignar el contacto &quot;{selectedContact?.name}&quot;
+              Selecciona un proyecto para asignar el contacto &quot;
+              {selectedContact?.name}&quot;
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div>
               <Label>Proyecto</Label>
-              <Select onValueChange={(value) => {
-                const project = projects.find(p => p.id === value);
-                setSelectedProject(project || null);
-              }}>
+              <Select
+                onValueChange={value => {
+                  const project = projects.find(p => p.id === value);
+                  setSelectedProject(project || null);
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecciona un proyecto" />
                 </SelectTrigger>
@@ -478,26 +502,46 @@ export default function ContactProjectAssignment({
       </Dialog>
 
       {/* Create Project Dialog */}
-      <Dialog open={isCreateProjectDialogOpen} onOpenChange={setIsCreateProjectDialogOpen}>
+      <Dialog
+        open={isCreateProjectDialogOpen}
+        onOpenChange={setIsCreateProjectDialogOpen}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Crear Proyecto desde Contacto</DialogTitle>
             <DialogDescription>
-              Crear un nuevo proyecto basado en la información del contacto &quot;{selectedContact?.name}&quot;
+              Crear un nuevo proyecto basado en la información del contacto
+              &quot;{selectedContact?.name}&quot;
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="p-4 bg-muted rounded">
               <h4 className="font-medium mb-2">Información del Contacto</h4>
               <div className="space-y-1 text-sm">
-                <div><strong>Nombre:</strong> {selectedContact?.name}</div>
-                <div><strong>Email:</strong> {selectedContact?.email}</div>
-                <div><strong>Teléfono:</strong> {selectedContact?.phone || 'No proporcionado'}</div>
-                <div><strong>Tipo de evento:</strong> {selectedContact?.eventType}</div>
-                <div><strong>Fecha:</strong> {selectedContact?.eventDate ? new Date(selectedContact.eventDate).toLocaleDateString() : 'No especificada'}</div>
+                <div>
+                  <strong>Nombre:</strong> {selectedContact?.name}
+                </div>
+                <div>
+                  <strong>Email:</strong> {selectedContact?.email}
+                </div>
+                <div>
+                  <strong>Teléfono:</strong>{' '}
+                  {selectedContact?.phone || 'No proporcionado'}
+                </div>
+                <div>
+                  <strong>Tipo de evento:</strong> {selectedContact?.eventType}
+                </div>
+                <div>
+                  <strong>Fecha:</strong>{' '}
+                  {selectedContact?.eventDate
+                    ? new Date(selectedContact.eventDate).toLocaleDateString()
+                    : 'No especificada'}
+                </div>
                 {selectedContact?.message && (
-                  <div><strong>Mensaje:</strong> {selectedContact.message}</div>
+                  <div>
+                    <strong>Mensaje:</strong> {selectedContact.message}
+                  </div>
                 )}
               </div>
             </div>
@@ -524,4 +568,4 @@ export default function ContactProjectAssignment({
       </Dialog>
     </div>
   );
-} 
+}

@@ -79,7 +79,13 @@ interface UpcomingTask {
   assignee?: string;
   completed: boolean;
   overdue: boolean;
-  category?: 'shooting' | 'meeting' | 'editing' | 'delivery' | 'follow-up' | 'other';
+  category?:
+    | 'shooting'
+    | 'meeting'
+    | 'editing'
+    | 'delivery'
+    | 'follow-up'
+    | 'other';
   taskType?: 'action' | 'milestone' | 'reminder';
 }
 
@@ -154,7 +160,7 @@ export default function DashboardUpcomingTasks({
           if (project) {
             // Categorize task based on title and content
             const category = categorizeTask(data.title, data.notes || '');
-            
+
             taskList.push({
               id: doc.id,
               projectId: data.projectId,
@@ -172,7 +178,9 @@ export default function DashboardUpcomingTasks({
         }
       });
 
-      console.log(`Loaded ${taskList.length} tasks from ${tasksSnapshot.size} total tasks`);
+      console.log(
+        `Loaded ${taskList.length} tasks from ${tasksSnapshot.size} total tasks`
+      );
 
       // If no tasks found, show a message
       if (taskList.length === 0) {
@@ -212,15 +220,25 @@ export default function DashboardUpcomingTasks({
 
         // First sort by priority (high priority first)
         const priorityOrder = { high: 3, medium: 2, low: 1 };
-        const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
+        const priorityDiff =
+          priorityOrder[b.priority] - priorityOrder[a.priority];
         if (priorityDiff !== 0) return priorityDiff;
 
         // Then sort by due date (earliest first)
         comparison = a.dueDate.getTime() - b.dueDate.getTime();
 
         // Then by category (shooting and meetings first)
-        const categoryOrder = { shooting: 3, meeting: 2, editing: 1, delivery: 1, 'follow-up': 1, other: 0 };
-        const categoryDiff = (categoryOrder[b.category || 'other'] || 0) - (categoryOrder[a.category || 'other'] || 0);
+        const categoryOrder = {
+          shooting: 3,
+          meeting: 2,
+          editing: 1,
+          delivery: 1,
+          'follow-up': 1,
+          other: 0,
+        };
+        const categoryDiff =
+          (categoryOrder[b.category || 'other'] || 0) -
+          (categoryOrder[a.category || 'other'] || 0);
         if (categoryDiff !== 0) return categoryDiff;
 
         return sortOrder === 'asc' ? comparison : -comparison;
@@ -230,36 +248,65 @@ export default function DashboardUpcomingTasks({
       setLoading(false);
     } catch (error) {
       console.error('Error loading upcoming tasks:', error);
-      
+
       // Check if it's a permissions error
       if (error instanceof Error && error.message.includes('permissions')) {
-        console.error('Permission error - check Firestore rules for projectTasks collection');
-        setError('Error de permisos: Verificar reglas de Firestore para la colección projectTasks');
+        console.error(
+          'Permission error - check Firestore rules for projectTasks collection'
+        );
+        setError(
+          'Error de permisos: Verificar reglas de Firestore para la colección projectTasks'
+        );
       } else {
         setError('Error al cargar las tareas próximas');
       }
-      
+
       setLoading(false);
     }
   }, [filterPeriod, sortBy, sortOrder]);
 
   // Helper function to categorize tasks
-  const categorizeTask = (title: string, notes: string): UpcomingTask['category'] => {
+  const categorizeTask = (
+    title: string,
+    notes: string
+  ): UpcomingTask['category'] => {
     const text = (title + ' ' + notes).toLowerCase();
-    
-    if (text.includes('shooting') || text.includes('fotografía') || text.includes('video') || text.includes('sesión')) {
+
+    if (
+      text.includes('shooting') ||
+      text.includes('fotografía') ||
+      text.includes('video') ||
+      text.includes('sesión')
+    ) {
       return 'shooting';
     }
-    if (text.includes('meeting') || text.includes('reunión') || text.includes('zoom') || text.includes('llamada')) {
+    if (
+      text.includes('meeting') ||
+      text.includes('reunión') ||
+      text.includes('zoom') ||
+      text.includes('llamada')
+    ) {
       return 'meeting';
     }
-    if (text.includes('editing') || text.includes('edición') || text.includes('post-producción')) {
+    if (
+      text.includes('editing') ||
+      text.includes('edición') ||
+      text.includes('post-producción')
+    ) {
       return 'editing';
     }
-    if (text.includes('delivery') || text.includes('entrega') || text.includes('final')) {
+    if (
+      text.includes('delivery') ||
+      text.includes('entrega') ||
+      text.includes('final')
+    ) {
       return 'delivery';
     }
-    if (text.includes('follow-up') || text.includes('seguimiento') || text.includes('recordatorio')) {
+    if (
+      text.includes('follow-up') ||
+      text.includes('seguimiento') ||
+      text.includes('recordatorio')
+    ) {
       return 'follow-up';
     }
     return 'other';
@@ -283,13 +330,13 @@ export default function DashboardUpcomingTasks({
       case 'shooting':
         return <Camera className="h-4 w-4 text-primary" />;
       case 'meeting':
-        return <Users className="h-4 w-4 text-blue-500" />;
+        return <Users className="h-4 w-4 text-accent" />;
       case 'editing':
-        return <Edit className="h-4 w-4 text-purple-500" />;
+        return <Edit className="h-4 w-4 text-accent" />;
       case 'delivery':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-success" />;
       case 'follow-up':
-        return <MessageSquare className="h-4 w-4 text-orange-500" />;
+        return <MessageSquare className="h-4 w-4 text-warning" />;
       default:
         return <FileText className="h-4 w-4 text-muted-foreground" />;
     }
@@ -322,19 +369,19 @@ export default function DashboardUpcomingTasks({
     // Create more specific, action-oriented titles
     const baseTitle = task.title;
     const category = task.category;
-    
+
     if (category === 'shooting') {
       if (isToday(task.dueDate)) return `Shooting hoy - ${baseTitle}`;
       if (isTomorrow(task.dueDate)) return `Shooting mañana - ${baseTitle}`;
       return `Shooting ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
-    
+
     if (category === 'meeting') {
       if (isToday(task.dueDate)) return `Reunión hoy - ${baseTitle}`;
       if (isTomorrow(task.dueDate)) return `Reunión mañana - ${baseTitle}`;
       return `Reunión ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
-    
+
     return baseTitle;
   };
 
@@ -347,7 +394,15 @@ export default function DashboardUpcomingTasks({
     const shootings = tasks.filter(task => task.category === 'shooting').length;
     const meetings = tasks.filter(task => task.category === 'meeting').length;
 
-    return { total, overdue, today, tomorrow, highPriority, shootings, meetings };
+    return {
+      total,
+      overdue,
+      today,
+      tomorrow,
+      highPriority,
+      shootings,
+      meetings,
+    };
   };
 
   const handleQuickAction = (action: string, taskId?: string) => {
@@ -433,7 +488,7 @@ export default function DashboardUpcomingTasks({
             </Card>
           ))
         )}
-        
+
         {showQuickActions && tasks.length > 0 && (
           <div className="text-center">
             <Button
@@ -540,13 +595,13 @@ export default function DashboardUpcomingTasks({
               </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-500">
+              <div className="text-2xl font-bold text-primary">
                 {stats.shootings}
               </div>
               <div className="text-sm text-muted-foreground">Shootings</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-500">
+              <div className="text-2xl font-bold text-accent">
                 {stats.meetings}
               </div>
               <div className="text-sm text-muted-foreground">Reuniones</div>
@@ -613,7 +668,9 @@ export default function DashboardUpcomingTasks({
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-2">
-                        <h3 className="text-sm font-medium">{getTaskDisplayTitle(task)}</h3>
+                        <h3 className="text-sm font-medium">
+                          {getTaskDisplayTitle(task)}
+                        </h3>
                         <Badge
                           variant="outline"
                           className={`text-xs ${getPriorityColor(task.priority)}`}
@@ -663,7 +720,9 @@ export default function DashboardUpcomingTasks({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleQuickAction('mark-complete', task.id)}
+                      onClick={() =>
+                        handleQuickAction('mark-complete', task.id)
+                      }
                     >
                       <CheckCircle className="h-4 w-4" />
                     </Button>
