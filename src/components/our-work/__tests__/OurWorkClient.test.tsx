@@ -2,23 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import OurWorkClient from '../OurWorkClient';
 
-// Mock the VelozLogo component
-jest.mock('@/components/shared/VelozLogo', () => {
-  return function MockVelozLogo({
-    variant,
-    size,
-  }: {
-    variant?: string;
-    size?: string;
-  }) {
-    return (
-      <div data-testid="veloz-logo" data-variant={variant} data-size={size}>
-        VELOZ
-      </div>
-    );
-  };
-});
-
 // Mock the useScrollNavigation hook
 jest.mock('@/hooks/useScrollNavigation', () => ({
   useScrollNavigation: () => ({
@@ -26,6 +9,22 @@ jest.mock('@/hooks/useScrollNavigation', () => ({
     scrollToCategory: jest.fn(),
   }),
 }));
+
+// Mock the CategoryNavigation component
+jest.mock('../CategoryNavigation', () => {
+  return function MockCategoryNavigation(props: any) {
+    return (
+      <div data-testid="category-navigation">Mock Category Navigation</div>
+    );
+  };
+});
+
+// Mock the OverviewSection component
+jest.mock('../OverviewSection', () => {
+  return function MockOverviewSection(props: any) {
+    return <div data-testid="overview-section">Mock Overview Section</div>;
+  };
+});
 
 describe('OurWorkClient', () => {
   const mockProjects = [
@@ -55,7 +54,7 @@ describe('OurWorkClient', () => {
     },
   ];
 
-  it('renders VelozLogo component instead of hardcoded title', () => {
+  it('renders CategoryNavigation component', () => {
     render(
       <OurWorkClient
         projects={mockProjects}
@@ -64,13 +63,11 @@ describe('OurWorkClient', () => {
       />
     );
 
-    // Check that the Eventos title is rendered instead of VelozLogo
-    const titleElement = screen.getByText('Eventos');
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveClass('uppercase');
+    const navigationElement = screen.getByTestId('category-navigation');
+    expect(navigationElement).toBeInTheDocument();
   });
 
-  it('does not render the old hardcoded title', () => {
+  it('renders OverviewSection component', () => {
     render(
       <OurWorkClient
         projects={mockProjects}
@@ -79,37 +76,7 @@ describe('OurWorkClient', () => {
       />
     );
 
-    // Check that the VelozLogo is not present since it was removed
-    expect(screen.queryByTestId('veloz-logo')).not.toBeInTheDocument();
-  });
-
-  it('renders the Eventos title correctly', () => {
-    render(
-      <OurWorkClient
-        projects={mockProjects}
-        categories={mockCategories}
-        locale="es"
-      />
-    );
-
-    // Check that the Eventos title is rendered
-    const titleElement = screen.getByText('Eventos');
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveClass('uppercase');
-    expect(titleElement).toHaveClass('whitespace-nowrap');
-  });
-
-  it('renders the Events title for English locale', () => {
-    render(
-      <OurWorkClient
-        projects={mockProjects}
-        categories={mockCategories}
-        locale="en"
-      />
-    );
-
-    // Check that the Events title is rendered for English
-    const titleElement = screen.getByText('Events');
-    expect(titleElement).toBeInTheDocument();
+    const overviewElement = screen.getByTestId('overview-section');
+    expect(overviewElement).toBeInTheDocument();
   });
 });

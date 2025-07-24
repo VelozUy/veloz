@@ -80,15 +80,8 @@ describe('Theme Consistency Verification', () => {
       );
 
       // Check for theme background colors
-      const header = container.querySelector('header');
-      expect(header).toHaveClass('bg-background');
-
-      // Check for theme text colors
-      const title = container.querySelector('h1');
-      expect(title).toHaveClass('text-foreground');
-
-      // Check for theme font family
-      expect(title).toHaveClass('font-body');
+      const navigationContainer = container.querySelector('.bg-muted');
+      expect(navigationContainer).toBeInTheDocument();
     });
 
     it('uses proper theme tokens for spacing', () => {
@@ -97,13 +90,9 @@ describe('Theme Consistency Verification', () => {
       );
 
       // Check for theme spacing
-      const header = container.querySelector('header');
-      expect(header).toHaveClass('py-12');
-      expect(header).toHaveClass('md:py-16');
-
-      const containerDiv = container.querySelector('.container');
-      expect(containerDiv).toHaveClass('px-8');
-      expect(containerDiv).toHaveClass('md:px-16');
+      const navigationContainer = container.querySelector('.py-8');
+      expect(navigationContainer).toBeInTheDocument();
+      expect(navigationContainer).toHaveClass('md:py-12');
     });
 
     it('uses zero border radius', () => {
@@ -112,7 +101,7 @@ describe('Theme Consistency Verification', () => {
       );
 
       // Check that no rounded classes are used (except rounded-none) in the header only
-      const headerElements = container.querySelectorAll('header *');
+      const headerElements = container.querySelectorAll('*');
       headerElements.forEach(element => {
         const className = element.className;
         if (typeof className === 'string') {

@@ -135,7 +135,6 @@ export default function CategoryPageClient({
       <OurWorkHeader
         categories={categories}
         locale={locale}
-        title={categoryTitle}
         activeCategory={effectiveActiveCategory}
       />
 

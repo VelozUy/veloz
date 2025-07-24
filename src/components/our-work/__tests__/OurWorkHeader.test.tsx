@@ -39,35 +39,6 @@ describe('OurWorkHeader', () => {
     },
   ];
 
-  it('renders default Eventos title for Spanish locale', () => {
-    render(<OurWorkHeader categories={mockCategories} locale="es" />);
-
-    const titleElement = screen.getByText('Eventos');
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveClass('uppercase');
-    expect(titleElement).toHaveClass('whitespace-nowrap');
-  });
-
-  it('renders Events title for English locale', () => {
-    render(<OurWorkHeader categories={mockCategories} locale="en" />);
-
-    const titleElement = screen.getByText('Events');
-    expect(titleElement).toBeInTheDocument();
-  });
-
-  it('renders custom title when provided', () => {
-    render(
-      <OurWorkHeader
-        categories={mockCategories}
-        locale="es"
-        title="Custom Title"
-      />
-    );
-
-    const titleElement = screen.getByText('Custom Title');
-    expect(titleElement).toBeInTheDocument();
-  });
-
   it('renders CategoryNavigation component', () => {
     render(<OurWorkHeader categories={mockCategories} locale="es" />);
 
