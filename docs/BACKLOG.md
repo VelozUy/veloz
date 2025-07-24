@@ -26,6 +26,8 @@ This file contains unprioritized ideas and future features that have been identi
 - [Client Project Tracking System](#-epic-client-project-tracking-system--completed) ✅ **COMPLETED**
 - [Enhanced Admin Project Management](#-epic-enhanced-admin-project-management--high-priority) ⭐ **HIGH PRIORITY**
 - [Crew Portfolio System](#-epic-crew-portfolio-system--high-priority) ⭐ **HIGH PRIORITY**
+- [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY**
+- [Crew Listing Page & Navigation](#-epic-crew-listing-page--navigation--high-priority) ⭐ **HIGH PRIORITY**
 - [Remove Individual Project Pages](#-epic-remove-individual-project-pages--low-priority) 🟩 **LOW PRIORITY**
 
 ### **📱 Performance & UX Epics**
@@ -40,6 +42,10 @@ This file contains unprioritized ideas and future features that have been identi
 ### **🛠️ Admin & Management Epics**
 
 - [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
+- [Crew Media Assignment System](#-epic-crew-media-assignment-system--high-priority) ⭐ **HIGH PRIORITY**
+- [Default Project Tasks System](#-epic-default-project-tasks-system--high-priority) ⭐ **HIGH PRIORITY**
+- [Project Contact Tab System](#-epic-project-contact-tab-system--high-priority) ⭐ **HIGH PRIORITY**
+- [Admin Contacts Page Redesign](#-epic-admin-contacts-page-redesign--high-priority) ⭐ **HIGH PRIORITY**
 
 ### **📊 Analytics & Business Intelligence Epics**
 
@@ -71,12 +77,12 @@ This file contains unprioritized ideas and future features that have been identi
 
 | Priority               | Count | Status                                                                                                 |
 | ---------------------- | ----- | ------------------------------------------------------------------------------------------------------ |
-| ⭐ **HIGH PRIORITY**   | 8     | Ready to start or in progress                                                                          |
+| ⭐ **HIGH PRIORITY**   | 14    | Ready to start or in progress                                                                          |
 | 🟧 **MEDIUM PRIORITY** | 7     | Future development                                                                                     |
 | 🟩 **LOW PRIORITY**    | 2     | Backlog items                                                                                          |
 | ✅ **COMPLETED**       | 7     | Category system, banner nav, navigation fix, client tracking, client portal, gallery loading completed |
 
-**Total Active Epics**: 19
+**Total Active Epics**: 25
 
 ---
 
@@ -701,8 +707,6 @@ This file contains unprioritized ideas and future features that have been identi
   - **Status**: Ready after Phase 3 completion
 
 #### 🟨 Medium Priority Tasks
-
-
 
 #### 🟩 Low Priority Tasks
 
@@ -3219,6 +3223,1152 @@ This file contains unprioritized ideas and future features that have been identi
 - Test thoroughly with different media types and sizes
 - Maintain backward compatibility during development
 - Create rollback plan for each phase
+
+---
+
+## 🧑‍💼 **EPIC: Crew Media Assignment System** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Implement crew member assignment functionality for media uploads and post-upload editing to track individual crew member contributions to projects
+
+**Reference**: User request for crew member assignment during media upload and post-upload editing
+**User Intent**: Enable project managers to assign crew members to individual media items during upload and update assignments after upload to accurately track crew contributions and provide proper attribution
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Media Upload Crew Assignment** - Add crew member selection during media upload
+  - **User Intent**: Allow crew member assignment when uploading media to projects
+  - **Acceptance Criteria**:
+    - Crew member dropdown/selector in media upload interface
+    - Multiple crew member selection support for collaborative work
+    - Default crew member assignment based on project team
+    - Crew member validation and error handling
+    - Integration with existing media upload workflow
+  - **Files**: `src/components/admin/MediaUpload.tsx`, `src/components/admin/CrewAssignmentSelector.tsx`, `src/services/media-upload.ts`
+  - **Reference**: Existing crew management system and media upload workflow
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Media Edit Crew Assignment** - Add crew member editing for existing media
+  - **User Intent**: Enable editing of crew member assignments for already uploaded media
+  - **Acceptance Criteria**:
+    - Crew member editing interface in media management
+    - Bulk crew member assignment for multiple media items
+    - Crew member assignment history tracking
+    - Real-time crew member statistics updates
+    - Integration with existing media management interface
+  - **Files**: `src/components/admin/MediaManager.tsx`, `src/components/admin/CrewAssignmentEditor.tsx`, `src/services/media-management.ts`
+  - **Reference**: Existing media management and crew portfolio system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Crew Assignment Data Model** - Extend data structure for crew-media relationships
+  - **User Intent**: Create robust data model for crew member assignments to media
+  - **Acceptance Criteria**:
+    - Media-crew relationship data model
+    - Multiple crew members per media item support
+    - Assignment timestamps and history tracking
+    - Role/specialty tracking for each assignment
+    - Database schema updates and migration scripts
+  - **Files**: `src/types/media.ts`, `src/types/crew.ts`, `firestore.rules`, database migration scripts
+  - **Reference**: Existing crew and media data models
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Crew Portfolio Integration** - Update crew portfolios with assigned media
+  - **User Intent**: Automatically update crew member portfolios with their assigned media
+  - **Acceptance Criteria**:
+    - Crew portfolios show assigned media automatically
+    - Portfolio statistics update based on assignments
+    - Media filtering by crew member in portfolios
+    - Crew member contribution analytics
+    - Integration with existing crew portfolio system
+  - **Files**: `src/components/crew/CrewPortfolio.tsx`, `src/services/crew-portfolio.ts`, `src/lib/crew-analytics.ts`
+  - **Reference**: Existing crew portfolio system
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Bulk Assignment Tools** - Create efficient bulk assignment interfaces
+  - **User Intent**: Provide efficient tools for assigning crew members to multiple media items
+  - **Acceptance Criteria**:
+    - Bulk crew assignment interface
+    - Template-based assignment patterns
+    - Assignment validation and conflict resolution
+    - Progress tracking for bulk operations
+    - Undo/redo functionality for bulk assignments
+  - **Files**: `src/components/admin/BulkCrewAssignment.tsx`, `src/services/bulk-assignment.ts`
+  - **Reference**: Existing bulk operation patterns in admin system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Assignment Analytics** - Track and analyze crew assignment patterns
+  - **User Intent**: Provide insights into crew member assignments and contributions
+  - **Acceptance Criteria**:
+    - Crew assignment analytics dashboard
+    - Assignment pattern analysis
+    - Crew member workload tracking
+    - Project contribution reports
+    - Assignment efficiency metrics
+  - **Files**: `src/app/admin/analytics/crew-assignments/page.tsx`, `src/lib/assignment-analytics.ts`
+  - **Reference**: Existing analytics system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Assignment Features** - Implement advanced assignment capabilities
+  - **User Intent**: Add sophisticated assignment features for complex project workflows
+  - **Acceptance Criteria**:
+    - Role-based assignment templates
+    - Assignment approval workflows
+    - Assignment conflict detection and resolution
+    - Assignment scheduling and timeline integration
+    - Advanced assignment reporting
+  - **Files**: `src/components/admin/AdvancedAssignmentTools.tsx`, `src/services/assignment-workflow.ts`
+  - **Reference**: Advanced project management requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Client Portal Integration** - Show crew assignments in client portal
+  - **User Intent**: Display crew member information in client project portal
+  - **Acceptance Criteria**:
+    - Crew member information in client project views
+    - Crew member contact information for clients
+    - Crew member portfolio links in client portal
+    - Client feedback on crew member performance
+    - Integration with existing client portal system
+  - **Files**: `src/app/client/[projectId]/page.tsx`, `src/components/client/CrewInfo.tsx`
+  - **Reference**: Existing client portal system
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Assignment Validation Rules** - Implement business rules for crew assignments
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Assignment Notifications** - Notify crew members of new assignments
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Assignment Export/Import** - Tools for exporting and importing crew assignments
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Assignment Accuracy**: High accuracy of crew member assignments to media
+- **Workflow Efficiency**: Faster media upload and assignment process
+- **Crew Attribution**: Proper attribution of work to individual crew members
+- **Data Quality**: Complete and accurate crew assignment data
+
+**Secondary Metrics**:
+
+- **User Adoption**: High adoption rate of crew assignment features
+- **Assignment Completeness**: Percentage of media with crew assignments
+- **Crew Satisfaction**: Improved crew member satisfaction with attribution
+- **Client Transparency**: Better client understanding of crew contributions
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing crew management system
+- Current media upload and management workflows
+- Crew portfolio system
+- Admin panel structure
+- Database schema for crew-media relationships
+
+**Business Dependencies**:
+
+- User approval of crew assignment workflow
+- Crew member buy-in for assignment tracking
+- Project manager training on new assignment features
+- Stakeholder review of assignment analytics
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Data Integrity**: Ensure accurate crew assignments and prevent data corruption
+- **User Experience**: Make assignment process intuitive and efficient
+- **Performance**: Handle large numbers of media items and crew assignments
+- **Integration**: Seamless integration with existing systems
+
+**Risk Mitigation**:
+
+- Implement assignment validation to prevent errors
+- Provide clear undo/redo functionality
+- Test thoroughly with various project types and crew sizes
+- Create comprehensive user training materials
+
+---
+
+## 📋 **EPIC: Projects Process Page & Client Login** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Create a public projects page that describes Veloz's client process and provides a login gateway to existing client project pages
+
+**Reference**: User request for /projects page with process description and client login functionality
+**User Intent**: Provide a public-facing page that explains Veloz's client process and serves as a login gateway for existing clients to access their project pages
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Projects Page Structure** - Create the main projects page with process description
+  - **User Intent**: Create a public page that explains Veloz's client process and workflow
+  - **Acceptance Criteria**:
+    - New route `/projects` accessible from banner navigation
+    - Professional process description with clear steps
+    - Visual timeline or infographic of client process
+    - Call-to-action for client login
+    - Mobile-responsive design matching Veloz theme
+    - SEO optimization for process-related keywords
+  - **Files**: `src/app/projects/page.tsx`, `src/components/projects/ProcessDescription.tsx`, `src/components/projects/ClientTimeline.tsx`
+  - **Reference**: Veloz brand guidelines and existing client process documentation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Client Login Integration** - Integrate login functionality with existing client system
+  - **User Intent**: Connect the projects page login to existing client authentication system
+  - **Acceptance Criteria**:
+    - Login form integrated with existing client authentication
+    - Redirect to client project pages after successful login
+    - Error handling for invalid credentials
+    - Password reset functionality
+    - Remember me functionality
+    - Secure authentication flow
+  - **Files**: `src/app/projects/login/page.tsx`, `src/components/projects/ClientLoginForm.tsx`, `src/services/client-auth.ts`
+  - **Reference**: Existing client authentication system and client portal implementation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Process Content Creation** - Develop comprehensive process description content
+  - **User Intent**: Create compelling content that explains Veloz's client process
+  - **Acceptance Criteria**:
+    - Clear step-by-step process description
+    - Visual elements (timeline, icons, illustrations)
+    - Client testimonials or case studies
+    - FAQ section for common client questions
+    - Contact information and next steps
+    - Professional photography of process in action
+  - **Files**: `src/components/projects/ProcessSteps.tsx`, `src/components/projects/ClientTestimonials.tsx`, `src/components/projects/ProcessFAQ.tsx`
+  - **Reference**: Veloz client process documentation and existing case studies
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Banner Navigation Update** - Add projects link to banner navigation
+  - **User Intent**: Add the projects page link to the main banner navigation
+  - **Acceptance Criteria**:
+    - Projects link added to banner navigation
+    - Proper positioning and styling
+    - Active state handling for projects page
+    - Mobile navigation support
+    - Consistent with existing navigation design
+  - **Files**: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/ConditionalNavigation.tsx`
+  - **Reference**: Existing banner navigation implementation
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Analytics & Tracking** - Add analytics for projects page performance
+  - **User Intent**: Track engagement and conversion on the projects page
+  - **Acceptance Criteria**:
+    - Page view analytics for projects page
+    - Login attempt tracking
+    - Process step engagement tracking
+    - Conversion funnel analysis
+    - A/B testing setup for content optimization
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
+  - **Reference**: Existing analytics implementation
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Content Management** - Create admin interface for process content
+  - **User Intent**: Allow easy updates to process description content
+  - **Acceptance Criteria**:
+    - Admin interface for editing process steps
+    - Content management for testimonials
+    - FAQ management system
+    - Process timeline editor
+    - Content version control
+  - **Files**: `src/app/admin/projects-content/page.tsx`, `src/components/admin/ProcessContentEditor.tsx`
+  - **Reference**: Existing admin content management patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Multi-language Support** - Add language support for process content
+  - **User Intent**: Support multiple languages for international clients
+  - **Acceptance Criteria**:
+    - Spanish, English, and Portuguese content
+    - Language switcher on projects page
+    - Localized process descriptions
+    - Translated testimonials and FAQs
+    - SEO optimization for each language
+  - **Files**: `src/i18n/locales/`, `src/components/projects/LanguageSwitcher.tsx`
+  - **Reference**: Existing i18n implementation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Advanced Features** - Add advanced features for client engagement
+  - **User Intent**: Enhance the projects page with advanced engagement features
+  - **Acceptance Criteria**:
+    - Interactive process timeline
+    - Client process calculator/estimator
+    - Live chat integration
+    - Process video content
+    - Social proof elements
+  - **Files**: `src/components/projects/InteractiveTimeline.tsx`, `src/components/projects/ProcessCalculator.tsx`
+  - **Reference**: Advanced engagement features requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Process Video Content** - Create video content explaining the process
+  - **Status**: Not started
+  - **Estimated Time**: 2-3 days
+
+- [ ] **Client Onboarding Flow** - Streamlined onboarding for new clients
+  - **Status**: Not started
+  - **Estimated Time**: 2-3 days
+
+- [ ] **Process Feedback System** - Collect feedback on process clarity
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Page Engagement**: High engagement with process content
+- **Login Conversion**: Successful client logins from projects page
+- **Client Understanding**: Clear understanding of Veloz process
+- **Lead Generation**: Increased client inquiries through process page
+
+**Secondary Metrics**:
+
+- **Content Engagement**: Time spent reading process content
+- **FAQ Usage**: Engagement with FAQ section
+- **Mobile Usage**: High mobile engagement
+- **SEO Performance**: Organic traffic to projects page
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing client authentication system
+- Banner navigation system
+- Admin content management system
+- Analytics tracking system
+- i18n system for multi-language support
+
+**Business Dependencies**:
+
+- Client process documentation
+- Client testimonials and case studies
+- Professional photography of process
+- Stakeholder approval of process description
+- Content creation and review process
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **User Experience**: Make process clear and engaging for potential clients
+- **Brand Consistency**: Maintain Veloz brand identity throughout
+- **Mobile Optimization**: Ensure excellent mobile experience
+- **SEO Optimization**: Optimize for relevant search terms
+- **Accessibility**: Ensure WCAG AA compliance
+
+**Risk Mitigation**:
+
+- Test login flow thoroughly with existing clients
+- Create backup content management process
+- Implement proper error handling for login issues
+- Ensure content is reviewed by stakeholders
+- Plan for content updates and maintenance
+
+---
+
+## 📋 **EPIC: Default Project Tasks System** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Implement a system for admins to define default tasks that are automatically added to new projects, streamlining project setup and ensuring consistency
+
+**Reference**: User request for default task definition system for new projects
+**User Intent**: Allow administrators to create and manage default task templates that are automatically applied to new projects, reducing manual setup time and ensuring all projects have essential tasks
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Default Task Data Model** - Create data structure for default tasks
+  - **User Intent**: Design and implement the data model for default tasks
+  - **Acceptance Criteria**:
+    - Default task data model with name, description, category, priority
+    - Support for task templates with variables (e.g., {project_name})
+    - Default task categories (Setup, Planning, Execution, Review, etc.)
+    - Priority levels (Critical, High, Medium, Low)
+    - Database schema updates and migration scripts
+    - Firestore security rules for default task management
+  - **Files**: `src/types/default-tasks.ts`, `firestore.rules`, database migration scripts
+  - **Reference**: Existing task and project data models
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Default Task Management Interface** - Create admin interface for managing default tasks
+  - **User Intent**: Provide admin interface for creating, editing, and managing default tasks
+  - **Acceptance Criteria**:
+    - Default task CRUD operations (Create, Read, Update, Delete)
+    - Task template editor with variable support
+    - Category and priority management
+    - Bulk operations for multiple default tasks
+    - Task template preview functionality
+    - Search and filter default tasks
+  - **Files**: `src/app/admin/default-tasks/page.tsx`, `src/components/admin/DefaultTaskManager.tsx`, `src/components/admin/DefaultTaskForm.tsx`
+  - **Reference**: Existing admin task management patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Project Creation Integration** - Integrate default tasks into project creation
+  - **User Intent**: Automatically add default tasks when creating new projects
+  - **Acceptance Criteria**:
+    - Default tasks automatically added to new projects
+    - Template variable substitution (e.g., {project_name} → actual project name)
+    - Option to select which default tasks to include
+    - Preview of tasks that will be added
+    - Ability to customize default tasks during project creation
+    - Integration with existing project creation workflow
+  - **Files**: `src/app/admin/projects/new/page.tsx`, `src/components/admin/DefaultTaskSelector.tsx`, `src/services/project-creation.ts`
+  - **Reference**: Existing project creation workflow
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Default Task Templates** - Create predefined task templates for different project types
+  - **User Intent**: Provide ready-to-use task templates for common project types
+  - **Acceptance Criteria**:
+    - Wedding event task template
+    - Corporate event task template
+    - Birthday party task template
+    - Quinceañera task template
+    - Custom event task template
+    - Template import/export functionality
+    - Template version control
+  - **Files**: `src/data/default-task-templates.ts`, `src/components/admin/TaskTemplateManager.tsx`
+  - **Reference**: Existing task template system
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Advanced Template Features** - Add advanced template functionality
+  - **User Intent**: Provide sophisticated template features for complex project workflows
+  - **Acceptance Criteria**:
+    - Conditional task inclusion based on project type
+    - Task dependencies and prerequisites
+    - Task duration estimation
+    - Crew member assignment suggestions
+    - Task checklist templates
+    - Template inheritance and composition
+  - **Files**: `src/components/admin/AdvancedTaskTemplate.tsx`, `src/services/template-engine.ts`
+  - **Reference**: Advanced project management requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Template Analytics** - Track and analyze default task usage
+  - **User Intent**: Provide insights into default task effectiveness and usage patterns
+  - **Acceptance Criteria**:
+    - Default task usage analytics
+    - Template effectiveness metrics
+    - Task completion rate tracking
+    - Project setup time optimization
+    - Template improvement recommendations
+    - Usage pattern analysis
+  - **Files**: `src/app/admin/analytics/default-tasks/page.tsx`, `src/lib/default-task-analytics.ts`
+  - **Reference**: Existing analytics system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Template Marketplace** - Create template sharing and marketplace features
+  - **User Intent**: Allow sharing and discovery of task templates across the organization
+  - **Acceptance Criteria**:
+    - Template sharing between admin users
+    - Template rating and review system
+    - Template discovery and search
+    - Template versioning and updates
+    - Template approval workflow
+    - Community template contributions
+  - **Files**: `src/components/admin/TemplateMarketplace.tsx`, `src/services/template-sharing.ts`
+  - **Reference**: Template marketplace requirements
+  - **Estimated Time**: 4-5 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: AI-Powered Task Suggestions** - Implement AI-driven task recommendations
+  - **User Intent**: Use AI to suggest relevant default tasks based on project details
+  - **Acceptance Criteria**:
+    - AI-powered task suggestions based on project type
+    - Machine learning for task pattern recognition
+    - Smart task recommendations
+    - Project-specific task optimization
+    - Continuous learning from project outcomes
+    - Integration with existing AI services
+  - **Files**: `src/lib/ai-task-suggestions.ts`, `src/components/admin/AITaskSuggestions.tsx`
+  - **Reference**: AI integration requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Task Template Validation** - Implement validation rules for task templates
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Template Backup & Recovery** - Backup and recovery system for task templates
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Template Migration Tools** - Tools for migrating existing projects to new templates
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Setup Efficiency**: Reduced time to set up new projects
+- **Task Consistency**: Consistent task structure across projects
+- **Admin Productivity**: Faster project creation process
+- **Task Completeness**: Higher percentage of projects with essential tasks
+
+**Secondary Metrics**:
+
+- **Template Usage**: High adoption of default task templates
+- **Customization Rate**: Frequency of template customization
+- **Task Completion**: Improved task completion rates
+- **User Satisfaction**: High admin satisfaction with default task system
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing project creation system
+- Current task management system
+- Admin panel structure
+- Database schema for tasks and projects
+- Template engine for variable substitution
+
+**Business Dependencies**:
+
+- User approval of default task workflow
+- Stakeholder review of task templates
+- Project manager training on new features
+- Content creation for predefined templates
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Data Integrity**: Ensure default tasks are properly applied and tracked
+- **User Experience**: Make template management intuitive and efficient
+- **Performance**: Handle large numbers of default tasks efficiently
+- **Flexibility**: Allow customization while maintaining consistency
+
+**Risk Mitigation**:
+
+- Implement template validation to prevent errors
+- Provide clear undo/redo functionality for template changes
+- Test thoroughly with various project types
+- Create comprehensive user training materials
+- Plan for template version control and updates
+
+---
+
+## 👥 **EPIC: Crew Listing Page & Navigation** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Create a public crew listing page accessible from banner navigation that displays all crew members with their photos and names, linking to individual portfolio pages
+
+**Reference**: User request for /crew page with crew member mugshots and navigation to portfolio pages
+**User Intent**: Provide a public-facing page that showcases all Veloz crew members with their photos and names, allowing visitors to click through to individual crew member portfolio pages
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Crew Listing Page Structure** - Create the main crew listing page
+  - **User Intent**: Create a public page that displays all crew members with their photos and names
+  - **Acceptance Criteria**:
+    - New route `/crew` accessible from banner navigation
+    - Grid layout displaying crew member photos and names
+    - Responsive design for mobile, tablet, and desktop
+    - Professional presentation matching Veloz brand
+    - SEO optimization for crew-related keywords
+    - Loading states and error handling
+  - **Files**: `src/app/crew/page.tsx`, `src/components/crew/CrewListing.tsx`, `src/components/crew/CrewMemberCard.tsx`
+  - **Reference**: Existing crew portfolio system and Veloz brand guidelines
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Banner Navigation Integration** - Add crew link to banner navigation
+  - **User Intent**: Add the crew page link to the main banner navigation
+  - **Acceptance Criteria**:
+    - Crew link added to banner navigation
+    - Proper positioning and styling
+    - Active state handling for crew page
+    - Mobile navigation support
+    - Consistent with existing navigation design
+  - **Files**: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/ConditionalNavigation.tsx`
+  - **Reference**: Existing banner navigation implementation
+  - **Estimated Time**: 0.5 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Crew Member Cards** - Design and implement crew member display cards
+  - **User Intent**: Create attractive crew member cards with photos and information
+  - **Acceptance Criteria**:
+    - Professional crew member photos (mugshots)
+    - Crew member names prominently displayed
+    - Hover effects and click interactions
+    - Consistent card sizing and layout
+    - Loading states for crew member photos
+    - Accessibility features (alt text, keyboard navigation)
+  - **Files**: `src/components/crew/CrewMemberCard.tsx`, `src/components/crew/CrewPhoto.tsx`
+  - **Reference**: Veloz design system and accessibility guidelines
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Portfolio Navigation** - Implement navigation to individual crew portfolio pages
+  - **User Intent**: Enable clicking on crew members to navigate to their portfolio pages
+  - **Acceptance Criteria**:
+    - Click navigation to individual crew portfolio pages
+    - Proper URL routing to `/crew/[name-slug]`
+    - Smooth transitions and loading states
+    - Error handling for invalid crew member links
+    - Integration with existing crew portfolio system
+    - Analytics tracking for crew member clicks
+  - **Files**: `src/components/crew/CrewMemberCard.tsx`, `src/app/crew/[name-slug]/page.tsx`, `src/lib/crew-navigation.ts`
+  - **Reference**: Existing crew portfolio system and navigation patterns
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Crew Filtering & Search** - Add filtering and search capabilities
+  - **User Intent**: Allow visitors to filter and search crew members by specialty or name
+  - **Acceptance Criteria**:
+    - Search functionality by crew member name
+    - Filter by crew member specialties/categories
+    - Real-time search results
+    - Clear search and filter options
+    - Search result highlighting
+    - Mobile-friendly search interface
+  - **Files**: `src/components/crew/CrewSearch.tsx`, `src/components/crew/CrewFilter.tsx`, `src/hooks/useCrewSearch.ts`
+  - **Reference**: Existing search and filter patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Crew Analytics & Tracking** - Add analytics for crew listing page
+  - **User Intent**: Track engagement and navigation patterns on the crew listing page
+  - **Acceptance Criteria**:
+    - Page view analytics for crew listing
+    - Crew member click tracking
+    - Search and filter usage analytics
+    - Popular crew member tracking
+    - Navigation flow analysis
+    - Conversion tracking to portfolio pages
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/crew-engagement/page.tsx`
+  - **Reference**: Existing analytics implementation
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Crew Features** - Add advanced features for crew presentation
+  - **User Intent**: Enhance the crew listing with advanced presentation features
+  - **Acceptance Criteria**:
+    - Crew member specialties display
+    - Recent work previews
+    - Crew member availability status
+    - Contact information for direct inquiries
+    - Social media links
+    - Crew member testimonials
+  - **Files**: `src/components/crew/CrewSpecialties.tsx`, `src/components/crew/CrewAvailability.tsx`
+  - **Reference**: Advanced crew presentation requirements
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Multi-language Support** - Add language support for crew content
+  - **User Intent**: Support multiple languages for international clients
+  - **Acceptance Criteria**:
+    - Spanish, English, and Portuguese crew descriptions
+    - Localized crew member bios
+    - Translated specialty categories
+    - Language switcher on crew page
+    - SEO optimization for each language
+  - **Files**: `src/i18n/locales/`, `src/components/crew/LanguageSwitcher.tsx`
+  - **Reference**: Existing i18n implementation
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Crew Photo Optimization** - Optimize crew member photos for web
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Crew Member Ordering** - Implement custom ordering for crew members
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Crew Member Status** - Add active/inactive status for crew members
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Page Engagement**: High engagement with crew listing page
+- **Portfolio Navigation**: Successful navigation to crew portfolio pages
+- **Crew Discovery**: Increased discovery of individual crew members
+- **Client Inquiries**: Increased client inquiries about specific crew members
+
+**Secondary Metrics**:
+
+- **Search Usage**: High usage of search and filter features
+- **Mobile Engagement**: High mobile engagement with crew listing
+- **SEO Performance**: Organic traffic to crew listing page
+- **Crew Member Clicks**: Most popular crew members by clicks
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing crew portfolio system
+- Banner navigation system
+- Crew member data and photos
+- Analytics tracking system
+- i18n system for multi-language support
+
+**Business Dependencies**:
+
+- Professional crew member photos (mugshots)
+- Crew member bios and descriptions
+- Stakeholder approval of crew presentation
+- Content creation for crew member profiles
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **User Experience**: Make crew discovery intuitive and engaging
+- **Brand Consistency**: Maintain Veloz brand identity throughout
+- **Mobile Optimization**: Ensure excellent mobile experience
+- **SEO Optimization**: Optimize for crew-related search terms
+- **Accessibility**: Ensure WCAG AA compliance
+
+**Risk Mitigation**:
+
+- Test navigation flow thoroughly with existing crew members
+- Ensure all crew member photos are high quality and professional
+- Implement proper error handling for missing crew data
+- Create backup content for crew member descriptions
+- Plan for crew member updates and maintenance
+
+---
+
+## 📞 **EPIC: Project Contact Tab System** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Add a "Contact" tab to admin project pages that displays all contact information gathered from contact forms when connected to projects
+
+**Reference**: User request for project contact tab in admin panel
+**User Intent**: Provide administrators with easy access to all contact information associated with projects through a dedicated "Contact" tab in the admin project interface
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Contact Data Model Integration** - Extend project data model to include contact information
+  - **User Intent**: Design and implement the data structure for linking contact form data to projects
+  - **Acceptance Criteria**:
+    - Contact form data model with all form fields
+    - Project-contact relationship data model
+    - Contact form submission tracking
+    - Contact information validation and sanitization
+    - Database schema updates and migration scripts
+    - Firestore security rules for contact data access
+  - **Files**: `src/types/contact.ts`, `src/types/project.ts`, `firestore.rules`, database migration scripts
+  - **Reference**: Existing contact form and project data models
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Contact Tab Interface** - Create the contact tab in admin project pages
+  - **User Intent**: Add a "Contact" tab to the admin project interface
+  - **Acceptance Criteria**:
+    - New "Contact" tab in project admin interface
+    - Display all contact form information
+    - Contact information organized in clear sections
+    - Contact form submission timestamp
+    - Contact status tracking (new, reviewed, contacted, etc.)
+    - Integration with existing project admin tabs
+  - **Files**: `src/app/admin/projects/[id]/page.tsx`, `src/components/admin/ProjectContactTab.tsx`, `src/components/admin/ContactInformation.tsx`
+  - **Reference**: Existing admin project interface and tab system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Contact Form Integration** - Connect contact forms to projects
+  - **User Intent**: Enable linking contact form submissions to specific projects
+  - **Acceptance Criteria**:
+    - Contact form project selection dropdown
+    - Automatic project detection based on form context
+    - Contact form submission to project linking
+    - Contact form validation and error handling
+    - Contact form submission confirmation
+    - Integration with existing contact form workflow
+  - **Files**: `src/components/forms/ContactForm.tsx`, `src/services/contact-form.ts`, `src/components/admin/ContactFormLinker.tsx`
+  - **Reference**: Existing contact form implementation
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Contact Information Display** - Design comprehensive contact information view
+  - **User Intent**: Create a comprehensive display of all contact information
+  - **Acceptance Criteria**:
+    - Complete contact form data display
+    - Contact information sections (personal, event, preferences)
+    - Contact history and timeline
+    - Contact notes and follow-up tracking
+    - Contact status management
+    - Export contact information functionality
+  - **Files**: `src/components/admin/ContactInformation.tsx`, `src/components/admin/ContactTimeline.tsx`, `src/components/admin/ContactNotes.tsx`
+  - **Reference**: Contact form field structure and admin display patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Contact Management Features** - Add contact management capabilities
+  - **User Intent**: Provide tools for managing and tracking contact interactions
+  - **Acceptance Criteria**:
+    - Contact status updates (new, in progress, contacted, closed)
+    - Contact notes and follow-up tracking
+    - Contact priority levels
+    - Contact assignment to team members
+    - Contact response templates
+    - Contact history and audit trail
+  - **Files**: `src/components/admin/ContactManagement.tsx`, `src/components/admin/ContactStatus.tsx`, `src/services/contact-management.ts`
+  - **Reference**: Existing admin management patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Contact Analytics & Reporting** - Add analytics for contact tracking
+  - **User Intent**: Track and analyze contact form submissions and project connections
+  - **Acceptance Criteria**:
+    - Contact form submission analytics
+    - Project-contact connection rates
+    - Contact response time tracking
+    - Contact conversion analytics
+    - Contact source tracking
+    - Contact quality metrics
+  - **Files**: `src/app/admin/analytics/contacts/page.tsx`, `src/lib/contact-analytics.ts`
+  - **Reference**: Existing analytics system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Advanced Contact Features** - Implement advanced contact management
+  - **User Intent**: Add sophisticated contact management features
+  - **Acceptance Criteria**:
+    - Contact segmentation and tagging
+    - Contact scoring and prioritization
+    - Automated contact follow-up reminders
+    - Contact template management
+    - Contact integration with external CRM
+    - Contact data import/export
+  - **Files**: `src/components/admin/AdvancedContactFeatures.tsx`, `src/services/contact-automation.ts`
+  - **Reference**: Advanced CRM requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Contact Communication Tools** - Add communication tools within contact tab
+  - **User Intent**: Enable direct communication with contacts from the admin interface
+  - **Acceptance Criteria**:
+    - Email composition and sending
+    - SMS messaging integration
+    - Contact communication history
+    - Communication templates
+    - Contact response tracking
+    - Communication analytics
+  - **Files**: `src/components/admin/ContactCommunication.tsx`, `src/services/communication.ts`
+  - **Reference**: Communication service requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Contact Data Validation** - Implement validation rules for contact data
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Contact Backup & Recovery** - Backup and recovery system for contact data
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Contact Import Tools** - Tools for importing contact data from external sources
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Contact Visibility**: Easy access to all project contact information
+- **Contact Tracking**: Complete tracking of contact form submissions
+- **Project-Contact Connection**: High rate of contact forms linked to projects
+- **Contact Management**: Efficient contact status and follow-up management
+
+**Secondary Metrics**:
+
+- **Contact Response Time**: Improved response times to contact inquiries
+- **Contact Conversion**: Higher conversion rates from contact forms
+- **Contact Quality**: Better quality contact data and interactions
+- **Admin Efficiency**: Faster contact information access and management
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing contact form system
+- Current project admin interface
+- Contact form data structure
+- Admin tab system
+- Database schema for contact-project relationships
+
+**Business Dependencies**:
+
+- User approval of contact tab workflow
+- Contact form field requirements
+- Stakeholder review of contact management features
+- Contact data privacy and security requirements
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Data Privacy**: Ensure contact data is properly secured and handled
+- **User Experience**: Make contact information easily accessible and organized
+- **Performance**: Handle large numbers of contact submissions efficiently
+- **Integration**: Seamless integration with existing contact form and project systems
+
+**Risk Mitigation**:
+
+- Implement proper data validation and sanitization
+- Provide clear contact data access controls
+- Test thoroughly with various contact form scenarios
+- Create comprehensive user training materials
+- Plan for contact data backup and recovery
+
+---
+
+## 📋 **EPIC: Admin Contacts Page Redesign** ⭐ **HIGH PRIORITY**
+
+### 🎯 Objective: Redesign the admin contacts page to remove the projects association tab and integrate project connection buttons directly into the single message list, with automatic archiving of connected messages
+
+**Reference**: User request for admin contacts page redesign with streamlined project association workflow
+**User Intent**: Simplify the contacts management workflow by removing the separate projects association tab and integrating project connection functionality directly into the message list, with automatic archiving of messages once they are connected to projects
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Contacts Page Structure Redesign** - Remove projects association tab and redesign layout
+  - **User Intent**: Remove the separate projects association tab and create a streamlined single message list
+  - **Acceptance Criteria**:
+    - Remove projects association tab from contacts page
+    - Redesign contacts page to show single message list
+    - Maintain all existing contact message functionality
+    - Preserve contact message data and history
+    - Update page layout and navigation
+    - Ensure responsive design for all screen sizes
+  - **Files**: `src/app/admin/contacts/page.tsx`, `src/components/admin/ContactsManager.tsx`, `src/components/admin/ContactMessageList.tsx`
+  - **Reference**: Existing admin contacts page implementation
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Phase 2: Project Connection Buttons Integration** - Add project connection buttons to individual message items
+  - **User Intent**: Integrate project connection functionality directly into each message item
+  - **Acceptance Criteria**:
+    - Project connection buttons on each message item
+    - Project selection dropdown for each message
+    - Clear visual indication of connection status
+    - Project connection confirmation dialog
+    - Error handling for connection failures
+    - Integration with existing project data
+  - **Files**: `src/components/admin/ContactMessageItem.tsx`, `src/components/admin/ProjectConnectionButton.tsx`, `src/services/contact-project-linking.ts`
+  - **Reference**: Existing project connection functionality
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 1 completion
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 3: Message Archiving System** - Implement automatic archiving of connected messages
+  - **User Intent**: Automatically archive messages once they are connected to projects
+  - **Acceptance Criteria**:
+    - Automatic archiving when message is connected to project
+    - Archive status tracking and display
+    - Archive timestamp and project reference
+    - Archive restoration functionality
+    - Archive filtering and search
+    - Archive export functionality
+  - **Files**: `src/components/admin/MessageArchive.tsx`, `src/services/message-archiving.ts`, `src/components/admin/ArchiveManager.tsx`
+  - **Reference**: Existing archiving patterns in admin system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 2 completion
+
+- [ ] **Phase 4: Enhanced Message Display** - Improve message item display with connection status
+  - **User Intent**: Enhance message items to clearly show connection status and project information
+  - **Acceptance Criteria**:
+    - Clear connection status indicators
+    - Connected project information display
+    - Message priority and status indicators
+    - Message timestamp and metadata
+    - Message content preview
+    - Message action buttons (archive, delete, etc.)
+  - **Files**: `src/components/admin/ContactMessageItem.tsx`, `src/components/admin/MessageStatus.tsx`, `src/components/admin/MessageActions.tsx`
+  - **Reference**: Existing message display patterns
+  - **Estimated Time**: 1-2 days
+  - **Status**: Ready after Phase 3 completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 5: Message Filtering & Search** - Add advanced filtering for messages
+  - **User Intent**: Provide comprehensive filtering and search capabilities for the message list
+  - **Acceptance Criteria**:
+    - Filter by connection status (connected, unconnected, archived)
+    - Filter by message date range
+    - Search by message content and sender
+    - Filter by project (for connected messages)
+    - Advanced search with multiple criteria
+    - Search result highlighting
+  - **Files**: `src/components/admin/MessageFilters.tsx`, `src/components/admin/MessageSearch.tsx`, `src/hooks/useMessageFilters.ts`
+  - **Reference**: Existing filtering and search patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 4 completion
+
+- [ ] **Phase 6: Message Analytics & Reporting** - Add analytics for message management
+  - **User Intent**: Track and analyze message connection patterns and workflow efficiency
+  - **Acceptance Criteria**:
+    - Message connection rate analytics
+    - Message response time tracking
+    - Project connection success rates
+    - Archive pattern analysis
+    - Workflow efficiency metrics
+    - Message quality assessment
+  - **Files**: `src/app/admin/analytics/messages/page.tsx`, `src/lib/message-analytics.ts`
+  - **Reference**: Existing analytics system
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 5 completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 7: Bulk Operations** - Add bulk message management features
+  - **User Intent**: Enable efficient bulk operations for multiple messages
+  - **Acceptance Criteria**:
+    - Bulk project connection for multiple messages
+    - Bulk archiving operations
+    - Bulk message deletion
+    - Bulk message export
+    - Bulk status updates
+    - Progress tracking for bulk operations
+  - **Files**: `src/components/admin/BulkMessageOperations.tsx`, `src/services/bulk-message-operations.ts`
+  - **Reference**: Existing bulk operation patterns
+  - **Estimated Time**: 2-3 days
+  - **Status**: Ready after Phase 6 completion
+
+- [ ] **Phase 8: Advanced Message Features** - Add advanced message management capabilities
+  - **User Intent**: Implement sophisticated message management features
+  - **Acceptance Criteria**:
+    - Message templates and responses
+    - Message priority scoring
+    - Message categorization and tagging
+    - Message follow-up scheduling
+    - Message collaboration features
+    - Message integration with external systems
+  - **Files**: `src/components/admin/AdvancedMessageFeatures.tsx`, `src/services/message-automation.ts`
+  - **Reference**: Advanced message management requirements
+  - **Estimated Time**: 3-4 days
+  - **Status**: Ready after Phase 7 completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Message Data Migration** - Migrate existing message data to new structure
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Message Backup System** - Backup and recovery system for message data
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Message Import Tools** - Tools for importing message data from external sources
+  - **Status**: Not started
+  - **Estimated Time**: 2 days
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Workflow Efficiency**: Faster message-to-project connection process
+- **User Experience**: Improved admin workflow for contact management
+- **Message Organization**: Better organization of connected vs unconnected messages
+- **Archive Management**: Efficient archiving of completed message workflows
+
+**Secondary Metrics**:
+
+- **Connection Rate**: Higher rate of messages connected to projects
+- **Response Time**: Faster response times to contact messages
+- **Archive Usage**: High usage of archive functionality
+- **User Satisfaction**: Improved admin satisfaction with contacts workflow
+
+### 🎯 Epic Dependencies
+
+**Technical Dependencies**:
+
+- Existing admin contacts page
+- Current project connection system
+- Message archiving functionality
+- Admin interface patterns
+- Database schema for message-project relationships
+
+**Business Dependencies**:
+
+- User approval of new contacts workflow
+- Stakeholder review of archiving strategy
+- Admin training on new interface
+- Message data migration planning
+
+### 📋 Implementation Notes
+
+**Critical Considerations**:
+
+- **Data Integrity**: Ensure message data is preserved during migration
+- **User Experience**: Make the new workflow intuitive and efficient
+- **Performance**: Handle large numbers of messages efficiently
+- **Integration**: Seamless integration with existing project system
+
+**Risk Mitigation**:
+
+- Implement proper data migration strategy
+- Provide clear undo/redo functionality for connections
+- Test thoroughly with various message scenarios
+- Create comprehensive user training materials
+- Plan for message data backup and recovery
 
 ---
 
