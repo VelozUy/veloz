@@ -2063,13 +2063,28 @@ _No tasks completed yet for this Epic_
   - Status: Completed - All layout and navigation components updated with new theme
   - PO Sign-Off: PO Approved (2025-07-18)
 
+- [x] **Navigation Banner Color Refinement** (2025-01-27)
+  - Notes: Updated VelozBannerNav to use sophisticated grey color scheme instead of white/black
+  - User Intent: Improve navigation banner aesthetics with theme-consistent colors
+  - Acceptance Criteria:
+    - Navigation links use background grey (`text-[var(--background)]`) instead of white
+    - Hover states use dark grey (`text-[var(--base-800)]`) for interaction feedback
+    - Active links use dark grey text with underline instead of blue
+    - Language switcher globe icon matches navigation colors
+    - Mobile navigation centered with no separator
+    - Mobile active link underline spans only text width
+  - Files: `src/components/layout/veloz-banner-nav.tsx`
+  - Status: Completed - Navigation banner now uses elegant grey color scheme
+  - PO Sign-Off: PO Approved (2025-01-27)
+
 ### ✅ Completed
 
 - [x] **Phase 1: Core Theme System Setup** (2025-01-27)
 - [x] **Phase 2: shadcn/ui Component Theme Integration** (2025-01-27)
 - [x] **Phase 3: Layout and Navigation Theme Updates** (2025-07-18)
+- [x] **Navigation Banner Color Refinement** (2025-01-27)
 
-> All theme phases, layout, navigation, content, and forms are now fully migrated to the OKLCH-based theme system. Visual review and test run completed. No theme-related test failures. Ready for PO review and sign-off.
+> All theme phases, layout, navigation, content, and forms are now fully migrated to the OKLCH-based theme system. Navigation banner uses sophisticated grey color scheme. Visual review and test run completed. No theme-related test failures. Ready for PO review and sign-off.
 
 ---
 

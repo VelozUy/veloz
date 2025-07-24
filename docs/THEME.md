@@ -299,20 +299,13 @@ The theme uses OKLCH color space for:
 
 #### Muted Colors
 
-- **Muted**: Subtle backgrounds and borders
-- **Muted Foreground**: Less prominent text
+- **Muted**: Subtle background colors
+- **Muted Foreground**: Text on muted backgrounds
 
 #### Accent Colors
 
-- **Accent**: Highlighting and focus states
+- **Accent**: Highlighting and secondary actions
 - **Accent Foreground**: Text on accent backgrounds
-
-#### New UX Accent Colors
-
-- **Accent Soft Gold** (`--accent-soft-gold`): Subtle highlights in headings, metadata, timeline dots, and passive status labels (e.g., "Reserved", "Optional")
-- **Accent Sky** (`--accent-sky`): Navigation hover states, links, or underlines in content-heavy views
-- **Accent Rose** (`--accent-rose`): Attention-grabbing alerts, error-friendly notices, or emotional storytelling accents (e.g., testimonials, memories)
-- **Accent Lime** (`--accent-lime`): Checklist items marked as complete, confirmations, success messages, and small affirmative badges
 
 #### Destructive Colors
 
@@ -321,7 +314,7 @@ The theme uses OKLCH color space for:
 
 #### Border Colors
 
-- **Border**: Standard border color
+- **Border**: Default border color
 - **Input**: Input field borders
 
 #### Ring Colors
@@ -362,6 +355,83 @@ The application uses the light theme by default:
 ```
 
 **No Dark Mode**: The `.dark` class should not be used. The application only uses the light theme.
+
+---
+
+## 🧭 Navigation Banner Colors
+
+_Added: 2025-01-27_
+
+The navigation banner (VelozBannerNav) uses a sophisticated color scheme that balances brand identity with accessibility and visual hierarchy.
+
+### Banner Structure
+
+The navigation banner consists of two sections:
+- **Left Section (Grey Background)**: Contains the VELOZ logo
+- **Right Section (Blue Background)**: Contains navigation links and language switcher
+
+### Color Specifications
+
+#### Navigation Links (Blue Banner Section)
+
+- **Default State**: `text-[var(--background)]` - Light grey matching the main background
+- **Hover State**: `text-[var(--base-800)]` - Dark grey for interaction feedback
+- **Active State**: `text-[var(--base-800)]` with `border-b-2 border-[var(--base-800)]` - Dark grey text with underline
+- **Language Switcher**: Same color scheme as navigation links
+
+#### Logo (Grey Section)
+
+- **Default State**: `text-foreground` - Standard text color
+- **Hover State**: `text-primary` - Brand blue on hover
+
+#### Mobile Navigation
+
+- **Links**: Same color scheme as desktop (light grey default, dark grey hover/active)
+- **Layout**: Centered links with no separator between navigation and language switcher
+- **Active Link**: Dark grey text with underline spanning only the text width
+
+### Implementation Details
+
+```tsx
+// Desktop navigation links
+<Link
+  className={cn(
+    'text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium text-sm px-2',
+    active && 'border-b-2 border-[var(--base-800)] pb-0.5'
+  )}
+>
+  {item.name}
+</Link>
+
+// Language switcher
+<LocaleSwitcher 
+  currentLocale={locale} 
+  className="text-[var(--background)] hover:text-[var(--base-800)]"
+/>
+
+// Mobile navigation links
+<Link
+  className={cn(
+    'block px-4 py-3 text-[var(--background)] hover:text-[var(--base-800)] transition-colors font-medium',
+    active && 'text-[var(--base-800)]'
+  )}
+>
+  <span className={cn(
+    'inline-block',
+    active && 'border-b-2 border-[var(--base-800)]'
+  )}>
+    {item.name}
+  </span>
+</Link>
+```
+
+### Design Rationale
+
+- **Subtle Elegance**: Light grey text on blue background creates sophisticated contrast
+- **Clear Hierarchy**: Active links use dark grey with underline for clear indication
+- **Consistent Interaction**: Hover states use the same dark grey for predictable feedback
+- **Accessibility**: High contrast ratios maintained for WCAG AA compliance
+- **Brand Cohesion**: Colors align with the overall theme system
 
 ---
 
