@@ -53,7 +53,9 @@ import {
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import TaskTemplateManager, { TaskTemplate } from '@/components/admin/TaskTemplateManager';
+import TaskTemplateManager, {
+  TaskTemplate,
+} from '@/components/admin/TaskTemplateManager';
 
 // Enhanced project schema with client information and milestones
 const enhancedProjectSchema = z.object({
@@ -233,7 +235,9 @@ export default function ProjectForms({
       uploadedAt: Date;
     }>
   >(initialData?.projectMaterials || []);
-  const [selectedTemplate, setSelectedTemplate] = useState<TaskTemplate | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<TaskTemplate | null>(
+    null
+  );
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
 
   const totalSteps = 7; // Added template selection step
@@ -1079,17 +1083,22 @@ export default function ProjectForms({
                 Plantilla de Tareas (Opcional)
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                Selecciona una plantilla de tareas para agregar automáticamente tareas predefinidas al proyecto.
-                Esto te ayudará a organizar mejor el flujo de trabajo.
+                Selecciona una plantilla de tareas para agregar automáticamente
+                tareas predefinidas al proyecto. Esto te ayudará a organizar
+                mejor el flujo de trabajo.
               </p>
               {!watchedValues.timeline?.startDate && (
-                <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-center gap-2 text-yellow-800">
+                <div className="mt-2 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+                  <div className="flex items-center gap-2 text-warning">
                     <AlertCircle className="h-4 w-4" />
-                    <span className="text-sm font-medium">Sin fecha de inicio</span>
+                    <span className="text-sm font-medium">
+                      Sin fecha de inicio
+                    </span>
                   </div>
-                  <p className="text-sm text-yellow-700 mt-1">
-                    No hay fecha de inicio del proyecto. Las tareas se crearán sin fechas de vencimiento y podrás actualizarlas manualmente cuando se confirme la fecha del proyecto.
+                  <p className="text-sm text-warning/80 mt-1">
+                    No hay fecha de inicio del proyecto. Las tareas se crearán
+                    sin fechas de vencimiento y podrás actualizarlas manualmente
+                    cuando se confirme la fecha del proyecto.
                   </p>
                 </div>
               )}
@@ -1104,9 +1113,12 @@ export default function ProjectForms({
                         <FileText className="h-4 w-4" />
                       </div>
                       <div>
-                        <div className="font-medium">{selectedTemplate.name}</div>
+                        <div className="font-medium">
+                          {selectedTemplate.name}
+                        </div>
                         <div className="text-sm text-muted-foreground">
-                          {selectedTemplate.tasks.length} tareas • {selectedTemplate.eventType || 'Sin tipo'}
+                          {selectedTemplate.tasks.length} tareas •{' '}
+                          {selectedTemplate.eventType || 'Sin tipo'}
                         </div>
                       </div>
                       <Button
@@ -1146,7 +1158,9 @@ export default function ProjectForms({
                         <div className="flex items-center space-x-3">
                           <CheckCircle className="h-4 w-4 text-success" />
                           <div>
-                            <div className="font-medium text-sm">{task.title}</div>
+                            <div className="font-medium text-sm">
+                              {task.title}
+                            </div>
                             <div className="text-xs text-muted-foreground">
                               {task.defaultDueDays > 0
                                 ? `+${task.defaultDueDays} días`
@@ -1166,7 +1180,11 @@ export default function ProjectForms({
                                 : 'text-success'
                           }`}
                         >
-                          {task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Media' : 'Baja'}
+                          {task.priority === 'high'
+                            ? 'Alta'
+                            : task.priority === 'medium'
+                              ? 'Media'
+                              : 'Baja'}
                         </Badge>
                       </div>
                     ))}
@@ -1183,13 +1201,14 @@ export default function ProjectForms({
             <DialogHeader>
               <DialogTitle>Seleccionar Plantilla de Tareas</DialogTitle>
               <DialogDescription>
-                Elige una plantilla para agregar tareas predefinidas al proyecto.
-                Las tareas se crearán automáticamente cuando se cree el proyecto.
+                Elige una plantilla para agregar tareas predefinidas al
+                proyecto. Las tareas se crearán automáticamente cuando se cree
+                el proyecto.
               </DialogDescription>
             </DialogHeader>
             <TaskTemplateManager
               mode="select"
-              onTemplateSelect={(template) => {
+              onTemplateSelect={template => {
                 setSelectedTemplate(template);
                 setShowTemplateDialog(false);
               }}

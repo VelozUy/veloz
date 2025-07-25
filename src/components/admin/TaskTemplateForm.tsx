@@ -14,17 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Save, Trash2, AlertCircle, CheckCircle, Shield } from 'lucide-react';
+import {
+  Plus,
+  Save,
+  Trash2,
+  AlertCircle,
+  CheckCircle,
+  Shield,
+} from 'lucide-react';
 import { getFirestoreService } from '@/lib/firebase';
 import { checkAdminStatus } from '@/lib/admin-auth';
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, getDoc } from 'firebase/firestore';
 import { TaskTemplate } from './TaskTemplateManager';
 
 interface TaskTemplateFormProps {
@@ -32,7 +33,10 @@ interface TaskTemplateFormProps {
   templateId?: string;
 }
 
-export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormProps) {
+export default function TaskTemplateForm({
+  mode,
+  templateId,
+}: TaskTemplateFormProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -65,7 +69,7 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
         setAdminLoading(true);
         const adminStatus = await checkAdminStatus(user.email);
         setIsAdmin(adminStatus);
-        
+
         if (adminStatus && mode === 'edit' && templateId) {
           await loadTemplate();
         }
@@ -85,6 +89,8 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
 
     try {
       setLoading(true);
+      console.log('Loading template for editing:', templateId);
+
       const db = await getFirestoreService();
       if (!db) {
         console.error('Firestore not available');
@@ -93,7 +99,11 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
 
       const templateDoc = await getDoc(doc(db, 'taskTemplates', templateId));
       if (templateDoc.exists()) {
-        const templateData = { id: templateDoc.id, ...templateDoc.data() } as TaskTemplate;
+        const templateData = {
+          id: templateDoc.id,
+          ...templateDoc.data(),
+        } as TaskTemplate;
+        console.log('Template loaded successfully:', templateData);
         setTemplate(templateData);
         setFormData({
           name: templateData.name,
@@ -102,11 +112,15 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
           tasks: templateData.tasks,
         });
       } else {
-        console.error('Template not found');
+        console.error('Template not found:', templateId);
+        alert(
+          'Plantilla no encontrada. Serás redirigido a la lista de plantillas.'
+        );
         router.push('/admin/templates');
       }
     } catch (error) {
       console.error('Error loading template:', error);
+      alert('Error al cargar la plantilla. Por favor, inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -331,7 +345,9 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
           {formData.tasks.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>No hay tareas configuradas.</p>
-              <p className="text-sm">Haz clic en &quot;Agregar Tarea&quot; para comenzar.</p>
+              <p className="text-sm">
+                Haz clic en &quot;Agregar Tarea&quot; para comenzar.
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -409,7 +425,8 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
                         className="mt-1"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Valores negativos = días antes del evento. Ej: -7 = una semana antes
+                        Valores negativos = días antes del evento. Ej: -7 = una
+                        semana antes
                       </p>
                     </div>
 
@@ -430,9 +447,7 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
                     <Label>Notas adicionales (opcional)</Label>
                     <Input
                       value={task.notes || ''}
-                      onChange={e =>
-                        updateTask(index, 'notes', e.target.value)
-                      }
+                      onChange={e => updateTask(index, 'notes', e.target.value)}
                       placeholder="Detalles o instrucciones especiales"
                       className="mt-1"
                     />
@@ -453,7 +468,9 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-muted/50 rounded-lg">
-                <div className="font-medium text-lg">{formData.tasks.length}</div>
+                <div className="font-medium text-lg">
+                  {formData.tasks.length}
+                </div>
                 <div className="text-muted-foreground">Total Tareas</div>
               </div>
               <div className="text-center p-3 bg-destructive/10 rounded-lg">
@@ -481,20 +498,22 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
 
       {/* Action Buttons */}
       <div className="flex justify-end space-x-4 pt-6 border-t">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={() => router.push('/admin/templates')}
           disabled={saving}
         >
           Cancelar
         </Button>
-        <Button 
+        <Button
           onClick={saveTemplate}
-          disabled={saving || !formData.name.trim() || formData.tasks.length === 0}
+          disabled={
+            saving || !formData.name.trim() || formData.tasks.length === 0
+          }
         >
           {saving ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
               Guardando...
             </>
           ) : (
@@ -507,4 +526,4 @@ export default function TaskTemplateForm({ mode, templateId }: TaskTemplateFormP
       </div>
     </div>
   );
-} 
+}

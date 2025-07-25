@@ -23,7 +23,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { ArrowLeft, Plus, FileText, Calendar, Settings, CheckCircle, Trash2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  Plus,
+  FileText,
+  Calendar,
+  Settings,
+  CheckCircle,
+  Trash2,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import TaskTemplateManager from '@/components/admin/TaskTemplateManager';
@@ -37,7 +45,7 @@ const templateExamples = [
     tasks: 8,
     duration: '35 días',
     icon: FileText,
-    color: 'bg-pink-500',
+    color: 'bg-primary',
   },
   {
     name: 'Evento Corporativo',
@@ -45,7 +53,7 @@ const templateExamples = [
     tasks: 7,
     duration: '21 días',
     icon: Calendar,
-    color: 'bg-blue-500',
+    color: 'bg-secondary',
   },
   {
     name: 'Photoshoot Profesional',
@@ -53,7 +61,7 @@ const templateExamples = [
     tasks: 6,
     duration: '10 días',
     icon: Settings,
-    color: 'bg-indigo-500',
+    color: 'bg-accent',
   },
 ];
 
@@ -157,13 +165,13 @@ export default function CreateTemplatePage() {
 
       // Success feedback
       alert('Plantilla creada exitosamente');
-      
+
       // Reset form and close dialog
       resetForm();
       setIsCreateDialogOpen(false);
       setIsDuplicateDialogOpen(false);
       setIsQuickCreateDialogOpen(false);
-      
+
       // Navigate back to templates list
       router.push('/admin/templates');
     } catch (error) {
@@ -214,7 +222,8 @@ export default function CreateTemplatePage() {
         <div className="bg-card rounded-lg border p-6">
           <h2 className="text-lg font-semibold mb-4">Crear Nueva Plantilla</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Elige cómo quieres crear tu nueva plantilla. Puedes crear una desde cero o basarte en una existente.
+            Elige cómo quieres crear tu nueva plantilla. Puedes crear una desde
+            cero o basarte en una existente.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -225,14 +234,20 @@ export default function CreateTemplatePage() {
                   <div className="p-2 rounded-lg bg-primary text-primary-foreground">
                     <Plus className="h-4 w-4" />
                   </div>
-                  <CardTitle className="text-body-lg">Crear desde Cero</CardTitle>
+                  <CardTitle className="text-body-lg">
+                    Crear desde Cero
+                  </CardTitle>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Crea una plantilla completamente nueva con tus propias tareas y configuraciones
+                  Crea una plantilla completamente nueva con tus propias tareas
+                  y configuraciones
                 </p>
               </CardHeader>
               <CardContent>
-                <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                <Dialog
+                  open={isCreateDialogOpen}
+                  onOpenChange={setIsCreateDialogOpen}
+                >
                   <DialogTrigger asChild>
                     <Button className="w-full">
                       <Plus className="h-4 w-4 mr-2" />
@@ -243,7 +258,8 @@ export default function CreateTemplatePage() {
                     <DialogHeader>
                       <DialogTitle>Crear Nueva Plantilla</DialogTitle>
                       <DialogDescription>
-                        Crea una plantilla completamente nueva con tus propias tareas
+                        Crea una plantilla completamente nueva con tus propias
+                        tareas
                       </DialogDescription>
                     </DialogHeader>
 
@@ -253,35 +269,59 @@ export default function CreateTemplatePage() {
                         <Input
                           id="template-name"
                           value={formData.name}
-                          onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                          onChange={e =>
+                            setFormData(prev => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
                           placeholder="Nombre de la plantilla"
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="template-description">Descripción</Label>
+                        <Label htmlFor="template-description">
+                          Descripción
+                        </Label>
                         <Textarea
                           id="template-description"
                           value={formData.description}
-                          onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                          onChange={e =>
+                            setFormData(prev => ({
+                              ...prev,
+                              description: e.target.value,
+                            }))
+                          }
                           placeholder="Descripción opcional"
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="template-event-type">Tipo de Evento</Label>
+                        <Label htmlFor="template-event-type">
+                          Tipo de Evento
+                        </Label>
                         <Select
                           value={formData.eventType}
-                          onValueChange={value => setFormData(prev => ({ ...prev, eventType: value }))}
+                          onValueChange={value =>
+                            setFormData(prev => ({ ...prev, eventType: value }))
+                          }
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Seleccionar tipo de evento" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Casamiento">Casamiento</SelectItem>
-                            <SelectItem value="Corporativos">Corporativos</SelectItem>
-                            <SelectItem value="Culturales">Culturales</SelectItem>
-                            <SelectItem value="Photoshoot">Photoshoot</SelectItem>
+                            <SelectItem value="Casamiento">
+                              Casamiento
+                            </SelectItem>
+                            <SelectItem value="Corporativos">
+                              Corporativos
+                            </SelectItem>
+                            <SelectItem value="Culturales">
+                              Culturales
+                            </SelectItem>
+                            <SelectItem value="Photoshoot">
+                              Photoshoot
+                            </SelectItem>
                             <SelectItem value="Prensa">Prensa</SelectItem>
                             <SelectItem value="Otros">Otros</SelectItem>
                           </SelectContent>
@@ -299,7 +339,10 @@ export default function CreateTemplatePage() {
 
                         <div className="space-y-3">
                           {formData.tasks.map((task, index) => (
-                            <div key={index} className="border rounded-lg p-3 space-y-3">
+                            <div
+                              key={index}
+                              className="border rounded-lg p-3 space-y-3"
+                            >
                               <div className="flex justify-between items-center">
                                 <Label>Tarea {index + 1}</Label>
                                 <Button
@@ -317,7 +360,9 @@ export default function CreateTemplatePage() {
                                 <Label>Título</Label>
                                 <Input
                                   value={task.title}
-                                  onChange={e => updateTask(index, 'title', e.target.value)}
+                                  onChange={e =>
+                                    updateTask(index, 'title', e.target.value)
+                                  }
                                   placeholder="Título de la tarea"
                                 />
                               </div>
@@ -328,7 +373,13 @@ export default function CreateTemplatePage() {
                                   <Input
                                     type="number"
                                     value={task.defaultDueDays}
-                                    onChange={e => updateTask(index, 'defaultDueDays', parseInt(e.target.value) || 0)}
+                                    onChange={e =>
+                                      updateTask(
+                                        index,
+                                        'defaultDueDays',
+                                        parseInt(e.target.value) || 0
+                                      )
+                                    }
                                     placeholder="0"
                                   />
                                 </div>
@@ -337,16 +388,18 @@ export default function CreateTemplatePage() {
                                   <Label>Prioridad</Label>
                                   <Select
                                     value={task.priority}
-                                    onValueChange={(value: 'low' | 'medium' | 'high') =>
-                                      updateTask(index, 'priority', value)
-                                    }
+                                    onValueChange={(
+                                      value: 'low' | 'medium' | 'high'
+                                    ) => updateTask(index, 'priority', value)}
                                   >
                                     <SelectTrigger>
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
                                       <SelectItem value="low">Baja</SelectItem>
-                                      <SelectItem value="medium">Media</SelectItem>
+                                      <SelectItem value="medium">
+                                        Media
+                                      </SelectItem>
                                       <SelectItem value="high">Alta</SelectItem>
                                     </SelectContent>
                                   </Select>
@@ -357,7 +410,9 @@ export default function CreateTemplatePage() {
                                 <Label>Notas (opcional)</Label>
                                 <Input
                                   value={task.notes || ''}
-                                  onChange={e => updateTask(index, 'notes', e.target.value)}
+                                  onChange={e =>
+                                    updateTask(index, 'notes', e.target.value)
+                                  }
                                   placeholder="Notas adicionales"
                                 />
                               </div>
@@ -367,7 +422,10 @@ export default function CreateTemplatePage() {
                       </div>
 
                       <div className="flex justify-end space-x-2">
-                        <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsCreateDialogOpen(false)}
+                        >
                           Cancelar
                         </Button>
                         <Button onClick={saveTemplate} disabled={loading}>
@@ -387,14 +445,20 @@ export default function CreateTemplatePage() {
                   <div className="p-2 rounded-lg bg-secondary text-secondary-foreground">
                     <FileText className="h-4 w-4" />
                   </div>
-                  <CardTitle className="text-body-lg">Duplicar Existente</CardTitle>
+                  <CardTitle className="text-body-lg">
+                    Duplicar Existente
+                  </CardTitle>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Basa tu nueva plantilla en una existente y personalízala según tus necesidades
+                  Basa tu nueva plantilla en una existente y personalízala según
+                  tus necesidades
                 </p>
               </CardHeader>
               <CardContent>
-                <Dialog open={isDuplicateDialogOpen} onOpenChange={setIsDuplicateDialogOpen}>
+                <Dialog
+                  open={isDuplicateDialogOpen}
+                  onOpenChange={setIsDuplicateDialogOpen}
+                >
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
                       <FileText className="h-4 w-4 mr-2" />
@@ -403,14 +467,17 @@ export default function CreateTemplatePage() {
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl">
                     <DialogHeader>
-                      <DialogTitle>Seleccionar Plantilla para Duplicar</DialogTitle>
+                      <DialogTitle>
+                        Seleccionar Plantilla para Duplicar
+                      </DialogTitle>
                       <DialogDescription>
-                        Selecciona una plantilla existente para duplicar y personalizar
+                        Selecciona una plantilla existente para duplicar y
+                        personalizar
                       </DialogDescription>
                     </DialogHeader>
-                    <TaskTemplateManager 
-                      mode="select" 
-                      onTemplateSelect={(template) => {
+                    <TaskTemplateManager
+                      mode="select"
+                      onTemplateSelect={template => {
                         setFormData({
                           name: `${template.name} (Copia)`,
                           description: template.description || '',
@@ -440,10 +507,14 @@ export default function CreateTemplatePage() {
               <Card key={index} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-center space-x-2">
-                    <div className={`p-2 rounded-lg ${example.color} text-white`}>
+                    <div
+                      className={`p-2 rounded-lg ${example.color} text-primary-foreground`}
+                    >
                       <example.icon className="h-4 w-4" />
                     </div>
-                    <CardTitle className="text-body-lg">{example.name}</CardTitle>
+                    <CardTitle className="text-body-lg">
+                      {example.name}
+                    </CardTitle>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {example.description}
@@ -482,24 +553,32 @@ export default function CreateTemplatePage() {
                   type="text"
                   placeholder="Ej: Evento de Empresa"
                   value={formData.name}
-                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={e =>
+                    setFormData(prev => ({ ...prev, name: e.target.value }))
+                  }
                 />
               </div>
               <div>
                 <Label>Tipo de Evento</Label>
                 <Select
                   value={formData.eventType}
-                  onValueChange={value => setFormData(prev => ({ ...prev, eventType: value }))}
+                  onValueChange={value =>
+                    setFormData(prev => ({ ...prev, eventType: value }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccionar tipo" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Casamiento">Casamiento</SelectItem>
-                    <SelectItem value="Corporativos">Eventos Corporativos</SelectItem>
+                    <SelectItem value="Corporativos">
+                      Eventos Corporativos
+                    </SelectItem>
                     <SelectItem value="Quinceañera">Quinceañera</SelectItem>
                     <SelectItem value="Cumpleaños">Cumpleaños</SelectItem>
-                    <SelectItem value="Culturales">Eventos Culturales</SelectItem>
+                    <SelectItem value="Culturales">
+                      Eventos Culturales
+                    </SelectItem>
                     <SelectItem value="Photoshoot">Photoshoot</SelectItem>
                     <SelectItem value="Prensa">Eventos de Prensa</SelectItem>
                     <SelectItem value="Otros">Otros</SelectItem>
@@ -513,7 +592,12 @@ export default function CreateTemplatePage() {
               <Textarea
                 placeholder="Describe el propósito de esta plantilla..."
                 value={formData.description}
-                onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={e =>
+                  setFormData(prev => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 rows={3}
               />
             </div>
@@ -540,7 +624,10 @@ export default function CreateTemplatePage() {
         </div>
 
         {/* Quick Create Dialog */}
-        <Dialog open={isQuickCreateDialogOpen} onOpenChange={setIsQuickCreateDialogOpen}>
+        <Dialog
+          open={isQuickCreateDialogOpen}
+          onOpenChange={setIsQuickCreateDialogOpen}
+        >
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>Crear Plantilla Básica</DialogTitle>
@@ -554,7 +641,9 @@ export default function CreateTemplatePage() {
                 <Label>Nombre</Label>
                 <Input
                   value={formData.name}
-                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={e =>
+                    setFormData(prev => ({ ...prev, name: e.target.value }))
+                  }
                   placeholder="Nombre de la plantilla"
                 />
               </div>
@@ -563,7 +652,12 @@ export default function CreateTemplatePage() {
                 <Label>Descripción</Label>
                 <Textarea
                   value={formData.description}
-                  onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={e =>
+                    setFormData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
                   placeholder="Descripción opcional"
                 />
               </div>
@@ -572,7 +666,9 @@ export default function CreateTemplatePage() {
                 <Label>Tipo de Evento</Label>
                 <Select
                   value={formData.eventType}
-                  onValueChange={value => setFormData(prev => ({ ...prev, eventType: value }))}
+                  onValueChange={value =>
+                    setFormData(prev => ({ ...prev, eventType: value }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccionar tipo de evento" />
@@ -592,7 +688,10 @@ export default function CreateTemplatePage() {
                 <Label>Tareas Predefinidas</Label>
                 <div className="space-y-2 mt-2">
                   {formData.tasks.map((task, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 border rounded-lg"
+                    >
                       <div className="flex items-center gap-3">
                         <CheckCircle className="h-4 w-4 text-success" />
                         <span className="font-medium">{task.title}</span>
@@ -615,7 +714,11 @@ export default function CreateTemplatePage() {
                                 : 'text-success'
                           }`}
                         >
-                          {task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Media' : 'Baja'}
+                          {task.priority === 'high'
+                            ? 'Alta'
+                            : task.priority === 'medium'
+                              ? 'Media'
+                              : 'Baja'}
                         </Badge>
                       </div>
                     </div>
@@ -624,7 +727,10 @@ export default function CreateTemplatePage() {
               </div>
 
               <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsQuickCreateDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsQuickCreateDialogOpen(false)}
+                >
                   Cancelar
                 </Button>
                 <Button onClick={saveTemplate} disabled={loading}>
@@ -637,4 +743,4 @@ export default function CreateTemplatePage() {
       </div>
     </AdminLayout>
   );
-} 
+}

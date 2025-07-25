@@ -21,7 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Plus, Edit, Trash2, Copy, Eye, Shield, AlertCircle } from 'lucide-react';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Copy,
+  Eye,
+  Shield,
+  AlertCircle,
+} from 'lucide-react';
 import { getFirestoreService } from '@/lib/firebase';
 import { checkAdminStatus } from '@/lib/admin-auth';
 import { useAuth } from '@/contexts/AuthContext';
@@ -70,7 +78,9 @@ export default function TaskTemplateManager({
   const [templates, setTemplates] = useState<TaskTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
-  const [previewTemplate, setPreviewTemplate] = useState<TaskTemplate | null>(null);
+  const [previewTemplate, setPreviewTemplate] = useState<TaskTemplate | null>(
+    null
+  );
   const [filterEventType, setFilterEventType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -81,7 +91,8 @@ export default function TaskTemplateManager({
     {
       id: 'default-wedding',
       name: 'Casamiento Estándar',
-      description: 'Template completo para casamientos con todas las tareas necesarias',
+      description:
+        'Template completo para casamientos con todas las tareas necesarias',
       eventType: 'Casamiento',
       isDefault: true,
       tasks: [
@@ -125,12 +136,17 @@ export default function TaskTemplateManager({
     {
       id: 'default-quinceanera',
       name: 'Quinceañera',
-      description: 'Template especializado para quinceañeras con timeline extendido',
+      description:
+        'Template especializado para quinceañeras con timeline extendido',
       eventType: 'Quinceañera',
       isDefault: true,
       tasks: [
         { title: 'Fecha confirmada', defaultDueDays: 0, priority: 'high' },
-        { title: 'Reunión de planificación', defaultDueDays: -14, priority: 'high' },
+        {
+          title: 'Reunión de planificación',
+          defaultDueDays: -14,
+          priority: 'high',
+        },
         { title: 'Crew armado', defaultDueDays: -7, priority: 'high' },
         { title: 'Shooting finalizado', defaultDueDays: 0, priority: 'high' },
         { title: 'Imágenes editadas', defaultDueDays: 21, priority: 'medium' },
@@ -176,7 +192,11 @@ export default function TaskTemplateManager({
       isDefault: true,
       tasks: [
         { title: 'Fecha confirmada', defaultDueDays: 0, priority: 'high' },
-        { title: 'Reunión de conceptos', defaultDueDays: -10, priority: 'high' },
+        {
+          title: 'Reunión de conceptos',
+          defaultDueDays: -10,
+          priority: 'high',
+        },
         { title: 'Crew armado', defaultDueDays: -5, priority: 'high' },
         { title: 'Shooting finalizado', defaultDueDays: 0, priority: 'high' },
         { title: 'Imágenes editadas', defaultDueDays: 10, priority: 'medium' },
@@ -248,7 +268,7 @@ export default function TaskTemplateManager({
         setAdminLoading(true);
         const adminStatus = await checkAdminStatus(user.email);
         setIsAdmin(adminStatus);
-        
+
         if (adminStatus) {
           await loadTemplates();
         }
@@ -299,8 +319,6 @@ export default function TaskTemplateManager({
     }
   }, []);
 
-
-
   const deleteTemplate = async (templateId: string) => {
     try {
       const db = await getFirestoreService();
@@ -321,7 +339,15 @@ export default function TaskTemplateManager({
   };
 
   const handleEditTemplate = (templateId: string) => {
-    router.push(`/admin/templates/${templateId}/edit`);
+    console.log('Navigating to edit template:', templateId);
+    try {
+      router.push(`/admin/templates/${templateId}/edit`);
+    } catch (error) {
+      console.error('Error navigating to edit template:', error);
+      alert(
+        'Error al navegar a la página de edición. Por favor, inténtalo de nuevo.'
+      );
+    }
   };
 
   const handleTemplateSelect = (template: TaskTemplate) => {
@@ -354,19 +380,28 @@ export default function TaskTemplateManager({
       }
 
       // Show loading state
-      const loadingMessage = `Duplicando "${template.name}"...`;
-      
+      console.log(`Duplicando "${template.name}"...`);
+
       // Add the duplicated template to Firestore
-      const docRef = await addDoc(collection(db, 'taskTemplates'), duplicatedTemplate);
-      
+      const docRef = await addDoc(
+        collection(db, 'taskTemplates'),
+        duplicatedTemplate
+      );
+
+      console.log('Template duplicated successfully:', docRef.id);
+
       // Reload templates to show the new one
       await loadTemplates();
-      
+
       // Success feedback
-      alert(`Plantilla "${template.name}" duplicada exitosamente como "${duplicatedTemplate.name}"`);
-      
+      alert(
+        `Plantilla "${template.name}" duplicada exitosamente como "${duplicatedTemplate.name}"`
+      );
+
       // Optionally navigate to edit page for immediate customization
-      const shouldEdit = confirm('¿Deseas editar la plantilla duplicada ahora?');
+      const shouldEdit = confirm(
+        '¿Deseas editar la plantilla duplicada ahora?'
+      );
       if (shouldEdit) {
         // Navigate to the edit page for the newly created template
         router.push(`/admin/templates/${docRef.id}/edit`);
@@ -407,12 +442,17 @@ export default function TaskTemplateManager({
     // Use props if provided, otherwise use internal state
     const searchFilter = nameFilter || searchTerm;
     const eventTypeFilterValue = eventTypeFilter || filterEventType;
-    
-    const matchesSearch = template.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      template.description?.toLowerCase().includes(searchFilter.toLowerCase()) ||
+
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+      template.description
+        ?.toLowerCase()
+        .includes(searchFilter.toLowerCase()) ||
       template.eventType?.toLowerCase().includes(searchFilter.toLowerCase());
 
-    const matchesEventType = eventTypeFilterValue === 'all' || template.eventType === eventTypeFilterValue;
+    const matchesEventType =
+      eventTypeFilterValue === 'all' ||
+      template.eventType === eventTypeFilterValue;
 
     return matchesSearch && matchesEventType;
   });
@@ -426,7 +466,7 @@ export default function TaskTemplateManager({
     'Culturales',
     'Photoshoot',
     'Prensa',
-    'Otros'
+    'Otros',
   ];
 
   if (loading || adminLoading) {
@@ -451,7 +491,8 @@ export default function TaskTemplateManager({
             <div>
               <h3 className="text-lg font-semibold mb-2">Acceso Restringido</h3>
               <p className="text-sm text-muted-foreground">
-                Solo los administradores pueden acceder a la gestión de plantillas.
+                Solo los administradores pueden acceder a la gestión de
+                plantillas.
               </p>
             </div>
           </div>
@@ -478,7 +519,7 @@ export default function TaskTemplateManager({
           <Input
             placeholder="Buscar plantillas..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -505,7 +546,7 @@ export default function TaskTemplateManager({
 
       {/* Template List Cards */}
       <div className="grid gap-4">
-        {filteredTemplates.map((template) => (
+        {filteredTemplates.map(template => (
           <Card key={template.id} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
@@ -513,9 +554,14 @@ export default function TaskTemplateManager({
                   <div className="flex items-center gap-2 mb-1">
                     <CardTitle className="text-base">{template.name}</CardTitle>
                     {template.isDefault && (
-                      <Badge variant="secondary" className="text-xs">Por defecto</Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        Por defecto
+                      </Badge>
                     )}
-                    <Badge variant={template.isDefault ? "secondary" : "outline"} className="text-xs">
+                    <Badge
+                      variant={template.isDefault ? 'secondary' : 'outline'}
+                      className="text-xs"
+                    >
                       {template.isDefault ? 'Sistema' : 'Personalizada'}
                     </Badge>
                   </div>
@@ -554,27 +600,27 @@ export default function TaskTemplateManager({
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
-                                              {!template.isDefault && (
-                          <>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditTemplate(template.id)}
-                              title="Editar"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => deleteTemplate(template.id)}
-                              className="text-destructive"
-                              title="Eliminar"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </>
-                        )}
+                      {!template.isDefault && (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditTemplate(template.id)}
+                            title="Editar"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteTemplate(template.id)}
+                            className="text-destructive"
+                            title="Eliminar"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
                     </>
                   )}
                 </div>
@@ -586,7 +632,9 @@ export default function TaskTemplateManager({
                   {template.eventType ? (
                     <Badge variant="outline">{template.eventType}</Badge>
                   ) : (
-                    <Badge variant="outline" className="text-muted-foreground">Sin tipo</Badge>
+                    <Badge variant="outline" className="text-muted-foreground">
+                      Sin tipo
+                    </Badge>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
@@ -594,19 +642,28 @@ export default function TaskTemplateManager({
                   <span className="text-muted-foreground">tareas</span>
                 </div>
                 <div className="flex gap-1">
-                  {template.tasks.filter(t => t.priority === 'high').length > 0 && (
+                  {template.tasks.filter(t => t.priority === 'high').length >
+                    0 && (
                     <Badge variant="destructive" className="text-xs">
-                      {template.tasks.filter(t => t.priority === 'high').length} Alta
+                      {template.tasks.filter(t => t.priority === 'high').length}{' '}
+                      Alta
                     </Badge>
                   )}
-                  {template.tasks.filter(t => t.priority === 'medium').length > 0 && (
+                  {template.tasks.filter(t => t.priority === 'medium').length >
+                    0 && (
                     <Badge variant="outline" className="text-xs text-warning">
-                      {template.tasks.filter(t => t.priority === 'medium').length} Media
+                      {
+                        template.tasks.filter(t => t.priority === 'medium')
+                          .length
+                      }{' '}
+                      Media
                     </Badge>
                   )}
-                  {template.tasks.filter(t => t.priority === 'low').length > 0 && (
+                  {template.tasks.filter(t => t.priority === 'low').length >
+                    0 && (
                     <Badge variant="outline" className="text-xs text-success">
-                      {template.tasks.filter(t => t.priority === 'low').length} Baja
+                      {template.tasks.filter(t => t.priority === 'low').length}{' '}
+                      Baja
                     </Badge>
                   )}
                 </div>
@@ -626,21 +683,36 @@ export default function TaskTemplateManager({
             </div>
             <div>
               <span className="font-medium">Tipos de Evento:</span>
-              <span className="ml-2">{new Set(filteredTemplates.map(t => t.eventType).filter(Boolean)).size}</span>
+              <span className="ml-2">
+                {
+                  new Set(
+                    filteredTemplates.map(t => t.eventType).filter(Boolean)
+                  ).size
+                }
+              </span>
             </div>
             <div>
               <span className="font-medium">Tareas Promedio:</span>
-              <span className="ml-2">{filteredTemplates.length > 0 ? Math.round(filteredTemplates.reduce((sum, t) => sum + t.tasks.length, 0) / filteredTemplates.length) : 0}</span>
+              <span className="ml-2">
+                {filteredTemplates.length > 0
+                  ? Math.round(
+                      filteredTemplates.reduce(
+                        (sum, t) => sum + t.tasks.length,
+                        0
+                      ) / filteredTemplates.length
+                    )
+                  : 0}
+              </span>
             </div>
             <div>
               <span className="font-medium">Plantillas del Sistema:</span>
-              <span className="ml-2">{filteredTemplates.filter(t => t.isDefault).length}</span>
+              <span className="ml-2">
+                {filteredTemplates.filter(t => t.isDefault).length}
+              </span>
             </div>
           </div>
         </div>
       )}
-
-
 
       {/* Enhanced Template Preview Dialog */}
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
@@ -660,21 +732,33 @@ export default function TaskTemplateManager({
               {/* Template Header Information */}
               <div className="grid md:grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
                 <div>
-                  <Label className="text-sm font-medium">Información General</Label>
+                  <Label className="text-sm font-medium">
+                    Información General
+                  </Label>
                   <div className="mt-2 space-y-2">
                     <div>
-                      <span className="text-sm text-muted-foreground">Nombre:</span>
+                      <span className="text-sm text-muted-foreground">
+                        Nombre:
+                      </span>
                       <p className="font-medium">{previewTemplate.name}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-muted-foreground">Descripción:</span>
-                      <p className="text-sm">{previewTemplate.description || 'Sin descripción'}</p>
+                      <span className="text-sm text-muted-foreground">
+                        Descripción:
+                      </span>
+                      <p className="text-sm">
+                        {previewTemplate.description || 'Sin descripción'}
+                      </p>
                     </div>
                     {previewTemplate.eventType && (
                       <div>
-                        <span className="text-sm text-muted-foreground">Tipo de Evento:</span>
+                        <span className="text-sm text-muted-foreground">
+                          Tipo de Evento:
+                        </span>
                         <div className="mt-1">
-                          <Badge variant="outline">{previewTemplate.eventType}</Badge>
+                          <Badge variant="outline">
+                            {previewTemplate.eventType}
+                          </Badge>
                         </div>
                       </div>
                     )}
@@ -684,26 +768,55 @@ export default function TaskTemplateManager({
                   <Label className="text-sm font-medium">Estadísticas</Label>
                   <div className="mt-2 space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Total de Tareas:</span>
-                      <span className="font-medium">{previewTemplate.tasks.length}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Tareas de Alta Prioridad:</span>
-                      <span className="font-medium text-destructive">
-                        {previewTemplate.tasks.filter(t => t.priority === 'high').length}
+                      <span className="text-sm text-muted-foreground">
+                        Total de Tareas:
                       </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Duración Estimada:</span>
                       <span className="font-medium">
-                        {Math.max(...previewTemplate.tasks.map(t => t.defaultDueDays)) + 
-                         Math.abs(Math.min(...previewTemplate.tasks.map(t => t.defaultDueDays)))} días
+                        {previewTemplate.tasks.length}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Tipo:</span>
-                      <Badge variant={previewTemplate.isDefault ? "secondary" : "outline"}>
-                        {previewTemplate.isDefault ? 'Por Defecto' : 'Personalizada'}
+                      <span className="text-sm text-muted-foreground">
+                        Tareas de Alta Prioridad:
+                      </span>
+                      <span className="font-medium text-destructive">
+                        {
+                          previewTemplate.tasks.filter(
+                            t => t.priority === 'high'
+                          ).length
+                        }
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        Duración Estimada:
+                      </span>
+                      <span className="font-medium">
+                        {Math.max(
+                          ...previewTemplate.tasks.map(t => t.defaultDueDays)
+                        ) +
+                          Math.abs(
+                            Math.min(
+                              ...previewTemplate.tasks.map(
+                                t => t.defaultDueDays
+                              )
+                            )
+                          )}{' '}
+                        días
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        Tipo:
+                      </span>
+                      <Badge
+                        variant={
+                          previewTemplate.isDefault ? 'secondary' : 'outline'
+                        }
+                      >
+                        {previewTemplate.isDefault
+                          ? 'Por Defecto'
+                          : 'Personalizada'}
                       </Badge>
                     </div>
                   </div>
@@ -712,7 +825,9 @@ export default function TaskTemplateManager({
 
               {/* Task Timeline Visualization */}
               <div>
-                <Label className="text-sm font-medium">Timeline de Tareas</Label>
+                <Label className="text-sm font-medium">
+                  Timeline de Tareas
+                </Label>
                 <div className="mt-3 space-y-3">
                   {previewTemplate.tasks
                     .sort((a, b) => a.defaultDueDays - b.defaultDueDays)
@@ -723,11 +838,15 @@ export default function TaskTemplateManager({
                       >
                         {/* Timeline indicator */}
                         <div className="flex flex-col items-center">
-                          <div className={`w-3 h-3 rounded-full ${
-                            task.priority === 'high' ? 'bg-destructive' :
-                            task.priority === 'medium' ? 'bg-warning' :
-                            'bg-success'
-                          }`} />
+                          <div
+                            className={`w-3 h-3 rounded-full ${
+                              task.priority === 'high'
+                                ? 'bg-destructive'
+                                : task.priority === 'medium'
+                                  ? 'bg-warning'
+                                  : 'bg-success'
+                            }`}
+                          />
                           {index < previewTemplate.tasks.length - 1 && (
                             <div className="w-0.5 h-8 bg-border mt-1" />
                           )}
@@ -754,7 +873,9 @@ export default function TaskTemplateManager({
                             </div>
                           </div>
                           {task.notes && (
-                            <p className="text-sm text-muted-foreground">{task.notes}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {task.notes}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -764,24 +885,40 @@ export default function TaskTemplateManager({
 
               {/* Priority Distribution */}
               <div>
-                <Label className="text-sm font-medium">Distribución de Prioridades</Label>
+                <Label className="text-sm font-medium">
+                  Distribución de Prioridades
+                </Label>
                 <div className="mt-2 flex gap-2">
                   <div className="flex-1 bg-destructive/10 p-3 rounded-lg">
-                    <div className="text-sm font-medium text-destructive">Alta</div>
+                    <div className="text-sm font-medium text-destructive">
+                      Alta
+                    </div>
                     <div className="text-2xl font-bold text-destructive">
-                      {previewTemplate.tasks.filter(t => t.priority === 'high').length}
+                      {
+                        previewTemplate.tasks.filter(t => t.priority === 'high')
+                          .length
+                      }
                     </div>
                   </div>
                   <div className="flex-1 bg-warning/10 p-3 rounded-lg">
-                    <div className="text-sm font-medium text-warning">Media</div>
+                    <div className="text-sm font-medium text-warning">
+                      Media
+                    </div>
                     <div className="text-2xl font-bold text-warning">
-                      {previewTemplate.tasks.filter(t => t.priority === 'medium').length}
+                      {
+                        previewTemplate.tasks.filter(
+                          t => t.priority === 'medium'
+                        ).length
+                      }
                     </div>
                   </div>
                   <div className="flex-1 bg-success/10 p-3 rounded-lg">
                     <div className="text-sm font-medium text-success">Baja</div>
                     <div className="text-2xl font-bold text-success">
-                      {previewTemplate.tasks.filter(t => t.priority === 'low').length}
+                      {
+                        previewTemplate.tasks.filter(t => t.priority === 'low')
+                          .length
+                      }
                     </div>
                   </div>
                 </div>
@@ -789,7 +926,10 @@ export default function TaskTemplateManager({
 
               {/* Action Buttons */}
               <div className="flex justify-end space-x-2 pt-4 border-t">
-                <Button variant="outline" onClick={() => setIsPreviewDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsPreviewDialogOpen(false)}
+                >
                   Cerrar
                 </Button>
                 {mode === 'manage' && (
@@ -819,10 +959,12 @@ export default function TaskTemplateManager({
                   </>
                 )}
                 {mode === 'select' && (
-                  <Button onClick={() => {
-                    handleTemplateSelect(previewTemplate);
-                    setIsPreviewDialogOpen(false);
-                  }}>
+                  <Button
+                    onClick={() => {
+                      handleTemplateSelect(previewTemplate);
+                      setIsPreviewDialogOpen(false);
+                    }}
+                  >
                     <Copy className="h-4 w-4 mr-2" />
                     Usar Esta Plantilla
                   </Button>

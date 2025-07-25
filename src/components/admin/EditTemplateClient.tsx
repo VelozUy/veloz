@@ -9,7 +9,9 @@ interface EditTemplateClientProps {
   templateId: string;
 }
 
-export default function EditTemplateClient({ templateId }: EditTemplateClientProps) {
+export default function EditTemplateClient({
+  templateId,
+}: EditTemplateClientProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -22,7 +24,7 @@ export default function EditTemplateClient({ templateId }: EditTemplateClientPro
         <div>
           <h1 className="text-2xl font-semibold">Editar Plantilla</h1>
           <p className="text-sm text-muted-foreground">
-            Modifica las tareas y configuración de la plantilla
+            Modifica las tareas y configuración de esta plantilla
           </p>
         </div>
       </div>
@@ -32,4 +34,4 @@ export default function EditTemplateClient({ templateId }: EditTemplateClientPro
       </div>
     </div>
   );
-} 
+}
