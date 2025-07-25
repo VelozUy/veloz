@@ -1947,7 +1947,6 @@ _No discoveries yet_
 
 **Objective**: ✅ **COMPLETED** - Comprehensive brand design system implemented across entire application for consistent visual identity and enhanced user experience
 
-**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete implementation plan and specifications
 **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Critical fixes for current visual issues
 **Status**: ✅ **COMPLETED** - All phases finished successfully
 
@@ -2061,7 +2060,6 @@ _No discoveries yet_
     - Document spacing and animation systems
     - Include component usage examples
   - **Files**: `docs/DESIGN_SYSTEM.md`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Success Metrics & Implementation Notes
   - **Estimated Time**: 1-2 days
 
 #### 🧠 Discovered During Epic
@@ -2821,7 +2819,6 @@ _No tasks completed yet for this Epic_
 
 **Objective**: Implement and optimize the micro questions wizard widget with seamless integration to the contact form, ensuring all fields are properly pre-filled and the user experience is smooth and intuitive
 
-**Reference**: `docs/NEW_DESIGN_PLAN.md` - Contact widget specifications and form integration requirements
 **User Intent**: Create a sophisticated multi-step contact widget that collects user information efficiently and seamlessly transfers it to the contact form for completion
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
@@ -2854,7 +2851,6 @@ _No tasks completed yet for this Epic_
     - Validation to enable/disable "Next" buttons based on required inputs ✅
     - Widget resets to step 1 when closed ✅
   - **Files**: `src/components/gallery/ContactWidget.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Contact widget specifications
   - **Estimated Time**: 2-3 days
   - **Status**: Completed - Multi-step wizard implemented with all required functionality
   - **Prompt Used**: "Create micro questions wizard form with event type, date, location, and contact choice steps"
@@ -2872,7 +2868,6 @@ _No tasks completed yet for this Epic_
     - Message field includes location information ✅
     - Form resets properly when URL parameters change ✅
   - **Files**: `src/components/gallery/ContactWidget.tsx`, `src/components/forms/ContactForm.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Form integration specifications
   - **Estimated Time**: 1-2 days
   - **Status**: Completed - URL parameter passing and form pre-filling implemented
 
@@ -2886,7 +2881,6 @@ _No tasks completed yet for this Epic_
     - Clear visual feedback for user actions ✅
     - Responsive design works on all devices ✅
   - **Files**: `src/components/gallery/ContactWidget.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - UI/UX specifications
   - **Estimated Time**: 1-2 days
   - **Status**: Completed - UI/UX optimized with inline calendar and proper validation
   - **Prompt Used**: "Optimize widget UI with inline calendar, stacked buttons, and proper validation"
@@ -3033,7 +3027,6 @@ _No tasks completed yet for this Epic_
 **Technical Dependencies**:
 
 - Current contact form implementation
-- Access to `docs/NEW_DESIGN_PLAN.md` specifications
 - Understanding of Next.js app directory SSR patterns
 - React hooks and state management patterns
 
@@ -3396,7 +3389,6 @@ _No tasks completed yet for this Epic_
 
 **Objective**: Transform the /our-work page to show galleries by project category with scroll navigation, displaying only feature media from each category in a single-page layout
 
-**Reference**: Meeting document "Reunión 19_07_25.md", `docs/NEW_DESIGN_PLAN.md`
 **User Intent**: Improve gallery organization with scroll navigation showing only feature media grouped by category, making it easier for clients to browse specific types of work in a single-page experience
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
@@ -3488,7 +3480,6 @@ _No tasks completed yet for this Epic_
     - Analyze category popularity
     - Conversion tracking from category views
   - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md`
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 5 completion
 
@@ -4036,7 +4027,6 @@ _No tasks completed yet for this Epic_
 
 **Objective**: Create an immersive fullscreen viewing experience for category gallery items with minimal UI, smooth transitions, and optimized performance for large media collections
 
-**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete design specifications and user experience requirements
 **User Intent**: Provide users with an immersive, distraction-free viewing experience when clicking on category gallery items, allowing them to focus entirely on the media content with intuitive navigation
 
 **Scope**: Fullscreen modal/dialog system for category gallery items only. Separate from project detail page lightbox functionality.
@@ -4055,7 +4045,6 @@ _No tasks completed yet for this Epic_
     - ESC key support for closing modal ✅
     - Proper z-index management for overlay ✅
   - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/components/our-work/FeatureMediaGrid.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Immersive viewing specifications
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ Completed - Fullscreen modal component fully implemented with comprehensive tests
 
@@ -4069,7 +4058,6 @@ _No tasks completed yet for this Epic_
     - Loading states with skeleton placeholders ✅
     - Error handling for failed media loads ✅
   - **Files**: `src/components/gallery/FullscreenModal.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Media optimization guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ Completed - Media display optimization fully implemented
 
@@ -4083,7 +4071,6 @@ _No tasks completed yet for this Epic_
     - Disabled states for first/last items ✅
     - Item counter display (e.g., "3 of 12") ✅
   - **Files**: `src/components/gallery/FullscreenModal.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Navigation UX specifications
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ Completed - Navigation controls fully implemented with touch gesture support
 
@@ -4099,7 +4086,6 @@ _No tasks completed yet for this Epic_
     - Minimum swipe distance (50px) to prevent accidental navigation ✅
     - Passive event listeners for performance ✅
   - **Files**: `src/hooks/useTouchGestures.ts`, `src/components/gallery/FullscreenModal.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Mobile interaction guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ Completed - Touch gesture support fully implemented
 
@@ -4113,7 +4099,6 @@ _No tasks completed yet for this Epic_
     - Progressive image loading with blur-up effects ✅
     - Video preloading with metadata only ✅
   - **Files**: `src/lib/fullscreen-performance.ts`, `src/hooks/useTouchGestures.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Performance optimization guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ Completed - Performance optimization fully implemented
 
@@ -4129,7 +4114,6 @@ _No tasks completed yet for this Epic_
     - Track user interactions (swipe gestures, keyboard usage) ✅
     - Conversion tracking from fullscreen view to contact ✅
   - **Files**: `src/lib/gallery-analytics.ts`, `src/components/our-work/FeatureMediaGrid.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Analytics requirements
   - **Estimated Time**: 1-2 days
   - **Status**: ✅ Completed - Analytics integration fully implemented
 
@@ -4145,7 +4129,6 @@ _No tasks completed yet for this Epic_
     - Background music/soundtrack support for videos
     - Custom transition effects between items
   - **Files**: Gallery components (REMOVED - Advanced features removed)
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Advanced feature specifications
   - **Estimated Time**: 3-4 days
   - **Status**: Ready after Phase 7 completion
 
@@ -4158,7 +4141,6 @@ _No tasks completed yet for this Epic_
     - Ensure proper fullscreen API support
     - Test performance on different devices and screen sizes
   - **Files**: Test files, browser compatibility utilities
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Cross-browser requirements
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 8 completion
 
@@ -4208,7 +4190,6 @@ _No tasks completed yet for this Epic_
 **Technical Dependencies**:
 
 - Current category gallery implementation
-- Access to `docs/NEW_DESIGN_PLAN.md` specifications
 - Understanding of existing media loading patterns
 - Touch gesture and keyboard event handling libraries
 
@@ -4939,7 +4920,6 @@ _No tasks completed yet for this Epic_
     - All actions update UI immediately ✅
     - Error handling for failed operations ✅
   - **Files**: `src/app/admin/templates/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template management should have full CRUD operations
   - **Estimated Time**: 0.5 days
   - **Status**: ✅ Completed - Templates page now uses actual TaskTemplateManager with full functionality
 
@@ -4952,7 +4932,6 @@ _No tasks completed yet for this Epic_
     - Support for all template fields (name, description, tasks, priorities) ✅
     - Integration with existing template system ✅
   - **Files**: `src/app/admin/templates/create/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template creation should save to database
   - **Estimated Time**: 1.5 days
   - **Status**: ✅ Completed - Full template creation workflow implemented
   - **Technical Details**:
@@ -4974,7 +4953,6 @@ _No tasks completed yet for this Epic_
     - Template usage statistics ✅
     - Quick apply template functionality ✅
   - **Files**: `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template preview should be comprehensive
   - **Estimated Time**: 1 day
   - **Status**: ✅ Completed - Enhanced preview modal with comprehensive features
   - **Technical Details**:
@@ -4998,7 +4976,6 @@ _No tasks completed yet for this Epic_
     - Generate new unique template ID ✅
     - Update template list immediately ✅
   - **Files**: `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template duplication should speed up creation process
   - **Estimated Time**: 1 day
   - **Status**: ✅ Completed - Enhanced duplication with immediate editing capability
   - **Technical Details**:
@@ -5018,7 +4995,6 @@ _No tasks completed yet for this Epic_
     - Smooth filtering transitions ✅
     - Mobile-responsive category interface ✅
   - **Files**: `src/app/admin/templates/categories/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Category filtering should work with live data
   - **Estimated Time**: 1 day
   - **Status**: ✅ Completed - Full categories integration with real data
   - **Technical Details**:
@@ -5042,7 +5018,6 @@ _No tasks completed yet for this Epic_
     - Priority thresholds influence template behavior
     - Category enable/disable affects available templates
   - **Files**: `src/app/admin/templates/settings/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Settings should control template behavior globally
   - **Estimated Time**: 1.5 days
   - **Status**: Ready after Phase 5 completion
 
@@ -5057,7 +5032,6 @@ _No tasks completed yet for this Epic_
     - Real-time validation feedback
     - Error prevention and recovery
   - **Files**: `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template validation should prevent data issues
   - **Estimated Time**: 0.5 days
   - **Status**: Ready after Phase 6 completion
 
@@ -5070,7 +5044,6 @@ _No tasks completed yet for this Epic_
     - Conflict resolution for duplicate templates
     - Bulk import/export functionality
   - **Files**: `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template import/export should enable backup and sharing
   - **Estimated Time**: 1 day
   - **Status**: Ready after Phase 7 completion
 

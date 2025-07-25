@@ -466,7 +466,6 @@ This file contains unprioritized ideas and future features that have been identi
 
 ### 🎯 Objective: ✅ **COMPLETED** - Comprehensive brand design system implemented across entire application for consistent visual identity and enhanced user experience
 
-**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete implementation plan and specifications
 **Reference**: `docs/DESIGN_UPDATE_PLAN.md` - Critical fixes for current visual issues
 **Status**: ✅ **COMPLETED** - All phases finished successfully
 **Completion Date**: 2025-01-27
@@ -672,7 +671,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Update Tailwind config with new font families
     - Implement fallback fonts if REDJOLA unavailable
   - **Files**: `src/app/globals.css`, `tailwind.config.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 2.1-2.3 (Typography System Implementation)
   - **Estimated Time**: 1-2 days
 
 - [ ] **Phase 3: Core Component Updates** - Update all UI components to match brand system
@@ -684,7 +682,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Update Dialog/Modal components with Vibrant Blue accents
     - Ensure all components use theme variables
   - **Files**: `src/components/ui/button.tsx`, `src/components/ui/input.tsx`, `src/components/ui/card.tsx`, `src/components/ui/dialog.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 3.1-3.4 (Component System Updates)
   - **Estimated Time**: 3-4 days
 
 - [ ] **Phase 4: Logo Component Implementation** - Create VelozLogo component with proper usage guidelines
@@ -696,7 +693,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Ensure proper color handling (white on dark, black on light backgrounds)
     - Add dog silhouette SVG icon
   - **Files**: `src/components/shared/VelozLogo.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 6.1-6.2 (Logo Implementation)
   - **Estimated Time**: 1-2 days
 
 #### 🟨 High Priority Tasks
@@ -709,7 +705,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Our Work page: Medium Grey filter buttons, Vibrant Blue media overlays
     - Contact page: Light Grey form inputs, Vibrant Blue submit button
   - **Files**: `src/app/page.tsx`, `src/app/about/page.tsx`, `src/app/our-work/page.tsx`, `src/app/contact/page.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 4.1-4.4 (Page-Specific Updates)
   - **Estimated Time**: 4-5 days
 
 - [ ] **Phase 6: Admin Panel Updates** - Update admin interface to match brand system
@@ -720,7 +715,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Navigation: White text with Vibrant Blue active states
     - Status indicators: Use Vibrant Blue for success states
   - **Files**: `src/app/admin/layout.tsx`, `src/components/admin/AdminLayout.tsx`, all admin components
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 5.1-5.2 (Admin Panel Updates)
   - **Estimated Time**: 3-4 days
 
 - [ ] **Phase 7: Visual Style Implementation** - Implement spacing, animations, and border radius system
@@ -731,7 +725,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Update border radius system for modern look
     - Ensure all animations are smooth and purposeful
   - **Files**: `tailwind.config.ts`, `src/app/globals.css`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 7.1-7.3 (Visual Style Implementation)
   - **Estimated Time**: 2-3 days
 
 #### 🟩 Medium Priority Tasks
@@ -743,7 +736,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Accessibility checklist: WCAG AA compliance for all color combinations
     - Performance checklist: Font loading < 200ms, optimized CSS
     - Cross-browser testing: Consistent appearance across major browsers
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 8.1-8.3 (Quality Assurance)
   - **Estimated Time**: 3-4 days
 
 - [ ] **Animation System Enhancement** - Add brand-specific micro-interactions
@@ -754,7 +746,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Ensure animations are subtle and enhance UX without being distracting
     - Optimize animations for performance
   - **Files**: `tailwind.config.ts`, component-specific files
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Section 7.2 (Animation Updates)
   - **Estimated Time**: 2-3 days
 
 - [ ] **Responsive Design Optimization** - Ensure design system works perfectly on all devices
@@ -764,7 +755,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Ensure typography scales properly on small screens
     - Verify touch targets are appropriately sized
     - Test navigation and interactions on touch devices
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Implementation Timeline (Week 5)
   - **Estimated Time**: 2-3 days
 
 #### 🟦 Low Priority Tasks
@@ -777,7 +767,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Document spacing and animation systems
     - Include component usage examples
   - **Files**: `docs/DESIGN_SYSTEM.md`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Success Metrics & Implementation Notes
   - **Estimated Time**: 1-2 days
 
 - [ ] **Component Library Enhancement** - Create additional brand-specific components
@@ -788,7 +777,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Add branded notification/toast components
     - Create consistent icon system
   - **Files**: `src/components/ui/` (new components)
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Phase 3 (Component System Updates)
   - **Estimated Time**: 3-4 days
 
 ### 📊 Epic Metrics & Success Criteria
@@ -1639,7 +1627,6 @@ This file contains unprioritized ideas and future features that have been identi
 
 ### 🎯 Objective: Transform the /our-work page to show galleries by project category with scroll navigation, displaying only feature media from each category in a single-page layout
 
-**Reference**: Meeting document "Reunión 19_07_25.md", `docs/NEW_DESIGN_PLAN.md`
 **User Intent**: Improve gallery organization with scroll navigation showing only feature media grouped by category, making it easier for clients to browse specific types of work in a single-page experience
 
 **Status**: ✅ **COMPLETED** - Category system implemented with build-time generation and dynamic routing
@@ -1708,7 +1695,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Analyze category popularity
     - Conversion tracking from category views
   - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md`
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 5 completion
 
@@ -2133,7 +2119,6 @@ This file contains unprioritized ideas and future features that have been identi
 
 ### 🎯 Objective: Create an immersive fullscreen viewing experience for category gallery items with minimal UI, smooth transitions, and optimized performance for large media collections
 
-**Reference**: `docs/NEW_DESIGN_PLAN.md` - Complete design specifications and user experience requirements
 **User Intent**: Provide users with an immersive, distraction-free viewing experience when clicking on category gallery items, allowing them to focus entirely on the media content with intuitive navigation
 
 **Scope**: Fullscreen modal/dialog system for category gallery items only. Separate from project detail page lightbox functionality.
@@ -2150,7 +2135,6 @@ This file contains unprioritized ideas and future features that have been identi
     - ESC key support for closing modal
     - Proper z-index management for overlay
   - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/components/gallery/CategoryGalleryItem.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Immersive viewing specifications
   - **Estimated Time**: 2-3 days
   - **Status**: Ready to start immediately
 
@@ -2164,7 +2148,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Loading states with skeleton placeholders
     - Error handling for failed media loads
   - **Files**: `src/components/gallery/FullscreenMediaDisplay.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Media optimization guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: Ready after Phase 1 completion
 
@@ -2178,7 +2161,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Disabled states for first/last items
     - Item counter display (e.g., "3 of 12")
   - **Files**: `src/components/gallery/FullscreenNavigation.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Navigation UX specifications
   - **Estimated Time**: 2-3 days
   - **Status**: Ready after Phase 2 completion
 
@@ -2194,7 +2176,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Minimum swipe distance (50px) to prevent accidental navigation
     - Passive event listeners for performance
   - **Files**: `src/hooks/useTouchGestures.ts`, `src/components/gallery/FullscreenModal.tsx`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Mobile interaction guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: Ready after Phase 3 completion
 
@@ -2208,7 +2189,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Progressive image loading with blur-up effects
     - Video preloading with metadata only
   - **Files**: `src/lib/fullscreen-performance.ts`, `src/hooks/useFullscreenPerformance.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Performance optimization guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: Ready after Phase 4 completion
 
@@ -2224,7 +2204,6 @@ This file contains unprioritized ideas and future features that have been identi
     - High contrast mode support
     - Reduced motion support for users with vestibular disorders
   - **Files**: `src/components/gallery/FullscreenModal.tsx`, `src/hooks/useAccessibility.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Accessibility guidelines
   - **Estimated Time**: 2-3 days
   - **Status**: Ready after Phase 5 completion
 
@@ -2238,7 +2217,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Track user interactions (swipe gestures, keyboard usage)
     - Conversion tracking from fullscreen view to contact
   - **Files**: `src/lib/analytics.ts`, `src/services/analytics-data.ts`
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Analytics requirements
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 6 completion
 
@@ -2254,7 +2232,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Background music/soundtrack support for videos
     - Custom transition effects between items
   - **Files**: Gallery components (REMOVED - Advanced features removed)
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Advanced feature specifications
   - **Estimated Time**: 3-4 days
   - **Status**: Ready after Phase 7 completion
 
@@ -2267,7 +2244,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Ensure proper fullscreen API support
     - Test performance on different devices and screen sizes
   - **Files**: Test files, browser compatibility utilities
-  - **Reference**: `docs/NEW_DESIGN_PLAN.md` - Cross-browser requirements
   - **Estimated Time**: 1-2 days
   - **Status**: Ready after Phase 8 completion
 
@@ -2306,7 +2282,6 @@ This file contains unprioritized ideas and future features that have been identi
 **Technical Dependencies**:
 
 - Current category gallery implementation
-- Access to `docs/NEW_DESIGN_PLAN.md` specifications
 - Understanding of existing media loading patterns
 - Touch gesture and keyboard event handling libraries
 
@@ -3521,7 +3496,6 @@ This file contains unprioritized ideas and future features that have been identi
     - All actions update UI immediately
     - Error handling for failed operations
   - **Files**: `src/app/admin/templates/page.tsx`, `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template management should have full CRUD operations
   - **Estimated Time**: 2 days
   - **Status**: Ready to start immediately
 
@@ -3534,7 +3508,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Support for all template fields (name, description, tasks, priorities)
     - Integration with existing template system
   - **Files**: `src/app/admin/templates/create/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template creation should save to database
   - **Estimated Time**: 1.5 days
   - **Status**: Ready to start after action handlers
 
@@ -3549,7 +3522,6 @@ This file contains unprioritized ideas and future features that have been identi
     - "Use This Template" and "Edit Template" buttons
     - Mobile-responsive design
   - **Files**: New modal component for template preview
-  - **Reference**: @NEW_DESIGN_PLAN.md - Users should be able to preview templates before applying
   - **Estimated Time**: 1 day
   - **Status**: Ready after action handlers completion
 
@@ -3563,7 +3535,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Validation and error handling
     - Cancel and save options
   - **Files**: New edit form component or page
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template editing should be intuitive and comprehensive
   - **Estimated Time**: 2 days
   - **Status**: Ready after preview modal completion
 
@@ -3578,7 +3549,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Generate new unique template ID
     - Update template list immediately
   - **Files**: `src/components/admin/TaskTemplateManager.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Template duplication should speed up creation process
   - **Estimated Time**: 1 day
   - **Status**: Ready after edit form completion
 
@@ -3591,7 +3561,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Smooth filtering transitions
     - Mobile-responsive category interface
   - **Files**: `src/app/admin/templates/categories/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Category filtering should work with live data
   - **Estimated Time**: 1 day
   - **Status**: Ready after duplication logic completion
 
@@ -3606,7 +3575,6 @@ This file contains unprioritized ideas and future features that have been identi
     - Priority thresholds influence template behavior
     - Category enable/disable affects available templates
   - **Files**: `src/app/admin/templates/settings/page.tsx`
-  - **Reference**: @NEW_DESIGN_PLAN.md - Settings should control template behavior globally
   - **Estimated Time**: 1.5 days
   - **Status**: Ready after categories integration completion
 
