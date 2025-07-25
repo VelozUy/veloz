@@ -17,17 +17,6 @@ export default function TemplatesManagementPage() {
       <div className="space-y-6">
         {/* Template Management Section */}
         <div className="bg-card rounded-lg border p-6">
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <h2 className="text-lg font-semibold">Plantillas Disponibles</h2>
-              <Badge variant="secondary" className="text-xs">
-                <Shield className="h-3 w-3 mr-1" />
-                Solo Administradores
-              </Badge>
-            </div>
-
-          </div>
-
           {/* TaskTemplateManager Component */}
           <TaskTemplateManager mode="manage" />
         </div>
