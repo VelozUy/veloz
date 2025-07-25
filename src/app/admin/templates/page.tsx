@@ -25,11 +25,7 @@ export default function TemplatesManagementPage() {
                 Solo Administradores
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Gestiona las plantillas de tareas que se pueden aplicar a los proyectos.
-              Las plantillas incluyen tareas predefinidas con fechas y prioridades.
-              <strong> Solo los administradores pueden acceder a esta función.</strong>
-            </p>
+
           </div>
 
           {/* TaskTemplateManager Component */}
