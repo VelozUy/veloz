@@ -36,73 +36,73 @@ const socialMediaConfig = {
     icon: Instagram,
     label: 'Instagram',
     getUrl: (username: string) => `https://instagram.com/${username}`,
-    color: 'hover:text-pink-500',
+    color: 'hover:text-primary',
   },
   linkedin: {
     icon: Linkedin,
     label: 'LinkedIn',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-600',
+    color: 'hover:text-primary',
   },
   website: {
     icon: Globe,
     label: 'Website',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-500',
+    color: 'hover:text-primary',
   },
   email: {
     icon: Mail,
     label: 'Email',
     getUrl: (email: string) => `mailto:${email}`,
-    color: 'hover:text-red-500',
+    color: 'hover:text-primary',
   },
   facebook: {
     icon: Facebook,
     label: 'Facebook',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-600',
+    color: 'hover:text-primary',
   },
   twitter: {
     icon: Twitter,
     label: 'Twitter',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-400',
+    color: 'hover:text-primary',
   },
   youtube: {
     icon: Youtube,
     label: 'YouTube',
     getUrl: (url: string) => url,
-    color: 'hover:text-red-600',
+    color: 'hover:text-primary',
   },
   vimeo: {
     icon: Video,
     label: 'Vimeo',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-500',
+    color: 'hover:text-primary',
   },
   behance: {
     icon: ExternalLink,
     label: 'Behance',
     getUrl: (url: string) => url,
-    color: 'hover:text-blue-600',
+    color: 'hover:text-primary',
   },
   dribbble: {
     icon: Share2,
     label: 'Dribbble',
     getUrl: (url: string) => url,
-    color: 'hover:text-pink-500',
+    color: 'hover:text-primary',
   },
   pinterest: {
     icon: Share2,
     label: 'Pinterest',
     getUrl: (url: string) => url,
-    color: 'hover:text-red-600',
+    color: 'hover:text-primary',
   },
   tiktok: {
     icon: Video,
     label: 'TikTok',
     getUrl: (url: string) => url,
-    color: 'hover:text-black',
+    color: 'hover:text-foreground',
   },
 };
 
@@ -262,7 +262,9 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
             {/* Enhanced Contact Information */}
             <Card>
               <CardHeader>
-                <h2 className="text-2xl font-semibold">Información de Contacto</h2>
+                <h2 className="text-2xl font-semibold">
+                  Información de Contacto
+                </h2>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -297,12 +299,20 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                   {/* Social Media Links */}
                   {availableSocialLinks.length > 0 && (
                     <div className="space-y-3">
-                      <h4 className="font-medium text-foreground">Redes Sociales</h4>
+                      <h4 className="font-medium text-foreground">
+                        Redes Sociales
+                      </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {availableSocialLinks
-                          .filter(({ platform }) => platform !== 'email' && platform !== 'website')
+                          .filter(
+                            ({ platform }) =>
+                              platform !== 'email' && platform !== 'website'
+                          )
                           .map(({ platform, value, config }) => (
-                            <div key={platform} className="flex items-center gap-3">
+                            <div
+                              key={platform}
+                              className="flex items-center gap-3"
+                            >
                               <config.icon className="w-4 h-4 text-muted-foreground" />
                               <a
                                 href={config.getUrl(value)}

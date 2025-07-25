@@ -26,10 +26,15 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react';
-import { crewAssignmentAnalyticsService, type CrewAssignmentAnalytics } from '@/services/crew-assignment-analytics';
+import {
+  crewAssignmentAnalyticsService,
+  type CrewAssignmentAnalytics,
+} from '@/services/crew-assignment-analytics';
 
 export default function CrewAssignmentAnalytics() {
-  const [analytics, setAnalytics] = useState<CrewAssignmentAnalytics | null>(null);
+  const [analytics, setAnalytics] = useState<CrewAssignmentAnalytics | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('all');
@@ -43,7 +48,8 @@ export default function CrewAssignmentAnalytics() {
       setLoading(true);
       setError(null);
 
-      const response = await crewAssignmentAnalyticsService.getCrewAssignmentAnalytics();
+      const response =
+        await crewAssignmentAnalyticsService.getCrewAssignmentAnalytics();
       if (response.success && response.data) {
         setAnalytics(response.data);
       } else {
@@ -96,7 +102,9 @@ export default function CrewAssignmentAnalytics() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Análisis de Asignación de Equipo</h2>
+          <h2 className="text-2xl font-bold">
+            Análisis de Asignación de Equipo
+          </h2>
           <p className="text-muted-foreground">
             Métricas de efectividad y colaboración del equipo
           </p>
@@ -118,33 +126,39 @@ export default function CrewAssignmentAnalytics() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Miembros</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Miembros
+            </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{overallMetrics.totalCrewMembers}</div>
-            <p className="text-xs text-muted-foreground">
-              Miembros del equipo
-            </p>
+            <div className="text-2xl font-bold">
+              {overallMetrics.totalCrewMembers}
+            </div>
+            <p className="text-xs text-muted-foreground">Miembros del equipo</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Asignaciones</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Asignaciones
+            </CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{overallMetrics.totalAssignments}</div>
-            <p className="text-xs text-muted-foreground">
-              Proyectos asignados
-            </p>
+            <div className="text-2xl font-bold">
+              {overallMetrics.totalAssignments}
+            </div>
+            <p className="text-xs text-muted-foreground">Proyectos asignados</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tasa de Éxito Promedio</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Tasa de Éxito Promedio
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -159,16 +173,16 @@ export default function CrewAssignmentAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Duración Promedio</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Duración Promedio
+            </CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {timeAnalysis.averageProjectDuration.toFixed(1)} días
             </div>
-            <p className="text-xs text-muted-foreground">
-              Por proyecto
-            </p>
+            <p className="text-xs text-muted-foreground">Por proyecto</p>
           </CardContent>
         </Card>
       </div>
@@ -184,7 +198,10 @@ export default function CrewAssignmentAnalytics() {
         <CardContent>
           <div className="space-y-4">
             {overallMetrics.topPerformingCrew.map((crew, index) => (
-              <div key={crew.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div
+                key={crew.id}
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                     <span className="text-sm font-semibold text-primary">
@@ -220,30 +237,39 @@ export default function CrewAssignmentAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {overallMetrics.bestTeamCombinations.slice(0, 5).map((team, index) => (
-              <div key={team.members.join('-')} className="p-3 bg-muted/50 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">#{index + 1}</Badge>
-                    <span className="font-medium">
-                      {team.projectsTogether} proyectos juntos
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-primary">
-                      {team.successRate.toFixed(1)}%
+            {overallMetrics.bestTeamCombinations
+              .slice(0, 5)
+              .map((team, index) => (
+                <div
+                  key={team.members.join('-')}
+                  className="p-3 bg-muted/50 rounded-lg"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">#{index + 1}</Badge>
+                      <span className="font-medium">
+                        {team.projectsTogether} proyectos juntos
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-primary">
+                        {team.successRate.toFixed(1)}%
+                      </div>
                     </div>
                   </div>
+                  <div className="flex flex-wrap gap-1">
+                    {team.members.map(memberId => (
+                      <Badge
+                        key={memberId}
+                        variant="outline"
+                        className="text-xs"
+                      >
+                        {memberId}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-1">
-                  {team.members.map((memberId) => (
-                    <Badge key={memberId} variant="outline" className="text-xs">
-                      {memberId}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </CardContent>
       </Card>
@@ -258,10 +284,12 @@ export default function CrewAssignmentAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {categoryAnalysis.map((category) => (
+            {categoryAnalysis.map(category => (
               <div key={category.category} className="p-4 border rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium capitalize">{category.category}</h4>
+                  <h4 className="font-medium capitalize">
+                    {category.category}
+                  </h4>
                   <Badge variant="secondary">
                     {category.totalProjects} proyectos
                   </Badge>
@@ -269,9 +297,14 @@ export default function CrewAssignmentAnalytics() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <span>Tasa de éxito</span>
-                    <span className="font-medium">{category.averageSuccessRate.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {category.averageSuccessRate.toFixed(1)}%
+                    </span>
                   </div>
-                  <Progress value={category.averageSuccessRate} className="h-2" />
+                  <Progress
+                    value={category.averageSuccessRate}
+                    className="h-2"
+                  />
                   <div className="text-xs text-muted-foreground">
                     {category.preferredCrewMembers.length} miembros preferidos
                   </div>
@@ -297,7 +330,7 @@ export default function CrewAssignmentAnalytics() {
                 {timeAnalysis.onTimeDeliveryRate.toFixed(1)}%
               </div>
               <p className="text-sm text-muted-foreground">Entregas a tiempo</p>
-              <CheckCircle className="w-8 h-8 text-green-500 mx-auto mt-2" />
+              <CheckCircle className="w-8 h-8 text-primary mx-auto mt-2" />
             </div>
 
             <div className="text-center p-4 bg-muted/50 rounded-lg">
@@ -305,15 +338,18 @@ export default function CrewAssignmentAnalytics() {
                 {timeAnalysis.averageProjectDuration.toFixed(1)} días
               </div>
               <p className="text-sm text-muted-foreground">Duración promedio</p>
-              <Clock className="w-8 h-8 text-blue-500 mx-auto mt-2" />
+              <Clock className="w-8 h-8 text-primary mx-auto mt-2" />
             </div>
 
             <div className="text-center p-4 bg-muted/50 rounded-lg">
               <div className="text-2xl font-bold text-primary">
-                {timeAnalysis.efficiencyTrends[timeAnalysis.efficiencyTrends.length - 1]?.efficiencyScore.toFixed(1)}%
+                {timeAnalysis.efficiencyTrends[
+                  timeAnalysis.efficiencyTrends.length - 1
+                ]?.efficiencyScore.toFixed(1)}
+                %
               </div>
               <p className="text-sm text-muted-foreground">Eficiencia actual</p>
-              <TrendingUp className="w-8 h-8 text-green-500 mx-auto mt-2" />
+              <TrendingUp className="w-8 h-8 text-primary mx-auto mt-2" />
             </div>
           </div>
 
@@ -340,4 +376,4 @@ export default function CrewAssignmentAnalytics() {
       </Card>
     </div>
   );
-} 
+}

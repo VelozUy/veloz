@@ -28,7 +28,10 @@ export default function AdminDiagnostic() {
     results.push({
       name: 'Client Side Rendering',
       status: typeof window !== 'undefined' ? 'success' : 'error',
-      message: typeof window !== 'undefined' ? 'Running on client side' : 'Running on server side',
+      message:
+        typeof window !== 'undefined'
+          ? 'Running on client side'
+          : 'Running on server side',
     });
 
     // 2. Check Firebase config
@@ -38,10 +41,14 @@ export default function AdminDiagnostic() {
       results.push({
         name: 'Firebase Configuration',
         status: config.isValid ? 'success' : 'error',
-        message: config.isValid ? 'Firebase config is valid' : `Missing environment variables: ${config.missing.join(', ')}`,
+        message: config.isValid
+          ? 'Firebase config is valid'
+          : `Missing environment variables: ${config.missing.join(', ')}`,
         details: {
           ...config,
-          instructions: config.isValid ? null : 'Create a .env.local file in the project root with your Firebase configuration. See the Firebase Console for your project settings.',
+          instructions: config.isValid
+            ? null
+            : 'Create a .env.local file in the project root with your Firebase configuration. See the Firebase Console for your project settings.',
         },
       });
     } catch (error) {
@@ -54,14 +61,19 @@ export default function AdminDiagnostic() {
 
     // 3. Check Firebase services
     try {
-      const { getAuthService, getFirestoreService } = await import('@/lib/firebase');
+      const { getAuthService, getFirestoreService } = await import(
+        '@/lib/firebase'
+      );
       const auth = await getAuthService();
       const db = await getFirestoreService();
-      
+
       results.push({
         name: 'Firebase Services',
         status: auth && db ? 'success' : 'error',
-        message: auth && db ? 'Firebase services initialized' : 'Firebase services failed to initialize',
+        message:
+          auth && db
+            ? 'Firebase services initialized'
+            : 'Firebase services failed to initialize',
         details: { auth: !!auth, db: !!db },
       });
     } catch (error) {
@@ -75,8 +87,12 @@ export default function AdminDiagnostic() {
     // 4. Check authentication state
     results.push({
       name: 'Authentication State',
-      status: loading ? 'loading' : (user ? 'success' : 'error'),
-      message: loading ? 'Checking authentication...' : (user ? `Authenticated as ${user.email}` : 'Not authenticated'),
+      status: loading ? 'loading' : user ? 'success' : 'error',
+      message: loading
+        ? 'Checking authentication...'
+        : user
+          ? `Authenticated as ${user.email}`
+          : 'Not authenticated',
       details: { user: !!user, loading, email: user?.email },
     });
 
@@ -88,7 +104,9 @@ export default function AdminDiagnostic() {
         results.push({
           name: 'Admin Status',
           status: isAdmin ? 'success' : 'error',
-          message: isAdmin ? 'User has admin privileges' : 'User does not have admin privileges',
+          message: isAdmin
+            ? 'User has admin privileges'
+            : 'User does not have admin privileges',
           details: { email: user.email, isAdmin },
         });
       } catch (error) {
@@ -108,18 +126,24 @@ export default function AdminDiagnostic() {
 
     // 6. Check component imports
     try {
-      const { default: AdminLayout } = await import('@/components/admin/AdminLayout');
-      const { default: DashboardUpcomingTasks } = await import('@/components/admin/DashboardUpcomingTasks');
-      const { default: ProjectStatusDashboard } = await import('@/components/admin/ProjectStatusDashboard');
-      
+      const { default: AdminLayout } = await import(
+        '@/components/admin/AdminLayout'
+      );
+      const { default: DashboardUpcomingTasks } = await import(
+        '@/components/admin/DashboardUpcomingTasks'
+      );
+      const { default: ProjectStatusDashboard } = await import(
+        '@/components/admin/ProjectStatusDashboard'
+      );
+
       results.push({
         name: 'Component Imports',
         status: 'success',
         message: 'All admin components imported successfully',
-        details: { 
-          AdminLayout: !!AdminLayout, 
-          DashboardUpcomingTasks: !!DashboardUpcomingTasks, 
-          ProjectStatusDashboard: !!ProjectStatusDashboard 
+        details: {
+          AdminLayout: !!AdminLayout,
+          DashboardUpcomingTasks: !!DashboardUpcomingTasks,
+          ProjectStatusDashboard: !!ProjectStatusDashboard,
         },
       });
     } catch (error) {
@@ -143,9 +167,9 @@ export default function AdminDiagnostic() {
       case 'loading':
         return <Loader2 className="w-4 h-4 animate-spin" />;
       case 'success':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
+        return <CheckCircle className="w-4 h-4 text-primary" />;
       case 'error':
-        return <XCircle className="w-4 h-4 text-red-500" />;
+        return <XCircle className="w-4 h-4 text-destructive" />;
     }
   };
 
@@ -154,7 +178,11 @@ export default function AdminDiagnostic() {
       case 'loading':
         return <Badge variant="secondary">Loading</Badge>;
       case 'success':
-        return <Badge variant="default" className="bg-green-500">Success</Badge>;
+        return (
+          <Badge variant="default" className="bg-primary">
+            Success
+          </Badge>
+        );
       case 'error':
         return <Badge variant="destructive">Error</Badge>;
     }
@@ -171,12 +199,17 @@ export default function AdminDiagnostic() {
       <CardContent>
         <div className="space-y-4">
           {diagnostics.map((diagnostic, index) => (
-            <div key={index} className="flex items-center justify-between p-3 border rounded">
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 border rounded"
+            >
               <div className="flex items-center gap-3">
                 {getStatusIcon(diagnostic.status)}
                 <div>
                   <div className="font-medium">{diagnostic.name}</div>
-                  <div className="text-sm text-muted-foreground">{diagnostic.message}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {diagnostic.message}
+                  </div>
                   {diagnostic.details && (
                     <details className="mt-2">
                       <summary className="cursor-pointer text-xs text-muted-foreground">
@@ -192,16 +225,16 @@ export default function AdminDiagnostic() {
               {getStatusBadge(diagnostic.status)}
             </div>
           ))}
-          
+
           {isRunning && (
             <Alert>
               <Loader2 className="w-4 h-4 animate-spin" />
               <AlertDescription>Running diagnostics...</AlertDescription>
             </Alert>
           )}
-          
-          <Button 
-            onClick={runDiagnostics} 
+
+          <Button
+            onClick={runDiagnostics}
             disabled={isRunning}
             variant="outline"
             className="w-full"
@@ -219,4 +252,4 @@ export default function AdminDiagnostic() {
       </CardContent>
     </Card>
   );
-} 
+}

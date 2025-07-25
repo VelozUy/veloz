@@ -13,11 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
-  Search, 
-  Filter, 
-  User, 
-  Camera, 
+import {
+  Search,
+  Filter,
+  User,
+  Camera,
   Video,
   Instagram,
   Linkedin,
@@ -41,62 +41,62 @@ const socialMediaConfig = {
   instagram: {
     icon: Instagram,
     label: 'Instagram',
-    color: 'text-pink-500',
+    color: 'text-primary',
   },
   linkedin: {
     icon: Linkedin,
     label: 'LinkedIn',
-    color: 'text-blue-600',
+    color: 'text-primary',
   },
   website: {
     icon: Globe,
     label: 'Website',
-    color: 'text-blue-500',
+    color: 'text-primary',
   },
   email: {
     icon: Mail,
     label: 'Email',
-    color: 'text-red-500',
+    color: 'text-primary',
   },
   facebook: {
     icon: Facebook,
     label: 'Facebook',
-    color: 'text-blue-600',
+    color: 'text-primary',
   },
   twitter: {
     icon: Twitter,
     label: 'Twitter',
-    color: 'text-blue-400',
+    color: 'text-primary',
   },
   youtube: {
     icon: Youtube,
     label: 'YouTube',
-    color: 'text-red-600',
+    color: 'text-primary',
   },
   vimeo: {
     icon: Video,
     label: 'Vimeo',
-    color: 'text-blue-500',
+    color: 'text-primary',
   },
   behance: {
     icon: ExternalLink,
     label: 'Behance',
-    color: 'text-blue-600',
+    color: 'text-primary',
   },
   dribbble: {
     icon: Share2,
     label: 'Dribbble',
-    color: 'text-pink-500',
+    color: 'text-primary',
   },
   pinterest: {
     icon: Share2,
     label: 'Pinterest',
-    color: 'text-red-600',
+    color: 'text-primary',
   },
   tiktok: {
     icon: Video,
     label: 'TikTok',
-    color: 'text-black',
+    color: 'text-foreground',
   },
 };
 
@@ -137,7 +137,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
   // Get available social media links for a crew member
   const getAvailableSocialLinks = (member: CrewMember) => {
     if (!member.socialLinks) return [];
-    
+
     return Object.entries(member.socialLinks)
       .filter(([_, value]) => value && value.trim() !== '')
       .map(([platform, value]) => ({
@@ -199,7 +199,9 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
         {filteredCrewMembers.length === 0 ? (
           <div className="text-center py-12">
             <User className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No se encontraron resultados</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              No se encontraron resultados
+            </h3>
             <p className="text-muted-foreground">
               Intenta ajustar los filtros de búsqueda.
             </p>
@@ -208,7 +210,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredCrewMembers.map(member => {
               const availableSocialLinks = getAvailableSocialLinks(member);
-              
+
               return (
                 <Card
                   key={member.id}
@@ -254,7 +256,11 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                     {member.skills && member.skills.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {member.skills.slice(0, 3).map((skill, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {skill}
                           </Badge>
                         ))}
@@ -273,18 +279,20 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                           Redes Sociales
                         </p>
                         <div className="flex flex-wrap gap-1">
-                          {availableSocialLinks.slice(0, 4).map(({ platform, config }) => {
-                            const IconComponent = config.icon;
-                            return (
-                              <div
-                                key={platform}
-                                className={`p-1 rounded-full ${config.color} bg-muted/50`}
-                                title={config.label}
-                              >
-                                <IconComponent className="w-3 h-3" />
-                              </div>
-                            );
-                          })}
+                          {availableSocialLinks
+                            .slice(0, 4)
+                            .map(({ platform, config }) => {
+                              const IconComponent = config.icon;
+                              return (
+                                <div
+                                  key={platform}
+                                  className={`p-1 rounded-full ${config.color} bg-muted/50`}
+                                  title={config.label}
+                                >
+                                  <IconComponent className="w-3 h-3" />
+                                </div>
+                              );
+                            })}
                           {availableSocialLinks.length > 4 && (
                             <Badge variant="outline" className="text-xs">
                               +{availableSocialLinks.length - 4} más

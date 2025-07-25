@@ -37,7 +37,12 @@ import {
   ChevronRight,
   Loader2,
 } from 'lucide-react';
-import { crewAvailabilityService, type AvailabilityCalendar, type AvailabilitySlot, type CreateAvailabilitySlotData } from '@/services/crew-availability';
+import {
+  crewAvailabilityService,
+  type AvailabilityCalendar,
+  type AvailabilitySlot,
+  type CreateAvailabilitySlotData,
+} from '@/services/crew-availability';
 import { crewMemberService } from '@/services/crew-member';
 import type { CrewMember } from '@/types';
 
@@ -46,12 +51,14 @@ interface CrewAvailabilityCalendarProps {
   onCrewMemberChange?: (crewMemberId: string) => void;
 }
 
-export default function CrewAvailabilityCalendar({ 
+export default function CrewAvailabilityCalendar({
   selectedCrewMemberId,
-  onCrewMemberChange 
+  onCrewMemberChange,
 }: CrewAvailabilityCalendarProps) {
   const [crewMembers, setCrewMembers] = useState<CrewMember[]>([]);
-  const [selectedCrewMember, setSelectedCrewMember] = useState<string>(selectedCrewMemberId || '');
+  const [selectedCrewMember, setSelectedCrewMember] = useState<string>(
+    selectedCrewMemberId || ''
+  );
   const [calendar, setCalendar] = useState<AvailabilityCalendar | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -141,7 +148,8 @@ export default function CrewAvailabilityCalendar({
         crewMemberId: selectedCrewMember,
       };
 
-      const response = await crewAvailabilityService.createAvailabilitySlot(slotData);
+      const response =
+        await crewAvailabilityService.createAvailabilitySlot(slotData);
       if (response.success) {
         setIsAddSlotDialogOpen(false);
         setNewSlot({
@@ -169,7 +177,8 @@ export default function CrewAvailabilityCalendar({
 
     try {
       setLoading(true);
-      const response = await crewAvailabilityService.deleteAvailabilitySlot(slotId);
+      const response =
+        await crewAvailabilityService.deleteAvailabilitySlot(slotId);
       if (response.success) {
         loadCalendar();
       } else {
@@ -186,13 +195,13 @@ export default function CrewAvailabilityCalendar({
   const getSlotColor = (type: string) => {
     switch (type) {
       case 'available':
-        return 'bg-green-100 border-green-300 text-green-800';
+        return 'bg-primary/10 border-primary/30 text-primary';
       case 'busy':
-        return 'bg-red-100 border-red-300 text-red-800';
+        return 'bg-destructive/10 border-destructive/30 text-destructive';
       case 'unavailable':
-        return 'bg-gray-100 border-gray-300 text-gray-800';
+        return 'bg-muted border-border text-muted-foreground';
       default:
-        return 'bg-blue-100 border-blue-300 text-blue-800';
+        return 'bg-primary/10 border-primary/30 text-primary';
     }
   };
 
@@ -252,7 +261,9 @@ export default function CrewAvailabilityCalendar({
   };
 
   const days = getDaysInMonth(currentDate);
-  const selectedCrewMemberData = crewMembers.find(c => c.id === selectedCrewMember);
+  const selectedCrewMemberData = crewMembers.find(
+    c => c.id === selectedCrewMember
+  );
 
   return (
     <div className="space-y-6">
@@ -265,7 +276,10 @@ export default function CrewAvailabilityCalendar({
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Select value={selectedCrewMember} onValueChange={handleCrewMemberChange}>
+          <Select
+            value={selectedCrewMember}
+            onValueChange={handleCrewMemberChange}
+          >
             <SelectTrigger className="w-64">
               <SelectValue placeholder="Seleccionar miembro del equipo" />
             </SelectTrigger>
@@ -320,7 +334,9 @@ export default function CrewAvailabilityCalendar({
       {loading && (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <span className="ml-2 text-muted-foreground">Cargando calendario...</span>
+          <span className="ml-2 text-muted-foreground">
+            Cargando calendario...
+          </span>
         </div>
       )}
 
@@ -347,29 +363,29 @@ export default function CrewAvailabilityCalendar({
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">
+                <div className="text-center p-4 bg-primary/10 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">
                     {calendar.totalAvailableHours.toFixed(1)}h
                   </div>
-                  <p className="text-sm text-green-600">Horas Disponibles</p>
+                  <p className="text-sm text-primary">Horas Disponibles</p>
                 </div>
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">
+                <div className="text-center p-4 bg-destructive/10 rounded-lg">
+                  <div className="text-2xl font-bold text-destructive">
                     {calendar.totalBusyHours.toFixed(1)}h
                   </div>
-                  <p className="text-sm text-red-600">Horas Ocupadas</p>
+                  <p className="text-sm text-destructive">Horas Ocupadas</p>
                 </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">
+                <div className="text-center p-4 bg-primary/10 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">
                     {calendar.availabilityPercentage.toFixed(1)}%
                   </div>
-                  <p className="text-sm text-blue-600">Disponibilidad</p>
+                  <p className="text-sm text-primary">Disponibilidad</p>
                 </div>
-                <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">
+                <div className="text-center p-4 bg-destructive/10 rounded-lg">
+                  <div className="text-2xl font-bold text-destructive">
                     {calendar.conflicts.length}
                   </div>
-                  <p className="text-sm text-orange-600">Conflictos</p>
+                  <p className="text-sm text-destructive">Conflictos</p>
                 </div>
               </div>
             </CardContent>
@@ -384,7 +400,10 @@ export default function CrewAvailabilityCalendar({
               <div className="grid grid-cols-7 gap-1">
                 {/* Day Headers */}
                 {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map(day => (
-                  <div key={day} className="p-2 text-center font-medium text-sm text-muted-foreground">
+                  <div
+                    key={day}
+                    className="p-2 text-center font-medium text-sm text-muted-foreground"
+                  >
                     {day}
                   </div>
                 ))}
@@ -392,14 +411,18 @@ export default function CrewAvailabilityCalendar({
                 {/* Calendar Days */}
                 {days.map((day, index) => {
                   const slots = getSlotsForDate(day);
-                  const isToday = day.toDateString() === new Date().toDateString();
-                  const isCurrentMonth = day.getMonth() === currentDate.getMonth();
+                  const isToday =
+                    day.toDateString() === new Date().toDateString();
+                  const isCurrentMonth =
+                    day.getMonth() === currentDate.getMonth();
 
                   return (
                     <div
                       key={index}
                       className={`min-h-24 p-2 border rounded-lg ${
-                        isToday ? 'bg-primary/10 border-primary' : 'bg-background'
+                        isToday
+                          ? 'bg-primary/10 border-primary'
+                          : 'bg-background'
                       } ${!isCurrentMonth ? 'opacity-50' : ''}`}
                     >
                       <div className="text-sm font-medium mb-1">
@@ -415,7 +438,8 @@ export default function CrewAvailabilityCalendar({
                               <div className="flex items-center gap-1">
                                 {getSlotIcon(slot.type)}
                                 <span className="font-medium">
-                                  {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                                  {formatTime(slot.startTime)} -{' '}
+                                  {formatTime(slot.endTime)}
                                 </span>
                               </div>
                               <Button
@@ -444,7 +468,7 @@ export default function CrewAvailabilityCalendar({
           {calendar.conflicts.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-600">
+                <CardTitle className="flex items-center gap-2 text-destructive">
                   <AlertTriangle className="w-5 h-5" />
                   Conflictos Detectados
                 </CardTitle>
@@ -452,17 +476,24 @@ export default function CrewAvailabilityCalendar({
               <CardContent>
                 <div className="space-y-2">
                   {calendar.conflicts.map((conflict, index) => (
-                    <div key={index} className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                    <div
+                      key={index}
+                      className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg"
+                    >
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-orange-600" />
-                        <span className="font-medium text-orange-800">
-                          {conflict.conflictType === 'double_booking' ? 'Doble reserva' : 'Conflicto de horario'}
+                        <AlertTriangle className="w-4 h-4 text-destructive" />
+                        <span className="font-medium text-destructive">
+                          {conflict.conflictType === 'double_booking'
+                            ? 'Doble reserva'
+                            : 'Conflicto de horario'}
                         </span>
                       </div>
-                      <div className="text-sm text-orange-700">
+                      <div className="text-sm text-destructive">
                         {conflict.conflictingSlots.map(slot => (
                           <div key={slot.id} className="ml-4">
-                            {formatDate(slot.startTime)} {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                            {formatDate(slot.startTime)}{' '}
+                            {formatTime(slot.startTime)} -{' '}
+                            {formatTime(slot.endTime)}
                           </div>
                         ))}
                       </div>
@@ -481,7 +512,8 @@ export default function CrewAvailabilityCalendar({
           <DialogHeader>
             <DialogTitle>Agregar Slot de Disponibilidad</DialogTitle>
             <DialogDescription>
-              Define un nuevo período de disponibilidad para {selectedCrewMemberData?.name.es}
+              Define un nuevo período de disponibilidad para{' '}
+              {selectedCrewMemberData?.name.es}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -492,10 +524,12 @@ export default function CrewAvailabilityCalendar({
                   id="startTime"
                   type="datetime-local"
                   value={newSlot.startTime.toISOString().slice(0, 16)}
-                  onChange={(e) => setNewSlot({
-                    ...newSlot,
-                    startTime: new Date(e.target.value),
-                  })}
+                  onChange={e =>
+                    setNewSlot({
+                      ...newSlot,
+                      startTime: new Date(e.target.value),
+                    })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -504,10 +538,12 @@ export default function CrewAvailabilityCalendar({
                   id="endTime"
                   type="datetime-local"
                   value={newSlot.endTime.toISOString().slice(0, 16)}
-                  onChange={(e) => setNewSlot({
-                    ...newSlot,
-                    endTime: new Date(e.target.value),
-                  })}
+                  onChange={e =>
+                    setNewSlot({
+                      ...newSlot,
+                      endTime: new Date(e.target.value),
+                    })
+                  }
                 />
               </div>
             </div>
@@ -534,7 +570,9 @@ export default function CrewAvailabilityCalendar({
               <Input
                 id="reason"
                 value={newSlot.reason}
-                onChange={(e) => setNewSlot({ ...newSlot, reason: e.target.value })}
+                onChange={e =>
+                  setNewSlot({ ...newSlot, reason: e.target.value })
+                }
                 placeholder="Ej: Proyecto de boda"
               />
             </div>
@@ -543,17 +581,24 @@ export default function CrewAvailabilityCalendar({
               <Textarea
                 id="notes"
                 value={newSlot.notes}
-                onChange={(e) => setNewSlot({ ...newSlot, notes: e.target.value })}
+                onChange={e =>
+                  setNewSlot({ ...newSlot, notes: e.target.value })
+                }
                 placeholder="Información adicional..."
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddSlotDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsAddSlotDialogOpen(false)}
+            >
               Cancelar
             </Button>
             <Button onClick={handleAddSlot} disabled={loading}>
-              {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : null}
               Agregar Slot
             </Button>
           </DialogFooter>
@@ -561,4 +606,4 @@ export default function CrewAvailabilityCalendar({
       </Dialog>
     </div>
   );
-} 
+}
