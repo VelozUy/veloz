@@ -74,7 +74,7 @@ interface UpcomingTask {
   projectId: string;
   projectTitle: string;
   title: string;
-  dueDate: Date;
+  dueDate: Date | null;
   priority: 'low' | 'medium' | 'high';
   assignee?: string;
   completed: boolean;
@@ -132,7 +132,7 @@ export default function DashboardUpcomingTasks({
       const tasksQuery = query(
         collection(db, 'projectTasks'),
         orderBy('dueDate', 'asc'),
-        limit(100) // Get more tasks to filter client-side
+        limit(500) // Get more tasks to filter client-side
       );
 
       const tasksSnapshot = await getDocs(tasksQuery);
@@ -155,7 +155,8 @@ export default function DashboardUpcomingTasks({
         const data = doc.data();
         const dueDate = data.dueDate ? new Date(data.dueDate.toDate()) : null;
 
-        if (dueDate && !data.completed) {
+        // Show all not completed tasks (including those without dates)
+        if (!data.completed) {
           const project = projectsMap.get(data.projectId);
           if (project) {
             // Categorize task based on title and content
@@ -170,7 +171,7 @@ export default function DashboardUpcomingTasks({
               priority: data.priority || 'medium',
               assignee: data.assignee,
               completed: data.completed || false,
-              overdue: isAfter(new Date(), dueDate),
+              overdue: dueDate ? isAfter(new Date(), dueDate) : false,
               category,
               taskType: data.taskType || 'action',
             });
@@ -187,35 +188,8 @@ export default function DashboardUpcomingTasks({
         console.log('No tasks found in the database');
       }
 
-      // Filter by period
-      let filteredTasks = taskList;
-      const now = new Date();
-
-      switch (filterPeriod) {
-        case 'today':
-          filteredTasks = taskList.filter(task => isToday(task.dueDate));
-          break;
-        case 'tomorrow':
-          filteredTasks = taskList.filter(task => isTomorrow(task.dueDate));
-          break;
-        case 'week':
-          const weekEnd = addDays(now, 7);
-          filteredTasks = taskList.filter(
-            task =>
-              isAfter(task.dueDate, startOfDay(now)) &&
-              isBefore(task.dueDate, endOfDay(weekEnd))
-          );
-          break;
-        case 'all':
-          // Show all upcoming tasks
-          filteredTasks = taskList.filter(task =>
-            isAfter(task.dueDate, startOfDay(now))
-          );
-          break;
-      }
-
       // Enhanced sorting with priority-based ordering
-      filteredTasks.sort((a, b) => {
+      let sortedTasks = taskList.sort((a, b) => {
         let comparison = 0;
 
         // First sort by priority (high priority first)
@@ -224,8 +198,16 @@ export default function DashboardUpcomingTasks({
           priorityOrder[b.priority] - priorityOrder[a.priority];
         if (priorityDiff !== 0) return priorityDiff;
 
-        // Then sort by due date (earliest first)
-        comparison = a.dueDate.getTime() - b.dueDate.getTime();
+        // Then sort by due date (earliest first, null dates last)
+        if (a.dueDate && b.dueDate) {
+          comparison = a.dueDate.getTime() - b.dueDate.getTime();
+        } else if (a.dueDate && !b.dueDate) {
+          comparison = -1; // a comes first
+        } else if (!a.dueDate && b.dueDate) {
+          comparison = 1; // b comes first
+        } else {
+          comparison = 0; // both null, maintain order
+        }
 
         // Then by category (shooting and meetings first)
         const categoryOrder = {
@@ -244,7 +226,7 @@ export default function DashboardUpcomingTasks({
         return sortOrder === 'asc' ? comparison : -comparison;
       });
 
-      setTasks(filteredTasks.slice(0, taskLimit));
+      setTasks(sortedTasks.slice(0, taskLimit));
       setLoading(false);
     } catch (error) {
       console.error('Error loading upcoming tasks:', error);
@@ -349,13 +331,16 @@ export default function DashboardUpcomingTasks({
     if (task.overdue) {
       return <AlertCircle className="h-4 w-4 text-destructive" />;
     }
-    if (isToday(task.dueDate)) {
+    if (task.dueDate && isToday(task.dueDate)) {
       return <Clock className="h-4 w-4 text-warning" />;
     }
     return <Calendar className="h-4 w-4 text-primary" />;
   };
 
-  const getDueDateText = (dueDate: Date) => {
+  const getDueDateText = (dueDate: Date | null) => {
+    if (!dueDate) {
+      return 'Sin fecha';
+    }
     if (isToday(dueDate)) {
       return 'Hoy';
     }
@@ -371,14 +356,14 @@ export default function DashboardUpcomingTasks({
     const category = task.category;
 
     if (category === 'shooting') {
-      if (isToday(task.dueDate)) return `Shooting hoy - ${baseTitle}`;
-      if (isTomorrow(task.dueDate)) return `Shooting mañana - ${baseTitle}`;
+      if (task.dueDate && isToday(task.dueDate)) return `Shooting hoy - ${baseTitle}`;
+      if (task.dueDate && isTomorrow(task.dueDate)) return `Shooting mañana - ${baseTitle}`;
       return `Shooting ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
 
     if (category === 'meeting') {
-      if (isToday(task.dueDate)) return `Reunión hoy - ${baseTitle}`;
-      if (isTomorrow(task.dueDate)) return `Reunión mañana - ${baseTitle}`;
+      if (task.dueDate && isToday(task.dueDate)) return `Reunión hoy - ${baseTitle}`;
+      if (task.dueDate && isTomorrow(task.dueDate)) return `Reunión mañana - ${baseTitle}`;
       return `Reunión ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
 
@@ -388,8 +373,8 @@ export default function DashboardUpcomingTasks({
   const getStats = () => {
     const total = tasks.length;
     const overdue = tasks.filter(task => task.overdue).length;
-    const today = tasks.filter(task => isToday(task.dueDate)).length;
-    const tomorrow = tasks.filter(task => isTomorrow(task.dueDate)).length;
+    const today = tasks.filter(task => task.dueDate && isToday(task.dueDate)).length;
+    const tomorrow = tasks.filter(task => task.dueDate && isTomorrow(task.dueDate)).length;
     const highPriority = tasks.filter(task => task.priority === 'high').length;
     const shootings = tasks.filter(task => task.category === 'shooting').length;
     const meetings = tasks.filter(task => task.category === 'meeting').length;
@@ -455,38 +440,70 @@ export default function DashboardUpcomingTasks({
         {tasks.length === 0 ? (
           <Card>
             <CardContent className="p-4 text-center text-muted-foreground">
-              No hay tareas urgentes
+              No hay tareas
             </CardContent>
           </Card>
         ) : (
-          tasks.map(task => (
-            <Card
-              key={task.id}
-              className={`${task.overdue ? 'border-destructive/20 bg-destructive/5' : ''}`}
-            >
-              <CardContent className="p-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2 flex-1">
-                    {getCategoryIcon(task.category)}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
-                        {getTaskDisplayTitle(task)}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {task.projectTitle}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={`text-xs ${getPriorityColor(task.priority)}`}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left p-2 font-medium text-muted-foreground">Tarea</th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">Proyecto</th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">Fecha</th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">Prioridad</th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map(task => (
+                  <tr 
+                    key={task.id} 
+                    className={`border-b border-border/50 hover:bg-muted/50 ${
+                      task.overdue ? 'bg-destructive/5' : ''
+                    }`}
                   >
-                    {task.priority}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+                    <td className="p-2">
+                      <div className="flex items-center space-x-2">
+                        {getCategoryIcon(task.category)}
+                        <span className="font-medium truncate max-w-[200px]">
+                          {task.title}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-2 text-muted-foreground">
+                      <a 
+                        href={`/admin/projects/${task.projectId}/edit`}
+                        className="truncate max-w-[150px] block hover:text-primary hover:underline cursor-pointer"
+                        title={`Editar proyecto: ${task.projectTitle}`}
+                      >
+                        {task.projectTitle}
+                      </a>
+                    </td>
+                    <td className="p-2">
+                      <span className={`text-xs ${
+                        task.overdue ? 'text-destructive font-medium' : 'text-muted-foreground'
+                      }`}>
+                        {getDueDateText(task.dueDate)}
+                        {task.overdue && ' (Vencido)'}
+                      </span>
+                    </td>
+                    <td className="p-2">
+                      <Badge
+                        variant="outline"
+                        className={`text-xs ${getPriorityColor(task.priority)}`}
+                      >
+                        {task.priority}
+                      </Badge>
+                    </td>
+                    <td className="p-2">
+                      {getStatusIcon(task)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {showQuickActions && tasks.length > 0 && (

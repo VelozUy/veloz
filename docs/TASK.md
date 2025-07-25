@@ -1687,6 +1687,98 @@ _No discoveries yet_
 
 ---
 
+### 🎨 EPIC: Admin Panel Cleanup ✅ **COMPLETED**
+
+**Objective**: Clean up the admin panel by removing subtitle, quick actions, and navigation links, keeping only actual data display
+
+**Status**: ✅ **COMPLETED** - Admin panel cleaned up to show only data without navigation elements
+
+**Completion Date**: 2025-01-27
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [x] **Remove Admin Panel Subtitle** - Remove descriptive subtitle from main admin page ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Remove redundant subtitle "Gestiona tu contenido, analiza el rendimiento y configura tu sitio"
+  - **Acceptance Criteria**:
+    - Subtitle removed from admin page ✅
+    - Clean header with only title "Panel de Administración" ✅
+    - No redundant text in admin interface ✅
+  - **Files**: `src/app/admin/page.tsx`
+  - **Reference**: Admin panel cleanup requirements
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - Subtitle removed for cleaner interface
+
+- [x] **Remove Quick Action Cards** - Remove all navigation cards to other sections ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Remove navigation cards (Dashboard, Analytics, Projects, Templates, Crew, Gallery, FAQs, Contacts)
+  - **Acceptance Criteria**:
+    - All navigation cards removed ✅
+    - No links to other admin sections ✅
+    - Clean data-focused interface ✅
+  - **Files**: `src/app/admin/page.tsx`
+  - **Reference**: Admin panel cleanup requirements
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - All navigation cards removed
+
+- [x] **Remove Quick Actions Section** - Remove DashboardActions component ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Remove quick action buttons and replace with system status data
+  - **Acceptance Criteria**:
+    - DashboardActions component removed ✅
+    - Quick action buttons replaced with system status ✅
+    - Clean data display without action buttons ✅
+  - **Files**: `src/app/admin/page.tsx`
+  - **Reference**: Admin panel cleanup requirements
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - Quick actions replaced with system status data
+
+- [x] **Update Tasks Display** - Change "Tareas Urgentes" to "Tareas" and show all not completed tasks ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Show all not completed tasks from all projects, ordered by date and priority, with pagination
+  - **Acceptance Criteria**:
+    - Title changed from "Tareas Urgentes" to "Tareas" ✅
+    - Shows all not completed tasks from all projects ✅
+    - Ordered by priority (high → medium → low) then by date ✅
+    - Paginated to 10 tasks per page ✅
+    - Tasks without dates also shown (they still have priority) ✅
+  - **Files**: `src/app/admin/page.tsx`, `src/components/admin/DashboardUpcomingTasks.tsx`
+  - **Reference**: Admin panel cleanup requirements
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ Completed - Tasks display updated with comprehensive task management
+
+- [x] **Convert Tasks to Compact Table** - Transform tasks from cards to compact table format ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Display tasks in a compact table format for better data scanning
+  - **Acceptance Criteria**:
+    - Tasks displayed in table format with columns: Tarea, Proyecto, Fecha, Prioridad, Estado ✅
+    - Project cell is clickable link to admin project edit page ✅
+    - Hover effects and overdue highlighting ✅
+    - Responsive design with horizontal scroll ✅
+    - Truncated text for long titles and project names ✅
+  - **Files**: `src/components/admin/DashboardUpcomingTasks.tsx`
+  - **Reference**: Admin panel cleanup requirements
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ Completed - Tasks converted to compact table format with project links
+
+#### ✅ Completed
+
+- [x] **Remove Admin Panel Subtitle** (2025-01-27)
+- [x] **Remove Quick Action Cards** (2025-01-27)
+- [x] **Remove Quick Actions Section** (2025-01-27)
+- [x] **Update Tasks Display** (2025-01-27)
+- [x] **Convert Tasks to Compact Table** (2025-01-27)
+
+**Status**: ✅ **COMPLETED** - Admin panel cleaned up to show only actual data
+
+**Key Achievements**:
+
+- ✅ Removed redundant subtitle for cleaner interface
+- ✅ Removed all navigation cards to other sections
+- ✅ Removed quick action buttons and replaced with system status data
+- ✅ Updated tasks display to show all not completed tasks with proper ordering
+- ✅ Converted tasks to compact table format with project links
+- ✅ Tasks without dates now included (they still have priority)
+- ✅ Project cells are clickable links to admin project edit pages
+- ✅ Responsive table design with proper hover effects and overdue highlighting
+
+---
+
 ### 🎨 EPIC: Veloz Brand Design System Implementation ✅ **COMPLETED**
 
 **Objective**: ✅ **COMPLETED** - Comprehensive brand design system implemented across entire application for consistent visual identity and enhanced user experience

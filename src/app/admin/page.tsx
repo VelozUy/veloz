@@ -20,19 +20,15 @@ export default function AdminDashboardPage() {
   return (
     <AdminLayout title="Panel Principal">
       <div className="container mx-auto p-4">
-        <div className="mb-6">
-          <h1 className="text-heading-md font-body text-foreground mb-1">
-            Panel de Administración
-          </h1>
-        </div>
 
-        {/* Upcoming Tasks Summary */}
+
+        {/* Tasks Summary */}
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Tareas Urgentes
+            Tareas
           </h2>
-          <DashboardUpcomingTasks limit={3} compactMode={true} showQuickActions={false} />
+          <DashboardUpcomingTasks limit={10} compactMode={true} showQuickActions={false} showCompleted={false} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
