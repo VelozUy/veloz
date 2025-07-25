@@ -4798,6 +4798,29 @@ _No tasks completed yet for this Epic_
     - Client inquiry tracking per crew member ✅
   - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
   - **Reference**: Meeting document - "Dashboard" section
+
+- [x] **Phase 5: Crew Page UX Improvements** - Simplify crew listing page for better user experience ✅ **COMPLETED**
+  - **User Intent**: Make crew page cleaner and more focused on crew member information
+  - **Acceptance Criteria**:
+    - Remove statistics cards from crew listing page ✅
+    - Remove search and filter functionality for simplified UX ✅
+    - Make entire crew member cards clickable for navigation ✅
+    - Remove action buttons and use card-level navigation ✅
+    - Maintain responsive design and accessibility ✅
+  - **Files**: `src/components/crew/CrewListing.tsx`, `src/app/crew/page.tsx`
+  - **Reference**: User feedback for simplified crew page experience
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ **COMPLETED** - Crew page simplified with clickable cards
+  - **Completion Date**: 2025-01-27
+  - **Technical Details**:
+    - Removed statistics cards showing team member counts and specialties
+    - Removed search input and role filter dropdown for cleaner interface
+    - Wrapped entire crew member cards in Link components for navigation
+    - Removed "Ver Perfil" and "Contactar" action buttons
+    - Added cursor-pointer class to indicate clickable cards
+    - Maintained hover effects and responsive design
+    - Simplified crew member display to focus on essential information
+    - Navigation uses existing `/crew/[name-slug]` route structure
   - **Estimated Time**: 1-2 days
   - **Status**: ✅ **COMPLETED** - Crew analytics system fully implemented
   - **Completion Date**: 2025-01-27
@@ -4969,7 +4992,7 @@ _No tasks completed yet for this Epic_
 
 **Critical Considerations**:
 
-  - Maintain existing crew management functionality
+- Maintain existing crew management functionality
 - Ensure mobile-responsive design for all crew pages
 - Integrate with existing gallery and project systems
 - Follow Veloz brand guidelines and design system

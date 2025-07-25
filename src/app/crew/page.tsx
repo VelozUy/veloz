@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import { crewMemberService } from '@/services/crew-member';
 import CrewListing from '@/components/crew/CrewListing';
 import { StructuredData } from '@/components/seo/StructuredData';
+import { getStaticContent } from '@/lib/utils';
 
 // Force static generation at build time
 export const dynamic = 'force-static';
@@ -13,7 +13,8 @@ export const metadata: Metadata = {
   title: 'Nuestro Equipo - Fotógrafos y Videógrafos Profesionales | Veloz',
   description:
     'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay. Cada miembro tiene su estilo único y especialidades en bodas, eventos corporativos y más.',
-  keywords: 'fotógrafos Uruguay, videógrafos Montevideo, equipo fotografía, bodas Uruguay, eventos corporativos, fotografía profesional, videografía profesional',
+  keywords:
+    'fotógrafos Uruguay, videógrafos Montevideo, equipo fotografía, bodas Uruguay, eventos corporativos, fotografía profesional, videografía profesional',
   authors: [{ name: 'Veloz Fotografía y Videografía' }],
   creator: 'Veloz Fotografía y Videografía',
   publisher: 'Veloz Fotografía y Videografía',
@@ -38,7 +39,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Nuestro Equipo - Fotógrafos y Videógrafos Profesionales | Veloz',
-    description: 'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay.',
+    description:
+      'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay.',
     creator: '@veloz_uy',
     site: '@veloz_uy',
   },
@@ -62,8 +64,11 @@ export const metadata: Metadata = {
 
 export default async function CrewPage() {
   try {
-    const result = await crewMemberService.getAllCrewMembers();
-    if (!result.success || !result.data) {
+    // Get static content for Spanish locale (default)
+    const staticContent = getStaticContent('es');
+    const crewMembers = staticContent.content.crewMembers || [];
+
+    if (!crewMembers || crewMembers.length === 0) {
       return (
         <div className="min-h-screen bg-background">
           <div className="container mx-auto px-4 py-8">
@@ -84,14 +89,15 @@ export default async function CrewPage() {
       '@type': 'Organization' as const,
       name: 'Veloz Fotografía y Videografía',
       url: 'https://veloz.com.uy',
-      description: 'Equipo de fotógrafos y videógrafos profesionales en Uruguay',
-      employee: result.data.map(member => ({
+      description:
+        'Equipo de fotógrafos y videógrafos profesionales en Uruguay',
+      employee: crewMembers.map((member: any) => ({
         '@type': 'Person' as const,
-        name: member.name.es || '',
-        jobTitle: member.role.es || '',
-        description: member.bio.es || '',
+        name: member.name?.es || '',
+        jobTitle: member.role?.es || '',
+        description: member.bio?.es || '',
         image: member.portrait || '',
-        url: `https://veloz.com.uy/crew/${member.name.es?.toLowerCase().replace(/\s+/g, '-') || ''}`,
+        url: `https://veloz.com.uy/crew/${member.name?.es?.toLowerCase().replace(/\s+/g, '-') || ''}`,
         knowsAbout: member.skills || [],
       })),
       address: {
@@ -121,11 +127,25 @@ export default async function CrewPage() {
       ],
     };
 
+    // Transform static crew members to match CrewMember type
+    const transformedCrewMembers = crewMembers.map((member: any) => ({
+      id: member.id,
+      name: { es: member.name, en: member.name, pt: member.name },
+      role: { es: member.role, en: member.role, pt: member.role },
+      portrait: member.portrait,
+      bio: { es: member.bio, en: member.bio, pt: member.bio },
+      socialLinks: member.socialLinks || {},
+      skills: member.skills || [],
+      order: member.order || 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+
     return (
       <>
         <StructuredData type="breadcrumb" data={breadcrumbSchema} />
         <StructuredData type="organization" data={teamSchema} />
-        <CrewListing crewMembers={result.data} />
+        <CrewListing crewMembers={transformedCrewMembers} />
       </>
     );
   } catch (error) {
