@@ -29,11 +29,93 @@ _Last updated: 2025-01-20_
 
 ---
 
+### 🎯 EPIC: Unified Crew Management Interface
+
+**Objective**: Merge crew management and work assignments into a single, streamlined interface
+
+**Status**: ✅ **COMPLETED** - All crew management interface improvements finished
+
+#### 🟥 Critical Priority Tasks
+
+- [x] **Merge Crew Management Tabs** - Combine "Gestión de Equipo" and "Gestión Avanzada de Equipo" into single "Crew" tab ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Simplify admin navigation by having one unified crew management interface
+  - **Acceptance Criteria**:
+    - Single "Crew" tab in admin sidebar ✅
+    - Removed "Gestión Avanzada de Equipo" tab ✅
+    - All crew functionality accessible from unified interface ✅
+  - **Files**: `src/components/admin/AdminLayout.tsx`, `src/app/admin/crew/page.tsx`
+  - **Status**: ✅ Completed - Updated sidebar navigation
+
+- [x] **Remove Work Assignments Section** - Eliminate "Asignaciones de Trabajo" section from main crew page ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Streamline crew page to focus on member management
+  - **Acceptance Criteria**:
+    - No more "Asignaciones de Trabajo" section ✅
+    - Simplified page layout ✅
+    - Focus on crew member profiles ✅
+  - **Files**: `src/app/admin/crew/page.tsx`
+  - **Status**: ✅ Completed - Removed assignments section and view mode toggle
+
+- [x] **Convert to Table Display** - Change crew member display from cards to table format ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Better data overview with table format
+  - **Acceptance Criteria**:
+    - Crew members displayed in table format ✅
+    - All member information visible in table ✅
+    - Responsive table design ✅
+  - **Files**: `src/app/admin/crew/page.tsx`
+  - **Status**: ✅ Completed - Implemented table with Name, Role, Skills, Projects, Social Media, Actions columns
+
+- [x] **Implement Inline Editing** - Add quick inline editing for skills and projects ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Edit skills and projects directly from table cells
+  - **Acceptance Criteria**:
+    - Click to edit skills and projects ✅
+    - Popover interface for editing ✅
+    - Save/cancel functionality ✅
+    - Real-time updates ✅
+  - **Files**: `src/app/admin/crew/page.tsx`, `src/components/ui/popover.tsx`
+  - **Status**: ✅ Completed - Added inline editing with popovers and checkboxes
+
+#### 🧠 Discovered During the Epic
+
+- [x] **Fix Skills Array Error** - Handle cases where member.skills is not an array ✅ **COMPLETED** (2025-01-27)
+  - Issue: TypeError when member.skills is null/undefined
+  - Solution: Added getMemberSkills() safety function
+
+- [x] **Add Missing UI Components** - Create Popover component for inline editing ✅ **COMPLETED** (2025-01-27)
+  - Created `src/components/ui/popover.tsx`
+  - Installed `@radix-ui/react-popover` dependency
+
+- [x] **Fix TypeScript Errors** - Resolve type issues with LocalizedContent and socialLinks ✅ **COMPLETED** (2025-01-27)
+  - Updated property access for LocalizedContent (.es, .en)
+  - Changed socialMedia to socialLinks to match interface
+
+### ✅ Completed
+
+- [x] **Merge Crew Management Tabs** - Updated admin sidebar to show single "Crew" tab (2025-01-27)
+  - Removed "Gestión Avanzada de Equipo" from sidebar
+  - Renamed "Gestión de Equipo" to "Crew"
+  - Updated navigation structure
+
+- [x] **Remove Work Assignments Section** - Streamlined crew page layout (2025-01-27)
+  - Removed "Asignaciones de Trabajo" section
+  - Simplified page title and subtitle
+  - Updated search functionality
+
+- [x] **Convert to Table Display** - Implemented table-based crew member display (2025-01-27)
+  - Added table with Name, Role, Skills, Projects, Social Media, Actions columns
+  - Maintained all member information in organized format
+  - Added responsive design for better data overview
+
+- [x] **Implement Inline Editing** - Added advanced inline editing capabilities (2025-01-27)
+  - Click-to-edit functionality for skills and projects
+  - Popover interface with checkboxes for selection
+  - Save/cancel buttons for editing actions
+  - Real-time updates to database
+
 ### 🎯 EPIC: Admin Panel Blank Page Issue
 
 **Objective**: Diagnose and fix the blank admin panel page issue
 
-**Status**: 🟥 **CRITICAL** - User reported admin panel showing blank page
+**Status**: ✅ **COMPLETED** - All admin panel issues resolved
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 
@@ -4846,6 +4928,27 @@ _No tasks completed yet for this Epic_
     - Added proper loading states and error handling for edit page
     - Maintained all existing crew member form functionality
     - Enhanced UX with clear navigation paths
+
+- [x] **Phase 6: Unified Crew Management Interface** - Merge crew management and work assignments into single interface ✅ **COMPLETED**
+  - **User Intent**: Combine crew member management and work assignments into a unified interface
+  - **Acceptance Criteria**:
+    - Merge "Miembros del Equipo" and "Asignaciones de Trabajo" tabs into single interface ✅
+    - Add view mode toggle between crew members and assignments ✅
+    - Show current assignments in crew member cards ✅
+    - Integrate project assignment functionality directly in main interface ✅
+    - Maintain all existing functionality while simplifying navigation ✅
+  - **Files**: `src/app/admin/crew/page.tsx`
+  - **Reference**: User request to merge tabs for better UX
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ **COMPLETED** - Unified crew management interface implemented
+  - **Completion Date**: 2025-01-27
+  - **Technical Details**:
+    - Replaced separate tabs with view mode toggle
+    - Integrated project assignment functionality directly in main interface
+    - Added current assignments display in crew member cards
+    - Enhanced search functionality to work with both crew members and projects
+    - Maintained all existing CRUD operations and assignment functionality
+    - Improved UX with unified interface and better data visibility
   - **Technical Details**:
     - Extended AnalyticsService with crew analytics methods
     - Added CrewAnalytics and CrewAnalyticsSummary interfaces
