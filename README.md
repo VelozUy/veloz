@@ -39,8 +39,8 @@ A modern Next.js website for Veloz, a professional event photography and videogr
 3. **Set up environment variables**
 
    ```bash
-   # Copy the environment template
-   cp .env.example .env.local
+   # Run the setup script to create .env.local
+   npm run setup:env
 
    # Edit .env.local with your Firebase configuration
    # See ENVIRONMENT.md for detailed instructions

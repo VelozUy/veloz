@@ -60,6 +60,13 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     }
   };
 
+  // Handle redirect when user is not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/admin/login');
+    }
+  }, [user, loading, router]);
+
   // Check admin status when user is authenticated
   useEffect(() => {
     const checkAdmin = async () => {
@@ -74,19 +81,12 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         const adminStatus = await checkAdminStatus(user.email);
         setIsAdmin(adminStatus);
         
-        console.log('🔍 AdminLayout Auth State:', {
-          user: !!user,
-          loading,
-          userEmail: user?.email,
-          isAdmin: adminStatus,
-        });
+
 
         if (!adminStatus) {
-          console.log('🔄 Redirecting to login - user is not an admin');
           router.push('/admin/login');
         }
       } catch (error) {
-        console.error('Error checking admin status:', error);
         setIsAdmin(false);
         router.push('/admin/login');
       } finally {
@@ -94,7 +94,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       }
     };
 
-    if (!loading) {
+    if (!loading && user) {
       checkAdmin();
     }
   }, [user, loading, router]);
@@ -113,7 +113,19 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   }
 
   if (!user || !isAdmin) {
-    return null; // Will redirect to login
+    // Show a proper loading state while redirecting
+    return (
+      <div
+        className={`min-h-screen flex items-center justify-center ${adminClasses.background} ${adminClasses.text}`}
+      >
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-body-sm text-foreground">
+            {!user ? 'Redirigiendo al login...' : 'Verificando permisos de administrador...'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

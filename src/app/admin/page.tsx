@@ -1,6 +1,7 @@
 'use client';
 
 import AdminLayout from '@/components/admin/AdminLayout';
+import AuthGuard from '@/components/admin/AuthGuard';
 import {
   Card,
   CardContent,
@@ -18,8 +19,9 @@ import ProjectStatusDashboard from '@/components/admin/ProjectStatusDashboard';
 
 export default function AdminDashboardPage() {
   return (
-    <AdminLayout title="Panel Principal">
-      <div className="container mx-auto p-4">
+    <AuthGuard>
+      <AdminLayout title="Panel Principal">
+        <div className="container mx-auto p-4">
 
 
         {/* Tasks Summary */}
@@ -97,7 +99,8 @@ export default function AdminDashboardPage() {
           </h2>
           <ProjectStatusDashboard compactMode={true} />
         </div>
-      </div>
-    </AdminLayout>
+              </div>
+      </AdminLayout>
+    </AuthGuard>
   );
 }

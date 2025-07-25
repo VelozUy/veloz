@@ -47,11 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         const unsubscribe = onAuthStateChanged(auth, user => {
-          console.log('🔍 AuthContext: User state changed:', {
-            user: !!user,
-            email: user?.email,
-            uid: user?.uid,
-          });
           setUser(user);
           setLoading(false);
         });

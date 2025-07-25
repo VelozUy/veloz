@@ -117,14 +117,8 @@ export default function AdminLoginPage() {
       provider.addScope('email');
       provider.addScope('profile');
 
-      console.log('🔐 Attempting Google sign-in...');
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
-      console.log('✅ Google sign-in successful:', {
-        email: user.email,
-        uid: user.uid,
-      });
 
       if (!user.email) {
         setError('No se pudo obtener el email de la cuenta de Google.');
@@ -146,16 +140,7 @@ export default function AdminLoginPage() {
       // User has access, redirect to admin dashboard
       router.push('/admin');
     } catch (error: unknown) {
-      console.error('❌ Login error:', error);
-
       const firebaseError = error as { code?: string; message?: string };
-
-      // Log detailed error information for debugging
-      console.error('Firebase error details:', {
-        code: firebaseError.code,
-        message: firebaseError.message,
-        error: firebaseError,
-      });
 
       switch (firebaseError.code) {
         case 'auth/internal-error':

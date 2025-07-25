@@ -34,18 +34,7 @@ export const validateFirebaseConfig = () => {
 export const debugFirebaseConfig = () => {
   const validation = validateFirebaseConfig();
 
-  console.log('🔥 Firebase Config Debug:', {
-    isClient: typeof window !== 'undefined',
-    isValid: validation.isValid,
-    missing: validation.missing,
-    hasApiKey: !!firebaseConfig.apiKey,
-    hasStorageBucket: !!firebaseConfig.storageBucket,
-    configValues: {
-      apiKey: firebaseConfig.apiKey?.substring(0, 10) + '...',
-      storageBucket: firebaseConfig.storageBucket,
-      projectId: firebaseConfig.projectId,
-    },
-  });
+
 
   return validation;
 };

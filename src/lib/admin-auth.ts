@@ -19,18 +19,11 @@ export async function checkAdminStatus(userEmail: string): Promise<boolean> {
 
     const adminDoc = await getDoc(doc(db, 'adminUsers', userEmail));
     if (!adminDoc.exists()) {
-      console.log('User not found in adminUsers collection:', userEmail);
       return false;
     }
 
     const adminData = adminDoc.data() as AdminUser;
     const isActive = adminData.status === 'active';
-    
-    console.log('Admin check result:', {
-      email: userEmail,
-      status: adminData.status,
-      isActive,
-    });
 
     return isActive;
   } catch (error) {

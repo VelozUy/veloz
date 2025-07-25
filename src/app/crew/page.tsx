@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { crewMemberService } from '@/services/crew-member';
 import CrewListing from '@/components/crew/CrewListing';
+import { StructuredData } from '@/components/seo/StructuredData';
 
 // Force static generation at build time
 export const dynamic = 'force-static';
@@ -9,13 +10,53 @@ export const dynamic = 'force-static';
 export const revalidate = false;
 
 export const metadata: Metadata = {
-  title: 'Nuestro Equipo - Veloz',
+  title: 'Nuestro Equipo - Fotógrafos y Videógrafos Profesionales | Veloz',
   description:
-    'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales. Cada miembro tiene su estilo único y especialidades.',
+    'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay. Cada miembro tiene su estilo único y especialidades en bodas, eventos corporativos y más.',
+  keywords: 'fotógrafos Uruguay, videógrafos Montevideo, equipo fotografía, bodas Uruguay, eventos corporativos, fotografía profesional, videografía profesional',
+  authors: [{ name: 'Veloz Fotografía y Videografía' }],
+  creator: 'Veloz Fotografía y Videografía',
+  publisher: 'Veloz Fotografía y Videografía',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://veloz.com.uy'),
+  alternates: {
+    canonical: 'https://veloz.com.uy/crew',
+  },
   openGraph: {
-    title: 'Nuestro Equipo - Veloz',
+    title: 'Nuestro Equipo - Fotógrafos y Videógrafos Profesionales | Veloz',
     description:
-      'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales.',
+      'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay. Cada miembro tiene su estilo único y especialidades.',
+    url: 'https://veloz.com.uy/crew',
+    siteName: 'Veloz Fotografía y Videografía',
+    locale: 'es_UY',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nuestro Equipo - Fotógrafos y Videógrafos Profesionales | Veloz',
+    description: 'Conoce a nuestro equipo de fotógrafos y videógrafos profesionales en Uruguay.',
+    creator: '@veloz_uy',
+    site: '@veloz_uy',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+    yahoo: 'your-yahoo-verification-code',
   },
 };
 
@@ -37,7 +78,56 @@ export default async function CrewPage() {
       );
     }
 
-    return <CrewListing crewMembers={result.data} />;
+    // Generate structured data for the team page
+    const teamSchema = {
+      '@context': 'https://schema.org' as const,
+      '@type': 'Organization' as const,
+      name: 'Veloz Fotografía y Videografía',
+      url: 'https://veloz.com.uy',
+      description: 'Equipo de fotógrafos y videógrafos profesionales en Uruguay',
+      employee: result.data.map(member => ({
+        '@type': 'Person' as const,
+        name: member.name.es || '',
+        jobTitle: member.role.es || '',
+        description: member.bio.es || '',
+        image: member.portrait || '',
+        url: `https://veloz.com.uy/crew/${member.name.es?.toLowerCase().replace(/\s+/g, '-') || ''}`,
+        knowsAbout: member.skills || [],
+      })),
+      address: {
+        '@type': 'PostalAddress' as const,
+        addressLocality: 'Montevideo',
+        addressCountry: 'UY',
+      },
+    };
+
+    // Generate breadcrumb structured data
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org' as const,
+      '@type': 'BreadcrumbList' as const,
+      itemListElement: [
+        {
+          '@type': 'ListItem' as const,
+          position: 1,
+          name: 'Inicio',
+          item: 'https://veloz.com.uy',
+        },
+        {
+          '@type': 'ListItem' as const,
+          position: 2,
+          name: 'Nuestro Equipo',
+          item: 'https://veloz.com.uy/crew',
+        },
+      ],
+    };
+
+    return (
+      <>
+        <StructuredData type="breadcrumb" data={breadcrumbSchema} />
+        <StructuredData type="organization" data={teamSchema} />
+        <CrewListing crewMembers={result.data} />
+      </>
+    );
   } catch (error) {
     console.error('Error loading crew members:', error);
     return (

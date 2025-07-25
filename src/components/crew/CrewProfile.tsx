@@ -15,6 +15,11 @@ import {
   Video,
   User,
   ArrowLeft,
+  Facebook,
+  Twitter,
+  Youtube,
+  ExternalLink,
+  Share2,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { CrewMember } from '@/types';
@@ -25,12 +30,99 @@ interface CrewProfileProps {
   crewMember: CrewMember;
 }
 
+// Social media platform configuration
+const socialMediaConfig = {
+  instagram: {
+    icon: Instagram,
+    label: 'Instagram',
+    getUrl: (username: string) => `https://instagram.com/${username}`,
+    color: 'hover:text-pink-500',
+  },
+  linkedin: {
+    icon: Linkedin,
+    label: 'LinkedIn',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-600',
+  },
+  website: {
+    icon: Globe,
+    label: 'Website',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-500',
+  },
+  email: {
+    icon: Mail,
+    label: 'Email',
+    getUrl: (email: string) => `mailto:${email}`,
+    color: 'hover:text-red-500',
+  },
+  facebook: {
+    icon: Facebook,
+    label: 'Facebook',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-600',
+  },
+  twitter: {
+    icon: Twitter,
+    label: 'Twitter',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-400',
+  },
+  youtube: {
+    icon: Youtube,
+    label: 'YouTube',
+    getUrl: (url: string) => url,
+    color: 'hover:text-red-600',
+  },
+  vimeo: {
+    icon: Video,
+    label: 'Vimeo',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-500',
+  },
+  behance: {
+    icon: ExternalLink,
+    label: 'Behance',
+    getUrl: (url: string) => url,
+    color: 'hover:text-blue-600',
+  },
+  dribbble: {
+    icon: Share2,
+    label: 'Dribbble',
+    getUrl: (url: string) => url,
+    color: 'hover:text-pink-500',
+  },
+  pinterest: {
+    icon: Share2,
+    label: 'Pinterest',
+    getUrl: (url: string) => url,
+    color: 'hover:text-red-600',
+  },
+  tiktok: {
+    icon: Video,
+    label: 'TikTok',
+    getUrl: (url: string) => url,
+    color: 'hover:text-black',
+  },
+};
+
 export default function CrewProfile({ crewMember }: CrewProfileProps) {
   const [activeTab, setActiveTab] = useState('about');
 
   const getSlugFromName = (name: string) => {
     return name.toLowerCase().replace(/\s+/g, '-');
   };
+
+  // Get available social media links
+  const availableSocialLinks = crewMember.socialLinks
+    ? Object.entries(crewMember.socialLinks)
+        .filter(([_, value]) => value && value.trim() !== '')
+        .map(([platform, value]) => ({
+          platform,
+          value: value!,
+          config: socialMediaConfig[platform as keyof typeof socialMediaConfig],
+        }))
+    : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,47 +184,29 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                 </div>
               )}
 
-              {/* Social Links */}
-              {crewMember.socialLinks && (
-                <div className="flex gap-3">
-                  {crewMember.socialLinks.instagram && (
-                    <a
-                      href={`https://instagram.com/${crewMember.socialLinks.instagram}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-background/20 rounded-full hover:bg-background/30 transition-colors"
-                    >
-                      <Instagram className="w-5 h-5" />
-                    </a>
-                  )}
-                  {crewMember.socialLinks.linkedin && (
-                    <a
-                      href={crewMember.socialLinks.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-background/20 rounded-full hover:bg-background/30 transition-colors"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                    </a>
-                  )}
-                  {crewMember.socialLinks.website && (
-                    <a
-                      href={crewMember.socialLinks.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 bg-background/20 rounded-full hover:bg-background/30 transition-colors"
-                    >
-                      <Globe className="w-5 h-5" />
-                    </a>
-                  )}
-                  {crewMember.socialLinks.email && (
-                    <a
-                      href={`mailto:${crewMember.socialLinks.email}`}
-                      className="p-2 bg-background/20 rounded-full hover:bg-background/30 transition-colors"
-                    >
-                      <Mail className="w-5 h-5" />
-                    </a>
-                  )}
+              {/* Enhanced Social Links */}
+              {availableSocialLinks.length > 0 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-background/90">
+                    Sígueme en redes sociales
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {availableSocialLinks.map(({ platform, value, config }) => {
+                      const IconComponent = config.icon;
+                      return (
+                        <a
+                          key={platform}
+                          href={config.getUrl(value)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`p-3 bg-background/20 rounded-full hover:bg-background/30 transition-all duration-200 ${config.color} group`}
+                          title={`${config.label}: ${value}`}
+                        >
+                          <IconComponent className="w-5 h-5 transition-transform group-hover:scale-110" />
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
@@ -185,15 +259,14 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
               </Card>
             )}
 
-            {/* Contact Information */}
+            {/* Enhanced Contact Information */}
             <Card>
               <CardHeader>
-                <h2 className="text-2xl font-semibold">
-                  Información de Contacto
-                </h2>
+                <h2 className="text-2xl font-semibold">Información de Contacto</h2>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {/* Email */}
                   {crewMember.socialLinks?.email && (
                     <div className="flex items-center gap-3">
                       <Mail className="w-5 h-5 text-muted-foreground" />
@@ -205,32 +278,8 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                       </a>
                     </div>
                   )}
-                  {crewMember.socialLinks?.instagram && (
-                    <div className="flex items-center gap-3">
-                      <Instagram className="w-5 h-5 text-muted-foreground" />
-                      <a
-                        href={`https://instagram.com/${crewMember.socialLinks.instagram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        @{crewMember.socialLinks.instagram}
-                      </a>
-                    </div>
-                  )}
-                  {crewMember.socialLinks?.linkedin && (
-                    <div className="flex items-center gap-3">
-                      <Linkedin className="w-5 h-5 text-muted-foreground" />
-                      <a
-                        href={crewMember.socialLinks.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        Perfil de LinkedIn
-                      </a>
-                    </div>
-                  )}
+
+                  {/* Website */}
                   {crewMember.socialLinks?.website && (
                     <div className="flex items-center gap-3">
                       <Globe className="w-5 h-5 text-muted-foreground" />
@@ -242,6 +291,30 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                       >
                         Sitio Web
                       </a>
+                    </div>
+                  )}
+
+                  {/* Social Media Links */}
+                  {availableSocialLinks.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-foreground">Redes Sociales</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {availableSocialLinks
+                          .filter(({ platform }) => platform !== 'email' && platform !== 'website')
+                          .map(({ platform, value, config }) => (
+                            <div key={platform} className="flex items-center gap-3">
+                              <config.icon className="w-4 h-4 text-muted-foreground" />
+                              <a
+                                href={config.getUrl(value)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline text-sm"
+                              >
+                                {config.label}
+                              </a>
+                            </div>
+                          ))}
+                      </div>
                     </div>
                   )}
                 </div>

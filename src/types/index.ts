@@ -389,6 +389,14 @@ export interface CrewMember {
     linkedin?: string;
     website?: string;
     email?: string;
+    facebook?: string;
+    twitter?: string;
+    youtube?: string;
+    vimeo?: string;
+    behance?: string;
+    dribbble?: string;
+    pinterest?: string;
+    tiktok?: string;
   };
   skills: string[]; // Array of skill tags
   order: number; // For display ordering

@@ -28,7 +28,8 @@
     "theme:validate": "node scripts/theme-validation.js",
     "theme:validate:strict": "node scripts/theme-validation.js --strict",
     "theme:validate:report": "node scripts/theme-validation.js --report",
-    "theme:preview": "echo 'Visit http://localhost:3000/debug/theme-preview to see theme preview'"
+    "theme:preview": "echo 'Visit http://localhost:3000/debug/theme-preview to see theme preview'",
+    "setup:env": "node scripts/setup-env.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -7,19 +7,28 @@ interface OrganizationSchema {
   '@type': 'Organization';
   name: string;
   url: string;
-  logo: string;
   description: string;
-  address: {
+  logo?: string;
+  address?: {
     '@type': 'PostalAddress';
     addressLocality: string;
     addressCountry: string;
   };
-  contactPoint: {
+  contactPoint?: {
     '@type': 'ContactPoint';
     telephone: string;
     contactType: string;
   };
-  sameAs: string[];
+  sameAs?: string[];
+  employee?: Array<{
+    '@type': 'Person';
+    name: string;
+    jobTitle?: string;
+    description?: string;
+    image?: string;
+    url?: string;
+    knowsAbout?: string[];
+  }>;
 }
 
 interface LocalBusinessSchema {
@@ -47,6 +56,28 @@ interface LocalBusinessSchema {
   };
 }
 
+interface PersonSchema {
+  '@context': 'https://schema.org';
+  '@type': 'Person';
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  worksFor?: {
+    '@type': 'Organization';
+    name: string;
+    url: string;
+  };
+  knowsAbout?: string[];
+  sameAs?: string[];
+  address?: {
+    '@type': 'PostalAddress';
+    addressLocality: string;
+    addressCountry: string;
+  };
+}
+
 interface BreadcrumbSchema {
   '@context': 'https://schema.org';
   '@type': 'BreadcrumbList';
@@ -59,8 +90,8 @@ interface BreadcrumbSchema {
 }
 
 interface StructuredDataProps {
-  type: 'organization' | 'localBusiness' | 'breadcrumb';
-  data: OrganizationSchema | LocalBusinessSchema | BreadcrumbSchema;
+  type: 'organization' | 'localBusiness' | 'breadcrumb' | 'person';
+  data: OrganizationSchema | LocalBusinessSchema | BreadcrumbSchema | PersonSchema;
 }
 
 export function StructuredData({ type, data }: StructuredDataProps) {

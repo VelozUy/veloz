@@ -13,13 +13,92 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Filter, User, Camera, Video } from 'lucide-react';
+import { 
+  Search, 
+  Filter, 
+  User, 
+  Camera, 
+  Video,
+  Instagram,
+  Linkedin,
+  Globe,
+  Mail,
+  Facebook,
+  Twitter,
+  Youtube,
+  ExternalLink,
+  Share2,
+} from 'lucide-react';
 import Link from 'next/link';
 import type { CrewMember } from '@/types';
 
 interface CrewListingProps {
   crewMembers: CrewMember[];
 }
+
+// Social media platform configuration
+const socialMediaConfig = {
+  instagram: {
+    icon: Instagram,
+    label: 'Instagram',
+    color: 'text-pink-500',
+  },
+  linkedin: {
+    icon: Linkedin,
+    label: 'LinkedIn',
+    color: 'text-blue-600',
+  },
+  website: {
+    icon: Globe,
+    label: 'Website',
+    color: 'text-blue-500',
+  },
+  email: {
+    icon: Mail,
+    label: 'Email',
+    color: 'text-red-500',
+  },
+  facebook: {
+    icon: Facebook,
+    label: 'Facebook',
+    color: 'text-blue-600',
+  },
+  twitter: {
+    icon: Twitter,
+    label: 'Twitter',
+    color: 'text-blue-400',
+  },
+  youtube: {
+    icon: Youtube,
+    label: 'YouTube',
+    color: 'text-red-600',
+  },
+  vimeo: {
+    icon: Video,
+    label: 'Vimeo',
+    color: 'text-blue-500',
+  },
+  behance: {
+    icon: ExternalLink,
+    label: 'Behance',
+    color: 'text-blue-600',
+  },
+  dribbble: {
+    icon: Share2,
+    label: 'Dribbble',
+    color: 'text-pink-500',
+  },
+  pinterest: {
+    icon: Share2,
+    label: 'Pinterest',
+    color: 'text-red-600',
+  },
+  tiktok: {
+    icon: Video,
+    label: 'TikTok',
+    color: 'text-black',
+  },
+};
 
 export default function CrewListing({ crewMembers }: CrewListingProps) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,6 +133,19 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
     { value: 'editor', label: 'Editores' },
     { value: 'director', label: 'Directores' },
   ];
+
+  // Get available social media links for a crew member
+  const getAvailableSocialLinks = (member: CrewMember) => {
+    if (!member.socialLinks) return [];
+    
+    return Object.entries(member.socialLinks)
+      .filter(([_, value]) => value && value.trim() !== '')
+      .map(([platform, value]) => ({
+        platform,
+        value: value!,
+        config: socialMediaConfig[platform as keyof typeof socialMediaConfig],
+      }));
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,62 +197,55 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
 
         {/* Crew Members Grid */}
         {filteredCrewMembers.length === 0 ? (
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center py-12">
-                <User className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">
-                  {searchTerm || selectedRole !== 'all'
-                    ? 'No se encontraron resultados'
-                    : 'No hay miembros del equipo'}
-                </h3>
-                <p className="text-muted-foreground">
-                  {searchTerm || selectedRole !== 'all'
-                    ? 'Intenta con otros términos de búsqueda'
-                    : 'El equipo se está preparando para mostrarse'}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="text-center py-12">
+            <User className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No se encontraron resultados</h3>
+            <p className="text-muted-foreground">
+              Intenta ajustar los filtros de búsqueda.
+            </p>
+          </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCrewMembers.map(member => (
-              <Card
-                key={member.id}
-                className="group hover:shadow-lg transition-shadow"
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
-                        {member.portrait ? (
-                          <Image
-                            src={member.portrait}
-                            alt={member.name.es || 'Crew Member'}
-                            width={64}
-                            height={64}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <User className="w-8 h-8 text-primary" />
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">
-                          {member.name.es}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {member.role.es}
-                        </p>
+            {filteredCrewMembers.map(member => {
+              const availableSocialLinks = getAvailableSocialLinks(member);
+              
+              return (
+                <Card
+                  key={member.id}
+                  className="group hover:shadow-lg transition-shadow"
+                >
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
+                          {member.portrait ? (
+                            <Image
+                              src={member.portrait}
+                              alt={member.name.es || 'Crew Member'}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <User className="w-8 h-8 text-primary" />
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground">
+                            {member.name.es}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {member.role.es}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    {/* Bio */}
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    {/* Bio Preview */}
                     {member.bio.es && (
-                      <p className="text-sm text-muted-foreground line-clamp-3">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {member.bio.es}
                       </p>
                     )}
@@ -169,11 +254,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                     {member.skills && member.skills.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {member.skills.slice(0, 3).map((skill, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="text-xs"
-                          >
+                          <Badge key={index} variant="outline" className="text-xs">
                             {skill}
                           </Badge>
                         ))}
@@ -185,24 +266,31 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                       </div>
                     )}
 
-                    {/* Social Links */}
-                    {member.socialLinks && (
-                      <div className="flex gap-2">
-                        {member.socialLinks.instagram && (
-                          <Badge variant="outline" className="text-xs">
-                            Instagram
-                          </Badge>
-                        )}
-                        {member.socialLinks.linkedin && (
-                          <Badge variant="outline" className="text-xs">
-                            LinkedIn
-                          </Badge>
-                        )}
-                        {member.socialLinks.website && (
-                          <Badge variant="outline" className="text-xs">
-                            Website
-                          </Badge>
-                        )}
+                    {/* Enhanced Social Links */}
+                    {availableSocialLinks.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground font-medium">
+                          Redes Sociales
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {availableSocialLinks.slice(0, 4).map(({ platform, config }) => {
+                            const IconComponent = config.icon;
+                            return (
+                              <div
+                                key={platform}
+                                className={`p-1 rounded-full ${config.color} bg-muted/50`}
+                                title={config.label}
+                              >
+                                <IconComponent className="w-3 h-3" />
+                              </div>
+                            );
+                          })}
+                          {availableSocialLinks.length > 4 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{availableSocialLinks.length - 4} más
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -219,10 +307,10 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                         Contactar
                       </Button>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         )}
 
@@ -281,25 +369,6 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
             </CardContent>
           </Card>
         </div>
-
-        {/* CTA */}
-        <Card className="mt-8 bg-primary/5 border-primary/20">
-          <CardContent className="pt-6">
-            <div className="text-center py-8">
-              <h3 className="text-xl font-semibold mb-2">
-                ¿Quieres trabajar con nuestro equipo?
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                Cada miembro tiene su estilo único. Encuentra el fotógrafo o
-                videógrafo perfecto para tu proyecto.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button>Contactar al Equipo</Button>
-                <Button variant="outline">Ver Nuestros Trabajos</Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

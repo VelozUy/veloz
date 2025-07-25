@@ -67,34 +67,24 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
           );
           try {
             await enableIndexedDbPersistence(db);
-            console.log('✅ Firebase offline persistence enabled');
           } catch (persistenceError) {
             // If persistence fails, continue without it
-            console.warn(
-              '⚠️ Firebase offline persistence failed:',
-              persistenceError
-            );
           }
 
           // Initialize Auth with better error handling
           try {
             const { getAuth } = await import('firebase/auth');
             auth = getAuth(app);
-            console.log('✅ Firebase Auth initialized');
           } catch (authError) {
-            console.warn('⚠️ Firebase Auth initialization failed:', authError);
+            // Auth initialization failed
           }
 
           // Initialize Storage with better error handling
           try {
             const { getStorage } = await import('firebase/storage');
             storage = getStorage(app);
-            console.log('✅ Firebase Storage initialized');
           } catch (storageError) {
-            console.warn(
-              '⚠️ Firebase Storage initialization failed:',
-              storageError
-            );
+            // Storage initialization failed
           }
         } catch (firestoreError) {
           console.error(
