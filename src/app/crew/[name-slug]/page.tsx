@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { crewMemberService } from '@/services/crew-member';
 import CrewProfile from '@/components/crew/CrewProfile';
 import { StructuredData } from '@/components/seo/StructuredData';
+import { getStaticContent } from '@/lib/utils';
 import type { CrewMember } from '@/types';
 
 interface CrewProfilePageProps {
@@ -23,19 +23,12 @@ export async function generateMetadata({
   const { 'name-slug': nameSlug } = await params;
 
   try {
-    const result = await crewMemberService.getAllCrewMembers();
-    if (!result.success || !result.data) {
-      return {
-        title: 'Crew Member Not Found - Veloz',
-        description: 'The requested crew member could not be found.',
-        robots: 'noindex, nofollow',
-      };
-    }
+    // Get static content for Spanish locale (default)
+    const staticContent = getStaticContent('es');
+    const crewMembers = staticContent.content.crewMembers || [];
 
-    const crewMember = result.data.find(
-      member =>
-        member.name.es?.toLowerCase().replace(/\s+/g, '-') === nameSlug ||
-        member.name.en?.toLowerCase().replace(/\s+/g, '-') === nameSlug
+    const crewMember = crewMembers.find(
+      member => member.name?.toLowerCase().replace(/\s+/g, '-') === nameSlug
     );
 
     if (!crewMember) {
@@ -47,14 +40,14 @@ export async function generateMetadata({
     }
 
     // Enhanced SEO metadata
-    const title = `${crewMember.name.es} - ${crewMember.role.es} | Veloz Fotografía y Videografía`;
-    const description = crewMember.bio.es 
-      ? `${crewMember.bio.es.substring(0, 160)}...`
-      : `Conoce a ${crewMember.name.es}, ${crewMember.role.es} en Veloz. Especialista en fotografía y videografía profesional en Uruguay.`;
-    
+    const title = `${crewMember.name} - ${crewMember.role || 'Crew Member'} | Veloz Fotografía y Videografía`;
+    const description = crewMember.bio
+      ? `${crewMember.bio.substring(0, 160)}...`
+      : `Conoce a ${crewMember.name}, ${crewMember.role || 'miembro del equipo'} en Veloz. Especialista en fotografía y videografía profesional en Uruguay.`;
+
     const keywords = [
-      crewMember.name.es,
-      crewMember.role.es,
+      crewMember.name,
+      crewMember.role,
       'fotógrafo',
       'videógrafo',
       'fotografía',
@@ -64,7 +57,7 @@ export async function generateMetadata({
       'eventos',
       'bodas',
       'corporativos',
-      ...crewMember.skills,
+      ...(crewMember.skills || []),
     ].filter(Boolean);
 
     const canonicalUrl = `https://veloz.com.uy/crew/${nameSlug}`;
@@ -73,8 +66,8 @@ export async function generateMetadata({
       title,
       description,
       keywords: keywords.join(', '),
-      authors: [{ name: crewMember.name.es }],
-      creator: crewMember.name.es,
+      authors: [{ name: crewMember.name }],
+      creator: crewMember.name,
       publisher: 'Veloz Fotografía y Videografía',
       formatDetection: {
         email: false,
@@ -90,14 +83,16 @@ export async function generateMetadata({
         description,
         url: canonicalUrl,
         siteName: 'Veloz Fotografía y Videografía',
-        images: crewMember.portrait ? [
-          {
-            url: crewMember.portrait,
-            width: 1200,
-            height: 630,
-            alt: `${crewMember.name.es} - ${crewMember.role.es}`,
-          }
-        ] : [],
+        images: crewMember.portrait
+          ? [
+              {
+                url: crewMember.portrait,
+                width: 1200,
+                height: 630,
+                alt: `${crewMember.name} - ${crewMember.role || 'Crew Member'}`,
+              },
+            ]
+          : [],
         locale: 'es_UY',
         type: 'profile',
       },
@@ -105,9 +100,9 @@ export async function generateMetadata({
         card: 'summary_large_image',
         title,
         description,
-        images: crewMember.portrait ? [crewMember.portrait] : [],
         creator: '@veloz_uy',
         site: '@veloz_uy',
+        images: crewMember.portrait ? [crewMember.portrait] : [],
       },
       robots: {
         index: true,
@@ -142,39 +137,66 @@ export default async function CrewProfilePage({
   const { 'name-slug': nameSlug } = await params;
 
   try {
-    const result = await crewMemberService.getAllCrewMembers();
-    if (!result.success || !result.data) {
-      notFound();
-    }
+    // Get static content for Spanish locale (default)
+    const staticContent = getStaticContent('es');
+    const crewMembers = staticContent.content.crewMembers || [];
 
-    const crewMember = result.data.find(
-      member =>
-        member.name.es?.toLowerCase().replace(/\s+/g, '-') === nameSlug ||
-        member.name.en?.toLowerCase().replace(/\s+/g, '-') === nameSlug
+    const crewMember = crewMembers.find(
+      member => member.name?.toLowerCase().replace(/\s+/g, '-') === nameSlug
     );
 
     if (!crewMember) {
       notFound();
     }
 
+    // Convert static content format to CrewMember type
+    const crewMemberData: CrewMember = {
+      id: crewMember.id,
+      name: {
+        es: crewMember.name,
+        en: crewMember.name,
+        pt: crewMember.name,
+      },
+      role: {
+        es: crewMember.role || '',
+        en: crewMember.role || '',
+        pt: crewMember.role || '',
+      },
+      portrait: crewMember.portrait,
+      bio: {
+        es: crewMember.bio || '',
+        en: crewMember.bio || '',
+        pt: crewMember.bio || '',
+      },
+      socialLinks: crewMember.socialLinks || {},
+      skills: crewMember.skills || [],
+      order: crewMember.order || 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
     // Generate structured data for the crew member
     const personSchema = {
       '@context': 'https://schema.org' as const,
       '@type': 'Person' as const,
-      name: crewMember.name.es || '',
-      jobTitle: crewMember.role.es || '',
-      description: crewMember.bio.es || '',
-      image: crewMember.portrait || '',
+      name: crewMemberData.name.es || '',
+      jobTitle: crewMemberData.role.es || '',
+      description: crewMemberData.bio.es || '',
+      image: crewMemberData.portrait || '',
       url: `https://veloz.com.uy/crew/${nameSlug}`,
       worksFor: {
         '@type': 'Organization' as const,
         name: 'Veloz Fotografía y Videografía',
         url: 'https://veloz.com.uy',
       },
-      knowsAbout: crewMember.skills || [],
+      knowsAbout: crewMemberData.skills || [],
       sameAs: [
-        ...(crewMember.socialLinks?.instagram ? [`https://instagram.com/${crewMember.socialLinks.instagram}`] : []),
-        ...(crewMember.socialLinks?.website ? [crewMember.socialLinks.website] : []),
+        ...(crewMemberData.socialLinks?.instagram
+          ? [`https://instagram.com/${crewMemberData.socialLinks.instagram}`]
+          : []),
+        ...(crewMemberData.socialLinks?.website
+          ? [crewMemberData.socialLinks.website]
+          : []),
       ].filter(Boolean),
       address: {
         '@type': 'PostalAddress' as const,
@@ -203,7 +225,7 @@ export default async function CrewProfilePage({
         {
           '@type': 'ListItem' as const,
           position: 3,
-          name: crewMember.name.es || 'Crew Member',
+          name: crewMemberData.name.es || 'Crew Member',
           item: `https://veloz.com.uy/crew/${nameSlug}`,
         },
       ],
@@ -213,7 +235,7 @@ export default async function CrewProfilePage({
       <>
         <StructuredData type="breadcrumb" data={breadcrumbSchema} />
         <StructuredData type="person" data={personSchema} />
-        <CrewProfile crewMember={crewMember} />
+        <CrewProfile crewMember={crewMemberData} />
       </>
     );
   } catch (error) {

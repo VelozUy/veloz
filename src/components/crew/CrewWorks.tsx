@@ -6,7 +6,15 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, MapPin, Users, Star, Loader2, Camera } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Star,
+  Loader2,
+  Camera,
+  ExternalLink,
+} from 'lucide-react';
 import Link from 'next/link';
 import type { CrewMember } from '@/types';
 import { crewPortfolioService, type CrewWork } from '@/services/crew-portfolio';
@@ -15,16 +23,21 @@ interface CrewWorksProps {
   crewMember: CrewMember;
 }
 
-// Mock data for recent works - this would come from the database
-const mockRecentWorks = [
+// Enhanced mock data for recent works - this would come from the database
+const mockRecentWorks: CrewWork[] = [
   {
     id: '1',
+    projectId: 'project-1',
     title: 'Boda María y Juan',
-    client: 'María González',
     category: 'casamiento',
-    location: 'Viña del Mar, Chile',
+    type: 'image' as const,
+    url: '/veloz-logo-blue.png',
+    thumbnailUrl: '/veloz-logo-blue.png',
+    description: 'Fotografía de boda en la costa de Chile',
     date: '2024-12-15',
-    status: 'completed',
+    client: 'María González',
+    location: 'Viña del Mar, Chile',
+    status: 'delivered',
     rating: 5,
     review: 'Excelente trabajo, muy profesional y creativo',
     images: [
@@ -36,42 +49,105 @@ const mockRecentWorks = [
   },
   {
     id: '2',
+    projectId: 'project-2',
     title: 'Evento Corporativo TechCorp',
-    client: 'TechCorp Chile',
     category: 'corporativos',
-    location: 'Santiago, Chile',
+    type: 'video' as const,
+    url: '/veloz-logo-blue.png',
+    thumbnailUrl: '/veloz-logo-blue.png',
+    description: 'Video promocional para empresa tecnológica',
     date: '2024-11-20',
-    status: 'in_progress',
-    progress: 75,
+    client: 'TechCorp Chile',
+    location: 'Santiago, Chile',
+    status: 'in_editing',
     crewRole: 'Videógrafo',
   },
   {
     id: '3',
+    projectId: 'project-3',
     title: 'Sesión de Moda Revista Vogue',
-    client: 'Revista Vogue Chile',
     category: 'moda',
-    location: 'Santiago, Chile',
+    type: 'image' as const,
+    url: '/veloz-logo-blue.png',
+    thumbnailUrl: '/veloz-logo-blue.png',
+    description: 'Fotografía de moda para revista local',
     date: '2024-10-10',
-    status: 'completed',
+    client: 'Revista Vogue Chile',
+    location: 'Santiago, Chile',
+    status: 'delivered',
     rating: 5,
     review: 'Resultados espectaculares, muy satisfechos',
     images: ['/veloz-logo-blue.png', '/veloz-logo-blue.png'],
     crewRole: 'Fotógrafo',
   },
+  {
+    id: '4',
+    projectId: 'project-4',
+    title: 'Evento Cultural Centro Cultural',
+    category: 'culturales',
+    type: 'image' as const,
+    url: '/veloz-logo-blue.png',
+    thumbnailUrl: '/veloz-logo-blue.png',
+    description: 'Documentación de evento cultural',
+    date: '2024-09-15',
+    client: 'Centro Cultural Montevideo',
+    location: 'Montevideo, Uruguay',
+    status: 'delivered',
+    rating: 4,
+    review: 'Muy buen trabajo documentando el evento',
+    images: ['/veloz-logo-blue.png'],
+    crewRole: 'Fotógrafo',
+  },
+  {
+    id: '5',
+    projectId: 'project-5',
+    title: 'Producto Comercial Empresa',
+    category: 'producto',
+    type: 'image' as const,
+    url: '/veloz-logo-blue.png',
+    thumbnailUrl: '/veloz-logo-blue.png',
+    description: 'Fotografía de producto para catálogo',
+    date: '2024-08-20',
+    client: 'Empresa Comercial',
+    location: 'Montevideo, Uruguay',
+    status: 'shooting_scheduled',
+    crewRole: 'Fotógrafo',
+  },
 ];
 
 const statusConfig = {
-  delivered: { label: 'Completado', color: 'bg-primary' },
-  in_editing: { label: 'En Progreso', color: 'bg-primary' },
-  shooting_scheduled: { label: 'Programado', color: 'bg-primary' },
-  draft: { label: 'Borrador', color: 'bg-muted' },
-  archived: { label: 'Archivado', color: 'bg-muted' },
+  delivered: {
+    label: 'Completado',
+    color: 'bg-primary',
+    textColor: 'text-primary',
+  },
+  in_editing: {
+    label: 'En Progreso',
+    color: 'bg-muted',
+    textColor: 'text-muted-foreground',
+  },
+  shooting_scheduled: {
+    label: 'Programado',
+    color: 'bg-muted',
+    textColor: 'text-muted-foreground',
+  },
+  draft: {
+    label: 'Borrador',
+    color: 'bg-muted',
+    textColor: 'text-muted-foreground',
+  },
+  archived: {
+    label: 'Archivado',
+    color: 'bg-muted',
+    textColor: 'text-muted-foreground',
+  },
 };
 
 export default function CrewWorks({ crewMember }: CrewWorksProps) {
   const [recentWorks, setRecentWorks] = useState<CrewWork[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [useMockData, setUseMockData] = useState(false);
 
   const loadCrewWorks = useCallback(async () => {
     try {
@@ -83,12 +159,19 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
       );
       if (response.success && response.data) {
         setRecentWorks(response.data);
+        setUseMockData(false);
       } else {
-        setError(response.error || 'Error al cargar los trabajos');
+        // Fallback to mock data if service fails
+        console.warn('Crew works service failed, using mock data');
+        setRecentWorks(mockRecentWorks);
+        setUseMockData(true);
       }
     } catch (error) {
       console.error('Error loading crew works:', error);
-      setError('Error al cargar los trabajos');
+      // Fallback to mock data
+      setRecentWorks(mockRecentWorks);
+      setUseMockData(true);
+      setError('Error al cargar los trabajos - mostrando datos de ejemplo');
     } finally {
       setLoading(false);
     }
@@ -104,6 +187,20 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
     );
   };
 
+  const getCategoryLabel = (category: string) => {
+    const categoryLabels: Record<string, string> = {
+      casamiento: 'Casamientos',
+      corporativos: 'Corporativos',
+      moda: 'Moda',
+      producto: 'Producto',
+      culturales: 'Culturales',
+      photoshoot: 'Photoshoot',
+      prensa: 'Prensa',
+      otros: 'Otros',
+    };
+    return categoryLabels[category] || category;
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -114,6 +211,11 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
         <p className="text-muted-foreground">
           Proyectos recientes donde {crewMember.name.es} ha participado
         </p>
+        {useMockData && (
+          <p className="text-sm text-primary mt-1">
+            Mostrando datos de ejemplo - sistema en desarrollo
+          </p>
+        )}
       </div>
 
       {/* Stats */}
@@ -241,10 +343,7 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
                         <h3 className="text-lg font-semibold">{work.title}</h3>
                         <Badge
                           variant="secondary"
-                          className={
-                            getStatusConfig(work.status).color +
-                            ' text-foreground'
-                          }
+                          className={`${getStatusConfig(work.status).color} ${getStatusConfig(work.status).textColor}`}
                         >
                           {getStatusConfig(work.status).label}
                         </Badge>
@@ -267,13 +366,26 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
 
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="outline" className="text-xs">
-                          {work.category}
+                          {getCategoryLabel(work.category)}
                         </Badge>
                         <Badge variant="outline" className="text-xs">
                           {work.crewRole}
                         </Badge>
                       </div>
                     </div>
+
+                    {/* Progress for in-progress projects */}
+                    {(work.status === 'in_editing' ||
+                      work.status === 'shooting_scheduled') && (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progreso</span>
+                          <span>0%</span> {/* Placeholder for progress */}
+                        </div>
+                        <Progress value={0} className="h-2" />{' '}
+                        {/* Placeholder for progress */}
+                      </div>
+                    )}
 
                     {/* Rating for completed projects */}
                     {work.status === 'delivered' && work.rating && (
@@ -304,8 +416,11 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
                       <Button size="sm" variant="outline">
                         Ver Detalles
                       </Button>
-                      <Button size="sm" variant="outline">
-                        Contactar Cliente
+                      <Button size="sm" variant="outline" asChild>
+                        <Link href={`/our-work/${work.category}`}>
+                          <ExternalLink className="w-3 h-3 mr-1" />
+                          Ver Categoría
+                        </Link>
                       </Button>
                     </div>
                   </div>

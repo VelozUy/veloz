@@ -25,6 +25,7 @@ import Link from 'next/link';
 import type { CrewMember } from '@/types';
 import CrewPortfolio from './CrewPortfolio';
 import CrewWorks from './CrewWorks';
+import CrewAnalytics from './CrewAnalytics';
 
 interface CrewProfileProps {
   crewMember: CrewMember;
@@ -221,10 +222,11 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="about">Sobre Mí</TabsTrigger>
             <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="works">Trabajos Recientes</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="about" className="space-y-6">
@@ -248,12 +250,65 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                   <h2 className="text-2xl font-semibold">Especialidades</h2>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {crewMember.skills.map((skill, index) => (
-                      <Badge key={index} variant="outline" className="text-sm">
-                        {skill}
-                      </Badge>
-                    ))}
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                      {crewMember.skills.map((skill, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-sm"
+                        >
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {/* Specialties Breakdown */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-foreground">
+                          Categorías Principales
+                        </h4>
+                        <div className="space-y-2">
+                          {crewMember.skills.slice(0, 3).map((skill, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between"
+                            >
+                              <span className="text-sm">{skill}</span>
+                              <div className="w-20 bg-muted rounded-full h-2">
+                                <div
+                                  className="bg-primary h-2 rounded-full"
+                                  style={{
+                                    width: `${100 - index * 20}%`,
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-foreground">
+                          Experiencia
+                        </h4>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span>Proyectos Completados</span>
+                            <Badge variant="secondary">23</Badge>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span>Años de Experiencia</span>
+                            <Badge variant="secondary">5+</Badge>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span>Rating Promedio</span>
+                            <Badge variant="secondary">4.8/5</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -327,6 +382,28 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
                       </div>
                     </div>
                   )}
+
+                  {/* Quick Contact Form */}
+                  <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+                    <h4 className="font-medium text-foreground mb-3">
+                      Contactar Directamente
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Button size="sm" className="flex-1">
+                          <Mail className="w-4 h-4 mr-2" />
+                          Enviar Email
+                        </Button>
+                        <Button size="sm" variant="outline" className="flex-1">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Ver Portfolio
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Responde en 24 horas • Consulta gratuita
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -338,6 +415,10 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
 
           <TabsContent value="works">
             <CrewWorks crewMember={crewMember} />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <CrewAnalytics crewMember={crewMember} />
           </TabsContent>
         </Tabs>
       </div>
