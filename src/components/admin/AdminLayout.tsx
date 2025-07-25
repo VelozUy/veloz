@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -17,9 +17,9 @@ import {
   FileText,
   Users,
 } from 'lucide-react';
-import { useState } from 'react';
 import BuildTrigger from './BuildTrigger';
 import { useAdminBackground } from '@/hooks/useBackground';
+import { checkAdminStatus } from '@/lib/admin-auth';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -30,6 +30,7 @@ const navigation = [
   { name: 'Panel Principal', href: '/admin', icon: LayoutDashboard },
   { name: 'Usuarios', href: '/admin/users', icon: User },
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
+  { name: 'Plantillas de Tareas', href: '/admin/templates', icon: FileText },
   { name: 'Gestión de Equipo', href: '/admin/crew', icon: Users },
   { name: 'Gestión Avanzada de Equipo', href: '/admin/team', icon: Users },
   { name: 'Comunicaciones', href: '/admin/communications', icon: Mail },
@@ -44,6 +45,8 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   const { user, signOut, loading } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [adminLoading, setAdminLoading] = useState(true);
 
   // Use the new background system for admin sections
   const { classes: adminClasses } = useAdminBackground();
@@ -57,20 +60,46 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     }
   };
 
-  // Redirect to login if not authenticated
+  // Check admin status when user is authenticated
   useEffect(() => {
-    console.log('🔍 AdminLayout Auth State:', {
-      user: !!user,
-      loading,
-      userEmail: user?.email,
-    });
-    if (!user && !loading) {
-      console.log('🔄 Redirecting to login - no user and not loading');
-      router.push('/admin/login');
+    const checkAdmin = async () => {
+      if (!user?.email) {
+        setIsAdmin(false);
+        setAdminLoading(false);
+        return;
+      }
+
+      try {
+        setAdminLoading(true);
+        const adminStatus = await checkAdminStatus(user.email);
+        setIsAdmin(adminStatus);
+        
+        console.log('🔍 AdminLayout Auth State:', {
+          user: !!user,
+          loading,
+          userEmail: user?.email,
+          isAdmin: adminStatus,
+        });
+
+        if (!adminStatus) {
+          console.log('🔄 Redirecting to login - user is not an admin');
+          router.push('/admin/login');
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+        router.push('/admin/login');
+      } finally {
+        setAdminLoading(false);
+      }
+    };
+
+    if (!loading) {
+      checkAdmin();
     }
   }, [user, loading, router]);
 
-  if (loading) {
+  if (loading || adminLoading) {
     return (
       <div
         className={`min-h-screen flex items-center justify-center ${adminClasses.background} ${adminClasses.text}`}
@@ -83,7 +112,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     );
   }
 
-  if (!user) {
+  if (!user || !isAdmin) {
     return null; // Will redirect to login
   }
 

@@ -14,6 +14,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
 import { withRetry } from '@/lib/firebase-error-handler';
 import { generateUniqueSlug } from '@/lib/utils';
+import { addDays } from 'date-fns';
 
 interface EnhancedProjectData {
   title: {
@@ -64,6 +65,7 @@ interface EnhancedProjectData {
   tags: string[];
   notes?: string;
   coverImage?: string;
+  selectedTemplate?: any; // TaskTemplate from the form
 }
 
 export default function NewProjectPage() {
@@ -149,7 +151,52 @@ export default function NewProjectPage() {
         )
       );
 
-      setSuccess('Proyecto creado exitosamente!');
+      // If a template was selected, create tasks from the template
+      if (data.selectedTemplate) {
+        try {
+          const projectStartDate = data.timeline.startDate ? new Date(data.timeline.startDate) : null;
+          let tasksWithoutDates = 0;
+          
+          // Create tasks from the selected template
+          for (const templateTask of data.selectedTemplate.tasks) {
+            let dueDate = null;
+            if (projectStartDate) {
+              dueDate = addDays(projectStartDate, templateTask.defaultDueDays);
+            } else if (templateTask.defaultDueDays === 0) {
+              // For tasks with defaultDueDays = 0, we can still create them without a date
+              dueDate = null;
+            } else {
+              // For tasks that need relative dates but no project start date, set to null
+              dueDate = null;
+              tasksWithoutDates++;
+            }
+            
+            await addDoc(collection(db!, 'projectTasks'), {
+              projectId: docRef.id,
+              title: templateTask.title,
+              dueDate,
+              priority: templateTask.priority,
+              assignee: templateTask.assignee,
+              notes: templateTask.notes,
+              completed: false,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+            });
+          }
+          
+          let successMessage = `Proyecto creado exitosamente con ${data.selectedTemplate.tasks.length} tareas de la plantilla "${data.selectedTemplate.name}"!`;
+          if (tasksWithoutDates > 0) {
+            successMessage += `\n\n${tasksWithoutDates} tareas se crearon sin fecha de vencimiento porque no hay fecha de inicio del proyecto. Puedes actualizar las fechas manualmente cuando se confirme la fecha del proyecto.`;
+          }
+          
+          setSuccess(successMessage);
+        } catch (error) {
+          console.error('Error creating template tasks:', error);
+          setSuccess('Proyecto creado exitosamente! (Error al crear tareas de plantilla)');
+        }
+      } else {
+        setSuccess('Proyecto creado exitosamente!');
+      }
       
       // Redirect to the project edit page after a short delay
       setTimeout(() => {

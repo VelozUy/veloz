@@ -182,6 +182,11 @@ service cloud.firestore {
       allow list: if isActiveAdmin(); // Only admins can list all status changes
     }
     
+    // Task Templates Collection - Admin only access
+    match /taskTemplates/{templateId} {
+      allow read, write, delete, create, list: if isActiveAdmin(); // Only active admins can access templates
+    }
+    
     // Legacy Contact Form Submissions (Optional) - Allow writes for contact forms
     match /contacts/{document} {
       allow create: if true; // Allow anyone to submit contact forms

@@ -36,6 +36,7 @@ export interface Task {
   priority: 'low' | 'medium' | 'high';
   assignee?: string;
   notes?: string;
+  manualOrder?: number;
   createdAt: Date;
   updatedAt: Date;
 }

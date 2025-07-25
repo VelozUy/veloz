@@ -53,6 +53,7 @@ import {
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import TaskTemplateManager, { TaskTemplate } from '@/components/admin/TaskTemplateManager';
 
 // Enhanced project schema with client information and milestones
 const enhancedProjectSchema = z.object({
@@ -232,8 +233,10 @@ export default function ProjectForms({
       uploadedAt: Date;
     }>
   >(initialData?.projectMaterials || []);
+  const [selectedTemplate, setSelectedTemplate] = useState<TaskTemplate | null>(null);
+  const [showTemplateDialog, setShowTemplateDialog] = useState(false);
 
-  const totalSteps = 6; // Added file upload step
+  const totalSteps = 7; // Added template selection step
 
   const form = useForm<EnhancedProjectFormData>({
     resolver: zodResolver(enhancedProjectSchema),
@@ -346,7 +349,7 @@ export default function ProjectForms({
 
   const handleFormSubmit = async (data: EnhancedProjectFormData) => {
     try {
-      // Include milestones and uploaded files in the data
+      // Include milestones, uploaded files, and selected template in the data
       const formDataWithMilestones = {
         ...data,
         timeline: {
@@ -354,6 +357,7 @@ export default function ProjectForms({
           milestones: watchedValues.timeline?.milestones || [],
         },
         projectMaterials: uploadedFiles,
+        selectedTemplate, // Include the selected template
       };
 
       await onSubmit(formDataWithMilestones);
@@ -1065,6 +1069,133 @@ export default function ProjectForms({
             </CardContent>
           </Card>
         )}
+
+        {/* Step 7: Template Selection */}
+        {currentStep === 7 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Plantilla de Tareas (Opcional)
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Selecciona una plantilla de tareas para agregar automáticamente tareas predefinidas al proyecto.
+                Esto te ayudará a organizar mejor el flujo de trabajo.
+              </p>
+              {!watchedValues.timeline?.startDate && (
+                <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center gap-2 text-yellow-800">
+                    <AlertCircle className="h-4 w-4" />
+                    <span className="text-sm font-medium">Sin fecha de inicio</span>
+                  </div>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    No hay fecha de inicio del proyecto. Las tareas se crearán sin fechas de vencimiento y podrás actualizarlas manualmente cuando se confirme la fecha del proyecto.
+                  </p>
+                </div>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-semibold mb-2">Plantilla Seleccionada</h4>
+                  {selectedTemplate ? (
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                      <div className="w-8 h-8 bg-primary/10 rounded flex items-center justify-center">
+                        <FileText className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="font-medium">{selectedTemplate.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {selectedTemplate.tasks.length} tareas • {selectedTemplate.eventType || 'Sin tipo'}
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedTemplate(null)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      No se ha seleccionado ninguna plantilla
+                    </p>
+                  )}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowTemplateDialog(true)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Seleccionar Plantilla
+                </Button>
+              </div>
+
+              {selectedTemplate && (
+                <div className="space-y-3">
+                  <h4 className="font-semibold">Tareas de la Plantilla</h4>
+                  <div className="space-y-2">
+                    {selectedTemplate.tasks.map((task, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <CheckCircle className="h-4 w-4 text-success" />
+                          <div>
+                            <div className="font-medium text-sm">{task.title}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {task.defaultDueDays > 0
+                                ? `+${task.defaultDueDays} días`
+                                : task.defaultDueDays < 0
+                                  ? `${task.defaultDueDays} días`
+                                  : 'Día 0'}
+                            </div>
+                          </div>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={`text-xs ${
+                            task.priority === 'high'
+                              ? 'text-destructive'
+                              : task.priority === 'medium'
+                                ? 'text-warning'
+                                : 'text-success'
+                          }`}
+                        >
+                          {task.priority === 'high' ? 'Alta' : task.priority === 'medium' ? 'Media' : 'Baja'}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Template Selection Dialog */}
+        <Dialog open={showTemplateDialog} onOpenChange={setShowTemplateDialog}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Seleccionar Plantilla de Tareas</DialogTitle>
+              <DialogDescription>
+                Elige una plantilla para agregar tareas predefinidas al proyecto.
+                Las tareas se crearán automáticamente cuando se cree el proyecto.
+              </DialogDescription>
+            </DialogHeader>
+            <TaskTemplateManager
+              mode="select"
+              onTemplateSelect={(template) => {
+                setSelectedTemplate(template);
+                setShowTemplateDialog(false);
+              }}
+            />
+          </DialogContent>
+        </Dialog>
 
         {/* Navigation Buttons */}
         <div className="flex items-center justify-between">

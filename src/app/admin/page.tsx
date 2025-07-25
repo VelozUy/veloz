@@ -95,6 +95,25 @@ export default function AdminDashboardPage() {
             </Card>
           </Link>
 
+          <Link href="/admin/templates">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-2">
+                  <FileText className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-body-lg">Plantillas</CardTitle>
+                </div>
+                <CardDescription>
+                  Gestiona plantillas de tareas
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-body-sm text-muted-foreground">
+                  Crea y gestiona plantillas para diferentes tipos de eventos
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
           <Link href="/admin/crew">
             <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader className="pb-3">

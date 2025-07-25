@@ -39,6 +39,7 @@ This file contains unprioritized ideas and future features that have been identi
 
 ### **🛠️ Admin & Management Epics**
 
+- [Template Management System Enhancement](#-epic-template-management-system-enhancement--critical-priority) 🔴 **CRITICAL PRIORITY**
 - [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
 - [Crew Media Assignment System](#-epic-crew-media-assignment-system--high-priority) ⭐ **HIGH PRIORITY**
 - [Default Project Tasks System](#-epic-default-project-tasks-system--high-priority) ⭐ **HIGH PRIORITY**
@@ -73,14 +74,15 @@ This file contains unprioritized ideas and future features that have been identi
 
 ## 📊 **Epic Status Summary**
 
-| Priority               | Count | Status                                                                                                 |
-| ---------------------- | ----- | ------------------------------------------------------------------------------------------------------ |
-| ⭐ **HIGH PRIORITY**   | 14    | Ready to start or in progress                                                                          |
-| 🟧 **MEDIUM PRIORITY** | 7     | Future development                                                                                     |
-| 🟩 **LOW PRIORITY**    | 2     | Backlog items                                                                                          |
-| ✅ **COMPLETED**       | 7     | Category system, banner nav, navigation fix, client tracking, client portal, gallery loading completed |
+| Priority                 | Count | Status                                                                                                 |
+| ------------------------ | ----- | ------------------------------------------------------------------------------------------------------ |
+| 🔴 **CRITICAL PRIORITY** | 1     | Template management functionality needs immediate implementation                                       |
+| ⭐ **HIGH PRIORITY**     | 14    | Ready to start or in progress                                                                          |
+| 🟧 **MEDIUM PRIORITY**   | 7     | Future development                                                                                     |
+| 🟩 **LOW PRIORITY**      | 2     | Backlog items                                                                                          |
+| ✅ **COMPLETED**         | 7     | Category system, banner nav, navigation fix, client tracking, client portal, gallery loading completed |
 
-**Total Active Epics**: 25
+**Total Active Epics**: 26
 
 ---
 
@@ -3525,6 +3527,199 @@ This file contains unprioritized ideas and future features that have been identi
 - Test thoroughly with various message scenarios
 - Create comprehensive user training materials
 - Plan for message data backup and recovery
+
+---
+
+## 🔴 **EPIC: Template Management System Enhancement** ⭐ **CRITICAL PRIORITY**
+
+### 🎯 Objective: Complete the template management functionality with working CRUD operations
+
+**Status**: 🔴 **CRITICAL PRIORITY** - UI completed, functionality needs implementation
+**Business Impact**: **HIGH** - Essential for project workflow efficiency
+**User Value**: **HIGH** - Streamlines project task management
+
+### 📋 Current State
+
+**✅ Completed**:
+
+- ✅ Template management UI with table view
+- ✅ Nested admin layout structure
+- ✅ Categories, create, and settings pages
+- ✅ Template data visualization and statistics
+- ✅ Clean, focused interface design
+
+**❌ Missing Functionality**:
+
+- ❌ Template action handlers (edit, preview, duplicate, delete)
+- ❌ Template creation workflow
+- ❌ Template preview modal
+- ❌ Template edit form
+- ❌ Template duplication logic
+- ❌ Settings functionality
+
+### 🎯 Epic Tasks
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Template Action Handlers** - Implement working edit, preview, duplicate, and delete actions
+  - **User Intent**: Enable full CRUD operations on templates from the table interface
+  - **Acceptance Criteria**:
+    - Preview button opens detailed template preview modal
+    - Edit button navigates to template edit form
+    - Duplicate button creates copy with "Copy of" prefix
+    - Delete button removes template with confirmation
+    - All actions update UI immediately
+    - Error handling for failed operations
+  - **Files**: `src/app/admin/templates/page.tsx`, `src/components/admin/TaskTemplateManager.tsx`
+  - **Reference**: @NEW_DESIGN_PLAN.md - Template management should have full CRUD operations
+  - **Estimated Time**: 2 days
+  - **Status**: Ready to start immediately
+
+- [ ] **Template Creation Workflow** - Connect create page to actual template creation
+  - **User Intent**: Allow admins to create new templates through the create page interface
+  - **Acceptance Criteria**:
+    - Create form saves templates to Firestore
+    - Template validation and error handling
+    - Success feedback and navigation to template list
+    - Support for all template fields (name, description, tasks, priorities)
+    - Integration with existing template system
+  - **Files**: `src/app/admin/templates/create/page.tsx`
+  - **Reference**: @NEW_DESIGN_PLAN.md - Template creation should save to database
+  - **Estimated Time**: 1.5 days
+  - **Status**: Ready to start after action handlers
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Template Preview Modal** - Create detailed preview component for templates
+  - **User Intent**: Allow admins to preview template details before applying or editing
+  - **Acceptance Criteria**:
+    - Modal shows template name, description, and event type
+    - Displays all template tasks with priorities and due dates
+    - Shows timeline visualization
+    - "Use This Template" and "Edit Template" buttons
+    - Mobile-responsive design
+  - **Files**: New modal component for template preview
+  - **Reference**: @NEW_DESIGN_PLAN.md - Users should be able to preview templates before applying
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after action handlers completion
+
+- [ ] **Template Edit Form** - Create comprehensive template editing interface
+  - **User Intent**: Allow admins to modify existing templates completely
+  - **Acceptance Criteria**:
+    - Edit template name, description, and event type
+    - Add, remove, and reorder tasks
+    - Modify task priorities and due dates
+    - Save changes to Firestore
+    - Validation and error handling
+    - Cancel and save options
+  - **Files**: New edit form component or page
+  - **Reference**: @NEW_DESIGN_PLAN.md - Template editing should be intuitive and comprehensive
+  - **Estimated Time**: 2 days
+  - **Status**: Ready after preview modal completion
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Template Duplication Logic** - Implement template cloning with customization
+  - **User Intent**: Speed up template creation by copying existing templates
+  - **Acceptance Criteria**:
+    - Create exact copy of template with "Copy of" prefix
+    - Allow immediate editing of duplicated template
+    - Preserve all task details and structure
+    - Generate new unique template ID
+    - Update template list immediately
+  - **Files**: `src/components/admin/TaskTemplateManager.tsx`
+  - **Reference**: @NEW_DESIGN_PLAN.md - Template duplication should speed up creation process
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after edit form completion
+
+- [ ] **Template Categories Integration** - Connect categories page to actual filtering
+  - **User Intent**: Organize templates by event type for easier management
+  - **Acceptance Criteria**:
+    - Categories page shows real template data
+    - Filter templates by event type
+    - Category statistics reflect actual data
+    - Smooth filtering transitions
+    - Mobile-responsive category interface
+  - **Files**: `src/app/admin/templates/categories/page.tsx`
+  - **Reference**: @NEW_DESIGN_PLAN.md - Category filtering should work with live data
+  - **Estimated Time**: 1 day
+  - **Status**: Ready after duplication logic completion
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Template Settings Functionality** - Connect settings page to actual configuration
+  - **User Intent**: Configure global template behavior and defaults
+  - **Acceptance Criteria**:
+    - Settings persist to Firestore
+    - Auto-assignment configuration works
+    - Default template selection affects project creation
+    - Priority thresholds influence template behavior
+    - Category enable/disable affects available templates
+  - **Files**: `src/app/admin/templates/settings/page.tsx`
+  - **Reference**: @NEW_DESIGN_PLAN.md - Settings should control template behavior globally
+  - **Estimated Time**: 1.5 days
+  - **Status**: Ready after categories integration completion
+
+#### 🧠 Discovered During Epic
+
+- [ ] **Template Validation System** - Ensure template data integrity
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Template Import/Export** - Allow template backup and sharing
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+- [ ] **Template Usage Analytics** - Track which templates are used most
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+### 📊 Epic Metrics & Success Criteria
+
+**Primary Success Metrics**:
+
+- **Template Creation**: Admins can create new templates successfully
+- **Template Usage**: Templates are applied to projects effectively
+- **Workflow Efficiency**: Reduced time to set up project tasks
+- **User Satisfaction**: Positive feedback from admin users
+
+**Technical Success Criteria**:
+
+- All CRUD operations work reliably
+- UI responds immediately to user actions
+- Data persists correctly to Firestore
+- Error handling prevents data loss
+- Mobile interface is fully functional
+
+### 🔧 Technical Dependencies
+
+**Required Components**:
+
+- Existing Firestore template collection
+- TaskTemplateManager component
+- Admin layout system
+- UI components (modals, forms, buttons)
+
+**Integration Points**:
+
+- Project task creation system
+- Admin navigation
+- Firestore database
+- Authentication system
+
+### 💼 Business Dependencies
+
+**Stakeholder Approval**:
+
+- Template structure validation
+- Workflow approval from project managers
+- UI/UX review and approval
+
+**User Training**:
+
+- Admin training on new template system
+- Documentation for template management
+- Best practices guide for template creation
 
 ---
 

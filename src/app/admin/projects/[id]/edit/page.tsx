@@ -1212,27 +1212,16 @@ export default function UnifiedProjectEditPage({
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">
-                        Gestión de Tareas del Proyecto
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Gestiona las tareas y actividades relacionadas con este
-                        proyecto.
-                      </p>
-                    </div>
-
-                    <ProjectTaskList
-                      projectId={projectId || ''}
-                      projectStartDate={
-                        draftProject.eventDate
-                          ? new Date(draftProject.eventDate)
-                          : undefined
-                      }
-                      crewMembers={[]} // TODO: Load crew members for assignment
-                    />
-                  </div>
+                  <ProjectTaskList
+                    projectId={projectId || ''}
+                    projectStartDate={
+                      draftProject.eventDate
+                        ? new Date(draftProject.eventDate)
+                        : undefined
+                    }
+                    crewMembers={[]} // TODO: Load crew members for assignment
+                    eventType={draftProject.eventType}
+                  />
                 )}
               </TabsContent>
 
