@@ -3,6 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@/lib/test-utils';
 import { userInteraction } from '@/lib/test-utils';
 import ContactForm from '../ContactForm';
 import { emailService } from '@/services/email';
+import { trackCustomEvent } from '@/services/analytics';
 
 // Mock the email service
 jest.mock('@/services/email', () => ({
@@ -29,6 +30,105 @@ jest.mock('lucide-react', () => ({
   Heart: () => <div data-testid="heart-icon" />,
   AlertCircle: () => <div data-testid="alert-circle-icon" />,
 }));
+
+// Mock the analytics service
+jest.mock('@/services/analytics', () => ({
+  trackCustomEvent: jest.fn(),
+}));
+
+// Mock Next.js navigation
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+}));
+
+// Mock the background hook
+jest.mock('@/hooks/useBackground', () => ({
+  useFormBackground: () => ({
+    classes: 'bg-muted',
+  }),
+}));
+
+const mockTranslations = {
+  contact: {
+    title: 'Contacto',
+    subtitle: 'Contáctanos',
+    form: {
+      name: {
+        label: 'Nombre',
+        placeholder: 'Tu nombre',
+      },
+      email: {
+        label: 'Email',
+        placeholder: 'tu@email.com',
+      },
+      phone: {
+        label: 'Teléfono',
+        placeholder: 'Tu teléfono',
+        optional: '(opcional)',
+      },
+      communicationPreference: {
+        label: 'Preferencia de comunicación',
+        call: 'Llamada',
+        whatsapp: 'WhatsApp',
+        email: 'Email',
+        zoom: 'Zoom',
+      },
+      eventType: {
+        label: 'Tipo de evento',
+        placeholder: 'Selecciona un tipo',
+        options: {
+          wedding: 'Boda',
+          quinceanera: 'Quinceañera',
+          birthday: 'Cumpleaños',
+          corporate: 'Empresarial',
+          other: 'Otro',
+        },
+      },
+      eventDate: {
+        label: 'Fecha del evento',
+        optional: '(opcional)',
+        help: 'Si no tienes fecha definida, no te preocupes',
+      },
+      message: {
+        label: 'Mensaje',
+        optional: '(opcional)',
+        placeholder: 'Cuéntanos más sobre tu evento...',
+      },
+      attachments: {
+        label: 'Archivos adjuntos',
+        optional: '(opcional)',
+        description: 'Puedes adjuntar fotos o documentos',
+      },
+      submit: {
+        button: 'Enviar mensaje',
+        loading: 'Enviando...',
+      },
+      privacy: {
+        line1: 'Al enviar este formulario, aceptas nuestra',
+        line2: 'política de privacidad',
+      },
+    },
+    success: {
+      title: '¡Mensaje enviado!',
+      message: 'Gracias por contactarnos',
+      action: 'Enviar otro mensaje',
+    },
+    trust: {
+      response: {
+        title: 'Respuesta rápida',
+        description: 'Te respondemos en menos de 24 horas',
+      },
+      commitment: {
+        title: 'Compromiso de calidad',
+        description: 'Garantizamos la mejor experiencia',
+      },
+      privacy: {
+        title: 'Privacidad garantizada',
+        description: 'Tus datos están seguros con nosotros',
+      },
+    },
+  },
+};
 
 describe('ContactForm Component', () => {
   const mockTranslations = {
@@ -641,6 +741,125 @@ describe('ContactForm Component', () => {
         const label =
           input.getAttribute('aria-label') || input.getAttribute('id');
         expect(label).toBeTruthy();
+      });
+    });
+  });
+});
+
+describe('ContactForm Analytics', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('tracks form view on mount', async () => {
+    render(<ContactForm translations={mockTranslations} />);
+
+    await waitFor(() => {
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_viewed');
+    });
+  });
+
+  it('tracks successful form submission', async () => {
+    const { emailService } = require('@/services/email');
+    emailService.sendContactForm.mockResolvedValue(undefined);
+
+    render(<ContactForm translations={mockTranslations} />);
+
+    // Fill required fields
+    const nameInput = screen.getByLabelText('Nombre');
+    const emailInput = screen.getByLabelText('Email');
+    const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+    fireEvent.click(eventTypeSelect);
+
+    const weddingOption = screen.getByText('Boda');
+    fireEvent.click(weddingOption);
+
+    // Submit form
+    const submitButton = screen.getByText('Enviar mensaje');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
+        result: 'success',
+        eventType: 'wedding',
+        communicationPreference: 'whatsapp',
+        hasAttachments: false,
+        attachmentCount: 0,
+      });
+    });
+  });
+
+  it('tracks form submission error', async () => {
+    const { emailService } = require('@/services/email');
+    emailService.sendContactForm.mockRejectedValue(new Error('Network error'));
+
+    render(<ContactForm translations={mockTranslations} />);
+
+    // Fill required fields
+    const nameInput = screen.getByLabelText('Nombre');
+    const emailInput = screen.getByLabelText('Email');
+    const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+    fireEvent.click(eventTypeSelect);
+
+    const weddingOption = screen.getByText('Boda');
+    fireEvent.click(weddingOption);
+
+    // Submit form
+    const submitButton = screen.getByText('Enviar mensaje');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
+        result: 'error',
+        error: 'Network error',
+        eventType: 'wedding',
+        communicationPreference: 'whatsapp',
+      });
+    });
+  });
+
+  it('tracks validation errors', async () => {
+    render(<ContactForm translations={mockTranslations} />);
+
+    // Submit form without filling required fields
+    const submitButton = screen.getByText('Enviar mensaje');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(trackCustomEvent).toHaveBeenCalledWith(
+        'contact_form_validation_error',
+        {
+          errorFields: ['name', 'email', 'eventType'],
+          errorCount: 3,
+        }
+      );
+    });
+  });
+
+  it('tracks form pre-filling from widget', async () => {
+    // Mock URL parameters
+    const mockSearchParams = new URLSearchParams(
+      'evento=wedding&fecha=2024-12-25&mensaje=Test message&ubicacion=Madrid'
+    );
+
+    jest.doMock('next/navigation', () => ({
+      useSearchParams: () => mockSearchParams,
+    }));
+
+    render(<ContactForm translations={mockTranslations} />);
+
+    await waitFor(() => {
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_prefilled', {
+        eventType: 'wedding',
+        eventDate: '2024-12-25',
+        hasLocation: true,
+        hasMessage: true,
       });
     });
   });

@@ -27,6 +27,7 @@ import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
 import FileUpload from './FileUpload';
 import { useFormBackground } from '@/hooks/useBackground';
+import { trackCustomEvent } from '@/services/analytics';
 
 // Contact form data type
 interface ContactFormData {
@@ -142,6 +143,11 @@ export default function ContactForm({ translations }: ContactFormProps) {
   // Use the new background system for form sections
   const { classes: formClasses } = useFormBackground();
 
+  // Track form view
+  useEffect(() => {
+    trackCustomEvent('contact_form_viewed');
+  }, []);
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -205,51 +211,48 @@ export default function ContactForm({ translations }: ContactFormProps) {
       eventDate: eventDate || '',
       message: fullMessage,
     });
+    setErrors({});
+    setSelectedFiles([]);
+    setUploadingFiles(false);
+
+    // Track if form was pre-filled from widget
+    if (eventType || eventDate || message || ubicacion) {
+      trackCustomEvent('contact_form_prefilled', {
+        eventType: eventType || null,
+        eventDate: eventDate || null,
+        hasLocation: !!ubicacion,
+        hasMessage: !!message,
+      });
+    }
   }, [searchParams]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim() || formData.name.length < 2) {
-      newErrors.name = 'Debe tener al menos 2 caracteres';
+    if (!formData.name.trim()) {
+      newErrors.name = translations.contact.form.name.label;
     }
 
-    // Conditional validation based on communication preference
-    switch (formData.communicationPreference) {
-      case 'email':
-        // Email requires email but not phone
-        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email =
-            'Por favor ingresa un email válido para que podamos responderte';
-        }
-        break;
-      case 'call':
-      case 'whatsapp':
-        // Call and WhatsApp require phone but not email
-        if (!formData.phone.trim()) {
-          newErrors.phone =
-            'Por favor ingresa tu número de teléfono para que podamos contactarte';
-        }
-        break;
-      case 'zoom':
-        // Zoom requires either email or phone (at least one)
-        const hasEmail =
-          formData.email.trim() && /\S+@\S+\.\S+/.test(formData.email);
-        const hasPhone = formData.phone.trim();
-        if (!hasEmail && !hasPhone) {
-          newErrors.email =
-            'Para videollamadas, necesitamos tu email o teléfono';
-          newErrors.phone =
-            'Para videollamadas, necesitamos tu email o teléfono';
-        }
-        break;
+    if (!formData.email.trim()) {
+      newErrors.email = translations.contact.form.email.label;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email inválido';
     }
 
-    if (!formData.eventType) {
-      newErrors.eventType = 'Por favor selecciona un tipo de evento';
+    if (!formData.eventType.trim()) {
+      newErrors.eventType = translations.contact.form.eventType.label;
     }
 
     setErrors(newErrors);
+
+    // Track validation errors if any
+    if (Object.keys(newErrors).length > 0) {
+      trackCustomEvent('contact_form_validation_error', {
+        errorFields: Object.keys(newErrors),
+        errorCount: Object.keys(newErrors).length,
+      });
+    }
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -275,6 +278,15 @@ export default function ContactForm({ translations }: ContactFormProps) {
 
       await emailService.sendContactForm(formDataWithAttachments);
       setIsSubmitted(true);
+
+      // Track successful form submission
+      trackCustomEvent('contact_form_submitted', {
+        result: 'success',
+        eventType: formData.eventType,
+        communicationPreference: formData.communicationPreference,
+        hasAttachments: uploadedUrls.length > 0,
+        attachmentCount: uploadedUrls.length,
+      });
     } catch (error) {
       console.error('Error submitting contact form:', error);
       setSubmitError(
@@ -282,6 +294,14 @@ export default function ContactForm({ translations }: ContactFormProps) {
           ? error.message
           : 'Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.'
       );
+
+      // Track form submission error
+      trackCustomEvent('contact_form_submitted', {
+        result: 'error',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        eventType: formData.eventType,
+        communicationPreference: formData.communicationPreference,
+      });
     } finally {
       setIsSubmitting(false);
     }

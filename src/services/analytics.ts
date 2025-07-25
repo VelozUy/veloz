@@ -1,4 +1,9 @@
-import { getAnalytics, logEvent, setUserId, setUserProperties } from 'firebase/analytics';
+import {
+  getAnalytics,
+  logEvent,
+  setUserId,
+  setUserProperties,
+} from 'firebase/analytics';
 import { getApp } from 'firebase/app';
 import { z } from 'zod';
 
@@ -76,7 +81,7 @@ class AnalyticsService {
       this.sessionId = this.generateSessionId();
       this.isInitialized = true;
       this.isGA4Enabled = !!process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
-      
+
       console.log('✅ Analytics initialized successfully', {
         isGA4Enabled: this.isGA4Enabled,
         sessionId: this.sessionId,
@@ -99,9 +104,13 @@ class AnalyticsService {
 
   private getDeviceType(): string {
     if (typeof window === 'undefined') return 'unknown';
-    
+
     const userAgent = navigator.userAgent;
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)) {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        userAgent
+      )
+    ) {
       return 'mobile';
     } else if (/iPad|Android/i.test(userAgent)) {
       return 'tablet';
@@ -115,7 +124,10 @@ class AnalyticsService {
     return navigator.language || 'unknown';
   }
 
-  private async logCustomEvent(eventName: string, eventParams: Record<string, unknown> = {}) {
+  private async logCustomEvent(
+    eventName: string,
+    eventParams: Record<string, unknown> = {}
+  ) {
     this.ensureInitialized();
     if (!this.isInitialized || !this.analytics) {
       console.warn('Analytics not initialized, skipping event:', eventName);
@@ -134,7 +146,7 @@ class AnalyticsService {
       if (this.isGA4Enabled) {
         await logEvent(this.analytics, eventName, enrichedParams);
       }
-      
+
       // Also log to console in development
       if (process.env.NODE_ENV === 'development') {
         console.log('Analytics Event:', eventName, enrichedParams);
@@ -147,7 +159,7 @@ class AnalyticsService {
   // Project view tracking
   async trackProjectView(data: ProjectViewEvent) {
     const validatedData = ProjectViewEventSchema.parse(data);
-    
+
     await this.logCustomEvent('project_view', {
       project_id: validatedData.projectId,
       project_title: validatedData.projectTitle,
@@ -163,7 +175,7 @@ class AnalyticsService {
   // Media interaction tracking
   async trackMediaInteraction(data: MediaInteractionEvent) {
     const validatedData = MediaInteractionEventSchema.parse(data);
-    
+
     await this.logCustomEvent('media_interaction', {
       project_id: validatedData.projectId,
       media_id: validatedData.mediaId,
@@ -177,7 +189,7 @@ class AnalyticsService {
   // CTA interaction tracking
   async trackCTAInteraction(data: CTAInteractionEvent) {
     const validatedData = CTAInteractionEventSchema.parse(data);
-    
+
     await this.logCustomEvent('cta_interaction', {
       project_id: validatedData.projectId,
       cta_type: validatedData.ctaType,
@@ -190,7 +202,7 @@ class AnalyticsService {
   // Crew interaction tracking
   async trackCrewInteraction(data: CrewInteractionEvent) {
     const validatedData = CrewInteractionEventSchema.parse(data);
-    
+
     await this.logCustomEvent('crew_interaction', {
       project_id: validatedData.projectId,
       crew_member_id: validatedData.crewMemberId,
@@ -239,11 +251,19 @@ class AnalyticsService {
     });
   }
 
+  // Custom event tracking
+  async trackCustomEvent(
+    eventName: string,
+    eventParams: Record<string, unknown> = {}
+  ) {
+    await this.logCustomEvent(eventName, eventParams);
+  }
+
   // Set user ID for cross-session tracking
   async setUserId(userId: string) {
     this.ensureInitialized(); // Ensure analytics is initialized before setting user ID
     if (!this.isInitialized || !this.analytics) return;
-    
+
     try {
       await setUserId(this.analytics, userId);
     } catch (error) {
@@ -255,7 +275,7 @@ class AnalyticsService {
   async setUserProperties(properties: Record<string, unknown>) {
     this.ensureInitialized(); // Ensure analytics is initialized before setting user properties
     if (!this.isInitialized || !this.analytics) return;
-    
+
     try {
       await setUserProperties(this.analytics, properties);
     } catch (error) {
@@ -278,10 +298,21 @@ class AnalyticsService {
 export const analyticsService = new AnalyticsService();
 
 // Export convenience functions
-export const trackProjectView = (data: ProjectViewEvent) => analyticsService.trackProjectView(data);
-export const trackMediaInteraction = (data: MediaInteractionEvent) => analyticsService.trackMediaInteraction(data);
-export const trackCTAInteraction = (data: CTAInteractionEvent) => analyticsService.trackCTAInteraction(data);
-export const trackCrewInteraction = (data: CrewInteractionEvent) => analyticsService.trackCrewInteraction(data);
-export const trackPageView = (pagePath: string, pageTitle?: string) => analyticsService.trackPageView(pagePath, pageTitle);
-export const trackScrollDepth = (pagePath: string, scrollDepth: number) => analyticsService.trackScrollDepth(pagePath, scrollDepth);
-export const trackError = (error: Error, context?: Record<string, unknown>) => analyticsService.trackError(error, context); 
+export const trackProjectView = (data: ProjectViewEvent) =>
+  analyticsService.trackProjectView(data);
+export const trackMediaInteraction = (data: MediaInteractionEvent) =>
+  analyticsService.trackMediaInteraction(data);
+export const trackCTAInteraction = (data: CTAInteractionEvent) =>
+  analyticsService.trackCTAInteraction(data);
+export const trackCrewInteraction = (data: CrewInteractionEvent) =>
+  analyticsService.trackCrewInteraction(data);
+export const trackPageView = (pagePath: string, pageTitle?: string) =>
+  analyticsService.trackPageView(pagePath, pageTitle);
+export const trackScrollDepth = (pagePath: string, scrollDepth: number) =>
+  analyticsService.trackScrollDepth(pagePath, scrollDepth);
+export const trackError = (error: Error, context?: Record<string, unknown>) =>
+  analyticsService.trackError(error, context);
+export const trackCustomEvent = (
+  eventName: string,
+  eventParams: Record<string, unknown> = {}
+) => analyticsService.trackCustomEvent(eventName, eventParams);

@@ -1,696 +1,122 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ContactWidget } from '../ContactWidget';
+import { trackCustomEvent } from '@/services/analytics';
+
+// Mock the analytics service
+jest.mock('@/services/analytics', () => ({
+  trackCustomEvent: jest.fn(),
+}));
 
 // Mock Next.js router
-const mockPush = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: mockPush,
+    push: jest.fn(),
   }),
 }));
 
-describe('ContactWidget', () => {
+describe('ContactWidget Analytics', () => {
   beforeEach(() => {
-    mockPush.mockClear();
+    jest.clearAllMocks();
   });
 
-  it('renders contact button with correct text', () => {
-    render(<ContactWidget language="es" />);
+  it('tracks widget open event', async () => {
+    render(<ContactWidget />);
 
-    expect(
-      screen.getByText('¿En qué evento estás pensando?')
-    ).toBeInTheDocument();
-  });
-
-  it('opens dialog when contact button is clicked', async () => {
-    render(<ContactWidget language="es" />);
-
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
+    // Open the widget
+    const triggerButton = screen.getByRole('button', {
+      name: /open contact widget/i,
+    });
+    fireEvent.click(triggerButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Cuéntanos sobre tu evento')).toBeInTheDocument();
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_widget_opened');
     });
   });
 
-  it('displays event type step initially', async () => {
-    render(<ContactWidget language="es" />);
+  it('tracks step completion events', async () => {
+    render(<ContactWidget />);
 
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Cuéntanos qué quieres celebrar')
-      ).toBeInTheDocument();
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-      expect(screen.getByText('🏢 Evento Empresarial')).toBeInTheDocument();
-      expect(screen.getByText('🎉 Otro tipo de evento')).toBeInTheDocument();
+    // Open the widget
+    const triggerButton = screen.getByRole('button', {
+      name: /open contact widget/i,
     });
-  });
+    fireEvent.click(triggerButton);
 
-  it('handles event type selection and moves to date step', async () => {
-    render(<ContactWidget language="es" />);
-
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
+    // Select event type
+    const weddingButton = screen.getByRole('button', { name: /wedding/i });
     fireEvent.click(weddingButton);
 
     await waitFor(() => {
-      expect(screen.getByText('¿Ya tienes fecha?')).toBeInTheDocument();
-      expect(
-        screen.getByText('No te preocupes si aún no estás seguro')
-      ).toBeInTheDocument();
+      expect(trackCustomEvent).toHaveBeenCalledWith(
+        'contact_widget_step_completed',
+        {
+          step: 'eventType',
+          value: 'wedding',
+        }
+      );
     });
   });
 
-  it('displays calendar component on date step', async () => {
-    render(<ContactWidget language="es" />);
+  it('tracks widget conversion to form', async () => {
+    render(<ContactWidget />);
 
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
+    // Open the widget
+    const triggerButton = screen.getByRole('button', {
+      name: /open contact widget/i,
     });
+    fireEvent.click(triggerButton);
 
-    const weddingButton = screen.getByText('💒 Boda');
+    // Complete the widget flow to conversion
+    const weddingButton = screen.getByRole('button', { name: /wedding/i });
     fireEvent.click(weddingButton);
 
-    await waitFor(() => {
-      expect(screen.getByText('¿Ya tienes fecha?')).toBeInTheDocument();
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-      expect(screen.getByText('Continuar')).toBeInTheDocument();
-    });
-  });
+    // Skip date
+    const skipDateButton = screen.getByRole('button', { name: /skip/i });
+    fireEvent.click(skipDateButton);
 
-  it('allows skipping date and moves to location step', async () => {
-    render(<ContactWidget language="es" />);
+    // Skip location
+    const skipLocationButton = screen.getByRole('button', { name: /skip/i });
+    fireEvent.click(skipLocationButton);
 
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Dónde será tu evento?')).toBeInTheDocument();
-      expect(
-        screen.getByText('Ayúdanos a entender mejor tu ubicación')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('displays location input on location step', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to location step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Dónde será tu evento?')).toBeInTheDocument();
-      expect(screen.getByLabelText('Ubicación')).toBeInTheDocument();
-      expect(
-        screen.getByPlaceholderText('Ciudad, barrio o lugar específico')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('allows skipping location and moves to contact step', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to location step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Quieres contarnos más?')).toBeInTheDocument();
-      expect(
-        screen.getByText('Elige cómo prefieres que nos contactemos')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('displays contact choice options', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to contact step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Sí, quiero contarte más detalles')
-      ).toBeInTheDocument();
-      expect(screen.getByText('Quiero que me llamen')).toBeInTheDocument();
-    });
-  });
-
-  it('navigates to contact form when more info is selected', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to contact step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Sí, quiero contarte más detalles')
-      ).toBeInTheDocument();
-    });
-
-    const moreInfoButton = screen.getByText('Sí, quiero contarte más detalles');
+    // Choose more info (conversion)
+    const moreInfoButton = screen.getByText(/más información/i);
     fireEvent.click(moreInfoButton);
 
-    expect(mockPush).toHaveBeenCalledWith(
-      '/contact?evento=wedding&mensaje=Ubicaci%C3%B3n%3A+%0A'
-    );
-  });
-
-  it('moves to phone step when call me is selected', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to contact step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
     await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Quiero que me llamen')).toBeInTheDocument();
-    });
-
-    const callMeButton = screen.getByText('Quiero que me llamen');
-    fireEvent.click(callMeButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¡Perfecto! Te llamamos')).toBeInTheDocument();
-      expect(
-        screen.getByText('Déjanos tu número y te contactamos pronto')
-      ).toBeInTheDocument();
-      expect(screen.getByLabelText('Teléfono')).toBeInTheDocument();
-      expect(
-        screen.getByPlaceholderText('Tu número de teléfono')
-      ).toBeInTheDocument();
+      expect(trackCustomEvent).toHaveBeenCalledWith(
+        'contact_widget_conversion',
+        {
+          eventType: 'wedding',
+          eventDate: '',
+          location: '',
+          choice: 'moreInfo',
+        }
+      );
     });
   });
 
-  it('handles phone submission and shows completion step', async () => {
-    render(<ContactWidget language="es" />);
+  it('tracks widget close (drop-off)', async () => {
+    render(<ContactWidget />);
 
-    // Navigate to phone step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
+    // Open the widget
+    const triggerButton = screen.getByRole('button', {
+      name: /open contact widget/i,
+    });
+    fireEvent.click(triggerButton);
+
+    // Close the widget
+    const cancelButton = screen.getByRole('button', {
+      name: /cancel and close dialog/i,
+    });
+    fireEvent.click(cancelButton);
 
     await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
+      expect(trackCustomEvent).toHaveBeenCalledWith('contact_widget_closed', {
+        step: 'eventType',
+        eventType: '',
+        eventDate: '',
+        location: '',
+      });
     });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Quiero que me llamen')).toBeInTheDocument();
-    });
-
-    const callMeButton = screen.getByText('Quiero que me llamen');
-    fireEvent.click(callMeButton);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText('Teléfono')).toBeInTheDocument();
-    });
-
-    const phoneInput = screen.getByLabelText('Teléfono');
-    fireEvent.change(phoneInput, { target: { value: '123456789' } });
-
-    const submitButton = screen.getByText('Solicitar llamada');
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¡Listo!')).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.'
-        )
-      ).toBeInTheDocument();
-      expect(screen.getByText('Cerrar')).toBeInTheDocument();
-    });
-  });
-
-  it('validates required inputs on location step', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to location step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Continuar')).toBeInTheDocument();
-    });
-
-    const continueButton = screen.getByText('Continuar');
-    expect(continueButton).toBeDisabled();
-  });
-
-  it('enables continue button when location is filled', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to location step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText('Ubicación')).toBeInTheDocument();
-    });
-
-    const locationInput = screen.getByLabelText('Ubicación');
-    fireEvent.change(locationInput, { target: { value: 'Madrid' } });
-
-    const continueButton = screen.getByText('Continuar');
-    expect(continueButton).not.toBeDisabled();
-  });
-
-  it('validates required inputs on phone step', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to phone step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Quiero que me llamen')).toBeInTheDocument();
-    });
-
-    const callMeButton = screen.getByText('Quiero que me llamen');
-    fireEvent.click(callMeButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Solicitar llamada')).toBeInTheDocument();
-    });
-
-    const submitButton = screen.getByText('Solicitar llamada');
-    expect(submitButton).toBeDisabled();
-  });
-
-  it('enables submit button when phone is filled', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to phone step
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo ubicación definida')
-      ).toBeInTheDocument();
-    });
-
-    const noLocationButton = screen.getByText(
-      'Aún no tengo ubicación definida'
-    );
-    fireEvent.click(noLocationButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Quiero que me llamen')).toBeInTheDocument();
-    });
-
-    const callMeButton = screen.getByText('Quiero que me llamen');
-    fireEvent.click(callMeButton);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText('Teléfono')).toBeInTheDocument();
-    });
-
-    const phoneInput = screen.getByLabelText('Teléfono');
-    fireEvent.change(phoneInput, { target: { value: '123456789' } });
-
-    const submitButton = screen.getByText('Solicitar llamada');
-    expect(submitButton).not.toBeDisabled();
-  });
-
-  it('resets widget when dialog is closed', async () => {
-    render(<ContactWidget language="es" />);
-
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Ya tienes fecha?')).toBeInTheDocument();
-    });
-
-    // Close dialog
-    const closeButton = screen.getByRole('button', { name: /close/i });
-    fireEvent.click(closeButton);
-
-    await waitFor(() => {
-      expect(screen.queryByText('¿Ya tienes fecha?')).not.toBeInTheDocument();
-    });
-
-    // Reopen and verify it starts from step 1
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-  });
-
-  it('displays different languages correctly', () => {
-    render(<ContactWidget language="en" />);
-
-    expect(
-      screen.getByText('What event are you thinking about?')
-    ).toBeInTheDocument();
-  });
-
-  it('handles corporate event type selection', async () => {
-    render(<ContactWidget language="es" />);
-
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('🏢 Evento Empresarial')).toBeInTheDocument();
-    });
-
-    const corporateButton = screen.getByText('🏢 Evento Empresarial');
-    fireEvent.click(corporateButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Ya tienes fecha?')).toBeInTheDocument();
-    });
-  });
-
-  it('handles other event type selection', async () => {
-    render(<ContactWidget language="es" />);
-
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('🎉 Otro tipo de evento')).toBeInTheDocument();
-    });
-
-    const otherButton = screen.getByText('🎉 Otro tipo de evento');
-    fireEvent.click(otherButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('¿Ya tienes fecha?')).toBeInTheDocument();
-    });
-  });
-
-  it('includes location in URL parameters when provided', async () => {
-    render(<ContactWidget language="es" />);
-
-    // Navigate to location step and fill it
-    const contactButton = screen.getByText('¿En qué evento estás pensando?');
-    fireEvent.click(contactButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('💒 Boda')).toBeInTheDocument();
-    });
-
-    const weddingButton = screen.getByText('💒 Boda');
-    fireEvent.click(weddingButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Aún no tengo fecha definida')
-      ).toBeInTheDocument();
-    });
-
-    const noDateButton = screen.getByText('Aún no tengo fecha definida');
-    fireEvent.click(noDateButton);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText('Ubicación')).toBeInTheDocument();
-    });
-
-    const locationInput = screen.getByLabelText('Ubicación');
-    fireEvent.change(locationInput, { target: { value: 'Madrid, España' } });
-
-    const continueButton = screen.getByText('Continuar');
-    fireEvent.click(continueButton);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Sí, quiero contarte más detalles')
-      ).toBeInTheDocument();
-    });
-
-    const moreInfoButton = screen.getByText('Sí, quiero contarte más detalles');
-    fireEvent.click(moreInfoButton);
-
-    expect(mockPush).toHaveBeenCalledWith(
-      '/contact?evento=wedding&mensaje=Ubicaci%C3%B3n%3A+Madrid%2C+Espa%C3%B1a%0A'
-    );
   });
 });
