@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { EventCategory, getCategoryDisplayName } from '@/constants/categories';
@@ -9,11 +9,13 @@ import { LocalizedContent } from '@/lib/static-content.generated';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 import { useGalleryPerformanceMonitor } from '@/lib/gallery-performance-monitor';
 
-import GalleryGrid from './GalleryGrid';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { FullscreenModal } from '@/components/gallery/FullscreenModal';
+import { GalleryImage } from '@/types/gallery';
 import MeetTheTeamStatic from '@/components/our-work/MeetTheTeamStatic';
 import SocialFeed from '@/components/our-work/SocialFeed';
 import ProjectTimeline from '@/components/our-work/ProjectTimeline';
-
+import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 
 interface ProjectMedia {
   id: string;
@@ -26,6 +28,7 @@ interface ProjectMedia {
   width?: number;
   height?: number;
   order: number;
+  featured?: boolean;
   blurDataURL?: string;
   poster?: string;
 }
@@ -111,6 +114,10 @@ export default function ProjectDetailGallery({
   const timelineRef = useRef<HTMLDivElement>(null);
   const crewRef = useRef<HTMLDivElement>(null);
 
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
+
   useEffect(() => {
     if (project?.id && project?.title) {
       trackProjectView({
@@ -128,6 +135,40 @@ export default function ProjectDetailGallery({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project?.id]);
+
+  // Transform media to GalleryImage format for TiledGallery
+  const galleryImages = useMemo((): GalleryImage[] => {
+    if (!project.media) return [];
+
+    return convertProjectMediaBatch(
+      project.media.map(item => ({
+        id: item.id,
+        url: item.url,
+        src: item.url, // For compatibility
+        alt: item.description?.es || `${project.title} - ${item.type}`,
+        width: item.width || 1200,
+        height: item.height || 800,
+        type: item.type,
+        aspectRatio: item.aspectRatio,
+        featured: item.featured || false,
+        order: item.order || 0,
+        projectTitle: project.title,
+      })),
+      project.title,
+      project.id
+    );
+  }, [project]);
+
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback((index: number) => {
+    setFullscreenStartIndex(index);
+    setIsFullscreenOpen(true);
+  }, []);
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+  }, []);
 
   // Handle keyboard navigation
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -216,15 +257,37 @@ export default function ProjectDetailGallery({
               Galería de fotos y videos del proyecto {project.title} con{' '}
               {project.media.length} elementos multimedia
             </div>
-            <GalleryGrid
-              media={project.media}
+            <TiledGallery
+              images={galleryImages}
+              galleryGroup={`project-${project.id}`}
               projectTitle={project.title}
-              layout={layout}
               className="mb-8"
+              enableAnimations={true}
+              lazyLoad={true}
+              onImageClick={(image, index) => {
+                handleOpenFullscreen(index);
+              }}
             />
           </div>
         </section>
       )}
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={galleryImages.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: project.title,
+        }))}
+        startIndex={fullscreenStartIndex}
+      />
 
       {/* Project Timeline - CRITICAL: Preserved and Enhanced */}
       {showTimeline && timelineProject && (
@@ -294,8 +357,6 @@ export default function ProjectDetailGallery({
         </div>
       </section>
 
-
-
       {/* Skip to content link for accessibility */}
       <a
         href="#project-title"
@@ -303,8 +364,6 @@ export default function ProjectDetailGallery({
       >
         Saltar al contenido principal
       </a>
-
-
     </div>
   );
 }

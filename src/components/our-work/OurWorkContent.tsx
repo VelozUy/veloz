@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { LocalizedContent } from '@/lib/static-content.generated';
@@ -21,6 +21,12 @@ import {
   CategoryTypography,
 } from '@/components/ui/category-typography';
 import { EventCategory, getCategoryStyle } from '@/constants/categories';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { FullscreenModal } from '@/components/gallery/FullscreenModal';
+import { GalleryImage } from '@/types/gallery';
+import { convertProjectMediaBatch } from '@/lib/gallery-layout';
+import { useRouter } from 'next/navigation';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 // Project interface for the our-work page
 interface Project {
@@ -70,6 +76,7 @@ interface Project {
     tags?: string[];
     aspectRatio?: '1:1' | '16:9' | '9:16';
     order?: number;
+    featured?: boolean;
   }>;
 }
 
@@ -152,9 +159,26 @@ const projectVariants = {
 };
 
 export function OurWorkContent({ content }: OurWorkContentProps) {
+  const router = useRouter();
+  const { trackProjectView } = useAnalytics();
   const [carouselIndices, setCarouselIndices] = useState<
     Record<string, number>
   >({});
+
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
+  const [currentProjectMedia, setCurrentProjectMedia] = useState<
+    Array<{
+      id: string;
+      type: 'photo' | 'video';
+      url: string;
+      alt: string;
+      width: number;
+      height: number;
+      projectTitle: string;
+    }>
+  >([]);
 
   // Use the new background system for content sections
   const { classes: contentClasses } = useContentBackground();
@@ -273,76 +297,58 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     return eventTypeMap[eventType] || 'Otros';
   };
 
+  // Transform project media to GalleryImage format for TiledGallery
+  const getGalleryImages = useCallback((project: Project): GalleryImage[] => {
+    return convertProjectMediaBatch(
+      project.media.slice(0, 6).map(item => ({
+        id: item.id,
+        url: item.url,
+        src: item.url, // For compatibility
+        alt: `${project.title} - ${item.type}`,
+        width: 1200,
+        height: 800,
+        type: item.type,
+        aspectRatio: item.aspectRatio,
+        featured: item.featured,
+        order: item.order || 0,
+        projectTitle: project.title,
+      })),
+      project.title,
+      project.id
+    );
+  }, []);
+
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback(
+    (project: Project, index: number) => {
+      const galleryImages = getGalleryImages(project);
+      setCurrentProjectMedia(
+        galleryImages.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: project.title,
+        }))
+      );
+      setFullscreenStartIndex(index);
+      setIsFullscreenOpen(true);
+    },
+    [getGalleryImages]
+  );
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+  }, []);
+
   // Render Custom Layout using Visual Grid Editor blocks
   const renderCustomLayout = (project: Project) => {
-    const category = project.eventType
-      ? getCategoryFromEventType(project.eventType)
-      : 'Otros';
-    const categoryStyle = getCategoryStyle(category);
+    const category = getCategoryFromEventType(project.eventType || 'otros');
 
-    // If hero media is configured, render hero layout first
-    if (project.heroMediaConfig && project.heroMediaConfig.mediaId) {
-      return (
-        <div className="space-y-8">
-          {/* Hero Section */}
-          <HeroLayout
-            heroConfig={project.heroMediaConfig}
-            projectMedia={project.media}
-            projectTitle={project.title}
-            className="mb-8"
-          />
-
-          {/* Project Description with Category Typography */}
-          {project.description && (
-            <div className="text-center space-y-6">
-              <CategoryTypography
-                category={category}
-                variant="body"
-                size="lg"
-                language={currentLocale as 'es' | 'en' | 'pt'}
-                className="max-w-4xl mx-auto leading-relaxed"
-              >
-                {project.description}
-              </CategoryTypography>
-            </div>
-          )}
-
-          {/* Simple Grid for Our-Work List Page */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {project.media.slice(0, 6).map((media, index) => (
-              <div
-                key={media.id || index}
-                className="aspect-square relative overflow-hidden rounded-none"
-              >
-                {media.type === 'video' ? (
-                  <video
-                    src={media.url}
-                    className="w-full h-full object-cover"
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                    preload={index < 4 ? 'auto' : 'metadata'}
-                  />
-                ) : (
-                  <Image
-                    src={media.url}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    priority={index < 4}
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // For our-work list page, always use simple grid layout
     return (
       <div className="space-y-8">
         {/* Project Description with Category Typography */}
@@ -360,55 +366,57 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           </div>
         )}
 
-        {/* Simple Grid for Our-Work List Page */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {project.media.slice(0, 6).map((media, index) => {
-            // Calculate aspect ratio for responsive sizing
-            const aspectRatio = media.aspectRatio || '1:1';
-
-            // Calculate padding-bottom for proper aspect ratio
-            let paddingBottom = '100%'; // Default square
-            if (aspectRatio === '16:9') paddingBottom = '56.25%';
-            else if (aspectRatio === '9:16') paddingBottom = '177.78%';
-
-            return (
-              <div
-                key={media.id || index}
-                className="relative overflow-hidden rounded-none"
-                style={{ paddingBottom }}
-              >
-                {media.type === 'video' ? (
-                  <video
-                    src={media.url}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    muted
-                    loop
-                    playsInline
-                    autoPlay
-                    preload={index < 4 ? 'auto' : 'metadata'}
-                  />
-                ) : (
-                  <Image
-                    src={media.url}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    priority={index < 4}
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {/* Tiled Gallery for Our-Work List Page */}
+        <TiledGallery
+          images={getGalleryImages(project)}
+          galleryGroup={`project-${project.id}`}
+          projectTitle={project.title}
+          className="mb-8"
+          enableAnimations={true}
+          lazyLoad={true}
+          onImageClick={(image, index) => {
+            handleOpenFullscreen(project, index);
+          }}
+        />
       </div>
     );
   };
 
   // Render project using only custom layout
   const renderProject = (project: Project) => {
-    return renderCustomLayout(project);
+    const category = getCategoryFromEventType(project.eventType || 'otros');
+
+    return (
+      <div className="space-y-8">
+        {/* Project Description with Category Typography */}
+        {project.description && (
+          <div className="text-center space-y-6">
+            <CategoryTypography
+              category={category}
+              variant="body"
+              size="lg"
+              language={currentLocale as 'es' | 'en' | 'pt'}
+              className="max-w-4xl mx-auto leading-relaxed"
+            >
+              {project.description}
+            </CategoryTypography>
+          </div>
+        )}
+
+        {/* Tiled Gallery for Our-Work List Page */}
+        <TiledGallery
+          images={getGalleryImages(project)}
+          galleryGroup={`project-${project.id}`}
+          projectTitle={project.title}
+          className="mb-8"
+          enableAnimations={true}
+          lazyLoad={true}
+          onImageClick={(image, index) => {
+            handleOpenFullscreen(project, index);
+          }}
+        />
+      </div>
+    );
   };
 
   return (
@@ -453,9 +461,9 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           className="space-y-0"
         >
           {filteredProjects.map((project, index) => {
-            const category = project.eventType
-              ? getCategoryFromEventType(project.eventType)
-              : 'Otros';
+            const category = getCategoryFromEventType(
+              project.eventType || 'otros'
+            );
             const categoryStyle = getCategoryStyle(category);
 
             return (
@@ -541,6 +549,14 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
           </motion.div>
         </div>
       </section>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={currentProjectMedia}
+        startIndex={fullscreenStartIndex}
+      />
     </div>
   );
 }

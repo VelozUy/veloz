@@ -1,15 +1,21 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-import { 
-  calculateTileLayout, 
+import {
+  calculateTileLayout,
   getResponsiveConfig,
   convertProjectMediaBatch,
-  optimizeLayout 
+  optimizeLayout,
 } from '@/lib/gallery-layout';
 import {
   GalleryImage,
@@ -17,14 +23,22 @@ import {
   TiledGalleryLayout,
   TileAnimationState,
 } from '@/types/gallery';
+import { useTiledGalleryLazyLoad } from '@/hooks/useTiledGalleryLazyLoad';
+import {
+  optimizeImageData,
+  preloadCriticalImages,
+  trackImageLoad,
+  clearImageCache,
+  type ImageOptimizationConfig,
+} from '@/lib/image-optimization';
 
 /**
  * TiledGallery Component
- * 
+ *
  * Modern masonry-style gallery with WordPress Jetpack-inspired layout algorithm.
  * Preserves all existing animations and interactions while providing sophisticated
  * tiled presentation with optimal aspect ratio balancing.
- * 
+ *
  * PRESERVES CURRENT ANIMATIONS:
  * - hover:brightness-110 brightness increase on hover
  * - group-hover:bg-foreground/20 overlay opacity changes
@@ -32,7 +46,7 @@ import {
  * - Framer Motion with opacity/y animations and staggered delays
  * - Progressive loading with blur-up effects
  * - Focus rings and keyboard navigation
- * - GLightbox integration with data attributes
+ * - FullscreenModal integration with click handlers
  */
 export function TiledGallery({
   images,
@@ -50,27 +64,51 @@ export function TiledGallery({
   galleryGroup,
   projectTitle = '',
 }: TiledGalleryProps) {
+  // Debug logging
+  console.log('TiledGallery received images:', images.length, images);
   // Container and layout state
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1200);
   const [layout, setLayout] = useState<TiledGalleryLayout | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  
-  // Animation and loading states - preserving current patterns
-  const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set());
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-  const [errorImages, setErrorImages] = useState<Set<string>>(new Set());
-  const [animationStates, setAnimationStates] = useState<Record<string, TileAnimationState>>({});
-  
-  // Intersection Observer for lazy loading - preserving current implementation
-  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Performance optimization - preserving current patterns while adding enhancements
+  const {
+    visibleItems,
+    loadedImages,
+    errorImages,
+    loadingQueue,
+    observeItem,
+    unobserveItem,
+    preloadNext,
+    clearMemory,
+    getPerformanceMetrics,
+    handleImageLoad,
+    handleImageError,
+  } = useTiledGalleryLazyLoad({
+    threshold: 0.1,
+    rootMargin: '100px 0px', // Increased for better preloading
+    preloadCount,
+    virtualScrolling,
+    maxConcurrentLoads: 4,
+    memoryLimit: 50,
+    lazyLoad,
+  });
+
+  // Animation states - preserving current patterns
+  const [animationStates, setAnimationStates] = useState<
+    Record<string, TileAnimationState>
+  >({});
+
+  // Performance monitoring
+  const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
 
   // Detect mobile viewport
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -78,7 +116,8 @@ export function TiledGallery({
 
   // Memoized responsive configuration
   const responsiveConfig = useMemo(() => {
-    if (typeof window === 'undefined') return { columns: 3, gap: 8, targetRowHeight: 300 };
+    if (typeof window === 'undefined')
+      return { columns: 3, gap: 8, targetRowHeight: 300 };
     return getResponsiveConfig(window.innerWidth);
   }, []);
 
@@ -94,7 +133,7 @@ export function TiledGallery({
         row: index,
         column: 0,
         width: 100,
-        height: (image.height || 1) / (image.width || 1) * 100,
+        height: ((image.height || 1) / (image.width || 1)) * 100,
         aspectRatio: (image.width || 1) / (image.height || 1),
         gridSpan: 'col-span-1',
         rowSpan: 'row-span-1',
@@ -119,19 +158,28 @@ export function TiledGallery({
         },
         metadata: {
           imageCount: images.length,
-          averageAspectRatio: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0) / images.length,
+          averageAspectRatio:
+            images.reduce(
+              (sum, img) => sum + (img.width || 1) / (img.height || 1),
+              0
+            ) / images.length,
           rowCount: images.length,
           calculationTime: 0,
         },
         tiles: mobileTiles,
-        rows: [{
-          id: 'mobile-row',
-          tiles: mobileTiles,
-          targetHeight: 300,
-          actualHeight: 300,
-          totalWidth: containerWidth,
-          aspectRatioSum: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0),
-        }],
+        rows: [
+          {
+            id: 'mobile-row',
+            tiles: mobileTiles,
+            targetHeight: 300,
+            actualHeight: 300,
+            totalWidth: containerWidth,
+            aspectRatioSum: images.reduce(
+              (sum, img) => sum + (img.width || 1) / (img.height || 1),
+              0
+            ),
+          },
+        ],
       };
     }
 
@@ -145,13 +193,21 @@ export function TiledGallery({
 
     const baseLayout = calculateTileLayout(images, containerWidth, config);
     return optimizeLayout(baseLayout);
-  }, [images, containerWidth, columns, gap, responsiveConfig, isMobile, staggerDelay]);
+  }, [
+    images,
+    containerWidth,
+    columns,
+    gap,
+    responsiveConfig,
+    isMobile,
+    staggerDelay,
+  ]);
 
   // Update layout state
   useEffect(() => {
     if (calculatedLayout) {
       setLayout(calculatedLayout);
-      
+
       // Initialize animation states
       const newAnimationStates: Record<string, TileAnimationState> = {};
       calculatedLayout.tiles.forEach(tile => {
@@ -185,101 +241,106 @@ export function TiledGallery({
     return () => resizeObserver.disconnect();
   }, []);
 
-  // Enhanced Intersection Observer for lazy loading - preserving current patterns
+  // Handle lazy loading initialization - using new performance hook
   useEffect(() => {
     if (!lazyLoad || typeof window === 'undefined') {
-      // If no lazy loading, mark all as visible
-      setVisibleItems(new Set(images.map(img => img.id)));
+      // If no lazy loading, the hook will handle marking all as visible
       return;
     }
+  }, [lazyLoad]);
 
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const itemId = entry.target.getAttribute('data-item-id');
-            if (itemId) {
-              setVisibleItems(prev => new Set([...prev, itemId]));
-
-              // Preload next few images for better UX - preserving current pattern
-              if (layout) {
-                const currentIndex = layout.tiles.findIndex(tile => tile.image.id === itemId);
-                if (currentIndex !== -1) {
-                  const nextTiles = layout.tiles.slice(currentIndex + 1, currentIndex + preloadCount);
-                  nextTiles.forEach(tile => {
-                    setVisibleItems(prev => new Set([...prev, tile.image.id]));
-                  });
-                }
-              }
-            }
-          }
-        });
-      },
-      {
-        rootMargin: '100px 0px', // Increased margin for better preloading
-        threshold: 0.1,
-      }
-    );
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [lazyLoad, layout, images, preloadCount]);
-
-  // Observe tiles when layout changes
+  // Observe tiles when layout changes - using new performance hook
   useEffect(() => {
-    if (!observerRef.current || !layout) return;
-
+    // Observe items even if layout is not ready yet
     const items = document.querySelectorAll('[data-item-id]');
+    console.log('Found items to observe:', items.length); // Debug log
     items.forEach(item => {
-      observerRef.current?.observe(item);
+      const itemId = item.getAttribute('data-item-id');
+      if (itemId && item instanceof HTMLElement) {
+        console.log('Observing item:', itemId); // Debug log
+        observeItem(itemId, item);
+      }
     });
 
     return () => {
       items.forEach(item => {
-        observerRef.current?.unobserve(item);
+        const itemId = item.getAttribute('data-item-id');
+        if (itemId) {
+          unobserveItem(itemId);
+        }
       });
     };
-  }, [layout]);
+  }, [layout, observeItem, unobserveItem]);
 
-  // Handle image loading - preserving current patterns
-  const handleImageLoad = useCallback((imageId: string) => {
-    setLoadedImages(prev => new Set([...prev, imageId]));
+  // Preload critical images - enhancing current preloading strategy
+  useEffect(() => {
+    if (images.length > 0) {
+      preloadCriticalImages(images, {
+        preloadCount: Math.min(4, preloadCount),
+        quality: 85,
+      });
+    }
+  }, [images, preloadCount]);
+
+  // Memory management - new optimization
+  useEffect(() => {
+    const memoryInterval = setInterval(() => {
+      clearMemory();
+    }, 30000); // Clear memory every 30 seconds
+
+    return () => clearInterval(memoryInterval);
+  }, [clearMemory]);
+
+  // Handle image loading - using performance hook handlers
+  const handleImageLoadWithAnimation = useCallback((imageId: string) => {
+    // Update animation states - preserving current patterns
     setAnimationStates(prev => ({
       ...prev,
-      [imageId]: { ...prev[imageId], isLoaded: true, animationPhase: 'visible' }
+      [imageId]: {
+        ...prev[imageId],
+        isLoaded: true,
+        animationPhase: 'visible',
+      },
     }));
   }, []);
 
-  const handleImageError = useCallback((imageId: string) => {
-    setErrorImages(prev => new Set([...prev, imageId]));
+  const handleImageErrorWithAnimation = useCallback((imageId: string) => {
+    // Update animation states - preserving current patterns
     setAnimationStates(prev => ({
       ...prev,
-      [imageId]: { ...prev[imageId], hasError: true, animationPhase: 'visible' }
+      [imageId]: {
+        ...prev[imageId],
+        hasError: true,
+        animationPhase: 'visible',
+      },
     }));
   }, []);
 
   // Handle image click - preserving existing functionality
-  const handleImageClick = useCallback((image: GalleryImage, index: number) => {
-    if (onImageClick) {
-      onImageClick(image, index);
-    }
-  }, [onImageClick]);
+  const handleImageClick = useCallback(
+    (image: GalleryImage, index: number) => {
+      if (onImageClick) {
+        onImageClick(image, index);
+      }
+    },
+    [onImageClick]
+  );
 
   // Handle keyboard navigation - preserving current patterns
-  const handleKeyDown = useCallback((e: React.KeyboardEvent, image: GalleryImage, index: number) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleImageClick(image, index);
-    }
-  }, [handleImageClick]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, image: GalleryImage, index: number) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleImageClick(image, index);
+      }
+    },
+    [handleImageClick]
+  );
 
   // Create fallback layout for SSR and initial render
   const fallbackLayout = useMemo(() => {
     if (!images.length) return null;
-    
+
     // Simple fallback layout - single column for SSR compatibility
     const fallbackTiles = images.map((image, index) => ({
       id: `fallback-tile-${image.id}`,
@@ -287,7 +348,7 @@ export function TiledGallery({
       row: index,
       column: 0,
       width: 100,
-      height: (image.height || 1) / (image.width || 1) * 100,
+      height: ((image.height || 1) / (image.width || 1)) * 100,
       aspectRatio: (image.width || 1) / (image.height || 1),
       gridSpan: 'col-span-1',
       rowSpan: 'row-span-1',
@@ -312,19 +373,28 @@ export function TiledGallery({
       },
       metadata: {
         imageCount: images.length,
-        averageAspectRatio: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0) / images.length,
+        averageAspectRatio:
+          images.reduce(
+            (sum, img) => sum + (img.width || 1) / (img.height || 1),
+            0
+          ) / images.length,
         rowCount: images.length,
         calculationTime: 0,
       },
       tiles: fallbackTiles,
-      rows: [{
-        id: 'fallback-row',
-        tiles: fallbackTiles,
-        targetHeight: 300,
-        actualHeight: 300,
-        totalWidth: containerWidth || 1200,
-        aspectRatioSum: images.reduce((sum, img) => sum + ((img.width || 1) / (img.height || 1)), 0),
-      }],
+      rows: [
+        {
+          id: 'fallback-row',
+          tiles: fallbackTiles,
+          targetHeight: 300,
+          actualHeight: 300,
+          totalWidth: containerWidth || 1200,
+          aspectRatioSum: images.reduce(
+            (sum, img) => sum + (img.width || 1) / (img.height || 1),
+            0
+          ),
+        },
+      ],
     };
   }, [images, containerWidth, gap, staggerDelay]);
 
@@ -348,7 +418,9 @@ export function TiledGallery({
             <div
               key={image.id}
               className="w-full relative overflow-hidden"
-              style={{ aspectRatio: `${image.width || 1} / ${image.height || 1}` }}
+              style={{
+                aspectRatio: `${image.width || 1} / ${image.height || 1}`,
+              }}
             >
               <Image
                 src={image.src}
@@ -370,10 +442,7 @@ export function TiledGallery({
     return (
       <div
         ref={containerRef}
-        className={cn(
-          'tiled-gallery-container relative w-full',
-          className
-        )}
+        className={cn('tiled-gallery-container relative w-full', className)}
         role="region"
         aria-label={ariaLabel}
         style={{ contain: 'layout style' }}
@@ -381,9 +450,21 @@ export function TiledGallery({
         {/* Mobile Single Column Layout */}
         <div className="space-y-4">
           {images.map((image, index) => {
-            const isVisible = visibleItems.has(image.id);
+            // TEMPORARY: Force all images to be visible for debugging
+            const isVisible = true; // Force all images to be visible
             const isLoaded = loadedImages.has(image.id);
             const hasError = errorImages.has(image.id);
+
+            // Debug logging
+            console.log(
+              `Rendering image ${image.id}: visible=${isVisible}, loaded=${isLoaded}, error=${hasError}, lazyLoad=${lazyLoad}, index=${index}`
+            );
+
+            // Skip rendering if not visible
+            if (!isVisible) {
+              console.log(`Skipping image ${image.id} - not visible`);
+              return null;
+            }
 
             return (
               <motion.div
@@ -401,36 +482,48 @@ export function TiledGallery({
                 }}
                 // PRESERVE CURRENT ANIMATIONS: Framer Motion with staggered delays
                 initial={enableAnimations ? { opacity: 0, y: 20 } : undefined}
-                animate={enableAnimations ? {
-                  opacity: isVisible ? 1 : 0,
-                  y: isVisible ? 0 : 20,
-                } : undefined}
-                transition={enableAnimations ? {
-                  duration: 0.5,
-                  delay: index * staggerDelay,
-                  ease: 'easeOut',
-                } : undefined}
+                animate={
+                  enableAnimations
+                    ? {
+                        opacity: isVisible ? 1 : 0,
+                        y: isVisible ? 0 : 20,
+                      }
+                    : undefined
+                }
+                transition={
+                  enableAnimations
+                    ? {
+                        duration: 0.5,
+                        delay: index * staggerDelay,
+                        ease: 'easeOut',
+                      }
+                    : undefined
+                }
                 onKeyDown={e => handleKeyDown(e, image, index)}
                 tabIndex={0}
                 role="button"
                 aria-label={`Ver ${image.type === 'video' ? 'video' : 'imagen'} de ${image.projectTitle || 'proyecto'}`}
                 onClick={() => handleImageClick(image, index)}
               >
-                {/* GLightbox link - preserving current lightbox integration */}
-                <a
-                  href={image.url}
-                  className="absolute inset-0 glightbox z-10 focus:outline-none"
-                  data-gallery={image.galleryGroup || galleryGroup || 'tiled-gallery'}
-                  data-type={image.dataType || (image.type === 'video' ? 'video' : 'image')}
-                  data-effect="fade"
-                  data-desc={image.dataDesc || image.alt}
+                {/* Clickable overlay for lightbox functionality */}
+                <div
+                  className="absolute inset-0 z-10 focus:outline-none cursor-pointer"
+                  onClick={() => handleImageClick(image, index)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleImageClick(image, index);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
                   aria-label={`Abrir ${image.type === 'video' ? 'video' : 'imagen'} en pantalla completa`}
-                  tabIndex={-1}
                 >
                   <span className="sr-only">
-                    Abrir {image.type === 'video' ? 'video' : 'imagen'} en pantalla completa
+                    Abrir {image.type === 'video' ? 'video' : 'imagen'} en
+                    pantalla completa
                   </span>
-                </a>
+                </div>
 
                 {/* Image/Video Display - preserving current loading patterns */}
                 <div className="absolute inset-0">
@@ -444,32 +537,57 @@ export function TiledGallery({
                         muted
                         loop
                         playsInline
-                        onLoadedData={() => handleImageLoad(image.id)}
-                        onError={() => handleImageError(image.id)}
+                        onLoadedData={() => {
+                          handleImageLoad(image.id);
+                          handleImageLoadWithAnimation(image.id);
+                        }}
+                        onError={() => {
+                          handleImageError(image.id);
+                          handleImageErrorWithAnimation(image.id);
+                        }}
                       />
                     </div>
                   ) : (
                     // Image display - preserving current progressive loading
                     <div className="relative w-full h-full">
-                      {isVisible && (
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          className={cn(
-                            'object-cover transition-opacity duration-500',
-                            isLoaded ? 'opacity-100' : 'opacity-0'
-                          )}
-                          sizes="100vw"
-                          priority={index < 4}
-                          onLoad={() => handleImageLoad(image.id)}
-                          onError={() => handleImageError(image.id)}
-                          quality={85}
-                          placeholder={image.blurDataURL ? 'blur' : 'empty'}
-                          blurDataURL={image.blurDataURL}
-                          loading={index < 4 ? 'eager' : 'lazy'}
-                        />
-                      )}
+                      {isVisible &&
+                        (() => {
+                          const optimizedImage = optimizeImageData(image, {
+                            quality: 85,
+                            priority: index < 4,
+                            sizes: '100vw',
+                          });
+
+                          return (
+                            <Image
+                              src={optimizedImage.src}
+                              alt={image.alt}
+                              fill
+                              className={cn(
+                                'object-cover transition-opacity duration-500',
+                                isLoaded ? 'opacity-100' : 'opacity-0'
+                              )}
+                              sizes={optimizedImage.sizes}
+                              priority={optimizedImage.priority}
+                              onLoad={() => {
+                                console.log('Image loaded:', image.id); // Debug log
+                                handleImageLoad(image.id);
+                                handleImageLoadWithAnimation(image.id);
+                              }}
+                              onError={() => {
+                                console.log('Image error:', image.id); // Debug log
+                                handleImageError(image.id);
+                                handleImageErrorWithAnimation(image.id);
+                              }}
+                              quality={optimizedImage.quality}
+                              placeholder={
+                                optimizedImage.blurDataURL ? 'blur' : 'empty'
+                              }
+                              blurDataURL={optimizedImage.blurDataURL}
+                              loading={optimizedImage.loading}
+                            />
+                          );
+                        })()}
 
                       {/* Blur placeholder - preserving current progressive loading */}
                       {image.blurDataURL && !isLoaded && !hasError && (
@@ -489,6 +607,9 @@ export function TiledGallery({
                       {!isLoaded && !hasError && !image.blurDataURL && (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
+                          <div className="ml-2 text-xs text-muted-foreground">
+                            Loading...
+                          </div>
                         </div>
                       )}
 
@@ -518,10 +639,7 @@ export function TiledGallery({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        'tiled-gallery-container relative w-full',
-        className
-      )}
+      className={cn('tiled-gallery-container relative w-full', className)}
       role="region"
       aria-label={ariaLabel}
       style={{ contain: 'layout style' }}
@@ -554,6 +672,11 @@ export function TiledGallery({
               const hasError = errorImages.has(image.id);
               const animationState = animationStates[image.id];
 
+              // Calculate the correct visual index based on tile position in layout
+              const visualIndex = activeLayout.tiles.findIndex(
+                t => t.id === tile.id
+              );
+
               return (
                 <motion.div
                   key={tile.id}
@@ -572,36 +695,48 @@ export function TiledGallery({
                   }}
                   // PRESERVE CURRENT ANIMATIONS: Framer Motion with staggered delays
                   initial={enableAnimations ? { opacity: 0, y: 20 } : undefined}
-                  animate={enableAnimations ? {
-                    opacity: isVisible ? 1 : 0,
-                    y: isVisible ? 0 : 20,
-                  } : undefined}
-                  transition={enableAnimations ? {
-                    duration: 0.5,
-                    delay: tile.animationDelay, // Uses existing stagger pattern
-                    ease: 'easeOut',
-                  } : undefined}
-                  onKeyDown={e => handleKeyDown(e, image, rowIndex * row.tiles.length + tileIndex)}
+                  animate={
+                    enableAnimations
+                      ? {
+                          opacity: isVisible ? 1 : 0,
+                          y: isVisible ? 0 : 20,
+                        }
+                      : undefined
+                  }
+                  transition={
+                    enableAnimations
+                      ? {
+                          duration: 0.5,
+                          delay: tile.animationDelay, // Uses existing stagger pattern
+                          ease: 'easeOut',
+                        }
+                      : undefined
+                  }
+                  onKeyDown={e => handleKeyDown(e, image, visualIndex)}
                   tabIndex={0}
                   role="button"
                   aria-label={`Ver ${image.type === 'video' ? 'video' : 'imagen'} de ${image.projectTitle || 'proyecto'}`}
-                  onClick={() => handleImageClick(image, rowIndex * row.tiles.length + tileIndex)}
+                  onClick={() => handleImageClick(image, visualIndex)}
                 >
-                  {/* GLightbox link - preserving current lightbox integration */}
-                  <a
-                    href={image.url}
-                    className="absolute inset-0 glightbox z-10 focus:outline-none"
-                    data-gallery={image.galleryGroup || galleryGroup || 'tiled-gallery'}
-                    data-type={image.dataType || (image.type === 'video' ? 'video' : 'image')}
-                    data-effect="fade"
-                    data-desc={image.dataDesc || image.alt}
+                  {/* Clickable overlay for lightbox functionality */}
+                  <div
+                    className="absolute inset-0 z-10 focus:outline-none cursor-pointer"
+                    onClick={() => handleImageClick(image, visualIndex)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleImageClick(image, visualIndex);
+                      }
+                    }}
+                    tabIndex={0}
+                    role="button"
                     aria-label={`Abrir ${image.type === 'video' ? 'video' : 'imagen'} en pantalla completa`}
-                    tabIndex={-1}
                   >
                     <span className="sr-only">
-                      Abrir {image.type === 'video' ? 'video' : 'imagen'} en pantalla completa
+                      Abrir {image.type === 'video' ? 'video' : 'imagen'} en
+                      pantalla completa
                     </span>
-                  </a>
+                  </div>
 
                   {/* Image/Video Display - preserving current loading patterns */}
                   <div className="absolute inset-0">
@@ -615,32 +750,50 @@ export function TiledGallery({
                           muted
                           loop
                           playsInline
-                          onLoadedData={() => handleImageLoad(image.id)}
-                          onError={() => handleImageError(image.id)}
+                          onLoadedData={() => {
+                            handleImageLoad(image.id);
+                            handleImageLoadWithAnimation(image.id);
+                          }}
+                          onError={() => {
+                            handleImageError(image.id);
+                            handleImageErrorWithAnimation(image.id);
+                          }}
                         />
                       </div>
                     ) : (
                       // Image display - preserving current progressive loading
                       <div className="relative w-full h-full">
-                        {isVisible && (
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            fill
-                            className={cn(
-                              'object-cover transition-opacity duration-500',
-                              isLoaded ? 'opacity-100' : 'opacity-0'
-                            )}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            priority={image.priority || tileIndex < 4}
-                            onLoad={() => handleImageLoad(image.id)}
-                            onError={() => handleImageError(image.id)}
-                            quality={85}
-                            placeholder={image.blurDataURL ? 'blur' : 'empty'}
-                            blurDataURL={image.blurDataURL}
-                            loading={tileIndex < 4 ? 'eager' : 'lazy'}
-                          />
-                        )}
+                        {isVisible &&
+                          (() => {
+                            const optimizedImage = optimizeImageData(image, {
+                              quality: 85,
+                              priority: image.priority || tileIndex < 4,
+                              sizes:
+                                '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+                            });
+
+                            return (
+                              <Image
+                                src={optimizedImage.src}
+                                alt={image.alt}
+                                fill
+                                className={cn(
+                                  'object-cover transition-opacity duration-500',
+                                  isLoaded ? 'opacity-100' : 'opacity-0'
+                                )}
+                                sizes={optimizedImage.sizes}
+                                priority={optimizedImage.priority}
+                                onLoad={() => handleImageLoad(image.id)}
+                                onError={() => handleImageError(image.id)}
+                                quality={optimizedImage.quality}
+                                placeholder={
+                                  optimizedImage.blurDataURL ? 'blur' : 'empty'
+                                }
+                                blurDataURL={optimizedImage.blurDataURL}
+                                loading={optimizedImage.loading}
+                              />
+                            );
+                          })()}
 
                         {/* Blur placeholder - preserving current progressive loading */}
                         {image.blurDataURL && !isLoaded && !hasError && (
@@ -685,8 +838,6 @@ export function TiledGallery({
           </div>
         ))}
       </div>
-
-
     </div>
   );
-} 
+}

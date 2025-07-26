@@ -35,16 +35,6 @@ Floating navigation component that provides:
 - Accessibility features with keyboard navigation
 - Reduced motion support
 
-#### `GalleryItem.tsx`
-
-Individual media item component with:
-
-- GLightbox integration for lightbox functionality
-- Hover effects with opacity transitions
-- Support for both photos and videos
-- Responsive design with proper aspect ratios
-- Professional presentation styling
-
 #### `ContactWidget.tsx`
 
 Floating contact button that provides:
@@ -54,15 +44,6 @@ Floating contact button that provides:
 - Event type selection
 - Form validation
 - Lead generation functionality
-
-#### `GalleryClientWrapper.tsx`
-
-Client-side functionality wrapper that handles:
-
-- Lightbox initialization
-- Analytics tracking
-- Performance optimizations
-- Cleanup on component unmount
 
 ### Supporting Files
 
@@ -119,6 +100,8 @@ Tests are located in `__tests__/` directory:
 - `GalleryContent.test.tsx`
 - `ContactWidget.test.tsx`
 - `SideNavigation.test.tsx`
+- `ProjectsDisplay.test.tsx`
+- `FullscreenModal.test.tsx`
 
 ## Migration Notes
 

@@ -49,7 +49,9 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
   // Fullscreen modal state
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
   const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
-  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(
+    new Set()
+  );
 
   // Preload images for faster fullscreen modal performance
   useEffect(() => {
@@ -70,18 +72,21 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
   }, [media]);
 
   // Handle fullscreen modal open
-  const handleOpenFullscreen = useCallback((index: number) => {
-    setFullscreenStartIndex(index);
-    setIsFullscreenOpen(true);
-    
-    // Aggressively preload all images when modal opens
-    media.forEach(item => {
-      if (item.type === 'photo' && !preloadedImages.has(item.id)) {
-        const img = new window.Image();
-        img.src = item.url;
-      }
-    });
-  }, [media, preloadedImages]);
+  const handleOpenFullscreen = useCallback(
+    (index: number) => {
+      setFullscreenStartIndex(index);
+      setIsFullscreenOpen(true);
+
+      // Aggressively preload all images when modal opens
+      media.forEach(item => {
+        if (item.type === 'photo' && !preloadedImages.has(item.id)) {
+          const img = new window.Image();
+          img.src = item.url;
+        }
+      });
+    },
+    [media, preloadedImages]
+  );
 
   // Handle fullscreen modal close
   const handleCloseFullscreen = useCallback(() => {
@@ -89,6 +94,9 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
   }, []);
 
   // Note: Media processing is now handled by TiledGallery component
+
+  // Debug logging
+  console.log('EditorialGrid media:', media.length, media);
 
   if (!media.length) {
     return (
@@ -115,8 +123,8 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
             featured: item.featured,
             order: 0, // All featured media at same level
           })),
-                     categoryTitle,
-           categoryId
+          categoryTitle,
+          categoryId
         )}
         onImageClick={(image, index) => {
           handleOpenFullscreen(index);
@@ -135,10 +143,26 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
       <FullscreenModal
         isOpen={isFullscreenOpen}
         onClose={handleCloseFullscreen}
-        media={media.map(item => ({
+        media={convertProjectMediaBatch(
+          media.map(item => ({
+            id: item.id,
+            url: item.url,
+            src: item.url, // For compatibility
+            alt: item.alt,
+            width: item.width,
+            height: item.height,
+            type: item.type,
+            aspectRatio: item.aspectRatio,
+            featured: item.featured,
+            order: 0, // All featured media at same level
+          })),
+          categoryTitle,
+          categoryId
+        ).map(item => ({
           id: item.id,
           type: item.type,
           url: item.url,
+          thumbnailUrl: item.url, // Use same URL as thumbnail for now, can be optimized later
           alt: item.alt,
           width: item.width,
           height: item.height,

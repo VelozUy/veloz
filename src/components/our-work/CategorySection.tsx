@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { GalleryImage } from '@/types/gallery';
 import { H2, H3, Body, Muted } from '@/components/ui/typography';
 import { useContentBackground } from '@/hooks/useBackground';
@@ -43,6 +44,10 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   const { classes: contentClasses } = useContentBackground();
   const { classes: ctaClasses } = useCTABackground();
 
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
+
   // Transform media to GalleryImage format for TiledGallery
   const galleryImages = useMemo((): GalleryImage[] => {
     return media.map(item => ({
@@ -59,6 +64,17 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
       galleryGroup: `category-${id}`, // Group images for lightbox
     }));
   }, [media, id]);
+
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback((index: number) => {
+    setFullscreenStartIndex(index);
+    setIsFullscreenOpen(true);
+  }, []);
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+  }, []);
 
   return (
     <section
@@ -81,13 +97,16 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
 
         {/* Tiled Gallery */}
         <div>
-          <TiledGallery 
+          <TiledGallery
             images={galleryImages}
             galleryGroup={`category-${id}`}
             projectTitle={title}
             className="mb-8"
             enableAnimations={true}
             lazyLoad={true}
+            onImageClick={(image, index) => {
+              handleOpenFullscreen(index);
+            }}
           />
         </div>
 
@@ -109,6 +128,23 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={galleryImages.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: item.projectTitle,
+        }))}
+        startIndex={fullscreenStartIndex}
+      />
     </section>
   );
 };

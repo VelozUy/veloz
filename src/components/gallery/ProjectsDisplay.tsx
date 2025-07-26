@@ -75,8 +75,8 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
     // Track the image view for analytics
     trackProjectView(project.id, project.title, project.eventType);
 
-    // The lightbox will be handled by GLightbox automatically
-    // since we have the proper data-gallery attributes
+    // The lightbox will be handled by FullscreenModal automatically
+    // since we have the proper onImageClick handlers
   };
 
   return (

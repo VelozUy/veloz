@@ -1,8 +1,15 @@
 'use client';
 
-import { useMemo, useRef, useEffect, useState, useCallback } from 'react';
-import Image from 'next/image';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
 
 export interface ProjectMedia {
@@ -59,84 +66,45 @@ export default function GalleryGrid({
   gap = 6,
   className = '',
 }: GalleryGridProps) {
-  const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set());
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [errorImages, setErrorImages] = useState<Set<string>>(new Set());
   const [imageLoadTimes, setImageLoadTimes] = useState<Record<string, number>>(
     {}
   );
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Fullscreen modal state
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenStartIndex, setFullscreenStartIndex] = useState(0);
 
   // Initialize performance optimizations
   useEffect(() => {
     initializePerformanceOptimizations();
   }, []);
 
+  // Handle fullscreen modal open
+  const handleOpenFullscreen = useCallback((index: number) => {
+    setFullscreenStartIndex(index);
+    setIsFullscreenOpen(true);
+  }, []);
+
+  // Handle fullscreen modal close
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreenOpen(false);
+  }, []);
+
+  // Handle image click for lightbox
+  const handleImageClick = useCallback(
+    (item: ProjectMedia, index: number) => {
+      handleOpenFullscreen(index);
+    },
+    [handleOpenFullscreen]
+  );
+
   // Sort media by order
   const sortedMedia = useMemo(() => {
     return [...media].sort((a, b) => a.order - b.order);
   }, [media]);
-
-  // Enhanced Intersection Observer for lazy loading with performance optimization
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const itemId = entry.target.getAttribute('data-item-id');
-            if (itemId) {
-              setVisibleItems(prev => new Set([...prev, itemId]));
-
-              // Preload next few images for better UX
-              const currentIndex = sortedMedia.findIndex(
-                item => item.id === itemId
-              );
-              if (currentIndex !== -1) {
-                const nextItems = sortedMedia.slice(
-                  currentIndex + 1,
-                  currentIndex + 4
-                );
-                nextItems.forEach(item => {
-                  if (!visibleItems.has(item.id)) {
-                    setVisibleItems(prev => new Set([...prev, item.id]));
-                  }
-                });
-              }
-            }
-          }
-        });
-      },
-      {
-        rootMargin: '100px 0px', // Increased margin for better preloading
-        threshold: 0.1,
-      }
-    );
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [sortedMedia, visibleItems]);
-
-  // Observe gallery items with enhanced performance
-  useEffect(() => {
-    if (!observerRef.current) return;
-
-    const items = document.querySelectorAll('[data-item-id]');
-    items.forEach(item => {
-      observerRef.current?.observe(item);
-    });
-
-    return () => {
-      items.forEach(item => {
-        observerRef.current?.unobserve(item);
-      });
-    };
-  }, [sortedMedia]);
 
   // Track image load performance
   const handleImageLoad = useCallback((mediaId: string, startTime: number) => {
@@ -262,13 +230,12 @@ export default function GalleryGrid({
           // Fix: Calculate paddingBottom correctly as (height/width) * 100%
           // Since getAspectRatio returns width/height, we use 1/aspectRatio to get height/width
           const paddingBottom = `${(1 / aspectRatio) * 100}%`;
-          const isVisible = visibleItems.has(item.id);
           const isLoaded = loadedImages.has(item.id);
           const hasError = errorImages.has(item.id);
           const loadStartTime = Date.now();
 
           return (
-            <motion.div
+            <div
               key={item.id}
               data-item-id={item.id}
               className={`group cursor-pointer transition-all duration-300 ease-out hover:brightness-110 ${gridSpan} focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
@@ -280,39 +247,30 @@ export default function GalleryGrid({
                 overflow: 'hidden',
                 contain: 'layout style',
               }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity: isVisible ? 1 : 0,
-                y: isVisible ? 0 : 20,
-              }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.05, // Reduced delay for better performance
-                ease: 'easeOut',
-              }}
               onKeyDown={e => handleKeyDown(e, item.id)}
               tabIndex={0}
               role="button"
               aria-label={`Ver ${item.type === 'video' ? 'video' : 'imagen'} de ${projectTitle}`}
             >
-              {/* GLightbox link - covers entire item */}
-              <a
-                href={item.url}
-                className="absolute inset-0 glightbox z-10 focus:outline-none"
-                data-gallery={`project-${item.projectId}`}
-                data-type={item.type === 'video' ? 'video' : 'image'}
-                data-effect="fade"
-                data-desc={
-                  item.description?.es || `${projectTitle} - ${item.type}`
-                }
+              {/* Clickable overlay for lightbox functionality */}
+              <div
+                className="absolute inset-0 z-10 focus:outline-none cursor-pointer"
+                onClick={() => handleImageClick(item, index)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleImageClick(item, index);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
                 aria-label={`Abrir ${item.type === 'video' ? 'video' : 'imagen'} en pantalla completa`}
-                tabIndex={-1}
               >
                 <span className="sr-only">
                   Abrir {item.type === 'video' ? 'video' : 'imagen'} en pantalla
                   completa
                 </span>
-              </a>
+              </div>
 
               {/* Enhanced Image/Video Display with Progressive Loading */}
               <div className="absolute inset-0">
@@ -335,54 +293,47 @@ export default function GalleryGrid({
                 ) : (
                   // Enhanced Image with Progressive Loading
                   <div className="relative w-full h-full">
-                    {isVisible && (
-                      <Image
-                        src={item.url}
-                        alt={
-                          item.description?.es ||
-                          `${projectTitle} - Imagen ${index + 1}`
-                        }
-                        fill
-                        className={`object-cover transition-opacity duration-500 ${
-                          isLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={index < 4} // Priority for first 4 items
-                        onLoad={() => handleImageLoad(item.id, loadStartTime)}
-                        onError={() => handleImageError(item.id)}
-                        quality={85}
-                        placeholder={item.blurDataURL ? 'blur' : 'empty'}
-                        blurDataURL={item.blurDataURL}
-                        loading={index < 4 ? 'eager' : 'lazy'}
-                      />
-                    )}
+                    <Image
+                      src={item.url}
+                      alt={
+                        item.description?.es ||
+                        `${projectTitle} - Imagen ${index + 1}`
+                      }
+                      fill
+                      className={`object-cover transition-opacity duration-500 ${
+                        isLoaded ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={index < 4} // Priority for first 4 items
+                      onLoad={() => handleImageLoad(item.id, loadStartTime)}
+                      onError={() => handleImageError(item.id)}
+                      quality={85}
+                      placeholder={item.blurDataURL ? 'blur' : 'empty'}
+                      blurDataURL={item.blurDataURL}
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                    />
 
                     {/* Blur placeholder for progressive loading */}
-                    {item.blurDataURL && !isLoaded && !hasError && (
+                    {!isLoaded && !hasError && item.blurDataURL && (
                       <Image
                         src={item.blurDataURL}
                         alt=""
                         fill
-                        className="object-cover opacity-100"
+                        className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={false}
-                        quality={10}
-                        placeholder="empty"
                       />
                     )}
 
-                    {/* Skeleton loader for better FCP */}
+                    {/* Loading skeleton */}
                     {!isLoaded && !hasError && !item.blurDataURL && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
-                      </div>
+                      <div className="absolute inset-0 bg-muted" />
                     )}
 
-                    {/* Error fallback */}
+                    {/* Error state */}
                     {hasError && (
                       <div className="absolute inset-0 bg-muted flex items-center justify-center">
                         <div className="text-muted-foreground text-sm">
-                          Error loading image
+                          Error al cargar la imagen
                         </div>
                       </div>
                     )}
@@ -390,11 +341,29 @@ export default function GalleryGrid({
                 )}
               </div>
 
-              {/* Enhanced Hover Overlay - Button removed */}
-            </motion.div>
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out z-10" />
+            </div>
           );
         })}
       </div>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isFullscreenOpen}
+        onClose={handleCloseFullscreen}
+        media={sortedMedia.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          alt: item.description?.es || `${projectTitle} - ${item.type}`,
+          width: item.width || 1200,
+          height: item.height || 800,
+          projectTitle: projectTitle,
+        }))}
+        startIndex={fullscreenStartIndex}
+      />
     </div>
   );
 }

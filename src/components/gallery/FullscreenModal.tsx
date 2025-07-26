@@ -13,6 +13,7 @@ interface FullscreenMedia {
   id: string;
   type: 'photo' | 'video';
   url: string;
+  thumbnailUrl?: string; // Optional thumbnail URL for better UX
   alt: string;
   width: number;
   height: number;
@@ -44,7 +45,6 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   onNavigate,
 }: FullscreenModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(startIndex);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
     {}
@@ -55,7 +55,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [skeletonAspectRatio, setSkeletonAspectRatio] = useState(1);
   const [buttonOpacity, setButtonOpacity] = useState(100);
   const [lastTouchTime, setLastTouchTime] = useState(0);
-  const [fullResolutionLoaded, setFullResolutionLoaded] = useState<Record<string, boolean>>({});
+  const [fullResolutionLoaded, setFullResolutionLoaded] = useState<
+    Record<string, boolean>
+  >({});
 
   // Handle mounting for portal - instant mount
   useEffect(() => {
@@ -63,13 +65,34 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     return () => setMounted(false);
   }, []);
 
-  // Update current index when startIndex changes
+  // Initialize current index when modal opens or startIndex changes
   useEffect(() => {
-    setCurrentIndex(startIndex);
-  }, [startIndex]);
+    if (startIndex !== undefined && currentIndex !== startIndex) {
+      setCurrentIndex(startIndex);
+    }
+  }, [startIndex]); // Removed media from dependencies to prevent unwanted resets
+
+  // Handle currentIndex changes (for navigation)
+  useEffect(() => {
+    if (isOpen && currentIndex !== startIndex) {
+      console.log('currentIndex changed to:', currentIndex);
+    }
+  }, [currentIndex, isOpen, startIndex]);
 
   // Get current media
   const currentMedia = media[currentIndex];
+
+  // Debug logging
+  useEffect(() => {
+    if (isOpen) {
+      console.log('FullscreenModal opened with:', {
+        mediaLength: media.length,
+        currentIndex,
+        startIndex,
+        currentMedia: currentMedia?.id,
+      });
+    }
+  }, [isOpen, media.length, currentIndex, startIndex, currentMedia]);
 
   // Initialize loading state for current media - instant response
   useEffect(() => {
@@ -81,15 +104,19 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
   // Handle media loading - NO ARTIFICIAL DELAY
   const handleMediaLoad = useCallback((mediaId: string) => {
+    console.log('Image loaded:', mediaId);
     // Remove artificial delay - show image immediately when ready
     setLoadingStates(prev => ({
       ...prev,
       [mediaId]: false,
     }));
-    setFullResolutionLoaded(prev => ({
-      ...prev,
-      [mediaId]: true,
-    }));
+    setFullResolutionLoaded(prev => {
+      console.log('Marking image as loaded in cache:', mediaId);
+      return {
+        ...prev,
+        [mediaId]: true,
+      };
+    });
   }, []);
 
   const handleMediaError = useCallback((mediaId: string) => {
@@ -105,7 +132,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       setButtonOpacity(100);
 
       const fadeTimer = setTimeout(() => {
-        setButtonOpacity(20);
+        setButtonOpacity(80); // Increased from 20 to 80 for better visibility
       }, 1000);
 
       return () => clearTimeout(fadeTimer);
@@ -149,38 +176,44 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   // Handle navigation with instant transitions
   const navigateTo = useCallback(
     (index: number) => {
-      if (index < 0 || index >= media.length) return;
+      console.log(
+        'navigateTo called with index:',
+        index,
+        'media.length:',
+        media.length
+      );
+      if (index < 0 || index >= media.length) {
+        console.log('Index out of bounds, returning');
+        return;
+      }
 
-      setIsTransitioning(true);
       setCurrentIndex(index);
-
-      // Clear the full resolution loaded state for the new image
-      setFullResolutionLoaded(prev => ({
-        ...prev,
-        [media[index].id]: false,
-      }));
-
-      // Don't reset loading state - let the thumbnail show immediately
-      // The thumbnail is already loaded from the grid, so we don't need a skeleton
 
       if (onNavigate) {
         onNavigate(index);
       }
-
-      // Instant transition reset
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100); // Minimal transition for smooth UX
     },
     [media, onNavigate]
   );
 
   // Handle next/previous navigation
   const handleNext = useCallback(() => {
+    console.log(
+      'Next button clicked, currentIndex:',
+      currentIndex,
+      'media.length:',
+      media.length
+    );
     navigateTo((currentIndex + 1) % media.length);
   }, [currentIndex, media.length, navigateTo]);
 
   const handlePrev = useCallback(() => {
+    console.log(
+      'Prev button clicked, currentIndex:',
+      currentIndex,
+      'media.length:',
+      media.length
+    );
     navigateTo(currentIndex === 0 ? media.length - 1 : currentIndex - 1);
   }, [currentIndex, media.length, navigateTo]);
 
@@ -318,7 +351,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           <button
             onClick={handlePrev}
             onTouchStart={handleTouch}
-            className="absolute left-4 bottom-8 transform -translate-y-1/2 z-50 p-4 md:p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer"
             style={{ opacity: `${buttonOpacity}%` }}
             aria-label="Anterior"
           >
@@ -340,7 +373,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           <button
             onClick={handleNext}
             onTouchStart={handleTouch}
-            className="absolute right-4 bottom-8 transform -translate-y-1/2 z-50 p-4 md:p-3 rounded-full bg-background/50 text-foreground hover:bg-background/70 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer"
             style={{ opacity: `${buttonOpacity}%` }}
             aria-label="Siguiente"
           >
@@ -366,21 +399,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         className="relative z-10 w-full h-full p-0 md:p-4"
         onTouchStart={handleTouch}
       >
-        <div
-          className={`transition-all duration-200 ease-out relative w-full h-full ${
-            isTransitioning ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-          }`}
-        >
+        <div className="relative w-full h-full">
           {/* No loading skeleton - thumbnails are always available from the grid */}
 
-          {currentMedia.type === 'video' ? (
+          {currentMedia && currentMedia.type === 'video' ? (
             <video
               src={currentMedia.url}
-              className={`w-full h-full object-contain transition-all duration-200 ease-out ${
-                loadingStates[currentMedia.id]
-                  ? 'opacity-0 scale-95'
-                  : 'opacity-100 scale-100'
-              }`}
+              className="w-full h-full object-contain"
               style={{
                 maxHeight: '100vh',
                 maxWidth: '100vw',
@@ -394,11 +419,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               onLoadedData={() => handleMediaLoad(currentMedia.id)}
               onError={() => handleMediaError(currentMedia.id)}
             />
-          ) : (
+          ) : currentMedia ? (
             <div className="relative w-full h-full">
               {/* Thumbnail image - shown immediately */}
               <img
-                src={currentMedia.url}
+                src={currentMedia.thumbnailUrl || currentMedia.url}
                 alt={currentMedia.alt}
                 className={`w-full h-full object-contain ${
                   fullResolutionLoaded[currentMedia.id]
@@ -410,7 +435,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                   maxWidth: '100vw',
                 }}
                 data-testid={`thumbnail-${currentMedia.id}`}
-                key={`thumbnail-${currentMedia.id}`} // Force re-render when image changes
+                key={`thumbnail-${currentIndex}-${currentMedia.id}`} // Force re-render when image changes
               />
 
               {/* Full resolution image - loads in background */}
@@ -427,8 +452,9 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                   maxWidth: '100vw',
                 }}
                 data-testid={`full-resolution-${currentMedia.id}`}
-                key={`full-resolution-${currentMedia.id}`} // Force re-render when image changes
+                key={`full-resolution-${currentIndex}-${currentMedia.id}`} // Force re-render when image changes
                 onLoad={() => {
+                  console.log('Full resolution image loaded:', currentMedia.id);
                   setFullResolutionLoaded(prev => ({
                     ...prev,
                     [currentMedia.id]: true,
@@ -436,7 +462,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 }}
               />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
 
