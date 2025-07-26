@@ -96,7 +96,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
   // Note: Media processing is now handled by TiledGallery component
 
   // Debug logging
-  console.log('EditorialGrid media:', media.length, media);
+  // EditorialGrid component initialized
 
   if (!media.length) {
     return (

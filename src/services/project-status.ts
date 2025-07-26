@@ -1,5 +1,16 @@
 import { getFirestoreService } from '@/lib/firebase';
-import { collection, doc, getDoc, updateDoc, addDoc, query, where, orderBy, getDocs, serverTimestamp } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+  addDoc,
+  query,
+  where,
+  orderBy,
+  getDocs,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { ProjectStatus } from '@/components/admin/ProjectStatusManager';
 
 export interface StatusChange {
@@ -43,27 +54,29 @@ class ProjectStatusService {
       }
 
       const projectData = projectDoc.data();
-      
+
       // Get status history
       const statusHistoryQuery = query(
         collection(db, 'projectStatusHistory'),
         where('projectId', '==', projectId),
         orderBy('timestamp', 'desc')
       );
-      
+
       const statusHistorySnapshot = await getDocs(statusHistoryQuery);
-      const statusHistory: StatusChange[] = statusHistorySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          projectId: data.projectId,
-          fromStatus: data.fromStatus,
-          toStatus: data.toStatus,
-          timestamp: data.timestamp.toDate(),
-          changedBy: data.changedBy,
-          notes: data.notes
-        };
-      });
+      const statusHistory: StatusChange[] = statusHistorySnapshot.docs.map(
+        doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            projectId: data.projectId,
+            fromStatus: data.fromStatus,
+            toStatus: data.toStatus,
+            timestamp: data.timestamp.toDate(),
+            changedBy: data.changedBy,
+            notes: data.notes,
+          };
+        }
+      );
 
       return {
         id: projectDoc.id,
@@ -77,7 +90,7 @@ class ProjectStatusService {
         assignee: projectData.assignee,
         priority: projectData.priority || 'medium',
         createdAt: projectData.createdAt?.toDate() || new Date(),
-        updatedAt: projectData.updatedAt?.toDate() || new Date()
+        updatedAt: projectData.updatedAt?.toDate() || new Date(),
       };
     } catch (error) {
       console.error('Error getting project:', error);
@@ -86,9 +99,9 @@ class ProjectStatusService {
   }
 
   async updateProjectStatus(
-    projectId: string, 
-    newStatus: ProjectStatus, 
-    changedBy: string, 
+    projectId: string,
+    newStatus: ProjectStatus,
+    changedBy: string,
     notes?: string
   ): Promise<void> {
     try {
@@ -108,22 +121,22 @@ class ProjectStatusService {
         toStatus: newStatus,
         timestamp: new Date(),
         changedBy,
-        notes
+        notes,
       };
 
       // Add to status history
       await addDoc(collection(db, 'projectStatusHistory'), {
         ...statusChange,
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
       });
 
       // Update project status
       await updateDoc(doc(db, 'projects', projectId), {
         status: newStatus,
-        updatedAt: serverTimestamp()
+        updatedAt: serverTimestamp(),
       });
 
-      console.log(`Project ${projectId} status updated from ${project.status} to ${newStatus}`);
+      // Project status updated
     } catch (error) {
       console.error('Error updating project status:', error);
       throw error;
@@ -158,7 +171,9 @@ class ProjectStatusService {
     }
   }
 
-  async getProjectsByStatusRange(statuses: ProjectStatus[]): Promise<EnhancedProject[]> {
+  async getProjectsByStatusRange(
+    statuses: ProjectStatus[]
+  ): Promise<EnhancedProject[]> {
     try {
       const db = await this.getDb();
       if (!db) throw new Error('Database not available');
@@ -192,18 +207,26 @@ class ProjectStatusService {
       if (!db) throw new Error('Database not available');
 
       const statuses: ProjectStatus[] = [
-        'draft', 'shooting_scheduled', 'shooting_completed', 
-        'in_editing', 'editing_completed', 'delivered', 'completed'
+        'draft',
+        'shooting_scheduled',
+        'shooting_completed',
+        'in_editing',
+        'editing_completed',
+        'delivered',
+        'completed',
       ];
 
-      const stats: Record<ProjectStatus, number> = {} as Record<ProjectStatus, number>;
+      const stats: Record<ProjectStatus, number> = {} as Record<
+        ProjectStatus,
+        number
+      >;
 
       for (const status of statuses) {
         const projectsQuery = query(
           collection(db, 'projects'),
           where('status', '==', status)
         );
-        
+
         const snapshot = await getDocs(projectsQuery);
         stats[status] = snapshot.size;
       }
@@ -222,7 +245,7 @@ class ProjectStatusService {
 
       const changesQuery = query(
         collection(db, 'projectStatusHistory'),
-        orderBy('timestamp', 'desc'),
+        orderBy('timestamp', 'desc')
         // Note: Firestore doesn't support limit with orderBy on server timestamp
         // We'll need to handle this client-side for now
       );
@@ -239,7 +262,7 @@ class ProjectStatusService {
             toStatus: data.toStatus,
             timestamp: data.timestamp.toDate(),
             changedBy: data.changedBy,
-            notes: data.notes
+            notes: data.notes,
           };
         });
 
@@ -271,7 +294,7 @@ class ProjectStatusService {
           toStatus: data.toStatus,
           timestamp: data.timestamp.toDate(),
           changedBy: data.changedBy,
-          notes: data.notes
+          notes: data.notes,
         };
       });
 
@@ -283,4 +306,4 @@ class ProjectStatusService {
   }
 }
 
-export const projectStatusService = new ProjectStatusService(); 
+export const projectStatusService = new ProjectStatusService();

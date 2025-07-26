@@ -43,8 +43,7 @@ export const useLazyLoadPerformance = (): UseLazyLoadPerformanceReturn => {
       metricsRef.current.successCount += 1;
       loadStartTimes.current.delete(imageId);
 
-      // Log performance data
-      console.log(`Image ${imageId} loaded in ${loadTime.toFixed(2)}ms`);
+      // Performance data tracked
     }
   }, []);
 
@@ -61,7 +60,7 @@ export const useLazyLoadPerformance = (): UseLazyLoadPerformanceReturn => {
     visibilityStartTimes.current.set(imageId, startTime);
     loadStartTimes.current.set(imageId, startTime);
 
-    console.log(`Image ${imageId} became visible`);
+    // Image became visible
   }, []);
 
   const getMetrics = useCallback((): LazyLoadMetrics => {

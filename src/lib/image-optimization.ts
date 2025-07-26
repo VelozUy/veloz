@@ -307,17 +307,17 @@ export function validateOptimizationConfig(
   const { quality, memoryLimit, maxConcurrentLoads } = config;
 
   if (quality && (quality < 1 || quality > 100)) {
-    console.warn('Image quality must be between 1 and 100');
+    // Image quality must be between 1 and 100
     return false;
   }
 
   if (memoryLimit && memoryLimit < 10) {
-    console.warn('Memory limit should be at least 10MB');
+    // Memory limit should be at least 10MB
     return false;
   }
 
   if (maxConcurrentLoads && maxConcurrentLoads < 1) {
-    console.warn('Max concurrent loads must be at least 1');
+    // Max concurrent loads must be at least 1
     return false;
   }
 

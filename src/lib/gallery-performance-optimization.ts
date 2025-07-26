@@ -176,17 +176,7 @@ export function validateCoreWebVitals(): Promise<OptimizationResult> {
       lcp: ((before.lcp - after.lcp) / before.lcp) * 100,
     };
 
-    // Log improvements
-    console.log('🚀 Core Web Vitals Improvements:');
-    console.log(
-      `CLS: ${before.cls.toFixed(3)} → ${after.cls.toFixed(3)} (${improvements.cls.toFixed(1)}% improvement)`
-    );
-    console.log(
-      `FCP: ${before.fcp.toFixed(1)}s → ${after.fcp.toFixed(1)}s (${improvements.fcp.toFixed(1)}% improvement)`
-    );
-    console.log(
-      `LCP: ${before.lcp.toFixed(1)}s → ${after.lcp.toFixed(1)}s (${improvements.lcp.toFixed(1)}% improvement)`
-    );
+    // Performance improvements calculated
 
     resolve({ before, after, improvements });
   });
@@ -385,8 +375,7 @@ export function initializePerformanceOptimizations(): void {
 
   // Step 5: Validate improvements
   validateCoreWebVitals().then(result => {
-    console.log('✅ Performance optimizations applied successfully');
-    console.log('📊 Performance metrics:', result);
+    // Performance optimizations applied successfully
   });
 }
 

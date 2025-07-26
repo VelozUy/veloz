@@ -395,14 +395,9 @@ export class FileUploadService {
             optimizedHeight: optimization.height,
           };
 
-          console.log(
-            `Image optimized: ${optimization.originalSize} -> ${optimization.optimizedSize} bytes (${optimization.compressionRatio.toFixed(2)}x compression)`
-          );
+          // Image optimized successfully
         } catch (error) {
-          console.warn(
-            'Image optimization failed, uploading original file:',
-            error
-          );
+          // Image optimization failed, uploading original file
           // Continue with original file if optimization fails
         }
       }

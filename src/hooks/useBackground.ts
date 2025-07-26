@@ -32,9 +32,7 @@ export function useBackground(
 
   const classes = useMemo(() => {
     if (!isValid) {
-      console.warn(
-        `Invalid background config: ${sectionType} with ${priority} priority`
-      );
+      // Invalid background config
       return responsive
         ? getResponsiveBackgroundClasses('content', 'medium').mobile
         : getBackgroundClasses('content', 'medium');

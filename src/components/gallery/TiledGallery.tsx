@@ -64,8 +64,7 @@ export function TiledGallery({
   galleryGroup,
   projectTitle = '',
 }: TiledGalleryProps) {
-  // Debug logging
-  console.log('TiledGallery received images:', images.length, images);
+  // TiledGallery component initialized
   // Container and layout state
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1200);
@@ -253,11 +252,9 @@ export function TiledGallery({
   useEffect(() => {
     // Observe items even if layout is not ready yet
     const items = document.querySelectorAll('[data-item-id]');
-    console.log('Found items to observe:', items.length); // Debug log
     items.forEach(item => {
       const itemId = item.getAttribute('data-item-id');
       if (itemId && item instanceof HTMLElement) {
-        console.log('Observing item:', itemId); // Debug log
         observeItem(itemId, item);
       }
     });
@@ -455,14 +452,8 @@ export function TiledGallery({
             const isLoaded = loadedImages.has(image.id);
             const hasError = errorImages.has(image.id);
 
-            // Debug logging
-            console.log(
-              `Rendering image ${image.id}: visible=${isVisible}, loaded=${isLoaded}, error=${hasError}, lazyLoad=${lazyLoad}, index=${index}`
-            );
-
             // Skip rendering if not visible
             if (!isVisible) {
-              console.log(`Skipping image ${image.id} - not visible`);
               return null;
             }
 
@@ -570,12 +561,10 @@ export function TiledGallery({
                               sizes={optimizedImage.sizes}
                               priority={optimizedImage.priority}
                               onLoad={() => {
-                                console.log('Image loaded:', image.id); // Debug log
                                 handleImageLoad(image.id);
                                 handleImageLoadWithAnimation(image.id);
                               }}
                               onError={() => {
-                                console.log('Image error:', image.id); // Debug log
                                 handleImageError(image.id);
                                 handleImageErrorWithAnimation(image.id);
                               }}

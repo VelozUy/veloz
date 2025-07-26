@@ -431,9 +431,9 @@ export class FirebaseErrorHandler {
     } else if (error.severity === 'high') {
       console.error('❌ High Priority Firebase Error:', error, context);
     } else if (error.severity === 'medium') {
-      console.warn('⚠️ Firebase Warning:', error, context);
+      // Firebase Warning
     } else {
-      console.log('ℹ️ Firebase Info:', error, context);
+      // Firebase Info
     }
   }
 
@@ -473,9 +473,7 @@ export class FirebaseErrorHandler {
 
         config.onRetry(attempt, lastError);
 
-        console.log(
-          `🔄 Retrying operation (attempt ${attempt + 1}/${config.maxAttempts}) in ${delay}ms...`
-        );
+        // Retrying operation
         await this.sleep(delay);
       }
     }
@@ -647,12 +645,12 @@ export const trackListener = (unsubscribe: () => void) => {
 
 // Cleanup all active listeners
 export const cleanupAllListeners = () => {
-  console.log(`🧹 Cleaning up ${activeListeners.size} active listeners`);
+  // Cleaning up active listeners
   activeListeners.forEach(unsubscribe => {
     try {
       unsubscribe();
     } catch (error) {
-      console.warn('Error during listener cleanup:', error);
+      // Error during listener cleanup
     }
   });
   activeListeners.clear();
@@ -706,7 +704,7 @@ export const trackError = (error: unknown, operation?: string): void => {
     errorHistory.shift();
   }
 
-  console.warn(`🔥 Firebase error tracked: ${errorType} - ${errorMessage}`);
+  // Firebase error tracked
 };
 
 // Get error statistics
@@ -745,9 +743,7 @@ export const getErrorStatistics = () => {
 // Automatic recovery trigger
 export const triggerAutomaticRecovery = async (): Promise<boolean> => {
   if (isRecovering || recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
-    console.warn(
-      '🔥 Automatic recovery skipped - already in progress or max attempts reached'
-    );
+    // Automatic recovery skipped - already in progress or max attempts reached
     return false;
   }
 
@@ -755,9 +751,7 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
     isRecovering = true;
     recoveryAttempts++;
 
-    console.log(
-      `🔥 Triggering automatic Firestore recovery (attempt ${recoveryAttempts}/${MAX_RECOVERY_ATTEMPTS})`
-    );
+    // Triggering automatic Firestore recovery
 
     // Track recovery attempt
     const recoveryStartTime = Date.now();
@@ -770,9 +764,9 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
     if (db) {
       try {
         await disableNetwork(db);
-        console.log('✅ Network disabled for recovery');
+        // Network disabled for recovery
       } catch (error) {
-        console.warn('⚠️ Could not disable network during recovery:', error);
+        // Could not disable network during recovery
       }
     }
 
@@ -798,16 +792,14 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
     if (newDb) {
       try {
         await enableNetwork(newDb);
-        console.log('✅ Network re-enabled after recovery');
+        // Network re-enabled after recovery
       } catch (error) {
-        console.warn('⚠️ Could not re-enable network after recovery:', error);
+        // Could not re-enable network after recovery
       }
     }
 
     const recoveryDuration = Date.now() - recoveryStartTime;
-    console.log(
-      `✅ Automatic Firestore recovery completed successfully in ${recoveryDuration}ms`
-    );
+    // Automatic Firestore recovery completed successfully
 
     // Track successful recovery
     const lastError = errorHistory[errorHistory.length - 1];
@@ -834,7 +826,7 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
     // Reset recovery attempts after cooldown
     setTimeout(() => {
       recoveryAttempts = 0;
-      console.log('🔄 Recovery attempts reset after cooldown');
+      // Recovery attempts reset after cooldown
     }, RECOVERY_COOLDOWN);
   }
 };
@@ -856,14 +848,12 @@ export const withFirestoreRecovery = async <T>(
     trackError(error);
 
     if (isFirestoreInternalError(error)) {
-      console.warn(
-        '🔥 Detected Firestore internal error, attempting automatic recovery...'
-      );
+      // Detected Firestore internal error, attempting automatic recovery...
 
       const recoverySuccess = await triggerAutomaticRecovery();
       if (recoverySuccess) {
         try {
-          console.log('🔥 Retrying operation after automatic recovery...');
+          // Retrying operation after automatic recovery...
           return await operation();
         } catch (retryError) {
           console.error(
@@ -872,7 +862,7 @@ export const withFirestoreRecovery = async <T>(
           );
           trackError(retryError);
           if (fallback !== undefined) {
-            console.warn('🔥 Using fallback value');
+            // Using fallback value
             return fallback;
           }
           throw retryError;
@@ -880,7 +870,7 @@ export const withFirestoreRecovery = async <T>(
       } else {
         console.error('🔥 Automatic Firestore recovery failed, cannot recover');
         if (fallback !== undefined) {
-          console.warn('🔥 Using fallback value');
+          // Using fallback value
           return fallback;
         }
         throw error;
@@ -891,8 +881,6 @@ export const withFirestoreRecovery = async <T>(
     }
   }
 };
-
-
 
 // Enhanced timeout wrapper
 export const withTimeout = <T>(
@@ -914,16 +902,16 @@ export const withTimeout = <T>(
 
 // Cleanup function to be called on app unmount
 export const cleanupFirebase = async () => {
-  console.log('🧹 Cleaning up Firebase resources...');
+  // Cleaning up Firebase resources...
   cleanupAllListeners();
 
   const db = await getFirestoreService();
   if (db) {
     try {
       await disableNetwork(db);
-      console.log('✅ Network disabled during cleanup');
+      // Network disabled during cleanup
     } catch (error) {
-      console.warn('⚠️ Could not disable network during cleanup:', error);
+      // Could not disable network during cleanup
     }
   }
 };
@@ -937,13 +925,14 @@ if (typeof window !== 'undefined') {
 
 // Global error handler for unhandled Firebase errors
 if (typeof window !== 'undefined') {
-  window.addEventListener('unhandledrejection', (event) => {
-    if (event.reason && (
-      event.reason.message?.includes('firebase') ||
-      event.reason.message?.includes('Failed to fetch') ||
-      event.reason.message?.includes('installations')
-    )) {
-      console.warn('⚠️ Unhandled Firebase error caught:', event.reason);
+  window.addEventListener('unhandledrejection', event => {
+    if (
+      event.reason &&
+      (event.reason.message?.includes('firebase') ||
+        event.reason.message?.includes('Failed to fetch') ||
+        event.reason.message?.includes('installations'))
+    ) {
+      // Unhandled Firebase error caught
       event.preventDefault(); // Prevent the error from crashing the app
     }
   });

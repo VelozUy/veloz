@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /**
  * Theme Accessibility Testing Utility
  *
@@ -225,12 +224,7 @@ export function validateColorCombination(
   const ratio = getContrastRatio(background, foreground);
   const result = testContrastRatio(ratio);
 
-  console.log(`🎨 ${context} Color Validation:`);
-  console.log(`   Foreground: ${foreground}`);
-  console.log(`   Background: ${background}`);
-  console.log(`   Contrast Ratio: ${ratio.toFixed(2)}:1`);
-  console.log(`   Accessibility: ${result.level}`);
-  console.log(`   Passes: ${result.passes ? '✅' : '❌'}`);
+  // Color validation logged
 
   return result;
 }

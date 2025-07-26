@@ -273,7 +273,7 @@ export const measurePerformance = (name: string, fn: () => void): void => {
   const start = performance.now();
   fn();
   const end = performance.now();
-  console.log(`${name} took ${end - start}ms`);
+  // Performance measurement completed
 };
 
 // Image optimization utilities
@@ -309,7 +309,7 @@ export const createProgressiveLoader = (
       loaded++;
       onProgress(loaded, total);
     } catch (error) {
-      console.warn(`Failed to load image: ${item.url}`, error);
+      // Failed to load image
       loaded++;
       onProgress(loaded, total);
     }

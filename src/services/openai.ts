@@ -102,9 +102,7 @@ export class OpenAIService {
     if (typeof window === 'undefined') {
       this.initializeFromEnv();
     } else {
-      console.warn(
-        'OpenAI service should not be initialized in browser. Use API routes instead.'
-      );
+      // OpenAI service should not be initialized in browser. Use API routes instead.
     }
   }
 
@@ -123,7 +121,7 @@ export class OpenAIService {
       process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
     if (!apiKey) {
-      console.warn('OpenAI API key not found in environment variables');
+      // OpenAI API key not found in environment variables
       return;
     }
 

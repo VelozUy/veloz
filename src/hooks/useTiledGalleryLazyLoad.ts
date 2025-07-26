@@ -129,10 +129,7 @@ export const useTiledGalleryLazyLoad = (
       // If lazy loading is disabled, mark all items as visible immediately
       const allItemIds = Array.from(itemRefs.current.keys());
       if (allItemIds.length > 0) {
-        console.log(
-          'Lazy loading disabled, marking all items as visible:',
-          allItemIds
-        ); // Debug log
+        // Lazy loading disabled, marking all items as visible
         setVisibleItems(new Set(allItemIds));
       }
     }
@@ -148,7 +145,7 @@ export const useTiledGalleryLazyLoad = (
       );
 
       if (missingItems.length > 0) {
-        console.log('Adding missing items to visible set:', missingItems); // Debug log
+        // Adding missing items to visible set
         setVisibleItems(prev => new Set([...prev, ...missingItems]));
       }
     }
@@ -199,19 +196,16 @@ export const useTiledGalleryLazyLoad = (
   // Observe item - preserving current patterns
   const observeItem = useCallback(
     (itemId: string, element: HTMLElement) => {
-      console.log('Observing item:', itemId, 'lazyLoad:', options.lazyLoad); // Debug log
       itemRefs.current.set(itemId, element);
       setItemCount(itemRefs.current.size);
 
       // If lazy loading is disabled, mark as visible immediately
       if (options.lazyLoad === false) {
-        console.log('Lazy loading disabled, marking as visible:', itemId); // Debug log
         setVisibleItems(prev => new Set([...prev, itemId]));
         return;
       }
 
       if (!observerRef.current) {
-        console.log('No observer available for:', itemId); // Debug log
         return;
       }
       observerRef.current.observe(element);
@@ -310,7 +304,6 @@ export const useTiledGalleryLazyLoad = (
 
   // Handle image load completion - preserving current patterns
   const handleImageLoad = useCallback((imageId: string) => {
-    console.log('Image loaded:', imageId); // Debug log
     const startTime = loadStartTimes.current.get(imageId);
     if (startTime) {
       const loadTime = performance.now() - startTime;

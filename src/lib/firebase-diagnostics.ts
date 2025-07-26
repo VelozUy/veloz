@@ -22,7 +22,7 @@ export class FirebaseDiagnostics {
   async runFullDiagnostics(): Promise<DiagnosticResult[]> {
     this.results = [];
 
-    console.log('🔥 Starting Firebase Diagnostics...');
+    // Starting Firebase Diagnostics...
 
     try {
       // Run all tests with overall timeout
@@ -52,7 +52,7 @@ export class FirebaseDiagnostics {
       }
     }
 
-    console.log('🔥 Firebase Diagnostics Complete:', this.results);
+    // Firebase Diagnostics Complete
     return this.results;
   }
 
@@ -74,7 +74,7 @@ export class FirebaseDiagnostics {
   ) {
     this.results.push({ test, status, message, details });
     const emoji = status === 'pass' ? '✅' : status === 'fail' ? '❌' : '⚠️';
-    console.log(`${emoji} ${test}: ${message}`);
+    // Diagnostic result logged
   }
 
   private async testEnvironmentVariables() {
@@ -264,35 +264,35 @@ export const quickDiagnostics = async (): Promise<DiagnosticResult[]> => {
 
 // Fix common issues automatically
 export const attemptAutoFix = async (): Promise<void> => {
-  console.log('🔧 Attempting auto-fix for common Firebase issues...');
+  // Attempting auto-fix for common Firebase issues...
 
   try {
     // Try to re-enable network with multiple attempts
     const db = await getFirestoreService();
     if (!db) throw new Error('Firestore not available');
-    console.log('🔄 Step 1: Disabling Firestore network...');
+    // Step 1: Disabling Firestore network...
     await disableNetwork(db);
 
-    console.log('🔄 Step 2: Waiting 2 seconds...');
+    // Step 2: Waiting 2 seconds...
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    console.log('🔄 Step 3: Re-enabling Firestore network...');
+    // Step 3: Re-enabling Firestore network...
     await enableNetwork(db);
 
-    console.log('🔄 Step 4: Testing connection...');
+    // Step 4: Testing connection...
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Test if the fix worked
     const testDoc = doc(db, 'test', 'connection-test');
     await getDoc(testDoc);
 
-    console.log('✅ Network reset and connection test completed successfully');
+    // Network reset and connection test completed successfully
   } catch (error) {
-    console.log('⚠️ Auto-fix attempt failed:', error);
+    // Auto-fix attempt failed
 
     // Try alternative approach - force refresh
     try {
-      console.log('🔄 Attempting alternative fix - clearing offline state...');
+      // Attempting alternative fix - clearing offline state...
 
       // Clear any cached offline state
       if (typeof window !== 'undefined' && window.localStorage) {
@@ -304,9 +304,9 @@ export const attemptAutoFix = async (): Promise<void> => {
         });
       }
 
-      console.log('✅ Cleared Firebase cache, please refresh the page');
+      // Cleared Firebase cache, please refresh the page
     } catch (cacheError) {
-      console.log('⚠️ Cache clearing failed:', cacheError);
+      // Cache clearing failed
     }
   }
 };

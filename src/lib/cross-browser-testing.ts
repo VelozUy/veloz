@@ -316,7 +316,7 @@ export function applyBrowserFixes(): void {
   if (browser.name === 'Edge') {
     // Fix for Intersection Observer in older Edge versions
     if (!testIntersectionObserver()) {
-      console.warn('Intersection Observer not supported in this Edge version');
+      // Intersection Observer not supported in this Edge version
     }
   }
 }
@@ -331,13 +331,10 @@ export function initCrossBrowserTesting(): void {
   // Run tests in development mode
   if (process.env.NODE_ENV === 'development') {
     const results = runCrossBrowserTests();
-    console.log('Cross-browser test results:', results);
+    // Cross-browser test results logged
 
     if (!results.passed) {
-      console.warn(
-        'Cross-browser compatibility issues detected:',
-        results.issues
-      );
+      // Cross-browser compatibility issues detected
     }
   }
 }

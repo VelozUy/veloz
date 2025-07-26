@@ -29,7 +29,7 @@ export const coreTests = {
       'Firebase Auth connection',
       'Firebase Storage connection',
       'Network connectivity',
-    ]
+    ],
   },
 
   // Navigation Tests
@@ -45,7 +45,7 @@ export const coreTests = {
       'Admin panel access',
       'Route protection works',
       'Conditional navigation shows/hides correctly',
-    ]
+    ],
   },
 
   // Homepage Tests
@@ -61,7 +61,7 @@ export const coreTests = {
       'Responsive design desktop',
       'SEO meta tags present',
       'Structured data (JSON-LD)',
-    ]
+    ],
   },
 
   // Gallery Tests
@@ -77,7 +77,7 @@ export const coreTests = {
       'CTA survey flow works',
       'Bento grid layout responsive',
       'Media filtering (if enabled)',
-    ]
+    ],
   },
 
   // Contact Form Tests
@@ -94,7 +94,7 @@ export const coreTests = {
       'Success message shows',
       'Error handling works',
       'Loading states work',
-    ]
+    ],
   },
 
   // Admin Panel Tests
@@ -111,7 +111,7 @@ export const coreTests = {
       'Contact messages view',
       'Media upload works',
       'Role-based permissions',
-    ]
+    ],
   },
 
   // Performance Tests
@@ -126,7 +126,7 @@ export const coreTests = {
       'Images optimized',
       'Fonts optimized',
       'Bundle size reasonable',
-    ]
+    ],
   },
 
   // SEO Tests
@@ -143,7 +143,7 @@ export const coreTests = {
       'Color contrast ratio',
       'Keyboard navigation',
       'Screen reader compatibility',
-    ]
+    ],
   },
 
   // Cross-browser Tests
@@ -159,7 +159,7 @@ export const coreTests = {
       'JavaScript features work',
       'CSS Grid/Flexbox support',
       'Modern JS features',
-    ]
+    ],
   },
 };
 
@@ -188,7 +188,15 @@ export class BrowserTester {
 
     return {
       userAgent: ua,
-      browser: isChrome ? 'Chrome' : isFirefox ? 'Firefox' : isSafari ? 'Safari' : isEdge ? 'Edge' : 'Unknown',
+      browser: isChrome
+        ? 'Chrome'
+        : isFirefox
+          ? 'Firefox'
+          : isSafari
+            ? 'Safari'
+            : isEdge
+              ? 'Edge'
+              : 'Unknown',
       version: this.getBrowserVersion(ua),
       platform: navigator.platform,
       language: navigator.language,
@@ -218,28 +226,33 @@ export class BrowserTester {
     // Test if Firebase is initialized
     try {
       const { db, auth, storage } = await import('@/lib/firebase');
-      
+
       tests.push({
         test: 'Firebase initialization',
         status: db ? 'pass' : 'fail',
-        message: db ? 'Firebase Firestore initialized' : 'Firebase Firestore not initialized',
+        message: db
+          ? 'Firebase Firestore initialized'
+          : 'Firebase Firestore not initialized',
         timestamp: new Date(),
       });
 
       tests.push({
         test: 'Firebase Auth initialization',
         status: auth ? 'pass' : 'fail',
-        message: auth ? 'Firebase Auth initialized' : 'Firebase Auth not initialized',
+        message: auth
+          ? 'Firebase Auth initialized'
+          : 'Firebase Auth not initialized',
         timestamp: new Date(),
       });
 
       tests.push({
         test: 'Firebase Storage initialization',
         status: storage ? 'pass' : 'fail',
-        message: storage ? 'Firebase Storage initialized' : 'Firebase Storage not initialized',
+        message: storage
+          ? 'Firebase Storage initialized'
+          : 'Firebase Storage not initialized',
         timestamp: new Date(),
       });
-
     } catch (error) {
       tests.push({
         test: 'Firebase import',
@@ -275,11 +288,14 @@ export class BrowserTester {
     });
 
     // Test if React app is mounted
-    const reactRoot = document.getElementById('__next') || document.getElementById('root');
+    const reactRoot =
+      document.getElementById('__next') || document.getElementById('root');
     tests.push({
       test: 'React app mounted',
       status: reactRoot ? 'pass' : 'fail',
-      message: reactRoot ? 'React root element found' : 'React root element not found',
+      message: reactRoot
+        ? 'React root element found'
+        : 'React root element not found',
       timestamp: new Date(),
     });
 
@@ -336,15 +352,20 @@ export class BrowserTester {
 
     // Test page load performance
     if ('performance' in window) {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
+
       if (navigation) {
         const loadTime = navigation.loadEventEnd - navigation.loadEventStart;
-        const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart;
-        
+        const domContentLoaded =
+          navigation.domContentLoadedEventEnd -
+          navigation.domContentLoadedEventStart;
+
         tests.push({
           test: 'Page load time',
-          status: loadTime < 3000 ? 'pass' : loadTime < 5000 ? 'warning' : 'fail',
+          status:
+            loadTime < 3000 ? 'pass' : loadTime < 5000 ? 'warning' : 'fail',
           message: `Page loaded in ${loadTime}ms`,
           details: { loadTime, domContentLoaded },
           timestamp: new Date(),
@@ -382,18 +403,25 @@ export class BrowserTester {
 
     // Check for basic accessibility features
     const images = document.querySelectorAll('img');
-    const imagesWithAlt = Array.from(images).filter(img => img.hasAttribute('alt'));
-    
+    const imagesWithAlt = Array.from(images).filter(img =>
+      img.hasAttribute('alt')
+    );
+
     tests.push({
       test: 'Images have alt text',
       status: images.length === imagesWithAlt.length ? 'pass' : 'warning',
       message: `${imagesWithAlt.length}/${images.length} images have alt text`,
-      details: { totalImages: images.length, imagesWithAlt: imagesWithAlt.length },
+      details: {
+        totalImages: images.length,
+        imagesWithAlt: imagesWithAlt.length,
+      },
       timestamp: new Date(),
     });
 
     // Check for ARIA labels
-    const elementsWithAria = document.querySelectorAll('[aria-label], [aria-labelledby], [role]');
+    const elementsWithAria = document.querySelectorAll(
+      '[aria-label], [aria-labelledby], [role]'
+    );
     tests.push({
       test: 'ARIA attributes present',
       status: elementsWithAria.length > 0 ? 'pass' : 'warning',
@@ -411,11 +439,14 @@ export class BrowserTester {
 
     // Browser info
     const browserInfo = this.getBrowserInfo();
-    console.log('🌐 Browser Info:', browserInfo);
+    // Browser Info logged
 
     // Run test suites
     const testSuites = [
-      { name: 'Firebase Connection', testFn: () => this.testFirebaseConnection() },
+      {
+        name: 'Firebase Connection',
+        testFn: () => this.testFirebaseConnection(),
+      },
       { name: 'Navigation', testFn: () => this.testNavigation() },
       { name: 'Responsive Design', testFn: () => this.testResponsiveDesign() },
       { name: 'Performance', testFn: () => this.testPerformance() },
@@ -441,12 +472,14 @@ export class BrowserTester {
       } catch (error) {
         suites.push({
           name: suite.name,
-          tests: [{
-            test: 'Test suite execution',
-            status: 'fail',
-            message: `Failed to run test suite: ${error}`,
-            timestamp: new Date(),
-          }],
+          tests: [
+            {
+              test: 'Test suite execution',
+              status: 'fail',
+              message: `Failed to run test suite: ${error}`,
+              timestamp: new Date(),
+            },
+          ],
           passed: 0,
           failed: 1,
           warnings: 0,
@@ -483,7 +516,14 @@ export class BrowserTester {
       if (suite.tests.length > 0) {
         report += '#### Detailed Results\n';
         for (const test of suite.tests) {
-          const icon = test.status === 'pass' ? '✅' : test.status === 'fail' ? '❌' : test.status === 'warning' ? '⚠️' : '⏳';
+          const icon =
+            test.status === 'pass'
+              ? '✅'
+              : test.status === 'fail'
+                ? '❌'
+                : test.status === 'warning'
+                  ? '⚠️'
+                  : '⏳';
           report += `${icon} **${test.test}**: ${test.message}\n`;
         }
         report += '\n';
@@ -495,8 +535,14 @@ export class BrowserTester {
 
   // Get overall test status
   getOverallStatus(): 'pass' | 'fail' | 'warning' {
-    const totalFailed = this.results.reduce((sum, suite) => sum + suite.failed, 0);
-    const totalWarnings = this.results.reduce((sum, suite) => sum + suite.warnings, 0);
+    const totalFailed = this.results.reduce(
+      (sum, suite) => sum + suite.failed,
+      0
+    );
+    const totalWarnings = this.results.reduce(
+      (sum, suite) => sum + suite.warnings,
+      0
+    );
 
     if (totalFailed > 0) return 'fail';
     if (totalWarnings > 0) return 'warning';
@@ -548,4 +594,4 @@ export const manualTestingChecklist = {
 // const tester = new BrowserTester();
 // tester.runComprehensiveTests().then(results => {
 //   console.log(tester.generateReport());
-// }); 
+// });

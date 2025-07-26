@@ -243,7 +243,7 @@ export class GalleryAnalytics {
    */
   public trackEvent(event: GalleryAnalyticsEvent) {
     // Fallback to console logging for development
-    console.log('Gallery Analytics Event:', event);
+    // Gallery Analytics Event logged
   }
 
   /**

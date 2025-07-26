@@ -3,7 +3,7 @@ import { doc, enableNetwork } from 'firebase/firestore';
 import { getStorageService } from './firebase';
 
 export const testFirebaseConnection = async () => {
-  console.log('🧪 Testing Firebase connection...');
+  // Testing Firebase connection...
 
   try {
     const db = await getFirestoreService();
@@ -13,16 +13,16 @@ export const testFirebaseConnection = async () => {
       return false;
     }
 
-    console.log('✅ Firebase Firestore is available');
+    // Firebase Firestore is available
 
     // Test network connectivity
     await enableNetwork(db);
-    console.log('✅ Firebase network enabled');
+    // Firebase network enabled
 
     // Test a simple document read
     // const testDoc = doc(db, 'test', 'connection');
     // const docSnap = await getDoc(testDoc);
-    console.log('✅ Firebase document read successful');
+    // Firebase document read successful
 
     return true;
   } catch (error) {
@@ -32,17 +32,12 @@ export const testFirebaseConnection = async () => {
 };
 
 export const debugFirebaseState = () => {
-  console.log('🔥 Firebase Debug Info:', {
-    isClient: typeof window !== 'undefined',
-    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A',
-    online: typeof navigator !== 'undefined' ? navigator.onLine : 'N/A',
-    timestamp: new Date().toISOString(),
-  });
+  // Firebase Debug Info logged
 };
 
 // Test script to verify Firebase Storage functionality
 export async function testFirebaseStorage() {
-  console.log('🧪 Testing Firebase Storage...');
+  // Testing Firebase Storage...
 
   try {
     const storage = await getStorageService();
@@ -52,8 +47,8 @@ export async function testFirebaseStorage() {
       return false;
     }
 
-    console.log('✅ Firebase Storage is available');
-    console.log('Storage instance:', storage);
+    // Firebase Storage is available
+    // Storage instance logged
 
     return true;
   } catch (error) {
@@ -64,18 +59,18 @@ export async function testFirebaseStorage() {
 
 // Test file upload service
 export async function testFileUploadService() {
-  console.log('🧪 Testing File Upload Service...');
+  // Testing File Upload Service...
 
   try {
     const { FileUploadService } = await import('../services/file-upload');
     const service = new FileUploadService();
 
-    console.log('✅ File Upload Service created successfully');
-    console.log('Service instance:', service);
+    // File Upload Service created successfully
+    // Service instance logged
 
     // Test configuration
     const imageConfig = service.getConfigForFileType('image');
-    console.log('✅ Image upload config:', imageConfig);
+    // Image upload config logged
 
     return true;
   } catch (error) {
@@ -88,21 +83,21 @@ export async function testFileUploadService() {
 import { getAuthSync, getAuthService } from './firebase';
 
 export async function testFirebaseAuth() {
-  console.log('🧪 Testing Firebase Auth initialization...');
+  // Testing Firebase Auth initialization...
 
   try {
     // Test synchronous auth
     const syncAuth = getAuthSync();
-    console.log('✅ Sync auth available:', !!syncAuth);
+    // Sync auth available
 
     // Test async auth
     const asyncAuth = await getAuthService();
-    console.log('✅ Async auth available:', !!asyncAuth);
+    // Async auth available
 
     if (syncAuth && typeof syncAuth.onAuthStateChanged === 'function') {
-      console.log('✅ Auth has onAuthStateChanged method');
+      // Auth has onAuthStateChanged method
     } else {
-      console.log('❌ Auth missing onAuthStateChanged method');
+      // Auth missing onAuthStateChanged method
     }
 
     return { syncAuth, asyncAuth };

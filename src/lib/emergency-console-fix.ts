@@ -8,11 +8,11 @@ declare global {
 }
 
 const emergencyFirebaseFix = async (): Promise<void> => {
-  console.log('🚨 EMERGENCY: Starting Firebase fix...');
+  // Starting Firebase fix...
 
   try {
     // Step 1: Clear all Firebase-related storage
-    console.log('🧹 Step 1: Clearing storage...');
+    // Clearing storage...
     if (typeof localStorage !== 'undefined') {
       const keys = Object.keys(localStorage);
       keys.forEach(key => {
@@ -22,7 +22,7 @@ const emergencyFirebaseFix = async (): Promise<void> => {
           key.includes('google')
         ) {
           localStorage.removeItem(key);
-          console.log(`Removed localStorage: ${key}`);
+          // Removed localStorage item
         }
       });
     }
@@ -36,30 +36,30 @@ const emergencyFirebaseFix = async (): Promise<void> => {
           key.includes('google')
         ) {
           sessionStorage.removeItem(key);
-          console.log(`Removed sessionStorage: ${key}`);
+          // Removed sessionStorage item
         }
       });
     }
 
     // Step 2: Clear IndexedDB
-    console.log('🗄️ Step 2: Clearing IndexedDB...');
+    // Clearing IndexedDB...
     if ('indexedDB' in window) {
       try {
         const databases = await indexedDB.databases();
         for (const db of databases) {
           if (db.name?.includes('firebase') || db.name?.includes('firestore')) {
-            console.log(`Deleting IndexedDB: ${db.name}`);
+            // Deleting IndexedDB
             indexedDB.deleteDatabase(db.name);
           }
         }
       } catch (error) {
-        console.log('IndexedDB cleanup failed:', error);
+        // IndexedDB cleanup failed
       }
     }
 
     // Step 3: Force page reload
-    console.log('🔄 Step 3: Force reloading page in 2 seconds...');
-    console.log('✅ Emergency fix completed. Page will reload...');
+    // Force reloading page in 2 seconds...
+    // Emergency fix completed. Page will reload...
 
     setTimeout(() => {
       window.location.reload();

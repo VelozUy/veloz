@@ -747,7 +747,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
             const storageRef = ref(storageService, media.filePath);
             await deleteObject(storageRef);
           } catch (storageError) {
-            console.warn('Failed to delete file from storage:', storageError);
+            // Failed to delete file from storage
             // Continue with Firestore deletion even if storage deletion fails
           }
         }

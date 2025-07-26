@@ -29,9 +29,7 @@ export const reinitializeFirebase = async (): Promise<boolean> => {
     isReinitializing = true;
     reinitAttempts++;
 
-    console.log(
-      `🔥 Reinitializing Firebase (attempt ${reinitAttempts}/${MAX_REINIT_ATTEMPTS})`
-    );
+    // Reinitializing Firebase
 
     // Clear existing instances
     app = null;
@@ -55,14 +53,14 @@ export const reinitializeFirebase = async (): Promise<boolean> => {
       ) {
         try {
           connectFirestoreEmulator(db, 'localhost', 8080);
-          console.log('🔥 Connected to Firestore emulator');
+          // Connected to Firestore emulator
         } catch (error) {
-          console.warn('🔥 Could not connect to Firestore emulator:', error);
+          // Could not connect to Firestore emulator
         }
       }
     }
 
-    console.log('✅ Firebase reinitialized successfully');
+    // Firebase reinitialized successfully
     return true;
   } catch (error) {
     console.error('❌ Firebase reinitialization failed:', error);
@@ -108,14 +106,12 @@ export const withFirestoreRecovery = async <T>(
     return await operation();
   } catch (error) {
     if (isFirestoreInternalError(error)) {
-      console.warn(
-        '🔥 Detected Firestore internal error, attempting recovery...'
-      );
+      // Detected Firestore internal error, attempting recovery...
 
       const reinitSuccess = await reinitializeFirebase();
       if (reinitSuccess) {
         try {
-          console.log('🔥 Retrying operation after reinitialization...');
+          // Retrying operation after reinitialization...
           return await operation();
         } catch (retryError) {
           console.error(

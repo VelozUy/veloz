@@ -36,7 +36,8 @@ class FullscreenPerformanceOptimizer {
 
   static getInstance(): FullscreenPerformanceOptimizer {
     if (!FullscreenPerformanceOptimizer.instance) {
-      FullscreenPerformanceOptimizer.instance = new FullscreenPerformanceOptimizer();
+      FullscreenPerformanceOptimizer.instance =
+        new FullscreenPerformanceOptimizer();
     }
     return FullscreenPerformanceOptimizer.instance;
   }
@@ -54,7 +55,7 @@ class FullscreenPerformanceOptimizer {
   endTimer() {
     const loadTime = performance.now() - this.loadStartTime;
     this.performanceMetrics.loadTime = loadTime;
-    console.log(`Fullscreen load time: ${loadTime.toFixed(2)}ms`);
+    // Fullscreen load time recorded
   }
 
   /**
@@ -70,7 +71,7 @@ class FullscreenPerformanceOptimizer {
   endNavigationTimer() {
     const navigationTime = performance.now() - this.navigationStartTime;
     this.performanceMetrics.navigationTime = navigationTime;
-    console.log(`Fullscreen navigation time: ${navigationTime.toFixed(2)}ms`);
+    // Fullscreen navigation time recorded
   }
 
   /**
@@ -95,14 +96,17 @@ class FullscreenPerformanceOptimizer {
   isMemoryUsageAcceptable(): boolean {
     const memory = this.getMemoryUsage();
     if (!memory) return true; // Can't measure, assume OK
-    
+
     return memory.percentage < this.memoryThreshold;
   }
 
   /**
    * Preload media items around current index
    */
-  preloadMedia(items: Array<{ id: string; src: string; type: 'image' | 'video' }>, currentIndex: number) {
+  preloadMedia(
+    items: Array<{ id: string; src: string; type: 'image' | 'video' }>,
+    currentIndex: number
+  ) {
     // Check memory usage before preloading
     if (!this.isMemoryUsageAcceptable()) {
       console.warn('Memory usage high, skipping preload');
@@ -112,16 +116,20 @@ class FullscreenPerformanceOptimizer {
 
     const maxPreload = Math.min(5, items.length);
     const indicesToPreload = [];
-    
+
     // Always preload current, next, and previous
     indicesToPreload.push(currentIndex);
     indicesToPreload.push((currentIndex + 1) % items.length);
-    indicesToPreload.push(currentIndex === 0 ? items.length - 1 : currentIndex - 1);
-    
+    indicesToPreload.push(
+      currentIndex === 0 ? items.length - 1 : currentIndex - 1
+    );
+
     // Add adjacent items if available
     if (items.length > 3) {
       indicesToPreload.push((currentIndex + 2) % items.length);
-      indicesToPreload.push(currentIndex === 0 ? items.length - 2 : currentIndex - 2);
+      indicesToPreload.push(
+        currentIndex === 0 ? items.length - 2 : currentIndex - 2
+      );
     }
 
     // Remove duplicates and limit
@@ -132,7 +140,7 @@ class FullscreenPerformanceOptimizer {
       if (!item) return;
 
       const key = `${item.id}-${item.src}`;
-      
+
       // Skip if already preloaded
       if (this.preloadedMedia.has(key)) return;
 
@@ -172,20 +180,23 @@ class FullscreenPerformanceOptimizer {
     });
 
     this.performanceMetrics.mediaCacheSize = this.preloadedMedia.size;
-    console.log(`Preloaded ${uniqueIndices.length} items, cache size: ${this.preloadedMedia.size}`);
+    // Preloaded items logged
   }
 
   /**
    * Get preloaded media if available
    */
-  getPreloadedMedia(id: string, src: string): HTMLImageElement | HTMLVideoElement | null {
+  getPreloadedMedia(
+    id: string,
+    src: string
+  ): HTMLImageElement | HTMLVideoElement | null {
     const key = `${id}-${src}`;
     const preloadItem = this.preloadedMedia.get(key);
-    
+
     if (preloadItem && preloadItem.loaded && preloadItem.element) {
       return preloadItem.element;
     }
-    
+
     return null;
   }
 
@@ -194,11 +205,14 @@ class FullscreenPerformanceOptimizer {
    */
   cleanupOldPreloads() {
     const maxCacheSize = 10;
-    
+
     if (this.preloadedMedia.size > maxCacheSize) {
       const entries = Array.from(this.preloadedMedia.entries());
-      const toRemove = entries.slice(0, this.preloadedMedia.size - maxCacheSize);
-      
+      const toRemove = entries.slice(
+        0,
+        this.preloadedMedia.size - maxCacheSize
+      );
+
       toRemove.forEach(([key, item]) => {
         if (item.element) {
           if (item.type === 'video') {
@@ -208,8 +222,8 @@ class FullscreenPerformanceOptimizer {
         }
         this.preloadedMedia.delete(key);
       });
-      
-      console.log(`Cleaned up ${toRemove.length} preloaded items`);
+
+      // Cleaned up preloaded items
     }
   }
 
@@ -217,7 +231,7 @@ class FullscreenPerformanceOptimizer {
    * Clear all preloaded media
    */
   clearPreloadedMedia() {
-    this.preloadedMedia.forEach((item) => {
+    this.preloadedMedia.forEach(item => {
       if (item.element) {
         if (item.type === 'video') {
           (item.element as HTMLVideoElement).src = '';
@@ -225,11 +239,11 @@ class FullscreenPerformanceOptimizer {
         item.element = undefined;
       }
     });
-    
+
     this.preloadedMedia.clear();
     this.performanceMetrics.mediaCacheSize = 0;
     this.performanceMetrics.preloadCount = 0;
-    console.log('Cleared all preloaded media');
+    // Cleared all preloaded media
   }
 
   /**
@@ -240,7 +254,7 @@ class FullscreenPerformanceOptimizer {
     if (memory) {
       this.performanceMetrics.memoryUsage = memory.used;
     }
-    
+
     return { ...this.performanceMetrics };
   }
 
@@ -271,18 +285,19 @@ class FullscreenPerformanceOptimizer {
 }
 
 // Export singleton instance
-export const fullscreenPerformance = FullscreenPerformanceOptimizer.getInstance();
+export const fullscreenPerformance =
+  FullscreenPerformanceOptimizer.getInstance();
 
 // Export utility functions
 export const initializeFullscreenPerformance = () => {
   fullscreenPerformance.resetMetrics();
-  console.log('Fullscreen performance optimizer initialized');
+  // Fullscreen performance optimizer initialized
 };
 
 export const cleanupFullscreenPerformance = () => {
   fullscreenPerformance.clearPreloadedMedia();
   fullscreenPerformance.resetMetrics();
-  console.log('Fullscreen performance optimizer cleaned up');
+  // Fullscreen performance optimizer cleaned up
 };
 
 export const getFullscreenPerformanceMetrics = () => {
@@ -291,4 +306,4 @@ export const getFullscreenPerformanceMetrics = () => {
 
 export const exportFullscreenPerformanceData = () => {
   return fullscreenPerformance.exportPerformanceData();
-}; 
+};

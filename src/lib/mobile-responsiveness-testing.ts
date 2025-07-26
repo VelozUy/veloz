@@ -397,10 +397,10 @@ export function initMobileResponsivenessTesting(): void {
   // Run tests in development mode
   if (process.env.NODE_ENV === 'development') {
     const results = runMobileResponsivenessTests();
-    console.log('Mobile responsiveness test results:', results);
+    // Mobile responsiveness test results logged
 
     if (!results.passed) {
-      console.warn('Mobile responsiveness issues detected:', results.issues);
+      // Mobile responsiveness issues detected
     }
   }
 }

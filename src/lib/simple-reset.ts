@@ -1,13 +1,13 @@
 // Simple Browser Reset - No Firebase Manipulation
 export const simpleBrowserReset = () => {
-  console.log('🧹 Starting simple browser reset...');
+  // Starting simple browser reset...
 
   if (typeof window !== 'undefined') {
     try {
       // Clear all storage
       localStorage.clear();
       sessionStorage.clear();
-      console.log('✅ Cleared localStorage and sessionStorage');
+      // Cleared localStorage and sessionStorage
 
       // Clear IndexedDB databases
       if ('indexedDB' in window) {
@@ -17,12 +17,12 @@ export const simpleBrowserReset = () => {
             databases.forEach(db => {
               if (db.name) {
                 indexedDB.deleteDatabase(db.name);
-                console.log(`✅ Deleted IndexedDB: ${db.name}`);
+                // Deleted IndexedDB
               }
             });
           })
           .catch(error => {
-            console.log('⚠️ IndexedDB cleanup failed:', error);
+            // IndexedDB cleanup failed
           });
       }
 
@@ -33,15 +33,15 @@ export const simpleBrowserReset = () => {
           .then(cacheNames => {
             cacheNames.forEach(cacheName => {
               caches.delete(cacheName);
-              console.log(`✅ Deleted cache: ${cacheName}`);
+              // Deleted cache
             });
           })
           .catch(error => {
-            console.log('⚠️ Cache cleanup failed:', error);
+            // Cache cleanup failed
           });
       }
 
-      console.log('🔄 Forcing hard reload...');
+      // Forcing hard reload...
 
       // Force hard reload with cache bypass
       setTimeout(() => {

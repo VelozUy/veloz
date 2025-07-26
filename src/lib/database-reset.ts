@@ -30,12 +30,12 @@ export class DatabaseReset {
   ) {
     this.results.push({ step, success, error, details });
     const emoji = success ? '✅' : '❌';
-    console.log(`${emoji} ${step}${error ? `: ${error}` : ''}`);
+    // Reset step completed
   }
 
   async performCompleteReset(): Promise<ResetStep[]> {
     this.results = [];
-    console.log('🗑️ Starting complete database reset...');
+    // Starting complete database reset...
 
     // Step 1: Disable network to stop all operations
     await this.disableFirestoreNetwork();
@@ -55,7 +55,7 @@ export class DatabaseReset {
     // Step 6: Schedule page reload
     this.scheduleReload();
 
-    console.log('🗑️ Database reset complete - reloading...');
+    // Database reset complete - reloading...
     return this.results;
   }
 

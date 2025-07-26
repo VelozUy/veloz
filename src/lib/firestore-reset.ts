@@ -20,7 +20,7 @@ export class FirestoreReset {
 
   async performCompleteReset(): Promise<ResetResult[]> {
     this.results = [];
-    console.log('🔄 Starting complete Firestore reset...');
+    // Starting complete Firestore reset...
 
     await this.step1_DisableNetwork();
     await this.step2_ClearLocalStorage();
@@ -34,7 +34,7 @@ export class FirestoreReset {
       'Page will reload in 2 seconds to complete reset'
     );
 
-    console.log('🔄 Firestore reset complete - reloading page...');
+    // Firestore reset complete - reloading page...
 
     // Schedule page reload after showing results
     setTimeout(() => {
@@ -49,7 +49,7 @@ export class FirestoreReset {
   private addResult(step: string, success: boolean, error?: string) {
     this.results.push({ step, success, error });
     const emoji = success ? '✅' : '❌';
-    console.log(`${emoji} ${step}${error ? `: ${error}` : ''}`);
+    // Reset step completed
   }
 
   private async step1_DisableNetwork() {

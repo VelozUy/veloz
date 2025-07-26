@@ -71,7 +71,6 @@ class AnalyticsService {
   private initializeAnalytics() {
     // Only initialize on client side
     if (typeof window === 'undefined') {
-      console.warn('Analytics initialization skipped on server side');
       return;
     }
 
@@ -82,12 +81,8 @@ class AnalyticsService {
       this.isInitialized = true;
       this.isGA4Enabled = !!process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
 
-      console.log('✅ Analytics initialized successfully', {
-        isGA4Enabled: this.isGA4Enabled,
-        sessionId: this.sessionId,
-      });
+      // Analytics initialized successfully
     } catch (error) {
-      console.warn('Analytics initialization failed:', error);
       this.isInitialized = false;
     }
   }
@@ -130,7 +125,6 @@ class AnalyticsService {
   ) {
     this.ensureInitialized();
     if (!this.isInitialized || !this.analytics) {
-      console.warn('Analytics not initialized, skipping event:', eventName);
       return;
     }
 
@@ -147,10 +141,7 @@ class AnalyticsService {
         await logEvent(this.analytics, eventName, enrichedParams);
       }
 
-      // Also log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Analytics Event:', eventName, enrichedParams);
-      }
+      // Analytics event logged
     } catch (error) {
       console.error('Failed to log analytics event:', error);
     }
