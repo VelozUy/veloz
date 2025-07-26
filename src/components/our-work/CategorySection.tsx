@@ -131,6 +131,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
 
       {/* Fullscreen Modal */}
       <FullscreenModal
+        key={`modal-${fullscreenStartIndex}`} // Force re-render when startIndex changes
         isOpen={isFullscreenOpen}
         onClose={handleCloseFullscreen}
         media={galleryImages.map(item => ({

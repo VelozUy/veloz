@@ -141,6 +141,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = ({
 
       {/* Fullscreen Modal */}
       <FullscreenModal
+        key={`modal-${fullscreenStartIndex}`} // Force re-render when startIndex changes
         isOpen={isFullscreenOpen}
         onClose={handleCloseFullscreen}
         media={convertProjectMediaBatch(

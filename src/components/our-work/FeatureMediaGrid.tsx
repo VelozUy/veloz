@@ -273,6 +273,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
       {/* Fullscreen Modal */}
       <FullscreenModal
+        key={`modal-${fullscreenStartIndex}`} // Force re-render when startIndex changes
         isOpen={isFullscreenOpen}
         onClose={handleCloseFullscreen}
         media={media.map(item => ({
