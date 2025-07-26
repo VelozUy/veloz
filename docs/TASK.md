@@ -1,6 +1,6 @@
 # 📋 Veloz Project Tasks
 
-_Last updated: 2025-01-20_
+_Last updated: 2025-07-25_
 
 ---
 
@@ -1432,6 +1432,26 @@ _No tasks completed yet for this Epic_
 
 #### 🟩 Low Priority
 
+- [ ] **Phase 9: Admin Panel Thumbnail Generation** - Generate thumbnails and blur data URLs during image upload ⭐ **HIGH PRIORITY**
+  - **User Intent**: Generate thumbnails and blur data URLs during admin panel image upload to support the optimized fullscreen modal experience
+  - **Acceptance Criteria**:
+    - Generate low-resolution thumbnails during image upload ✅
+    - Create blur data URLs for progressive loading ✅
+    - Update ProjectMedia interface to include blurDataURL field ✅
+    - Modify upload process to generate and store thumbnails ✅
+    - Ensure compatibility with existing gallery components ✅
+    - Maintain backward compatibility with existing media ✅
+  - **Files**: `src/services/firebase.ts`, `src/services/file-upload.ts`, `src/components/admin/MediaUpload.tsx`
+  - **Reference**: Fullscreen modal optimization requires thumbnail data
+  - **Estimated Time**: 2-3 days
+  - **Status**: Not Started - Thumbnail generation needed for optimal gallery performance
+  - **Technical Details**:
+    - Add blurDataURL field to ProjectMedia interface
+    - Implement thumbnail generation in upload process
+    - Create low-resolution versions for immediate display
+    - Generate blur data URLs for progressive loading
+    - Update all upload components to use new thumbnail system
+
 - [x] **Phase 7: Analytics Integration** - Implement comprehensive analytics tracking ✅
   - **User Intent**: Track user behavior and gallery performance for business insights
   - **Acceptance Criteria**:
@@ -1445,6 +1465,26 @@ _No tasks completed yet for this Epic_
   - **Status**: Completed - Comprehensive analytics tracking for gallery interactions
   - **Prompt Used**: "Implement comprehensive analytics tracking for gallery interactions"
   - **PO Sign-Off**: PO Approved (2025-01-20)
+
+- [x] **Phase 8: Tiled Gallery Fullscreen Modal Optimization** - Improve perceived loading speed with thumbnail images ⭐ **HIGH PRIORITY** ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Ensure the tiled gallery provides the fullscreen modal with thumbnail images to show while the full-size images are loading
+  - **Acceptance Criteria**:
+    - FullscreenModal receives blurDataURL as thumbnailUrl for immediate visual feedback ✅
+    - Thumbnail images show immediately when modal opens ✅
+    - Full resolution images load in background seamlessly ✅
+    - No loading spinners or skeleton states in modal ✅
+    - Improved perceived loading speed for better UX ✅
+  - **Files**: `src/components/our-work/GalleryGrid.tsx`, `src/components/our-work/ProjectDetailGallery.tsx`, `src/components/gallery/FullscreenModal.tsx`
+  - **Reference**: Performance optimization for perceived loading speed
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ Completed - Thumbnail optimization implemented and tested
+  - **Technical Details**:
+    - Updated GalleryGrid to pass blurDataURL as thumbnailUrl to FullscreenModal
+    - Updated ProjectDetailGallery to use blurDataURL as thumbnailUrl
+    - FullscreenModal already has dual image loading system (thumbnail + full resolution)
+    - Thumbnails show immediately while full resolution loads in background
+    - Updated all tests to work with new dual-image system
+    - All 34 tests passing with improved test coverage
 
 #### 🧠 Discovered During Epic
 

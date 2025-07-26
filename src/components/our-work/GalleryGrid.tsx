@@ -356,7 +356,7 @@ export default function GalleryGrid({
           id: item.id,
           type: item.type,
           url: item.url,
-          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          thumbnailUrl: item.blurDataURL || item.url, // Use blurDataURL as thumbnail for immediate visual feedback
           alt: item.description?.es || `${projectTitle} - ${item.type}`,
           width: item.width || 1200,
           height: item.height || 800,

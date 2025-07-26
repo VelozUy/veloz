@@ -280,7 +280,7 @@ export default function ProjectDetailGallery({
           id: item.id,
           type: item.type,
           url: item.url,
-          thumbnailUrl: item.url, // Use the same URL as thumbnail for immediate visual feedback
+          thumbnailUrl: item.blurDataURL || item.url, // Use blurDataURL as thumbnail for immediate visual feedback
           alt: item.alt,
           width: item.width,
           height: item.height,

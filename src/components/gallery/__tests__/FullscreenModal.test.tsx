@@ -70,7 +70,9 @@ describe('FullscreenModal', () => {
       );
 
       expect(screen.getByRole('dialog')).toBeInTheDocument();
-      expect(screen.getByLabelText('Vista de pantalla completa')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Vista de pantalla completa')
+      ).toBeInTheDocument();
     });
 
     it('should display the first media item by default', () => {
@@ -82,7 +84,7 @@ describe('FullscreenModal', () => {
         />
       );
 
-      expect(screen.getByAltText('Test Image 1')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
     });
 
     it('should display the correct media item when startIndex is provided', () => {
@@ -109,7 +111,7 @@ describe('FullscreenModal', () => {
       );
 
       // Initially should show first item
-      expect(screen.getByTestId('image-1')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
 
       // Change startIndex to show second item
       rerender(
@@ -150,8 +152,8 @@ describe('FullscreenModal', () => {
       );
 
       // Should immediately show the third item (index 2) without showing first item first
-      expect(screen.getByTestId('image-3')).toBeInTheDocument();
-      expect(screen.queryByTestId('image-1')).not.toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-3')).toBeInTheDocument();
+      expect(screen.queryByTestId('thumbnail-1')).not.toBeInTheDocument();
     });
   });
 
@@ -165,7 +167,9 @@ describe('FullscreenModal', () => {
         />
       );
 
-      const closeButton = screen.getByLabelText('Cerrar vista de pantalla completa');
+      const closeButton = screen.getByLabelText(
+        'Cerrar vista de pantalla completa'
+      );
       fireEvent.click(closeButton);
 
       expect(mockOnClose).toHaveBeenCalledTimes(1);
@@ -259,7 +263,7 @@ describe('FullscreenModal', () => {
       const prevButton = screen.getByLabelText('Anterior');
       fireEvent.click(prevButton);
 
-      expect(screen.getByAltText('Test Image 1')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
       expect(mockOnNavigate).toHaveBeenCalledWith(0);
     });
 
@@ -277,7 +281,7 @@ describe('FullscreenModal', () => {
       const prevButton = screen.getByLabelText('Anterior');
       fireEvent.click(prevButton);
 
-      expect(screen.getByAltText('Test Image 2')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-3')).toBeInTheDocument();
       expect(mockOnNavigate).toHaveBeenCalledWith(2);
     });
 
@@ -295,7 +299,7 @@ describe('FullscreenModal', () => {
       const nextButton = screen.getByLabelText('Siguiente');
       fireEvent.click(nextButton);
 
-      expect(screen.getByAltText('Test Image 1')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
       expect(mockOnNavigate).toHaveBeenCalledWith(0);
     });
   });
@@ -351,7 +355,7 @@ describe('FullscreenModal', () => {
         />
       );
 
-      const image = screen.getByAltText('Test Image 1');
+      const image = screen.getByTestId('thumbnail-1');
       expect(image).toBeInTheDocument();
       expect(image).toHaveAttribute('src', '/test-image-1.jpg');
     });
@@ -389,7 +393,10 @@ describe('FullscreenModal', () => {
 
       const dialog = screen.getByRole('dialog');
       expect(dialog).toHaveAttribute('aria-modal', 'true');
-      expect(dialog).toHaveAttribute('aria-label', 'Vista de pantalla completa');
+      expect(dialog).toHaveAttribute(
+        'aria-label',
+        'Vista de pantalla completa'
+      );
     });
 
     it('should have proper focus management', () => {
@@ -401,7 +408,9 @@ describe('FullscreenModal', () => {
         />
       );
 
-      const closeButton = screen.getByLabelText('Cerrar vista de pantalla completa');
+      const closeButton = screen.getByLabelText(
+        'Cerrar vista de pantalla completa'
+      );
       expect(closeButton).toBeInTheDocument();
     });
 
@@ -424,7 +433,7 @@ describe('FullscreenModal', () => {
 
       // Test left arrow key (should go back to first item)
       fireEvent.keyDown(document, { key: 'ArrowLeft' });
-      expect(screen.getByTestId('image-1')).toBeInTheDocument();
+      expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
     });
   });
 
@@ -439,7 +448,7 @@ describe('FullscreenModal', () => {
       );
 
       const dialog = screen.getByRole('dialog');
-      
+
       // Simulate touch start
       fireEvent.touchStart(dialog, {
         touches: [{ clientX: 100, clientY: 100 }],
@@ -483,8 +492,10 @@ describe('FullscreenModal', () => {
     });
 
     it('should preload adjacent media items for smooth navigation', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      
+      const consoleSpy = jest
+        .spyOn(console, 'warn')
+        .mockImplementation(() => {});
+
       render(
         <FullscreenModal
           isOpen={true}
@@ -512,7 +523,7 @@ describe('FullscreenModal', () => {
 
       // Navigate to next item (should trigger loading)
       fireEvent.click(screen.getByLabelText('Siguiente'));
-      
+
       // Check if loading circle is visible
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
@@ -528,16 +539,16 @@ describe('FullscreenModal', () => {
 
       // Navigate to next item to trigger loading
       fireEvent.click(screen.getByLabelText('Siguiente'));
-      
+
       // Simulate media load
       const video = screen.getByTestId('video-2');
       fireEvent.loadedData(video);
-      
+
       // Loading should be hidden after media loads
       expect(video).toBeInTheDocument();
     });
 
-    it('should show loading skeleton when media is loading', () => {
+    it('should show thumbnail immediately when modal opens', () => {
       render(
         <FullscreenModal
           isOpen={true}
@@ -546,12 +557,12 @@ describe('FullscreenModal', () => {
         />
       );
 
-      // The skeleton should be visible initially for the first media item
-      const skeleton = document.querySelector('.animate-pulse');
-      expect(skeleton).toBeInTheDocument();
+      // The thumbnail should be visible immediately for the first media item
+      const thumbnail = screen.getByTestId('thumbnail-1');
+      expect(thumbnail).toBeInTheDocument();
     });
 
-    it('should hide loading skeleton when media loads', () => {
+    it('should show full resolution image when it loads', () => {
       render(
         <FullscreenModal
           isOpen={true}
@@ -560,24 +571,19 @@ describe('FullscreenModal', () => {
         />
       );
 
-      // Simulate media load
-      const image = screen.getByTestId('image-1');
-      fireEvent.load(image);
-      
-      // Skeleton should be hidden after media loads
-      const skeleton = document.querySelector('.animate-pulse');
-      expect(skeleton).not.toBeInTheDocument();
+      // Simulate full resolution image load
+      const fullResolutionImage = screen.getByTestId('full-resolution-1');
+      fireEvent.load(fullResolutionImage);
+
+      // Full resolution image should be visible after loading
+      expect(fullResolutionImage).toHaveClass('opacity-100');
     });
   });
 
   describe('Error handling', () => {
     it('should handle empty media array gracefully', () => {
       render(
-        <FullscreenModal
-          isOpen={true}
-          onClose={mockOnClose}
-          media={[]}
-        />
+        <FullscreenModal isOpen={true} onClose={mockOnClose} media={[]} />
       );
 
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -597,4 +603,4 @@ describe('FullscreenModal', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
-}); 
+});

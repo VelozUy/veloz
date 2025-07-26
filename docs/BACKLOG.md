@@ -1,6 +1,6 @@
 # 📋 Veloz Project Backlog
 
-_Last updated: January 2025_
+_Last updated: July 2025_
 
 This file contains unprioritized ideas and future features that have been identified but not yet prioritized into active Epics. These items are organized by potential Epic themes for easy refinement and prioritization.
 

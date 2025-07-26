@@ -1,6 +1,6 @@
 # 🎨 Veloz Theme System
 
-_Last updated: 2025-01-20_
+_Last updated: 2025-07-25_
 
 ---
 
@@ -367,6 +367,7 @@ The navigation banner (VelozBannerNav) uses a sophisticated color scheme that ba
 ### Banner Structure
 
 The navigation banner consists of two sections:
+
 - **Left Section (Grey Background)**: Contains the VELOZ logo
 - **Right Section (Blue Background)**: Contains navigation links and language switcher
 
@@ -405,8 +406,8 @@ The navigation banner consists of two sections:
 </Link>
 
 // Language switcher
-<LocaleSwitcher 
-  currentLocale={locale} 
+<LocaleSwitcher
+  currentLocale={locale}
   className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
 />
 
