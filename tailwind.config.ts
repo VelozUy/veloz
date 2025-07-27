@@ -8,36 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // Comprehensive color system using CSS variables
+      // Veloz brand color system
       colors: {
-        // Base color palette
-        base: {
-          50: 'var(--base-50)',
-          100: 'var(--base-100)',
-          200: 'var(--base-200)',
-          300: 'var(--base-300)',
-          400: 'var(--base-400)',
-          500: 'var(--base-500)',
-          600: 'var(--base-600)',
-          700: 'var(--base-700)',
-          800: 'var(--base-800)',
-          900: 'var(--base-900)',
-          950: 'var(--base-950)',
-          1000: 'var(--base-1000)',
-        },
-        // Primary color palette
-        'primary-50': 'var(--primary-50)',
-        'primary-100': 'var(--primary-100)',
-        'primary-200': 'var(--primary-200)',
-        'primary-300': 'var(--primary-300)',
-        'primary-400': 'var(--primary-400)',
-        'primary-500': 'var(--primary-500)',
-        'primary-600': 'var(--primary-600)',
-        'primary-700': 'var(--primary-700)',
-        'primary-800': 'var(--primary-800)',
-        'primary-900': 'var(--primary-900)',
-        'primary-950': 'var(--primary-950)',
-        'primary-1000': 'var(--primary-1000)',
+        // Veloz brand colors
+        'veloz-blue': '#0019AA',
+        'veloz-blue-hover': '#000f75',
+        'carbon-black': '#212223',
+        'light-gray-1': '#d4d4d4',
+        'light-gray-2': '#afafaf',
+        'light-gray-2-hover': '#999999',
+
         // Semantic colors
         background: 'var(--background)',
         foreground: 'var(--foreground)',
@@ -76,10 +56,10 @@ const config: Config = {
           '5': 'var(--chart-5)',
         },
         // Legacy colors for backward compatibility
-        charcoal: '#1a1b1f',
-        'gray-light': '#f0f0f0',
-        'gray-medium': '#d2d2d2',
-        'blue-accent': '#1d7efc',
+        charcoal: '#212223',
+        'gray-light': '#d4d4d4',
+        'gray-medium': '#afafaf',
+        'blue-accent': '#0019AA',
         white: '#ffffff',
       },
 

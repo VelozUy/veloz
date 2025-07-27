@@ -3,7 +3,7 @@
 import React from 'react';
 import { H2, H3 } from '@/components/ui/typography';
 import EditorialGrid from './EditorialGrid';
-import { useContentBackground } from '@/hooks/useBackground';
+
 import { useCTABackground } from '@/hooks/useBackground';
 
 interface CategoryMedia {
@@ -41,13 +41,11 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
   categories,
   className = '',
 }: OverviewSectionProps) => {
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
   const { classes: ctaClasses } = useCTABackground();
 
   return (
     <section
-      className={`min-h-screen pb-12 md:pb-16 ${contentClasses.background} ${className}`}
+      className={`min-h-screen pb-12 md:pb-16 bg-background ${className}`}
     >
       <div className="container mx-auto px-8 md:px-16">
         {/* Category Sections - Compact Editorial Spacing */}

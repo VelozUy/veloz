@@ -41,14 +41,14 @@ export default function CategoryNavigation({
   const handleMobileCategorySelect = (categoryId: string) => {
     // Close the drawer
     setDrawerOpen(false);
-    
+
     // Navigate to the appropriate URL
     if (categoryId === 'overview') {
       router.push('/our-work');
     } else {
       router.push(`/our-work/${categoryId}`);
     }
-    
+
     // Also call the original onCategoryChange for any scroll-based logic
     onCategoryChange(categoryId);
   };
@@ -114,7 +114,7 @@ export default function CategoryNavigation({
   const getActiveCategoryDisplayName = () => {
     const activeItem = categories.find(cat => cat.id === activeCategory);
     if (!activeItem) return 'Seleccionar categoría';
-    
+
     return activeItem.id === 'overview'
       ? activeItem.name
       : getCategoryDisplayName(activeItem.name as EventCategory, 'es');
@@ -161,43 +161,45 @@ export default function CategoryNavigation({
             'after:bg-primary after:opacity-100'
           )}
         >
-          <span className="text-primary">
-            {getActiveCategoryDisplayName()}
-          </span>
-          <ChevronDownIcon 
+          <span className="text-primary">{getActiveCategoryDisplayName()}</span>
+          <ChevronDownIcon
             className={cn(
               'absolute right-4 w-5 h-5 text-muted-foreground transition-transform duration-300',
               drawerOpen && 'rotate-180'
-            )} 
+            )}
           />
         </button>
 
         {/* Custom Dropdown Overlay */}
         {drawerOpen && (
-          <div 
+          <div
             className="fixed inset-0 z-50 bg-transparent"
             onClick={() => setDrawerOpen(false)}
           >
             {/* Dropdown Content - positioned below the button */}
-            <div 
+            <div
               className={cn(
-                "absolute left-4 right-4 top-[88px] z-50 bg-background border border-border shadow-xl rounded-none",
-                "animate-in slide-in-from-top-2 zoom-in-95 fade-in-0 duration-300 ease-out",
-                "transform-gpu"
+                'absolute left-4 right-4 top-[88px] z-50 bg-background border border-border shadow-xl',
+                'animate-in slide-in-from-top-2 zoom-in-95 fade-in-0 duration-300 ease-out',
+                'transform-gpu'
               )}
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
               style={{
-                transformOrigin: 'top center'
+                transformOrigin: 'top center',
               }}
             >
               {/* Category Links */}
               <div className="py-2 max-h-[50vh] overflow-y-auto bg-background">
                 {categories.map((category, index) => {
                   const isActive = category.id === activeCategory;
-                  const displayName = category.id === 'overview'
-                    ? category.name
-                    : getCategoryDisplayName(category.name as EventCategory, 'es');
-                  
+                  const displayName =
+                    category.id === 'overview'
+                      ? category.name
+                      : getCategoryDisplayName(
+                          category.name as EventCategory,
+                          'es'
+                        );
+
                   return (
                     <button
                       key={category.id}
@@ -209,13 +211,13 @@ export default function CategoryNavigation({
                         'border-b border-border/50 last:border-b-0',
                         'after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:transition-all after:duration-300',
                         'animate-in slide-in-from-top-2 fade-in-0 duration-300 ease-out',
-                        isActive 
-                          ? 'text-primary after:bg-primary after:opacity-100' 
+                        isActive
+                          ? 'text-primary after:bg-primary after:opacity-100'
                           : 'text-muted-foreground after:bg-primary after:opacity-0 hover:text-primary hover:after:opacity-50'
                       )}
                       style={{
                         animationDelay: `${index * 50}ms`,
-                        animationFillMode: 'both'
+                        animationFillMode: 'both',
                       }}
                     >
                       {displayName}

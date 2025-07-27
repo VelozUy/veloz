@@ -5,7 +5,7 @@ import { TiledGallery } from '@/components/gallery/TiledGallery';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { GalleryImage } from '@/types/gallery';
 import { H2, H3, Body, Muted } from '@/components/ui/typography';
-import { useContentBackground } from '@/hooks/useBackground';
+
 import { useCTABackground } from '@/hooks/useBackground';
 
 interface CategorySectionProps {
@@ -40,8 +40,6 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   media,
   className = '',
 }: CategorySectionProps) => {
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
   const { classes: ctaClasses } = useCTABackground();
 
   // Fullscreen modal state
@@ -79,7 +77,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
   return (
     <section
       id={`category-${id}`}
-      className={`min-h-screen pt-8 pb-16 ${contentClasses.background} ${className}`}
+      className={`min-h-screen pt-8 pb-16 bg-background ${className}`}
       data-testid="category-section"
     >
       <div className="container mx-auto px-4">

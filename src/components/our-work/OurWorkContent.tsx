@@ -10,7 +10,7 @@ import {
   EVENT_TYPE_LABELS_PT,
 } from '@/constants';
 import { EventType } from '@/types';
-import { useContentBackground } from '@/hooks/useBackground';
+
 import { useCTABackground } from '@/hooks/useBackground';
 
 import Image from 'next/image';
@@ -180,8 +180,6 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
     }>
   >([]);
 
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
   const { classes: ctaClasses } = useCTABackground();
 
   // Determine current locale from content
@@ -420,7 +418,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   };
 
   return (
-    <div className={`min-h-screen pt-20 pb-16 ${contentClasses.background}`}>
+    <div className="min-h-screen pt-20 pb-16 bg-background">
       {/* Title and Subtitle Section */}
       <section className="px-4 md:px-8 lg:px-12">
         <div className="w-full">
@@ -478,7 +476,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                   className="block"
                 >
                   <div
-                    className={`w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer ${contentClasses.background} hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
+                    className="w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer bg-background hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
                   >
                     {/* Project Content - Full Width */}
                     <div className="w-full px-4 md:px-8 lg:px-12 py-8">

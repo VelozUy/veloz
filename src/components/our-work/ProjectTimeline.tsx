@@ -13,7 +13,6 @@ import {
   Check,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useContentBackground } from '@/hooks/useBackground';
 
 interface TimelinePhase {
   id: string;
@@ -182,9 +181,6 @@ export default function ProjectTimeline({
   className,
   onInteraction,
 }: ProjectTimelineProps) {
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
-
   // Enhanced timeline with animations and interactions
   const [expandedPhase, setExpandedPhase] = useState<string | null>(null);
   const [visiblePhases, setVisiblePhases] = useState<Set<string>>(new Set());
@@ -256,8 +252,6 @@ export default function ProjectTimeline({
         return <Check className="w-4 h-4" />;
       case 'in-progress':
         return <Clock className="w-4 h-4" />;
-      case 'upcoming':
-        return <Clock className="w-4 h-4" />;
       default:
         return <Clock className="w-4 h-4" />;
     }
@@ -265,10 +259,7 @@ export default function ProjectTimeline({
 
   return (
     <section
-      className={cn(
-        `py-12 ${contentClasses.background} ${contentClasses.text}`,
-        className
-      )}
+      className={cn('py-12 bg-background text-foreground', className)}
       role="region"
       aria-label={`Cronología del proyecto ${project.title}`}
     >

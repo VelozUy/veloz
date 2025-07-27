@@ -9,7 +9,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 
-import { useContentBackground } from '@/hooks/useBackground';
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
 
 // FAQ interface matching the static content structure
@@ -67,14 +66,11 @@ export default function AboutContent({
   coreValues,
   methodologySteps,
 }: AboutContentProps) {
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
-
   return (
-    <div className={`min-h-screen ${contentClasses.background}`}>
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-16 space-y-16">
         {/* Hero Section */}
-        <div className={`text-center space-y-6 ${contentClasses.text}`}>
+        <div className="text-center space-y-6 text-foreground">
           <h1 className="text-heading-lg font-body">
             {content.content.about.title || 'Sobre Nosotros'}
           </h1>
@@ -87,19 +83,15 @@ export default function AboutContent({
         {/* Philosophy Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2
-              className={`text-heading-md font-body mb-4 ${contentClasses.text}`}
-            >
+            <h2 className="text-heading-md font-body mb-4 text-foreground">
               {content.content.about.philosophy.title || 'Nuestra Filosofía'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
           </div>
 
-          <Card className={`bg-card shadow-xl ${contentClasses.border}`}>
+          <Card className="bg-card shadow-xl border-border">
             <CardContent className="p-8 md:p-12">
-              <p
-                className={`text-body-lg leading-relaxed text-center max-w-4xl mx-auto ${contentClasses.text}`}
-              >
+              <p className="text-body-lg leading-relaxed text-center max-w-4xl mx-auto text-foreground">
                 {content.content.about.philosophy.description ||
                   'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.'}
               </p>
@@ -110,9 +102,7 @@ export default function AboutContent({
         {/* Methodology Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2
-              className={`text-heading-md font-body mb-4 ${contentClasses.text}`}
-            >
+            <h2 className="text-heading-md font-body mb-4 text-foreground">
               {content.content.about.methodology.title || 'Nuestra Metodología'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
@@ -122,18 +112,16 @@ export default function AboutContent({
             {methodologySteps.map((item, index) => (
               <Card
                 key={index}
-                className={`group hover:shadow-lg transition-all duration-300 bg-card ${contentClasses.border}`}
+                className="group hover:shadow-lg transition-all duration-300 bg-card border-border"
               >
                 <CardContent className="p-6 text-center space-y-4">
                   <div className="text-3xl font-body text-primary group-hover:text-primary/80 transition-colors">
                     {item.step}
                   </div>
-                  <h3
-                    className={`text-body-lg font-body ${contentClasses.text}`}
-                  >
+                  <h3 className="text-body-lg font-body text-foreground">
                     {item.title}
                   </h3>
-                  <p className={`text-body-md ${contentClasses.text}`}>
+                  <p className="text-body-md text-foreground">
                     {item.description}
                   </p>
                 </CardContent>
@@ -145,9 +133,7 @@ export default function AboutContent({
         {/* Core Values Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2
-              className={`text-heading-md font-body mb-4 ${contentClasses.text}`}
-            >
+            <h2 className="text-heading-md font-body mb-4 text-foreground">
               {content.content.about.values.title || 'Nuestros Valores'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
@@ -170,18 +156,16 @@ export default function AboutContent({
               return (
                 <Card
                   key={index}
-                  className={`group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card ${contentClasses.border}`}
+                  className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card border-border"
                 >
                   <CardContent className="p-6 space-y-4">
                     <div className="w-12 h-12 bg-primary rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
                       <IconComponent className="w-6 h-6 text-primary-foreground" />
                     </div>
-                    <h3
-                      className={`text-body-lg font-body ${contentClasses.text}`}
-                    >
+                    <h3 className="text-body-lg font-body text-foreground">
                       {value.title}
                     </h3>
-                    <p className={`text-body-md ${contentClasses.text}`}>
+                    <p className="text-body-md text-foreground">
                       {value.description}
                     </p>
                   </CardContent>
@@ -195,15 +179,13 @@ export default function AboutContent({
         {faqs.length > 0 && (
           <section className="space-y-8">
             <div className="text-center">
-              <h2
-                className={`text-heading-md font-body mb-4 ${contentClasses.text}`}
-              >
+              <h2 className="text-heading-md font-body mb-4 text-foreground">
                 {content.content.about.faq.title || 'Preguntas Frecuentes'}
               </h2>
               <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
 
-            <Card className={`bg-card shadow-xl ${contentClasses.border}`}>
+            <Card className="bg-card shadow-xl border-border">
               <CardContent className="p-6 md:p-8">
                 <Accordion
                   type="single"
@@ -214,11 +196,9 @@ export default function AboutContent({
                     <AccordionItem
                       key={faq.id}
                       value={faq.id}
-                      className={`border bg-muted/50 rounded-none px-4 ${contentClasses.border}`}
+                      className="border bg-muted/50 rounded-none px-4 border-border"
                     >
-                      <AccordionTrigger
-                        className={`text-left font-body font-medium hover:text-primary transition-colors py-4 ${contentClasses.text}`}
-                      >
+                      <AccordionTrigger className="text-left font-body font-medium hover:text-primary transition-colors py-4 text-foreground">
                         {getFAQText(faq, 'question')}
                         {faq.category && (
                           <Badge variant="secondary" className="ml-2 text-xs">
@@ -226,9 +206,7 @@ export default function AboutContent({
                           </Badge>
                         )}
                       </AccordionTrigger>
-                      <AccordionContent
-                        className={`text-body-md pb-4 pt-2 ${contentClasses.text}`}
-                      >
+                      <AccordionContent className="text-body-md pb-4 pt-2 text-foreground">
                         <div
                           dangerouslySetInnerHTML={{
                             __html: getFAQText(faq, 'answer'),

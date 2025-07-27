@@ -3,7 +3,6 @@
 import React from 'react';
 import CategoryNavigation from './CategoryNavigation';
 import { useScrollNavigation } from '@/hooks/useScrollNavigation';
-import { useContentBackground } from '@/hooks/useBackground';
 
 interface Category {
   id: string;
@@ -31,19 +30,16 @@ export default function OurWorkHeader({
     scrollThreshold: 100,
   });
 
-  // Use the new background system for content sections
-  const { classes: contentClasses } = useContentBackground();
-
   return (
     <>
       {/* Category navigation */}
-      <div className={`${contentClasses.background} h-24 md:h-28 flex items-center`}>
+      <div className="bg-background h-24 md:h-28 flex items-center">
         <div className="container mx-auto px-4">
           <CategoryNavigation
             categories={categories}
             activeCategory={activeCategory || 'overview'}
             onCategoryChange={scrollToCategory}
-            backgroundClass={contentClasses.background}
+            backgroundClass="bg-background"
           />
         </div>
       </div>

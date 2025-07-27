@@ -97,7 +97,7 @@ export default function VelozBannerNav({
       <nav className="fixed top-0 left-0 right-0 z-50">
         <div className="relative h-16">
           {/* Base gray background covering entire nav bar */}
-          <div className="absolute inset-0 bg-muted" />
+          <div className="absolute inset-0 bg-background" />
 
           {/* Logo section - positioned on top of gray background */}
           <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center">
@@ -130,7 +130,8 @@ export default function VelozBannerNav({
                       href={item.href}
                       className={cn(
                         'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
-                        active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
+                        active &&
+                          'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
                       )}
                     >
                       {item.name}
@@ -140,8 +141,8 @@ export default function VelozBannerNav({
 
                 {/* Language Switcher */}
                 <div className="ml-4">
-                  <LocaleSwitcher 
-                    currentLocale={locale} 
+                  <LocaleSwitcher
+                    currentLocale={locale}
                     className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                   />
                 </div>
@@ -166,7 +167,7 @@ export default function VelozBannerNav({
     <>
       <nav className="fixed top-0 left-0 right-0 z-50">
         {/* Banner Container */}
-        <div className="relative h-16 bg-muted">
+        <div className="relative h-16 bg-background">
           {/* Logo section - positioned on top of gray background */}
           <div className="absolute left-0 top-0 bottom-0 w-[50%] md:w-[50%] flex items-center justify-center z-20">
             <div className="flex items-center justify-center w-full">
@@ -198,7 +199,8 @@ export default function VelozBannerNav({
                       href={item.href}
                       className={cn(
                         'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
-                        active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
+                        active &&
+                          'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
                       )}
                     >
                       {item.name}
@@ -208,8 +210,8 @@ export default function VelozBannerNav({
 
                 {/* Language Switcher */}
                 <div className="ml-4">
-                  <LocaleSwitcher 
-                    currentLocale={locale} 
+                  <LocaleSwitcher
+                    currentLocale={locale}
                     className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                   />
                 </div>
@@ -233,12 +235,12 @@ export default function VelozBannerNav({
       </nav>
 
       {/* Mobile/Tablet Navigation - completely separate from nav */}
-      <div 
+      <div
         className={cn(
-          "lg:hidden fixed top-16 left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-40",
-          isMobileMenuOpen 
-            ? "opacity-100 translate-y-0" 
-            : "opacity-0 -translate-y-4 pointer-events-none"
+          'lg:hidden fixed top-16 left-0 right-0 bg-primary shadow-xl border-t border-primary-foreground/20 rounded-bl-[1rem] transform transition-all duration-300 ease-in-out z-40',
+          isMobileMenuOpen
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-4 pointer-events-none'
         )}
       >
         <div className="px-6 py-6 space-y-4">
@@ -255,10 +257,12 @@ export default function VelozBannerNav({
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <span className={cn(
-                    'inline-block',
-                    active && 'border-b-2 border-[var(--accent-soft-gold)]'
-                  )}>
+                  <span
+                    className={cn(
+                      'inline-block',
+                      active && 'border-b-2 border-[var(--accent-soft-gold)]'
+                    )}
+                  >
                     {item.name}
                   </span>
                 </Link>
@@ -268,8 +272,8 @@ export default function VelozBannerNav({
 
           {/* Language Switcher for Mobile/Tablet */}
           <div className="flex justify-center">
-            <LocaleSwitcher 
-              currentLocale={locale} 
+            <LocaleSwitcher
+              currentLocale={locale}
               className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
             />
           </div>
