@@ -104,6 +104,10 @@ const config: Config = {
         'scale-in': 'scaleIn 0.2s ease-out',
         'bounce-gentle': 'bounceGentle 0.6s ease-in-out',
         'veloz-hover': 'velozHover 0.35s cubic-bezier(0.4,0,0.2,1)',
+        'spin-slow': 'spin 3s linear infinite',
+        'target-bounce': 'targetBounce 1.2s ease-in-out infinite',
+        'target-pulse': 'targetPulse 1.5s ease-in-out infinite',
+        'target-scale': 'targetScale 2s ease-in-out infinite',
       },
 
       keyframes: {
@@ -131,6 +135,31 @@ const config: Config = {
           '0%': { transform: 'scale(1)', filter: 'brightness(1)' },
           '60%': { transform: 'scale(1.045)', filter: 'brightness(1.08)' },
           '100%': { transform: 'scale(1.025)', filter: 'brightness(1.04)' },
+        },
+        spin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        targetBounce: {
+          '0%, 100%': { transform: 'scale(1) translateY(0)' },
+          '25%': { transform: 'scale(1.1) translateY(-2px)' },
+          '50%': { transform: 'scale(0.9) translateY(0)' },
+          '75%': { transform: 'scale(1.05) translateY(-1px)' },
+        },
+        targetPulse: {
+          '0%, 100%': {
+            transform: 'scale(1)',
+            opacity: '0.8',
+          },
+          '50%': {
+            transform: 'scale(1.15)',
+            opacity: '1',
+          },
+        },
+        targetScale: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '33%': { transform: 'scale(1.2)' },
+          '66%': { transform: 'scale(0.8)' },
         },
       },
 

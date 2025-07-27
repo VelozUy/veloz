@@ -1,2 +1,15 @@
 export { default as VelozLogo } from './VelozLogo';
 export { default as VelozIcon } from './VelozIcon';
+export { VelozSignature } from './VelozSignature';
+export { PerimeterBox } from './PerimeterBox';
+export { TargetLoader } from './TargetLoader';
+export { VelozLoader } from './VelozLoader';
+export { StripedDivider } from './StripedDivider';
+export { VelozStamp } from './VelozStamp';
+export { GridDotOverlay } from './GridDotOverlay';
+export { VelozTarget } from './VelozTarget';
+export { VelozCircles } from './VelozCircles';
+export { VelozWorld } from './VelozWorld';
+export { VelozBarcode } from './VelozBarcode';
+export { VelozCheckboard } from './VelozCheckboard';
+export { VelozRuler } from './VelozRuler';

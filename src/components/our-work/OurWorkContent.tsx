@@ -27,6 +27,7 @@ import { GalleryImage } from '@/types/gallery';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { useRouter } from 'next/navigation';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { getBackgroundClasses } from '@/lib/background-utils';
 
 // Project interface for the our-work page
 interface Project {
@@ -181,6 +182,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   >([]);
 
   const { classes: ctaClasses } = useCTABackground();
+  const contentClasses = getBackgroundClasses('content', 'high');
 
   // Determine current locale from content
   const currentLocale = content.locale || 'es';

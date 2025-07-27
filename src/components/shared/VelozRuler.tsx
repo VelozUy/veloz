@@ -1,0 +1,158 @@
+export function VelozRuler({
+  orientation = 'vertical',
+  size = 'default',
+}: {
+  orientation?: 'vertical' | 'horizontal';
+  size?: 'small' | 'default' | 'large';
+}) {
+  const sizeClasses = {
+    small: 'w-4 h-32',
+    default: 'w-6 h-40',
+    large: 'w-8 h-48',
+  };
+
+  const renderRuler = () => {
+    if (orientation === 'vertical') {
+      return (
+        <svg
+          viewBox="0 0 16 181"
+          className={`${sizeClasses[size]} text-[--primary]`}
+          fill="none"
+          stroke="currentColor"
+        >
+          <path fillRule="evenodd" d="m6.5 90.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 85.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 81.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 76.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 72.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 67.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 67.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 63.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 59h9.1" />
+          <path fillRule="evenodd" d="m6.5 54.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 50.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 45.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 45.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 41.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 36.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 32.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 27.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 23.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 23.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 18.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 14.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 9.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 5.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 1h9.1" />
+          <path fillRule="evenodd" d="m0.1 90.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 67.9h15.5" />
+          <path fillRule="evenodd" d="m0.1 45.6h15.5" />
+          <path fillRule="evenodd" d="m0.1 23.3h15.5" />
+          <path fillRule="evenodd" d="m0.1 1h15.5" />
+          <path fillRule="evenodd" d="m6.5 90.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 94.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 99.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 103.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 108.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 112.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 112.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 117h9.1" />
+          <path fillRule="evenodd" d="m6.5 121.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 125.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 130.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 134.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 134.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 139.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 143.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 148.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 152.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 157.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 157.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 161.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 166.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 170.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 175h9.1" />
+          <path fillRule="evenodd" d="m6.5 179.5h9.1" />
+          <path fillRule="evenodd" d="m0.1 90.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 112.6h15.5" />
+          <path fillRule="evenodd" d="m0.1 134.9h15.5" />
+          <path fillRule="evenodd" d="m0.1 157.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 179.5h15.5" />
+        </svg>
+      );
+    } else {
+      // Horizontal version would need to be rotated or created separately
+      return (
+        <svg
+          viewBox="0 0 16 181"
+          className={`${sizeClasses[size]} text-[--primary] rotate-90`}
+          fill="none"
+          stroke="currentColor"
+        >
+          <path fillRule="evenodd" d="m6.5 90.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 85.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 81.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 76.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 72.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 67.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 67.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 63.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 59h9.1" />
+          <path fillRule="evenodd" d="m6.5 54.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 50.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 45.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 45.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 41.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 36.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 32.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 27.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 23.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 23.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 18.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 14.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 9.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 5.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 1h9.1" />
+          <path fillRule="evenodd" d="m0.1 90.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 67.9h15.5" />
+          <path fillRule="evenodd" d="m0.1 45.6h15.5" />
+          <path fillRule="evenodd" d="m0.1 23.3h15.5" />
+          <path fillRule="evenodd" d="m0.1 1h15.5" />
+          <path fillRule="evenodd" d="m6.5 90.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 94.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 99.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 103.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 108.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 112.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 112.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 117h9.1" />
+          <path fillRule="evenodd" d="m6.5 121.5h9.1" />
+          <path fillRule="evenodd" d="m6.5 125.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 130.4h9.1" />
+          <path fillRule="evenodd" d="m6.5 134.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 134.9h9.1" />
+          <path fillRule="evenodd" d="m6.5 139.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 143.8h9.1" />
+          <path fillRule="evenodd" d="m6.5 148.3h9.1" />
+          <path fillRule="evenodd" d="m6.5 152.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 157.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 157.2h9.1" />
+          <path fillRule="evenodd" d="m6.5 161.7h9.1" />
+          <path fillRule="evenodd" d="m6.5 166.1h9.1" />
+          <path fillRule="evenodd" d="m6.5 170.6h9.1" />
+          <path fillRule="evenodd" d="m6.5 175h9.1" />
+          <path fillRule="evenodd" d="m6.5 179.5h9.1" />
+          <path fillRule="evenodd" d="m0.1 90.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 112.6h15.5" />
+          <path fillRule="evenodd" d="m0.1 134.9h15.5" />
+          <path fillRule="evenodd" d="m0.1 157.2h15.5" />
+          <path fillRule="evenodd" d="m0.1 179.5h15.5" />
+        </svg>
+      );
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center">{renderRuler()}</div>
+  );
+}
