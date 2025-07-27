@@ -71,7 +71,7 @@ export default function AboutContent({
       <div className="container mx-auto px-4 py-16 space-y-16">
         {/* Hero Section */}
         <div className="text-center space-y-6 text-foreground">
-          <h1 className="text-heading-lg font-body">
+          <h1 className="text-section-title-lg font-body font-semibold">
             {content.content.about.title || 'Sobre Nosotros'}
           </h1>
           <p className="text-body-lg max-w-3xl mx-auto">
@@ -83,7 +83,7 @@ export default function AboutContent({
         {/* Philosophy Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2 className="text-heading-md font-body mb-4 text-foreground">
+            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
               {content.content.about.philosophy.title || 'Nuestra Filosofía'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
@@ -102,7 +102,7 @@ export default function AboutContent({
         {/* Methodology Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2 className="text-heading-md font-body mb-4 text-foreground">
+            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
               {content.content.about.methodology.title || 'Nuestra Metodología'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
@@ -133,7 +133,7 @@ export default function AboutContent({
         {/* Core Values Section */}
         <section className="space-y-8">
           <div className="text-center">
-            <h2 className="text-heading-md font-body mb-4 text-foreground">
+            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
               {content.content.about.values.title || 'Nuestros Valores'}
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
@@ -179,7 +179,7 @@ export default function AboutContent({
         {faqs.length > 0 && (
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-heading-md font-body mb-4 text-foreground">
+              <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
                 {content.content.about.faq.title || 'Preguntas Frecuentes'}
               </h2>
               <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>

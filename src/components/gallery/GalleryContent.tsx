@@ -51,7 +51,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
         {/* No Projects Message */}
         <div className="text-center py-16">
           <div className="max-w-md mx-auto">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">
+            <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
               No se encontraron proyectos
             </h2>
             <p className="text-muted-foreground">
@@ -73,7 +73,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
         {/* Main Title - Eventos */}
         <div className="text-center py-16">
           <h1
-            className="font-body tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
+            className="font-body font-semibold tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
             style={{
               fontSize: 'clamp(1.5rem, min(6vw, 8rem), 8rem)',
               lineHeight: '0.9',

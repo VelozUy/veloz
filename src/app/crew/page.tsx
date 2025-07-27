@@ -73,7 +73,9 @@ export default async function CrewPage() {
         <div className="min-h-screen bg-background">
           <div className="container mx-auto px-4 py-8">
             <div className="text-center">
-              <h1 className="text-3xl font-bold mb-4">Nuestro Equipo</h1>
+              <h1 className="text-section-title-md font-body font-semibold mb-4">
+                Nuestro Equipo
+              </h1>
               <p className="text-muted-foreground">
                 No hay miembros del equipo disponibles en este momento.
               </p>
@@ -154,7 +156,9 @@ export default async function CrewPage() {
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Nuestro Equipo</h1>
+            <h1 className="text-section-title-md font-body font-semibold mb-4">
+              Nuestro Equipo
+            </h1>
             <p className="text-muted-foreground">
               Error al cargar los miembros del equipo. Por favor, intenta de
               nuevo más tarde.

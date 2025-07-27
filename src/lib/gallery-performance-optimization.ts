@@ -126,13 +126,6 @@ export function optimizeFCP(): void {
   const preloadLinks = [
     {
       rel: 'preload',
-      href: '/fonts/redjola.woff2',
-      as: 'font',
-      type: 'font/woff2',
-      crossorigin: 'anonymous',
-    },
-    {
-      rel: 'preload',
       href: '/fonts/roboto.woff2',
       as: 'font',
       type: 'font/woff2',

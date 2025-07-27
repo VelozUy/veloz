@@ -271,7 +271,7 @@ export default function ProjectTimeline({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+          <h2 className="text-section-title-lg font-body font-semibold mb-4 text-foreground">
             Cronología del Proyecto
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

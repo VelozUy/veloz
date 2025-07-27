@@ -14,7 +14,6 @@ import { getStaticContent, t } from '@/lib/utils';
 // Import build-time data
 let BUILD_TIME_FAQS: FAQ[] = [];
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const buildTimeData = require('@/lib/build-time-data.generated');
   BUILD_TIME_FAQS = buildTimeData.BUILD_TIME_FAQS || [];
 } catch {
@@ -244,7 +243,7 @@ export default async function AboutPagePT() {
         <div className="container mx-auto px-4 py-16 space-y-16">
           {/* Hero Section */}
           <div className="text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold text-primary">
+            <h1 className="text-section-title-lg font-body font-semibold text-primary">
               {t(content, 'about.title', 'Sobre Nós')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -259,7 +258,7 @@ export default async function AboutPagePT() {
           {/* Philosophy Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
                 {t(content, 'about.philosophy.title', 'Nossa Filosofia')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
@@ -281,7 +280,7 @@ export default async function AboutPagePT() {
           {/* Methodology Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
                 {t(content, 'about.methodology.title', 'Nossa Metodologia')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
@@ -310,7 +309,7 @@ export default async function AboutPagePT() {
           {/* Core Values Section */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
                 {t(content, 'about.values.title', 'Nossos Valores')}
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
@@ -345,7 +344,7 @@ export default async function AboutPagePT() {
           {faqs.length > 0 && (
             <section className="space-y-8">
               <div className="text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
                   {t(content, 'about.faq.title', 'Perguntas Frequentes')}
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>

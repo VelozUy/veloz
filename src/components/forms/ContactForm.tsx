@@ -434,7 +434,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
           </div>
 
           <div className="space-y-4 text-foreground">
-            <h1 className="text-heading-lg font-body">{t.success.title}</h1>
+            <h1 className="text-section-title-lg font-body font-semibold">
+              {t.success.title}
+            </h1>
             <p className="text-body-lg leading-relaxed">{t.success.message}</p>
           </div>
 
@@ -457,7 +459,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 lg:mb-16 space-y-4 lg:space-y-6 text-foreground">
-          <h1 className="text-heading-lg font-body">{t.title}</h1>
+          <h1 className="text-section-title-lg font-body font-semibold">
+            {t.title}
+          </h1>
           <p className="text-body-lg max-w-3xl mx-auto leading-relaxed">
             {t.subtitle}
           </p>

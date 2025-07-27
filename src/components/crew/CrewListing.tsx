@@ -195,7 +195,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
       <div className="bg-foreground text-background">
         <div className="container mx-auto px-4 py-12">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-section-title-lg font-body font-semibold mb-4">
               Nuestro Equipo
             </h1>
             <p className="text-xl text-background/80 max-w-2xl mx-auto">

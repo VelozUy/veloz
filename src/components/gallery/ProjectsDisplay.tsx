@@ -52,7 +52,7 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
   if (!projects || !Array.isArray(projects) || projects.length === 0) {
     return (
       <div className={`text-center py-16 ${className}`}>
-        <h2 className="text-2xl font-semibold text-foreground mb-4">
+        <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
           No se encontraron proyectos
         </h2>
         <p className="text-muted-foreground">
@@ -124,7 +124,7 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
               aria-label={`Ver detalles del proyecto: ${project.title}`}
               aria-describedby={`project-${project.id}-description`}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-2">
                 {project.title}
               </h2>
               <span className="text-sm text-muted-foreground font-medium">

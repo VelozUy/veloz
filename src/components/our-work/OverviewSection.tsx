@@ -1,10 +1,24 @@
 'use client';
 
 import React from 'react';
-import { H2, H3 } from '@/components/ui/typography';
+import { H3 } from '@/components/ui/typography';
+import { CategoryTypography } from '@/components/ui/category-typography';
 import EditorialGrid from './EditorialGrid';
 
 import { useCTABackground } from '@/hooks/useBackground';
+import { EventCategory } from '@/constants/categories';
+
+// Alternative title component for better readability
+const ReadableTitle: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className = '' }) => (
+  <h2
+    className={`font-body font-semibold text-foreground uppercase tracking-wider text-3xl md:text-4xl lg:text-5xl antialiased ${className}`}
+  >
+    {children}
+  </h2>
+);
 
 interface CategoryMedia {
   id: string;
@@ -58,7 +72,9 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({
                 {/* Category Header - Only show if title is provided */}
                 {category.title && (
                   <div className="text-center mb-8 md:mb-10">
-                    <H2 className="mb-6">{category.title}</H2>
+                    <ReadableTitle className="mb-6">
+                      {category.title}
+                    </ReadableTitle>
                   </div>
                 )}
 

@@ -428,7 +428,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             transition={{ delay: 0.3 }}
             className={`text-center py-16 ${contentClasses.text}`}
           >
-            <h1 className="text-heading-lg font-body font-normal mb-6">
+            <h1 className="text-section-title-lg font-body font-semibold mb-6">
               {uiText.title}
             </h1>
             <p className="text-body-lg max-w-4xl mx-auto leading-relaxed">
@@ -529,7 +529,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             transition={{ delay: 0.4 }}
             className={`text-center ${ctaClasses.text}`}
           >
-            <h2 className="text-heading-md font-body font-normal mb-6">
+            <h2 className="text-section-title-md font-body font-semibold mb-6">
               {uiText.readyTitle}
             </h2>
             <p className="text-body-lg max-w-3xl mx-auto mb-8">

@@ -163,7 +163,7 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
 
             {/* Info */}
             <div className="flex-1">
-              <h1 className="text-4xl md:text-5xl font-bold mb-2">
+              <h1 className="text-section-title-lg font-body font-semibold mb-2">
                 {crewMember.name.es}
               </h1>
               <p className="text-xl md:text-2xl text-background/80 mb-4">

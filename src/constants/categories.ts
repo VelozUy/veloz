@@ -50,7 +50,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Casamentos',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -83,7 +83,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Casamentos',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -116,7 +116,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Corporativo',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -149,7 +149,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Cultural',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -182,7 +182,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Photoshoot',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -215,7 +215,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Imprensa',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',
@@ -248,7 +248,7 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryStyle> = {
       pt: 'Outros',
     },
     typography: {
-      fontFamily: 'font-body', // Roboto for all text except VELOZ brand title
+      fontFamily: 'font-body', // Roboto for better readability
       fontWeight: 'font-normal',
       fontSize: {
         sm: 'text-sm',

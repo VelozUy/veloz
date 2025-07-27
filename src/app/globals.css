@@ -8,9 +8,8 @@
 @font-face {
   font-family: 'REDJOLA';
   src:
-    url('/redjola/REDJOLA Free Trial.woff2') format('woff2'),
-    url('/redjola/REDJOLA Free Trial.woff') format('woff'),
-    url('/redjola/REDJOLA Free Trial.ttf') format('truetype');
+    url('/redjola/Redjola.otf') format('opentype'),
+    url('/redjola/Redjola.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -246,6 +245,28 @@ html {
   font-size: 1.5rem;
   line-height: 1.4;
   font-weight: 400;
+}
+
+/* Section titles with Roboto font for better readability */
+.text-section-title-lg {
+  font-size: 3rem;
+  line-height: 1.2;
+  font-weight: 400;
+  font-family: var(--font-body);
+}
+
+.text-section-title-md {
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-family: var(--font-body);
+}
+
+.text-section-title-sm {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 400;
+  font-family: var(--font-body);
 }
 
 .text-body-lg {

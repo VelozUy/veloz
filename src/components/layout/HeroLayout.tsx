@@ -157,7 +157,7 @@ export default function HeroLayout({
       {projectTitle && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-primary-foreground px-4">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
+            <h1 className="text-section-title-lg font-body font-semibold mb-4 drop-shadow-lg">
               {projectTitle}
             </h1>
           </div>

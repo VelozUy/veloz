@@ -146,7 +146,7 @@ export default function ContactsPage() {
     <AdminLayout title="Contactos">
       <div className="container mx-auto p-4">
         <div className="mb-6">
-          <h1 className="text-heading-md font-body text-foreground mb-1">
+          <h1 className="text-section-title-md font-body font-semibold text-foreground mb-1">
             Gestión de Contactos
           </h1>
           <p className="text-body-sm text-muted-foreground">

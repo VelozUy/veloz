@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -81,7 +82,7 @@ export default function MeetTheTeamStatic({
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Users className="w-6 h-6 text-primary" />
-            <h2 className="text-3xl font-bold text-card-foreground">
+            <h2 className="text-section-title-md font-body font-semibold text-card-foreground">
               {language === 'en'
                 ? 'Meet the Team'
                 : language === 'pt'
@@ -110,9 +111,11 @@ export default function MeetTheTeamStatic({
                 <div className="flex items-start gap-4 mb-4">
                   <div className="relative">
                     {member.portrait ? (
-                      <img
+                      <Image
                         src={member.portrait}
                         alt={member.name}
+                        width={80}
+                        height={80}
                         className="w-20 h-20 object-cover border-2 border-primary/20"
                       />
                     ) : (
