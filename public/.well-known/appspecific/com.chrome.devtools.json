@@ -1,0 +1,8 @@
+{
+  "name": "Veloz",
+  "description": "Veloz website and admin panel",
+  "version": "1.0.0",
+  "devtools": {
+    "enabled": true
+  }
+}
