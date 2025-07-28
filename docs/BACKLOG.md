@@ -3643,6 +3643,196 @@ This file contains unprioritized ideas and future features that have been identi
 
 ---
 
+## 🎯 **EPIC: Footer Contact Information Management** 🟥 **CRITICAL PRIORITY**
+
+### 🎯 Objective: Create an admin interface to manage footer contact information (email, phone, WhatsApp) so admins can update it without code changes
+
+**Status**: 🟥 **CRITICAL** - Contact information currently hardcoded in footer
+**Business Impact**: **HIGH** - Essential for maintaining up-to-date contact information
+**User Value**: **HIGH** - Admins can update contact info without developer intervention
+
+**Background**: Currently, the footer contact information (email: info@veloz.com.uy, phone: +598 99 123 456, WhatsApp: +598 99 123 456) is hardcoded in `src/components/shared/VelozFooter.tsx`. Admins cannot update this information through the admin panel.
+
+#### 🟥 Critical Priority Tasks - START IMMEDIATELY
+
+- [ ] **Phase 1: Contact Information Data Model** - Create Firestore data structure for contact information
+  - **User Intent**: Store contact information in database for admin management
+  - **Acceptance Criteria**:
+    - Firestore collection `contactInfo` with document `footer`
+    - Fields: email, phone, whatsapp, updatedAt, updatedBy
+    - Validation schema for contact information
+    - Security rules for admin-only access
+    - Migration script for existing hardcoded values
+  - **Files**: `src/types/contact.ts`, `firestore.rules`, `src/lib/validation-schemas.ts`
+  - **Reference**: Existing admin settings patterns in `src/app/admin/templates/settings/page.tsx`
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+- [ ] **Phase 2: Admin Contact Settings Page** - Create admin interface for managing contact information
+  - **User Intent**: Provide admin interface to update footer contact information
+  - **Acceptance Criteria**:
+    - New admin page `/admin/contact-settings`
+    - Form with email, phone, and WhatsApp fields
+    - Real-time validation and error handling
+    - Save functionality with success feedback
+    - Integration with existing admin navigation
+    - Mobile-responsive design
+  - **Files**: `src/app/admin/contact-settings/page.tsx`, `src/components/admin/ContactSettingsForm.tsx`
+  - **Reference**: Existing admin settings patterns
+  - **Estimated Time**: 2 days
+  - **Status**: Not started
+
+- [ ] **Phase 3: Footer Component Integration** - Update footer to fetch contact info from database
+  - **User Intent**: Footer should display contact information from database instead of hardcoded values
+  - **Acceptance Criteria**:
+    - Footer fetches contact info from Firestore on load
+    - Loading state while fetching data
+    - Fallback to hardcoded values if database unavailable
+    - Error handling for failed fetches
+    - Caching for performance optimization
+  - **Files**: `src/components/shared/VelozFooter.tsx`, `src/services/contact-info.ts`
+  - **Reference**: Existing data fetching patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 4: Admin Navigation Integration** - Add contact settings to admin navigation
+  - **User Intent**: Make contact settings easily accessible from admin panel
+  - **Acceptance Criteria**:
+    - Contact settings link added to admin sidebar
+    - Proper positioning in navigation hierarchy
+    - Icon and styling consistent with other admin pages
+    - Active state handling for contact settings page
+  - **Files**: `src/components/admin/AdminLayout.tsx`
+  - **Reference**: Existing admin navigation structure
+  - **Estimated Time**: 0.5 days
+  - **Status**: Not started
+
+- [ ] **Phase 5: Contact Information Service** - Create service layer for contact information management
+  - **User Intent**: Centralized service for contact information CRUD operations
+  - **Acceptance Criteria**:
+    - Service functions for get, update, create contact info
+    - Error handling and logging
+    - TypeScript interfaces for contact data
+    - Integration with existing service patterns
+    - Unit tests for service functions
+  - **Files**: `src/services/contact-info.ts`, `src/services/__tests__/contact-info.test.ts`
+  - **Reference**: Existing service patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+#### 🟨 Medium Priority Tasks
+
+- [ ] **Phase 6: Contact Information Validation** - Implement comprehensive validation
+  - **User Intent**: Ensure contact information is valid and properly formatted
+  - **Acceptance Criteria**:
+    - Email validation with proper format checking
+    - Phone number validation for Uruguayan format
+    - WhatsApp number validation
+    - Real-time validation feedback
+    - Error messages in Spanish
+  - **Files**: `src/lib/validation-schemas.ts`, `src/components/admin/ContactSettingsForm.tsx`
+  - **Reference**: Existing validation patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+- [ ] **Phase 7: Contact Information History** - Track changes to contact information
+  - **User Intent**: Maintain audit trail of contact information changes
+  - **Acceptance Criteria**:
+    - History collection in Firestore
+    - Track who made changes and when
+    - Previous values stored for reference
+    - Admin can view change history
+    - Automatic cleanup of old history entries
+  - **Files**: `src/services/contact-info.ts`, `src/components/admin/ContactHistory.tsx`
+  - **Reference**: Existing audit patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 8: Contact Information Analytics** - Track usage of contact information
+  - **User Intent**: Monitor how often contact information is viewed
+  - **Acceptance Criteria**:
+    - Analytics tracking for footer contact section views
+    - Click tracking for email, phone, WhatsApp links
+    - Admin dashboard with contact usage statistics
+    - Integration with existing analytics system
+  - **Files**: `src/lib/analytics.ts`, `src/app/admin/analytics/page.tsx`
+  - **Reference**: Existing analytics patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+- [ ] **Phase 9: Contact Information Backup** - Implement backup and restore functionality
+  - **User Intent**: Protect against accidental data loss
+  - **Acceptance Criteria**:
+    - Automatic backup of contact information
+    - Manual backup/restore functionality
+    - Export contact information to JSON
+    - Import contact information from backup
+    - Admin can manage backups
+  - **Files**: `src/services/contact-info.ts`, `src/components/admin/ContactBackup.tsx`
+  - **Reference**: Existing backup patterns
+  - **Estimated Time**: 1 day
+  - **Status**: Not started
+
+#### 🧠 Discovered During the Epic
+
+- [ ] **Contact Information Caching** - Implement caching for better performance
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Contact Information Notifications** - Notify admins when contact info is updated
+  - **Status**: Not started
+  - **Estimated Time**: 0.5 days
+
+- [ ] **Contact Information Testing** - Comprehensive testing of all contact management features
+  - **Status**: Not started
+  - **Estimated Time**: 1 day
+
+#### ✅ Completed
+
+- No tasks completed yet
+
+**Key Achievements**:
+
+- **Admin Control**: Admins can update contact information without code changes
+- **Data Persistence**: Contact information stored securely in Firestore
+- **User Experience**: Intuitive admin interface for contact management
+- **Validation**: Comprehensive validation ensures data quality
+- **Performance**: Caching and optimization for fast loading
+- **Security**: Proper access control and audit trails
+- **Reliability**: Fallback mechanisms and error handling
+
+**Technical Implementation**:
+
+- **Contact Information Service**: Centralized service for CRUD operations
+- **Admin Settings Page**: User-friendly interface for contact management
+- **Footer Integration**: Dynamic contact information display
+- **Validation System**: Comprehensive data validation
+- **History Tracking**: Audit trail for contact information changes
+- **Analytics Integration**: Usage tracking and reporting
+- **Backup System**: Data protection and recovery
+
+**Business Value**:
+
+- **Operational Efficiency**: No developer intervention needed for contact updates
+- **Data Accuracy**: Real-time updates ensure current contact information
+- **User Experience**: Professional contact management interface
+- **Compliance**: Audit trails for regulatory requirements
+- **Scalability**: Foundation for additional contact management features
+
+**Integration Points**:
+
+- **Admin Panel**: Seamless integration with existing admin interface
+- **Footer Component**: Dynamic contact information display
+- **Analytics**: Integration with existing analytics system
+- **Validation**: Consistent with existing validation patterns
+- **Security**: Integration with existing admin authentication
+
+---
+
 ## 📝 **Notes for Epic Refinement**
 
 When moving items from this backlog to active Epics:
