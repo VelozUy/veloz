@@ -39,6 +39,7 @@ import {
   Upload,
   Instagram,
   FileText,
+  Users,
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import {
@@ -63,6 +64,7 @@ import CrewMemberAssignment from '@/components/admin/CrewMemberAssignment';
 import SocialFeedManager from '@/components/admin/SocialFeedManager';
 import ClientInviteManager from '@/components/admin/ClientInviteManager';
 import ProjectTaskList from '@/components/admin/ProjectTaskList';
+import ProjectContactTab from '@/components/admin/ProjectContactTab';
 import { MediaBlock, HeroMediaConfig, GridConfig } from '@/types';
 import { migrateProjectData, withRetry } from '@/lib/firebase-error-handler';
 import { withFirestoreRecovery } from '@/lib/firebase-reinit';
@@ -770,7 +772,7 @@ export default function UnifiedProjectEditPage({
               onValueChange={setActiveTab}
               className="space-y-6"
             >
-              <TabsList className="grid w-full grid-cols-6">
+              <TabsList className="grid w-full grid-cols-7">
                 <TabsTrigger value="details">Detalles del Proyecto</TabsTrigger>
                 <TabsTrigger
                   value="media"
@@ -792,6 +794,7 @@ export default function UnifiedProjectEditPage({
                 <TabsTrigger value="crew">Equipo</TabsTrigger>
                 <TabsTrigger value="social-feed">Feed Social</TabsTrigger>
                 <TabsTrigger value="clients">Clientes</TabsTrigger>
+                <TabsTrigger value="contacts">Contactos</TabsTrigger>
               </TabsList>
 
               {/* Project Details Tab */}
@@ -1321,6 +1324,67 @@ export default function UnifiedProjectEditPage({
                     }
                   />
                 </div>
+              </TabsContent>
+
+              {/* Contacts Tab */}
+              <TabsContent value="contacts" className="space-y-6">
+                {isCreateMode ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Users className="w-8 h-8 text-primary-foreground" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">
+                        Gestión de Contactos del Proyecto
+                      </h3>
+                      <p className="text-muted-foreground mb-4">
+                        {draftProject.title.en ||
+                        draftProject.title.es ||
+                        draftProject.title.pt
+                          ? 'Guarda el proyecto primero, luego podrás gestionar los contactos.'
+                          : 'Por favor agrega un título al proyecto en la pestaña Detalles primero.'}
+                      </p>
+                      {draftProject.title.en ||
+                      draftProject.title.es ||
+                      draftProject.title.pt ? (
+                        <Button onClick={handleSaveChanges} disabled={saving}>
+                          {saving ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Guardando Proyecto...
+                            </>
+                          ) : (
+                            <>
+                              <Save className="w-4 h-4 mr-2" />
+                              Guardar Proyecto y Habilitar Gestión de Contactos
+                            </>
+                          )}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          onClick={() => setActiveTab('details')}
+                        >
+                          Ir a Detalles del Proyecto
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <ProjectContactTab
+                    projectId={projectId || ''}
+                    projectTitle={
+                      draftProject.title.es ||
+                      draftProject.title.en ||
+                      draftProject.title.pt
+                    }
+                    onSuccess={message => {
+                      setSuccess(message);
+                      setTimeout(() => setSuccess(''), 3000);
+                    }}
+                    onError={setError}
+                  />
+                )}
               </TabsContent>
             </Tabs>
           </CardContent>

@@ -1,49 +1,27 @@
-# 📋 Veloz Project Backlog
+# 📋 Veloz Project Backlog - Future Epics
 
 _Last updated: July 2025_
 
-This file contains unprioritized ideas and future features that have been identified but not yet prioritized into active Epics. These items are organized by potential Epic themes for easy refinement and prioritization.
+This file contains future epics that are not yet active. For detailed epic information, check the referenced files in `docs/epics/`.
 
 ---
 
 ## 📑 **Quick Navigation**
 
-### **🎨 Styling & Design Epics**
-
-- [Tiled Gallery Implementation](#-epic-tiled-gallery-implementation--core-completed) ✅ **CORE COMPLETED** (Replaces GalleryContent)
-
-- [Veloz Brand Design System Implementation](#-epic-veloz-brand-design-system-implementation--completed) ✅ **COMPLETED**
-
-- [Square Border System Implementation](#-epic-square-border-system-implementation--completed) ✅ **COMPLETED**
-- [Light Gray Background Color System Implementation](#-epic-light-gray-background-color-system-implementation--completed) ✅ **COMPLETED**
-- [Banner Navigation System Redesign](#-epic-banner-navigation-system-redesign--completed) ✅ **COMPLETED**
-
-### **🎯 Core Functionality Epics**
-
-- [Client Portal & Public Access System](#-epic-client-portal--public-access-system--completed) ✅ **COMPLETED**
-- [Client Project Tracking System](#-epic-client-project-tracking-system--completed) ✅ **COMPLETED**
-- [Enhanced Admin Project Management](#-epic-enhanced-admin-project-management--high-priority) ⭐ **HIGH PRIORITY**
-- [Crew Portfolio System](#-epic-crew-portfolio-system--completed) ✅ **COMPLETED**
-- [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY**
-- [Crew Listing Page & Navigation](#-epic-crew-listing-page--navigation--high-priority) ⭐ **HIGH PRIORITY**
-
-### **📱 Performance & UX Epics**
+### **🎨 Frontend & Design Epics**
 
 - [Mobile & Performance Optimization](#-epic-mobile--performance-optimization) 🟧 **HIGH PRIORITY**
 - [Enhanced User Experience & Interface](#-epic-enhanced-user-experience--interface) 🟧 **HIGH PRIORITY**
 
+### **🛠️ Admin & Management Epics**
+
+- [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
+- [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY**
+- [Crew Listing Page & Navigation](#-epic-crew-listing-page--navigation--high-priority) ⭐ **HIGH PRIORITY**
+
 ### **🔍 Marketing & SEO Epics**
 
 - [SEO & Marketing Enhancement](#-epic-seo--marketing-enhancement) 🟧 **HIGH PRIORITY**
-
-### **🛠️ Admin & Management Epics**
-
-- [Template Management System Enhancement](#-epic-template-management-system-enhancement--critical-priority) ✅ **COMPLETED**
-- [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
-- [Crew Media Assignment System](#-epic-crew-media-assignment-system--high-priority) ⭐ **HIGH PRIORITY**
-- [Default Project Tasks System](#-epic-default-project-tasks-system--high-priority) ⭐ **HIGH PRIORITY**
-- [Project Contact Tab System](#-epic-project-contact-tab-system--high-priority) ⭐ **HIGH PRIORITY**
-- [Admin Contacts Page Redesign](#-epic-admin-contacts-page-redesign--high-priority) ⭐ **HIGH PRIORITY**
 
 ### **📊 Analytics & Business Intelligence Epics**
 
@@ -73,15 +51,32 @@ This file contains unprioritized ideas and future features that have been identi
 
 ## 📊 **Epic Status Summary**
 
-| Priority                 | Count | Status                                                                                                                                      |
-| ------------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🔴 **CRITICAL PRIORITY** | 0     | All critical priority items completed                                                                                                       |
-| ⭐ **HIGH PRIORITY**     | 10    | Ready to start or in progress                                                                                                               |
-| 🟧 **MEDIUM PRIORITY**   | 7     | Future development                                                                                                                          |
-| 🟩 **LOW PRIORITY**      | 1     | Backlog items                                                                                                                               |
-| ✅ **COMPLETED**         | 9     | Category system, banner nav, navigation fix, client tracking, client portal, gallery loading, brand design system, crew portfolio completed |
+| Priority                 | Count | Status                                     |
+| ------------------------ | ----- | ------------------------------------------ |
+| 🔴 **CRITICAL PRIORITY** | 0     | All critical priority items completed      |
+| ⭐ **HIGH PRIORITY**     | 3     | Ready to start when current epics complete |
+| 🟧 **MEDIUM PRIORITY**   | 7     | Future development                         |
+| 🟩 **LOW PRIORITY**      | 1     | Backlog items                              |
+| ✅ **COMPLETED**         | 9     | Archived in `docs/COMPLETED.md`            |
 
-**Total Active Epics**: 22
+**Total Future Epics**: 11
+
+---
+
+## 🔗 **Quick Navigation**
+
+- **Active Epics**: `docs/TASK.md`
+- **Completed Epics**: `docs/COMPLETED.md`
+- **Epic Templates**: `docs/epic-templates/epic-template.md`
+
+---
+
+## 📝 **Notes**
+
+- Keep this file under 1000 lines
+- Move epics to active status when ready to start
+- Use reference system for detailed context
+- Detailed epic files are in `docs/epics/` directory
 
 ---
 

@@ -314,6 +314,7 @@ export interface ContactMessage {
     locale: string;
   };
   archived: boolean; // Keep for backward compatibility
+  projectId?: string; // Link to project
   createdAt: FirebaseTimestamp;
   updatedAt: FirebaseTimestamp;
 }

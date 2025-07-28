@@ -130,6 +130,87 @@ class ContactMessageService extends BaseFirebaseService<ContactMessage> {
       };
     }, 'getBySource');
   }
+
+  // Get contacts by project ID
+  async getByProjectId(
+    projectId: string
+  ): Promise<ApiResponse<ContactMessage[]>> {
+    return this.withRetry(async () => {
+      const collection = await this.getCollection();
+      const q = query(
+        collection,
+        where('projectId', '==', projectId),
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+      const messages = snapshot.docs.map(doc =>
+        this.processDocument(doc)
+      ) as ContactMessage[];
+
+      return {
+        success: true,
+        data: messages,
+      };
+    }, 'getByProjectId');
+  }
+
+  // Assign contact to project
+  async assignToProject(
+    contactId: string,
+    projectId: string
+  ): Promise<ApiResponse<void>> {
+    return this.withRetry(async () => {
+      const docRef = await this.getDocRef(contactId);
+      await updateDoc(docRef, {
+        projectId,
+        updatedAt: new Date(),
+      });
+
+      return {
+        success: true,
+        data: undefined,
+      };
+    }, 'assignToProject');
+  }
+
+  // Remove contact from project
+  async removeFromProject(contactId: string): Promise<ApiResponse<void>> {
+    return this.withRetry(async () => {
+      const docRef = await this.getDocRef(contactId);
+      await updateDoc(docRef, {
+        projectId: null,
+        updatedAt: new Date(),
+      });
+
+      return {
+        success: true,
+        data: undefined,
+      };
+    }, 'removeFromProject');
+  }
+
+  // Get unassigned contacts
+  async getUnassigned(): Promise<ApiResponse<ContactMessage[]>> {
+    return this.withRetry(async () => {
+      const collection = await this.getCollection();
+      const q = query(
+        collection,
+        where('projectId', '==', null),
+        orderBy('createdAt', 'desc')
+      );
+
+      const snapshot = await getDocs(q);
+      const messages = snapshot.docs.map(doc =>
+        this.processDocument(doc)
+      ) as ContactMessage[];
+
+      return {
+        success: true,
+        data: messages,
+      };
+    }, 'getUnassigned');
+  }
 }
 
 // Export service instance

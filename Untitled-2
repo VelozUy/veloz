@@ -1,0 +1,216 @@
+# Cursor Rules - Enhanced Backlog Management
+
+## Project Awareness
+- Read `PRD.md` at start of conversation
+- Check `TASK.md` before starting tasks
+- Use consistent naming and architecture from `PRD.md`
+- Ask questions if uncertain
+- Confirm file paths exist before referencing
+
+## Enhanced Task Management
+
+### File Organization
+```
+docs/
+├── TASK.md (active epics only, max 500 lines)
+├── epics/
+│   ├── frontend/
+│   ├── backend/
+│   ├── admin/
+│   ├── infrastructure/
+│   ├── analytics/
+│   ├── marketing/
+│   ├── quality/
+│   └── client-features/
+├── BACKLOG.md (future epics only, max 1000 lines)
+├── COMPLETED.md (archived completed epics)
+└── epic-templates/
+    └── epic-template.md
+```
+
+### Epic Lifecycle
+- Active Epics: Keep only 2-3 active in `TASK.md`
+- Reference System: Use file references for detailed info
+- Archive Completed: Move to `COMPLETED.md` immediately
+- Context Rotation: Rotate based on priority
+
+### Task Format
+```md
+### EPIC: Game Flow Polishing
+Reference: `docs/epics/backend/game-flow-polishing.md`
+Objective: Ensure game loop runs without bugs
+Status: Active (Week 3 of 4)
+Business Impact: HIGH
+User Value: HIGH
+
+#### Critical (This Week)
+- [~] Fix voting race condition
+  - File: gameEngine.ts
+  - Notes: See epic file for context
+  - Time: 2 days
+
+#### High (Next Week)
+- [ ] Prevent duplicate game names
+  - File: createGame.ts
+  - Notes: Use Firestore transactions
+  - Time: 1.5 days
+
+#### Discovered During Epic
+- [ ] 'View results' button sometimes not appearing
+
+### Completed
+- [x] Refactored joinGame() with validation (2025-07-15)
+```
+
+### Task Status
+- [ ] - Not started
+- [~] - In progress
+- [x] - Completed
+- [!] - Blocked
+- [>] - Moved to different epic
+- [?] - Needs clarification
+
+### Backlog Management
+- Split large files when they exceed limits
+- Group by business impact and user value
+- Use cross-references between files
+- Maintain navigation index in main files
+- Record future ideas in `BACKLOG.md`
+
+## File Optimization for Processing
+
+### Performance Rules
+- Keep all files under size limits (TASK.md: 500 lines, BACKLOG.md: 1000 lines)
+- Use concise language - avoid verbose descriptions
+- Minimize emojis and decorative characters
+- Prefer bullet points over paragraphs
+- Use abbreviations where clear (e.g., "w/" instead of "with")
+- Limit file depth - max 3-4 levels of nesting
+- Use consistent formatting patterns
+- Avoid redundant information across files
+
+### Context Efficiency
+- Reference detailed content instead of duplicating
+- Use file links rather than copying content
+- Keep active files focused on current work only
+- Archive completed work immediately
+- Rotate active content based on priority
+- Use standardized templates for consistency
+
+### Processing Speed
+- Structure files for quick scanning
+- Use clear section headers
+- Limit line length to 80-100 characters
+- Use consistent indentation (2 spaces)
+- Avoid complex nested structures
+- Prefer flat hierarchies over deep nesting
+
+## Agile Process (Backlog → Done)
+
+### 1. Refine
+- Confirm task clarity
+- Ask questions if ambiguous
+- Confirm affected files
+- Check for reusable code
+- Check epic file for context
+
+### 2. Write in TASK.md
+- Include epic reference path
+- Priority and business impact
+- Affected file/module
+- State: [~] In progress
+- Estimated time
+- Use reference system for details
+
+### 3. Develop
+- Follow project rules
+- Avoid side-effects
+- Add # Reason: comments when needed
+- Check epic file for dependencies
+
+### 4. Test
+- Write unit tests for success, edge, failure cases
+- Update tests if logic changes
+- Confirm all tests pass
+- Update epic file with results
+
+### 5. PO Review
+- Submit for Product Owner review
+- Verify requirements met
+- Confirm completeness and quality
+- Update epic file with results
+
+### 6. Close
+- Mark as [x] in TASK.md
+- Add discovered tasks to epic
+- Link affected files
+- Archive epic to COMPLETED.md when done
+
+## Handling Feedback and Requests
+
+### Context-Aware Management
+- User feedback/bugs: Add to task, track in epic file
+- New features: Add to epic file in docs/epics/
+- Explicit requests: Mark top priority, load epic file
+
+### File Management Rules
+- Keep TASK.md under 500 lines
+- Keep BACKLOG.md under 1000 lines
+- Use reference system for context
+- Archive completed epics immediately
+- Rotate active epics by priority
+
+## Code Structure
+- Max file length: 500 LOC
+- Organize by feature/responsibility
+- Prefer relative imports
+- Reuse existing code
+- Avoid duplication
+- Use existing patterns
+
+## Testing
+- Every feature includes unit tests
+- Update tests if logic changes
+- Tests in /tests mirroring app structure
+- Use mock data only in tests
+- Include assertions
+
+## Code Quality
+- Prioritize simple, explicit solutions
+- Split logic into small methods (≤10 lines)
+- Use named constants
+- Consider edge cases, performance, security
+- Follow project coding style
+
+## Security
+- Never overwrite secrets without confirmation
+- Never delete/modify code unless tracked
+- Only use verified libraries/packages
+
+## AI Collaboration
+- Only modify requested/necessary items
+- Avoid new tech/patterns unless needed
+- Don't modify formatting unnecessarily
+- Make single file edits
+- Never remove unrelated code
+- Provide file links, not context copies
+- Check epic files for context
+
+## Prohibited Practices
+- No ad-hoc scripts in production
+- No stubs/fake logic in dev/prod
+- Avoid cleverness when clarity works
+- No monolithic task files
+- No context overload
+
+## Epic Health Monitoring
+- Track completion rates
+- Monitor file sizes
+- Use reference system
+- Rotate active epics by priority
+
+## Guidelines
+- Update README.md for new features
+- Comment non-obvious logic with # Reason:
+- Let code speak for itself
+- Use clear variable/function names 
