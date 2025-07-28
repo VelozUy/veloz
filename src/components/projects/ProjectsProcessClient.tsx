@@ -152,7 +152,7 @@ export default function ProjectsProcessClient() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {processSteps.map((step, index) => (
-              <Card key={step.id} className="relative overflow-hidden">
+              <Card key={step.id} className="relative overflow-hidden bg-card">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
                     <div
@@ -190,7 +190,7 @@ export default function ProjectsProcessClient() {
             ¿Por Qué Elegir Veloz?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card>
+            <Card className="bg-card">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-primary text-primary-foreground">
@@ -207,7 +207,7 @@ export default function ProjectsProcessClient() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-card">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-secondary text-secondary-foreground">
@@ -224,7 +224,7 @@ export default function ProjectsProcessClient() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-card">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-accent text-accent-foreground">
@@ -252,7 +252,7 @@ export default function ProjectsProcessClient() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index}>
+              <Card key={index} className="bg-card">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
@@ -286,7 +286,7 @@ export default function ProjectsProcessClient() {
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             {faqs.map((faq, index) => (
-              <Card key={index}>
+              <Card key={index} className="bg-card">
                 <CardHeader>
                   <CardTitle className="text-lg">{faq.question}</CardTitle>
                 </CardHeader>
