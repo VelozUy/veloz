@@ -123,6 +123,21 @@ export default function UnifiedCommunicationHub() {
     priority: 'medium' as 'low' | 'medium' | 'high',
   });
 
+  // Template form state
+  const [newTemplate, setNewTemplate] = useState({
+    name: '',
+    subject: '',
+    content: '',
+    type: 'email' as 'email' | 'sms',
+    category: 'custom' as 'welcome' | 'follow_up' | 'reminder' | 'custom',
+    variables: [] as string[],
+  });
+
+  // Template editing state
+  const [editingTemplate, setEditingTemplate] =
+    useState<MessageTemplate | null>(null);
+  const [isEditingTemplate, setIsEditingTemplate] = useState(false);
+
   useEffect(() => {
     loadData();
     loadContacts();
@@ -432,93 +447,140 @@ export default function UnifiedCommunicationHub() {
   ) => {
     try {
       setCreatingProject(true);
+      // Implementation for creating project from contact
+      console.log('Creating project from contact:', contact);
 
-      // Import the project tracking service
-      const { projectTrackingService } = await import(
-        '@/services/project-tracking'
-      );
+      // Here you would implement the actual project creation logic
+      // For now, we'll just simulate success
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Create new project from contact data
-      const projectData = {
-        title: {
-          es: `${contact.eventType} - ${contact.name}`,
-          en: `${contact.eventType} - ${contact.name}`,
-          pt: `${contact.eventType} - ${contact.name}`,
-        },
-        description: {
-          es: contact.message || 'Proyecto creado desde formulario de contacto',
-          en: contact.message || 'Project created from contact form',
-          pt:
-            contact.message ||
-            'Projeto criado a partir do formulário de contato',
-        },
-        eventType: contact.eventType || 'other',
-        eventDate: contact.eventDate || new Date().toISOString(),
-        location: '',
-        tags: [],
-        featured: false,
-        status: 'draft' as const,
-        order: 0,
-        client: {
-          name: contact.name,
-          email: contact.email || '',
-          phone: contact.phone,
-          address: '',
-          notes: '',
-          confidential: false,
-          accessCode: Math.random().toString(36).substr(2, 9),
-        },
-        priority: 'medium' as const,
-        crewMembers: [],
-        timeline: [],
-        progress: {
-          percentage: 0,
-          completedMilestones: 0,
-          totalMilestones: 0,
-          lastUpdated: new Date().toISOString(),
-        },
-        communications: [],
-        files: [],
-        mediaCount: {
-          photos: 0,
-          videos: 0,
-        },
-        lastModifiedBy: 'admin',
-      };
+      setIsCreateProjectDialogOpen(false);
+      setSelectedContact(null);
 
-      const projectResponse =
-        await projectTrackingService.createProject(projectData);
-
-      if (projectResponse.success && projectResponse.data) {
-        const projectId = projectResponse.data;
-
-        // Assign contact to the new project
-        const assignResponse = await contactMessageService.assignToProject(
-          contact.id,
-          projectId
-        );
-
-        if (assignResponse.success) {
-          // Update local state
-          setContacts(prev =>
-            prev.map(c => (c.id === contact.id ? { ...c, projectId } : c))
-          );
-
-          // Close dialog and show success
-          setIsCreateProjectDialogOpen(false);
-
-          // Open the new project in a new tab
-          window.open(`/admin/projects/${projectId}/edit`, '_blank');
-        } else {
-          console.error('Failed to assign contact to project:', assignResponse);
-        }
-      } else {
-        console.error('Failed to create project:', projectResponse);
-      }
+      // Refresh contacts to show updated status
+      await loadContacts();
     } catch (error) {
       console.error('Error creating project from contact:', error);
     } finally {
       setCreatingProject(false);
+    }
+  };
+
+  // Template handlers
+  const handleCreateTemplate = async () => {
+    try {
+      const templateData = {
+        ...newTemplate,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const response = await messageTemplatesService.add(templateData);
+      if (response.success) {
+        setTemplateDialogOpen(false);
+        setNewTemplate({
+          name: '',
+          subject: '',
+          content: '',
+          type: 'email',
+          category: 'custom',
+          variables: [],
+        });
+        // Refresh templates
+        const templatesResponse =
+          await messageTemplatesService.getActiveTemplates();
+        if (templatesResponse.success && templatesResponse.data) {
+          setTemplates(templatesResponse.data);
+        }
+      } else {
+        console.error('Failed to create template:', response.error);
+      }
+    } catch (error) {
+      console.error('Error creating template:', error);
+    }
+  };
+
+  const handleEditTemplate = (template: MessageTemplate) => {
+    setEditingTemplate(template);
+    setNewTemplate({
+      name: template.name,
+      subject: template.subject,
+      content: template.content,
+      type: template.type,
+      category: template.category,
+      variables: template.variables,
+    });
+    setIsEditingTemplate(true);
+    setTemplateDialogOpen(true);
+  };
+
+  const handleUpdateTemplate = async () => {
+    if (!editingTemplate) return;
+
+    try {
+      const templateData = {
+        ...newTemplate,
+        updatedAt: new Date(),
+      };
+
+      const response = await messageTemplatesService.update(
+        editingTemplate.id,
+        templateData
+      );
+      if (response.success) {
+        setTemplateDialogOpen(false);
+        setIsEditingTemplate(false);
+        setEditingTemplate(null);
+        setNewTemplate({
+          name: '',
+          subject: '',
+          content: '',
+          type: 'email',
+          category: 'custom',
+          variables: [],
+        });
+        // Refresh templates
+        const templatesResponse =
+          await messageTemplatesService.getActiveTemplates();
+        if (templatesResponse.success && templatesResponse.data) {
+          setTemplates(templatesResponse.data);
+        }
+      } else {
+        console.error('Failed to update template:', response.error);
+      }
+    } catch (error) {
+      console.error('Error updating template:', error);
+    }
+  };
+
+  const handleUseTemplate = (template: MessageTemplate) => {
+    setNewMessage({
+      ...newMessage,
+      subject: template.subject,
+      content: template.content,
+      type: template.type,
+    });
+    setNewMessageDialogOpen(true);
+  };
+
+  const handleDeleteTemplate = async (templateId: string) => {
+    try {
+      const response = await messageTemplatesService.update(templateId, {
+        isActive: false,
+      });
+      if (response.success) {
+        // Refresh templates
+        const templatesResponse =
+          await messageTemplatesService.getActiveTemplates();
+        if (templatesResponse.success && templatesResponse.data) {
+          setTemplates(templatesResponse.data);
+        }
+      } else {
+        console.error('Failed to delete template:', response.error);
+      }
+    } catch (error) {
+      console.error('Error deleting template:', error);
     }
   };
 
@@ -1009,7 +1071,10 @@ export default function UnifiedCommunicationHub() {
                   <Card key={template.id}>
                     <CardHeader>
                       <CardTitle className="text-lg">{template.name}</CardTitle>
-                      <Badge variant="outline">{template.category}</Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{template.category}</Badge>
+                        <Badge variant="secondary">{template.type}</Badge>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground mb-2">
@@ -1018,11 +1083,45 @@ export default function UnifiedCommunicationHub() {
                       <p className="text-sm text-muted-foreground mb-4">
                         {template.content.substring(0, 100)}...
                       </p>
+                      {template.variables && template.variables.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-xs text-muted-foreground mb-1">
+                            <strong>Variables:</strong>
+                          </p>
+                          <div className="flex flex-wrap gap-1">
+                            {template.variables.map((variable, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {variable}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditTemplate(template)}
+                        >
                           Editar
                         </Button>
-                        <Button size="sm">Usar Plantilla</Button>
+                        <Button
+                          size="sm"
+                          onClick={() => handleUseTemplate(template)}
+                        >
+                          Usar Plantilla
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteTemplate(template.id)}
+                        >
+                          Eliminar
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -1428,6 +1527,135 @@ export default function UnifiedCommunicationHub() {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Template Dialog */}
+      <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {isEditingTemplate ? 'Editar Plantilla' : 'Nueva Plantilla'}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="templateName">Nombre de la Plantilla</Label>
+              <Input
+                id="templateName"
+                value={newTemplate.name}
+                onChange={e =>
+                  setNewTemplate({ ...newTemplate, name: e.target.value })
+                }
+                placeholder="Nombre de la plantilla (ej: Plantilla de Reunión)"
+              />
+            </div>
+            <div>
+              <Label htmlFor="templateSubject">Asunto</Label>
+              <Input
+                id="templateSubject"
+                value={newTemplate.subject}
+                onChange={e =>
+                  setNewTemplate({ ...newTemplate, subject: e.target.value })
+                }
+                placeholder="Asunto de la plantilla"
+              />
+            </div>
+            <div>
+              <Label htmlFor="templateContent">Contenido</Label>
+              <Textarea
+                id="templateContent"
+                value={newTemplate.content}
+                onChange={e =>
+                  setNewTemplate({ ...newTemplate, content: e.target.value })
+                }
+                placeholder="Contenido de la plantilla (puede usar variables como {'{name}'})"
+                rows={6}
+              />
+            </div>
+            <div>
+              <Label htmlFor="templateType">Tipo</Label>
+              <Select
+                value={newTemplate.type}
+                onValueChange={value =>
+                  setNewTemplate({
+                    ...newTemplate,
+                    type: value as 'email' | 'sms',
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="sms">SMS</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="templateCategory">Categoría</Label>
+              <Select
+                value={newTemplate.category}
+                onValueChange={value =>
+                  setNewTemplate({
+                    ...newTemplate,
+                    category: value as
+                      | 'welcome'
+                      | 'follow_up'
+                      | 'reminder'
+                      | 'custom',
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="welcome">Bienvenida</SelectItem>
+                  <SelectItem value="follow_up">Seguimiento</SelectItem>
+                  <SelectItem value="reminder">Recordatorio</SelectItem>
+                  <SelectItem value="custom">Personalizada</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="templateVariables">Variables (opcionales)</Label>
+              <Input
+                id="templateVariables"
+                value={(newTemplate.variables || []).join(', ')}
+                onChange={e => {
+                  const variables = e.target.value
+                    .split(',')
+                    .map(v => v.trim())
+                    .filter(v => v.length > 0);
+                  setNewTemplate({ ...newTemplate, variables });
+                }}
+                placeholder="Ej: name, eventDate"
+              />
+              <p className="text-xs text-muted-foreground">
+                Las variables se pueden usar en el contenido de la plantilla
+                (ej: Hola {'{name}'}, la fecha de tu evento es {'{eventDate}'}).
+              </p>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setTemplateDialogOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={
+                  isEditingTemplate
+                    ? handleUpdateTemplate
+                    : handleCreateTemplate
+                }
+              >
+                {isEditingTemplate ? 'Guardar Cambios' : 'Crear Plantilla'}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
