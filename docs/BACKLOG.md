@@ -15,7 +15,7 @@ This file contains unprioritized ideas and future features that have been identi
 - [Veloz Brand Design System Implementation](#-epic-veloz-brand-design-system-implementation--completed) ✅ **COMPLETED**
 
 - [Square Border System Implementation](#-epic-square-border-system-implementation--completed) ✅ **COMPLETED**
-- [Light Gray Background Color System Implementation](#-epic-light-gray-background-color-system-implementation--new-epic) ⭐ **NEW EPIC**
+- [Light Gray Background Color System Implementation](#-epic-light-gray-background-color-system-implementation--completed) ✅ **COMPLETED**
 - [Banner Navigation System Redesign](#-epic-banner-navigation-system-redesign--completed) ✅ **COMPLETED**
 
 ### **🎯 Core Functionality Epics**
