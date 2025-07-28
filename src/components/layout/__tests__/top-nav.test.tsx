@@ -64,12 +64,26 @@ describe('TopNav', () => {
   it('applies correct styling classes', () => {
     render(<TopNav translations={mockTranslations} locale="es" />);
     
-    // Check that the main nav container has the correct background color
+    // Check that the main nav container has the correct background color (charcoal)
     const nav = screen.getByRole('navigation');
-    expect(nav).toHaveClass('bg-background');
+    expect(nav).toHaveClass('bg-foreground');
+    expect(nav).toHaveClass('relative');
     
     // Check that the logo container is centered
     const logoContainer = screen.getByTestId('logo-horizontal-white');
     expect(logoContainer).toBeInTheDocument();
+  });
+
+  it('uses correct theme colors for navigation styling', () => {
+    render(<TopNav translations={mockTranslations} locale="es" />);
+    
+    // Check that navigation uses charcoal background (#212223)
+    const nav = screen.getByRole('navigation');
+    expect(nav).toHaveClass('bg-foreground');
+    
+    // Check that locale switcher uses primary foreground text
+    const localeSwitcher = screen.getByTestId('locale-switcher');
+    expect(localeSwitcher).toHaveClass('text-primary-foreground');
+    expect(localeSwitcher).toHaveClass('hover:text-primary');
   });
 }); 

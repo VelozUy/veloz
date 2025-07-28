@@ -31,6 +31,18 @@ function getLocalizedPath(path: string, locale: string): string {
   return `/${locale}${path}`;
 }
 
+/**
+ * TopNav Component
+ * 
+ * Navigation bar with charcoal background (#212223) and white text.
+ * Scrolls with the page (not fixed).
+ * Uses theme variables:
+ * - Background: bg-foreground (charcoal #212223)
+ * - Text: text-primary-foreground (white #ffffff)
+ * - Logo: LogoHorizontalWhite component
+ * 
+ * This styling should not be changed without updating tests and documentation.
+ */
 export default function TopNav({
   translations,
   locale,
@@ -62,7 +74,7 @@ export default function TopNav({
   // Prevent hydration mismatch by ensuring consistent initial render
   if (!mounted) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background">
+      <nav className="relative z-50 bg-foreground">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
@@ -71,7 +83,7 @@ export default function TopNav({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-foreground/80 hover:text-foreground transition-colors font-medium"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium"
                 >
                   {item.name}
                 </Link>
@@ -85,7 +97,7 @@ export default function TopNav({
                 className="flex items-center justify-center group pointer-events-auto"
               >
                 <LogoHorizontalWhite
-                  size="sm"
+                  size="xs"
                 />
               </Link>
             </div>
@@ -94,13 +106,13 @@ export default function TopNav({
             <div className="hidden md:flex items-center">
               <LocaleSwitcher
                 currentLocale={locale}
-                className="text-foreground hover:text-primary"
+                className="text-primary-foreground hover:text-primary"
               />
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-none hover:bg-foreground/10 transition-colors text-foreground"
+              className="md:hidden p-2 rounded-none hover:bg-primary-foreground/10 transition-colors text-primary-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -142,7 +154,7 @@ export default function TopNav({
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background">
+      <nav className="relative z-50 bg-foreground">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
@@ -154,8 +166,8 @@ export default function TopNav({
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      'text-foreground/80 hover:text-foreground transition-colors font-medium',
-                      active && 'text-foreground'
+                      'text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium',
+                      active && 'text-primary-foreground'
                     )}
                   >
                     {item.name}
@@ -171,7 +183,7 @@ export default function TopNav({
                 className="flex items-center justify-center group pointer-events-auto"
               >
                 <LogoHorizontalWhite
-                  size="sm"
+                  size="xs"
                 />
               </Link>
             </div>
@@ -180,13 +192,13 @@ export default function TopNav({
             <div className="hidden md:flex items-center">
               <LocaleSwitcher
                 currentLocale={locale}
-                className="text-foreground hover:text-primary"
+                className="text-primary-foreground hover:text-primary"
               />
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-none hover:bg-foreground/10 transition-colors text-foreground"
+              className="md:hidden p-2 rounded-none hover:bg-primary-foreground/10 transition-colors text-primary-foreground"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
@@ -202,7 +214,7 @@ export default function TopNav({
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bg-background shadow-xl border-t border-foreground/10 z-40">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-foreground shadow-xl border-t border-primary-foreground/10 z-40">
           <div className="px-4 py-6 space-y-4">
             {navItems.map(item => {
               const active = isActive(item.href);
@@ -211,8 +223,8 @@ export default function TopNav({
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'block px-4 py-3 text-foreground/80 hover:text-foreground transition-colors font-medium',
-                    active && 'text-foreground'
+                    'block px-4 py-3 text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium',
+                    active && 'text-primary-foreground'
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -222,11 +234,11 @@ export default function TopNav({
             })}
 
             {/* Language Switcher for Mobile */}
-            <div className="pt-4 border-t border-foreground/10">
+            <div className="pt-4 border-t border-primary-foreground/10">
               <div className="flex justify-center">
                 <LocaleSwitcher
                   currentLocale={locale}
-                  className="text-foreground hover:text-primary"
+                  className="text-primary-foreground hover:text-primary"
                 />
               </div>
             </div>
