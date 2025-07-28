@@ -327,29 +327,6 @@ export default function ProjectsProcessClient() {
           </div>
         </div>
       </section>
-
-      {/* Contact Info */}
-      <section className="py-12 px-4">
-        <div className="max-w-border-64 mx-auto text-center">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center gap-2">
-              <Mail className="h-6 w-6 text-muted-foreground" />
-              <p className="font-semibold">Email</p>
-              <p className="text-muted-foreground">info@veloz.com.uy</p>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <Phone className="h-6 w-6 text-muted-foreground" />
-              <p className="font-semibold">Teléfono</p>
-              <p className="text-muted-foreground">+598 99 123 456</p>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <MessageSquare className="h-6 w-6 text-muted-foreground" />
-              <p className="font-semibold">WhatsApp</p>
-              <p className="text-muted-foreground">+598 99 123 456</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
