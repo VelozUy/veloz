@@ -69,7 +69,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
       <SideNavigation projects={projects} />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="max-w-border-64 mx-auto px-4 py-8">
         {/* Main Title - Eventos */}
         <div className="text-center py-16">
           <h1

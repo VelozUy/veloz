@@ -15,6 +15,7 @@ import {
   VelozBarcode,
   VelozCheckboard,
   VelozRuler,
+  VelozFooter,
 } from '@/components/shared';
 
 export default function DesignDebugPage() {
@@ -474,6 +475,54 @@ export default function DesignDebugPage() {
                     <VelozBarcode size="small" />
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* VelozFooter Section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-semibold mb-6 text-foreground">
+            VelozFooter
+          </h2>
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-foreground">
+                Default Footer (Page 19 Design)
+              </h3>
+              <div className="border border-border rounded-lg overflow-hidden">
+                <VelozFooter />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-foreground">
+                Footer in Context
+              </h3>
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="p-8 bg-background">
+                  <h4 className="text-xl font-semibold mb-4">
+                    Sample Page Content
+                  </h4>
+                  <p className="text-muted-foreground mb-4">
+                    This demonstrates how the VelozFooter looks when used at the
+                    bottom of a page. The footer maintains the exact design from
+                    page 19 of the Veloz Manual with the light gray background,
+                    &ldquo;PROCESOS OPTIMIZADOS&rdquo; text in REDJOLA font, and
+                    decorative elements on the sides.
+                  </p>
+                  <div className="h-32 bg-muted rounded-lg flex items-center justify-center text-muted-foreground">
+                    Page content area
+                  </div>
+                </div>
+                <VelozFooter />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-foreground">
+                Footer with Custom Styling
+              </h3>
+              <div className="border border-border rounded-lg overflow-hidden">
+                <VelozFooter className="scale-75" />
               </div>
             </div>
           </div>

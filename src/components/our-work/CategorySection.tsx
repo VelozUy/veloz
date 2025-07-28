@@ -80,7 +80,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
       className={`min-h-screen pt-8 pb-16 bg-background ${className}`}
       data-testid="category-section"
     >
-      <div className="container mx-auto px-4">
+      <div className="max-w-border-64 mx-auto px-4">
         {/* Category Header - Only show if title or description is provided */}
         {(title || description) && (
           <div className="text-center mb-12">

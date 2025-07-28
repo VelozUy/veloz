@@ -13,3 +13,4 @@ export { VelozWorld } from './VelozWorld';
 export { VelozBarcode } from './VelozBarcode';
 export { VelozCheckboard } from './VelozCheckboard';
 export { VelozRuler } from './VelozRuler';
+export { VelozFooter } from './VelozFooter';

@@ -52,7 +52,7 @@ const HARDCODED_COLOR_PATTERNS = [
   /bg-stone-\d+/g,
 
   // Text colors
-  /text-white(?![-\/])/g,
+  /(?<=\s)text-white(?![-\/\.\w])/g,
   /text-black(?![-\/])/g,
   /text-gray-\d+/g,
   /text-blue-\d+/g,
@@ -204,6 +204,11 @@ export function validateFileForThemeConsistency(
 ): ConsistencyIssue[] {
   // Skip checking the theme consistency checker itself
   if (filePath.includes('theme-consistency-checker')) {
+    return [];
+  }
+
+  // Skip LogoHorizontalWhite component as it contains SVG filenames, not CSS classes
+  if (filePath.includes('LogoHorizontalWhite')) {
     return [];
   }
 

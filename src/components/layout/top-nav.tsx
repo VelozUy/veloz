@@ -33,20 +33,17 @@ function getLocalizedPath(path: string, locale: string): string {
 
 /**
  * TopNav Component
- * 
+ *
  * Navigation bar with charcoal background (#212223) and white text.
  * Scrolls with the page (not fixed).
  * Uses theme variables:
  * - Background: bg-foreground (charcoal #212223)
  * - Text: text-primary-foreground (white #ffffff)
  * - Logo: LogoHorizontalWhite component
- * 
+ *
  * This styling should not be changed without updating tests and documentation.
  */
-export default function TopNav({
-  translations,
-  locale,
-}: TopNavProps) {
+export default function TopNav({ translations, locale }: TopNavProps) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -75,7 +72,7 @@ export default function TopNav({
   if (!mounted) {
     return (
       <nav className="relative z-50 bg-foreground">
-        <div className="container mx-auto px-4">
+        <div className="w-full px-16">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
@@ -96,9 +93,7 @@ export default function TopNav({
                 href={getLocalizedPath('/', locale)}
                 className="flex items-center justify-center group pointer-events-auto"
               >
-                <LogoHorizontalWhite
-                  size="xs"
-                />
+                <LogoHorizontalWhite size="xs" />
               </Link>
             </div>
 
@@ -155,7 +150,7 @@ export default function TopNav({
   return (
     <>
       <nav className="relative z-50 bg-foreground">
-        <div className="container mx-auto px-4">
+        <div className="w-full px-16">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
@@ -182,9 +177,7 @@ export default function TopNav({
                 href={getLocalizedPath('/', locale)}
                 className="flex items-center justify-center group pointer-events-auto"
               >
-                <LogoHorizontalWhite
-                  size="xs"
-                />
+                <LogoHorizontalWhite size="xs" />
               </Link>
             </div>
 
@@ -247,4 +240,4 @@ export default function TopNav({
       )}
     </>
   );
-} 
+}

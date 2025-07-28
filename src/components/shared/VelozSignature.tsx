@@ -27,7 +27,7 @@ export function VelozSignature({
         />
       </svg>
       {variant === 'horizontal' && (
-        <span className="font-redjola text-xl uppercase tracking-widest text-[--primary]">
+        <span className="font-logo text-xl uppercase tracking-widest text-[--primary]">
           VELOZ
         </span>
       )}

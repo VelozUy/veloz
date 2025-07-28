@@ -36,7 +36,7 @@ const HARDCODED_COLOR_PATTERNS = [
   /bg-stone-\d+/g,
 
   // Text colors
-  /text-white/g,
+  /text-white(?![-\/\.\w])/g,
   /text-black/g,
   /text-gray-\d+/g,
   /text-blue-\d+/g,

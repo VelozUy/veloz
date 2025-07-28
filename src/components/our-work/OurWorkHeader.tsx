@@ -34,7 +34,7 @@ export default function OurWorkHeader({
     <>
       {/* Category navigation */}
       <div className="bg-background h-24 md:h-28 flex items-center">
-        <div className="container mx-auto px-4">
+        <div className="max-w-border-64 mx-auto px-4">
           <CategoryNavigation
             categories={categories}
             activeCategory={activeCategory || 'overview'}
