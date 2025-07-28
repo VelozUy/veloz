@@ -39,7 +39,6 @@ const navigation = [
   { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },
   { name: 'Preguntas Frecuentes', href: '/admin/faqs', icon: HelpCircle },
-  { name: 'Mensajes de Contacto', href: '/admin/contacts', icon: Mail },
 ];
 
 export default function AdminLayout({ children, title }: AdminLayoutProps) {

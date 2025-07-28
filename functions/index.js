@@ -4,11 +4,11 @@
  * Includes admin email preferences and fallback email services
  */
 
-const functions = require("firebase-functions");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-const admin = require("firebase-admin");
-const { Resend } = require("resend");
-const nodemailer = require("nodemailer");
+const functions = require('firebase-functions');
+const { onDocumentCreated } = require('firebase-functions/v2/firestore');
+const admin = require('firebase-admin');
+const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
@@ -17,14 +17,16 @@ admin.initializeApp();
 const config = functions.config();
 
 // Initialize email services with safe API key handling
-const resend = config.resend?.api_key ? new Resend(config.resend.api_key) : null;
+const resend = config.resend?.api_key
+  ? new Resend(config.resend.api_key)
+  : null;
 
 // Nodemailer configuration (fallback)
 const createNodemailerTransporter = () => {
   if (!config.smtp?.host || !config.smtp?.user || !config.smtp?.pass) {
     return null;
   }
-  
+
   return nodemailer.createTransporter({
     host: config.smtp.host,
     port: parseInt(config.smtp.port) || 587,
@@ -54,37 +56,39 @@ const getAdminEmailRecipients = async () => {
         recipients.push({
           email: userData.email,
           name: userData.name || userData.displayName || 'Admin',
-          role: userData.role || 'admin'
+          role: userData.role || 'admin',
         });
       }
     });
 
     // Fallback to default admin email if no admins have notifications enabled
     if (recipients.length === 0) {
-      const fallbackEmails = config.admin?.notification_emails 
+      const fallbackEmails = config.admin?.notification_emails
         ? config.admin.notification_emails.split(',').map(email => email.trim())
         : ['info@veloz.com.uy'];
-      
+
       return fallbackEmails.map(email => ({
         email,
         name: 'Admin',
-        role: 'admin'
+        role: 'admin',
       }));
     }
 
     return recipients;
   } catch (error) {
-    functions.logger.error('Failed to get admin email recipients', { error: error.message });
-    
+    functions.logger.error('Failed to get admin email recipients', {
+      error: error.message,
+    });
+
     // Fallback to default emails
-    const fallbackEmails = config.admin?.notification_emails 
+    const fallbackEmails = config.admin?.notification_emails
       ? config.admin.notification_emails.split(',').map(email => email.trim())
       : ['info@veloz.com.uy'];
-    
+
     return fallbackEmails.map(email => ({
       email,
       name: 'Admin',
-      role: 'admin'
+      role: 'admin',
     }));
   }
 };
@@ -92,7 +96,7 @@ const getAdminEmailRecipients = async () => {
 /**
  * Email template for contact notifications
  */
-const createContactEmailTemplate = (contactData) => {
+const createContactEmailTemplate = contactData => {
   const {
     name,
     email,
@@ -147,54 +151,82 @@ const createContactEmailTemplate = (contactData) => {
                     <span class="field-value"><a href="mailto:${email}">${email}</a></span>
                 </div>
                 
-                ${phone ? `
+                ${
+                  phone
+                    ? `
                 <div class="field">
                     <span class="field-label">📱 Teléfono:</span>
                     <span class="field-value"><a href="tel:${phone}">${phone}</a></span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${eventType ? `
+                ${
+                  eventType
+                    ? `
                 <div class="field">
                     <span class="field-label">🎉 Tipo de Evento:</span>
                     <span class="field-value">${eventType}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${eventDate ? `
+                ${
+                  eventDate
+                    ? `
                 <div class="field">
                     <span class="field-label">📅 Fecha del Evento:</span>
                     <span class="field-value">${eventDate}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${location ? `
+                ${
+                  location
+                    ? `
                 <div class="field">
                     <span class="field-label">📍 Ubicación:</span>
                     <span class="field-value">${location}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${budget ? `
+                ${
+                  budget
+                    ? `
                 <div class="field">
                     <span class="field-label">💰 Presupuesto:</span>
                     <span class="field-value">${budget}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${services && services.length > 0 ? `
+                ${
+                  services && services.length > 0
+                    ? `
                 <div class="field">
                     <span class="field-label">🎬 Servicios Solicitados:</span>
                     <span class="field-value">${Array.isArray(services) ? services.join(', ') : services}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
-                ${referral ? `
+                ${
+                  referral
+                    ? `
                 <div class="field">
                     <span class="field-label">👥 Referencia:</span>
                     <span class="field-value">${referral}</span>
                 </div>
-                ` : ''}
+                `
+                    : ''
+                }
                 
                 <div class="message-box">
                     <h3>💬 Mensaje:</h3>
@@ -211,7 +243,7 @@ const createContactEmailTemplate = (contactData) => {
             
             <div class="footer">
                 <p>Esta notificación fue enviada automáticamente desde el formulario de contacto de Veloz.</p>
-                <p>Para gestionar este contacto, visita el <a href="https://veloz.com.uy/admin/contacts">panel de administración</a>.</p>
+                <p>Para gestionar este contacto, visita el <a href="https://veloz.com.uy/admin/communications">panel de administración</a>.</p>
             </div>
         </div>
     </body>
@@ -237,7 +269,7 @@ ${message}
 
 ---
 Responder a: ${email}
-Panel de administración: https://veloz.com.uy/admin/contacts
+Panel de administración: https://veloz.com.uy/admin/communications
   `;
 
   return { html, text };
@@ -261,14 +293,16 @@ const sendEmailWithResend = async (to, subject, { html, text }) => {
       replyTo: 'info@veloz.com.uy',
     });
 
-    functions.logger.info('Email sent successfully with Resend', { 
-      result, 
-      to: Array.isArray(to) ? to : [to] 
+    functions.logger.info('Email sent successfully with Resend', {
+      result,
+      to: Array.isArray(to) ? to : [to],
     });
-    
+
     return { success: true, service: 'resend', result };
   } catch (error) {
-    functions.logger.error('Failed to send email with Resend', { error: error.message });
+    functions.logger.error('Failed to send email with Resend', {
+      error: error.message,
+    });
     throw error;
   }
 };
@@ -278,7 +312,7 @@ const sendEmailWithResend = async (to, subject, { html, text }) => {
  */
 const sendEmailWithNodemailer = async (to, subject, { html, text }) => {
   const transporter = createNodemailerTransporter();
-  
+
   if (!transporter) {
     throw new Error('Nodemailer service not configured');
   }
@@ -294,15 +328,17 @@ const sendEmailWithNodemailer = async (to, subject, { html, text }) => {
     };
 
     const result = await transporter.sendMail(mailOptions);
-    
-    functions.logger.info('Email sent successfully with Nodemailer', { 
-      messageId: result.messageId, 
-      to: Array.isArray(to) ? to : [to] 
+
+    functions.logger.info('Email sent successfully with Nodemailer', {
+      messageId: result.messageId,
+      to: Array.isArray(to) ? to : [to],
     });
-    
+
     return { success: true, service: 'nodemailer', result };
   } catch (error) {
-    functions.logger.error('Failed to send email with Nodemailer', { error: error.message });
+    functions.logger.error('Failed to send email with Nodemailer', {
+      error: error.message,
+    });
     throw error;
   }
 };
@@ -315,8 +351,10 @@ const sendEmailWithFallback = async (to, subject, emailContent) => {
   try {
     return await sendEmailWithResend(to, subject, emailContent);
   } catch (resendError) {
-    functions.logger.warn('Resend failed, trying Nodemailer fallback', { error: resendError.message });
-    
+    functions.logger.warn('Resend failed, trying Nodemailer fallback', {
+      error: resendError.message,
+    });
+
     // Fallback to Nodemailer
     try {
       return await sendEmailWithNodemailer(to, subject, emailContent);
@@ -335,8 +373,8 @@ const sendEmailWithFallback = async (to, subject, emailContent) => {
  * Triggers when a new document is created in the contactMessages collection
  */
 exports.sendContactEmail = onDocumentCreated(
-  "contactMessages/{messageId}",
-  async (event) => {
+  'contactMessages/{messageId}',
+  async event => {
     const snapshot = event.data;
     const messageId = event.params.messageId;
 
@@ -346,17 +384,20 @@ exports.sendContactEmail = onDocumentCreated(
     }
 
     const contactData = snapshot.data();
-    
-    functions.logger.info('Processing new contact message', { 
-      messageId, 
-      name: contactData.name, 
-      email: contactData.email 
+
+    functions.logger.info('Processing new contact message', {
+      messageId,
+      name: contactData.name,
+      email: contactData.email,
     });
 
     try {
       // Validate required fields
       if (!contactData.name || !contactData.email || !contactData.message) {
-        functions.logger.error('Missing required contact data', { messageId, contactData });
+        functions.logger.error('Missing required contact data', {
+          messageId,
+          contactData,
+        });
         return;
       }
 
@@ -365,14 +406,16 @@ exports.sendContactEmail = onDocumentCreated(
       const adminEmails = adminRecipients.map(admin => admin.email);
 
       if (adminEmails.length === 0) {
-        functions.logger.warn('No admin recipients found for contact email notifications');
+        functions.logger.warn(
+          'No admin recipients found for contact email notifications'
+        );
         return;
       }
 
-      functions.logger.info('Sending contact notifications to admins', { 
-        messageId, 
+      functions.logger.info('Sending contact notifications to admins', {
+        messageId,
         adminEmails,
-        adminCount: adminRecipients.length 
+        adminCount: adminRecipients.length,
       });
 
       // Create email content
@@ -385,13 +428,17 @@ exports.sendContactEmail = onDocumentCreated(
 
       for (const admin of adminRecipients) {
         try {
-          const emailResult = await sendEmailWithFallback([admin.email], subject, emailTemplate);
+          const emailResult = await sendEmailWithFallback(
+            [admin.email],
+            subject,
+            emailTemplate
+          );
           emailResults.push({
             admin: admin.email,
             success: true,
-            service: emailResult.service
+            service: emailResult.service,
           });
-          
+
           functions.logger.info('Email sent to admin', {
             admin: admin.email,
             service: emailResult.service,
@@ -401,9 +448,9 @@ exports.sendContactEmail = onDocumentCreated(
           emailResults.push({
             admin: admin.email,
             success: false,
-            error: error.message
+            error: error.message,
           });
-          
+
           functions.logger.error('Failed to send email to admin', {
             admin: admin.email,
             error: error.message,
@@ -416,15 +463,24 @@ exports.sendContactEmail = onDocumentCreated(
       const overallSuccess = successfulSends.length > 0;
 
       // Update the contact message with email status
-      await admin.firestore()
+      await admin
+        .firestore()
         .collection('contactMessages')
         .doc(messageId)
         .update({
           emailSent: overallSuccess,
-          emailSentAt: overallSuccess ? admin.firestore.FieldValue.serverTimestamp() : null,
+          emailSentAt: overallSuccess
+            ? admin.firestore.FieldValue.serverTimestamp()
+            : null,
           emailResults: emailResults,
-          emailError: overallSuccess ? null : (lastError ? lastError.message : 'Failed to send to any admin'),
-          emailErrorAt: overallSuccess ? null : admin.firestore.FieldValue.serverTimestamp(),
+          emailError: overallSuccess
+            ? null
+            : lastError
+              ? lastError.message
+              : 'Failed to send to any admin',
+          emailErrorAt: overallSuccess
+            ? null
+            : admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         });
 
@@ -435,14 +491,13 @@ exports.sendContactEmail = onDocumentCreated(
         overallSuccess,
       });
 
-      return { 
-        success: overallSuccess, 
-        messageId, 
+      return {
+        success: overallSuccess,
+        messageId,
         emailResults,
         adminCount: adminRecipients.length,
-        successCount: successfulSends.length
+        successCount: successfulSends.length,
       };
-
     } catch (error) {
       functions.logger.error('Failed to send contact email notification', {
         messageId,
@@ -452,7 +507,8 @@ exports.sendContactEmail = onDocumentCreated(
 
       // Update the contact message with error status
       try {
-        await admin.firestore()
+        await admin
+          .firestore()
           .collection('contactMessages')
           .doc(messageId)
           .update({
@@ -462,15 +518,19 @@ exports.sendContactEmail = onDocumentCreated(
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
       } catch (updateError) {
-        functions.logger.error('Failed to update contact message with error status', {
-          messageId,
-          updateError: updateError.message,
-        });
+        functions.logger.error(
+          'Failed to update contact message with error status',
+          {
+            messageId,
+            updateError: updateError.message,
+          }
+        );
       }
 
       throw error;
     }
-  });
+  }
+);
 
 /**
  * Manual trigger for testing contact emails
@@ -479,21 +539,21 @@ exports.testContactEmail = functions.https.onRequest(async (req, res) => {
   try {
     // Test contact data
     const testContactData = {
-      name: "Test User",
-      email: "test@example.com",
-      message: "This is a test message from the contact form.",
-      phone: "+598 99 123 456",
-      eventType: "wedding",
-      eventDate: "2025-06-15",
-      location: "Montevideo, Uruguay",
-      budget: "$1000-2000",
-      services: ["photos", "videos"],
-      referral: "Google search",
+      name: 'Test User',
+      email: 'test@example.com',
+      message: 'This is a test message from the contact form.',
+      phone: '+598 99 123 456',
+      eventType: 'wedding',
+      eventDate: '2025-06-15',
+      location: 'Montevideo, Uruguay',
+      budget: '$1000-2000',
+      services: ['photos', 'videos'],
+      referral: 'Google search',
     };
 
     const emailTemplate = createContactEmailTemplate(testContactData);
-    const subject = "🎬 TEST - Nueva consulta - Test User";
-    
+    const subject = '🎬 TEST - Nueva consulta - Test User';
+
     // Get admin recipients or use query parameter
     let testEmails;
     if (req.query.email) {
@@ -506,21 +566,27 @@ exports.testContactEmail = functions.https.onRequest(async (req, res) => {
     if (testEmails.length === 0) {
       return res.status(400).json({
         success: false,
-        error: "No test email recipients found. Pass ?email=your@email.com or configure admin users.",
+        error:
+          'No test email recipients found. Pass ?email=your@email.com or configure admin users.',
       });
     }
 
-    const result = await sendEmailWithFallback(testEmails, subject, emailTemplate);
+    const result = await sendEmailWithFallback(
+      testEmails,
+      subject,
+      emailTemplate
+    );
 
     res.json({
       success: true,
-      message: "Test email sent successfully",
+      message: 'Test email sent successfully',
       service: result.service,
       to: testEmails,
     });
-
   } catch (error) {
-    functions.logger.error('Failed to send test email', { error: error.message });
+    functions.logger.error('Failed to send test email', {
+      error: error.message,
+    });
     res.status(500).json({
       success: false,
       error: error.message,
@@ -533,19 +599,15 @@ exports.testContactEmail = functions.https.onRequest(async (req, res) => {
  */
 exports.healthCheck = functions.https.onRequest((req, res) => {
   res.json({
-    status: "healthy",
+    status: 'healthy',
     timestamp: new Date().toISOString(),
-    functions: [
-      "sendContactEmail",
-      "testContactEmail", 
-      "healthCheck"
-    ],
+    functions: ['sendContactEmail', 'testContactEmail', 'healthCheck'],
     services: {
       hasResendKey: !!config.resend?.api_key,
       hasSmtpConfig: !!(config.smtp?.host && config.smtp?.user),
       hasAdminEmails: !!config.admin?.notification_emails,
       resendConfigured: !!resend,
       nodemailerConfigured: !!createNodemailerTransporter(),
-    }
+    },
   });
 });

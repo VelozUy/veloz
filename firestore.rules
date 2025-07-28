@@ -166,6 +166,27 @@ service cloud.firestore {
       allow list: if isActiveAdmin(); // Only admins can list all messages
     }
     
+    // Communications Collection - Admin management, public read for project communications
+    match /communications/{communicationId} {
+      allow read: if true; // Allow public read for communications
+      allow write, delete: if isActiveAdmin(); // Only admins can manage communications
+      allow create: if isActiveAdmin(); // Only admins can create communications
+      allow list: if isActiveAdmin(); // Only admins can list all communications
+    }
+    
+    // Message Templates Collection - Admin only access
+    match /messageTemplates/{templateId} {
+      allow read, write, delete, create, list: if isActiveAdmin(); // Only active admins can access templates
+    }
+    
+    // Client Feedback Collection - Admin management, public read for feedback
+    match /clientFeedback/{feedbackId} {
+      allow read: if true; // Allow public read for client feedback
+      allow write, delete: if isActiveAdmin(); // Only admins can manage feedback
+      allow create: if isActiveAdmin(); // Only admins can create feedback entries
+      allow list: if isActiveAdmin(); // Only admins can list all feedback
+    }
+    
     // Project Tasks Collection - Admin management, public read for project tasks
     match /projectTasks/{taskId} {
       allow read: if true; // Allow public read for project tasks

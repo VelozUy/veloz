@@ -1,6 +1,6 @@
 # 📋 Veloz Project Tasks - Active Epics
 
-_Last updated: 2025-07-25_
+_Last updated: 2025-01-27_
 
 ---
 
@@ -18,26 +18,54 @@ _Last updated: 2025-07-25_
 
 ## 🎯 **ACTIVE EPICS**
 
-### 🧱 EPIC: Enhanced Admin Project Management
+### 🧱 EPIC: Unified Communication Center
 
-**Reference**: `docs/epics/admin/enhanced-admin-project-management.md`
-**Objective**: Improve admin project management with advanced features and better UX
-**Status**: Active (Week 2 of 4)
+**Reference**: `docs/epics/admin/unified-communication-center.md`
+**Objective**: Merge Centro de Comunicaciones and Mensajes de Contacto into unified system
+**Status**: Active (Week 1 of 3)
 **Business Impact**: HIGH
 **User Value**: HIGH
 
 #### 🟥 Critical (This Week)
 
-- [x] Project contact tab system implementation
-  - File: `src/app/admin/projects/[id]/page.tsx`
+- [x] Create unified communication interface structure
+  - File: `src/app/admin/communications/page.tsx`
   - Notes: See epic file for full context
-  - Estimated Time: 3 days
-  - Status: ✅ **COMPLETED** - Contact tab added to project edit page with full CRUD functionality
+  - Estimated Time: 2 days
+  - Status: Completed (2025-01-27)
+
+- [x] Implement contact messages tab
+  - File: `src/components/admin/ContactMessagesTab.tsx`
+  - Notes: See epic file for full context
+  - Estimated Time: 1.5 days
+  - Status: Completed (2025-01-27)
 
 #### 🟧 High (Next Week)
 
-- [ ] Admin contacts page redesign
-  - File: `src/app/admin/contacts/page.tsx`
+- [ ] Implement communications tab
+  - File: `src/components/admin/CommunicationsTab.tsx`
+  - Notes: See epic file for full context
+  - Estimated Time: 2 days
+
+### 🧱 EPIC: Enhanced Admin Project Management
+
+**Reference**: `docs/epics/admin/enhanced-admin-project-management.md`
+**Objective**: Improve admin project management with advanced features and better UX
+**Status**: Active (Week 3 of 4)
+**Business Impact**: HIGH
+**User Value**: HIGH
+
+#### 🟧 High (Next Week)
+
+- [ ] Project management analytics dashboard
+  - File: `src/components/admin/ProjectAnalytics.tsx`
+  - Notes: See epic file for full context
+  - Estimated Time: 2 days
+
+#### 🟨 Medium (Future)
+
+- [ ] Project contact analytics
+  - File: `src/components/admin/ContactAnalytics.tsx`
   - Notes: See epic file for full context
   - Estimated Time: 2 days
 
@@ -45,16 +73,9 @@ _Last updated: 2025-07-25_
 
 **Reference**: `docs/epics/admin/crew-media-assignment-system.md`
 **Objective**: Implement system for assigning media to crew members
-**Status**: Active (Week 1 of 3)
+**Status**: Active (Week 2 of 3)
 **Business Impact**: HIGH
 **User Value**: MEDIUM
-
-#### 🟥 Critical (This Week)
-
-- [ ] Media assignment interface
-  - File: `src/components/admin/CrewMediaAssignment.tsx`
-  - Notes: See epic file for full context
-  - Estimated Time: 2.5 days
 
 #### 🟧 High (Next Week)
 
@@ -63,18 +84,10 @@ _Last updated: 2025-07-25_
   - Notes: See epic file for full context
   - Estimated Time: 1.5 days
 
-### 🧱 EPIC: Default Project Tasks System
+#### 🟨 Medium (Future)
 
-**Reference**: `docs/epics/admin/default-project-tasks-system.md`
-**Objective**: Implement system for default project tasks and templates
-**Status**: Active (Week 1 of 2)
-**Business Impact**: MEDIUM
-**User Value**: HIGH
-
-#### 🟥 Critical (This Week)
-
-- [ ] Default task templates implementation
-  - File: `src/components/admin/DefaultTaskTemplates.tsx`
+- [ ] Assignment analytics and reporting
+  - File: `src/components/admin/AssignmentAnalytics.tsx`
   - Notes: See epic file for full context
   - Estimated Time: 2 days
 
@@ -82,12 +95,12 @@ _Last updated: 2025-07-25_
 
 ## 📊 **Epic Status Summary**
 
-| Status                 | Count | Epics                                                                           |
-| ---------------------- | ----- | ------------------------------------------------------------------------------- |
-| 🔴 **CRITICAL**        | 3     | Enhanced Admin Project Management, Crew Media Assignment, Default Project Tasks |
-| ⭐ **HIGH PRIORITY**   | 3     | Ready to start when current epics complete                                      |
-| 🟧 **MEDIUM PRIORITY** | 7     | Future development                                                              |
-| ✅ **COMPLETED**       | 9     | Archived in `docs/COMPLETED.md`                                                 |
+| Status                 | Count | Epics                                                           |
+| ---------------------- | ----- | --------------------------------------------------------------- |
+| 🔴 **CRITICAL**        | 2     | Unified Communication Center, Enhanced Admin Project Management |
+| ⭐ **HIGH PRIORITY**   | 4     | Ready to start when current epics complete                      |
+| 🟧 **MEDIUM PRIORITY** | 8     | Future development                                              |
+| ✅ **COMPLETED**       | 9     | Archived in `docs/COMPLETED.md`                                 |
 
 **Total Active Epics**: 3
 

@@ -109,7 +109,6 @@ describe('AdminLayout', () => {
     expect(screen.getByText('Página Sobre Nosotros')).toBeInTheDocument();
     expect(screen.getByText('Preguntas Frecuentes')).toBeInTheDocument();
     expect(screen.getByText('Formularios')).toBeInTheDocument();
-    expect(screen.getByText('Mensajes de Contacto')).toBeInTheDocument();
   });
 
   it('handles sidebar toggle correctly', () => {
