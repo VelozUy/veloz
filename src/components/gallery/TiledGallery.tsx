@@ -31,6 +31,7 @@ import {
   clearImageCache,
   type ImageOptimizationConfig,
 } from '@/lib/image-optimization';
+import { VelozLoader } from '@/components/shared';
 
 /**
  * TiledGallery Component
@@ -592,13 +593,10 @@ export function TiledGallery({
                         />
                       )}
 
-                      {/* Loading spinner - preserving current pattern */}
+                      {/* Loading state with VelozLoader */}
                       {!isLoaded && !hasError && !image.blurDataURL && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
-                          <div className="ml-2 text-xs text-muted-foreground">
-                            Loading...
-                          </div>
+                          <VelozLoader orientation="horizontal" size="small" />
                         </div>
                       )}
 
@@ -652,6 +650,7 @@ export function TiledGallery({
               gap: `${gap}px`,
               height: `${row.actualHeight}px`,
               width: '100%',
+              justifyContent: 'center',
             }}
           >
             {row.tiles.map((tile, tileIndex) => {
@@ -798,10 +797,13 @@ export function TiledGallery({
                           />
                         )}
 
-                        {/* Loading spinner - preserving current pattern */}
+                        {/* Loading state with VelozLoader */}
                         {!isLoaded && !hasError && !image.blurDataURL && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-8 h-8 border-2 border-transparent border-r-2 border-r-muted-foreground rounded-full animate-spin" />
+                            <VelozLoader
+                              orientation="horizontal"
+                              size="small"
+                            />
                           </div>
                         )}
 
