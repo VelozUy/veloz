@@ -16,6 +16,7 @@ import {
   Mail,
   FileText,
   Users,
+  QrCode,
 } from 'lucide-react';
 import BuildTrigger from './BuildTrigger';
 import { useAdminBackground } from '@/hooks/useBackground';
@@ -33,6 +34,7 @@ const navigation = [
   { name: 'Plantillas de Tareas', href: '/admin/templates', icon: FileText },
   { name: 'Crew', href: '/admin/crew', icon: Users },
   { name: 'Comunicaciones', href: '/admin/communications', icon: Mail },
+  { name: 'Generador QR', href: '/admin/qr-codes', icon: QrCode },
   { name: 'Página de Inicio', href: '/admin/homepage', icon: Home },
   { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },
@@ -79,8 +81,6 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         setAdminLoading(true);
         const adminStatus = await checkAdminStatus(user.email);
         setIsAdmin(adminStatus);
-        
-
 
         if (!adminStatus) {
           router.push('/admin/login');
@@ -120,7 +120,9 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         <div className="text-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-3"></div>
           <p className="text-body-sm text-foreground">
-            {!user ? 'Redirigiendo al login...' : 'Verificando permisos de administrador...'}
+            {!user
+              ? 'Redirigiendo al login...'
+              : 'Verificando permisos de administrador...'}
           </p>
         </div>
       </div>

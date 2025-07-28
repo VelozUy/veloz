@@ -32,9 +32,12 @@ import {
 } from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
+import { QRCodeTracker } from '@/components/QRCodeTracker';
+import { Toaster } from 'sonner';
 import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
 import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -249,6 +252,10 @@ export default function RootLayout({
       >
         <StructuredData type="organization" data={organizationSchema} />
         <PerformanceMonitor />
+        <Suspense fallback={null}>
+          <QRCodeTracker />
+        </Suspense>
+        <Toaster />
         <AnalyticsWrapper>
           <ConditionalNavigation />
           <PageLayout>{children}</PageLayout>

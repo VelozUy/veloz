@@ -256,32 +256,28 @@ export default function TaskTemplateManager({
     },
   ];
 
-  useEffect(() => {
-    const checkAdminAndLoadTemplates = async () => {
-      if (!user?.email) {
-        setIsAdmin(false);
-        setAdminLoading(false);
-        return;
+  const checkAdminAndLoadTemplates = async () => {
+    if (!user?.email) {
+      setIsAdmin(false);
+      setAdminLoading(false);
+      return;
+    }
+
+    try {
+      setAdminLoading(true);
+      const adminStatus = await checkAdminStatus(user.email);
+      setIsAdmin(adminStatus);
+
+      if (adminStatus) {
+        await loadTemplates();
       }
-
-      try {
-        setAdminLoading(true);
-        const adminStatus = await checkAdminStatus(user.email);
-        setIsAdmin(adminStatus);
-
-        if (adminStatus) {
-          await loadTemplates();
-        }
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        setIsAdmin(false);
-      } finally {
-        setAdminLoading(false);
-      }
-    };
-
-    checkAdminAndLoadTemplates();
-  }, [user]);
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      setIsAdmin(false);
+    } finally {
+      setAdminLoading(false);
+    }
+  };
 
   const loadTemplates = useCallback(async () => {
     try {
@@ -289,53 +285,68 @@ export default function TaskTemplateManager({
       const db = await getFirestoreService();
       if (!db) {
         console.error('Firestore not available');
-        setLoading(false);
         return;
       }
 
-      const templatesQuery = query(
-        collection(db, 'taskTemplates'),
-        orderBy('createdAt', 'desc')
-      );
+      const templatesRef = collection(db, 'taskTemplates');
+      const q = query(templatesRef, orderBy('createdAt', 'desc'));
+      const querySnapshot = await getDocs(q);
 
-      const snapshot = await getDocs(templatesQuery);
-      const templateList: TaskTemplate[] = [];
+      const templatesData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as TaskTemplate[];
 
-      snapshot.forEach(doc => {
-        templateList.push({ id: doc.id, ...doc.data() } as TaskTemplate);
-      });
-
-      // Add default templates if none exist
-      if (templateList.length === 0) {
-        setTemplates(defaultTemplates);
-      } else {
-        setTemplates(templateList);
-      }
-
-      setLoading(false);
+      setTemplates(templatesData);
     } catch (error) {
       console.error('Error loading templates:', error);
+    } finally {
       setLoading(false);
     }
-  }, []);
+  }, [defaultTemplates]);
+
+  useEffect(() => {
+    checkAdminAndLoadTemplates();
+  }, [user]);
+
+  useEffect(() => {
+    loadTemplates();
+  }, [loadTemplates]);
 
   const deleteTemplate = async (templateId: string) => {
+    // Add confirmation dialog
+    const template = templates.find(t => t.id === templateId);
+    if (!template) return;
+
+    const confirmed = confirm(
+      `¿Estás seguro de que quieres eliminar la plantilla "${template.name}"? Esta acción no se puede deshacer.`
+    );
+
+    if (!confirmed) return;
+
     try {
       const db = await getFirestoreService();
       if (!db) {
         console.error('Firestore not available');
+        alert('Error: No se pudo conectar con la base de datos');
         return;
       }
 
       await deleteDoc(doc(db, 'taskTemplates', templateId));
-      loadTemplates();
+
+      // Success feedback
+      alert(`Plantilla "${template.name}" eliminada exitosamente`);
+
+      // Reload templates
+      await loadTemplates();
     } catch (error) {
       console.error('Error deleting template:', error);
+      alert('Error al eliminar la plantilla. Por favor, inténtalo de nuevo.');
     }
   };
 
   const handleCreateTemplate = () => {
-    router.push('/admin/templates/new');
+    router.push('/admin/templates/create');
   };
 
   const handleEditTemplate = (templateId: string) => {
@@ -357,20 +368,16 @@ export default function TaskTemplateManager({
   };
 
   const handleTemplatePreview = (template: TaskTemplate) => {
-    setPreviewTemplate(template);
-    setIsPreviewDialogOpen(true);
+    try {
+      setPreviewTemplate(template);
+      setIsPreviewDialogOpen(true);
+    } catch (error) {
+      console.error('Error opening template preview:', error);
+      alert('Error al abrir la vista previa. Por favor, inténtalo de nuevo.');
+    }
   };
 
   const handleTemplateDuplicate = async (template: TaskTemplate) => {
-    const duplicatedTemplate = {
-      ...template,
-      id: `duplicate-${Date.now()}`,
-      name: `${template.name} (Copia)`,
-      isDefault: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
     try {
       const db = await getFirestoreService();
       if (!db) {
@@ -382,10 +389,22 @@ export default function TaskTemplateManager({
       // Show loading state
       console.log(`Duplicando "${template.name}"...`);
 
+      // Create duplicated template with new ID and name
+      const duplicatedTemplate = {
+        ...template,
+        name: `${template.name} (Copia)`,
+        isDefault: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      // Remove the id field so Firestore generates a new one
+      const { id, ...templateData } = duplicatedTemplate;
+
       // Add the duplicated template to Firestore
       const docRef = await addDoc(
         collection(db, 'taskTemplates'),
-        duplicatedTemplate
+        templateData
       );
 
       console.log('Template duplicated successfully:', docRef.id);

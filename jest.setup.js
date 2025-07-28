@@ -165,6 +165,19 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
   disconnect: jest.fn(),
 }));
 
+// Mock TextEncoder and TextDecoder for QR code generation
+global.TextEncoder = class TextEncoder {
+  encode(input) {
+    return new Uint8Array(Buffer.from(input, 'utf8'));
+  }
+};
+
+global.TextDecoder = class TextDecoder {
+  decode(input) {
+    return Buffer.from(input).toString('utf8');
+  }
+};
+
 // Suppress console warnings in tests
 const originalError = console.error;
 beforeAll(() => {

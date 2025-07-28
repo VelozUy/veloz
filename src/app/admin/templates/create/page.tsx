@@ -31,39 +31,13 @@ import {
   Settings,
   CheckCircle,
   Trash2,
+  Save,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import TaskTemplateManager from '@/components/admin/TaskTemplateManager';
 import { getFirestoreService } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-
-const templateExamples = [
-  {
-    name: 'Casamiento Estándar',
-    description: 'Template completo para casamientos',
-    tasks: 8,
-    duration: '35 días',
-    icon: FileText,
-    color: 'bg-primary',
-  },
-  {
-    name: 'Evento Corporativo',
-    description: 'Template para eventos empresariales',
-    tasks: 7,
-    duration: '21 días',
-    icon: Calendar,
-    color: 'bg-secondary',
-  },
-  {
-    name: 'Photoshoot Profesional',
-    description: 'Template para sesiones fotográficas',
-    tasks: 6,
-    duration: '10 días',
-    icon: Settings,
-    color: 'bg-accent',
-  },
-];
 
 interface Task {
   title: string;
@@ -76,7 +50,6 @@ export default function CreateTemplatePage() {
   const router = useRouter();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDuplicateDialogOpen, setIsDuplicateDialogOpen] = useState(false);
-  const [isQuickCreateDialogOpen, setIsQuickCreateDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -131,6 +104,7 @@ export default function CreateTemplatePage() {
       const db = await getFirestoreService();
       if (!db) {
         console.error('Firestore not available');
+        alert('Error: No se pudo conectar con la base de datos');
         return;
       }
 
@@ -161,7 +135,10 @@ export default function CreateTemplatePage() {
         updatedAt: serverTimestamp(),
       };
 
-      await addDoc(collection(db, 'taskTemplates'), templateData);
+      const docRef = await addDoc(
+        collection(db, 'taskTemplates'),
+        templateData
+      );
 
       // Success feedback
       alert('Plantilla creada exitosamente');
@@ -170,7 +147,6 @@ export default function CreateTemplatePage() {
       resetForm();
       setIsCreateDialogOpen(false);
       setIsDuplicateDialogOpen(false);
-      setIsQuickCreateDialogOpen(false);
 
       // Navigate back to templates list
       router.push('/admin/templates');
@@ -180,29 +156,6 @@ export default function CreateTemplatePage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const createQuickTemplate = () => {
-    if (!formData.name.trim()) {
-      alert('El nombre de la plantilla es requerido');
-      return;
-    }
-
-    // Add default tasks based on event type
-    const defaultTasks: Task[] = [
-      { title: 'Fecha confirmada', defaultDueDays: 0, priority: 'high' },
-      { title: 'Crew armado', defaultDueDays: -2, priority: 'high' },
-      { title: 'Shooting finalizado', defaultDueDays: 0, priority: 'high' },
-      { title: 'Imágenes editadas', defaultDueDays: 3, priority: 'medium' },
-      { title: 'Imágenes entregadas', defaultDueDays: 7, priority: 'medium' },
-    ];
-
-    setFormData(prev => ({
-      ...prev,
-      tasks: defaultTasks,
-    }));
-
-    setIsQuickCreateDialogOpen(true);
   };
 
   return (
@@ -429,7 +382,17 @@ export default function CreateTemplatePage() {
                           Cancelar
                         </Button>
                         <Button onClick={saveTemplate} disabled={loading}>
-                          {loading ? 'Guardando...' : 'Guardar Plantilla'}
+                          {loading ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
+                              Guardando...
+                            </>
+                          ) : (
+                            <>
+                              <Save className="h-4 w-4 mr-2" />
+                              Guardar Plantilla
+                            </>
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -495,125 +458,6 @@ export default function CreateTemplatePage() {
           </div>
         </div>
 
-        {/* Template Examples */}
-        <div className="bg-card rounded-lg border p-6">
-          <h2 className="text-lg font-semibold mb-4">Ejemplos de Plantillas</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            Inspírate en estas plantillas existentes para crear la tuya
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {templateExamples.map((example, index) => (
-              <Card key={index} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-2">
-                    <div
-                      className={`p-2 rounded-lg ${example.color} text-primary-foreground`}
-                    >
-                      <example.icon className="h-4 w-4" />
-                    </div>
-                    <CardTitle className="text-body-lg">
-                      {example.name}
-                    </CardTitle>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {example.description}
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2 mb-3">
-                    <Badge variant="outline" className="text-xs">
-                      {example.tasks} tareas
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {example.duration}
-                    </Badge>
-                  </div>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Ver Detalles
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Quick Template Creation */}
-        <div className="bg-card rounded-lg border p-6">
-          <h2 className="text-lg font-semibold mb-4">Creación Rápida</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            Crea una plantilla básica y personalízala después
-          </p>
-
-          <div className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label>Nombre de la Plantilla</Label>
-                <Input
-                  type="text"
-                  placeholder="Ej: Evento de Empresa"
-                  value={formData.name}
-                  onChange={e =>
-                    setFormData(prev => ({ ...prev, name: e.target.value }))
-                  }
-                />
-              </div>
-              <div>
-                <Label>Tipo de Evento</Label>
-                <Select
-                  value={formData.eventType}
-                  onValueChange={value =>
-                    setFormData(prev => ({ ...prev, eventType: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Casamiento">Casamiento</SelectItem>
-                    <SelectItem value="Corporativos">
-                      Eventos Corporativos
-                    </SelectItem>
-                    <SelectItem value="Quinceañera">Quinceañera</SelectItem>
-                    <SelectItem value="Cumpleaños">Cumpleaños</SelectItem>
-                    <SelectItem value="Culturales">
-                      Eventos Culturales
-                    </SelectItem>
-                    <SelectItem value="Photoshoot">Photoshoot</SelectItem>
-                    <SelectItem value="Prensa">Eventos de Prensa</SelectItem>
-                    <SelectItem value="Otros">Otros</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div>
-              <Label>Descripción</Label>
-              <Textarea
-                placeholder="Describe el propósito de esta plantilla..."
-                value={formData.description}
-                onChange={e =>
-                  setFormData(prev => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                rows={3}
-              />
-            </div>
-
-            <div className="flex gap-2">
-              <Button onClick={createQuickTemplate}>
-                <Plus className="h-4 w-4 mr-2" />
-                Crear Plantilla Básica
-              </Button>
-              <Button variant="outline" onClick={resetForm}>
-                Limpiar
-              </Button>
-            </div>
-          </div>
-        </div>
-
         {/* Template Manager Integration */}
         <div className="bg-card rounded-lg border p-6">
           <h2 className="text-lg font-semibold mb-4">Gestión de Plantillas</h2>
@@ -622,124 +466,6 @@ export default function CreateTemplatePage() {
           </p>
           <TaskTemplateManager mode="manage" />
         </div>
-
-        {/* Quick Create Dialog */}
-        <Dialog
-          open={isQuickCreateDialogOpen}
-          onOpenChange={setIsQuickCreateDialogOpen}
-        >
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Crear Plantilla Básica</DialogTitle>
-              <DialogDescription>
-                Revisa y personaliza la plantilla básica antes de guardarla
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-4">
-              <div>
-                <Label>Nombre</Label>
-                <Input
-                  value={formData.name}
-                  onChange={e =>
-                    setFormData(prev => ({ ...prev, name: e.target.value }))
-                  }
-                  placeholder="Nombre de la plantilla"
-                />
-              </div>
-
-              <div>
-                <Label>Descripción</Label>
-                <Textarea
-                  value={formData.description}
-                  onChange={e =>
-                    setFormData(prev => ({
-                      ...prev,
-                      description: e.target.value,
-                    }))
-                  }
-                  placeholder="Descripción opcional"
-                />
-              </div>
-
-              <div>
-                <Label>Tipo de Evento</Label>
-                <Select
-                  value={formData.eventType}
-                  onValueChange={value =>
-                    setFormData(prev => ({ ...prev, eventType: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar tipo de evento" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Casamiento">Casamiento</SelectItem>
-                    <SelectItem value="Corporativos">Corporativos</SelectItem>
-                    <SelectItem value="Culturales">Culturales</SelectItem>
-                    <SelectItem value="Photoshoot">Photoshoot</SelectItem>
-                    <SelectItem value="Prensa">Prensa</SelectItem>
-                    <SelectItem value="Otros">Otros</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Tareas Predefinidas</Label>
-                <div className="space-y-2 mt-2">
-                  {formData.tasks.map((task, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 border rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="h-4 w-4 text-success" />
-                        <span className="font-medium">{task.title}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">
-                          {task.defaultDueDays > 0
-                            ? `+${task.defaultDueDays}d`
-                            : task.defaultDueDays < 0
-                              ? `${task.defaultDueDays}d`
-                              : 'Día 0'}
-                        </Badge>
-                        <Badge
-                          variant="outline"
-                          className={`text-xs ${
-                            task.priority === 'high'
-                              ? 'text-destructive'
-                              : task.priority === 'medium'
-                                ? 'text-warning'
-                                : 'text-success'
-                          }`}
-                        >
-                          {task.priority === 'high'
-                            ? 'Alta'
-                            : task.priority === 'medium'
-                              ? 'Media'
-                              : 'Baja'}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex justify-end space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setIsQuickCreateDialogOpen(false)}
-                >
-                  Cancelar
-                </Button>
-                <Button onClick={saveTemplate} disabled={loading}>
-                  {loading ? 'Guardando...' : 'Guardar Plantilla'}
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     </AdminLayout>
   );
