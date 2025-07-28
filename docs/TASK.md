@@ -107,6 +107,7 @@ _Last updated: 2025-07-25_
   - Fixed file paths to use separate files for hound and text logos
 
 #### 🧠 Discovered During the Epic
+
 - [x] **Fix Logo File Paths** - Resolved issue where both logos were using same file ✅ **COMPLETED** (2025-07-25)
   - **Issue**: Both hound icon and text logo were using same file path
   - **Solution**: Created separate files veloz-hound-white.svg and veloz-text-white.svg
@@ -115,7 +116,7 @@ _Last updated: 2025-07-25_
 - [x] **Debug SVG Display Issues** - Resolved logo visibility problems ✅ **COMPLETED** (2025-07-25)
   - **Issue**: SVGs not displaying in navigation despite correct file paths
   - **Root Cause**: CSS classes and sizing issues affecting image display
-  - **Solution**: 
+  - **Solution**:
     - Removed `relative` positioning that was causing layout issues
     - Added explicit height styling for proper container dimensions
     - Added `display: block` to ensure images are visible
@@ -5644,7 +5645,22 @@ _No tasks completed yet for this Epic_
   - **Estimated Time**: 2-3 days
   - **Status**: ✅ **COMPLETED** - Successfully replaced GalleryGrid with TiledGallery while preserving all existing functionality
 
-- [ ] **Phase 8: Advanced Features** - Add sophisticated gallery features
+- [x] **Phase 8: TiledGallery UI Enhancements** - Center rows and add VelozLoader loading states ✅ **COMPLETED**
+  - **User Intent**: Improve visual presentation and loading experience of the tiled gallery
+  - **Acceptance Criteria**:
+    - **CENTER ROWS**: Add justifyContent: 'center' to desktop layout rows for proper centering ✅
+    - **VELOZLOADER INTEGRATION**: Replace generic loading spinners with VelozLoader component ✅
+    - **BRAND CONSISTENCY**: Use horizontal orientation and small size for consistent branding ✅
+    - **MOBILE LAYOUT**: Preserve mobile layout centering (already centered by default) ✅
+    - **ANIMATION PRESERVATION**: Maintain all existing animations and functionality ✅
+    - **LOADING STATES**: Apply VelozLoader to both mobile and desktop layouts ✅
+    - **RESPONSIVE DESIGN**: Ensure centering works across all screen sizes ✅
+  - **Files**: `src/components/gallery/TiledGallery.tsx`
+  - **Reference**: Veloz brand design system and existing loading patterns
+  - **Estimated Time**: 1 day
+  - **Status**: ✅ **COMPLETED** - Rows centered and VelozLoader loading states implemented
+
+- [ ] **Phase 9: Advanced Features** - Add sophisticated gallery features
   - **User Intent**: Enhance tiled gallery with advanced features for professional presentation
   - **Acceptance Criteria**:
     - Image filtering and sorting options (date, name, size, aspect ratio)
@@ -5656,11 +5672,11 @@ _No tasks completed yet for this Epic_
   - **Files**: `src/components/gallery/AdvancedTiledGallery.tsx`, `src/hooks/useGalleryFiltering.ts`
   - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 7.1 (Core Features)
   - **Estimated Time**: 3-4 days
-  - **Status**: Ready after Phase 7 completion
+  - **Status**: Ready after Phase 8 completion
 
 #### 🟩 Low Priority Tasks
 
-- [ ] **Phase 9: Testing and Quality Assurance** - Comprehensive testing suite
+- [ ] **Phase 10: Testing and Quality Assurance** - Comprehensive testing suite
   - **User Intent**: Ensure tiled gallery works reliably across all scenarios and devices
   - **Acceptance Criteria**:
     - Unit tests for layout calculation algorithms
@@ -5673,9 +5689,9 @@ _No tasks completed yet for this Epic_
   - **Files**: `src/components/gallery/__tests__/TiledGallery.test.tsx`, `src/lib/__tests__/gallery-layout.test.ts`
   - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 9 (Testing Strategy)
   - **Estimated Time**: 2-3 days
-  - **Status**: Ready after Phase 8 completion
+  - **Status**: Ready after Phase 9 completion
 
-- [ ] **Phase 10: Documentation and Examples** - Create comprehensive documentation
+- [ ] **Phase 11: Documentation and Examples** - Create comprehensive documentation
   - **User Intent**: Provide clear documentation and examples for future development and usage
   - **Acceptance Criteria**:
     - Component API documentation with all props and methods
@@ -5687,7 +5703,7 @@ _No tasks completed yet for this Epic_
   - **Files**: `docs/TILED_GALLERY_USAGE.md`, `src/components/gallery/examples/`
   - **Reference**: `docs/TILED_GALLERY_INVESTIGATION.md` - Section 10 (Next Steps)
   - **Estimated Time**: 1-2 days
-  - **Status**: Ready after Phase 9 completion
+  - **Status**: Ready after Phase 10 completion
 
 #### 🧠 Discovered During Epic
 
