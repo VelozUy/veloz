@@ -98,18 +98,48 @@ _Last updated: 2025-01-27_
   - Notes: See epic file for full context
   - Estimated Time: 2 days
 
+### 🧱 EPIC: Default Project Tasks System
+
+**Reference**: `docs/epics/admin/default-project-tasks-system.md`
+**Objective**: Implement system for default project tasks and templates, allowing admins to create reusable task templates and streamline project setup
+**Status**: Active (Week 1 of 2)
+**Business Impact**: MEDIUM
+**User Value**: HIGH
+
+#### 🟥 Critical (This Week)
+
+- [x] Default task templates implementation
+  - File: `src/components/admin/DefaultTaskTemplates.tsx`
+  - Notes: See epic file for full context - template creation interface, pre-defined templates, template editing
+  - Estimated Time: 2 days
+  - Status: Completed (2025-01-27)
+
+#### 🟧 High (Next Week)
+
+- [ ] Task template management interface
+  - File: `src/components/admin/TaskTemplateManager.tsx`
+  - Notes: See epic file for full context - template library, search, filtering, duplication
+  - Estimated Time: 2 days
+
+#### 🟨 Medium (Future)
+
+- [ ] Project task automation
+  - File: `src/lib/project-task-automation.ts`
+  - Notes: See epic file for full context - automatic task generation, conditional tasks
+  - Estimated Time: 2 days
+
 ---
 
 ## 📊 **Epic Status Summary**
 
 | Status                 | Count | Epics                                      |
 | ---------------------- | ----- | ------------------------------------------ |
-| 🔴 **CRITICAL**        | 1     | Enhanced Admin Project Management          |
+| 🔴 **CRITICAL**        | 1     | Default Project Tasks System               |
 | ⭐ **HIGH PRIORITY**   | 4     | Ready to start when current epics complete |
 | 🟧 **MEDIUM PRIORITY** | 8     | Future development                         |
 | ✅ **COMPLETED**       | 9     | Archived in `docs/COMPLETED.md`            |
 
-**Total Active Epics**: 3
+**Total Active Epics**: 4
 
 ---
 

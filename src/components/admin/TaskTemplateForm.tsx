@@ -8,6 +8,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -15,22 +23,49 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
   Plus,
   Save,
   Trash2,
   AlertCircle,
   CheckCircle,
   Shield,
+  Search,
+  Users,
+  User,
 } from 'lucide-react';
 import { getFirestoreService } from '@/lib/firebase';
 import { checkAdminStatus } from '@/lib/admin-auth';
 import { useAuth } from '@/contexts/AuthContext';
-import { collection, doc, addDoc, updateDoc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  getDoc,
+  getDocs,
+} from 'firebase/firestore';
 import { TaskTemplate } from './TaskTemplateManager';
+import { crewMemberService } from '@/services/crew-member';
 
 interface TaskTemplateFormProps {
   mode: 'create' | 'edit';
   templateId?: string;
+}
+
+interface AssignableUser {
+  id: string;
+  name: string;
+  email?: string;
+  role: string;
+  type: 'admin' | 'crew';
 }
 
 export default function TaskTemplateForm({
@@ -56,6 +91,12 @@ export default function TaskTemplateForm({
       notes?: string;
     }>,
   });
+  const [assignableUsers, setAssignableUsers] = useState<AssignableUser[]>([]);
+  const [assigneeSearchTerm, setAssigneeSearchTerm] = useState('');
+  const [isAssigneeDialogOpen, setIsAssigneeDialogOpen] = useState(false);
+  const [currentAssigneeIndex, setCurrentAssigneeIndex] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const checkAdminAndLoadTemplate = async () => {
@@ -225,6 +266,79 @@ export default function TaskTemplateForm({
     }
   };
 
+  // Load assignable users (admins + crew members)
+  const loadAssignableUsers = useCallback(async () => {
+    try {
+      const users: AssignableUser[] = [];
+
+      // Load admin users
+      const db = await getFirestoreService();
+      if (db) {
+        const adminSnapshot = await getDocs(collection(db, 'adminUsers'));
+        adminSnapshot.forEach(doc => {
+          const adminData = doc.data();
+          if (adminData.status === 'active') {
+            users.push({
+              id: doc.id,
+              name: adminData.displayName || adminData.email || 'Admin',
+              email: adminData.email,
+              role: adminData.role || 'admin',
+              type: 'admin',
+            });
+          }
+        });
+      }
+
+      // Load crew members
+      const crewResult = await crewMemberService.getAllCrewMembers();
+      if (crewResult.success && crewResult.data) {
+        crewResult.data.forEach(crew => {
+          users.push({
+            id: crew.id,
+            name: crew.name.es || crew.name.en || 'Crew Member',
+            email: undefined,
+            role: crew.role.es || crew.role.en || 'Crew',
+            type: 'crew',
+          });
+        });
+      }
+
+      setAssignableUsers(users);
+    } catch (error) {
+      console.error('Error loading assignable users:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadAssignableUsers();
+  }, [loadAssignableUsers]);
+
+  // Filter assignable users based on search
+  const filteredAssignableUsers = assignableUsers.filter(user => {
+    if (!assigneeSearchTerm) return true;
+    const searchLower = assigneeSearchTerm.toLowerCase();
+    return (
+      user.name.toLowerCase().includes(searchLower) ||
+      user.role.toLowerCase().includes(searchLower) ||
+      (user.email && user.email.toLowerCase().includes(searchLower))
+    );
+  });
+
+  const handleAssigneeSelect = (userId: string, userName: string) => {
+    if (currentAssigneeIndex !== null) {
+      updateTask(currentAssigneeIndex, 'assignee', userName);
+      updateTask(currentAssigneeIndex, 'assigneeId', userId);
+    }
+    setIsAssigneeDialogOpen(false);
+    setAssigneeSearchTerm('');
+    setCurrentAssigneeIndex(null);
+  };
+
+  const openAssigneeDialog = (index: number) => {
+    setCurrentAssigneeIndex(index);
+    setIsAssigneeDialogOpen(true);
+  };
+
   if (loading || adminLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -351,109 +465,119 @@ export default function TaskTemplateForm({
             </div>
           ) : (
             <div className="space-y-4">
-              {formData.tasks.map((task, index) => (
-                <div key={index} className="border rounded-lg p-4 space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline">Tarea {index + 1}</Badge>
-                      {task.priority && (
-                        <Badge
-                          variant="outline"
-                          className={`text-xs ${getPriorityColor(task.priority)}`}
-                        >
-                          {getPriorityLabel(task.priority)}
-                        </Badge>
-                      )}
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeTask(index)}
-                      className="text-destructive hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+              <div className="border rounded-lg">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[50px]">#</TableHead>
+                      <TableHead>Título</TableHead>
+                      <TableHead>Prioridad</TableHead>
+                      <TableHead>Días</TableHead>
+                      <TableHead>Asignado</TableHead>
+                      <TableHead>Notas</TableHead>
+                      <TableHead className="w-[80px]">Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {formData.tasks.map((task, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            value={task.title}
+                            onChange={e =>
+                              updateTask(index, 'title', e.target.value)
+                            }
+                            placeholder="Título de la tarea"
+                            className="w-full"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            value={task.priority}
+                            onValueChange={(value: 'low' | 'medium' | 'high') =>
+                              updateTask(index, 'priority', value)
+                            }
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="low">Baja</SelectItem>
+                              <SelectItem value="medium">Media</SelectItem>
+                              <SelectItem value="high">Alta</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            type="number"
+                            value={task.defaultDueDays}
+                            onChange={e =>
+                              updateTask(
+                                index,
+                                'defaultDueDays',
+                                parseInt(e.target.value) || 0
+                              )
+                            }
+                            placeholder="0"
+                            className="w-full"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => openAssigneeDialog(index)}
+                            className="w-full justify-start"
+                          >
+                            {task.assignee ? (
+                              <span className="truncate">{task.assignee}</span>
+                            ) : (
+                              <span className="text-muted-foreground">
+                                Seleccionar...
+                              </span>
+                            )}
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            value={task.notes || ''}
+                            onChange={e =>
+                              updateTask(index, 'notes', e.target.value)
+                            }
+                            placeholder="Notas"
+                            className="w-full"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeTask(index)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Título de la Tarea *</Label>
-                      <Input
-                        value={task.title}
-                        onChange={e =>
-                          updateTask(index, 'title', e.target.value)
-                        }
-                        placeholder="Ej: Fecha confirmada"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Prioridad</Label>
-                      <Select
-                        value={task.priority}
-                        onValueChange={(value: 'low' | 'medium' | 'high') =>
-                          updateTask(index, 'priority', value)
-                        }
-                      >
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="low">Baja</SelectItem>
-                          <SelectItem value="medium">Media</SelectItem>
-                          <SelectItem value="high">Alta</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Días desde inicio del proyecto</Label>
-                      <Input
-                        type="number"
-                        value={task.defaultDueDays}
-                        onChange={e =>
-                          updateTask(
-                            index,
-                            'defaultDueDays',
-                            parseInt(e.target.value) || 0
-                          )
-                        }
-                        placeholder="0"
-                        className="mt-1"
-                      />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Valores negativos = días antes del evento. Ej: -7 = una
-                        semana antes
-                      </p>
-                    </div>
-
-                    <div>
-                      <Label>Asignado por defecto (opcional)</Label>
-                      <Input
-                        value={task.assignee || ''}
-                        onChange={e =>
-                          updateTask(index, 'assignee', e.target.value)
-                        }
-                        placeholder="Nombre del responsable"
-                        className="mt-1"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label>Notas adicionales (opcional)</Label>
-                    <Input
-                      value={task.notes || ''}
-                      onChange={e => updateTask(index, 'notes', e.target.value)}
-                      placeholder="Detalles o instrucciones especiales"
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-              ))}
+              <div className="text-xs text-muted-foreground">
+                <p>
+                  <strong>Nota:</strong> Los días se calculan desde la fecha de
+                  inicio del proyecto.
+                </p>
+                <p>
+                  Valores negativos = días antes del evento. Ej: -7 = una semana
+                  antes
+                </p>
+              </div>
             </div>
           )}
         </CardContent>
@@ -524,6 +648,70 @@ export default function TaskTemplateForm({
           )}
         </Button>
       </div>
+
+      {/* Assignee Selection Dialog */}
+      <Dialog
+        open={isAssigneeDialogOpen}
+        onOpenChange={setIsAssigneeDialogOpen}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Seleccionar Responsable</DialogTitle>
+            <DialogDescription>
+              Busca y selecciona un administrador o miembro del equipo
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar por nombre, rol o email..."
+                value={assigneeSearchTerm}
+                onChange={e => setAssigneeSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {/* Users List */}
+            <div className="max-h-60 overflow-y-auto space-y-2">
+              {filteredAssignableUsers.length === 0 ? (
+                <div className="text-center py-4 text-muted-foreground">
+                  <Users className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">No se encontraron usuarios</p>
+                </div>
+              ) : (
+                filteredAssignableUsers.map(user => (
+                  <div
+                    key={user.id}
+                    className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-muted transition-colors"
+                    onClick={() => handleAssigneeSelect(user.id, user.name)}
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      {user.type === 'admin' ? (
+                        <Shield className="h-4 w-4 text-primary" />
+                      ) : (
+                        <User className="h-4 w-4 text-primary" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium truncate">{user.name}</div>
+                      <div className="text-sm text-muted-foreground truncate">
+                        {user.role}
+                        {user.email && ` • ${user.email}`}
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {user.type === 'admin' ? 'Admin' : 'Crew'}
+                    </Badge>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
