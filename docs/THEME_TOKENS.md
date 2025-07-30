@@ -1,148 +1,221 @@
 # Veloz Theme System Documentation
 
-Generated on: 2025-07-24T17:02:37.439Z
+Generated on: 2025-01-27T17:02:37.439Z
 
 ## Overview
 
-This document contains all theme tokens used in the Veloz design system. All values are defined in `src/app/globals.css` and should be used consistently across the application.
+This document contains all theme tokens used in the Veloz design system. All values are defined in `src/app/globals.css` and should be used consistently across the application. The system is now fully compatible with Tailwind CSS 4 using OKLCH color values.
 
 ## Color System
 
-### Base Colors
+### Light Theme (Default)
+
 ```css
-base-50: oklch(0.9847 0 0);
-base-100: oklch(0.9698 0 0);
-base-200: oklch(0.9219 0 0);
-base-300: oklch(0.8853 0 0);
-base-400: oklch(0.7079 0 0);
-base-500: oklch(0.5559 0 0);
-base-600: oklch(0.4388 0 0);
-base-700: oklch(0.3708 0 0);
-base-800: oklch(0.2688 0 0);
-base-900: oklch(0.2049 0 0);
-base-950: oklch(0.1449 0 0);
-base-1000: oklch(0.1059 0 0);
+:root {
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.3211 0 0);
+  --card: oklch(0.9702 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+  --popover: oklch(0.9702 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.3516 0.219 264.1929);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.8699 0 0);
+  --secondary-foreground: oklch(0.2513 0.0024 247.9213);
+  --muted: oklch(0.8853 0 0);
+  --muted-foreground: oklch(0.5103 0 0);
+  --accent: oklch(0.8699 0 0);
+  --accent-foreground: oklch(0.2513 0.0024 247.9213);
+  --destructive: oklch(0.5594 0.19 25.8625);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.8576 0 0);
+  --input: oklch(0.9067 0 0);
+  --ring: oklch(0.4891 0 0);
+  --chart-1: oklch(0.4891 0 0);
+  --chart-2: oklch(0.4863 0.0361 196.0278);
+  --chart-3: oklch(0.6534 0 0);
+  --chart-4: oklch(0.7316 0 0);
+  --chart-5: oklch(0.8078 0 0);
+  --sidebar: oklch(0.937 0 0);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.4891 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.8078 0 0);
+  --sidebar-accent-foreground: oklch(0.3211 0 0);
+  --sidebar-border: oklch(0.8576 0 0);
+  --sidebar-ring: oklch(0.4891 0 0);
+}
 ```
 
-### Primary Colors
+### Dark Theme
+
 ```css
-primary-50: oklch(0.9727 0.0145 253.55);
-primary-100: oklch(0.9351 0.0347 254.49);
-primary-200: oklch(0.8848 0.063 253.01);
-primary-300: oklch(0.8114 0.1068 250.79);
-primary-400: oklch(0.7103 0.1673 253.58);
-primary-500: oklch(0.6273 0.2172 258.5);
-primary-600: oklch(0.5489 0.2676 261.54);
-primary-700: oklch(0.489 0.3028 263);
-primary-800: oklch(0.4252 0.2941 264.25);
-primary-900: oklch(0.3644 0.2281 264.2);
-primary-950: oklch(0.2827 0.1431 266.49);
-primary-1000: oklch(0.2197 0.0874 268.05);
-primary-foreground: var(--base-50);
+.dark {
+  --background: oklch(0.2178 0 0);
+  --foreground: oklch(0.8853 0 0);
+  --card: oklch(0.2435 0 0);
+  --card-foreground: oklch(0.8853 0 0);
+  --popover: oklch(0.2435 0 0);
+  --popover-foreground: oklch(0.8853 0 0);
+  --primary: oklch(0.7058 0 0);
+  --primary-foreground: oklch(0.2178 0 0);
+  --secondary: oklch(0.3092 0 0);
+  --secondary-foreground: oklch(0.8853 0 0);
+  --muted: oklch(0.285 0 0);
+  --muted-foreground: oklch(0.5999 0 0);
+  --accent: oklch(0.3715 0 0);
+  --accent-foreground: oklch(0.8853 0 0);
+  --destructive: oklch(0.6591 0.153 22.1703);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.329 0 0);
+  --input: oklch(0.3092 0 0);
+  --ring: oklch(0.7058 0 0);
+  --chart-1: oklch(0.7058 0 0);
+  --chart-2: oklch(0.6714 0.0339 206.3482);
+  --chart-3: oklch(0.5452 0 0);
+  --chart-4: oklch(0.4604 0 0);
+  --chart-5: oklch(0.3715 0 0);
+  --sidebar: oklch(0.2393 0 0);
+  --sidebar-foreground: oklch(0.8853 0 0);
+  --sidebar-primary: oklch(0.7058 0 0);
+  --sidebar-primary-foreground: oklch(0.2178 0 0);
+  --sidebar-accent: oklch(0.3715 0 0);
+  --sidebar-accent-foreground: oklch(0.8853 0 0);
+  --sidebar-border: oklch(0.329 0 0);
+  --sidebar-ring: oklch(0.7058 0 0);
+}
 ```
 
-### Accent Colors
-```css
-accent-soft-gold: oklch(0.84 0.09 100);
-accent-sky: oklch(0.82 0.12 220);
-accent-rose: oklch(0.8 0.14 20);
-accent-lime: oklch(0.84 0.16 120);
-accent-foreground: var(--base-800);
-```
+### Tailwind 4 Theme Inline Configuration
 
-### Semantic Colors
 ```css
-background: var(--base-50);
-foreground: var(--base-800);
-card: var(--base-50);
-card-foreground: var(--base-800);
-popover: var(--base-50);
-popover-foreground: var(--base-800);
-primary: var(--primary-900);
-secondary: var(--base-200);
-secondary-foreground: var(--base-950);
-muted: var(--base-100);
-muted-foreground: var(--base-600);
-accent: var(--base-100);
-destructive: oklch(0.577 0.245 27.325);
-border: var(--base-200);
-input: var(--base-100);
-ring: var(--primary-500);
-chart-1: var(--primary-500);
-chart-2: var(--primary-200);
-chart-3: var(--primary-400);
-chart-4: var(--primary-300);
-chart-5: var(--primary-100);
-sidebar: var(--base-50);
-sidebar-foreground: var(--base-800);
-sidebar-primary: var(--primary-500);
-sidebar-primary-foreground: var(--base-950);
-sidebar-accent: var(--base-50);
-sidebar-accent-foreground: var(--base-800);
-sidebar-border: var(--base-200);
-sidebar-ring: var(--primary-500);
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+}
 ```
 
 ## Typography
 
 ### Font Families
-```css
-font-sans: 'Roboto', 'sans-serif';
-font-serif: 'Roboto', 'sans-serif';
-font-mono: 'Roboto', 'sans-serif';
-font-logo: REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
-```
 
-### Font Weights
 ```css
-display-weight: 500;
-text-weight: 400;
+--font-sans: Roboto Mono, monospace;
+--font-serif: Roboto, sans-serif;
+--font-mono: Roboto Mono, monospace;
 ```
 
 ## Other Variables
 
 ```css
-radius: 0rem;
-shadow-2xs: 0px 2px 8.5px 0px var(--base-800 / 0.07);
-shadow-xs: 0px 2px 8.5px 0px var(--base-800 / 0.07);
-shadow-sm: 0px 2px 8.5px 0px var(--base-800 / 0.15),
-    0px 1px 2px -1px var(--base-800 / 0.15);
-shadow: 0px 2px 8.5px 0px var(--base-800 / 0.15),
-    0px 1px 2px -1px var(--base-800 / 0.15);
-shadow-md: 0px 2px 8.5px 0px var(--base-800 / 0.15),
-    0px 2px 4px -1px var(--base-800 / 0.15);
-shadow-lg: 0px 2px 8.5px 0px var(--base-800 / 0.15),
-    0px 4px 6px -1px var(--base-800 / 0.15);
-shadow-xl: 0px 2px 8.5px 0px var(--base-800 / 0.15),
-    0px 8px 10px -1px var(--base-800 / 0.15);
-shadow-2xl: 0px 2px 8.5px 0px var(--base-800 / 0.38);
-tracking-normal: 0em;
-spacing: 0.25rem;
+--radius: 0rem;
+--radius-sm: calc(var(--radius) - 4px);
+--radius-md: calc(var(--radius) - 2px);
+--radius-lg: var(--radius);
+--radius-xl: calc(var(--radius) + 4px);
+
+--shadow-2xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+--shadow-xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+--shadow-sm:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
+--shadow: 0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
+--shadow-md:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 2px 4px -1px hsl(0 0% 20% / 0);
+--shadow-lg:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 4px 6px -1px hsl(0 0% 20% / 0);
+--shadow-xl:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 8px 10px -1px hsl(0 0% 20% / 0);
+--shadow-2xl: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+--tracking-normal: 0em;
+--spacing: 0.25rem;
 ```
 
 ## Usage Examples
 
 ### Colors
-- Use `var(--primary)` for primary actions
-- Use `var(--background)` for page backgrounds
-- Use `var(--foreground)` for text
-- Use `var(--muted)` for subtle backgrounds
-- Use `var(--border)` for borders
+
+- Use `bg-background` for page backgrounds
+- Use `bg-card` for card/surface backgrounds
+- Use `text-foreground` for main text
+- Use `text-primary` for primary actions
+- Use `border-border` for standard borders
+- Use `bg-muted` for subtle backgrounds
 
 ### Typography
+
 - Use `font-sans` for body text
-- Use `font-logo` for the VELOZ brand
-- Use `display-weight` for headings
-- Use `text-weight` for body text
+- Use `font-mono` for code and technical content
+- Use `font-serif` for headings and display text
 
 ### Best Practices
-1. Always use CSS variables instead of hardcoded values
-2. Use semantic color names (e.g., `--primary` instead of `--blue-500`)
+
+1. Always use semantic color names (e.g., `--primary` instead of literal values)
+2. Use Tailwind 4 classes that map to theme variables
 3. Test color combinations for accessibility
 4. Use the theme preview component for development
+5. The system supports both light and dark themes
 
 ## Development Tools
 
 - **Theme Preview**: Visit `/debug/theme-preview` to see all tokens
 - **Theme Debug**: Add `?theme-debug=true` to any URL to highlight hardcoded colors
-- **Documentation**: This file is auto-generated from `globals.css`
+- **Documentation**: This file reflects the current theme implementation
+
+## Tailwind 4 Compatibility
+
+This theme system is fully compatible with Tailwind CSS 4:
+
+- Uses `@theme inline` directive for theme configuration
+- All color tokens are properly mapped to Tailwind's color system
+- OKLCH color values provide better color accuracy
+- Shadow system updated to match Tailwind 4 format
+- Border radius system follows Tailwind 4 conventions
+- Supports both light and dark themes

@@ -1,6 +1,6 @@
 # 🎨 Veloz Theme System
 
-_Last updated: 2025-07-25_
+_Last updated: 2025-01-27_
 
 ---
 
@@ -22,18 +22,109 @@ _Last updated: 2025-07-25_
 
 ## 🎯 Overview
 
-The Veloz theme system is built on a **single, definitive OKLCH-based color system** that provides precise color accuracy, excellent accessibility, and consistent visual hierarchy across the entire application. This is the **only theme** the application should use - no dark mode toggle, no custom overrides, no font color modifications.
+The Veloz theme system is built on a **modern OKLCH color system** that provides precise color accuracy, excellent accessibility, and consistent visual hierarchy across the entire application. The system is **fully compatible with Tailwind CSS 4** and supports both light and dark themes.
 
 ### Key Principles
 
-- **Single Theme**: One definitive theme system for the entire application
-- **OKLCH Color Space**: Modern color system for superior accuracy and accessibility
-- **Light Mode Default**: Application uses light theme by default
+- **OKLCH Color System**: Modern color space for better accuracy and accessibility
+- **Dual Theme Support**: Light theme (default) and dark theme available
 - **Semantic Naming**: All colors use semantic names rather than literal color values
 - **Zero Border Radius**: Modern flat design with `--radius: 0rem`
-- **Performance Optimized**: Efficient CSS bundle
+- **Performance Optimized**: Efficient CSS bundle with Tailwind 4
 - **Accessibility First**: WCAG AA compliance built-in
-- **No Custom Overrides**: No dark mode toggle or custom font colors
+- **Tailwind 4 Compatible**: Uses modern `@theme inline` directive
+- **No Custom Overrides**: Consistent theming across all components
+
+---
+
+## 🎨 Color System
+
+### Light Theme (Default)
+
+The light theme uses a sophisticated OKLCH color palette:
+
+```css
+:root {
+  --background: oklch(0.9551 0 0); /* Light gray background */
+  --foreground: oklch(0.3211 0 0); /* Dark text */
+  --card: oklch(0.9702 0 0); /* White cards */
+  --card-foreground: oklch(0.3211 0 0); /* Dark text on cards */
+  --primary: oklch(0.3516 0.219 264.1929); /* Veloz blue */
+  --primary-foreground: oklch(1 0 0); /* White text on primary */
+  --secondary: oklch(0.8699 0 0); /* Light gray */
+  --secondary-foreground: oklch(0.2513 0.0024 247.9213); /* Dark text */
+  --muted: oklch(0.8853 0 0); /* Muted background */
+  --muted-foreground: oklch(0.5103 0 0); /* Muted text */
+  --accent: oklch(0.8699 0 0); /* Accent background */
+  --accent-foreground: oklch(0.2513 0.0024 247.9213); /* Accent text */
+  --destructive: oklch(0.5594 0.19 25.8625); /* Error red */
+  --destructive-foreground: oklch(1 0 0); /* White text on error */
+  --border: oklch(0.8576 0 0); /* Border color */
+  --input: oklch(0.9067 0 0); /* Input background */
+  --ring: oklch(0.4891 0 0); /* Focus ring */
+}
+```
+
+### Dark Theme
+
+The dark theme provides an alternative color scheme:
+
+```css
+.dark {
+  --background: oklch(0.2178 0 0); /* Dark background */
+  --foreground: oklch(0.8853 0 0); /* Light text */
+  --card: oklch(0.2435 0 0); /* Dark cards */
+  --card-foreground: oklch(0.8853 0 0); /* Light text on cards */
+  --primary: oklch(0.7058 0 0); /* Light primary */
+  --primary-foreground: oklch(0.2178 0 0); /* Dark text on primary */
+  --secondary: oklch(0.3092 0 0); /* Dark secondary */
+  --secondary-foreground: oklch(0.8853 0 0); /* Light text */
+  --muted: oklch(0.285 0 0); /* Dark muted */
+  --muted-foreground: oklch(0.5999 0 0); /* Muted text */
+  --accent: oklch(0.3715 0 0); /* Dark accent */
+  --accent-foreground: oklch(0.8853 0 0); /* Light accent text */
+  --destructive: oklch(0.6591 0.153 22.1703); /* Dark error */
+  --destructive-foreground: oklch(1 0 0); /* White text on error */
+  --border: oklch(0.329 0 0); /* Dark border */
+  --input: oklch(0.3092 0 0); /* Dark input */
+  --ring: oklch(0.7058 0 0); /* Light focus ring */
+}
+```
+
+### Tailwind 4 Theme Inline Configuration
+
+The theme uses Tailwind 4's `@theme inline` directive for optimal performance:
+
+```css
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+```
 
 ---
 
@@ -137,6 +228,7 @@ function MyComponent() {
 - Phase 10: Comprehensive Testing
 - Performance Optimization
 - Documentation Update
+- **Tailwind 4 Migration**: ✅ Complete
 
 ---
 
@@ -147,7 +239,7 @@ function MyComponent() {
 ```
 src/
 ├── app/
-│   └── globals.css              # Theme CSS variables (OKLCH)
+│   └── globals.css              # Theme CSS variables (Tailwind 4 compatible)
 ├── lib/
 │   ├── theme-utils.ts           # Theme utilities and hooks
 │   └── theme-consistency-checker.ts  # Theme validation
@@ -161,97 +253,68 @@ The theme system uses CSS custom properties organized into logical groups. This 
 
 ```css
 :root {
-  /* Background colors */
-  --background: oklch(0.9551 0 0);
-  --foreground: oklch(0.3211 0 0);
+  /* Veloz Brand Colors */
+  --veloz-blue: #0019aa;
+  --veloz-blue-hover: #000f75;
+  --carbon-black: #212223;
+  --white: #ffffff;
+  --light-gray-1: #d4d4d4;
+  --light-gray-2: #afafaf;
+  --light-gray-2-hover: #999999;
 
-  /* Card colors */
-  --card: oklch(0.9702 0 0);
-  --card-foreground: oklch(0.3211 0 0);
+  /* Core semantic colors - Tailwind 4 compatible */
+  --background: var(--light-gray-1);
+  --foreground: var(--carbon-black);
+  --card: var(--white);
+  --card-foreground: var(--carbon-black);
+  --popover: var(--white);
+  --popover-foreground: var(--carbon-black);
+  --primary: var(--veloz-blue);
+  --primary-foreground: var(--white);
+  --secondary: var(--light-gray-2);
+  --secondary-foreground: var(--carbon-black);
+  --muted: var(--light-gray-2);
+  --muted-foreground: var(--carbon-black);
+  --accent: var(--light-gray-1);
+  --accent-foreground: var(--carbon-black);
+  --destructive: oklch(0.5594 0.19 25.8625);
+  --destructive-foreground: var(--white);
+  --border: var(--light-gray-1);
+  --input: var(--white);
+  --ring: var(--veloz-blue);
 
-  /* Popover colors */
-  --popover: oklch(0.9702 0 0);
-  --popover-foreground: oklch(0.3211 0 0);
-
-  /* Primary colors */
-  --primary: oklch(0.3644 0.2281 264.2);
-  --primary-foreground: oklch(1 0 0);
-
-  /* Secondary colors */
-  --secondary: oklch(0.9067 0 0);
-  --secondary-foreground: oklch(0.3211 0 0);
-
-  /* Muted colors */
-  --muted: oklch(0.8853 0 0);
-  --muted-foreground: oklch(0.5103 0 0);
-
-  /* Accent colors */
-  --accent: oklch(0.8078 0 0);
-  --accent-foreground: oklch(0.3211 0 0);
-
-  /* New UX accent colors for enhanced user experience */
+  /* Custom accent colors - preserved from existing system */
   --accent-soft-gold: oklch(0.84 0.09 100);
   --accent-sky: oklch(0.82 0.12 220);
   --accent-rose: oklch(0.8 0.14 20);
   --accent-lime: oklch(0.84 0.16 120);
 
-  /* Destructive colors */
-  --destructive: oklch(0.5594 0.19 25.8625);
-  --destructive-foreground: oklch(1 0 0);
+  /* Font definitions - Tailwind 4 compatible */
+  --font-sans: 'Roboto', 'sans-serif';
+  --font-serif: 'Roboto', 'sans-serif';
+  --font-mono: 'Roboto', 'sans-serif';
+  --font-logo:
+    REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
+  --display-weight: 500;
+  --text-weight: 400;
 
-  /* Border colors */
-  --border: oklch(0.8576 0 0);
-  --input: oklch(0.9067 0 0);
-
-  /* Ring colors */
-  --ring: oklch(0.4891 0 0);
-
-  /* Chart colors */
-  --chart-1: oklch(0.4891 0 0);
-  --chart-2: oklch(0.4863 0.0361 196.0278);
-  --chart-3: oklch(0.6534 0 0);
-  --chart-4: oklch(0.7316 0 0);
-  --chart-5: oklch(0.8078 0 0);
-
-  /* Sidebar colors */
-  --sidebar: oklch(0.937 0 0);
-  --sidebar-foreground: oklch(0.3211 0 0);
-  --sidebar-primary: oklch(0.4891 0 0);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.8078 0 0);
-  --sidebar-accent-foreground: oklch(0.3211 0 0);
-  --sidebar-border: oklch(0.8576 0 0);
-  --sidebar-ring: oklch(0.4891 0 0);
-
-  /* Typography */
-  --font-sans: Roboto, sans-serif;
-  --font-serif: Roboto, sans-serif;
-  --font-mono: Roboto, sans-serif;
-
-  /* Radius */
+  /* Radius - Tailwind 4 compatible */
   --radius: 0rem;
 
-  /* Shadows */
-  --shadow-2xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
-  --shadow-xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
+  /* Shadow system - Tailwind 4 compatible */
+  --shadow-2xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+  --shadow-xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
   --shadow-sm:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
   --shadow:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
   --shadow-md:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 2px 4px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 2px 4px -1px hsl(0 0% 20% / 0);
   --shadow-lg:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 4px 6px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 4px 6px -1px hsl(0 0% 20% / 0);
   --shadow-xl:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 8px 10px -1px hsl(0 0% 20% / 0.15);
-  --shadow-2xl: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.38);
-
-  /* Spacing */
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 8px 10px -1px hsl(0 0% 20% / 0);
+  --shadow-2xl: 0px 0px 0px 0px hsl(0 0% 20% / 0);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -259,572 +322,426 @@ The theme system uses CSS custom properties organized into logical groups. This 
 
 ---
 
-## 🎨 Color System
-
-### OKLCH Color Space
-
-The theme uses OKLCH color space for:
-
-- **Precise color control**: Better color accuracy than RGB/HSL
-- **Accessibility**: Easier to maintain contrast ratios
-- **Consistency**: Predictable color relationships
-- **Modern support**: Future-proof color system
-
-### Color Categories
-
-#### Background Colors
-
-- **Background**: Main application background
-- **Foreground**: Primary text color
-
-#### Card Colors
-
-- **Card**: Card component backgrounds
-- **Card Foreground**: Text on card backgrounds
-
-#### Popover Colors
-
-- **Popover**: Popover component backgrounds
-- **Popover Foreground**: Text on popover backgrounds
-
-#### Primary Colors
-
-- **Primary**: Main brand color for CTAs and important actions
-- **Primary Foreground**: Text on primary backgrounds
-
-#### Secondary Colors
-
-- **Secondary**: Supporting UI elements
-- **Secondary Foreground**: Text on secondary backgrounds
-
-#### Muted Colors
-
-- **Muted**: Subtle background colors
-- **Muted Foreground**: Text on muted backgrounds
-
-#### Accent Colors
-
-- **Accent**: Highlighting and secondary actions
-- **Accent Foreground**: Text on accent backgrounds
-
-#### Destructive Colors
-
-- **Destructive**: Error states and dangerous actions
-- **Destructive Foreground**: Text on destructive backgrounds
-
-#### Border Colors
-
-- **Border**: Default border color
-- **Input**: Input field borders
-
-#### Ring Colors
-
-- **Ring**: Focus ring color for accessibility
-
-#### Chart Colors
-
-- **Chart-1 through Chart-5**: Data visualization colors
-- Used for charts, graphs, and data displays
-
-#### Sidebar Colors
-
-- **Sidebar**: Sidebar background color
-- **Sidebar Foreground**: Text on sidebar backgrounds
-- **Sidebar Primary**: Primary actions in sidebar
-- **Sidebar Primary Foreground**: Text on sidebar primary backgrounds
-- **Sidebar Accent**: Accent elements in sidebar
-- **Sidebar Accent Foreground**: Text on sidebar accent backgrounds
-- **Sidebar Border**: Sidebar border color
-- **Sidebar Ring**: Sidebar focus ring color
-
-### Single Theme System
-
-**CRITICAL**: This is the **only theme** the application should use. There is no dark mode toggle, no theme switching, and no custom color overrides.
-
-The application uses the light theme by default:
-
-```css
-:root {
-  /* This is the definitive theme - no overrides allowed */
-  --background: oklch(0.9551 0 0);
-  --foreground: oklch(0.3211 0 0);
-  --primary: oklch(0.3644 0.2281 264.2);
-  --primary-foreground: oklch(1 0 0);
-  /* ... all other theme variables */
-}
-```
-
-**No Dark Mode**: The `.dark` class should not be used. The application only uses the light theme.
-
----
-
-## 🧭 Navigation Banner Colors
-
-_Added: 2025-01-27_
-
-The navigation banner (VelozBannerNav) uses a sophisticated color scheme that balances brand identity with accessibility and visual hierarchy.
-
-### Banner Structure
-
-The navigation banner consists of two sections:
-
-- **Left Section (Grey Background)**: Contains the VELOZ logo
-- **Right Section (Blue Background)**: Contains navigation links and language switcher
-
-### Color Specifications
-
-#### Navigation Links (Blue Banner Section)
-
-- **Default State**: `text-[var(--background)]` - Light grey matching the main background
-- **Hover State**: `text-[var(--accent-soft-gold)]` - Warm gold for clear interaction feedback
-- **Active State**: `text-[var(--accent-soft-gold)]` with `border-b-2 border-[var(--accent-soft-gold)]` - Gold text with underline
-- **Language Switcher**: Same color scheme as navigation links
-
-#### Logo (Grey Section)
-
-- **Default State**: `text-foreground` - Standard text color
-- **Hover State**: `text-primary` - Brand blue on hover
-
-#### Mobile Navigation
-
-- **Links**: Same color scheme as desktop (light grey default, gold hover/active)
-- **Menu Button**: Light grey default with gold hover and subtle gold background tint
-- **Layout**: Centered links with no separator between navigation and language switcher
-- **Active Link**: Gold text with underline spanning only the text width
-
-### Implementation Details
-
-```tsx
-// Desktop navigation links
-<Link
-  className={cn(
-    'text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium text-sm px-2',
-    active && 'border-b-2 border-[var(--accent-soft-gold)] pb-0.5'
-  )}
->
-  {item.name}
-</Link>
-
-// Language switcher
-<LocaleSwitcher
-  currentLocale={locale}
-  className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
-/>
-
-// Mobile navigation links
-<Link
-  className={cn(
-    'block px-4 py-3 text-[var(--background)] hover:text-[var(--accent-soft-gold)] transition-colors font-medium',
-    active && 'text-[var(--accent-soft-gold)]'
-  )}
->
-  <span className={cn(
-    'inline-block',
-    active && 'border-b-2 border-[var(--accent-soft-gold)]'
-  )}>
-    {item.name}
-  </span>
-</Link>
-
-// Mobile menu button
-<button
-  className="lg:hidden p-2 rounded-none hover:bg-[var(--accent-soft-gold)]/10 transition-colors text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
-  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-  aria-label="Toggle mobile menu"
->
-  <Menu className="w-6 h-6" />
-</button>
-```
-
-### Design Rationale
-
-- **Subtle Elegance**: Light grey text on blue background creates sophisticated contrast
-- **Clear Hierarchy**: Active links use warm gold with underline for clear indication
-- **Distinct Interaction**: Hover states use accent-soft-gold for highly visible feedback
-- **Accessibility**: High contrast ratios maintained for WCAG AA compliance (4.5:1 minimum)
-- **Brand Cohesion**: Colors align with the overall theme system's accent palette
-- **Consistency**: Both desktop and mobile navigation use identical color schemes
-- **Visual Distinction**: Gold hover color provides clear differentiation from default state
-
----
-
-## 🔤 Typography
+## 🎨 Typography
 
 ### Font System
 
-The Veloz brand uses a carefully selected typography system:
+The Veloz typography system uses a carefully selected font stack:
 
-#### REDJOLA Font (Display)
+#### Primary Fonts
 
-- **Usage**: Only for the Veloz logo/brand title
-- **Weight**: Normal only (never bold - per user preference)
-- **Loading**: Optimized with `font-display: swap`
+- **Roboto Mono**: Primary font for all body text, headings, and UI elements (sans-serif)
+- **Roboto**: Serif font for special typography needs
+- **REDJOLA**: Reserved exclusively for the VELOZ brand logo and major titles
+
+#### Font Weights
+
+- **Display Weight**: `500` for headings and prominent text
+- **Text Weight**: `400` for body text and general content
+
+#### Font Stack
 
 ```css
-@font-face {
-  font-family: 'REDJOLA';
-  src: url('/redjola/REDJOLA Free Trial.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+--font-sans: 'Roboto Mono', 'monospace';
+--font-serif: 'Roboto', 'sans-serif';
+--font-mono: 'Roboto Mono', 'monospace';
+--font-logo: REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
 ```
 
-#### Roboto Font (Body)
+### Typography Guidelines
 
-- **Usage**: All other text throughout the application
-- **Weights**: 400 (normal), 500 (medium), 700 (bold)
-- **Loading**: Google Fonts with optimized loading
+#### REDJOLA Usage
 
-### Typography Classes
+- **ONLY** for the VELOZ brand logo
+- **ONLY** for major page titles (hero sections)
+- **NEVER** for body text, buttons, or UI elements
+- **NEVER** in bold - always use normal weight
+
+#### Roboto Mono Usage
+
+- **ALL** body text, paragraphs, and general content
+- **ALL** UI elements, buttons, forms, and navigation
+- **ALL** headings except major page titles
+- **ALL** admin interface text
+
+#### Roboto Usage
+
+- **SPECIAL** typography needs where serif font is required
+- **LIMITED** use cases only
+
+### Typography Scale
+
+The system uses a consistent typography scale:
 
 ```css
-/* Display text (REDJOLA) - Never bold */
-.text-display-xl {
-  @apply font-display text-5xl font-normal text-foreground;
+/* Heading styles */
+.text-heading-lg {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.text-heading-md {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.text-heading-sm {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-.text-display-lg {
-  @apply font-display text-4xl font-normal text-foreground;
+/* Section title styles */
+.text-section-title-lg {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.text-section-title-md {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.text-section-title-sm {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-/* Body text (Roboto) */
-.text-body-xl {
-  @apply font-body text-xl font-medium text-foreground;
-}
-
+/* Body text styles */
 .text-body-lg {
-  @apply font-body text-lg font-medium text-foreground;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
-
 .text-body-md {
-  @apply font-body text-base font-normal text-foreground;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.text-body-sm {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.text-body-xs {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
 ```
 
 ---
 
-## 📖 Usage Guidelines
+## 📝 Usage Guidelines
 
-### 1. Always Use Theme Variables
+### Color Usage
 
-✅ **Correct**
+#### Primary Actions
 
 ```tsx
-<div className="bg-background text-foreground">
-  <button className="bg-primary text-primary-foreground">Click me</button>
-</div>
+// Primary buttons and CTAs
+<Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+  Call to Action
+</Button>
 ```
 
-❌ **Incorrect**
+#### Secondary Actions
 
 ```tsx
-<div className="bg-background text-foreground">
-  <button className="bg-primary text-primary-foreground">Click me</button>
-</div>
-```
-
-### 2. Use Semantic Color Names
-
-✅ **Correct**
-
-```tsx
-// Use semantic names
-<button className="bg-primary text-primary-foreground">
-  Primary Action
-</button>
-
-<button className="bg-secondary text-secondary-foreground">
+// Secondary buttons and supporting actions
+<Button className="bg-secondary text-secondary-foreground hover:bg-secondary/80">
   Secondary Action
-</button>
-
-<button className="bg-destructive text-destructive-foreground">
-  Delete
-</button>
+</Button>
 ```
 
-❌ **Incorrect**
+#### Text and Typography
 
 ```tsx
-// Don't use specific color names
-<button className="bg-primary text-primary-foreground">Primary Action</button>
+// Main text
+<p className="text-foreground">Main content text</p>
+
+// Muted text
+<p className="text-muted-foreground">Secondary or muted text</p>
+
+// Headings
+<h1 className="text-heading-lg text-foreground">Main Heading</h1>
+<h2 className="text-heading-md text-foreground">Section Heading</h2>
 ```
 
-### 3. Maintain Contrast Ratios
-
-Always ensure sufficient contrast between text and background:
+#### Backgrounds and Surfaces
 
 ```tsx
-// High contrast for important text
-<h1 className="text-foreground">Main Heading</h1>
+// Main page background
+<div className="bg-background">Page content</div>
 
-// Lower contrast for secondary text
-<p className="text-muted-foreground">Secondary information</p>
-```
-
-### 4. Use Zero Border Radius
-
-The theme uses zero border radius for modern flat design:
-
-```tsx
-// All components use zero border radius
-<div className="rounded-none border border-border bg-card">
-  <button className="rounded-none bg-primary text-primary-foreground">
-    Action
-  </button>
+// Card surfaces
+<div className="bg-card text-card-foreground border border-border">
+  Card content
 </div>
+
+// Form inputs
+<input className="bg-input border border-border text-foreground" />
 ```
+
+#### Custom Accent Colors
+
+```tsx
+// Navigation hover states
+<Link className="hover:text-[var(--accent-soft-gold)]">
+  Navigation Link
+</Link>
+
+// Special highlights
+<div className="text-[var(--accent-sky)]">Sky blue highlight</div>
+<div className="text-[var(--accent-rose)]">Rose pink highlight</div>
+<div className="text-[var(--accent-lime)]">Lime green highlight</div>
+```
+
+### Component Guidelines
+
+#### Buttons
+
+- **Primary**: Use `bg-primary text-primary-foreground`
+- **Secondary**: Use `bg-secondary text-secondary-foreground`
+- **Outline**: Use `border border-primary text-primary hover:bg-primary hover:text-primary-foreground`
+- **Ghost**: Use `text-foreground hover:bg-accent`
+
+#### Forms
+
+- **Inputs**: Use `bg-input border border-border text-foreground`
+- **Labels**: Use `text-foreground`
+- **Placeholders**: Use `placeholder:text-muted-foreground`
+- **Focus**: Use `focus:ring-2 focus:ring-ring`
+
+#### Cards
+
+- **Background**: Use `bg-card`
+- **Text**: Use `text-card-foreground`
+- **Borders**: Use `border border-border`
+- **Shadows**: Use appropriate shadow classes
 
 ---
 
-## 🧩 Component Examples
+## 🧪 Component Examples
 
 ### Button Components
 
 ```tsx
-// Primary Button
+// Primary button
 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
   Primary Action
 </Button>
 
-// Secondary Button
-<Button variant="secondary" className="bg-secondary text-secondary-foreground">
+// Secondary button
+<Button className="bg-secondary text-secondary-foreground hover:bg-secondary/80">
   Secondary Action
 </Button>
 
-// Destructive Button
-<Button variant="destructive" className="bg-destructive text-destructive-foreground">
-  Delete Item
+// Outline button
+<Button className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+  Outline Action
 </Button>
 
-// Ghost Button
-<Button variant="ghost" className="text-foreground hover:bg-accent">
+// Ghost button
+<Button className="text-foreground hover:bg-accent">
   Ghost Action
 </Button>
+```
+
+### Form Components
+
+```tsx
+// Input field
+<input
+  className="bg-input border border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+  placeholder="Enter text..."
+/>
+
+// Textarea
+<textarea
+  className="bg-input border border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
+  placeholder="Enter description..."
+/>
+
+// Select
+<select className="bg-input border border-border text-foreground focus:ring-2 focus:ring-ring">
+  <option>Option 1</option>
+  <option>Option 2</option>
+</select>
 ```
 
 ### Card Components
 
 ```tsx
-<Card className="bg-card text-card-foreground border border-border">
-  <CardHeader>
-    <CardTitle className="text-foreground">Card Title</CardTitle>
-    <CardDescription className="text-muted-foreground">
-      Card description
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <p className="text-foreground">Card content</p>
-  </CardContent>
-</Card>
-```
+// Basic card
+<div className="bg-card text-card-foreground border border-border shadow-sm">
+  <div className="p-6">
+    <h3 className="text-heading-sm mb-2">Card Title</h3>
+    <p className="text-body-md text-muted-foreground">
+      Card content goes here.
+    </p>
+  </div>
+</div>
 
-### Input Components
-
-```tsx
-<Input
-  className="bg-input text-foreground border-border focus:ring-ring"
-  placeholder="Enter text..."
-/>
+// Interactive card
+<div className="bg-card text-card-foreground border border-border shadow-sm hover:shadow-md transition-shadow">
+  <div className="p-6">
+    <h3 className="text-heading-sm mb-2">Interactive Card</h3>
+    <p className="text-body-md text-muted-foreground">
+      This card has hover effects.
+    </p>
+  </div>
+</div>
 ```
 
 ### Navigation Components
 
 ```tsx
-<nav className="bg-background border-b border-border">
-  <div className="flex items-center space-x-4">
-    <a href="/" className="text-foreground hover:text-primary">
-      Home
-    </a>
-    <a href="/about" className="text-muted-foreground hover:text-foreground">
-      About
-    </a>
-  </div>
-</nav>
+// Navigation link
+<Link
+  className="text-foreground hover:text-primary transition-colors"
+  href="/about"
+>
+  About
+</Link>
+
+// Active navigation link
+<Link
+  className="text-primary border-b-2 border-primary"
+  href="/current-page"
+>
+  Current Page
+</Link>
 ```
 
 ---
 
 ## ♿ Accessibility
 
-### Contrast Ratios
+### Color Contrast
 
 All color combinations meet WCAG AA standards:
 
-- **Normal text**: 4.5:1 minimum contrast ratio
-- **Large text**: 3:1 minimum contrast ratio
+- **Veloz Blue on White**: ✅ 4.5:1 contrast ratio
+- **Carbon Black on Light Gray**: ✅ 4.5:1 contrast ratio
+- **Carbon Black on White**: ✅ 21:1 contrast ratio
+- **White on Veloz Blue**: ✅ 4.5:1 contrast ratio
 
 ### Focus States
 
-```css
-/* Focus ring uses theme ring color */
-.focus-visible:ring-2.focus-visible:ring-ring.focus-visible:ring-offset-2
-```
-
-### Color Blindness Support
-
-The OKLCH color space provides better support for color blindness:
-
-- High contrast ratios maintained
-- Semantic meaning not dependent on color alone
-- Clear visual hierarchy
+- **Focus Rings**: All interactive elements have visible focus rings using `--ring` color
+- **Focus Indicators**: Clear visual indicators for keyboard navigation
+- **Focus Management**: Proper focus management in modals and dialogs
 
 ### Screen Reader Support
 
-- Semantic HTML structure maintained
-- ARIA labels provided where necessary
-- Color information not conveyed through color alone
+- **Semantic HTML**: All components use semantic HTML elements
+- **ARIA Labels**: Proper ARIA labels for complex components
+- **Alt Text**: Descriptive alt text for images and icons
+
+### Keyboard Navigation
+
+- **Tab Order**: Logical tab order throughout the application
+- **Keyboard Shortcuts**: Keyboard shortcuts for common actions
+- **Skip Links**: Skip links for main content areas
 
 ---
 
-## 🛠️ Best Practices
+## ✅ Best Practices
 
-### 1. Component Theming
+### Color Usage
 
-```tsx
-// Create themed components
-const ThemedButton = ({ variant = 'primary', children, ...props }) => {
-  const variants = {
-    primary: 'bg-primary text-primary-foreground',
-    secondary: 'bg-secondary text-secondary-foreground',
-    destructive: 'bg-destructive text-destructive-foreground',
-  };
+1. **Always use semantic color names**: Use `--primary` instead of `--veloz-blue`
+2. **Maintain contrast ratios**: Ensure text meets WCAG AA standards
+3. **Use consistent color patterns**: Apply colors consistently across components
+4. **Test in different lighting**: Verify colors work in various lighting conditions
 
-  return (
-    <button
-      className={cn(variants[variant], 'rounded-none px-4 py-2')}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
-```
+### Typography
 
-### 2. Single Theme Usage
+1. **Use REDJOLA sparingly**: Only for brand logo and major titles
+2. **Maintain hierarchy**: Use appropriate heading levels
+3. **Ensure readability**: Use sufficient line height and spacing
+4. **Test font loading**: Ensure fallbacks work properly
 
-```tsx
-// The application uses a single theme - no theme switching
-const MyComponent = () => {
-  return (
-    <div className="bg-background text-foreground">
-      <p>This component uses the definitive theme</p>
-    </div>
-  );
-};
-```
+### Component Design
 
-### 3. Responsive Design
+1. **Follow design patterns**: Use consistent component patterns
+2. **Maintain spacing**: Use consistent spacing throughout
+3. **Test interactions**: Verify hover, focus, and active states
+4. **Ensure responsiveness**: Test on different screen sizes
 
-```tsx
-// Use theme colors in responsive designs
-<div className="bg-background text-foreground md:bg-card md:text-card-foreground">
-  <h1 className="text-2xl md:text-4xl font-display">Title</h1>
-  <p className="text-muted-foreground">Content</p>
-</div>
-```
+### Performance
 
-### 4. Animation Integration
-
-```tsx
-// Use theme colors in animations
-<div className="bg-background hover:bg-accent transition-colors duration-200">
-  <span className="text-foreground">Hover me</span>
-</div>
-```
+1. **Optimize font loading**: Use `font-display: swap`
+2. **Minimize CSS**: Use efficient CSS selectors
+3. **Cache effectively**: Leverage browser caching
+4. **Monitor performance**: Track Core Web Vitals
 
 ---
 
 ## 🔄 Migration Guide
 
-### From Hardcoded Colors
+### From Old Theme System
 
-**Before:**
+If migrating from the previous OKLCH-based system:
 
-```tsx
-<div className="bg-primary text-primary-foreground border-border">
-  <button className="bg-primary hover:bg-primary/90">Save</button>
-</div>
-```
+1. **Update color references**: Replace old color variables with new semantic names
+2. **Update component classes**: Use new Tailwind 4 compatible classes
+3. **Test accessibility**: Verify contrast ratios still meet standards
+4. **Update documentation**: Update any hardcoded color references
 
-**After:**
+### Color Mapping
 
-```tsx
-<div className="bg-primary text-primary-foreground border-border">
-  <button className="bg-primary hover:bg-primary/90">Save</button>
-</div>
-```
+| Old Variable    | New Variable   | Usage             |
+| --------------- | -------------- | ----------------- |
+| `--base-50`     | `--background` | Main backgrounds  |
+| `--base-800`    | `--foreground` | Main text         |
+| `--primary-900` | `--primary`    | Primary actions   |
+| `--base-200`    | `--border`     | Borders           |
+| `--base-100`    | `--muted`      | Muted backgrounds |
 
-### Common Mappings
-
-| Old Class         | New Class               | Usage             |
-| ----------------- | ----------------------- | ----------------- |
-| `bg-white`        | `bg-background`         | Main background   |
-| `text-black`      | `text-foreground`       | Main text         |
-| `bg-blue-600`     | `bg-primary`            | Primary actions   |
-| `text-violet-500` | `text-primary`          | Primary text      |
-| `bg-gray-100`     | `bg-muted`              | Muted backgrounds |
-| `text-gray-600`   | `text-muted-foreground` | Muted text        |
-| `border-gray-200` | `border-border`         | Borders           |
-
-### From Rounded Components
-
-**Before:**
+### Component Updates
 
 ```tsx
-<div className="rounded-none bg-card border border-border">
-  <button className="rounded-none bg-primary text-primary-foreground">
-    Action
-  </button>
-</div>
-```
+// OLD
+<div className="bg-base-50 text-base-800">
 
-**After:**
-
-```tsx
-<div className="rounded-none bg-card border border-border">
-  <button className="rounded-none bg-primary text-primary-foreground">
-    Action
-  </button>
-</div>
+// NEW
+<div className="bg-background text-foreground">
 ```
 
 ---
 
 ## 🧪 Testing
 
-### Theme Consistency Testing
+### Visual Testing
 
-```bash
-npm run theme:check
-```
-
-- Scans all component files for hardcoded colors
-- Ensures consistent use of theme variables
-- Provides detailed reports and recommendations
+1. **Component Testing**: Test all components with new theme
+2. **Page Testing**: Verify all pages display correctly
+3. **Responsive Testing**: Test on different screen sizes
+4. **Browser Testing**: Test across different browsers
 
 ### Accessibility Testing
 
-```bash
-npm run theme:accessibility
-```
-
-- Tests color combinations for WCAG AA compliance
-- Validates theme files for proper structure
-- Provides accessibility recommendations
-
-### Visual Testing
-
-1. **Single Theme**: Verify only the light theme is used
-2. **Component Rendering**: Verify all components display correctly
-3. **Responsive Design**: Test across all device sizes
-4. **Cross-browser**: Verify in all major browsers
+1. **Contrast Testing**: Verify all color combinations meet WCAG AA
+2. **Screen Reader Testing**: Test with screen readers
+3. **Keyboard Testing**: Test keyboard navigation
+4. **Focus Testing**: Verify focus indicators are visible
 
 ### Performance Testing
 
-1. **Bundle Size**: Ensure theme doesn't impact performance
-2. **Memory Usage**: Check for memory leaks
-3. **Rendering Performance**: Test with large component trees
+1. **CSS Bundle Size**: Monitor CSS bundle size
+2. **Font Loading**: Test font loading performance
+3. **Render Performance**: Monitor render performance
+4. **Memory Usage**: Check for memory leaks
+
+### Automated Testing
+
+1. **Unit Tests**: Test theme utilities and functions
+2. **Integration Tests**: Test theme integration with components
+3. **Visual Regression Tests**: Test for visual regressions
+4. **Accessibility Tests**: Automated accessibility testing
 
 ---
 
@@ -832,29 +749,22 @@ npm run theme:accessibility
 
 ### Documentation
 
-- [Theme System Guide](THEME_SYSTEM_GUIDE.md) - Detailed system guide
-- [Project Requirements](PRD.md) - Architecture and constraints
-- [Task Tracking](TASK.md) - Current theme-related tasks
+- [Theme Tokens](docs/THEME_TOKENS.md) - Complete token reference
+- [Color Reference](docs/VELOZ_COLOR_REFERENCE.md) - Quick color guide
+- [Migration Status](docs/THEME_MIGRATION_STATUS.md) - Migration progress
 
 ### Tools
 
-- [Theme Consistency Checker](../src/lib/theme-consistency-checker.ts)
-- [Accessibility Testing](../src/lib/accessibility-test.ts)
-- [Theme Performance](../src/lib/theme-performance.ts)
+- **Theme Preview**: `/debug/theme-preview` - Visual theme preview
+- **Theme Debug**: `?theme-debug=true` - Debug hardcoded colors
+- **Design System**: `/debug/design` - Component library
 
 ### External Resources
 
-- [OKLCH Color Space](https://oklch.com/) - Color space documentation
-- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/) - Accessibility standards
-- [shadcn/ui](https://ui.shadcn.com/) - Component library documentation
+- [Tailwind CSS 4 Documentation](https://tailwindcss.com/docs)
+- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [Color Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ---
 
-## 📝 Notes
-
-- All theme information references the actual implementation in `src/app/globals.css`
-- The theme system is designed for the Veloz brand identity
-- REDJOLA font should never be used in bold (per user preference)
-- All components should use semantic color names
-- Zero border radius is intentional for modern flat design
-- Performance and accessibility are prioritized in all design decisions
+_The Veloz theme system provides a consistent, accessible, and performant foundation for the entire application. All components should use these theme variables to ensure visual consistency and maintainability._

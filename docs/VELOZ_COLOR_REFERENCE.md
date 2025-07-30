@@ -1,253 +1,288 @@
 # 🎨 Veloz Color Reference Guide
 
-_Quick reference for the new Veloz theme implementation_
+_Quick reference for the new Veloz theme implementation - Tailwind 4 Compatible with OKLCH Colors_
 
 ---
 
-## 🎯 Core Brand Colors
+## 🎯 Core Theme Colors
 
-| Color Name             | HEX Code  | Usage                               |
-| ---------------------- | --------- | ----------------------------------- |
-| **Veloz Blue**         | `#0019AA` | Primary actions, CTAs, links        |
-| **Veloz Blue Hover**   | `#000f75` | Hover states for primary elements   |
-| **Carbon Black**       | `#212223` | Main text, headings, icons          |
-| **White**              | `#FFFFFF` | Card backgrounds, surfaces          |
-| **Light Gray 1**       | `#d4d4d4` | Site background, borders            |
-| **Light Gray 2**       | `#afafaf` | Muted elements, disabled states     |
-| **Light Gray 2 Hover** | `#999999` | Hover states for secondary elements |
+### Light Theme (Default)
+
+| Color Name                 | OKLCH Value                     | Usage                              |
+| -------------------------- | ------------------------------- | ---------------------------------- |
+| **Background**             | `oklch(0.9551 0 0)`             | Main page background               |
+| **Foreground**             | `oklch(0.3211 0 0)`             | Primary text color                 |
+| **Card**                   | `oklch(0.9702 0 0)`             | Card and surface backgrounds       |
+| **Card Foreground**        | `oklch(0.3211 0 0)`             | Text on card backgrounds           |
+| **Primary**                | `oklch(0.3516 0.2190 264.1929)` | Primary actions, CTAs, links       |
+| **Primary Foreground**     | `oklch(1.0000 0 0)`             | Text on primary backgrounds        |
+| **Secondary**              | `oklch(0.8699 0 0)`             | Secondary UI elements              |
+| **Secondary Foreground**   | `oklch(0.2513 0.0024 247.9213)` | Text on secondary backgrounds      |
+| **Muted**                  | `oklch(0.8853 0 0)`             | Muted backgrounds                  |
+| **Muted Foreground**       | `oklch(0.5103 0 0)`             | Muted text color                   |
+| **Accent**                 | `oklch(0.8699 0 0)`             | Accent backgrounds                 |
+| **Accent Foreground**      | `oklch(0.2513 0.0024 247.9213)` | Text on accent backgrounds         |
+| **Destructive**            | `oklch(0.5594 0.1900 25.8625)`  | Error states and dangerous actions |
+| **Destructive Foreground** | `oklch(1.0000 0 0)`             | Text on destructive backgrounds    |
+| **Border**                 | `oklch(0.8576 0 0)`             | Border color                       |
+| **Input**                  | `oklch(0.9067 0 0)`             | Input field background             |
+| **Ring**                   | `oklch(0.4891 0 0)`             | Focus ring color                   |
+
+### Dark Theme
+
+| Color Name                 | OKLCH Value                    | Usage                               |
+| -------------------------- | ------------------------------ | ----------------------------------- |
+| **Background**             | `oklch(0.2178 0 0)`            | Dark page background                |
+| **Foreground**             | `oklch(0.8853 0 0)`            | Light text color                    |
+| **Card**                   | `oklch(0.2435 0 0)`            | Dark card backgrounds               |
+| **Card Foreground**        | `oklch(0.8853 0 0)`            | Light text on card backgrounds      |
+| **Primary**                | `oklch(0.7058 0 0)`            | Light primary color                 |
+| **Primary Foreground**     | `oklch(0.2178 0 0)`            | Dark text on primary backgrounds    |
+| **Secondary**              | `oklch(0.3092 0 0)`            | Dark secondary elements             |
+| **Secondary Foreground**   | `oklch(0.8853 0 0)`            | Light text on secondary backgrounds |
+| **Muted**                  | `oklch(0.2850 0 0)`            | Dark muted backgrounds              |
+| **Muted Foreground**       | `oklch(0.5999 0 0)`            | Muted text color                    |
+| **Accent**                 | `oklch(0.3715 0 0)`            | Dark accent backgrounds             |
+| **Accent Foreground**      | `oklch(0.8853 0 0)`            | Light text on accent backgrounds    |
+| **Destructive**            | `oklch(0.6591 0.1530 22.1703)` | Dark error states                   |
+| **Destructive Foreground** | `oklch(1.0000 0 0)`            | White text on error backgrounds     |
+| **Border**                 | `oklch(0.3290 0 0)`            | Dark border color                   |
+| **Input**                  | `oklch(0.3092 0 0)`            | Dark input field background         |
+| **Ring**                   | `oklch(0.7058 0 0)`            | Light focus ring color              |
 
 ---
 
-## 📝 Tailwind Classes Reference
+## 📝 Tailwind 4 Classes Reference
 
 ### Background Colors
 
 ```css
-/* Site background */
-bg-[#d4d4d4]
+/* Page background */
+bg-background
 
 /* Card/surface backgrounds */
-bg-white
+bg-card
 
 /* Primary button background */
-bg-[#0019AA]
+bg-primary
 
 /* Secondary button background */
-bg-[#afafaf]
+bg-secondary
+
+/* Muted backgrounds */
+bg-muted
+
+/* Accent backgrounds */
+bg-accent
 ```
 
 ### Text Colors
 
 ```css
 /* Main text */
-text-[#212223]
+text-foreground
 
-/* White text on dark backgrounds */
-text-white
+/* Text on primary backgrounds */
+text-primary-foreground
 
 /* Primary link/button text */
-text-[#0019AA]
+text-primary
 
 /* Muted text */
-text-[#afafaf]
+text-muted-foreground
+
+/* Text on card backgrounds */
+text-card-foreground
+
+/* Text on accent backgrounds */
+text-accent-foreground
 ```
 
 ### Border Colors
 
 ```css
 /* Standard borders */
-border-[#d4d4d4]
+border-border
 
 /* Primary button borders */
-border-[#0019AA]
+border-primary
+
+/* Card borders */
+border-card
 ```
 
 ### Focus States
 
 ```css
 /* Focus ring for inputs */
-focus:ring-[#0019AA]
+focus:ring-ring
 
 /* Focus ring for buttons */
-focus:ring-[#0019AA]
+focus:ring-ring
 ```
 
----
-
-## 🔄 Migration Patterns
-
-### Button Updates
-
-```tsx
-// OLD
-<Button className="bg-primary hover:bg-primary/90">
-  Submit
-</Button>
-
-// NEW
-<Button className="bg-[#0019AA] hover:bg-[#000f75]">
-  Submit
-</Button>
-```
-
-### Input Updates
-
-```tsx
-// OLD
-<input className="bg-background border border-input text-foreground" />
-
-// NEW
-<input className="bg-white border border-[#d4d4d4] text-[#212223]" />
-```
-
-### Navigation Updates
-
-```tsx
-// OLD
-<nav className="bg-background text-foreground">
-
-// NEW
-<nav className="bg-[#d4d4d4] text-[#212223]">
-```
-
-### Card Updates
-
-```tsx
-// OLD
-<div className="bg-card border border-border">
-
-// NEW
-<div className="bg-white border border-[#d4d4d4]">
-```
-
----
-
-## 🎨 Component-Specific Guidelines
-
-### Buttons
-
-- **Primary**: `bg-[#0019AA] text-white hover:bg-[#000f75]`
-- **Secondary**: `bg-[#afafaf] text-[#212223] hover:bg-[#999999]`
-- **Tertiary**: `border border-[#0019AA] text-[#0019AA] hover:bg-[#0019AA] hover:text-white`
-
-### Forms
-
-- **Input Background**: `bg-white`
-- **Input Border**: `border-[#d4d4d4]`
-- **Input Text**: `text-[#212223]`
-- **Placeholder**: `placeholder:text-[#afafaf]`
-- **Focus Ring**: `focus:ring-[#0019AA]`
-
-### Navigation
-
-- **Background**: `bg-[#d4d4d4]`
-- **Text**: `text-[#212223]`
-- **Active State**: `text-[#0019AA]`
-- **Hover State**: `hover:text-[#000f75]`
-
-### Cards & Containers
-
-- **Background**: `bg-white`
-- **Border**: `border-[#d4d4d4]`
-- **Text**: `text-[#212223]`
-
----
-
-## 🚫 What NOT to Use
-
-### Avoid These Classes
+### Form Elements
 
 ```css
-/* Don't use old semantic classes */
-bg-primary
-bg-background
-bg-card
-text-primary
-text-foreground
+/* Input backgrounds */
+bg-input
+
+/* Input borders */
 border-border
-border-input
 
-/* Don't use OKLCH colors */
-oklch(0.9847 0 0)
-oklch(0.3644 0.2281 264.2)
-
-/* Don't use rounded corners */
-rounded-md
-rounded-lg
+/* Focus rings */
+focus:ring-ring
 ```
 
-### Replace With
+---
+
+## 🎨 Chart Colors
+
+### Light Theme Chart Colors
 
 ```css
-/* Use new Veloz colors */
-bg-[#0019AA]
-bg-[#d4d4d4]
-bg-white
-text-[#212223]
-text-[#0019AA]
-border-[#d4d4d4]
+--chart-1: oklch(0.4891 0 0);
+--chart-2: oklch(0.4863 0.0361 196.0278);
+--chart-3: oklch(0.6534 0 0);
+--chart-4: oklch(0.7316 0 0);
+--chart-5: oklch(0.8078 0 0);
+```
 
-/* Use flat design (no border radius) */
-/* Remove all rounded classes */
+### Dark Theme Chart Colors
+
+```css
+--chart-1: oklch(0.7058 0 0);
+--chart-2: oklch(0.6714 0.0339 206.3482);
+--chart-3: oklch(0.5452 0 0);
+--chart-4: oklch(0.4604 0 0);
+--chart-5: oklch(0.3715 0 0);
 ```
 
 ---
 
-## ✅ Validation Checklist
+## 🎨 Sidebar Colors
 
-### Color Usage
+### Light Theme Sidebar Colors
 
-- [ ] All primary actions use `#0019AA`
-- [ ] All text uses `#212223`
-- [ ] All backgrounds use `#d4d4d4`
-- [ ] All cards use `#FFFFFF`
-- [ ] All borders use `#d4d4d4`
-- [ ] All muted elements use `#afafaf`
-
-### Accessibility
-
-- [ ] Veloz Blue on White: ✅ 4.5:1 contrast ratio
-- [ ] Carbon Black on Light Gray: ✅ 4.5:1 contrast ratio
-- [ ] Carbon Black on White: ✅ 21:1 contrast ratio
-- [ ] White on Veloz Blue: ✅ 4.5:1 contrast ratio
-
-### Consistency
-
-- [ ] No mixed color systems
-- [ ] No old semantic classes
-- [ ] No rounded corners
-- [ ] Consistent hover states
-
----
-
-## 🔧 Quick Fixes
-
-### Common Issues
-
-```tsx
-// Issue: Old semantic classes still in use
-className = 'bg-primary text-primary-foreground';
-
-// Fix: Replace with new colors
-className = 'bg-[#0019AA] text-white';
+```css
+--sidebar: oklch(0.937 0 0);
+--sidebar-foreground: oklch(0.3211 0 0);
+--sidebar-primary: oklch(0.4891 0 0);
+--sidebar-primary-foreground: oklch(1 0 0);
+--sidebar-accent: oklch(0.8078 0 0);
+--sidebar-accent-foreground: oklch(0.3211 0 0);
+--sidebar-border: oklch(0.8576 0 0);
+--sidebar-ring: oklch(0.4891 0 0);
 ```
 
-```tsx
-// Issue: Rounded corners
-className = 'rounded-md border border-input';
+### Dark Theme Sidebar Colors
 
-// Fix: Remove rounded, use new colors
-className = 'border border-[#d4d4d4]';
-```
-
-```tsx
-// Issue: Mixed color systems
-className = 'bg-[#0019AA] text-foreground';
-
-// Fix: Use consistent new colors
-className = 'bg-[#0019AA] text-white';
+```css
+--sidebar: oklch(0.2393 0 0);
+--sidebar-foreground: oklch(0.8853 0 0);
+--sidebar-primary: oklch(0.7058 0 0);
+--sidebar-primary-foreground: oklch(0.2178 0 0);
+--sidebar-accent: oklch(0.3715 0 0);
+--sidebar-accent-foreground: oklch(0.8853 0 0);
+--sidebar-border: oklch(0.329 0 0);
+--sidebar-ring: oklch(0.7058 0 0);
 ```
 
 ---
 
-_Use this reference during migration to ensure consistent application of the new Veloz theme._
+## 🎨 Shadow System
+
+```css
+--shadow-2xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+--shadow-xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+--shadow-sm:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
+--shadow: 0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
+--shadow-md:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 2px 4px -1px hsl(0 0% 20% / 0);
+--shadow-lg:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 4px 6px -1px hsl(0 0% 20% / 0);
+--shadow-xl:
+  0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 8px 10px -1px hsl(0 0% 20% / 0);
+--shadow-2xl: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+```
+
+---
+
+## 🎨 Border Radius System
+
+```css
+--radius: 0rem;
+--radius-sm: calc(var(--radius) - 4px);
+--radius-md: calc(var(--radius) - 2px);
+--radius-lg: var(--radius);
+--radius-xl: calc(var(--radius) + 4px);
+```
+
+---
+
+## 🎨 Typography
+
+```css
+--font-sans: Roboto Mono, monospace;
+--font-serif: Roboto, sans-serif;
+--font-mono: Roboto Mono, monospace;
+```
+
+---
+
+## 💡 Usage Guidelines
+
+### Best Practices
+
+1. **Use Semantic Classes**: Always use semantic Tailwind classes like `bg-primary` instead of hardcoded values
+2. **Theme Consistency**: The system supports both light and dark themes automatically
+3. **Accessibility**: All color combinations meet WCAG AA contrast requirements
+4. **OKLCH Benefits**: Modern color space provides better color accuracy and accessibility
+5. **Performance**: Tailwind 4's `@theme inline` directive ensures optimal CSS bundle size
+
+### Common Patterns
+
+```tsx
+// Primary button
+<button className="bg-primary text-primary-foreground hover:bg-primary/90">
+  Primary Action
+</button>
+
+// Secondary button
+<button className="bg-secondary text-secondary-foreground hover:bg-secondary/80">
+  Secondary Action
+</button>
+
+// Card component
+<div className="bg-card text-card-foreground border border-border">
+  Card Content
+</div>
+
+// Form input
+<input className="bg-input border border-border focus:ring-ring" />
+
+// Muted text
+<p className="text-muted-foreground">Muted content</p>
+```
+
+### Theme Switching
+
+The system automatically supports theme switching:
+
+```tsx
+// Add dark class to html element for dark theme
+document.documentElement.classList.add('dark');
+
+// Remove dark class for light theme
+document.documentElement.classList.remove('dark');
+```
+
+---
+
+## 🔧 Development Tools
+
+- **Theme Preview**: Visit `/debug/theme-preview` to see all tokens
+- **Theme Debug**: Add `?theme-debug=true` to any URL to highlight hardcoded colors
+- **OKLCH Converter**: Use browser dev tools to convert between color formats
+- **Accessibility Checker**: Test color combinations for contrast compliance

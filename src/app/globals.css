@@ -15,120 +15,106 @@
   font-display: swap;
 }
 
-/* Veloz Theme System - New Brand Colors */
+/* Veloz Theme System - Tailwind 4 Compatible with OKLCH Colors */
 :root {
-  /* Veloz Brand Colors */
-  --veloz-blue: #0019aa;
-  --veloz-blue-hover: #000f75;
-  --carbon-black: #212223;
-  --white: #ffffff;
-  --light-gray-1: #d4d4d4;
-  --light-gray-2: #afafaf;
-  --light-gray-2-hover: #999999;
+  /* Core semantic colors - Light theme (OKLCH) */
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.3211 0 0);
+  --card: oklch(0.9702 0 0);
+  --card-foreground: oklch(0.3211 0 0);
+  --popover: oklch(0.9702 0 0);
+  --popover-foreground: oklch(0.3211 0 0);
+  --primary: oklch(0.3516 0.219 264.1929);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.8699 0 0);
+  --secondary-foreground: oklch(0.2513 0.0024 247.9213);
+  --muted: oklch(0.8853 0 0);
+  --muted-foreground: oklch(0.5103 0 0);
+  --accent: oklch(0.8699 0 0);
+  --accent-foreground: oklch(0.2513 0.0024 247.9213);
+  --destructive: oklch(0.5594 0.19 25.8625);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.8576 0 0);
+  --input: oklch(0.9067 0 0);
+  --ring: oklch(0.4891 0 0);
+  --chart-1: oklch(0.4891 0 0);
+  --chart-2: oklch(0.4863 0.0361 196.0278);
+  --chart-3: oklch(0.6534 0 0);
+  --chart-4: oklch(0.7316 0 0);
+  --chart-5: oklch(0.8078 0 0);
+  --sidebar: oklch(0.937 0 0);
+  --sidebar-foreground: oklch(0.3211 0 0);
+  --sidebar-primary: oklch(0.4891 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.8078 0 0);
+  --sidebar-accent-foreground: oklch(0.3211 0 0);
+  --sidebar-border: oklch(0.8576 0 0);
+  --sidebar-ring: oklch(0.4891 0 0);
 
-  /* Semantic assignments */
-  --background: var(--light-gray-1);
-  --foreground: var(--carbon-black);
-  --card: var(--white);
-  --card-foreground: var(--carbon-black);
-  --popover: var(--white);
-  --popover-foreground: var(--carbon-black);
-  --primary: var(--veloz-blue);
-  --primary-foreground: var(--white);
-  --secondary: var(--light-gray-2);
-  --secondary-foreground: var(--carbon-black);
-  --muted: var(--light-gray-2);
-  --muted-foreground: var(--carbon-black);
-  --accent: var(--light-gray-1);
-  --accent-foreground: var(--carbon-black);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: var(--white);
-  --border: var(--light-gray-1);
-  --input: var(--white);
-  --ring: var(--veloz-blue);
-  --chart-1: var(--veloz-blue);
-  --chart-2: var(--light-gray-2);
-  --chart-3: var(--carbon-black);
-  --chart-4: var(--light-gray-1);
-  --chart-5: var(--white);
+  /* Font definitions - Tailwind 4 compatible */
+  --font-sans: Roboto Mono, monospace;
+  --font-serif: Roboto, sans-serif;
+  --font-mono: Roboto Mono, monospace;
+
+  /* Radius - Tailwind 4 compatible */
   --radius: 0rem;
-  --sidebar: var(--white);
-  --sidebar-foreground: var(--carbon-black);
-  --sidebar-primary: var(--veloz-blue);
-  --sidebar-primary-foreground: var(--white);
-  --sidebar-accent: var(--light-gray-1);
-  --sidebar-accent-foreground: var(--carbon-black);
-  --sidebar-border: var(--light-gray-1);
-  --sidebar-ring: var(--veloz-blue);
 
-  /* Font definitions */
-  --font-sans: 'Roboto', 'sans-serif';
-  --font-serif: 'Roboto', 'sans-serif';
-  --font-mono: 'Roboto', 'sans-serif';
-  --font-logo:
-    REDJOLA, Bebas Neue, Oswald, ui-sans-serif, system-ui, sans-serif;
-  --display-weight: 500;
-  --text-weight: 400;
-
-  /* Shadow system */
-  --shadow-2xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
-  --shadow-xs: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.07);
+  /* Shadow system - Tailwind 4 compatible */
+  --shadow-2xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
+  --shadow-xs: 0px 0px 0px 0px hsl(0 0% 20% / 0);
   --shadow-sm:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
   --shadow:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 1px 2px -1px hsl(0 0% 20% / 0);
   --shadow-md:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 2px 4px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 2px 4px -1px hsl(0 0% 20% / 0);
   --shadow-lg:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 4px 6px -1px hsl(0 0% 20% / 0.15);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 4px 6px -1px hsl(0 0% 20% / 0);
   --shadow-xl:
-    0px 2px 8.5px 0px hsl(0 0% 20% / 0.15),
-    0px 8px 10px -1px hsl(0 0% 20% / 0.15);
-  --shadow-2xl: 0px 2px 8.5px 0px hsl(0 0% 20% / 0.38);
+    0px 0px 0px 0px hsl(0 0% 20% / 0), 0px 8px 10px -1px hsl(0 0% 20% / 0);
+  --shadow-2xl: 0px 0px 0px 0px hsl(0 0% 20% / 0);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
 
+.dark {
+  /* Core semantic colors - Dark theme (OKLCH) */
+  --background: oklch(0.2178 0 0);
+  --foreground: oklch(0.8853 0 0);
+  --card: oklch(0.2435 0 0);
+  --card-foreground: oklch(0.8853 0 0);
+  --popover: oklch(0.2435 0 0);
+  --popover-foreground: oklch(0.8853 0 0);
+  --primary: oklch(0.7058 0 0);
+  --primary-foreground: oklch(0.2178 0 0);
+  --secondary: oklch(0.3092 0 0);
+  --secondary-foreground: oklch(0.8853 0 0);
+  --muted: oklch(0.285 0 0);
+  --muted-foreground: oklch(0.5999 0 0);
+  --accent: oklch(0.3715 0 0);
+  --accent-foreground: oklch(0.8853 0 0);
+  --destructive: oklch(0.6591 0.153 22.1703);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.329 0 0);
+  --input: oklch(0.3092 0 0);
+  --ring: oklch(0.7058 0 0);
+  --chart-1: oklch(0.7058 0 0);
+  --chart-2: oklch(0.6714 0.0339 206.3482);
+  --chart-3: oklch(0.5452 0 0);
+  --chart-4: oklch(0.4604 0 0);
+  --chart-5: oklch(0.3715 0 0);
+  --sidebar: oklch(0.2393 0 0);
+  --sidebar-foreground: oklch(0.8853 0 0);
+  --sidebar-primary: oklch(0.7058 0 0);
+  --sidebar-primary-foreground: oklch(0.2178 0 0);
+  --sidebar-accent: oklch(0.3715 0 0);
+  --sidebar-accent-foreground: oklch(0.8853 0 0);
+  --sidebar-border: oklch(0.329 0 0);
+  --sidebar-ring: oklch(0.7058 0 0);
+}
+
 @theme inline {
-  /* Base colors */
-  --color-base-50: var(--base-50);
-  --color-base-100: var(--base-100);
-  --color-base-200: var(--base-200);
-  --color-base-300: var(--base-300);
-  --color-base-400: var(--base-400);
-  --color-base-500: var(--base-500);
-  --color-base-600: var(--base-600);
-  --color-base-700: var(--base-700);
-  --color-base-800: var(--base-800);
-  --color-base-900: var(--base-900);
-  --color-base-950: var(--base-950);
-  --color-base-1000: var(--base-1000);
-
-  /* Primary colors */
-  --color-primary-50: var(--primary-50);
-  --color-primary-100: var(--primary-100);
-  --color-primary-200: var(--primary-200);
-  --color-primary-300: var(--primary-300);
-  --color-primary-400: var(--primary-400);
-  --color-primary-500: var(--primary-500);
-  --color-primary-600: var(--primary-600);
-  --color-primary-700: var(--primary-700);
-  --color-primary-800: var(--primary-800);
-  --color-primary-900: var(--primary-900);
-  --color-primary-950: var(--primary-950);
-  --color-primary-1000: var(--primary-1000);
-
-  /* Accent colors for enhanced UX */
-  --color-accent-soft-gold: var(--accent-soft-gold);
-  --color-accent-sky: var(--accent-sky);
-  --color-accent-rose: var(--accent-rose);
-  --color-accent-lime: var(--accent-lime);
-
-  /* Semantic colors */
+  /* Core semantic colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -162,11 +148,18 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Font definitions */
-  --font-display: var(--font-sans);
-  --font-text: var(--font-sans);
+  /* Custom accent colors */
+  --color-accent-soft-gold: var(--accent-soft-gold);
+  --color-accent-sky: var(--accent-sky);
+  --color-accent-rose: var(--accent-rose);
+  --color-accent-lime: var(--accent-lime);
 
-  /* Border radius */
+  /* Fonts */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
