@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import AdminLayout from '@/components/admin/AdminLayout';
+import AuthGuard from '@/components/admin/AuthGuard';
 import {
   Card,
   CardContent,
@@ -15,7 +17,7 @@ import { getAnalyticsSummaries } from '@/services/analytics-data';
 import type { AnalyticsSummary } from '@/services/analytics-data';
 import { analyticsService } from '@/lib/analytics';
 import type { CrewAnalyticsSummary } from '@/lib/analytics';
-import {
+import { 
   MetricCardGrid,
   ViewsMetricCard,
   VisitorsMetricCard,
@@ -26,6 +28,7 @@ import {
   MediaInteractionBreakdownCard,
   DeviceBreakdownCard,
 } from '@/components/admin/MetricCard';
+import ProjectAnalytics from '@/components/admin/ProjectAnalytics';
 
 interface DashboardMetrics {
   totalViews: number;
@@ -205,7 +208,9 @@ export default function AnalyticsDashboardPage() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <AuthGuard>
+      <AdminLayout title="Analytics">
+        <div className="container mx-auto p-4">
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
@@ -410,22 +415,7 @@ export default function AnalyticsDashboardPage() {
         </TabsContent>
 
         <TabsContent value="projects" className="space-y-3">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">
-                Rendimiento por Proyecto
-              </CardTitle>
-              <CardDescription className="text-sm">
-                Análisis detallado del rendimiento de cada proyecto
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-muted-foreground text-sm">
-                La tabla de proyectos con métricas detalladas se implementará
-                próximamente.
-              </p>
-            </CardContent>
-          </Card>
+          <ProjectAnalytics showBusinessMetrics={true} />
         </TabsContent>
 
         <TabsContent value="engagement" className="space-y-3">
@@ -601,6 +591,8 @@ export default function AnalyticsDashboardPage() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+        </div>
+      </AdminLayout>
+    </AuthGuard>
   );
 }

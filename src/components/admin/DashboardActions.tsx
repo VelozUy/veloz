@@ -87,7 +87,7 @@ export default function DashboardActions({
     {
       id: 'analytics',
       title: 'Analytics',
-      description: 'Ver métricas y reportes',
+      description: 'Ver métricas y reportes detallados',
       icon: <TrendingUp className="h-4 w-4" />,
       href: '/admin/analytics',
       priority: 'low',

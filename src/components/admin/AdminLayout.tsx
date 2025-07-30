@@ -17,6 +17,7 @@ import {
   FileText,
   Users,
   QrCode,
+  BarChart3,
 } from 'lucide-react';
 import BuildTrigger from './BuildTrigger';
 import { useAdminBackground } from '@/hooks/useBackground';
@@ -39,6 +40,7 @@ const navigation = [
   { name: 'Página Sobre Nosotros', href: '/admin/about', icon: FileText },
   { name: 'Formularios', href: '/admin/forms', icon: FileText },
   { name: 'Preguntas Frecuentes', href: '/admin/faqs', icon: HelpCircle },
+  { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
 ];
 
 export default function AdminLayout({ children, title }: AdminLayoutProps) {

@@ -150,7 +150,7 @@ export default function UnifiedCommunicationHub() {
       // Load communications from database
       const communicationsResponse = await communicationsService.getAll();
       if (communicationsResponse.success && communicationsResponse.data) {
-        setCommunications(communicationsResponse.data);
+        setCommunications(communicationsResponse.data as Communication[]);
       } else {
         console.warn('Failed to load communications:', communicationsResponse);
         if (
@@ -168,7 +168,7 @@ export default function UnifiedCommunicationHub() {
       const templatesResponse =
         await messageTemplatesService.getActiveTemplates();
       if (templatesResponse.success && templatesResponse.data) {
-        setTemplates(templatesResponse.data);
+        setTemplates(templatesResponse.data as MessageTemplate[]);
       } else {
         console.warn('Failed to load templates:', templatesResponse);
         if (
@@ -185,7 +185,7 @@ export default function UnifiedCommunicationHub() {
       // Load feedback from database
       const feedbackResponse = await clientFeedbackService.getAll();
       if (feedbackResponse.success && feedbackResponse.data) {
-        setFeedback(feedbackResponse.data);
+        setFeedback(feedbackResponse.data as ClientFeedback[]);
       } else {
         console.warn('Failed to load feedback:', feedbackResponse);
         if (
@@ -263,9 +263,11 @@ export default function UnifiedCommunicationHub() {
             message:
               'Hola, estamos interesados en sus servicios para nuestra boda. ¿Podrían enviarnos información sobre sus paquetes?',
             status: 'new',
-            source: 'website',
-            createdAt: new Date('2025-01-27T14:30:00'),
-            updatedAt: new Date('2025-01-27T14:30:00'),
+            source: 'contact_form',
+            isRead: false,
+            archived: false,
+            createdAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
+            updatedAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
           },
           {
             id: '2',
@@ -277,9 +279,11 @@ export default function UnifiedCommunicationHub() {
             message:
               'Necesitamos servicios de fotografía para nuestro evento corporativo anual. ¿Tienen experiencia en eventos empresariales?',
             status: 'in_progress',
-            source: 'website',
-            createdAt: new Date('2025-01-26T10:15:00'),
-            updatedAt: new Date('2025-01-26T10:15:00'),
+            source: 'contact_form',
+            isRead: true,
+            archived: false,
+            createdAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
+            updatedAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
           },
           {
             id: '3',
@@ -291,9 +295,11 @@ export default function UnifiedCommunicationHub() {
             message:
               'Queremos celebrar el cumpleaños de mi hija. ¿Ofrecen servicios para fiestas infantiles?',
             status: 'completed',
-            source: 'website',
-            createdAt: new Date('2025-01-25T16:45:00'),
-            updatedAt: new Date('2025-01-25T16:45:00'),
+            source: 'contact_form',
+            isRead: true,
+            archived: false,
+            createdAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
+            updatedAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
           },
         ];
         setContacts(mockContacts);
@@ -317,9 +323,11 @@ export default function UnifiedCommunicationHub() {
           message:
             'Hola, estamos interesados en sus servicios para nuestra boda. ¿Podrían enviarnos información sobre sus paquetes?',
           status: 'new',
-          source: 'website',
-          createdAt: new Date('2025-01-27T14:30:00'),
-          updatedAt: new Date('2025-01-27T14:30:00'),
+          source: 'contact_form',
+          isRead: false,
+          archived: false,
+          createdAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
+          updatedAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
         },
         {
           id: '2',
@@ -331,9 +339,11 @@ export default function UnifiedCommunicationHub() {
           message:
             'Necesitamos servicios de fotografía para nuestro evento corporativo anual. ¿Tienen experiencia en eventos empresariales?',
           status: 'in_progress',
-          source: 'website',
-          createdAt: new Date('2025-01-26T10:15:00'),
-          updatedAt: new Date('2025-01-26T10:15:00'),
+          source: 'contact_form',
+          isRead: true,
+          archived: false,
+          createdAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
+          updatedAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
         },
         {
           id: '3',
@@ -345,9 +355,11 @@ export default function UnifiedCommunicationHub() {
           message:
             'Queremos celebrar el cumpleaños de mi hija. ¿Ofrecen servicios para fiestas infantiles?',
           status: 'completed',
-          source: 'website',
-          createdAt: new Date('2025-01-25T16:45:00'),
-          updatedAt: new Date('2025-01-25T16:45:00'),
+          source: 'contact_form',
+          isRead: true,
+          archived: false,
+          createdAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
+          updatedAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
         },
       ];
       setContacts(mockContacts);
@@ -476,7 +488,7 @@ export default function UnifiedCommunicationHub() {
         updatedAt: new Date(),
       };
 
-      const response = await messageTemplatesService.add(templateData);
+      const response = await messageTemplatesService.create(templateData);
       if (response.success) {
         setTemplateDialogOpen(false);
         setNewTemplate({
@@ -856,7 +868,7 @@ export default function UnifiedCommunicationHub() {
                             {contact.message || 'Sin mensaje'}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">
-                            {new Date(contact.createdAt).toLocaleDateString()}
+                            {new Date(contact.createdAt.seconds * 1000).toLocaleDateString()}
                           </div>
                         </div>
                       </TableCell>
