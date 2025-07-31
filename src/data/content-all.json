@@ -256,8 +256,8 @@
         "headline": "Capturamos lo irrepetible",
         "logo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
         },
         "backgroundVideo": {
           "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
@@ -266,7 +266,7 @@
         }
       },
       "about": {
-        "title": "Veloz",
+        "title": "Sobre nosotros",
         "subtitle": "Capturar lo irrepetible, eso nos mueve.\nSomos un equipo de fotógrafos, filmmakers y editores dedicados a convertir momentos fugaces en recuerdos visuales que perduran; Veloz nace como una respuesta a quienes buscan excelencia visual manteniendo siempre calidez humana y respeto por el momento que se nos confía.",
         "philosophy": {
           "title": "Nuestra filosofía.",
@@ -275,20 +275,20 @@
         "methodology": {
           "title": "NUESTRA METODOLOGÍA",
           "planning": {
-            "title": "Presupuestación.",
-            "description": "Una vez que nos cuentes detalles de tu evento a través del formulario, nos pondremos en contacto contigo para evacuar dudas y poder elaborar un presupuesto apropiado."
+            "title": "Planificación",
+            "description": "Estudiamos cada detalle del evento para anticipar los momentos clave."
           },
           "coverage": {
-            "title": "Planificación.",
-            "description": "Asignamos al equipo de trabajo del proyecto y estudiamos cada detalle del evento para no perder nada. Estaremos en contacto contigo para contarte cómo pensamos llevarlo a cabo."
+            "title": "Cobertura Integral",
+            "description": "Nuestro equipo se distribuye estratégicamente para no perder ningún momento."
           },
           "capture": {
-            "title": "Captura.",
-            "description": "Asistimos al evento y nos encargamos de todo el registro para que tú puedas concentrarte en disfrutar."
+            "title": "Captura Profesional",
+            "description": "Utilizamos técnicas avanzadas y equipos de última generación."
           },
           "postproduction": {
-            "title": "Post producción.",
-            "description": "Una vez que termina el evento nos encargamos de seleccionar y editar el material. Recibirás un código de rastreo para que puedas ver en tiempo real en qué momento del proceso nos encontramos.\nUna vez terminado el trabajo, te entregamos el material en el formato/s que prefi eras."
+            "title": "Post-Producción",
+            "description": "Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales."
           }
         },
         "values": {
@@ -325,10 +325,94 @@
       "faqs": [
         {
           "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
+          "question": "¿Qué tipo de eventos cubrimos?",
+          "answer": "Cumpleaños, casamientos, corporativos, lanzamientos, eventos culturales, conciertos.\nSi tu evento se encuentra por fuera de estas categorías, podés contarnos al respecto: nos encantan los desafíos nuevos.",
           "category": "General",
           "order": 1
+        },
+        {
+          "id": "pN4fNIoa0DuuW1Zutkgv",
+          "question": "¿Con cuánto tiempo de anticipación debo contactarlos?",
+          "answer": "El tiempo mínimo es de una semana. De esta forma nos aseguramos de entender bien las características de tu evento y poder garantizarte el mejor resultado.\nSi te encuentras en una emergencia y no tienes una semana, contanos al respecto y nuestra disposición es la de poder ayudar.",
+          "category": "General",
+          "order": 2
+        },
+        {
+          "id": "O58pCRDY89zCQMGWxjv1",
+          "question": "¿Cómo se realiza la entrega del material?",
+          "answer": "Formatos digitales, álbumes, USB, galería online… nos adaptamos a tus preferencias.",
+          "category": "General",
+          "order": 3
+        },
+        {
+          "id": "VbTmu1PtnQ67CcPZw2Ek",
+          "question": "¿Cuánto tarda la entrega del material fi nal?",
+          "answer": "La velocidad nos caracteriza. En una plazo de una semana a dos semanas podemos entregarte el material.",
+          "category": "General",
+          "order": 4
+        },
+        {
+          "id": "3rA4vga0x8CgGI185nUX",
+          "question": "¿Cuántos fotógrafos o camarógrafos son asignados por evento?",
+          "answer": "Los que sean necesarios; no es lo mismo un casamiento multitudinario a una lectura de poesía íntima. Por eso enfatizamos entender las características puntuales de tu evento.",
+          "category": "General",
+          "order": 5
+        },
+        {
+          "id": "OoguSYTkzeyvuWtAEKPe",
+          "question": "¿Puedo solicitar fotos o videos específi cos durante un evento?",
+          "answer": "Sí, sin dudas. El cliente tiene la posibilidad, tanto en la preparación del evento como durante el mismo, de solicitar priorizar determinados elementos o personas por sobre otros.",
+          "category": "General",
+          "order": 6
+        },
+        {
+          "id": "Xmb4W69SO94hyLdggF1u",
+          "question": "¿Cómo se maneja la privacidad y el uso de las imágenes?",
+          "answer": "Las imágenes y los videos son propiedad del cliente y no guardamos ningún derecho sobre ellos. Excepcionalmente podemos solicitarte autorización para utilizar el material a fi nes de difusión, pero dependemos de tu aprobación.",
+          "category": "General",
+          "order": 7
+        },
+        {
+          "id": "bxVVZ8T5rRDKXqiRDFYL",
+          "question": "¿Cómo funciona el sistema de pagos?",
+          "answer": "Una vez que se confi rma el presupuesto, solicitamos un pago del 30% total a modo de garantía. El 70% restante se realiza posterior a la entrega del material.",
+          "category": "General",
+          "order": 8
+        },
+        {
+          "id": "yV9BMf3BqNGBWTSXBrN4",
+          "question": "¿Qué pasa si el evento se cancela o se pospone?",
+          "answer": "Si el evento se cancela hacemos un reintegro del 30% abonado. En caso de que el evento se posponga, nos adaptamos a la nueva fecha independiente de cuál sea ésta.",
+          "category": "General",
+          "order": 9
+        },
+        {
+          "id": "4lJYNrFMS0KdsE78mf4s",
+          "question": "¿Qué medios de pago aceptamos?",
+          "answer": "Aceptamos pagos por transferencia bancaria, débito o crédito.",
+          "category": "General",
+          "order": 10
+        },
+        {
+          "id": "vNRTM6oBYmdomSGhY5Gn",
+          "question": "¿Qué se puede ofrecer además de coberturas?",
+          "answer": "Adicionalmente a la cobertura de tu evento, también realizamos sesiones en estudio previas o post evento, retratos en locación y entrevistas.",
+          "category": "General",
+          "order": 11
+        },
+        {
+          "id": "arB0nFxXV0MBtWpzVyr8",
+          "question": "¿Puedo elegir el estilo o tono del registro?",
+          "answer": "¡Sin duda! Parte del trabajo que hacemos durante la preparación es entender tus pretensiones estéticas para adaptarnos a ellas y asignar al equipo que mejor pueda materializarlas.",
+          "category": "General",
+          "order": 12
+        },
+        {
+          "id": "fI8dJEC6ZB6xW5RmgtW4",
+          "question": "¿Ofrecen servicio de cobertura para eventos sorpresa?",
+          "answer": "Sí, nos encanta. En ese caso trabajamos estrechamente con organizador para entender la modalidad de la sorpresa, analizamos el espacio para colocar cámaras ocultas y nos hacemos parte de los invitados capturando así lo genuino y espontáneo de lo que ocurra.",
+          "category": "General",
+          "order": 13
         }
       ],
       "categories": [
@@ -338,7 +422,9 @@
           "label": "Eventos",
           "title": "Eventos",
           "description": "Una selección de nuestros mejores trabajos.",
-          "eventTypes": ["*"]
+          "eventTypes": [
+            "*"
+          ]
         },
         {
           "id": "photoshoot",
@@ -346,7 +432,9 @@
           "label": "Photoshoot",
           "title": "Photoshoot",
           "description": "Proyectos de photoshoot",
-          "eventTypes": ["Photoshoot"]
+          "eventTypes": [
+            "Photoshoot"
+          ]
         },
         {
           "id": "culturales",
@@ -354,7 +442,9 @@
           "label": "Culturales",
           "title": "Culturales",
           "description": "Proyectos de culturales",
-          "eventTypes": ["Culturales"]
+          "eventTypes": [
+            "Culturales"
+          ]
         },
         {
           "id": "casamiento",
@@ -362,7 +452,9 @@
           "label": "Casamiento",
           "title": "Casamiento",
           "description": "Proyectos de casamiento",
-          "eventTypes": ["Casamiento"]
+          "eventTypes": [
+            "Casamiento"
+          ]
         }
       ],
       "projects": [
@@ -381,294 +473,294 @@
             {
               "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
               "mediaOffsetY": 6.693989071038249,
-              "zIndex": 1,
               "x": 0,
-              "id": "block-1751483402659",
+              "zIndex": 1,
+              "width": 7,
               "y": 0,
               "type": "image",
-              "width": 7,
+              "mediaOffsetX": -8.021077283372364,
               "height": 6,
-              "mediaOffsetX": -8.021077283372364
+              "id": "block-1751483402659"
             },
             {
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "id": "block-1751483411676",
+              "type": "video",
               "width": 7,
-              "height": 5,
-              "mediaOffsetY": 6.639344262295083,
               "mediaOffsetX": 10.675916515693812,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "y": 4,
+              "zIndex": 3,
+              "id": "block-1751483411676",
               "x": 0,
-              "type": "video",
-              "zIndex": 3
+              "height": 5,
+              "mediaOffsetY": 6.639344262295083
             },
             {
-              "height": 9,
-              "mediaOffsetX": -25,
               "type": "video",
-              "width": 5,
               "y": 0,
               "id": "block-1751483421758",
-              "mediaOffsetY": 0.8896965322885589,
-              "mediaId": "evM72UydC452ixuXMAVn",
               "x": 11,
-              "zIndex": 4
+              "height": 9,
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "mediaOffsetY": 0.8896965322885589,
+              "mediaOffsetX": -25,
+              "width": 5
             },
             {
-              "y": 0,
-              "zIndex": 2,
-              "type": "image",
               "height": 9,
-              "mediaOffsetY": 8.854005567584286,
+              "zIndex": 2,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "x": 7,
-              "width": 4,
+              "mediaOffsetY": 8.854005567584286,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
               "id": "block-1751483440728",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
+              "width": 4
             },
             {
+              "color": "#ffffff",
               "type": "title",
-              "zIndex": 5,
-              "id": "title-1751488350641",
-              "title": "Ciclismo",
               "width": 16,
               "x": 0,
-              "color": "#ffffff",
               "font": "quicksand",
-              "height": 4,
-              "y": 2
+              "title": "Ciclismo",
+              "zIndex": 5,
+              "y": 2,
+              "id": "title-1751488350641",
+              "height": 4
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "height": 5,
-              "y": 0,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "type": "video",
               "width": 8,
-              "id": "auto-0",
-              "x": 0
-            },
-            {
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 5,
+              "type": "video",
               "y": 0,
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 8,
-              "type": "image",
-              "width": 5,
-              "x": 8
+              "id": "auto-0",
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "zIndex": 0
             },
             {
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
+              "zIndex": 1,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "type": "image",
+              "y": 0,
+              "height": 8,
+              "width": 5,
+              "x": 8,
+              "id": "auto-1"
+            },
+            {
               "height": 3,
+              "x": 13,
+              "zIndex": 2,
+              "width": 3,
               "id": "auto-2",
               "type": "image",
-              "y": 0,
-              "zIndex": 2,
-              "x": 13
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0
             },
             {
-              "x": 0,
-              "type": "image",
-              "zIndex": 3,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "height": 8,
-              "id": "auto-3",
+              "type": "image",
               "y": 1,
-              "width": 5
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "width": 5,
+              "id": "auto-3",
+              "zIndex": 3,
+              "x": 0
             },
             {
               "x": 5,
-              "zIndex": 4,
-              "height": 8,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
               "id": "auto-4",
               "y": 1,
-              "width": 5,
-              "type": "image"
-            },
-            {
-              "y": 3,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
-              "zIndex": 5,
-              "width": 6,
-              "x": 10,
-              "height": 6,
-              "id": "auto-5",
-              "type": "image"
-            },
-            {
-              "height": 6,
-              "width": 6,
-              "zIndex": 6,
               "type": "image",
-              "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "x": 0
-            },
-            {
-              "id": "auto-7",
-              "zIndex": 7,
-              "x": 6,
+              "zIndex": 4,
               "height": 8,
-              "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "width": 5,
-              "type": "image",
-              "y": 1
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "id": "auto-8",
-              "x": 11,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "width": 6,
+              "type": "image",
+              "x": 10,
+              "id": "auto-5",
+              "y": 3,
+              "zIndex": 5,
+              "height": 6
+            },
+            {
+              "width": 6,
+              "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "x": 0,
+              "height": 6,
+              "id": "auto-6"
+            },
+            {
+              "mediaId": "dtsBBRanqbKQUVZEwh2k",
+              "zIndex": 7,
+              "height": 8,
+              "y": 1,
+              "id": "auto-7",
+              "type": "image",
+              "x": 6,
+              "width": 5
+            },
+            {
+              "zIndex": 8,
               "width": 5,
               "y": 1,
-              "type": "video",
               "height": 8,
-              "zIndex": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "type": "video",
+              "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "x": 11
             },
             {
-              "height": 5,
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
               "x": 0,
-              "id": "auto-9"
+              "zIndex": 9,
+              "type": "image",
+              "height": 5,
+              "id": "auto-9",
+              "width": 8,
+              "y": 4
             },
             {
-              "height": 8,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
               "y": 1,
-              "type": "image",
-              "id": "auto-10",
               "zIndex": 10,
-              "x": 8
+              "id": "auto-10",
+              "x": 8,
+              "width": 5,
+              "type": "image",
+              "height": 8
             },
             {
-              "height": 3,
-              "type": "image",
-              "x": 13,
-              "width": 3,
               "zIndex": 11,
-              "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "id": "auto-11"
+              "type": "image",
+              "mediaId": "FSOslPFFgsgYZfvgbI64",
+              "height": 3,
+              "id": "auto-11",
+              "width": 3,
+              "x": 13
             },
             {
               "height": 5,
-              "id": "auto-12",
-              "type": "image",
               "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "y": 4,
               "x": 0,
+              "type": "image",
+              "id": "auto-12",
               "width": 8
             },
             {
               "x": 8,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "y": 4,
+              "height": 5,
               "id": "auto-13",
-              "zIndex": 13,
               "width": 8,
+              "y": 4,
               "type": "image",
-              "height": 5
+              "zIndex": 13,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS"
             },
             {
+              "type": "image",
+              "zIndex": 14,
               "x": 0,
+              "y": 3,
               "height": 6,
               "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "id": "auto-14",
-              "zIndex": 14,
-              "y": 3,
               "width": 6,
-              "type": "image"
+              "id": "auto-14"
             },
             {
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "zIndex": 15,
               "width": 8,
+              "type": "image",
+              "id": "auto-15",
+              "height": 5,
+              "y": 4,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "x": 6
             },
             {
-              "type": "image",
-              "x": 14,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
               "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "x": 14,
+              "zIndex": 16,
+              "y": 7,
               "width": 2,
               "height": 2,
-              "zIndex": 16,
-              "y": 7
+              "type": "image"
             },
             {
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "x": 0,
+              "id": "auto-17",
+              "type": "image",
               "zIndex": 17,
               "height": 8,
               "width": 5,
-              "x": 0,
-              "y": 1,
-              "type": "image",
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
+              "y": 1
             },
             {
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "type": "image",
+              "height": 5,
+              "x": 5,
               "y": 4,
               "zIndex": 18,
-              "id": "auto-18",
-              "width": 8,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "x": 5,
-              "type": "image",
-              "height": 5
+              "width": 8
             },
             {
-              "type": "image",
+              "id": "auto-19",
+              "height": 3,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
               "zIndex": 19,
               "y": 6,
-              "height": 3,
-              "width": 3,
-              "x": 13,
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19"
+              "type": "image"
             },
             {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "height": 6,
-              "id": "auto-20",
+              "x": 0,
+              "width": 6,
               "zIndex": 20,
               "type": "image",
-              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20",
               "y": 3,
-              "x": 0
+              "height": 6
             },
             {
-              "width": 8,
-              "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "x": 6,
               "height": 5,
+              "y": 4,
               "id": "auto-21",
-              "type": "image"
+              "width": 8,
+              "x": 6,
+              "type": "image",
+              "zIndex": 21,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb"
             },
             {
               "id": "auto-22",
               "type": "image",
+              "height": 2,
               "y": 7,
               "zIndex": 22,
-              "x": 14,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
               "width": 2,
-              "height": 2
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -679,9 +771,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -696,8 +788,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -713,9 +805,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -730,9 +822,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -782,8 +874,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -798,9 +890,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -815,8 +907,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -833,8 +925,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -849,9 +941,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -866,9 +958,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -883,8 +975,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -900,9 +992,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -917,9 +1009,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -934,9 +1026,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -951,9 +1043,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -968,9 +1060,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -985,9 +1077,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1002,8 +1094,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1019,9 +1111,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1036,8 +1128,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1053,9 +1145,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1082,64 +1174,64 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "zIndex": 1,
+              "y": 0,
+              "height": 9,
+              "width": 10,
               "x": 0,
               "id": "block-1751903375015",
-              "zIndex": 1,
-              "height": 9,
-              "width": 10,
               "type": "video",
-              "y": 0
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ"
             },
             {
-              "id": "block-1751903380017",
-              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
               "x": 10,
               "mediaOffsetX": -21.111111111111107,
-              "mediaOffsetY": -18.148148148148145,
+              "id": "block-1751903380017",
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "y": 0,
               "zIndex": 2,
-              "width": 6
+              "height": 9,
+              "y": 0,
+              "width": 6,
+              "type": "video"
             },
             {
-              "color": "#ffffff",
-              "title": "JONA l'oreal",
-              "x": 3,
-              "y": 3,
-              "zIndex": 3,
               "font": "inter",
               "id": "title-1751903383860",
-              "width": 10,
+              "height": 5,
+              "x": 3,
               "type": "title",
-              "height": 5
+              "y": 3,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "zIndex": 3,
+              "width": 10
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "mediaOffsetY": 0.3703703703703704,
-              "height": 9,
-              "mediaOffsetX": 0,
-              "y": 0,
-              "x": 0,
               "id": "auto-0",
-              "width": 10
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
+              "y": 0,
+              "mediaOffsetX": 0,
+              "zIndex": 0,
+              "width": 10,
+              "height": 9,
+              "type": "video"
             },
             {
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "zIndex": 1,
-              "mediaOffsetX": 0,
-              "width": 6,
-              "id": "auto-1",
-              "y": 0,
               "type": "video",
-              "x": 10
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "y": 0,
+              "x": 10,
+              "width": 6,
+              "mediaOffsetX": 0,
+              "zIndex": 1,
+              "id": "auto-1",
+              "height": 9,
+              "mediaOffsetY": -3.888888888888893
             }
           ],
           "detailPageGridHeight": 9,
@@ -1150,9 +1242,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1167,8 +1259,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -1205,8 +1297,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1221,9 +1313,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1238,9 +1330,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1289,8 +1381,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -1340,9 +1432,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1357,9 +1449,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1392,8 +1484,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1425,9 +1517,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1459,9 +1551,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1476,9 +1568,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1513,9 +1605,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
               },
               "tags": [
                 "event photographer",
@@ -1588,200 +1680,200 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "mediaOffsetX": 0,
-              "width": 16,
-              "height": 9,
-              "zIndex": 1,
               "x": 0,
-              "type": "image",
-              "mediaOffsetY": 0,
+              "zIndex": 1,
               "id": "block-1752176726619",
-              "y": 0
+              "mediaOffsetX": 0,
+              "mediaOffsetY": 0,
+              "height": 9,
+              "type": "image",
+              "width": 16,
+              "y": 0,
+              "mediaId": "edrQjkSUX2pOlyXleUXb"
             },
             {
               "zIndex": 2,
-              "font": "inter",
-              "y": 2,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "color": "#000000",
               "x": 0,
               "width": 16,
+              "title": "Casamiento de Paco y Margarita",
+              "type": "title",
+              "height": 5,
+              "color": "#000000",
               "id": "title-1752176729459",
-              "height": 5
+              "y": 2,
+              "font": "inter"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "y": 0,
-              "zIndex": 0,
-              "height": 5,
               "x": 0,
-              "width": 8,
+              "zIndex": 0,
+              "id": "auto-0",
+              "height": 5,
+              "type": "image",
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "id": "auto-0"
+              "y": 0,
+              "width": 8
             },
             {
+              "id": "auto-1",
               "width": 6,
+              "height": 6,
               "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "zIndex": 1,
-              "y": 0,
-              "id": "auto-1",
+              "type": "image",
               "x": 8,
-              "height": 6,
-              "type": "image"
+              "y": 0
             },
             {
               "width": 2,
-              "y": 0,
               "height": 2,
+              "type": "image",
+              "y": 0,
+              "id": "auto-2",
               "zIndex": 2,
               "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "id": "auto-2",
-              "type": "image",
               "x": 14
             },
             {
-              "zIndex": 3,
-              "width": 8,
-              "height": 5,
-              "type": "image",
               "id": "auto-3",
               "y": 4,
+              "type": "image",
+              "x": 0,
+              "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
-              "x": 0
+              "zIndex": 3,
+              "height": 5
             },
             {
               "id": "auto-4",
-              "x": 8,
-              "width": 8,
               "y": 4,
               "zIndex": 4,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image"
-            },
-            {
-              "id": "auto-5",
-              "y": 4,
-              "width": 8,
+              "x": 8,
               "height": 5,
               "type": "image",
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "zIndex": 5
+              "width": 8,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
             },
             {
+              "zIndex": 5,
+              "id": "auto-5",
+              "width": 8,
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
+              "x": 0,
+              "y": 4,
+              "height": 5
+            },
+            {
+              "y": 4,
+              "type": "image",
               "zIndex": 6,
               "id": "auto-6",
               "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
               "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "x": 8
+              "x": 8,
+              "width": 8
             },
             {
+              "y": 4,
               "x": 0,
               "type": "image",
               "height": 5,
-              "width": 8,
-              "y": 4,
-              "zIndex": 7,
               "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "zIndex": 7,
+              "width": 8,
               "id": "auto-7"
             },
             {
-              "id": "auto-8",
-              "y": 4,
+              "zIndex": 8,
+              "type": "image",
               "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
               "width": 8,
               "x": 8,
-              "type": "image",
-              "height": 5,
-              "zIndex": 8
+              "y": 4,
+              "height": 5
             },
             {
+              "zIndex": 9,
               "id": "auto-9",
+              "y": 4,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "height": 5,
-              "y": 4,
-              "type": "image",
               "x": 0,
-              "width": 8,
-              "zIndex": 9
+              "type": "image",
+              "height": 5,
+              "width": 8
             },
             {
-              "width": 8,
               "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "x": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "id": "auto-10",
-              "zIndex": 10,
-              "x": 8
-            },
-            {
               "y": 4,
               "width": 8,
+              "zIndex": 10,
+              "type": "image",
+              "id": "auto-10"
+            },
+            {
               "height": 5,
-              "x": 0,
+              "width": 8,
               "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "y": 4,
+              "x": 0,
               "zIndex": 11,
               "type": "image",
               "id": "auto-11"
             },
             {
               "zIndex": 12,
+              "id": "auto-12",
               "width": 5,
-              "y": 1,
-              "height": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
               "type": "image",
-              "x": 8,
-              "id": "auto-12"
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "height": 8,
+              "x": 8
             },
             {
-              "width": 3,
               "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
               "x": 13,
               "id": "auto-13",
-              "type": "image",
-              "zIndex": 13
+              "width": 3,
+              "zIndex": 13,
+              "y": 6,
+              "height": 3,
+              "type": "image"
             },
             {
-              "zIndex": 14,
               "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
-              "type": "image",
               "id": "auto-14",
+              "zIndex": 14,
+              "height": 5,
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "y": 4,
               "width": 8,
-              "height": 5
+              "type": "image"
             },
             {
-              "x": 8,
-              "id": "auto-15",
+              "y": 4,
               "type": "image",
               "zIndex": 15,
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "id": "auto-15",
               "height": 5,
-              "y": 4,
+              "x": 8,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "width": 8
             },
             {
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "height": 8,
-              "x": 0,
               "type": "image",
-              "width": 5,
-              "id": "auto-16",
+              "zIndex": 16,
               "y": 1,
-              "zIndex": 16
+              "width": 5,
+              "height": 8,
+              "id": "auto-16",
+              "x": 0,
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI"
             }
           ],
           "detailPageGridHeight": 47,
@@ -1792,9 +1884,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1810,8 +1902,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1826,8 +1918,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -1843,8 +1935,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -1860,8 +1952,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -1895,8 +1987,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -1911,9 +2003,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1928,9 +2020,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1945,9 +2037,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -1963,8 +2055,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -1979,8 +2071,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -1997,8 +2089,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2013,8 +2105,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -2030,9 +2122,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -2064,8 +2156,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -25195,11 +25287,11 @@
         }
       },
       "metadata": {
-        "generatedAt": "2025-07-31T13:14:30.343Z",
+        "generatedAt": "2025-07-31T15:24:28.613Z",
         "totalLayouts": 36
       }
     },
-    "lastUpdated": "2025-07-31T13:14:30.348Z",
+    "lastUpdated": "2025-07-31T15:24:28.617Z",
     "buildTime": true
   },
   "en": {
@@ -25459,8 +25551,8 @@
         "headline": "Capturing the Unrepeatable",
         "logo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
         },
         "backgroundVideo": {
           "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
@@ -25478,20 +25570,20 @@
         "methodology": {
           "title": "NUESTRA METODOLOGÍA",
           "planning": {
-            "title": "Presupuestación.",
-            "description": "Una vez que nos cuentes detalles de tu evento a través del formulario, nos pondremos en contacto contigo para evacuar dudas y poder elaborar un presupuesto apropiado."
+            "title": "Planning",
+            "description": "We study every detail of the event to anticipate key moments."
           },
           "coverage": {
-            "title": "Planificación.",
-            "description": "Asignamos al equipo de trabajo del proyecto y estudiamos cada detalle del evento para no perder nada. Estaremos en contacto contigo para contarte cómo pensamos llevarlo a cabo."
+            "title": "Comprehensive Coverage",
+            "description": "Our team is strategically distributed to not miss any moment."
           },
           "capture": {
-            "title": "Captura.",
-            "description": "Asistimos al evento y nos encargamos de todo el registro para que tú puedas concentrarte en disfrutar."
+            "title": "Professional Capture",
+            "description": "We use advanced techniques and state-of-the-art equipment."
           },
           "postproduction": {
-            "title": "Post producción.",
-            "description": "Una vez que termina el evento nos encargamos de seleccionar y editar el material. Recibirás un código de rastreo para que puedas ver en tiempo real en qué momento del proceso nos encontramos.\nUna vez terminado el trabajo, te entregamos el material en el formato/s que prefi eras."
+            "title": "Post-Production",
+            "description": "We carefully edit every image and video to achieve exceptional results."
           }
         },
         "values": {
@@ -25532,6 +25624,90 @@
           "answer": "yooooo",
           "category": "General",
           "order": 1
+        },
+        {
+          "id": "pN4fNIoa0DuuW1Zutkgv",
+          "question": "¿Con cuánto tiempo de anticipación debo contactarlos?",
+          "answer": "El tiempo mínimo es de una semana. De esta forma nos aseguramos de entender bien las características de tu evento y poder garantizarte el mejor resultado.\nSi te encuentras en una emergencia y no tienes una semana, contanos al respecto y nuestra disposición es la de poder ayudar.",
+          "category": "General",
+          "order": 2
+        },
+        {
+          "id": "O58pCRDY89zCQMGWxjv1",
+          "question": "¿Cómo se realiza la entrega del material?",
+          "answer": "Formatos digitales, álbumes, USB, galería online… nos adaptamos a tus preferencias.",
+          "category": "General",
+          "order": 3
+        },
+        {
+          "id": "VbTmu1PtnQ67CcPZw2Ek",
+          "question": "¿Cuánto tarda la entrega del material fi nal?",
+          "answer": "La velocidad nos caracteriza. En una plazo de una semana a dos semanas podemos entregarte el material.",
+          "category": "General",
+          "order": 4
+        },
+        {
+          "id": "3rA4vga0x8CgGI185nUX",
+          "question": "¿Cuántos fotógrafos o camarógrafos son asignados por evento?",
+          "answer": "Los que sean necesarios; no es lo mismo un casamiento multitudinario a una lectura de poesía íntima. Por eso enfatizamos entender las características puntuales de tu evento.",
+          "category": "General",
+          "order": 5
+        },
+        {
+          "id": "OoguSYTkzeyvuWtAEKPe",
+          "question": "¿Puedo solicitar fotos o videos específi cos durante un evento?",
+          "answer": "Sí, sin dudas. El cliente tiene la posibilidad, tanto en la preparación del evento como durante el mismo, de solicitar priorizar determinados elementos o personas por sobre otros.",
+          "category": "General",
+          "order": 6
+        },
+        {
+          "id": "Xmb4W69SO94hyLdggF1u",
+          "question": "¿Cómo se maneja la privacidad y el uso de las imágenes?",
+          "answer": "Las imágenes y los videos son propiedad del cliente y no guardamos ningún derecho sobre ellos. Excepcionalmente podemos solicitarte autorización para utilizar el material a fi nes de difusión, pero dependemos de tu aprobación.",
+          "category": "General",
+          "order": 7
+        },
+        {
+          "id": "bxVVZ8T5rRDKXqiRDFYL",
+          "question": "¿Cómo funciona el sistema de pagos?",
+          "answer": "Una vez que se confi rma el presupuesto, solicitamos un pago del 30% total a modo de garantía. El 70% restante se realiza posterior a la entrega del material.",
+          "category": "General",
+          "order": 8
+        },
+        {
+          "id": "yV9BMf3BqNGBWTSXBrN4",
+          "question": "¿Qué pasa si el evento se cancela o se pospone?",
+          "answer": "Si el evento se cancela hacemos un reintegro del 30% abonado. En caso de que el evento se posponga, nos adaptamos a la nueva fecha independiente de cuál sea ésta.",
+          "category": "General",
+          "order": 9
+        },
+        {
+          "id": "4lJYNrFMS0KdsE78mf4s",
+          "question": "¿Qué medios de pago aceptamos?",
+          "answer": "Aceptamos pagos por transferencia bancaria, débito o crédito.",
+          "category": "General",
+          "order": 10
+        },
+        {
+          "id": "vNRTM6oBYmdomSGhY5Gn",
+          "question": "¿Qué se puede ofrecer además de coberturas?",
+          "answer": "Adicionalmente a la cobertura de tu evento, también realizamos sesiones en estudio previas o post evento, retratos en locación y entrevistas.",
+          "category": "General",
+          "order": 11
+        },
+        {
+          "id": "arB0nFxXV0MBtWpzVyr8",
+          "question": "¿Puedo elegir el estilo o tono del registro?",
+          "answer": "¡Sin duda! Parte del trabajo que hacemos durante la preparación es entender tus pretensiones estéticas para adaptarnos a ellas y asignar al equipo que mejor pueda materializarlas.",
+          "category": "General",
+          "order": 12
+        },
+        {
+          "id": "fI8dJEC6ZB6xW5RmgtW4",
+          "question": "¿Ofrecen servicio de cobertura para eventos sorpresa?",
+          "answer": "Sí, nos encanta. En ese caso trabajamos estrechamente con organizador para entender la modalidad de la sorpresa, analizamos el espacio para colocar cámaras ocultas y nos hacemos parte de los invitados capturando así lo genuino y espontáneo de lo que ocurra.",
+          "category": "General",
+          "order": 13
         }
       ],
       "categories": [
@@ -25541,7 +25717,9 @@
           "label": "Events",
           "title": "Events",
           "description": "A selection of our best work.",
-          "eventTypes": ["*"]
+          "eventTypes": [
+            "*"
+          ]
         },
         {
           "id": "photoshoot",
@@ -25549,7 +25727,9 @@
           "label": "Photoshoot",
           "title": "Photoshoot",
           "description": "Proyectos de photoshoot",
-          "eventTypes": ["Photoshoot"]
+          "eventTypes": [
+            "Photoshoot"
+          ]
         },
         {
           "id": "culturales",
@@ -25557,7 +25737,9 @@
           "label": "Culturales",
           "title": "Culturales",
           "description": "Proyectos de culturales",
-          "eventTypes": ["Culturales"]
+          "eventTypes": [
+            "Culturales"
+          ]
         },
         {
           "id": "casamiento",
@@ -25565,7 +25747,9 @@
           "label": "Casamiento",
           "title": "Casamiento",
           "description": "Proyectos de casamiento",
-          "eventTypes": ["Casamiento"]
+          "eventTypes": [
+            "Casamiento"
+          ]
         }
       ],
       "projects": [
@@ -25584,294 +25768,294 @@
             {
               "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
               "mediaOffsetY": 6.693989071038249,
-              "zIndex": 1,
               "x": 0,
-              "id": "block-1751483402659",
+              "zIndex": 1,
+              "width": 7,
               "y": 0,
               "type": "image",
-              "width": 7,
+              "mediaOffsetX": -8.021077283372364,
               "height": 6,
-              "mediaOffsetX": -8.021077283372364
+              "id": "block-1751483402659"
             },
             {
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "id": "block-1751483411676",
+              "type": "video",
               "width": 7,
-              "height": 5,
-              "mediaOffsetY": 6.639344262295083,
               "mediaOffsetX": 10.675916515693812,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "y": 4,
+              "zIndex": 3,
+              "id": "block-1751483411676",
               "x": 0,
-              "type": "video",
-              "zIndex": 3
+              "height": 5,
+              "mediaOffsetY": 6.639344262295083
             },
             {
-              "height": 9,
-              "mediaOffsetX": -25,
               "type": "video",
-              "width": 5,
               "y": 0,
               "id": "block-1751483421758",
-              "mediaOffsetY": 0.8896965322885589,
-              "mediaId": "evM72UydC452ixuXMAVn",
               "x": 11,
-              "zIndex": 4
+              "height": 9,
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "mediaOffsetY": 0.8896965322885589,
+              "mediaOffsetX": -25,
+              "width": 5
             },
             {
-              "y": 0,
-              "zIndex": 2,
-              "type": "image",
               "height": 9,
-              "mediaOffsetY": 8.854005567584286,
+              "zIndex": 2,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "x": 7,
-              "width": 4,
+              "mediaOffsetY": 8.854005567584286,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
               "id": "block-1751483440728",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
+              "width": 4
             },
             {
+              "color": "#ffffff",
               "type": "title",
-              "zIndex": 5,
-              "id": "title-1751488350641",
-              "title": "Ciclismo",
               "width": 16,
               "x": 0,
-              "color": "#ffffff",
               "font": "quicksand",
-              "height": 4,
-              "y": 2
+              "title": "Ciclismo",
+              "zIndex": 5,
+              "y": 2,
+              "id": "title-1751488350641",
+              "height": 4
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "height": 5,
-              "y": 0,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "type": "video",
               "width": 8,
-              "id": "auto-0",
-              "x": 0
-            },
-            {
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 5,
+              "type": "video",
               "y": 0,
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 8,
-              "type": "image",
-              "width": 5,
-              "x": 8
+              "id": "auto-0",
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "zIndex": 0
             },
             {
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
+              "zIndex": 1,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "type": "image",
+              "y": 0,
+              "height": 8,
+              "width": 5,
+              "x": 8,
+              "id": "auto-1"
+            },
+            {
               "height": 3,
+              "x": 13,
+              "zIndex": 2,
+              "width": 3,
               "id": "auto-2",
               "type": "image",
-              "y": 0,
-              "zIndex": 2,
-              "x": 13
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0
             },
             {
-              "x": 0,
-              "type": "image",
-              "zIndex": 3,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "height": 8,
-              "id": "auto-3",
+              "type": "image",
               "y": 1,
-              "width": 5
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "width": 5,
+              "id": "auto-3",
+              "zIndex": 3,
+              "x": 0
             },
             {
               "x": 5,
-              "zIndex": 4,
-              "height": 8,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
               "id": "auto-4",
               "y": 1,
-              "width": 5,
-              "type": "image"
-            },
-            {
-              "y": 3,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
-              "zIndex": 5,
-              "width": 6,
-              "x": 10,
-              "height": 6,
-              "id": "auto-5",
-              "type": "image"
-            },
-            {
-              "height": 6,
-              "width": 6,
-              "zIndex": 6,
               "type": "image",
-              "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "x": 0
-            },
-            {
-              "id": "auto-7",
-              "zIndex": 7,
-              "x": 6,
+              "zIndex": 4,
               "height": 8,
-              "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "width": 5,
-              "type": "image",
-              "y": 1
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "id": "auto-8",
-              "x": 11,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "width": 6,
+              "type": "image",
+              "x": 10,
+              "id": "auto-5",
+              "y": 3,
+              "zIndex": 5,
+              "height": 6
+            },
+            {
+              "width": 6,
+              "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "x": 0,
+              "height": 6,
+              "id": "auto-6"
+            },
+            {
+              "mediaId": "dtsBBRanqbKQUVZEwh2k",
+              "zIndex": 7,
+              "height": 8,
+              "y": 1,
+              "id": "auto-7",
+              "type": "image",
+              "x": 6,
+              "width": 5
+            },
+            {
+              "zIndex": 8,
               "width": 5,
               "y": 1,
-              "type": "video",
               "height": 8,
-              "zIndex": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "type": "video",
+              "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "x": 11
             },
             {
-              "height": 5,
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
               "x": 0,
-              "id": "auto-9"
+              "zIndex": 9,
+              "type": "image",
+              "height": 5,
+              "id": "auto-9",
+              "width": 8,
+              "y": 4
             },
             {
-              "height": 8,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
               "y": 1,
-              "type": "image",
-              "id": "auto-10",
               "zIndex": 10,
-              "x": 8
+              "id": "auto-10",
+              "x": 8,
+              "width": 5,
+              "type": "image",
+              "height": 8
             },
             {
-              "height": 3,
-              "type": "image",
-              "x": 13,
-              "width": 3,
               "zIndex": 11,
-              "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "id": "auto-11"
+              "type": "image",
+              "mediaId": "FSOslPFFgsgYZfvgbI64",
+              "height": 3,
+              "id": "auto-11",
+              "width": 3,
+              "x": 13
             },
             {
               "height": 5,
-              "id": "auto-12",
-              "type": "image",
               "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "y": 4,
               "x": 0,
+              "type": "image",
+              "id": "auto-12",
               "width": 8
             },
             {
               "x": 8,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "y": 4,
+              "height": 5,
               "id": "auto-13",
-              "zIndex": 13,
               "width": 8,
+              "y": 4,
               "type": "image",
-              "height": 5
+              "zIndex": 13,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS"
             },
             {
+              "type": "image",
+              "zIndex": 14,
               "x": 0,
+              "y": 3,
               "height": 6,
               "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "id": "auto-14",
-              "zIndex": 14,
-              "y": 3,
               "width": 6,
-              "type": "image"
+              "id": "auto-14"
             },
             {
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "zIndex": 15,
               "width": 8,
+              "type": "image",
+              "id": "auto-15",
+              "height": 5,
+              "y": 4,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "x": 6
             },
             {
-              "type": "image",
-              "x": 14,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
               "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "x": 14,
+              "zIndex": 16,
+              "y": 7,
               "width": 2,
               "height": 2,
-              "zIndex": 16,
-              "y": 7
+              "type": "image"
             },
             {
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "x": 0,
+              "id": "auto-17",
+              "type": "image",
               "zIndex": 17,
               "height": 8,
               "width": 5,
-              "x": 0,
-              "y": 1,
-              "type": "image",
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
+              "y": 1
             },
             {
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "type": "image",
+              "height": 5,
+              "x": 5,
               "y": 4,
               "zIndex": 18,
-              "id": "auto-18",
-              "width": 8,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "x": 5,
-              "type": "image",
-              "height": 5
+              "width": 8
             },
             {
-              "type": "image",
+              "id": "auto-19",
+              "height": 3,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
               "zIndex": 19,
               "y": 6,
-              "height": 3,
-              "width": 3,
-              "x": 13,
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19"
+              "type": "image"
             },
             {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "height": 6,
-              "id": "auto-20",
+              "x": 0,
+              "width": 6,
               "zIndex": 20,
               "type": "image",
-              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20",
               "y": 3,
-              "x": 0
+              "height": 6
             },
             {
-              "width": 8,
-              "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "x": 6,
               "height": 5,
+              "y": 4,
               "id": "auto-21",
-              "type": "image"
+              "width": 8,
+              "x": 6,
+              "type": "image",
+              "zIndex": 21,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb"
             },
             {
               "id": "auto-22",
               "type": "image",
+              "height": 2,
               "y": 7,
               "zIndex": 22,
-              "x": 14,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
               "width": 2,
-              "height": 2
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -25882,9 +26066,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -25899,8 +26083,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -25916,9 +26100,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -25933,9 +26117,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -25985,8 +26169,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26001,9 +26185,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26018,8 +26202,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -26036,8 +26220,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -26052,9 +26236,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26069,9 +26253,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -26086,8 +26270,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -26103,9 +26287,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26120,9 +26304,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -26137,9 +26321,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -26154,9 +26338,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -26171,9 +26355,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -26188,9 +26372,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -26205,8 +26389,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -26222,9 +26406,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -26239,8 +26423,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -26256,9 +26440,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26285,64 +26469,64 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "zIndex": 1,
+              "y": 0,
+              "height": 9,
+              "width": 10,
               "x": 0,
               "id": "block-1751903375015",
-              "zIndex": 1,
-              "height": 9,
-              "width": 10,
               "type": "video",
-              "y": 0
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ"
             },
             {
-              "id": "block-1751903380017",
-              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
               "x": 10,
               "mediaOffsetX": -21.111111111111107,
-              "mediaOffsetY": -18.148148148148145,
+              "id": "block-1751903380017",
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "y": 0,
               "zIndex": 2,
-              "width": 6
+              "height": 9,
+              "y": 0,
+              "width": 6,
+              "type": "video"
             },
             {
-              "color": "#ffffff",
-              "title": "JONA l'oreal",
-              "x": 3,
-              "y": 3,
-              "zIndex": 3,
               "font": "inter",
               "id": "title-1751903383860",
-              "width": 10,
+              "height": 5,
+              "x": 3,
               "type": "title",
-              "height": 5
+              "y": 3,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "zIndex": 3,
+              "width": 10
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "mediaOffsetY": 0.3703703703703704,
-              "height": 9,
-              "mediaOffsetX": 0,
-              "y": 0,
-              "x": 0,
               "id": "auto-0",
-              "width": 10
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
+              "y": 0,
+              "mediaOffsetX": 0,
+              "zIndex": 0,
+              "width": 10,
+              "height": 9,
+              "type": "video"
             },
             {
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "zIndex": 1,
-              "mediaOffsetX": 0,
-              "width": 6,
-              "id": "auto-1",
-              "y": 0,
               "type": "video",
-              "x": 10
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "y": 0,
+              "x": 10,
+              "width": 6,
+              "mediaOffsetX": 0,
+              "zIndex": 1,
+              "id": "auto-1",
+              "height": 9,
+              "mediaOffsetY": -3.888888888888893
             }
           ],
           "detailPageGridHeight": 9,
@@ -26353,9 +26537,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -26370,8 +26554,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -26408,8 +26592,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26424,9 +26608,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26441,9 +26625,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26492,8 +26676,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -26543,9 +26727,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26560,9 +26744,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26595,8 +26779,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26628,9 +26812,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26662,9 +26846,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26679,9 +26863,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -26716,9 +26900,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
               },
               "tags": [
                 "event photographer",
@@ -26791,200 +26975,200 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "mediaOffsetX": 0,
-              "width": 16,
-              "height": 9,
-              "zIndex": 1,
               "x": 0,
-              "type": "image",
-              "mediaOffsetY": 0,
+              "zIndex": 1,
               "id": "block-1752176726619",
-              "y": 0
+              "mediaOffsetX": 0,
+              "mediaOffsetY": 0,
+              "height": 9,
+              "type": "image",
+              "width": 16,
+              "y": 0,
+              "mediaId": "edrQjkSUX2pOlyXleUXb"
             },
             {
               "zIndex": 2,
-              "font": "inter",
-              "y": 2,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "color": "#000000",
               "x": 0,
               "width": 16,
+              "title": "Casamiento de Paco y Margarita",
+              "type": "title",
+              "height": 5,
+              "color": "#000000",
               "id": "title-1752176729459",
-              "height": 5
+              "y": 2,
+              "font": "inter"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "y": 0,
-              "zIndex": 0,
-              "height": 5,
               "x": 0,
-              "width": 8,
+              "zIndex": 0,
+              "id": "auto-0",
+              "height": 5,
+              "type": "image",
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "id": "auto-0"
+              "y": 0,
+              "width": 8
             },
             {
+              "id": "auto-1",
               "width": 6,
+              "height": 6,
               "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "zIndex": 1,
-              "y": 0,
-              "id": "auto-1",
+              "type": "image",
               "x": 8,
-              "height": 6,
-              "type": "image"
+              "y": 0
             },
             {
               "width": 2,
-              "y": 0,
               "height": 2,
+              "type": "image",
+              "y": 0,
+              "id": "auto-2",
               "zIndex": 2,
               "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "id": "auto-2",
-              "type": "image",
               "x": 14
             },
             {
-              "zIndex": 3,
-              "width": 8,
-              "height": 5,
-              "type": "image",
               "id": "auto-3",
               "y": 4,
+              "type": "image",
+              "x": 0,
+              "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
-              "x": 0
+              "zIndex": 3,
+              "height": 5
             },
             {
               "id": "auto-4",
-              "x": 8,
-              "width": 8,
               "y": 4,
               "zIndex": 4,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image"
-            },
-            {
-              "id": "auto-5",
-              "y": 4,
-              "width": 8,
+              "x": 8,
               "height": 5,
               "type": "image",
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "zIndex": 5
+              "width": 8,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
             },
             {
+              "zIndex": 5,
+              "id": "auto-5",
+              "width": 8,
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
+              "x": 0,
+              "y": 4,
+              "height": 5
+            },
+            {
+              "y": 4,
+              "type": "image",
               "zIndex": 6,
               "id": "auto-6",
               "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
               "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "x": 8
+              "x": 8,
+              "width": 8
             },
             {
+              "y": 4,
               "x": 0,
               "type": "image",
               "height": 5,
-              "width": 8,
-              "y": 4,
-              "zIndex": 7,
               "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "zIndex": 7,
+              "width": 8,
               "id": "auto-7"
             },
             {
-              "id": "auto-8",
-              "y": 4,
+              "zIndex": 8,
+              "type": "image",
               "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
               "width": 8,
               "x": 8,
-              "type": "image",
-              "height": 5,
-              "zIndex": 8
+              "y": 4,
+              "height": 5
             },
             {
+              "zIndex": 9,
               "id": "auto-9",
+              "y": 4,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "height": 5,
-              "y": 4,
-              "type": "image",
               "x": 0,
-              "width": 8,
-              "zIndex": 9
+              "type": "image",
+              "height": 5,
+              "width": 8
             },
             {
-              "width": 8,
               "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "x": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "id": "auto-10",
-              "zIndex": 10,
-              "x": 8
-            },
-            {
               "y": 4,
               "width": 8,
+              "zIndex": 10,
+              "type": "image",
+              "id": "auto-10"
+            },
+            {
               "height": 5,
-              "x": 0,
+              "width": 8,
               "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "y": 4,
+              "x": 0,
               "zIndex": 11,
               "type": "image",
               "id": "auto-11"
             },
             {
               "zIndex": 12,
+              "id": "auto-12",
               "width": 5,
-              "y": 1,
-              "height": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
               "type": "image",
-              "x": 8,
-              "id": "auto-12"
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "height": 8,
+              "x": 8
             },
             {
-              "width": 3,
               "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
               "x": 13,
               "id": "auto-13",
-              "type": "image",
-              "zIndex": 13
+              "width": 3,
+              "zIndex": 13,
+              "y": 6,
+              "height": 3,
+              "type": "image"
             },
             {
-              "zIndex": 14,
               "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
-              "type": "image",
               "id": "auto-14",
+              "zIndex": 14,
+              "height": 5,
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "y": 4,
               "width": 8,
-              "height": 5
+              "type": "image"
             },
             {
-              "x": 8,
-              "id": "auto-15",
+              "y": 4,
               "type": "image",
               "zIndex": 15,
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "id": "auto-15",
               "height": 5,
-              "y": 4,
+              "x": 8,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "width": 8
             },
             {
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "height": 8,
-              "x": 0,
               "type": "image",
-              "width": 5,
-              "id": "auto-16",
+              "zIndex": 16,
               "y": 1,
-              "zIndex": 16
+              "width": 5,
+              "height": 8,
+              "id": "auto-16",
+              "x": 0,
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI"
             }
           ],
           "detailPageGridHeight": 47,
@@ -26995,9 +27179,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27013,8 +27197,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27029,8 +27213,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -27046,8 +27230,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -27063,8 +27247,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -27098,8 +27282,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -27114,9 +27298,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27131,9 +27315,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27148,9 +27332,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -27166,8 +27350,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27182,8 +27366,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -27200,8 +27384,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27216,8 +27400,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -27233,9 +27417,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -27267,8 +27451,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -50398,11 +50582,11 @@
         }
       },
       "metadata": {
-        "generatedAt": "2025-07-31T13:14:30.343Z",
+        "generatedAt": "2025-07-31T15:24:28.613Z",
         "totalLayouts": 36
       }
     },
-    "lastUpdated": "2025-07-31T13:14:30.355Z",
+    "lastUpdated": "2025-07-31T15:24:28.626Z",
     "buildTime": true
   },
   "pt": {
@@ -50662,8 +50846,8 @@
         "headline": "Capturamos lo irrepetible",
         "logo": {
           "enabled": true,
-          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073",
-          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png"
+          "filename": "homepage/logos/1750775258524-veloz-logo-temp.png",
+          "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/homepage%2Flogos%2F1750775258524-veloz-logo-temp.png?alt=media&token=f3d98b3f-0c95-4a90-957d-14562481c073"
         },
         "backgroundVideo": {
           "filename": "homepage/videos/1750775497979-veloz-landing-loop-temp.mp4",
@@ -50681,20 +50865,20 @@
         "methodology": {
           "title": "NUESTRA METODOLOGÍA",
           "planning": {
-            "title": "Presupuestación.",
-            "description": "Una vez que nos cuentes detalles de tu evento a través del formulario, nos pondremos en contacto contigo para evacuar dudas y poder elaborar un presupuesto apropiado."
+            "title": "Planejamento",
+            "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
           },
           "coverage": {
-            "title": "Planificación.",
-            "description": "Asignamos al equipo de trabajo del proyecto y estudiamos cada detalle del evento para no perder nada. Estaremos en contacto contigo para contarte cómo pensamos llevarlo a cabo."
+            "title": "Cobertura Integral",
+            "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
           },
           "capture": {
-            "title": "Captura.",
-            "description": "Asistimos al evento y nos encargamos de todo el registro para que tú puedas concentrarte en disfrutar."
+            "title": "Captura Profissional",
+            "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
           },
           "postproduction": {
-            "title": "Post producción.",
-            "description": "Una vez que termina el evento nos encargamos de seleccionar y editar el material. Recibirás un código de rastreo para que puedas ver en tiempo real en qué momento del proceso nos encontramos.\nUna vez terminado el trabajo, te entregamos el material en el formato/s que prefi eras."
+            "title": "Pós-Produção",
+            "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
           }
         },
         "values": {
@@ -50731,10 +50915,94 @@
       "faqs": [
         {
           "id": "r6TCNoH3rfDe5Z9ETTV5",
-          "question": "¿quienes son?",
-          "answer": "lol, vos quien sos",
+          "question": "¿Qué tipo de eventos cubrimos?",
+          "answer": "Cumpleaños, casamientos, corporativos, lanzamientos, eventos culturales, conciertos.\nSi tu evento se encuentra por fuera de estas categorías, podés contarnos al respecto: nos encantan los desafíos nuevos.",
           "category": "General",
           "order": 1
+        },
+        {
+          "id": "pN4fNIoa0DuuW1Zutkgv",
+          "question": "¿Con cuánto tiempo de anticipación debo contactarlos?",
+          "answer": "El tiempo mínimo es de una semana. De esta forma nos aseguramos de entender bien las características de tu evento y poder garantizarte el mejor resultado.\nSi te encuentras en una emergencia y no tienes una semana, contanos al respecto y nuestra disposición es la de poder ayudar.",
+          "category": "General",
+          "order": 2
+        },
+        {
+          "id": "O58pCRDY89zCQMGWxjv1",
+          "question": "¿Cómo se realiza la entrega del material?",
+          "answer": "Formatos digitales, álbumes, USB, galería online… nos adaptamos a tus preferencias.",
+          "category": "General",
+          "order": 3
+        },
+        {
+          "id": "VbTmu1PtnQ67CcPZw2Ek",
+          "question": "¿Cuánto tarda la entrega del material fi nal?",
+          "answer": "La velocidad nos caracteriza. En una plazo de una semana a dos semanas podemos entregarte el material.",
+          "category": "General",
+          "order": 4
+        },
+        {
+          "id": "3rA4vga0x8CgGI185nUX",
+          "question": "¿Cuántos fotógrafos o camarógrafos son asignados por evento?",
+          "answer": "Los que sean necesarios; no es lo mismo un casamiento multitudinario a una lectura de poesía íntima. Por eso enfatizamos entender las características puntuales de tu evento.",
+          "category": "General",
+          "order": 5
+        },
+        {
+          "id": "OoguSYTkzeyvuWtAEKPe",
+          "question": "¿Puedo solicitar fotos o videos específi cos durante un evento?",
+          "answer": "Sí, sin dudas. El cliente tiene la posibilidad, tanto en la preparación del evento como durante el mismo, de solicitar priorizar determinados elementos o personas por sobre otros.",
+          "category": "General",
+          "order": 6
+        },
+        {
+          "id": "Xmb4W69SO94hyLdggF1u",
+          "question": "¿Cómo se maneja la privacidad y el uso de las imágenes?",
+          "answer": "Las imágenes y los videos son propiedad del cliente y no guardamos ningún derecho sobre ellos. Excepcionalmente podemos solicitarte autorización para utilizar el material a fi nes de difusión, pero dependemos de tu aprobación.",
+          "category": "General",
+          "order": 7
+        },
+        {
+          "id": "bxVVZ8T5rRDKXqiRDFYL",
+          "question": "¿Cómo funciona el sistema de pagos?",
+          "answer": "Una vez que se confi rma el presupuesto, solicitamos un pago del 30% total a modo de garantía. El 70% restante se realiza posterior a la entrega del material.",
+          "category": "General",
+          "order": 8
+        },
+        {
+          "id": "yV9BMf3BqNGBWTSXBrN4",
+          "question": "¿Qué pasa si el evento se cancela o se pospone?",
+          "answer": "Si el evento se cancela hacemos un reintegro del 30% abonado. En caso de que el evento se posponga, nos adaptamos a la nueva fecha independiente de cuál sea ésta.",
+          "category": "General",
+          "order": 9
+        },
+        {
+          "id": "4lJYNrFMS0KdsE78mf4s",
+          "question": "¿Qué medios de pago aceptamos?",
+          "answer": "Aceptamos pagos por transferencia bancaria, débito o crédito.",
+          "category": "General",
+          "order": 10
+        },
+        {
+          "id": "vNRTM6oBYmdomSGhY5Gn",
+          "question": "¿Qué se puede ofrecer además de coberturas?",
+          "answer": "Adicionalmente a la cobertura de tu evento, también realizamos sesiones en estudio previas o post evento, retratos en locación y entrevistas.",
+          "category": "General",
+          "order": 11
+        },
+        {
+          "id": "arB0nFxXV0MBtWpzVyr8",
+          "question": "¿Puedo elegir el estilo o tono del registro?",
+          "answer": "¡Sin duda! Parte del trabajo que hacemos durante la preparación es entender tus pretensiones estéticas para adaptarnos a ellas y asignar al equipo que mejor pueda materializarlas.",
+          "category": "General",
+          "order": 12
+        },
+        {
+          "id": "fI8dJEC6ZB6xW5RmgtW4",
+          "question": "¿Ofrecen servicio de cobertura para eventos sorpresa?",
+          "answer": "Sí, nos encanta. En ese caso trabajamos estrechamente con organizador para entender la modalidad de la sorpresa, analizamos el espacio para colocar cámaras ocultas y nos hacemos parte de los invitados capturando así lo genuino y espontáneo de lo que ocurra.",
+          "category": "General",
+          "order": 13
         }
       ],
       "categories": [
@@ -50744,7 +51012,9 @@
           "label": "Eventos",
           "title": "Eventos",
           "description": "Uma seleção dos nossos melhores trabalhos.",
-          "eventTypes": ["*"]
+          "eventTypes": [
+            "*"
+          ]
         },
         {
           "id": "photoshoot",
@@ -50752,7 +51022,9 @@
           "label": "Photoshoot",
           "title": "Photoshoot",
           "description": "Proyectos de photoshoot",
-          "eventTypes": ["Photoshoot"]
+          "eventTypes": [
+            "Photoshoot"
+          ]
         },
         {
           "id": "culturales",
@@ -50760,7 +51032,9 @@
           "label": "Culturales",
           "title": "Culturales",
           "description": "Proyectos de culturales",
-          "eventTypes": ["Culturales"]
+          "eventTypes": [
+            "Culturales"
+          ]
         },
         {
           "id": "casamiento",
@@ -50768,7 +51042,9 @@
           "label": "Casamiento",
           "title": "Casamiento",
           "description": "Proyectos de casamiento",
-          "eventTypes": ["Casamiento"]
+          "eventTypes": [
+            "Casamiento"
+          ]
         }
       ],
       "projects": [
@@ -50787,294 +51063,294 @@
             {
               "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
               "mediaOffsetY": 6.693989071038249,
-              "zIndex": 1,
               "x": 0,
-              "id": "block-1751483402659",
+              "zIndex": 1,
+              "width": 7,
               "y": 0,
               "type": "image",
-              "width": 7,
+              "mediaOffsetX": -8.021077283372364,
               "height": 6,
-              "mediaOffsetX": -8.021077283372364
+              "id": "block-1751483402659"
             },
             {
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "id": "block-1751483411676",
+              "type": "video",
               "width": 7,
-              "height": 5,
-              "mediaOffsetY": 6.639344262295083,
               "mediaOffsetX": 10.675916515693812,
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
               "y": 4,
+              "zIndex": 3,
+              "id": "block-1751483411676",
               "x": 0,
-              "type": "video",
-              "zIndex": 3
+              "height": 5,
+              "mediaOffsetY": 6.639344262295083
             },
             {
-              "height": 9,
-              "mediaOffsetX": -25,
               "type": "video",
-              "width": 5,
               "y": 0,
               "id": "block-1751483421758",
-              "mediaOffsetY": 0.8896965322885589,
-              "mediaId": "evM72UydC452ixuXMAVn",
               "x": 11,
-              "zIndex": 4
+              "height": 9,
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "zIndex": 4,
+              "mediaOffsetY": 0.8896965322885589,
+              "mediaOffsetX": -25,
+              "width": 5
             },
             {
-              "y": 0,
-              "zIndex": 2,
-              "type": "image",
               "height": 9,
-              "mediaOffsetY": 8.854005567584286,
+              "zIndex": 2,
+              "y": 0,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
               "x": 7,
-              "width": 4,
+              "mediaOffsetY": 8.854005567584286,
+              "type": "image",
               "mediaOffsetX": -14.754098360655737,
               "id": "block-1751483440728",
-              "mediaId": "8HrzgDIJGqGdSO0PybiO"
+              "width": 4
             },
             {
+              "color": "#ffffff",
               "type": "title",
-              "zIndex": 5,
-              "id": "title-1751488350641",
-              "title": "Ciclismo",
               "width": 16,
               "x": 0,
-              "color": "#ffffff",
               "font": "quicksand",
-              "height": 4,
-              "y": 2
+              "title": "Ciclismo",
+              "zIndex": 5,
+              "y": 2,
+              "id": "title-1751488350641",
+              "height": 4
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
-              "height": 5,
-              "y": 0,
-              "mediaId": "6h63m4y2XnApEjJBBl2D",
-              "type": "video",
               "width": 8,
-              "id": "auto-0",
-              "x": 0
-            },
-            {
-              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "height": 5,
+              "type": "video",
               "y": 0,
-              "id": "auto-1",
-              "zIndex": 1,
-              "height": 8,
-              "type": "image",
-              "width": 5,
-              "x": 8
+              "id": "auto-0",
+              "mediaId": "6h63m4y2XnApEjJBBl2D",
+              "x": 0,
+              "zIndex": 0
             },
             {
-              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
-              "width": 3,
+              "zIndex": 1,
+              "mediaId": "8HrzgDIJGqGdSO0PybiO",
+              "type": "image",
+              "y": 0,
+              "height": 8,
+              "width": 5,
+              "x": 8,
+              "id": "auto-1"
+            },
+            {
               "height": 3,
+              "x": 13,
+              "zIndex": 2,
+              "width": 3,
               "id": "auto-2",
               "type": "image",
-              "y": 0,
-              "zIndex": 2,
-              "x": 13
+              "mediaId": "8HUSkVPzmq7qL7wzvEWX",
+              "y": 0
             },
             {
-              "x": 0,
-              "type": "image",
-              "zIndex": 3,
-              "mediaId": "alyLKMlcUn2Ava6OCvie",
               "height": 8,
-              "id": "auto-3",
+              "type": "image",
               "y": 1,
-              "width": 5
+              "mediaId": "alyLKMlcUn2Ava6OCvie",
+              "width": 5,
+              "id": "auto-3",
+              "zIndex": 3,
+              "x": 0
             },
             {
               "x": 5,
-              "zIndex": 4,
-              "height": 8,
-              "mediaId": "BIcRnxLaEsa4egQBk4ZC",
               "id": "auto-4",
               "y": 1,
-              "width": 5,
-              "type": "image"
-            },
-            {
-              "y": 3,
-              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
-              "zIndex": 5,
-              "width": 6,
-              "x": 10,
-              "height": 6,
-              "id": "auto-5",
-              "type": "image"
-            },
-            {
-              "height": 6,
-              "width": 6,
-              "zIndex": 6,
               "type": "image",
-              "id": "auto-6",
-              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
-              "y": 3,
-              "x": 0
-            },
-            {
-              "id": "auto-7",
-              "zIndex": 7,
-              "x": 6,
+              "zIndex": 4,
               "height": 8,
-              "mediaId": "dtsBBRanqbKQUVZEwh2k",
               "width": 5,
-              "type": "image",
-              "y": 1
+              "mediaId": "BIcRnxLaEsa4egQBk4ZC"
             },
             {
-              "id": "auto-8",
-              "x": 11,
+              "mediaId": "BqE0nJXEYPRjrMwHxjh5",
+              "width": 6,
+              "type": "image",
+              "x": 10,
+              "id": "auto-5",
+              "y": 3,
+              "zIndex": 5,
+              "height": 6
+            },
+            {
+              "width": 6,
+              "type": "image",
+              "zIndex": 6,
+              "y": 3,
+              "mediaId": "d3TJPwFR3qftEGy7Mf0c",
+              "x": 0,
+              "height": 6,
+              "id": "auto-6"
+            },
+            {
+              "mediaId": "dtsBBRanqbKQUVZEwh2k",
+              "zIndex": 7,
+              "height": 8,
+              "y": 1,
+              "id": "auto-7",
+              "type": "image",
+              "x": 6,
+              "width": 5
+            },
+            {
+              "zIndex": 8,
               "width": 5,
               "y": 1,
-              "type": "video",
               "height": 8,
-              "zIndex": 8,
-              "mediaId": "evM72UydC452ixuXMAVn"
+              "type": "video",
+              "id": "auto-8",
+              "mediaId": "evM72UydC452ixuXMAVn",
+              "x": 11
             },
             {
-              "height": 5,
-              "width": 8,
-              "zIndex": 9,
-              "y": 4,
-              "type": "image",
               "mediaId": "FadSTZIEfDPweyIGgz7b",
               "x": 0,
-              "id": "auto-9"
+              "zIndex": 9,
+              "type": "image",
+              "height": 5,
+              "id": "auto-9",
+              "width": 8,
+              "y": 4
             },
             {
-              "height": 8,
-              "width": 5,
               "mediaId": "foybyfLK0lkqA6j4HL4l",
               "y": 1,
-              "type": "image",
-              "id": "auto-10",
               "zIndex": 10,
-              "x": 8
+              "id": "auto-10",
+              "x": 8,
+              "width": 5,
+              "type": "image",
+              "height": 8
             },
             {
-              "height": 3,
-              "type": "image",
-              "x": 13,
-              "width": 3,
               "zIndex": 11,
-              "mediaId": "FSOslPFFgsgYZfvgbI64",
               "y": 6,
-              "id": "auto-11"
+              "type": "image",
+              "mediaId": "FSOslPFFgsgYZfvgbI64",
+              "height": 3,
+              "id": "auto-11",
+              "width": 3,
+              "x": 13
             },
             {
               "height": 5,
-              "id": "auto-12",
-              "type": "image",
               "zIndex": 12,
               "mediaId": "kn1K7gbSfxqw4dze5KJa",
               "y": 4,
               "x": 0,
+              "type": "image",
+              "id": "auto-12",
               "width": 8
             },
             {
               "x": 8,
-              "mediaId": "Lzb0t6nElL0ZAWQsqBLS",
-              "y": 4,
+              "height": 5,
               "id": "auto-13",
-              "zIndex": 13,
               "width": 8,
+              "y": 4,
               "type": "image",
-              "height": 5
+              "zIndex": 13,
+              "mediaId": "Lzb0t6nElL0ZAWQsqBLS"
             },
             {
+              "type": "image",
+              "zIndex": 14,
               "x": 0,
+              "y": 3,
               "height": 6,
               "mediaId": "O7IlGWX72PxKPNZfWc0M",
-              "id": "auto-14",
-              "zIndex": 14,
-              "y": 3,
               "width": 6,
-              "type": "image"
+              "id": "auto-14"
             },
             {
-              "type": "image",
-              "y": 4,
-              "id": "auto-15",
-              "height": 5,
-              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "zIndex": 15,
               "width": 8,
+              "type": "image",
+              "id": "auto-15",
+              "height": 5,
+              "y": 4,
+              "mediaId": "Vl3QqvF41XwFB7JTOLPx",
               "x": 6
             },
             {
-              "type": "image",
-              "x": 14,
-              "mediaId": "vzIZoJBlyC6joJqfhJaE",
               "id": "auto-16",
+              "mediaId": "vzIZoJBlyC6joJqfhJaE",
+              "x": 14,
+              "zIndex": 16,
+              "y": 7,
               "width": 2,
               "height": 2,
-              "zIndex": 16,
-              "y": 7
+              "type": "image"
             },
             {
+              "mediaId": "WlnpFA11erD9UOmBm0KT",
+              "x": 0,
+              "id": "auto-17",
+              "type": "image",
               "zIndex": 17,
               "height": 8,
               "width": 5,
-              "x": 0,
-              "y": 1,
-              "type": "image",
-              "mediaId": "WlnpFA11erD9UOmBm0KT",
-              "id": "auto-17"
+              "y": 1
             },
             {
+              "id": "auto-18",
+              "mediaId": "Y8CuJO9aiwQMtYziWzit",
+              "type": "image",
+              "height": 5,
+              "x": 5,
               "y": 4,
               "zIndex": 18,
-              "id": "auto-18",
-              "width": 8,
-              "mediaId": "Y8CuJO9aiwQMtYziWzit",
-              "x": 5,
-              "type": "image",
-              "height": 5
+              "width": 8
             },
             {
-              "type": "image",
+              "id": "auto-19",
+              "height": 3,
+              "x": 13,
+              "width": 3,
+              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
               "zIndex": 19,
               "y": 6,
-              "height": 3,
-              "width": 3,
-              "x": 13,
-              "mediaId": "YbNkGpe2ZN1U7mjll4nU",
-              "id": "auto-19"
+              "type": "image"
             },
             {
-              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
-              "height": 6,
-              "id": "auto-20",
+              "x": 0,
+              "width": 6,
               "zIndex": 20,
               "type": "image",
-              "width": 6,
+              "mediaId": "YN67Uwe4AaCpBHBfKSOf",
+              "id": "auto-20",
               "y": 3,
-              "x": 0
+              "height": 6
             },
             {
-              "width": 8,
-              "y": 4,
-              "mediaId": "yPHmTxUgbA8pPu9ProKb",
-              "zIndex": 21,
-              "x": 6,
               "height": 5,
+              "y": 4,
               "id": "auto-21",
-              "type": "image"
+              "width": 8,
+              "x": 6,
+              "type": "image",
+              "zIndex": 21,
+              "mediaId": "yPHmTxUgbA8pPu9ProKb"
             },
             {
               "id": "auto-22",
               "type": "image",
+              "height": 2,
               "y": 7,
               "zIndex": 22,
-              "x": 14,
               "mediaId": "ZXo05IpIGfgXYvanLgbC",
               "width": 2,
-              "height": 2
+              "x": 14
             }
           ],
           "detailPageGridHeight": 59,
@@ -51085,9 +51361,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062746279-_MG_2578-min.jpg?alt=media&token=5bf239a1-3515-492d-bb0f-570401a1825c",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51102,8 +51378,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062753292-_MG_2620-min.jpg?alt=media&token=5237836b-36dc-4c8c-956d-9842f6032420",
               "description": {
-                "en": "",
                 "pt": "",
+                "en": "",
                 "es": ""
               },
               "tags": [],
@@ -51119,9 +51395,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062762026-_MG_2631-min.jpg?alt=media&token=fc389b99-d894-4172-8f4d-e267e59220f0",
               "description": {
+                "en": "",
                 "pt": "",
-                "es": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51136,9 +51412,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062769870-_MG_2644-min.jpg?alt=media&token=4b9f4409-3c37-4496-8b02-cf1fed60f042",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51188,8 +51464,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062790285-_MG_2776-min.jpg?alt=media&token=fabe40fb-44ef-44f7-8057-1469a0eba6b5",
               "description": {
                 "es": "",
-                "en": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51204,9 +51480,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062796776-_MG_2777-min.jpg?alt=media&token=399d47d9-e166-44b8-86a1-d77ace57cad1",
               "description": {
-                "en": "",
                 "es": "",
-                "pt": ""
+                "pt": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51221,8 +51497,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062804867-_MG_2779-min.jpg?alt=media&token=68282ec0-37cc-4e44-8477-4019a78dfc08",
               "description": {
-                "pt": "",
                 "es": "",
+                "pt": "",
                 "en": ""
               },
               "tags": [],
@@ -51239,8 +51515,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062811670-_MG_2788-min.jpg?alt=media&token=c55eadc0-5646-4dd6-9e81-d83f2bd3d37d",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51255,9 +51531,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062819760-_MG_2792-min.jpg?alt=media&token=ab2b2806-0b56-4077-9ec6-355dbdc8de34",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51272,9 +51548,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062828735-_MG_2794-min.jpg?alt=media&token=2444d8da-d7ed-48a9-8b73-640eb7b4a83a",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51289,8 +51565,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062836637-_MG_2796-min.jpg?alt=media&token=af82370c-4f23-4203-bee5-7ea42d9a48cb",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -51306,9 +51582,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062844925-_MG_2801-min.jpg?alt=media&token=65f2237f-4542-4d9c-a14d-8bda819b1cf8",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51323,9 +51599,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062852943-_MG_2835-min.jpg?alt=media&token=6303a9f6-2e64-4917-be63-42b41dc59fb2",
               "description": {
-                "en": "",
+                "es": "",
                 "pt": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51340,9 +51616,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062859837-Fotograma_03-min.jpg?alt=media&token=8d4432c8-2d9f-4d0f-ae5a-372607fb7330",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -51357,9 +51633,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062865326-Fotograma_04-min.jpg?alt=media&token=81c2d6c2-e03f-4cd8-b6f3-0cc8e4d5f2ce",
               "description": {
-                "es": "",
+                "en": "",
                 "pt": "",
-                "en": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -51374,9 +51650,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062872587-Fotograma_05-min.jpg?alt=media&token=a53faf35-fede-4105-b48c-e87c635d8dad",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -51391,9 +51667,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062878189-Fotogramas_01-min.jpg?alt=media&token=8c222b5f-d141-4c0e-8261-8d629d0443f3",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -51408,8 +51684,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062884871-Fotogramas_02-min.jpg?alt=media&token=71c494b1-23ae-4f5b-8683-ae1f7f51ad94",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -51425,9 +51701,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062890616-Historia_Black_Friday-min.jpg?alt=media&token=ad39cbf6-294e-49a4-97c9-e21a19641c93",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51442,8 +51718,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751062896347-Temporada_2_-_Historia_15__comp.mp4?alt=media&token=c4797f29-5d1a-4a59-9024-1d9e4a73e9be",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -51459,9 +51735,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FPOPFdVzSh5Tom6jILa7x%2F1751063225938-Temporada_2_comp.mp4?alt=media&token=cca6ade1-c151-42b3-9308-c5ff7429fabe",
               "description": {
-                "en": "",
                 "pt": "",
-                "es": ""
+                "es": "",
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51488,64 +51764,64 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "zIndex": 1,
+              "y": 0,
+              "height": 9,
+              "width": 10,
               "x": 0,
               "id": "block-1751903375015",
-              "zIndex": 1,
-              "height": 9,
-              "width": 10,
               "type": "video",
-              "y": 0
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ"
             },
             {
-              "id": "block-1751903380017",
-              "height": 9,
+              "mediaOffsetY": -18.148148148148145,
               "x": 10,
               "mediaOffsetX": -21.111111111111107,
-              "mediaOffsetY": -18.148148148148145,
+              "id": "block-1751903380017",
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "y": 0,
               "zIndex": 2,
-              "width": 6
+              "height": 9,
+              "y": 0,
+              "width": 6,
+              "type": "video"
             },
             {
-              "color": "#ffffff",
-              "title": "JONA l'oreal",
-              "x": 3,
-              "y": 3,
-              "zIndex": 3,
               "font": "inter",
               "id": "title-1751903383860",
-              "width": 10,
+              "height": 5,
+              "x": 3,
               "type": "title",
-              "height": 5
+              "y": 3,
+              "color": "#ffffff",
+              "title": "JONA l'oreal",
+              "zIndex": 3,
+              "width": 10
             }
           ],
           "detailPageBlocks": [
             {
-              "zIndex": 0,
               "mediaId": "2u8GsCVp4JdWJB4HYMxd",
-              "type": "video",
-              "mediaOffsetY": 0.3703703703703704,
-              "height": 9,
-              "mediaOffsetX": 0,
-              "y": 0,
-              "x": 0,
               "id": "auto-0",
-              "width": 10
+              "x": 0,
+              "mediaOffsetY": 0.3703703703703704,
+              "y": 0,
+              "mediaOffsetX": 0,
+              "zIndex": 0,
+              "width": 10,
+              "height": 9,
+              "type": "video"
             },
             {
-              "height": 9,
-              "mediaOffsetY": -3.888888888888893,
-              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
-              "zIndex": 1,
-              "mediaOffsetX": 0,
-              "width": 6,
-              "id": "auto-1",
-              "y": 0,
               "type": "video",
-              "x": 10
+              "mediaId": "2ZpjegpMiUDzt9NqDvMJ",
+              "y": 0,
+              "x": 10,
+              "width": 6,
+              "mediaOffsetX": 0,
+              "zIndex": 1,
+              "id": "auto-1",
+              "height": 9,
+              "mediaOffsetY": -3.888888888888893
             }
           ],
           "detailPageGridHeight": 9,
@@ -51556,9 +51832,9 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058695352-PANORAMA_-_U_ltima_versio_n_comp.mp4?alt=media&token=c2f0b10a-7551-4005-9a4d-408ee1914304",
               "description": {
+                "pt": "",
                 "en": "",
-                "es": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -51573,8 +51849,8 @@
               "type": "video",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2Fw3YKpgg5j1C86axTeoWB%2F1751058703909-Video_02_comp.mp4?alt=media&token=25217712-05b6-45c8-8826-492a28613ad6",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -51611,8 +51887,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058292440-_MG_1876.jpg?alt=media&token=b535aec8-5d10-48b7-8439-2ad3ba140359",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51627,9 +51903,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058316881-_MG_1878.jpg?alt=media&token=1a42175e-0ac7-446b-95fe-8296cef48e69",
               "description": {
-                "es": "",
                 "en": "",
-                "pt": ""
+                "pt": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51644,9 +51920,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058331900-_MG_1882.jpg?alt=media&token=40bc9c11-b88f-4b1d-b7da-d61d7c2cb19c",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51695,8 +51971,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058384032-_MG_1890.jpg?alt=media&token=f3554dc6-5498-44c7-b63f-c7dad0168c63",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -51746,9 +52022,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058416308-_MG_1898.jpg?alt=media&token=a36e292d-cf28-421f-94c9-9af1bea8fb21",
               "description": {
+                "es": "",
                 "pt": "",
-                "en": "",
-                "es": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51763,9 +52039,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058425873-_MG_1904.jpg?alt=media&token=55ee9952-b466-4c1f-a55b-99ce48eaf208",
               "description": {
-                "en": "",
+                "pt": "",
                 "es": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51798,8 +52074,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058445748-_MG_1910.jpg?alt=media&token=75fbaa44-da9c-4480-b36a-96650c846565",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51831,9 +52107,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058464953-_MG_1915.jpg?alt=media&token=d3044ed1-6050-40a9-8fd6-ddc8da6ee3b4",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51865,9 +52141,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058484547-_MG_1921.jpg?alt=media&token=0ab296d8-7baf-4a87-a018-002c525427d4",
               "description": {
-                "pt": "",
                 "es": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51882,9 +52158,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1751058494609-_MG_1924.jpg?alt=media&token=9c301ffe-56f0-41b0-b145-ed854be23d27",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -51919,9 +52195,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1751057584337-premium_photo-1681682668713-635b82742cc3.jpg?alt=media&token=2a844401-148e-45f5-a66d-d7b2c11abb92",
               "description": {
+                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional.",
                 "en": "Event photographer in Montevideo capturing a live music performance with professional lighting.",
-                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional.",
-                "es": "Fotógrafo de eventos en Montevideo capturando una actuación musical en vivo con iluminación profesional."
+                "pt": "Fotógrafo de eventos em Montevidéu capturando uma apresentação musical ao vivo com iluminação profissional."
               },
               "tags": [
                 "event photographer",
@@ -51994,200 +52270,200 @@
           "status": "published",
           "mediaBlocks": [
             {
-              "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "mediaOffsetX": 0,
-              "width": 16,
-              "height": 9,
-              "zIndex": 1,
               "x": 0,
-              "type": "image",
-              "mediaOffsetY": 0,
+              "zIndex": 1,
               "id": "block-1752176726619",
-              "y": 0
+              "mediaOffsetX": 0,
+              "mediaOffsetY": 0,
+              "height": 9,
+              "type": "image",
+              "width": 16,
+              "y": 0,
+              "mediaId": "edrQjkSUX2pOlyXleUXb"
             },
             {
               "zIndex": 2,
-              "font": "inter",
-              "y": 2,
-              "title": "Casamiento de Paco y Margarita",
-              "type": "title",
-              "color": "#000000",
               "x": 0,
               "width": 16,
+              "title": "Casamiento de Paco y Margarita",
+              "type": "title",
+              "height": 5,
+              "color": "#000000",
               "id": "title-1752176729459",
-              "height": 5
+              "y": 2,
+              "font": "inter"
             }
           ],
           "detailPageBlocks": [
             {
-              "type": "image",
-              "y": 0,
-              "zIndex": 0,
-              "height": 5,
               "x": 0,
-              "width": 8,
+              "zIndex": 0,
+              "id": "auto-0",
+              "height": 5,
+              "type": "image",
               "mediaId": "48cCo1kJoAFeOM2iWWBI",
-              "id": "auto-0"
+              "y": 0,
+              "width": 8
             },
             {
+              "id": "auto-1",
               "width": 6,
+              "height": 6,
               "mediaId": "4SCEUjX67DJ2jbmTRiaG",
               "zIndex": 1,
-              "y": 0,
-              "id": "auto-1",
+              "type": "image",
               "x": 8,
-              "height": 6,
-              "type": "image"
+              "y": 0
             },
             {
               "width": 2,
-              "y": 0,
               "height": 2,
+              "type": "image",
+              "y": 0,
+              "id": "auto-2",
               "zIndex": 2,
               "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-              "id": "auto-2",
-              "type": "image",
               "x": 14
             },
             {
-              "zIndex": 3,
-              "width": 8,
-              "height": 5,
-              "type": "image",
               "id": "auto-3",
               "y": 4,
+              "type": "image",
+              "x": 0,
+              "width": 8,
               "mediaId": "9pFVXpDET7jWxDq7RoNh",
-              "x": 0
+              "zIndex": 3,
+              "height": 5
             },
             {
               "id": "auto-4",
-              "x": 8,
-              "width": 8,
               "y": 4,
               "zIndex": 4,
-              "height": 5,
-              "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-              "type": "image"
-            },
-            {
-              "id": "auto-5",
-              "y": 4,
-              "width": 8,
+              "x": 8,
               "height": 5,
               "type": "image",
-              "mediaId": "dW52BSrrFYrUs6IztfUs",
-              "x": 0,
-              "zIndex": 5
+              "width": 8,
+              "mediaId": "DjkGYSpAgl0fBpSYJtdJ"
             },
             {
+              "zIndex": 5,
+              "id": "auto-5",
+              "width": 8,
+              "mediaId": "dW52BSrrFYrUs6IztfUs",
+              "type": "image",
+              "x": 0,
+              "y": 4,
+              "height": 5
+            },
+            {
+              "y": 4,
+              "type": "image",
               "zIndex": 6,
               "id": "auto-6",
               "height": 5,
-              "y": 4,
-              "width": 8,
-              "type": "image",
               "mediaId": "edrQjkSUX2pOlyXleUXb",
-              "x": 8
+              "x": 8,
+              "width": 8
             },
             {
+              "y": 4,
               "x": 0,
               "type": "image",
               "height": 5,
-              "width": 8,
-              "y": 4,
-              "zIndex": 7,
               "mediaId": "f9qFLMkKrowonoJvyLaU",
+              "zIndex": 7,
+              "width": 8,
               "id": "auto-7"
             },
             {
-              "id": "auto-8",
-              "y": 4,
+              "zIndex": 8,
+              "type": "image",
               "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+              "id": "auto-8",
               "width": 8,
               "x": 8,
-              "type": "image",
-              "height": 5,
-              "zIndex": 8
+              "y": 4,
+              "height": 5
             },
             {
+              "zIndex": 9,
               "id": "auto-9",
+              "y": 4,
               "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-              "height": 5,
-              "y": 4,
-              "type": "image",
               "x": 0,
-              "width": 8,
-              "zIndex": 9
+              "type": "image",
+              "height": 5,
+              "width": 8
             },
             {
-              "width": 8,
               "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+              "x": 8,
               "height": 5,
-              "type": "image",
-              "y": 4,
-              "id": "auto-10",
-              "zIndex": 10,
-              "x": 8
-            },
-            {
               "y": 4,
               "width": 8,
+              "zIndex": 10,
+              "type": "image",
+              "id": "auto-10"
+            },
+            {
               "height": 5,
-              "x": 0,
+              "width": 8,
               "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+              "y": 4,
+              "x": 0,
               "zIndex": 11,
               "type": "image",
               "id": "auto-11"
             },
             {
               "zIndex": 12,
+              "id": "auto-12",
               "width": 5,
-              "y": 1,
-              "height": 8,
-              "mediaId": "NwBqAs7qwNWCet4AkPgi",
               "type": "image",
-              "x": 8,
-              "id": "auto-12"
+              "y": 1,
+              "mediaId": "NwBqAs7qwNWCet4AkPgi",
+              "height": 8,
+              "x": 8
             },
             {
-              "width": 3,
               "mediaId": "OodOx8NGStI3PD1KIO8E",
-              "height": 3,
-              "y": 6,
               "x": 13,
               "id": "auto-13",
-              "type": "image",
-              "zIndex": 13
+              "width": 3,
+              "zIndex": 13,
+              "y": 6,
+              "height": 3,
+              "type": "image"
             },
             {
-              "zIndex": 14,
               "x": 0,
-              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
-              "type": "image",
               "id": "auto-14",
+              "zIndex": 14,
+              "height": 5,
+              "mediaId": "Pm3gGJJcoUc5uxxmjdss",
               "y": 4,
               "width": 8,
-              "height": 5
+              "type": "image"
             },
             {
-              "x": 8,
-              "id": "auto-15",
+              "y": 4,
               "type": "image",
               "zIndex": 15,
-              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+              "id": "auto-15",
               "height": 5,
-              "y": 4,
+              "x": 8,
+              "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
               "width": 8
             },
             {
-              "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-              "height": 8,
-              "x": 0,
               "type": "image",
-              "width": 5,
-              "id": "auto-16",
+              "zIndex": 16,
               "y": 1,
-              "zIndex": 16
+              "width": 5,
+              "height": 8,
+              "id": "auto-16",
+              "x": 0,
+              "mediaId": "zTBVfHCpXvFGTWU3jbUI"
             }
           ],
           "detailPageGridHeight": 47,
@@ -52198,9 +52474,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057327114-al-elmes-ULHxWq8reao-unsplash.jpg?alt=media&token=01fb7ff2-d452-447d-95b4-f7630c7e0802",
               "description": {
-                "es": "",
+                "pt": "",
                 "en": "",
-                "pt": ""
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52216,8 +52492,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057338780-alvin-mahmudov-NSVJAAXOYHs-unsplash.jpg?alt=media&token=06137812-fc04-4b17-83d0-14c3bcd48cf5",
               "description": {
                 "pt": "",
-                "es": "",
-                "en": ""
+                "en": "",
+                "es": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52232,8 +52508,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057347577-andreas-ronningen-S2YssLw97l4-unsplash.jpg?alt=media&token=9f1bc649-01ae-47f2-9e39-ccca02dcef94",
               "description": {
-                "pt": "",
                 "en": "",
+                "pt": "",
                 "es": ""
               },
               "tags": [],
@@ -52249,8 +52525,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057354674-black-and-white-2561020.jpg?alt=media&token=15ca2a2b-a2b1-4f6d-92a8-703ad62e7503",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -52266,8 +52542,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057365530-bride-4066022.jpg?alt=media&token=daefc210-aa98-4a1e-b67a-9abc77744d68",
               "description": {
-                "en": "",
                 "es": "",
+                "en": "",
                 "pt": ""
               },
               "tags": [],
@@ -52301,8 +52577,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057377911-chuttersnap-NYqEk7a42yc-unsplash.jpg?alt=media&token=07dc2ce7-2b52-431a-abd8-73fb65a5866c",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "9:16",
@@ -52317,9 +52593,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057383409-couple-5559942.jpg?alt=media&token=dc9c4c15-3f66-4773-a4dd-6b6c967098cb",
               "description": {
+                "en": "",
                 "es": "",
-                "pt": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52334,9 +52610,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057391236-jeremy-wong-weddings-464ps_nOflw-unsplash.jpg?alt=media&token=3e1d7e7c-cad5-4594-b1c0-a1194d50bbae",
               "description": {
+                "pt": "",
                 "es": "",
-                "en": "",
-                "pt": ""
+                "en": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52351,9 +52627,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057397920-love-2771068.jpg?alt=media&token=31e34671-a35e-446c-92dc-dcf13c93f3e5",
               "description": {
-                "pt": "",
+                "en": "",
                 "es": "",
-                "en": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "1:1",
@@ -52369,8 +52645,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057404585-portrait-4615580.jpg?alt=media&token=6b114ea3-cd1e-4577-8e66-9a441179f006",
               "description": {
                 "en": "",
-                "pt": "",
-                "es": ""
+                "es": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52385,8 +52661,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057414201-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=f30575a2-38c1-4daf-b817-ab89e7398685",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -52403,8 +52679,8 @@
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057424564-thomas-ae-XaznRvFCd64-unsplash.jpg?alt=media&token=f584f00c-dfa5-4e8a-aa9b-0395885f53af",
               "description": {
                 "es": "",
-                "pt": "",
-                "en": ""
+                "en": "",
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52419,8 +52695,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057432435-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=92916c3a-bc31-4f16-ab8f-37a6f5743aea",
               "description": {
-                "es": "",
                 "pt": "",
+                "es": "",
                 "en": ""
               },
               "tags": [],
@@ -52436,9 +52712,9 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057438991-tom-the-photographer-SljsxQcjZl0-unsplash.jpg?alt=media&token=3d1b007a-5ef9-4742-88a9-d483955b838f",
               "description": {
+                "es": "",
                 "en": "",
-                "pt": "",
-                "es": ""
+                "pt": ""
               },
               "tags": [],
               "aspectRatio": "16:9",
@@ -52470,8 +52746,8 @@
               "type": "photo",
               "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1751057455517-wedding-7658831.jpg?alt=media&token=9ec94d2b-5316-4e27-beb2-500ead996027",
               "description": {
-                "es": "",
                 "en": "",
+                "es": "",
                 "pt": ""
               },
               "tags": [],
@@ -75601,11 +75877,11 @@
         }
       },
       "metadata": {
-        "generatedAt": "2025-07-31T13:14:30.343Z",
+        "generatedAt": "2025-07-31T15:24:28.613Z",
         "totalLayouts": 36
       }
     },
-    "lastUpdated": "2025-07-31T13:14:30.364Z",
+    "lastUpdated": "2025-07-31T15:24:28.636Z",
     "buildTime": true
   }
 }

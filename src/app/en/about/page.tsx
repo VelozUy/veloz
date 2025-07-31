@@ -1,15 +1,9 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
-import { faqService, FAQ } from '@/services/faq';
 import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
+import FAQSection from '@/components/about/FAQSection';
+import { faqService, FAQ } from '@/services/faq';
 
 // Import build-time data
 let BUILD_TIME_FAQS: FAQ[] = [];
@@ -90,6 +84,8 @@ function generateFAQStructuredData(faqs: FAQ[], locale: string = 'en') {
 
   return faqStructuredData;
 }
+
+
 
 export const metadata: Metadata = {
   title: 'About Us | Veloz - Professional Photography & Videography',
@@ -182,146 +178,109 @@ export default async function AboutPageEN() {
       )}
 
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16 space-y-16">
-          {/* Hero Section */}
-          <div className="text-center space-y-6">
-            <h1 className="text-section-title-lg font-body font-semibold text-primary">
-              {t(content, 'about.title', 'About Us')}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {t(
-                content,
-                'about.subtitle',
-                'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.'
-              )}
-            </p>
+      <div className="container mx-auto px-4 py-16 space-y-16">
+        {/* Hero Section */}
+        <div className="text-center space-y-6">
+          <h1 className="text-section-title-lg font-body font-semibold text-primary">
+            {t(content, 'about.title', 'About Us')}
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            {t(
+              content,
+              'about.subtitle',
+              'We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.'
+            )}
+          </p>
+        </div>
+
+        {/* Philosophy Section */}
+        <section className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
+              {t(content, 'about.philosophy.title', 'Our Philosophy')}
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
           </div>
 
-          {/* Philosophy Section */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-                {t(content, 'about.philosophy.title', 'Our Philosophy')}
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-            </div>
-
-            <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardContent className="p-8 md:p-12">
-                <div
-                  className="prose prose-lg max-w-4xl mx-auto text-muted-foreground prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-em:text-foreground"
-                  dangerouslySetInnerHTML={{
-                    __html: t(
-                      content,
-                      'about.philosophy.content',
-                      'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.'
+          <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardContent className="p-8 md:p-12">
+              <div
+                className="prose prose-lg max-w-4xl mx-auto text-muted-foreground prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-em:text-foreground"
+                dangerouslySetInnerHTML={{
+                  __html: t(
+                    content,
+                    'about.philosophy.content',
+                    'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.'
+                  )
+                    .replace(
+                      /^### (.*$)/gim,
+                      '<h3 class="text-lg font-semibold mb-2">$1</h3>'
                     )
-                      .replace(
-                        /^### (.*$)/gim,
-                        '<h3 class="text-lg font-semibold mb-2">$1</h3>'
-                      )
-                      .replace(
-                        /^## (.*$)/gim,
-                        '<h2 class="text-xl font-semibold mb-3">$1</h2>'
-                      )
-                      .replace(
-                        /^# (.*$)/gim,
-                        '<h1 class="text-2xl font-bold mb-4">$1</h1>'
-                      )
-                      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-                      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-                      .replace(
-                        /`(.*?)`/gim,
-                        '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
-                      )
-                      .replace(
-                        /\[([^\]]+)\]\(([^)]+)\)/gim,
-                        '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
-                      )
-                      .replace(/\n\n/gim, '</p><p class="mb-3">')
-                      .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
-                  }}
-                />
-              </CardContent>
-            </Card>
-          </section>
+                    .replace(
+                      /^## (.*$)/gim,
+                      '<h2 class="text-xl font-semibold mb-3">$1</h2>'
+                    )
+                    .replace(
+                      /^# (.*$)/gim,
+                      '<h1 class="text-2xl font-bold mb-4">$1</h1>'
+                    )
+                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                    .replace(
+                      /`(.*?)`/gim,
+                      '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
+                    )
+                    .replace(
+                      /\[([^\]]+)\]\(([^)]+)\)/gim,
+                      '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
+                    )
+                    .replace(/\n\n/gim, '</p><p class="mb-3">')
+                    .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
+                }}
+              />
+            </CardContent>
+          </Card>
+        </section>
 
-          {/* Methodology Section */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-                {t(content, 'about.methodology.title', 'Our Methodology')}
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-            </div>
+        {/* Methodology Section */}
+        <section className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
+              {t(content, 'about.methodology.title', 'Our Methodology')}
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
+          </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {methodologySteps.map((item, index) => (
-                <Card
-                  key={index}
-                  className="group hover:shadow-lg transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
-                >
-                  <CardContent className="p-6 text-center space-y-4">
-                    <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
-                      {item.step}
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground">
-                      {item.title}
-                    </h3>
-                    <p className="text-muted-foreground">{item.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* FAQ Section */}
-          {faqs.length > 0 && (
-            <section className="space-y-8">
-              <div className="text-center">
-                <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-                  {t(content, 'about.faq.title', 'Frequently Asked Questions')}
-                </h2>
-                <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-              </div>
-
-              <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
-                <CardContent className="p-6 md:p-8">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="w-full space-y-4"
-                  >
-                    {faqs.map(faq => (
-                      <AccordionItem
-                        key={faq.id}
-                        value={faq.id}
-                        className="border-0 bg-muted/30 rounded-none px-4"
-                      >
-                        <AccordionTrigger className="text-left font-medium text-foreground hover:text-primary transition-colors py-4">
-                          {getFAQText(faq, 'question', 'en')}
-                          {faq.category && (
-                            <Badge variant="secondary" className="ml-2 text-xs">
-                              {faq.category}
-                            </Badge>
-                          )}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground pb-4 pt-2">
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: getFAQText(faq, 'answer', 'en'),
-                            }}
-                          />
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {methodologySteps.map((item, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-lg transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
+              >
+                <CardContent className="p-6 text-center space-y-4">
+                  <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
+                    {item.step}
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground">{item.description}</p>
                 </CardContent>
               </Card>
-            </section>
-          )}
-        </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        {faqs.length > 0 && (
+          <FAQSection 
+            faqs={faqs}
+            title={t(content, 'about.faq.title', 'Frequently Asked Questions')}
+            locale="en"
+          />
+        )}
       </div>
+    </div>
     </>
   );
 }
