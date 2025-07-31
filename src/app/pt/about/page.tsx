@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
 import FAQSection from '@/components/about/FAQSection';
 import { faqService, FAQ } from '@/services/faq';
+import { aboutContentService } from '@/services/about-content';
 
 // Import build-time data
 let BUILD_TIME_FAQS: FAQ[] = [];
@@ -85,8 +86,6 @@ function generateFAQStructuredData(faqs: FAQ[], locale: string = 'pt') {
   return faqStructuredData;
 }
 
-
-
 export const metadata: Metadata = {
   title: 'Sobre Nós | Veloz - Fotografia e Vídeo Profissional',
   description:
@@ -113,57 +112,94 @@ export default async function AboutPagePT() {
   const faqs = await getFAQs();
   const faqStructuredData = generateFAQStructuredData(faqs, 'pt');
 
-  // Methodology steps with translations
-  const methodologySteps = [
-    {
-      step: '01',
-      title: t(content, 'about.methodology.planning.title', 'Planejamento'),
-      description: t(
-        content,
-        'about.methodology.planning.description',
-        'Estudamos cada detalhe do evento para antecipar os momentos-chave.'
-      ),
-    },
-    {
-      step: '02',
-      title: t(
-        content,
-        'about.methodology.coverage.title',
-        'Cobertura Integral'
-      ),
-      description: t(
-        content,
-        'about.methodology.coverage.description',
-        'Nossa equipe se distribui estrategicamente para não perder nenhum momento.'
-      ),
-    },
-    {
-      step: '03',
-      title: t(
-        content,
-        'about.methodology.capture.title',
-        'Captura Profissional'
-      ),
-      description: t(
-        content,
-        'about.methodology.capture.description',
-        'Utilizamos técnicas avançadas e equipamentos de última geração.'
-      ),
-    },
-    {
-      step: '04',
-      title: t(
-        content,
-        'about.methodology.postproduction.title',
-        'Pós-Produção'
-      ),
-      description: t(
-        content,
-        'about.methodology.postproduction.description',
-        'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.'
-      ),
-    },
-  ];
+  // Fetch methodology data from database
+  let methodologySteps: Array<{
+    step: string;
+    title: string;
+    description: string;
+  }> = [];
+  try {
+    const dbResponse = await aboutContentService.getAboutContent();
+    if (
+      dbResponse.success &&
+      dbResponse.data &&
+      dbResponse.data.methodologySteps
+    ) {
+      // Use database methodology steps if available
+      methodologySteps = dbResponse.data.methodologySteps
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+        .map((step, index) => ({
+          step: String(index + 1).padStart(2, '0'),
+          title:
+            typeof step.title === 'string'
+              ? step.title
+              : step.title?.pt || step.title?.es || step.title?.en || '',
+          description:
+            typeof step.description === 'string'
+              ? step.description
+              : step.description?.pt ||
+                step.description?.es ||
+                step.description?.en ||
+                '',
+        }));
+    }
+  } catch (error) {
+    console.error('Error fetching methodology from database:', error);
+  }
+
+  // Fallback to static content if no database content
+  if (methodologySteps.length === 0) {
+    methodologySteps = [
+      {
+        step: '01',
+        title: t(content, 'about.methodology.planning.title', 'Planejamento'),
+        description: t(
+          content,
+          'about.methodology.planning.description',
+          'Estudamos cada detalhe do evento para antecipar os momentos-chave.'
+        ),
+      },
+      {
+        step: '02',
+        title: t(
+          content,
+          'about.methodology.coverage.title',
+          'Cobertura Integral'
+        ),
+        description: t(
+          content,
+          'about.methodology.coverage.description',
+          'Nossa equipe se distribui estrategicamente para não perder nenhum momento.'
+        ),
+      },
+      {
+        step: '03',
+        title: t(
+          content,
+          'about.methodology.capture.title',
+          'Captura Profissional'
+        ),
+        description: t(
+          content,
+          'about.methodology.capture.description',
+          'Utilizamos técnicas avançadas e equipamentos de última geração.'
+        ),
+      },
+      {
+        step: '04',
+        title: t(
+          content,
+          'about.methodology.postproduction.title',
+          'Pós-Produção'
+        ),
+        description: t(
+          content,
+          'about.methodology.postproduction.description',
+          'Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais.'
+        ),
+      },
+    ];
+  }
 
   return (
     <>
@@ -178,109 +214,109 @@ export default async function AboutPagePT() {
       )}
 
       <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16 space-y-16">
-        {/* Hero Section */}
-        <div className="text-center space-y-6">
-          <h1 className="text-section-title-lg font-body font-semibold text-primary">
-            {t(content, 'about.title', 'Sobre Nós')}
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t(
-              content,
-              'about.subtitle',
-              'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.'
-            )}
-          </p>
+        <div className="container mx-auto px-4 py-16 space-y-16">
+          {/* Hero Section */}
+          <div className="text-center space-y-6">
+            <h1 className="text-section-title-lg font-body font-semibold text-primary">
+              {t(content, 'about.title', 'Sobre Nós')}
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              {t(
+                content,
+                'about.subtitle',
+                'Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.'
+              )}
+            </p>
+          </div>
+
+          {/* Philosophy Section */}
+          <section className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
+                {t(content, 'about.philosophy.title', 'Nossa Filosofia')}
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
+            </div>
+
+            <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
+              <CardContent className="p-8 md:p-12">
+                <div
+                  className="prose prose-lg max-w-4xl mx-auto text-muted-foreground prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-em:text-foreground"
+                  dangerouslySetInnerHTML={{
+                    __html: t(
+                      content,
+                      'about.philosophy.content',
+                      'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.'
+                    )
+                      .replace(
+                        /^### (.*$)/gim,
+                        '<h3 class="text-lg font-semibold mb-2">$1</h3>'
+                      )
+                      .replace(
+                        /^## (.*$)/gim,
+                        '<h2 class="text-xl font-semibold mb-3">$1</h2>'
+                      )
+                      .replace(
+                        /^# (.*$)/gim,
+                        '<h1 class="text-2xl font-bold mb-4">$1</h1>'
+                      )
+                      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                      .replace(
+                        /`(.*?)`/gim,
+                        '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
+                      )
+                      .replace(
+                        /\[([^\]]+)\]\(([^)]+)\)/gim,
+                        '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
+                      )
+                      .replace(/\n\n/gim, '</p><p class="mb-3">')
+                      .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
+                  }}
+                />
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Methodology Section */}
+          <section className="space-y-8">
+            <div className="text-center">
+              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
+                {t(content, 'about.methodology.title', 'Nossa Metodologia')}
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {methodologySteps.map((item, index) => (
+                <Card
+                  key={index}
+                  className="group hover:shadow-lg transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
+                >
+                  <CardContent className="p-6 text-center space-y-4">
+                    <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
+                      {item.step}
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground">{item.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ Section */}
+          {faqs.length > 0 && (
+            <FAQSection
+              faqs={faqs}
+              title={t(content, 'about.faq.title', 'Perguntas Frequentes')}
+              locale="pt"
+            />
+          )}
         </div>
-
-        {/* Philosophy Section */}
-        <section className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-              {t(content, 'about.philosophy.title', 'Nossa Filosofia')}
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-          </div>
-
-          <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
-            <CardContent className="p-8 md:p-12">
-              <div
-                className="prose prose-lg max-w-4xl mx-auto text-muted-foreground prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-em:text-foreground"
-                dangerouslySetInnerHTML={{
-                  __html: t(
-                    content,
-                    'about.philosophy.content',
-                    'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.'
-                  )
-                    .replace(
-                      /^### (.*$)/gim,
-                      '<h3 class="text-lg font-semibold mb-2">$1</h3>'
-                    )
-                    .replace(
-                      /^## (.*$)/gim,
-                      '<h2 class="text-xl font-semibold mb-3">$1</h2>'
-                    )
-                    .replace(
-                      /^# (.*$)/gim,
-                      '<h1 class="text-2xl font-bold mb-4">$1</h1>'
-                    )
-                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-                    .replace(
-                      /`(.*?)`/gim,
-                      '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
-                    )
-                    .replace(
-                      /\[([^\]]+)\]\(([^)]+)\)/gim,
-                      '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
-                    )
-                    .replace(/\n\n/gim, '</p><p class="mb-3">')
-                    .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
-                }}
-              />
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Methodology Section */}
-        <section className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-              {t(content, 'about.methodology.title', 'Nossa Metodologia')}
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {methodologySteps.map((item, index) => (
-              <Card
-                key={index}
-                className="group hover:shadow-lg transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
-              >
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
-                    {item.step}
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground">{item.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        {faqs.length > 0 && (
-          <FAQSection 
-            faqs={faqs}
-            title={t(content, 'about.faq.title', 'Perguntas Frequentes')}
-            locale="pt"
-          />
-        )}
       </div>
-    </div>
     </>
   );
 }
