@@ -2,6 +2,17 @@
 
 _Last updated: 2025-01-27_
 
+## 🚨 **TEMPORARY CHANGES FOR LAUNCH**
+
+### Projects Page Removal
+
+- **Status**: Temporarily removed for launch
+- **Reason**: Simplified navigation for launch
+- **Plan**: Will be re-added post-launch with enhanced features
+- **Impact**: All project links now point to `/our-work/[slug]` instead of `/projects/[slug]`
+- **Navigation**: Removed "Proceso" link from main navigation
+- **CTA**: Updated secondary button to "Ver Nuestro Trabajo" pointing to `/our-work`
+
 ---
 
 ## 🧩 Epic-Based Task Tracking

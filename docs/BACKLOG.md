@@ -16,7 +16,7 @@ This file contains future epics that are not yet active. For detailed epic infor
 ### **🛠️ Admin & Management Epics**
 
 - [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
-- [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY**
+- [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY** _(Temporarily on hold for launch)_
 - [Crew Listing Page & Navigation](#-epic-crew-listing-page--navigation--high-priority) ⭐ **HIGH PRIORITY**
 
 ### **🔍 Marketing & SEO Epics**
@@ -2490,9 +2490,11 @@ This file contains future epics that are not yet active. For detailed epic infor
 
 ---
 
-## 📋 **EPIC: Projects Process Page & Client Login** ⭐ **HIGH PRIORITY**
+## 📋 **EPIC: Projects Process Page & Client Login** ⭐ **HIGH PRIORITY** _(Temporarily on hold for launch)_
 
 ### 🎯 Objective: Create a public projects page that describes Veloz's client process and provides a login gateway to existing client project pages
+
+**Note**: Temporarily removed for launch to simplify navigation. Will be re-added post-launch with enhanced features.
 
 **Reference**: User request for /projects page with process description and client login functionality
 **User Intent**: Provide a public-facing page that explains Veloz's client process and serves as a login gateway for existing clients to access their project pages

@@ -474,7 +474,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
               >
                 {/* Project Container - Full Width with Category Styling */}
                 <Link
-                  href={`/projects/${project.slug ? project.slug : project.id}`}
+                  href={`/our-work/${project.slug ? project.slug : project.id}`}
                   className="block"
                 >
                   <div

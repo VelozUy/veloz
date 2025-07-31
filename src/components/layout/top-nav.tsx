@@ -63,10 +63,6 @@ export default function TopNav({ translations, locale }: TopNavProps) {
       href: getLocalizedPath('/our-work', locale),
     },
     {
-      name: 'Proceso',
-      href: getLocalizedPath('/projects', locale),
-    },
-    {
       name: translations.navigation.about,
       href: getLocalizedPath('/about', locale),
     },
@@ -146,11 +142,6 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
     // Handle our-work routes (both /our-work and /our-work/[slug])
     if (cleanHref === '/our-work' && cleanPath.startsWith('/our-work')) {
-      return true;
-    }
-
-    // Handle projects routes (both /projects and /projects/[slug])
-    if (cleanHref === '/projects' && cleanPath.startsWith('/projects')) {
       return true;
     }
 

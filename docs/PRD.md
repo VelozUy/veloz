@@ -159,7 +159,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 - **Overview**: `/our-work` (shows featured media from all categories)
 - **Category Pages**: `/our-work/[category-slug]` (shows all media from category)
-- **Project Pages**: `/projects/[project-slug]` (individual project detail pages)
+- **Project Pages**: `/our-work/[project-slug]` (individual project detail pages) - _Note: Projects page temporarily removed for launch, will be re-added post-launch_
 
 **Technical Implementation**:
 
