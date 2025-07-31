@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { getStaticContent } from '@/lib/utils';
-import TopNav from './top-nav';
+import TopNavV2 from './TopNavV2';
 
 export default function ConditionalNavigation() {
   const pathname = usePathname();
@@ -49,6 +49,6 @@ export default function ConditionalNavigation() {
     };
   };
 
-  // Use the new top navigation design
-  return <TopNav translations={translations} locale={currentLocale} />;
+  // Use the new shareable top navigation design
+  return <TopNavV2 translations={translations} locale={currentLocale} />;
 }

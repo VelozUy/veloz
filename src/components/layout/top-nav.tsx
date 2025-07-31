@@ -80,7 +80,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
         <div className="w-full px-16">
           <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-8">
               {navItems.map(item => (
                 <Link
                   key={item.name}
@@ -103,7 +103,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
             </div>
 
             {/* Right: Contact Link and Language Switcher */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-8">
               <Link
                 href={contactItem.href}
                 className="text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium"
@@ -169,7 +169,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
         <div className="w-full px-16">
           <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-8">
               {navItems.map(item => {
                 const active = isActive(item.href);
                 return (
@@ -198,7 +198,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
             </div>
 
             {/* Right: Contact Link and Language Switcher */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-8">
               <Link
                 href={contactItem.href}
                 className={cn(
