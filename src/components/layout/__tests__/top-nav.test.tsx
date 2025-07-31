@@ -86,6 +86,10 @@ describe('TopNav', () => {
     expect(nav).toHaveClass('duration-300');
     expect(nav).toHaveClass('ease-in-out');
 
+    // Check that the navigation has the correct height (h-20 for taller nav)
+    const navContainer = nav.querySelector('div > div');
+    expect(navContainer).toHaveClass('h-20');
+
     // Check that the logo container is centered
     const logoContainer = screen.getByTestId('logo-horizontal-white');
     expect(logoContainer).toBeInTheDocument();

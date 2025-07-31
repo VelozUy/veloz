@@ -81,7 +81,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-foreground transform transition-transform duration-300 ease-in-out">
         <div className="w-full px-16">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
               {navItems.map(item => (
@@ -101,7 +101,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
                 href={getLocalizedPath('/', locale)}
                 className="flex items-center justify-center group pointer-events-auto"
               >
-                <LogoHorizontalWhite size="xs" />
+                <LogoHorizontalWhite size="sm" />
               </Link>
             </div>
 
@@ -169,7 +169,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
         )}
       >
         <div className="w-full px-16">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
               {navItems.map(item => {
@@ -195,7 +195,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
                 href={getLocalizedPath('/', locale)}
                 className="flex items-center justify-center group pointer-events-auto"
               >
-                <LogoHorizontalWhite size="xs" />
+                <LogoHorizontalWhite size="sm" />
               </Link>
             </div>
 
@@ -225,7 +225,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bg-foreground shadow-xl border-t border-primary-foreground/10 z-40">
+        <div className="md:hidden fixed top-20 left-0 right-0 bg-foreground shadow-xl border-t border-primary-foreground/10 z-40">
           <div className="px-4 py-6 space-y-4">
             {navItems.map(item => {
               const active = isActive(item.href);

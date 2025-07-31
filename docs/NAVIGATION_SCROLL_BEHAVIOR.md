@@ -39,10 +39,15 @@ The top navigation bar now implements a scroll-based hide/show behavior that pro
    - Configurable threshold for scroll detection
    - Returns `isVisible`, `scrollDirection`, and `lastScrollY`
 
+3. **Navigation Height** (`src/components/layout/top-nav.tsx`)
+   - Navigation bar height increased to `h-20` (80px) for better readability
+   - Logo size increased to `sm` (32px) to maximize visibility within the taller nav
+   - Mobile navigation adjusted to account for new height
+
 ### CSS Changes
 
 1. **Global Styles** (`src/app/globals.css`)
-   - Added `padding-top: 4rem` to body to account for fixed navigation
+   - Added `padding-top: 5rem` to body to account for fixed navigation (80px height)
    - This prevents content from being hidden behind the navigation bar
 
 ### CSS Classes Used
