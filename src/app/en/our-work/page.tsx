@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import { GalleryContent } from '@/components/gallery/GalleryContent';
-import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { getStaticContent } from '@/lib/utils';
+import OurWorkClient from '@/components/our-work/OurWorkClient';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 
 // Force static generation at build time
 export const dynamic = 'force-static';
@@ -11,18 +11,21 @@ export const metadata: Metadata = {
   title: 'Our Work | Veloz Photography & Videography',
   description:
     'Explore our portfolio of weddings, corporate events, birthdays and more. Discover why clients choose Veloz for their special moments.',
+  keywords: [
+    'photography portfolio',
+    'work gallery',
+    'Veloz weddings',
+    'corporate events',
+    'professional photography',
+    'videography',
+    'special moments',
+  ],
   openGraph: {
     title: 'Our Work | Veloz Photography & Videography',
     description:
-      'Explore our portfolio of weddings, corporate events, birthdays and more. Discover why clients choose Veloz for their special moments.',
-    images: [
-      {
-        url: '/og-gallery.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Veloz Photography & Videography Portfolio',
-      },
-    ],
+      'Explore our portfolio of weddings, corporate events, birthdays and more.',
+    type: 'website',
+    locale: 'en_US',
   },
   alternates: {
     canonical: '/en/our-work',
@@ -37,13 +40,15 @@ export const metadata: Metadata = {
 export default function OurWorkPage() {
   // Get static content for English
   const content = getStaticContent('en');
+  const projects = content.content.projects || [];
+  const categories = content.content.categories || [];
 
   return (
     <div className="relative min-h-screen w-full bg-background">
-      {/* Gallery Content - static rendered */}
-      <GalleryContent content={content} />
+      {/* Single Tiled Grid with All Featured Media */}
+      <OurWorkClient projects={projects} locale={content.locale} />
 
-      {/* CTA Widget */}
+      {/* Contact Widget (client) */}
       <ContactWidget language={content.locale} />
     </div>
   );

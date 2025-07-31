@@ -37,12 +37,8 @@ export default function OurWorkPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-background">
-      {/* Category Navigation and Sections (client) */}
-      <OurWorkClient
-        projects={projects}
-        categories={categories}
-        locale={content.locale}
-      />
+      {/* Single Tiled Grid with All Featured Media */}
+      <OurWorkClient projects={projects} locale={content.locale} />
 
       {/* Contact Widget (client) */}
       <ContactWidget language={content.locale} />

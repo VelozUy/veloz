@@ -83,6 +83,19 @@ The component uses:
 />
 ```
 
+### Our Work Page CTA
+
+```tsx
+<CTASection
+  title="¿Listo para Comenzar?"
+  description="Cuéntanos sobre tu evento y descubre cómo podemos hacerlo inolvidable."
+  primaryButtonText="Contactar Ahora"
+  primaryButtonHref="/contact"
+  secondaryButtonText="Ver Nuestro Trabajo"
+  secondaryButtonHref="/our-work"
+/>
+```
+
 ### Service Page CTA
 
 ```tsx

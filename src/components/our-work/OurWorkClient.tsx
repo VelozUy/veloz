@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { useScrollNavigation } from '@/hooks/useScrollNavigation';
-import CategoryNavigation from './CategoryNavigation';
-import OverviewSection from './OverviewSection';
-import OurWorkHeader from './OurWorkHeader';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { convertProjectMediaBatch } from '@/lib/gallery-layout';
+import { CTASection } from '@/components/shared';
 
 interface Project {
   id: string;
   slug?: string;
   title: string;
   eventType?: string;
+  status?: string;
   media?: Array<{
     id: string;
     type: 'photo' | 'video';
@@ -34,27 +34,19 @@ interface Category {
 
 interface OurWorkClientProps {
   projects: Project[];
-  categories: Category[];
+  categories?: Category[];
   locale: string;
 }
 
 export default function OurWorkClient({
   projects,
-  categories,
   locale,
 }: OurWorkClientProps) {
-  // Group featured media by category
-  const categoryMedia = useMemo(() => {
-    return categories.map(category => {
-      // Find all projects matching this category
-      const projectsInCategory = projects.filter(
-        (p: Project) =>
-          category.eventTypes.includes('*') ||
-          category.eventTypes.includes(p.eventType || '')
-      );
-
-      // Collect all featured media from these projects
-      const media = projectsInCategory.flatMap((project: Project) =>
+  // Collect all featured media from all published projects
+  const allFeaturedMedia = useMemo(() => {
+    return projects
+      .filter(project => project.status === 'published') // Only published projects
+      .flatMap((project: Project) =>
         (project.media || [])
           .filter(m => m.featured)
           .map(m => {
@@ -76,29 +68,63 @@ export default function OurWorkClient({
             };
           })
       );
+  }, [projects]);
 
-      return {
-        id: category.id,
-        title: category.title,
-        description: category.description,
-        media,
-      };
-    });
-  }, [projects, categories]);
-
-  // Only include categories with at least one featured media for sections
-  const visibleCategories = categoryMedia.filter(cat => cat.media.length > 0);
+  // Get localized title based on locale
+  const getLocalizedTitle = (locale: string) => {
+    switch (locale) {
+      case 'en':
+        return 'Our Work';
+      case 'pt':
+        return 'Nosso Trabalho';
+      default:
+        return 'Nuestro Trabajo';
+    }
+  };
 
   return (
     <>
-      {/* Shared Header and Navigation */}
-      <OurWorkHeader
-        categories={categories}
-        locale={locale}
-      />
+      {/* Single Tiled Grid with All Featured Media */}
+      <section className="min-h-screen pb-12 md:pb-16 bg-background">
+        <div className="container mx-auto px-8 md:px-16 pt-8 md:pt-12">
+          {/* Tiled Gallery - All Featured Media */}
+          <div className="mb-8 md:mb-10">
+            <TiledGallery
+              images={convertProjectMediaBatch(
+                allFeaturedMedia.map(item => ({
+                  id: item.id,
+                  url: item.url,
+                  src: item.url, // For compatibility
+                  alt: item.alt,
+                  width: item.width,
+                  height: item.height,
+                  type: item.type,
+                  aspectRatio: item.aspectRatio,
+                  featured: item.featured,
+                  order: 0, // All featured media at same level
+                })),
+                getLocalizedTitle(locale),
+                'our-work'
+              )}
+              onImageClick={(image, index) => {
+                // Handle click - can be expanded later
+                console.log('Image clicked:', image, index);
+              }}
+              galleryGroup="gallery-our-work"
+              projectTitle={getLocalizedTitle(locale)}
+              ariaLabel={`${getLocalizedTitle(locale)} photo gallery`}
+              className="editorial-tiled-gallery"
+              enableAnimations={true}
+              lazyLoad={true}
+              preloadCount={8}
+              gap={8}
+            />
+          </div>
+        </div>
+      </section>
 
-      {/* Overview Section */}
-      <OverviewSection categories={visibleCategories} />
+      {/* CTA Section */}
+      <CTASection />
     </>
   );
 }
