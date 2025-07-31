@@ -14,3 +14,4 @@ export { VelozBarcode } from './VelozBarcode';
 export { VelozCheckboard } from './VelozCheckboard';
 export { VelozRuler } from './VelozRuler';
 export { VelozFooter } from './VelozFooter';
+export { default as CTASection } from './CTASection';

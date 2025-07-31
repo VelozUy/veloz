@@ -18,6 +18,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
+import CTASection from '@/components/shared/CTASection';
 
 const processSteps = [
   {
@@ -300,33 +301,7 @@ export default function ProjectsProcessClient() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-primary text-primary-foreground">
-        <div className="max-w-border-64 mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">¿Listo para Comenzar?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Cuéntanos sobre tu evento y descubre cómo podemos hacerlo
-            inolvidable.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <Button size="lg" variant="secondary">
-                <Mail className="mr-2 h-5 w-5" />
-                Contactar Ahora
-              </Button>
-            </Link>
-            <Link href="/projects/login">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
-              >
-                <Users className="mr-2 h-5 w-5" />
-                Acceso Clientes
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTASection />
     </div>
   );
 }

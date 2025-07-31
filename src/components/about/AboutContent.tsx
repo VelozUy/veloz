@@ -2,10 +2,9 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import FAQSection from './FAQSection';
+import CTASection from '@/components/shared/CTASection';
 
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
-
-
 
 // FAQ interface matching the static content structure
 interface FAQ {
@@ -146,12 +145,15 @@ export default function AboutContent({
 
       {/* FAQ Section */}
       {faqs.length > 0 && (
-        <FAQSection 
+        <FAQSection
           faqs={faqs}
           title={content.content.about.faq.title || 'Preguntas Frecuentes'}
           locale="es"
         />
       )}
+
+      {/* CTA Section */}
+      <CTASection />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
 import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
 import FAQSection from '@/components/about/FAQSection';
+import CTASection from '@/components/shared/CTASection';
 import { faqService, FAQ } from '@/services/faq';
 import { aboutContentService } from '@/services/about-content';
 
@@ -317,6 +318,9 @@ export default async function AboutPagePT() {
           )}
         </div>
       </div>
+
+      {/* CTA Section */}
+      <CTASection />
     </>
   );
 }
