@@ -187,6 +187,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* Add padding for fixed navigation bar */
+  padding-top: 4rem; /* 64px to match navigation height */
 }
 
 html {

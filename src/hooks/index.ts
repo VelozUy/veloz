@@ -26,3 +26,6 @@ export {
   useTestimonialBackground,
   useMetaBackground,
 } from './useBackground';
+
+// Scroll behavior hooks
+export { useScrollDirection } from './useScrollDirection';

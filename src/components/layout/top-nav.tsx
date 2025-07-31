@@ -7,6 +7,7 @@ import { LocaleSwitcher } from '@/components/ui/locale-switcher';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LogoHorizontalWhite from '@/components/shared/LogoHorizontalWhite';
+import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 interface TopNavProps {
   translations: {
@@ -53,6 +54,9 @@ export default function TopNav({ translations, locale }: TopNavProps) {
     setMounted(true);
   }, []);
 
+  // Use scroll direction hook for navigation visibility
+  const { isVisible } = useScrollDirection({ threshold: 5 });
+
   const navItems = [
     {
       name: translations.navigation.gallery,
@@ -75,7 +79,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
   // Prevent hydration mismatch by ensuring consistent initial render
   if (!mounted) {
     return (
-      <nav className="relative z-50 bg-foreground">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-foreground transform transition-transform duration-300 ease-in-out">
         <div className="w-full px-16">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
@@ -158,7 +162,12 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
   return (
     <>
-      <nav className="relative z-50 bg-foreground">
+      <nav
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 bg-foreground transform transition-transform duration-300 ease-in-out',
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        )}
+      >
         <div className="w-full px-16">
           <div className="flex items-center justify-between h-16">
             {/* Left: Navigation Links */}
@@ -216,7 +225,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-foreground shadow-xl border-t border-primary-foreground/10 z-40">
+        <div className="md:hidden fixed top-16 left-0 right-0 bg-foreground shadow-xl border-t border-primary-foreground/10 z-40">
           <div className="px-4 py-6 space-y-4">
             {navItems.map(item => {
               const active = isActive(item.href);
