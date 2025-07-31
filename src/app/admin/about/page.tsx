@@ -687,28 +687,51 @@ export default function AboutAdminPage() {
             response.data
           );
 
-          // Ensure all array items have IDs
+          // Debug: Log the data structure to understand what we're working with
+          console.log('About content data structure:', {
+            hasValues: !!contentData.values,
+            valuesType: typeof contentData.values,
+            isValuesArray: Array.isArray(contentData.values),
+            valuesLength: Array.isArray(contentData.values)
+              ? contentData.values.length
+              : 'N/A',
+            hasPhilosophyPoints: !!contentData.philosophyPoints,
+            philosophyPointsType: typeof contentData.philosophyPoints,
+            isPhilosophyPointsArray: Array.isArray(
+              contentData.philosophyPoints
+            ),
+            hasMethodologySteps: !!contentData.methodologySteps,
+            methodologyStepsType: typeof contentData.methodologySteps,
+            isMethodologyStepsArray: Array.isArray(
+              contentData.methodologySteps
+            ),
+          });
+
+          // Ensure all array items have IDs and validate data structure
           const processedData = {
             ...contentData,
-            values:
-              contentData.values?.map((item: AboutValueData, index) => ({
-                ...item,
-                id: item.id || `value-${Date.now()}-${index}`,
-              })) || [],
-            philosophyPoints:
-              contentData.philosophyPoints?.map(
-                (item: AboutPhilosophyPointData, index) => ({
+            values: Array.isArray(contentData.values)
+              ? contentData.values.map((item: AboutValueData, index) => ({
                   ...item,
-                  id: item.id || `philosophy-${Date.now()}-${index}`,
-                })
-              ) || [],
-            methodologySteps:
-              contentData.methodologySteps?.map(
-                (item: AboutMethodologyStepData, index) => ({
-                  ...item,
-                  id: item.id || `methodology-${Date.now()}-${index}`,
-                })
-              ) || [],
+                  id: item.id || `value-${Date.now()}-${index}`,
+                }))
+              : [],
+            philosophyPoints: Array.isArray(contentData.philosophyPoints)
+              ? contentData.philosophyPoints.map(
+                  (item: AboutPhilosophyPointData, index) => ({
+                    ...item,
+                    id: item.id || `philosophy-${Date.now()}-${index}`,
+                  })
+                )
+              : [],
+            methodologySteps: Array.isArray(contentData.methodologySteps)
+              ? contentData.methodologySteps.map(
+                  (item: AboutMethodologyStepData, index) => ({
+                    ...item,
+                    id: item.id || `methodology-${Date.now()}-${index}`,
+                  })
+                )
+              : [],
           };
 
           setFormData(processedData);
@@ -1986,20 +2009,22 @@ export default function AboutAdminPage() {
                       }
                       strategy={verticalListSortingStrategy}
                     >
-                      {formData.values
-                        .sort((a, b) => (a.order || 0) - (b.order || 0))
-                        .map((value, index) => (
-                          <SortableValueCard
-                            key={value.id}
-                            value={value}
-                            index={index}
-                            currentLanguage={currentLanguage}
-                            onValueChange={handleValueChange}
-                            onRemoveValue={handleRemoveValue}
-                            onTranslateValue={handleTranslateValue}
-                            isTranslating={isValueTranslating}
-                          />
-                        ))}
+                      {Array.isArray(formData.values)
+                        ? formData.values
+                            .sort((a, b) => (a.order || 0) - (b.order || 0))
+                            .map((value, index) => (
+                              <SortableValueCard
+                                key={value.id}
+                                value={value}
+                                index={index}
+                                currentLanguage={currentLanguage}
+                                onValueChange={handleValueChange}
+                                onRemoveValue={handleRemoveValue}
+                                onTranslateValue={handleTranslateValue}
+                                isTranslating={isValueTranslating}
+                              />
+                            ))
+                        : null}
                     </SortableContext>
                   </DndContext>
                 )}

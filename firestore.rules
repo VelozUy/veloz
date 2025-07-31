@@ -124,6 +124,13 @@ service cloud.firestore {
       allow create: if isActiveAdmin();
     }
     
+    // About Content Collection - Admin write, public read
+    match /aboutContent/{document} {
+      allow read: if true; // Public read access for about content
+      allow write, delete: if isActiveAdmin();
+      allow create: if isActiveAdmin();
+    }
+    
     // Pages Collection - Admin write, public read
     match /pages/{document} {
       allow read: if true; // Public read access for static pages

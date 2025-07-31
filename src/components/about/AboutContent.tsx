@@ -70,11 +70,11 @@ export default function AboutContent({
     <div className="min-h-screen bg-background">
       <div className="max-w-border-64 mx-auto px-4 py-16 space-y-16">
         {/* Hero Section */}
-        <div className="text-center space-y-6 text-foreground">
-          <h1 className="text-section-title-lg font-body font-semibold">
+        <div className="text-left space-y-6 text-foreground">
+          <h1 className="text-section-title-lg font-body font-bold uppercase">
             {content.content.about.title || 'Sobre Nosotros'}
           </h1>
-          <p className="text-body-lg max-w-3xl mx-auto">
+          <p className="text-body-lg max-w-3xl">
             {content.content.about.subtitle ||
               'Somos un equipo apasionado dedicado a capturar los momentos más importantes de tu vida con excelencia, calidez y agilidad.'}
           </p>
@@ -82,11 +82,11 @@ export default function AboutContent({
 
         {/* Philosophy Section */}
         <section className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
+          <div className="text-left">
+            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
               {content.content.about.philosophy.title || 'Nuestra Filosofía'}
             </h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-primary rounded-full"></div>
           </div>
 
           <Card className="bg-card shadow-xl border-border">
@@ -101,11 +101,11 @@ export default function AboutContent({
 
         {/* Methodology Section */}
         <section className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
+          <div className="text-left">
+            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
               {content.content.about.methodology.title || 'Nuestra Metodología'}
             </h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-primary rounded-full"></div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -118,7 +118,7 @@ export default function AboutContent({
                   <div className="text-3xl font-body text-primary group-hover:text-primary/80 transition-colors">
                     {item.step}
                   </div>
-                  <h3 className="text-body-lg font-body text-foreground">
+                  <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
                     {item.title}
                   </h3>
                   <p className="text-body-md text-foreground">
@@ -132,11 +132,11 @@ export default function AboutContent({
 
         {/* Core Values Section */}
         <section className="space-y-8">
-          <div className="text-center">
-            <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
+          <div className="text-left">
+            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
               {content.content.about.values.title || 'Nuestros Valores'}
             </h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-primary rounded-full"></div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -162,7 +162,7 @@ export default function AboutContent({
                     <div className="w-12 h-12 bg-primary rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
                       <IconComponent className="w-6 h-6 text-primary-foreground" />
                     </div>
-                    <h3 className="text-body-lg font-body text-foreground">
+                    <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
                       {value.title}
                     </h3>
                     <p className="text-body-md text-foreground">
@@ -178,11 +178,11 @@ export default function AboutContent({
         {/* FAQ Section */}
         {faqs.length > 0 && (
           <section className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-section-title-md font-body font-semibold mb-4 text-foreground">
+            <div className="text-left">
+              <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
                 {content.content.about.faq.title || 'Preguntas Frecuentes'}
               </h2>
-              <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-primary rounded-full"></div>
             </div>
 
             <Card className="bg-card shadow-xl border-border">

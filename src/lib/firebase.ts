@@ -55,20 +55,32 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
       // Add offline persistence and better error handling
       if (app) {
         try {
-          // Initialize Firestore with offline persistence
-          const { getFirestore, enableNetwork, disableNetwork } = await import(
-            'firebase/firestore'
-          );
-          db = getFirestore(app);
-
-          // Enable offline persistence
-          const { enableIndexedDbPersistence } = await import(
-            'firebase/firestore'
-          );
+          // Initialize Firestore with better error handling
           try {
-            await enableIndexedDbPersistence(db);
-          } catch (persistenceError) {
-            // If persistence fails, continue without it
+            const { getFirestore } = await import('firebase/firestore');
+            db = getFirestore(app);
+
+            // Enable offline persistence using the new cache settings
+            const { initializeFirestore } = await import('firebase/firestore');
+            try {
+              // Use the new cache settings instead of deprecated enableIndexedDbPersistence
+              db = initializeFirestore(app, {
+                cacheSizeBytes: 50 * 1024 * 1024, // 50MB cache
+                experimentalForceLongPolling: false,
+              });
+            } catch (persistenceError) {
+              // If persistence fails, continue without it
+              console.warn(
+                'Firestore cache initialization failed:',
+                persistenceError
+              );
+            }
+          } catch (firestoreError) {
+            console.error(
+              '❌ Firebase Firestore initialization failed:',
+              firestoreError
+            );
+            // Continue without Firestore
           }
 
           // Initialize Auth with better error handling
@@ -86,12 +98,9 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
           } catch (storageError) {
             // Storage initialization failed
           }
-        } catch (firestoreError) {
-          console.error(
-            '❌ Firebase Firestore initialization failed:',
-            firestoreError
-          );
-          // Continue without Firestore
+        } catch (error) {
+          console.error('❌ Firebase services initialization failed:', error);
+          // Continue with basic app initialization
         }
       }
 
