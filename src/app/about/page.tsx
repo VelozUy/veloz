@@ -122,55 +122,27 @@ export default async function AboutPage() {
     },
   ];
 
-  // Methodology steps with translations
+  // Methodology steps with database data
   const methodologySteps = [
     {
       step: '01',
-      title: t(content, 'about.methodology.planning.title', 'Planificación'),
-      description: t(
-        content,
-        'about.methodology.planning.description',
-        'Estudiamos cada detalle del evento para anticipar los momentos clave.'
-      ),
+      title: content.content.about.methodology.planning.title,
+      description: content.content.about.methodology.planning.description,
     },
     {
       step: '02',
-      title: t(
-        content,
-        'about.methodology.coverage.title',
-        'Cobertura Integral'
-      ),
-      description: t(
-        content,
-        'about.methodology.coverage.description',
-        'Nuestro equipo se distribuye estratégicamente para no perder ningún momento.'
-      ),
+      title: content.content.about.methodology.coverage.title,
+      description: content.content.about.methodology.coverage.description,
     },
     {
       step: '03',
-      title: t(
-        content,
-        'about.methodology.capture.title',
-        'Captura Profesional'
-      ),
-      description: t(
-        content,
-        'about.methodology.capture.description',
-        'Utilizamos técnicas avanzadas y equipos de última generación.'
-      ),
+      title: content.content.about.methodology.capture.title,
+      description: content.content.about.methodology.capture.description,
     },
     {
       step: '04',
-      title: t(
-        content,
-        'about.methodology.postproduction.title',
-        'Post-Producción'
-      ),
-      description: t(
-        content,
-        'about.methodology.postproduction.description',
-        'Editamos cuidadosamente cada imagen y video para lograr resultados excepcionales.'
-      ),
+      title: content.content.about.methodology.postproduction.title,
+      description: content.content.about.methodology.postproduction.description,
     },
   ];
 

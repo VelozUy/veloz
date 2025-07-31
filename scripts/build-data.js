@@ -1272,7 +1272,7 @@ function generateLocaleContent(
                 aboutContent.philosophyTitle?.[locale] ||
                 aboutContent.philosophyTitle?.es ||
                 STATIC_TRANSLATIONS[locale].about.philosophy.title,
-              content:
+              description:
                 aboutContent.philosophyContent?.[locale] ||
                 aboutContent.philosophyContent?.es ||
                 STATIC_TRANSLATIONS[locale].about.philosophy.description,
