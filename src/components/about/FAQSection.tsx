@@ -40,31 +40,39 @@ interface FAQSectionProps {
   locale?: string;
 }
 
-function getFAQText(faq: FAQ, field: 'question' | 'answer', locale: string = 'es'): string {
+function getFAQText(
+  faq: FAQ,
+  field: 'question' | 'answer',
+  locale: string = 'es'
+): string {
   const content = faq[field];
-  
+
   // Handle static content FAQ structure (string)
   if (typeof content === 'string') {
     return content;
   }
-  
+
   // Handle service FAQ structure (localized object)
   if (content && typeof content === 'object') {
-    return content[locale as keyof typeof content] || content.es || content.en || '';
+    return (
+      content[locale as keyof typeof content] || content.es || content.en || ''
+    );
   }
-  
+
   return '';
 }
 
-
-
-export default function FAQSection({ faqs, title = 'Preguntas Frecuentes', locale = 'es' }: FAQSectionProps) {
+export default function FAQSection({
+  faqs,
+  title = 'Preguntas Frecuentes',
+  locale = 'es',
+}: FAQSectionProps) {
   if (faqs.length === 0) {
     return null;
   }
 
-    return (
-    <section className="py-16 px-16 bg-muted">
+  return (
+    <section className="py-16 px-16 bg-muted/30">
       <div className="max-w-border-64 mx-auto space-y-8">
         <div className="text-left">
           <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
@@ -73,11 +81,7 @@ export default function FAQSection({ faqs, title = 'Preguntas Frecuentes', local
           <div className="w-24 h-1 bg-primary rounded-full"></div>
         </div>
 
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full space-y-4"
-        >
+        <Accordion type="single" collapsible className="w-full space-y-4">
           {faqs.map(faq => (
             <AccordionItem
               key={faq.id}
@@ -100,4 +104,4 @@ export default function FAQSection({ faqs, title = 'Preguntas Frecuentes', local
       </div>
     </section>
   );
-} 
+}
