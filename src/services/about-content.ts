@@ -3,7 +3,6 @@ import {
   aboutContentSchema,
   AboutContentData,
   AboutMethodologyStepData,
-  AboutValueData,
 } from '@/lib/validation-schemas';
 import type { ApiResponse } from '@/types';
 
@@ -149,7 +148,7 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
    * Update specific section of about content
    */
   async updateSection(
-    section: 'methodologySteps' | 'values',
+    section: 'methodologySteps',
     sectionData: Partial<AboutContentData[typeof section]>
   ): Promise<ApiResponse<void>> {
     try {
@@ -294,169 +293,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       };
     } catch (error) {
       console.error('Error checking if about content exists:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Add a new value to the values section
-   */
-  async addValue(
-    newValue: Omit<AboutValueData, 'order'>
-  ): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentValues = existingResponse.data.values || [];
-      const maxOrder = Math.max(...currentValues.map(v => v.order || 0), -1);
-
-      const valueWithOrder: AboutValueData = {
-        ...newValue,
-        order: maxOrder + 1,
-      };
-
-      const updatedValues = [...currentValues, valueWithOrder];
-
-      const updateResponse = await this.updateSection('values', updatedValues);
-      return updateResponse;
-    } catch (error) {
-      console.error('Error adding value:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Update an existing value
-   */
-  async updateValue(
-    id: string,
-    updatedValue: Partial<Omit<AboutValueData, 'id'>>
-  ): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentValues = existingResponse.data.values || [];
-      const valueIndex = currentValues.findIndex(
-        (v: AboutValueData) => v.id === id
-      );
-
-      if (valueIndex === -1) {
-        return {
-          success: false,
-          error: 'Value not found.',
-        };
-      }
-
-      const updatedValues = currentValues.map(
-        (value: AboutValueData, index: number) =>
-          index === valueIndex ? { ...value, ...updatedValue } : value
-      );
-
-      const updateResponse = await this.updateSection('values', updatedValues);
-      return updateResponse;
-    } catch (error) {
-      console.error('Error updating value:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Delete a value
-   */
-  async deleteValue(id: string): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentValues = existingResponse.data.values || [];
-      const filteredValues = currentValues.filter(
-        (v: AboutValueData) => v.id !== id
-      );
-
-      if (filteredValues.length === currentValues.length) {
-        return {
-          success: false,
-          error: 'Value not found.',
-        };
-      }
-
-      const updateResponse = await this.updateSection('values', filteredValues);
-      return updateResponse;
-    } catch (error) {
-      console.error('Error deleting value:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Reorder values
-   */
-  async reorderValues(valueIds: string[]): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentValues = existingResponse.data.values || [];
-
-      // Create a map for quick lookup
-      const valueMap = new Map(
-        currentValues.map((v: AboutValueData) => [v.id, v])
-      );
-
-      // Reorder values and update order numbers
-      const reorderedValues = valueIds
-        .map(id => valueMap.get(id))
-        .filter((value): value is AboutValueData => value !== undefined)
-        .map((value: AboutValueData, index: number) => ({
-          ...value,
-          order: index,
-        }));
-
-      const updateResponse = await this.updateSection(
-        'values',
-        reorderedValues
-      );
-      return updateResponse;
-    } catch (error) {
-      console.error('Error reordering values:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -763,94 +599,6 @@ Nos concentramos nos pequenos detalhes que tornam seu evento grandioso. Da decor
           },
           order: 3,
           stepNumber: 3,
-        },
-      ],
-      valuesTitle: { es: '', en: '', pt: '' },
-      valuesDescription: { es: '', en: '', pt: '' },
-      values: [
-        {
-          id: 'passion',
-          title: {
-            es: 'Pasión',
-            en: 'Passion',
-            pt: 'Paixão',
-          },
-          description: {
-            es: 'Amamos lo que hacemos y se refleja en cada imagen que capturamos.',
-            en: 'We love what we do and it shows in every image we capture.',
-            pt: 'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.',
-          },
-          order: 0,
-        },
-        {
-          id: 'teamwork',
-          title: {
-            es: 'Trabajo en Equipo',
-            en: 'Teamwork',
-            pt: 'Trabalho em Equipe',
-          },
-          description: {
-            es: 'Nuestro modelo colaborativo nos permite cubrir cada momento importante.',
-            en: 'Our collaborative model allows us to cover every important moment.',
-            pt: 'Nosso modelo colaborativo nos permite cobrir cada momento importante.',
-          },
-          order: 1,
-        },
-        {
-          id: 'quality',
-          title: {
-            es: 'Calidad Técnica',
-            en: 'Technical Quality',
-            pt: 'Qualidade Técnica',
-          },
-          description: {
-            es: 'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.',
-            en: 'We use professional equipment and advanced techniques for exceptional results.',
-            pt: 'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.',
-          },
-          order: 2,
-        },
-        {
-          id: 'agility',
-          title: {
-            es: 'Agilidad',
-            en: 'Agility',
-            pt: 'Agilidade',
-          },
-          description: {
-            es: 'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.',
-            en: 'We adapt quickly to any situation to never miss a moment.',
-            pt: 'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.',
-          },
-          order: 3,
-        },
-        {
-          id: 'excellence',
-          title: {
-            es: 'Excelencia',
-            en: 'Excellence',
-            pt: 'Excelência',
-          },
-          description: {
-            es: 'Buscamos la perfección en cada proyecto, superando las expectativas.',
-            en: 'We strive for perfection in every project, exceeding expectations.',
-            pt: 'Buscamos a perfeição em cada projeto, superando expectativas.',
-          },
-          order: 4,
-        },
-        {
-          id: 'trust',
-          title: {
-            es: 'Confianza',
-            en: 'Trust',
-            pt: 'Confiança',
-          },
-          description: {
-            es: 'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.',
-            en: 'We build lasting relationships based on transparency and professionalism.',
-            pt: 'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.',
-          },
-          order: 5,
         },
       ],
       teamTitle: { es: '', en: '', pt: '' },

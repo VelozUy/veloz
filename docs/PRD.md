@@ -121,7 +121,6 @@ The web application's primary goal is to communicate Veloz's professionalism and
 - ✅ Additional static content:
   - Philosophy section
   - Methodology (team-based approach with 4-step workflow)
-  - Core values (6 values with icons and descriptions)
 
 # wireframes
 
@@ -137,7 +136,6 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 [ Section: Our Philosophy ]
 [ Section: Methodology (Icons/Steps) ]
-[ Section: Our Values (Icon + Text Grid) ]
 
 ### 3. **Our Work** (Gallery) ✅ **COMPLETED**
 

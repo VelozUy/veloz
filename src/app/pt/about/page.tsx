@@ -117,64 +117,6 @@ export default async function AboutPagePT() {
   const faqs = await getFAQs();
   const faqStructuredData = generateFAQStructuredData(faqs, 'pt');
 
-  // Core values with translations
-  const coreValues = [
-    {
-      icon: Heart,
-      title: t(content, 'about.values.passion.title', 'Paixão'),
-      description: t(
-        content,
-        'about.values.passion.description',
-        'Amamos o que fazemos e isso se reflete em cada imagem que capturamos.'
-      ),
-    },
-    {
-      icon: Users,
-      title: t(content, 'about.values.teamwork.title', 'Trabalho em Equipe'),
-      description: t(
-        content,
-        'about.values.teamwork.description',
-        'Nosso modelo colaborativo nos permite cobrir cada momento importante.'
-      ),
-    },
-    {
-      icon: Camera,
-      title: t(content, 'about.values.quality.title', 'Qualidade Técnica'),
-      description: t(
-        content,
-        'about.values.quality.description',
-        'Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais.'
-      ),
-    },
-    {
-      icon: Zap,
-      title: t(content, 'about.values.agility.title', 'Agilidade'),
-      description: t(
-        content,
-        'about.values.agility.description',
-        'Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento.'
-      ),
-    },
-    {
-      icon: Trophy,
-      title: t(content, 'about.values.excellence.title', 'Excelência'),
-      description: t(
-        content,
-        'about.values.excellence.description',
-        'Buscamos a perfeição em cada projeto, superando expectativas.'
-      ),
-    },
-    {
-      icon: Shield,
-      title: t(content, 'about.values.trust.title', 'Confiança'),
-      description: t(
-        content,
-        'about.values.trust.description',
-        'Construímos relacionamentos duradouros baseados na transparência e profissionalismo.'
-      ),
-    },
-  ];
-
   // Methodology steps with translations
   const methodologySteps = [
     {
@@ -330,40 +272,6 @@ export default async function AboutPagePT() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </section>
-
-          {/* Core Values Section */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-                {t(content, 'about.values.title', 'Nossos Valores')}
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {coreValues.map((value, index) => {
-                const IconComponent = value.icon;
-                return (
-                  <Card
-                    key={index}
-                    className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
-                  >
-                    <CardContent className="p-6 space-y-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-6 h-6 text-primary-foreground" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {value.title}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {value.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
             </div>
           </section>
 

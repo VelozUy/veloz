@@ -38,9 +38,6 @@ interface AboutContentProps {
         methodology: {
           title: string;
         };
-        values: {
-          title: string;
-        };
         faq: {
           title: string;
         };
@@ -49,11 +46,6 @@ interface AboutContentProps {
     translations: Record<string, unknown>;
   };
   faqs: FAQ[];
-  coreValues: Array<{
-    iconName: string;
-    title: string;
-    description: string;
-  }>;
   methodologySteps: Array<{
     step: string;
     title: string;
@@ -64,7 +56,6 @@ interface AboutContentProps {
 export default function AboutContent({
   content,
   faqs,
-  coreValues,
   methodologySteps,
 }: AboutContentProps) {
   return (
@@ -159,53 +150,6 @@ export default function AboutContent({
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-      <section className="py-16 px-16 bg-muted/30">
-        <div className="max-w-border-64 mx-auto space-y-8">
-          <div className="text-left">
-            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
-              {content.content.about.values.title || 'Nuestros Valores'}
-            </h2>
-            <div className="w-24 h-1 bg-primary rounded-full"></div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coreValues.map((value, index) => {
-              const iconMap: Record<
-                string,
-                React.ComponentType<{ className?: string }>
-              > = {
-                Heart,
-                Users,
-                Camera,
-                Zap,
-                Trophy,
-                Shield,
-              };
-              const IconComponent = iconMap[value.iconName];
-              return (
-                <Card
-                  key={index}
-                  className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card border-border"
-                >
-                  <CardContent className="p-6 space-y-4">
-                    <div className="w-12 h-12 bg-primary rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <IconComponent className="w-6 h-6 text-primary-foreground" />
-                    </div>
-                    <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
-                      {value.title}
-                    </h3>
-                    <p className="text-body-md text-foreground">
-                      {value.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
           </div>
         </div>
       </section>

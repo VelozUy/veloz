@@ -2,20 +2,16 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
+import { Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
 import type {
   AboutContentData,
   AboutMethodologyStepData,
-  AboutValueData,
 } from '@/lib/validation-schemas';
 
 interface AboutContentPreviewProps {
   content: AboutContentData;
   currentLanguage: string;
 }
-
-// Core values with icons
-const coreValueIcons = [Heart, Users, Camera, Zap, Trophy, Shield];
 
 export default function AboutContentPreview({
   content,
@@ -153,44 +149,6 @@ export default function AboutContentPreview({
           </section>
         )}
 
-        {/* Values Section */}
-        {content.values && content.values.length > 0 && (
-          <section className="space-y-4">
-            <div className="text-center">
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-                {getText(content.valuesTitle) || 'Nuestros Valores'}
-              </h2>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {content.values.map((value: AboutValueData, index: number) => {
-                const IconComponent =
-                  coreValueIcons[index % coreValueIcons.length];
-                return (
-                  <Card
-                    key={value.id || `value-${index}`}
-                    className="group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
-                  >
-                    <CardContent className="p-4 space-y-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-5 h-5 text-primary-foreground" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {getText(value.title) || `Valor ${index + 1}`}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {getText(value.description) ||
-                          'Descripción del valor...'}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
         {/* FAQ Section */}
         <section className="space-y-4">
           <div className="text-center">
@@ -213,8 +171,7 @@ export default function AboutContentPreview({
         {/* Empty State */}
         {!getText(content.philosophyContent) &&
           (!content.methodologySteps ||
-            content.methodologySteps.length === 0) &&
-          (!content.values || content.values.length === 0) && (
+            content.methodologySteps.length === 0) && (
             <div className="text-center py-8">
               <p className="text-muted-foreground text-sm">
                 No hay contenido para mostrar en la vista previa.

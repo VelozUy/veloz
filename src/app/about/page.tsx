@@ -64,64 +64,6 @@ export default async function AboutPage() {
   const faqs: FAQ[] = content.content.faqs || [];
   const faqStructuredData = generateFAQStructuredData(faqs);
 
-  // Core values with translations
-  const coreValues = [
-    {
-      iconName: 'Heart',
-      title: t(content, 'about.values.passion.title', 'Pasión'),
-      description: t(
-        content,
-        'about.values.passion.description',
-        'Amamos lo que hacemos y se refleja en cada imagen que capturamos.'
-      ),
-    },
-    {
-      iconName: 'Users',
-      title: t(content, 'about.values.teamwork.title', 'Trabajo en Equipo'),
-      description: t(
-        content,
-        'about.values.teamwork.description',
-        'Nuestro modelo colaborativo nos permite cubrir cada momento importante.'
-      ),
-    },
-    {
-      iconName: 'Camera',
-      title: t(content, 'about.values.quality.title', 'Calidad Técnica'),
-      description: t(
-        content,
-        'about.values.quality.description',
-        'Utilizamos equipos profesionales y técnicas avanzadas para resultados excepcionales.'
-      ),
-    },
-    {
-      iconName: 'Zap',
-      title: t(content, 'about.values.agility.title', 'Agilidad'),
-      description: t(
-        content,
-        'about.values.agility.description',
-        'Nos adaptamos rápidamente a cualquier situación para no perder ningún momento.'
-      ),
-    },
-    {
-      iconName: 'Trophy',
-      title: t(content, 'about.values.excellence.title', 'Excelencia'),
-      description: t(
-        content,
-        'about.values.excellence.description',
-        'Buscamos la perfección en cada proyecto, superando las expectativas.'
-      ),
-    },
-    {
-      iconName: 'Shield',
-      title: t(content, 'about.values.trust.title', 'Confianza'),
-      description: t(
-        content,
-        'about.values.trust.description',
-        'Construimos relaciones duraderas basadas en la transparencia y profesionalismo.'
-      ),
-    },
-  ];
-
   // Methodology steps with database data
   const methodologySteps = [
     {
@@ -161,7 +103,6 @@ export default async function AboutPage() {
       <AboutContent
         content={content}
         faqs={faqs}
-        coreValues={coreValues}
         methodologySteps={methodologySteps}
       />
     </>

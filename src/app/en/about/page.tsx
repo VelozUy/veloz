@@ -117,64 +117,6 @@ export default async function AboutPageEN() {
   const faqs = await getFAQs();
   const faqStructuredData = generateFAQStructuredData(faqs, 'en');
 
-  // Core values with translations
-  const coreValues = [
-    {
-      icon: Heart,
-      title: t(content, 'about.values.passion.title', 'Passion'),
-      description: t(
-        content,
-        'about.values.passion.description',
-        'We love what we do and it shows in every image we capture.'
-      ),
-    },
-    {
-      icon: Users,
-      title: t(content, 'about.values.teamwork.title', 'Teamwork'),
-      description: t(
-        content,
-        'about.values.teamwork.description',
-        'Our collaborative model allows us to cover every important moment.'
-      ),
-    },
-    {
-      icon: Camera,
-      title: t(content, 'about.values.quality.title', 'Technical Quality'),
-      description: t(
-        content,
-        'about.values.quality.description',
-        'We use professional equipment and advanced techniques for exceptional results.'
-      ),
-    },
-    {
-      icon: Zap,
-      title: t(content, 'about.values.agility.title', 'Agility'),
-      description: t(
-        content,
-        'about.values.agility.description',
-        'We adapt quickly to any situation to never miss a moment.'
-      ),
-    },
-    {
-      icon: Trophy,
-      title: t(content, 'about.values.excellence.title', 'Excellence'),
-      description: t(
-        content,
-        'about.values.excellence.description',
-        'We strive for perfection in every project, exceeding expectations.'
-      ),
-    },
-    {
-      icon: Shield,
-      title: t(content, 'about.values.trust.title', 'Trust'),
-      description: t(
-        content,
-        'about.values.trust.description',
-        'We build lasting relationships based on transparency and professionalism.'
-      ),
-    },
-  ];
-
   // Methodology steps with translations
   const methodologySteps = [
     {
@@ -330,40 +272,6 @@ export default async function AboutPageEN() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </section>
-
-          {/* Core Values Section */}
-          <section className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
-                {t(content, 'about.values.title', 'Our Values')}
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {coreValues.map((value, index) => {
-                const IconComponent = value.icon;
-                return (
-                  <Card
-                    key={index}
-                    className="group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-0"
-                  >
-                    <CardContent className="p-6 space-y-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-none flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-6 h-6 text-primary-foreground" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {value.title}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {value.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
             </div>
           </section>
 

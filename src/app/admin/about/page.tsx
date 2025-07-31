@@ -14,9 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Globe,
-  Heart,
   Loader2,
-  Plus,
   Save,
   CheckCircle,
   AlertTriangle,
@@ -46,7 +44,6 @@ import { aboutContentService } from '@/services/about-content';
 import {
   AboutContentData,
   AboutMethodologyStepData,
-  AboutValueData,
 } from '@/lib/validation-schemas';
 import AboutContentPreview from '@/components/admin/AboutContentPreview';
 import { MarkdownEditor } from '@/components/ui/markdown-editor';
@@ -253,187 +250,6 @@ function SortableMethodologyCard({
   );
 }
 
-// Sortable Value Card Component
-function SortableValueCard({
-  value,
-  index,
-  currentLanguage,
-  onValueChange,
-  onRemoveValue,
-  onTranslateValue,
-  isTranslating,
-}: {
-  value: AboutValueData;
-  index: number;
-  currentLanguage: string;
-  onValueChange: (
-    valueId: string,
-    field: 'title' | 'description',
-    language: string,
-    value: string
-  ) => void;
-  onRemoveValue: (valueId: string) => void;
-  onTranslateValue: (
-    valueId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => void;
-  isTranslating: (
-    valueId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => boolean;
-}) {
-  // Ensure value has an ID for drag and drop functionality
-  const valueId = value.id || `value-${index}`;
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: valueId });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style}>
-      <Card className="bg-muted/50">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {/* Drag handle */}
-              <div
-                {...attributes}
-                {...listeners}
-                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
-              >
-                <GripVertical className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <CardTitle className="text-lg">
-                {value.title[currentLanguage as keyof typeof value.title] ||
-                  `Valor ${index + 1}`}
-              </CardTitle>
-            </div>
-            <Button
-              onClick={() => onRemoveValue(valueId)}
-              size="sm"
-              variant="destructive"
-              className="flex items-center gap-2"
-            >
-              <Trash2 className="h-4 w-4" />
-              Eliminar
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${valueId}-title`}>Título</Label>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onTranslateValue(valueId, 'title', 'en')}
-                  disabled={isTranslating(valueId, 'title', 'en')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(valueId, 'title', 'en') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇺🇸 EN'
-                  )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onTranslateValue(valueId, 'title', 'pt')}
-                  disabled={isTranslating(valueId, 'title', 'pt')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(valueId, 'title', 'pt') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇧🇷 PT'
-                  )}
-                </Button>
-              </div>
-            </div>
-            <Input
-              id={`${valueId}-title`}
-              value={
-                value.title[currentLanguage as keyof typeof value.title] || ''
-              }
-              onChange={e =>
-                onValueChange(valueId, 'title', currentLanguage, e.target.value)
-              }
-              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-            />
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${valueId}-description`}>Descripción</Label>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onTranslateValue(valueId, 'description', 'en')}
-                  disabled={isTranslating(valueId, 'description', 'en')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(valueId, 'description', 'en') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇺🇸 EN'
-                  )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onTranslateValue(valueId, 'description', 'pt')}
-                  disabled={isTranslating(valueId, 'description', 'pt')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(valueId, 'description', 'pt') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇧🇷 PT'
-                  )}
-                </Button>
-              </div>
-            </div>
-            <Textarea
-              id={`${valueId}-description`}
-              value={
-                value.description[
-                  currentLanguage as keyof typeof value.description
-                ] || ''
-              }
-              onChange={e =>
-                onValueChange(
-                  valueId,
-                  'description',
-                  currentLanguage,
-                  e.target.value
-                )
-              }
-              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-              rows={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
 export default function AboutAdminPage() {
   const { user } = useAuth();
   const [, setAboutContent] = useState<AboutContentData | null>(null);
@@ -457,9 +273,6 @@ export default function AboutAdminPage() {
   const [hasChanges, setHasChanges] = useState(false);
 
   // Translation loading states
-  const [translatingValues, setTranslatingValues] = useState<
-    Record<string, boolean>
-  >({});
   const [translatingPhilosophy, setTranslatingPhilosophy] = useState<
     Record<string, boolean>
   >({});
@@ -492,13 +305,6 @@ export default function AboutAdminPage() {
 
           // Debug: Log the data structure to understand what we're working with
           console.log('About content data structure:', {
-            hasValues: !!contentData.values,
-            valuesType: typeof contentData.values,
-            isValuesArray: Array.isArray(contentData.values),
-            valuesLength: Array.isArray(contentData.values)
-              ? contentData.values.length
-              : 'N/A',
-
             hasMethodologySteps: !!contentData.methodologySteps,
             methodologyStepsType: typeof contentData.methodologySteps,
             isMethodologyStepsArray: Array.isArray(
@@ -515,13 +321,6 @@ export default function AboutAdminPage() {
               en: '',
               pt: '',
             },
-            values: Array.isArray(contentData.values)
-              ? contentData.values.map((item: AboutValueData, index) => ({
-                  ...item,
-                  id: item.id || `value-${Date.now()}-${index}`,
-                }))
-              : [],
-
             methodologySteps: Array.isArray(contentData.methodologySteps)
               ? contentData.methodologySteps.map(
                   (item: AboutMethodologyStepData, index) => ({
@@ -590,8 +389,7 @@ export default function AboutAdminPage() {
       | 'heroSubtitle'
       | 'philosophyTitle'
       | 'philosophyContent'
-      | 'methodologyTitle'
-      | 'valuesTitle',
+      | 'methodologyTitle',
     language: string,
     value: string
   ) => {
@@ -610,90 +408,6 @@ export default function AboutAdminPage() {
         [language]: value,
       };
 
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // Handler for individual value changes
-  const handleValueChange = (
-    valueId: string,
-    field: 'title' | 'description',
-    language: string,
-    value: string
-  ) => {
-    if (!formData) return;
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.values = (updated.values as AboutValueData[]).map(
-        (item: AboutValueData) =>
-          item.id === valueId
-            ? {
-                ...item,
-                [field]: {
-                  ...item[field],
-                  [language]: value,
-                },
-              }
-            : item
-      );
-
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // Handler for adding new value
-  const handleAddValue = () => {
-    if (!formData) return;
-
-    const newId = `value-${Date.now()}`;
-    const currentValues = formData.values || [];
-    const maxOrder = Math.max(...currentValues.map(v => v.order || 0), -1);
-
-    const newValue: AboutValueData = {
-      id: newId,
-      order: maxOrder + 1,
-      title: {
-        es: '',
-        en: '',
-        pt: '',
-      },
-      description: {
-        es: '',
-        en: '',
-        pt: '',
-      },
-      icon: '',
-    };
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.values = [...updated.values, newValue];
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // Handler for removing value
-  const handleRemoveValue = (valueId: string) => {
-    if (!formData) return;
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.values = (updated.values as AboutValueData[]).filter(
-        (item: AboutValueData) => item.id !== valueId
-      );
       return updated;
     });
 
@@ -819,15 +533,6 @@ export default function AboutAdminPage() {
       });
     }
 
-    // Values section
-    translationData['values.title'] = formData.valuesTitle;
-    if (Array.isArray(formData.values)) {
-      formData.values.forEach((value, index) => {
-        translationData[`values.item.${index}.title`] = value.title;
-        translationData[`values.item.${index}.description`] = value.description;
-      });
-    }
-
     return translationData;
   };
 
@@ -838,43 +543,7 @@ export default function AboutAdminPage() {
       'philosophy.title': 'Título de Filosofía',
       'philosophy.content': 'Contenido de Filosofía',
       'methodology.title': 'Título de Metodología',
-      'values.title': 'Título de Valores',
     };
-  };
-
-  const handleValuesDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id && formData) {
-      setFormData(prev => {
-        if (!prev) return prev;
-        if (!Array.isArray(prev.values)) return prev;
-
-        const oldIndex = prev.values.findIndex(
-          (item: AboutValueData) =>
-            (item.id || `value-${Date.now()}-${Math.random()}`) === active.id
-        );
-        const newIndex = prev.values.findIndex(
-          (item: AboutValueData) =>
-            (item.id || `value-${Date.now()}-${Math.random()}`) === over?.id
-        );
-
-        const newItems = arrayMove(prev.values, oldIndex, newIndex);
-
-        // Update order values
-        const updatedItems = newItems.map((item, index) => ({
-          ...item,
-          order: index,
-        }));
-
-        return {
-          ...prev,
-          values: updatedItems,
-        };
-      });
-
-      setHasChanges(true);
-    }
   };
 
   const handleMethodologyDragEnd = (event: DragEndEvent) => {
@@ -911,66 +580,6 @@ export default function AboutAdminPage() {
       });
 
       setHasChanges(true);
-    }
-  };
-
-  const handleTranslateValue = async (
-    valueId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => {
-    if (!formData) return;
-
-    const translationKey = `${valueId}-${field}-${language}`;
-
-    try {
-      setTranslatingValues(prev => ({ ...prev, [translationKey]: true }));
-
-      // Find the value by ID
-      if (!Array.isArray(formData.values)) return;
-      const valueIndex = formData.values.findIndex(item => item.id === valueId);
-      if (valueIndex === -1) return;
-
-      const value = formData.values[valueIndex];
-      const sourceText = value[field].es;
-
-      if (!sourceText) {
-        console.warn(`No Spanish text found for ${field} of value ${valueId}`);
-        return;
-      }
-
-      // Use the translation service to translate the text
-      const { TranslationClientService } = await import(
-        '@/services/translation-client'
-      );
-      const translationService = new TranslationClientService();
-      const response = await translationService.translateText({
-        text: sourceText,
-        fromLanguage: 'es',
-        toLanguage: language,
-        contentType: 'marketing',
-      });
-
-      setFormData(prev => {
-        if (!prev) return prev;
-
-        const updated = { ...prev };
-        updated.values[valueIndex] = {
-          ...updated.values[valueIndex],
-          [field]: {
-            ...updated.values[valueIndex][field],
-            [language]: response.translatedText,
-          },
-        };
-
-        return updated;
-      });
-
-      setHasChanges(true);
-    } catch (error) {
-      console.error('Error translating value:', error);
-    } finally {
-      setTranslatingValues(prev => ({ ...prev, [translationKey]: false }));
     }
   };
 
@@ -1038,16 +647,6 @@ export default function AboutAdminPage() {
     }
   };
 
-  // Helper function to check if a specific translation is in progress
-  const isValueTranslating = (
-    valueId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => {
-    const translationKey = `${valueId}-${field}-${language}`;
-    return translatingValues[translationKey] || false;
-  };
-
   const isMethodologyTranslating = (
     stepId: string,
     field: 'title' | 'description',
@@ -1108,28 +707,6 @@ export default function AboutAdminPage() {
                   ...updated.methodologySteps[index][
                     field as 'title' | 'description'
                   ],
-                  [language]: targetText,
-                },
-              };
-            }
-          }
-        } else if (fieldKey === 'values.title') {
-          updated.valuesTitle = {
-            ...updated.valuesTitle,
-            [language]: targetText,
-          };
-        } else if (fieldKey.startsWith('values.item.')) {
-          const match = fieldKey.match(
-            /values\.item\.(\d+)\.(title|description)/
-          );
-          if (match) {
-            const [, indexStr, field] = match;
-            const index = parseInt(indexStr, 10);
-            if (updated.values[index]) {
-              updated.values[index] = {
-                ...updated.values[index],
-                [field]: {
-                  ...updated.values[index][field as 'title' | 'description'],
                   [language]: targetText,
                 },
               };
@@ -1289,11 +866,10 @@ export default function AboutAdminPage() {
 
         {/* Content Sections */}
         <Tabs defaultValue="main" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="main">Contenido Principal</TabsTrigger>
             <TabsTrigger value="philosophy">Filosofía</TabsTrigger>
             <TabsTrigger value="methodology">Metodología</TabsTrigger>
-            <TabsTrigger value="values">Valores</TabsTrigger>
             <TabsTrigger value="preview">Vista Previa</TabsTrigger>
           </TabsList>
 
@@ -1406,7 +982,6 @@ export default function AboutAdminPage() {
                     size="sm"
                     className="flex items-center gap-2"
                   >
-                    <Plus className="h-4 w-4" />
                     Agregar Paso
                   </Button>
                 </div>
@@ -1438,9 +1013,7 @@ export default function AboutAdminPage() {
                 {!Array.isArray(formData.methodologySteps) ||
                 formData.methodologySteps.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    <div className="mb-4">
-                      <Heart className="h-12 w-12 mx-auto opacity-20" />
-                    </div>
+                    <div className="mb-4"></div>
                     <p>No hay pasos de metodología agregados aún.</p>
                     <p className="text-sm">
                       Haz clic en &quot;Agregar Paso&quot; para comenzar.
@@ -1484,95 +1057,6 @@ export default function AboutAdminPage() {
                             isTranslating={isMethodologyTranslating}
                           />
                         ))}
-                    </SortableContext>
-                  </DndContext>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="values" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Valores Corporativos</CardTitle>
-                  <Button
-                    onClick={handleAddValue}
-                    size="sm"
-                    className="flex items-center gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Agregar Valor
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <Label htmlFor="values-title">Título de la Sección</Label>
-                  <Input
-                    id="values-title"
-                    value={
-                      formData.valuesTitle[
-                        currentLanguage as keyof typeof formData.valuesTitle
-                      ] || ''
-                    }
-                    onChange={e =>
-                      handleInputChange(
-                        'valuesTitle',
-                        currentLanguage,
-                        e.target.value
-                      )
-                    }
-                    placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-                  />
-                </div>
-
-                {/* Dynamic Values */}
-                {!Array.isArray(formData.values) ||
-                formData.values.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <div className="mb-4">
-                      <Heart className="h-12 w-12 mx-auto opacity-20" />
-                    </div>
-                    <p>No hay valores agregados aún.</p>
-                    <p className="text-sm">
-                      Haz clic en &quot;Agregar Valor&quot; para comenzar.
-                    </p>
-                  </div>
-                ) : (
-                  <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleValuesDragEnd}
-                  >
-                    <SortableContext
-                      items={
-                        Array.isArray(formData.values)
-                          ? formData.values.map(
-                              item =>
-                                item.id ||
-                                `value-${Date.now()}-${Math.random()}`
-                            )
-                          : []
-                      }
-                      strategy={verticalListSortingStrategy}
-                    >
-                      {Array.isArray(formData.values)
-                        ? formData.values
-                            .sort((a, b) => (a.order || 0) - (b.order || 0))
-                            .map((value, index) => (
-                              <SortableValueCard
-                                key={value.id}
-                                value={value}
-                                index={index}
-                                currentLanguage={currentLanguage}
-                                onValueChange={handleValueChange}
-                                onRemoveValue={handleRemoveValue}
-                                onTranslateValue={handleTranslateValue}
-                                isTranslating={isValueTranslating}
-                              />
-                            ))
-                        : null}
                     </SortableContext>
                   </DndContext>
                 )}

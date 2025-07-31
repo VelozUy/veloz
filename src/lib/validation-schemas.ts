@@ -262,15 +262,6 @@ export const aboutMethodologyStepSchema = z.object({
   image: z.string().url().optional(),
 });
 
-// About Value Schema
-export const aboutValueSchema = z.object({
-  id: z.string().optional(),
-  order: z.number().int().min(0).optional(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
-  icon: z.string().optional(),
-});
-
 // About Content Schema
 export const aboutContentSchema = baseSchema.extend({
   heroTitle: multiLanguageTextSchema,
@@ -289,9 +280,6 @@ export const aboutContentSchema = baseSchema.extend({
   methodologyTitle: multiLanguageTextSchema,
   methodologyDescription: multiLanguageTextSchema,
   methodologySteps: z.array(aboutMethodologyStepSchema).default([]),
-  valuesTitle: multiLanguageTextSchema,
-  valuesDescription: multiLanguageTextSchema,
-  values: z.array(aboutValueSchema).default([]),
   teamTitle: multiLanguageTextSchema,
   teamDescription: multiLanguageTextSchema,
   ctaTitle: multiLanguageTextSchema,
@@ -548,7 +536,7 @@ export type AboutContentData = z.infer<typeof aboutContentSchema>;
 export type AboutMethodologyStepData = z.infer<
   typeof aboutMethodologyStepSchema
 >;
-export type AboutValueData = z.infer<typeof aboutValueSchema>;
+
 export type AdminUserData = z.infer<typeof adminUserSchema>;
 export type EmailNotificationPreferencesData = z.infer<
   typeof emailNotificationPreferencesSchema
