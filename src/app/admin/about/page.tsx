@@ -45,214 +45,17 @@ import { CSS } from '@dnd-kit/utilities';
 import { aboutContentService } from '@/services/about-content';
 import {
   AboutContentData,
-  AboutPhilosophyPointData,
   AboutMethodologyStepData,
   AboutValueData,
 } from '@/lib/validation-schemas';
 import AboutContentPreview from '@/components/admin/AboutContentPreview';
+import { MarkdownEditor } from '@/components/ui/markdown-editor';
 
 const LANGUAGES = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
 ];
-
-// Sortable Philosophy Point Card Component
-function SortablePhilosophyCard({
-  point,
-  index,
-  currentLanguage,
-  onPhilosophyPointChange,
-  onRemovePhilosophyPoint,
-  onTranslatePhilosophyPoint,
-  isTranslating,
-}: {
-  point: AboutPhilosophyPointData;
-  index: number;
-  currentLanguage: string;
-  onPhilosophyPointChange: (
-    pointId: string,
-    field: 'title' | 'description',
-    language: string,
-    value: string
-  ) => void;
-  onRemovePhilosophyPoint: (pointId: string) => void;
-  onTranslatePhilosophyPoint: (
-    pointId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => void;
-  isTranslating: (
-    pointId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => boolean;
-}) {
-  // Ensure point has an ID for drag and drop functionality
-  const pointId = point.id || `philosophy-${index}`;
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: pointId });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  return (
-    <div ref={setNodeRef} style={style}>
-      <Card className="bg-muted/50">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {/* Drag handle */}
-              <div
-                {...attributes}
-                {...listeners}
-                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
-              >
-                <GripVertical className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <CardTitle className="text-lg">
-                {point.title[currentLanguage as keyof typeof point.title] ||
-                  `Punto ${index + 1}`}
-              </CardTitle>
-            </div>
-            <Button
-              onClick={() => onRemovePhilosophyPoint(pointId)}
-              size="sm"
-              variant="destructive"
-              className="flex items-center gap-2"
-              aria-label={`Remove philosophy point ${index + 1}`}
-            >
-              <Trash2 className="h-4 w-4" />
-              Eliminar
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${pointId}-title`}>Título</Label>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    onTranslatePhilosophyPoint(pointId, 'title', 'en')
-                  }
-                  disabled={isTranslating(pointId, 'title', 'en')}
-                  className="text-xs h-7 px-2"
-                  aria-label="Translate title to English"
-                >
-                  {isTranslating(pointId, 'title', 'en') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇺🇸 EN'
-                  )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    onTranslatePhilosophyPoint(pointId, 'title', 'pt')
-                  }
-                  disabled={isTranslating(pointId, 'title', 'pt')}
-                  className="text-xs h-7 px-2"
-                  aria-label="Translate title to Portuguese"
-                >
-                  {isTranslating(pointId, 'title', 'pt') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇧🇷 PT'
-                  )}
-                </Button>
-              </div>
-            </div>
-            <Input
-              id={`${pointId}-title`}
-              value={
-                point.title[currentLanguage as keyof typeof point.title] || ''
-              }
-              onChange={e =>
-                onPhilosophyPointChange(
-                  pointId,
-                  'title',
-                  currentLanguage,
-                  e.target.value
-                )
-              }
-              placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-            />
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label htmlFor={`${pointId}-description`}>Descripción</Label>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    onTranslatePhilosophyPoint(pointId, 'description', 'en')
-                  }
-                  disabled={isTranslating(pointId, 'description', 'en')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(pointId, 'description', 'en') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇺🇸 EN'
-                  )}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    onTranslatePhilosophyPoint(pointId, 'description', 'pt')
-                  }
-                  disabled={isTranslating(pointId, 'description', 'pt')}
-                  className="text-xs h-7 px-2"
-                >
-                  {isTranslating(pointId, 'description', 'pt') ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    '🇧🇷 PT'
-                  )}
-                </Button>
-              </div>
-            </div>
-            <Textarea
-              id={`${pointId}-description`}
-              value={
-                point.description[
-                  currentLanguage as keyof typeof point.description
-                ] || ''
-              }
-              onChange={e =>
-                onPhilosophyPointChange(
-                  pointId,
-                  'description',
-                  currentLanguage,
-                  e.target.value
-                )
-              }
-              placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
-              rows={4}
-            />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
 
 // Sortable Methodology Step Card Component
 function SortableMethodologyCard({
@@ -695,11 +498,7 @@ export default function AboutAdminPage() {
             valuesLength: Array.isArray(contentData.values)
               ? contentData.values.length
               : 'N/A',
-            hasPhilosophyPoints: !!contentData.philosophyPoints,
-            philosophyPointsType: typeof contentData.philosophyPoints,
-            isPhilosophyPointsArray: Array.isArray(
-              contentData.philosophyPoints
-            ),
+
             hasMethodologySteps: !!contentData.methodologySteps,
             methodologyStepsType: typeof contentData.methodologySteps,
             isMethodologyStepsArray: Array.isArray(
@@ -710,20 +509,19 @@ export default function AboutAdminPage() {
           // Ensure all array items have IDs and validate data structure
           const processedData = {
             ...contentData,
+            // Ensure philosophyContent exists with proper structure
+            philosophyContent: contentData.philosophyContent || {
+              es: '',
+              en: '',
+              pt: '',
+            },
             values: Array.isArray(contentData.values)
               ? contentData.values.map((item: AboutValueData, index) => ({
                   ...item,
                   id: item.id || `value-${Date.now()}-${index}`,
                 }))
               : [],
-            philosophyPoints: Array.isArray(contentData.philosophyPoints)
-              ? contentData.philosophyPoints.map(
-                  (item: AboutPhilosophyPointData, index) => ({
-                    ...item,
-                    id: item.id || `philosophy-${Date.now()}-${index}`,
-                  })
-                )
-              : [],
+
             methodologySteps: Array.isArray(contentData.methodologySteps)
               ? contentData.methodologySteps.map(
                   (item: AboutMethodologyStepData, index) => ({
@@ -791,6 +589,7 @@ export default function AboutAdminPage() {
       | 'heroTitle'
       | 'heroSubtitle'
       | 'philosophyTitle'
+      | 'philosophyContent'
       | 'methodologyTitle'
       | 'valuesTitle',
     language: string,
@@ -832,7 +631,7 @@ export default function AboutAdminPage() {
       const updated = { ...prev };
       updated.values = (updated.values as AboutValueData[]).map(
         (item: AboutValueData) =>
-          (item.id || `value-${Date.now()}-${Math.random()}`) === valueId
+          item.id === valueId
             ? {
                 ...item,
                 [field]: {
@@ -854,8 +653,12 @@ export default function AboutAdminPage() {
     if (!formData) return;
 
     const newId = `value-${Date.now()}`;
+    const currentValues = formData.values || [];
+    const maxOrder = Math.max(...currentValues.map(v => v.order || 0), -1);
+
     const newValue: AboutValueData = {
       id: newId,
+      order: maxOrder + 1,
       title: {
         es: '',
         en: '',
@@ -889,94 +692,7 @@ export default function AboutAdminPage() {
 
       const updated = { ...prev };
       updated.values = (updated.values as AboutValueData[]).filter(
-        (item: AboutValueData) =>
-          (item.id || `value-${Date.now()}-${Math.random()}`) !== valueId
-      );
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // === Philosophy Points Handlers ===
-
-  // Handler for individual philosophy point changes
-  const handlePhilosophyPointChange = (
-    pointId: string,
-    field: 'title' | 'description',
-    language: string,
-    value: string
-  ) => {
-    if (!formData) return;
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.philosophyPoints = (
-        updated.philosophyPoints as AboutPhilosophyPointData[]
-      ).map((item: AboutPhilosophyPointData) =>
-        (item.id || `philosophy-${Date.now()}-${Math.random()}`) === pointId
-          ? {
-              ...item,
-              [field]: {
-                ...item[field],
-                [language]: value,
-              },
-            }
-          : item
-      );
-
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // Handler for adding new philosophy point
-  const handleAddPhilosophyPoint = () => {
-    if (!formData) return;
-
-    const newId = `philosophy-${Date.now()}`;
-    const newPoint: AboutPhilosophyPointData = {
-      id: newId,
-      title: {
-        es: '',
-        en: '',
-        pt: '',
-      },
-      description: {
-        es: '',
-        en: '',
-        pt: '',
-      },
-      icon: '',
-    };
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.philosophyPoints = [...updated.philosophyPoints, newPoint];
-      return updated;
-    });
-
-    setHasChanges(true);
-  };
-
-  // Handler for removing philosophy point
-  const handleRemovePhilosophyPoint = (pointId: string) => {
-    if (!formData) return;
-
-    setFormData(prev => {
-      if (!prev) return prev;
-
-      const updated = { ...prev };
-      updated.philosophyPoints = (
-        updated.philosophyPoints as AboutPhilosophyPointData[]
-      ).filter(
-        (item: AboutPhilosophyPointData) =>
-          (item.id || `philosophy-${Date.now()}-${Math.random()}`) !== pointId
+        (item: AboutValueData) => item.id !== valueId
       );
       return updated;
     });
@@ -1002,7 +718,7 @@ export default function AboutAdminPage() {
       updated.methodologySteps = (
         updated.methodologySteps as AboutMethodologyStepData[]
       ).map((item: AboutMethodologyStepData) =>
-        (item.id || `methodology-${Date.now()}-${Math.random()}`) === stepId
+        item.id === stepId
           ? {
               ...item,
               [field]: {
@@ -1024,8 +740,12 @@ export default function AboutAdminPage() {
     if (!formData) return;
 
     const newId = `methodology-${Date.now()}`;
+    const currentSteps = formData.methodologySteps || [];
+    const maxOrder = Math.max(...currentSteps.map(s => s.order || 0), -1);
+
     const newStep: AboutMethodologyStepData = {
       id: newId,
+      order: maxOrder + 1,
       title: {
         es: '',
         en: '',
@@ -1036,7 +756,7 @@ export default function AboutAdminPage() {
         en: '',
         pt: '',
       },
-      stepNumber: formData.methodologySteps.length + 1,
+      stepNumber: currentSteps.length + 1,
     };
 
     setFormData(prev => {
@@ -1060,10 +780,7 @@ export default function AboutAdminPage() {
       const updated = { ...prev };
       updated.methodologySteps = (
         updated.methodologySteps as AboutMethodologyStepData[]
-      ).filter(
-        (item: AboutMethodologyStepData) =>
-          (item.id || `methodology-${Date.now()}-${Math.random()}`) !== stepId
-      );
+      ).filter((item: AboutMethodologyStepData) => item.id !== stepId);
       return updated;
     });
 
@@ -1086,13 +803,11 @@ export default function AboutAdminPage() {
 
     // Philosophy section
     translationData['philosophy.title'] = formData.philosophyTitle;
-    if (Array.isArray(formData.philosophyPoints)) {
-      formData.philosophyPoints.forEach((point, index) => {
-        translationData[`philosophy.item.${index}.title`] = point.title;
-        translationData[`philosophy.item.${index}.description`] =
-          point.description;
-      });
-    }
+    translationData['philosophy.content'] = formData.philosophyContent || {
+      es: '',
+      en: '',
+      pt: '',
+    };
 
     // Methodology section
     translationData['methodology.title'] = formData.methodologyTitle;
@@ -1121,6 +836,7 @@ export default function AboutAdminPage() {
       title: 'Título Principal',
       subtitle: 'Subtítulo',
       'philosophy.title': 'Título de Filosofía',
+      'philosophy.content': 'Contenido de Filosofía',
       'methodology.title': 'Título de Metodología',
       'values.title': 'Título de Valores',
     };
@@ -1154,43 +870,6 @@ export default function AboutAdminPage() {
         return {
           ...prev,
           values: updatedItems,
-        };
-      });
-
-      setHasChanges(true);
-    }
-  };
-
-  const handlePhilosophyDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id && formData) {
-      setFormData(prev => {
-        if (!prev) return prev;
-        if (!Array.isArray(prev.philosophyPoints)) return prev;
-
-        const oldIndex = prev.philosophyPoints.findIndex(
-          (item: AboutPhilosophyPointData) =>
-            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
-            active.id
-        );
-        const newIndex = prev.philosophyPoints.findIndex(
-          (item: AboutPhilosophyPointData) =>
-            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
-            over?.id
-        );
-
-        const newItems = arrayMove(prev.philosophyPoints, oldIndex, newIndex);
-
-        // Update order values
-        const updatedItems = newItems.map((item, index) => ({
-          ...item,
-          order: index,
-        }));
-
-        return {
-          ...prev,
-          philosophyPoints: updatedItems,
         };
       });
 
@@ -1295,70 +974,6 @@ export default function AboutAdminPage() {
     }
   };
 
-  const handleTranslatePhilosophyPoint = async (
-    pointId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => {
-    if (!formData) return;
-
-    const translationKey = `${pointId}-${field}-${language}`;
-
-    try {
-      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: true }));
-
-      // Find the philosophy point by ID
-      if (!Array.isArray(formData.philosophyPoints)) return;
-      const pointIndex = formData.philosophyPoints.findIndex(
-        item => item.id === pointId
-      );
-      if (pointIndex === -1) return;
-
-      const point = formData.philosophyPoints[pointIndex];
-      const sourceText = point[field].es;
-
-      if (!sourceText) {
-        console.warn(
-          `No Spanish text found for ${field} of philosophy point ${pointId}`
-        );
-        return;
-      }
-
-      // Use the translation service to translate the text
-      const { TranslationClientService } = await import(
-        '@/services/translation-client'
-      );
-      const translationService = new TranslationClientService();
-      const response = await translationService.translateText({
-        text: sourceText,
-        fromLanguage: 'es',
-        toLanguage: language,
-        contentType: 'marketing',
-      });
-
-      setFormData(prev => {
-        if (!prev) return prev;
-
-        const updated = { ...prev };
-        updated.philosophyPoints[pointIndex] = {
-          ...updated.philosophyPoints[pointIndex],
-          [field]: {
-            ...updated.philosophyPoints[pointIndex][field],
-            [language]: response.translatedText,
-          },
-        };
-
-        return updated;
-      });
-
-      setHasChanges(true);
-    } catch (error) {
-      console.error('Error translating philosophy point:', error);
-    } finally {
-      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: false }));
-    }
-  };
-
   const handleTranslateMethodologyStep = async (
     stepId: string,
     field: 'title' | 'description',
@@ -1433,15 +1048,6 @@ export default function AboutAdminPage() {
     return translatingValues[translationKey] || false;
   };
 
-  const isPhilosophyTranslating = (
-    pointId: string,
-    field: 'title' | 'description',
-    language: 'en' | 'pt'
-  ) => {
-    const translationKey = `${pointId}-${field}-${language}`;
-    return translatingPhilosophy[translationKey] || false;
-  };
-
   const isMethodologyTranslating = (
     stepId: string,
     field: 'title' | 'description',
@@ -1478,25 +1084,11 @@ export default function AboutAdminPage() {
             ...updated.philosophyTitle,
             [language]: targetText,
           };
-        } else if (fieldKey.startsWith('philosophy.item.')) {
-          const match = fieldKey.match(
-            /philosophy\.item\.(\d+)\.(title|description)/
-          );
-          if (match) {
-            const [, indexStr, field] = match;
-            const index = parseInt(indexStr, 10);
-            if (updated.philosophyPoints[index]) {
-              updated.philosophyPoints[index] = {
-                ...updated.philosophyPoints[index],
-                [field]: {
-                  ...updated.philosophyPoints[index][
-                    field as 'title' | 'description'
-                  ],
-                  [language]: targetText,
-                },
-              };
-            }
-          }
+        } else if (fieldKey === 'philosophy.content') {
+          updated.philosophyContent = {
+            ...updated.philosophyContent,
+            [language]: targetText,
+          };
         } else if (fieldKey === 'methodology.title') {
           updated.methodologyTitle = {
             ...updated.methodologyTitle,
@@ -1579,14 +1171,6 @@ export default function AboutAdminPage() {
       </AdminLayout>
     );
   }
-
-  // Patch philosophy points to ensure each has an id
-  const philosophyPointsWithId = Array.isArray(formData.philosophyPoints)
-    ? formData.philosophyPoints.map((point, index) => ({
-        ...point,
-        id: point.id || `philosophy-${index}-${Date.now()}`,
-      }))
-    : [];
 
   return (
     <AdminLayout title="Página Sobre Nosotros">
@@ -1766,17 +1350,7 @@ export default function AboutAdminPage() {
           <TabsContent value="philosophy" className="space-y-6">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Sección de Filosofía</CardTitle>
-                  <Button
-                    onClick={handleAddPhilosophyPoint}
-                    size="sm"
-                    className="flex items-center gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Agregar Punto
-                  </Button>
-                </div>
+                <CardTitle>Sección de Filosofía</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
@@ -1799,51 +1373,25 @@ export default function AboutAdminPage() {
                   />
                 </div>
 
-                {/* Dynamic Philosophy Points */}
-                {!Array.isArray(formData.philosophyPoints) ||
-                formData.philosophyPoints.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <div className="mb-4">
-                      <Heart className="h-12 w-12 mx-auto opacity-20" />
-                    </div>
-                    <p>No hay puntos de filosofía agregados aún.</p>
-                    <p className="text-sm">
-                      Haz clic en &quot;Agregar Punto&quot; para comenzar.
-                    </p>
-                  </div>
-                ) : (
-                  <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handlePhilosophyDragEnd}
-                  >
-                    <SortableContext
-                      items={philosophyPointsWithId.map(item => item.id)}
-                      strategy={verticalListSortingStrategy}
-                    >
-                      {philosophyPointsWithId
-                        .sort((a, b) => (a.order || 0) - (b.order || 0))
-                        .map((point, index) => (
-                          <SortablePhilosophyCard
-                            key={point.id}
-                            point={point}
-                            index={index}
-                            currentLanguage={currentLanguage}
-                            onPhilosophyPointChange={
-                              handlePhilosophyPointChange
-                            }
-                            onRemovePhilosophyPoint={
-                              handleRemovePhilosophyPoint
-                            }
-                            onTranslatePhilosophyPoint={
-                              handleTranslatePhilosophyPoint
-                            }
-                            isTranslating={isPhilosophyTranslating}
-                          />
-                        ))}
-                    </SortableContext>
-                  </DndContext>
-                )}
+                <div>
+                  <MarkdownEditor
+                    value={
+                      formData.philosophyContent?.[
+                        currentLanguage as keyof typeof formData.philosophyContent
+                      ] || ''
+                    }
+                    onChange={value =>
+                      handleInputChange(
+                        'philosophyContent',
+                        currentLanguage,
+                        value
+                      )
+                    }
+                    placeholder={`Contenido de filosofía en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}...`}
+                    label="Contenido de Filosofía"
+                    rows={15}
+                  />
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
 import type {
   AboutContentData,
-  AboutPhilosophyPointData,
   AboutMethodologyStepData,
   AboutValueData,
 } from '@/lib/validation-schemas';
@@ -72,7 +71,7 @@ export default function AboutContentPreview({
         </div>
 
         {/* Philosophy Section */}
-        {content.philosophyPoints && content.philosophyPoints.length > 0 && (
+        {getText(content.philosophyContent) && (
           <section className="space-y-4">
             <div className="text-center">
               <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
@@ -81,26 +80,40 @@ export default function AboutContentPreview({
               <div className="w-16 h-0.5 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
             </div>
 
-            <div className="space-y-3">
-              {content.philosophyPoints.map(
-                (point: AboutPhilosophyPointData, index: number) => (
-                  <Card
-                    key={point.id || `philosophy-${index}`}
-                    className="bg-card/80 backdrop-blur-sm border-0 shadow-sm"
-                  >
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-foreground mb-2">
-                        {getText(point.title) || `Punto ${index + 1}`}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {getText(point.description) ||
-                          'Descripción del punto filosófico...'}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )
-              )}
-            </div>
+            <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-sm">
+              <CardContent className="p-6">
+                <div
+                  className="prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: getText(content.philosophyContent)
+                      .replace(
+                        /^### (.*$)/gim,
+                        '<h3 class="text-lg font-semibold mb-2">$1</h3>'
+                      )
+                      .replace(
+                        /^## (.*$)/gim,
+                        '<h2 class="text-xl font-semibold mb-3">$1</h2>'
+                      )
+                      .replace(
+                        /^# (.*$)/gim,
+                        '<h1 class="text-2xl font-bold mb-4">$1</h1>'
+                      )
+                      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                      .replace(
+                        /`(.*?)`/gim,
+                        '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
+                      )
+                      .replace(
+                        /\[([^\]]+)\]\(([^)]+)\)/gim,
+                        '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
+                      )
+                      .replace(/\n\n/gim, '</p><p class="mb-3">')
+                      .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
+                  }}
+                />
+              </CardContent>
+            </Card>
           </section>
         )}
 
@@ -198,7 +211,7 @@ export default function AboutContentPreview({
         </section>
 
         {/* Empty State */}
-        {(!content.philosophyPoints || content.philosophyPoints.length === 0) &&
+        {!getText(content.philosophyContent) &&
           (!content.methodologySteps ||
             content.methodologySteps.length === 0) &&
           (!content.values || content.values.length === 0) && (

@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable */
-
 /**
  * Build-time data fetching script for Static Localized Routes
  * This script fetches ALL admin-editable content from Firestore and generates
@@ -1262,138 +1260,138 @@ function generateLocaleContent(
       about: aboutContent
         ? {
             title:
-              aboutContent.title?.[locale] ||
-              aboutContent.title?.es ||
+              aboutContent.heroTitle?.[locale] ||
+              aboutContent.heroTitle?.es ||
               STATIC_TRANSLATIONS[locale].about.title,
             subtitle:
-              aboutContent.subtitle?.[locale] ||
-              aboutContent.subtitle?.es ||
+              aboutContent.heroSubtitle?.[locale] ||
+              aboutContent.heroSubtitle?.es ||
               STATIC_TRANSLATIONS[locale].about.subtitle,
             philosophy: {
               title:
-                aboutContent.philosophy?.title?.[locale] ||
-                aboutContent.philosophy?.title?.es ||
+                aboutContent.philosophyTitle?.[locale] ||
+                aboutContent.philosophyTitle?.es ||
                 STATIC_TRANSLATIONS[locale].about.philosophy.title,
-              description:
-                aboutContent.philosophy?.items?.[0]?.description?.[locale] ||
-                aboutContent.philosophy?.items?.[0]?.description?.es ||
+              content:
+                aboutContent.philosophyContent?.[locale] ||
+                aboutContent.philosophyContent?.es ||
                 STATIC_TRANSLATIONS[locale].about.philosophy.description,
             },
             methodology: {
               title:
-                aboutContent.methodology?.title?.[locale] ||
-                aboutContent.methodology?.title?.es ||
+                aboutContent.methodologyTitle?.[locale] ||
+                aboutContent.methodologyTitle?.es ||
                 STATIC_TRANSLATIONS[locale].about.methodology.title,
               planning: {
                 title:
-                  aboutContent.methodology?.items?.[0]?.title?.[locale] ||
-                  aboutContent.methodology?.items?.[0]?.title?.es ||
+                  aboutContent.methodologySteps?.[0]?.title?.[locale] ||
+                  aboutContent.methodologySteps?.[0]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.planning.title,
                 description:
-                  aboutContent.methodology?.items?.[0]?.description?.[locale] ||
-                  aboutContent.methodology?.items?.[0]?.description?.es ||
+                  aboutContent.methodologySteps?.[0]?.description?.[locale] ||
+                  aboutContent.methodologySteps?.[0]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.planning
                     .description,
               },
               coverage: {
                 title:
-                  aboutContent.methodology?.items?.[1]?.title?.[locale] ||
-                  aboutContent.methodology?.items?.[1]?.title?.es ||
+                  aboutContent.methodologySteps?.[1]?.title?.[locale] ||
+                  aboutContent.methodologySteps?.[1]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.coverage.title,
                 description:
-                  aboutContent.methodology?.items?.[1]?.description?.[locale] ||
-                  aboutContent.methodology?.items?.[1]?.description?.es ||
+                  aboutContent.methodologySteps?.[1]?.description?.[locale] ||
+                  aboutContent.methodologySteps?.[1]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.coverage
                     .description,
               },
               capture: {
                 title:
-                  aboutContent.methodology?.items?.[2]?.title?.[locale] ||
-                  aboutContent.methodology?.items?.[2]?.title?.es ||
+                  aboutContent.methodologySteps?.[2]?.title?.[locale] ||
+                  aboutContent.methodologySteps?.[2]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.capture.title,
                 description:
-                  aboutContent.methodology?.items?.[2]?.description?.[locale] ||
-                  aboutContent.methodology?.items?.[2]?.description?.es ||
+                  aboutContent.methodologySteps?.[2]?.description?.[locale] ||
+                  aboutContent.methodologySteps?.[2]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.capture
                     .description,
               },
               postproduction: {
                 title:
-                  aboutContent.methodology?.items?.[3]?.title?.[locale] ||
-                  aboutContent.methodology?.items?.[3]?.title?.es ||
+                  aboutContent.methodologySteps?.[3]?.title?.[locale] ||
+                  aboutContent.methodologySteps?.[3]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.postproduction
                     .title,
                 description:
-                  aboutContent.methodology?.items?.[3]?.description?.[locale] ||
-                  aboutContent.methodology?.items?.[3]?.description?.es ||
+                  aboutContent.methodologySteps?.[3]?.description?.[locale] ||
+                  aboutContent.methodologySteps?.[3]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.methodology.postproduction
                     .description,
               },
             },
             values: {
               title:
-                aboutContent.values?.title?.[locale] ||
-                aboutContent.values?.title?.es ||
+                aboutContent.valuesTitle?.[locale] ||
+                aboutContent.valuesTitle?.es ||
                 STATIC_TRANSLATIONS[locale].about.values.title,
               passion: {
                 title:
-                  aboutContent.values?.items?.[0]?.title?.[locale] ||
-                  aboutContent.values?.items?.[0]?.title?.es ||
+                  aboutContent.values?.[0]?.title?.[locale] ||
+                  aboutContent.values?.[0]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.passion.title,
                 description:
-                  aboutContent.values?.items?.[0]?.description?.[locale] ||
-                  aboutContent.values?.items?.[0]?.description?.es ||
+                  aboutContent.values?.[0]?.description?.[locale] ||
+                  aboutContent.values?.[0]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.passion.description,
               },
               teamwork: {
                 title:
-                  aboutContent.values?.items?.[1]?.title?.[locale] ||
-                  aboutContent.values?.items?.[1]?.title?.es ||
+                  aboutContent.values?.[1]?.title?.[locale] ||
+                  aboutContent.values?.[1]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.teamwork.title,
                 description:
-                  aboutContent.values?.items?.[1]?.description?.[locale] ||
-                  aboutContent.values?.items?.[1]?.description?.es ||
+                  aboutContent.values?.[1]?.description?.[locale] ||
+                  aboutContent.values?.[1]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.teamwork.description,
               },
               quality: {
                 title:
-                  aboutContent.values?.items?.[2]?.title?.[locale] ||
-                  aboutContent.values?.items?.[2]?.title?.es ||
+                  aboutContent.values?.[2]?.title?.[locale] ||
+                  aboutContent.values?.[2]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.quality.title,
                 description:
-                  aboutContent.values?.items?.[2]?.description?.[locale] ||
-                  aboutContent.values?.items?.[2]?.description?.es ||
+                  aboutContent.values?.[2]?.description?.[locale] ||
+                  aboutContent.values?.[2]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.quality.description,
               },
               agility: {
                 title:
-                  aboutContent.values?.items?.[3]?.title?.[locale] ||
-                  aboutContent.values?.items?.[3]?.title?.es ||
+                  aboutContent.values?.[3]?.title?.[locale] ||
+                  aboutContent.values?.[3]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.agility.title,
                 description:
-                  aboutContent.values?.items?.[3]?.description?.[locale] ||
-                  aboutContent.values?.items?.[3]?.description?.es ||
+                  aboutContent.values?.[3]?.description?.[locale] ||
+                  aboutContent.values?.[3]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.agility.description,
               },
               excellence: {
                 title:
-                  aboutContent.values?.items?.[4]?.title?.[locale] ||
-                  aboutContent.values?.items?.[4]?.title?.es ||
+                  aboutContent.values?.[4]?.title?.[locale] ||
+                  aboutContent.values?.[4]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.excellence.title,
                 description:
-                  aboutContent.values?.items?.[4]?.description?.[locale] ||
-                  aboutContent.values?.items?.[4]?.description?.es ||
+                  aboutContent.values?.[4]?.description?.[locale] ||
+                  aboutContent.values?.[4]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.excellence
                     .description,
               },
               trust: {
                 title:
-                  aboutContent.values?.items?.[5]?.title?.[locale] ||
-                  aboutContent.values?.items?.[5]?.title?.es ||
+                  aboutContent.values?.[5]?.title?.[locale] ||
+                  aboutContent.values?.[5]?.title?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.trust.title,
                 description:
-                  aboutContent.values?.items?.[5]?.description?.[locale] ||
-                  aboutContent.values?.items?.[5]?.description?.es ||
+                  aboutContent.values?.[5]?.description?.[locale] ||
+                  aboutContent.values?.[5]?.description?.es ||
                   STATIC_TRANSLATIONS[locale].about.values.trust.description,
               },
             },
@@ -1486,7 +1484,7 @@ function generateCategories(projects, locale = 'es') {
   const categories = Array.from(eventTypesWithFeaturedMedia).map(eventType => {
     // Special handling for "Culturales y artísticos" -> "Culturales"
     let categoryId, displayName;
-    
+
     if (eventType === 'Culturales y artísticos') {
       categoryId = 'culturales';
       displayName = 'Culturales';
@@ -1563,7 +1561,10 @@ async function buildStaticContent() {
     // Generate gallery layouts for all projects and categories
     console.log('🎨 Generating gallery layouts...');
     const sampleCategories = generateCategories(projects, 'es'); // Use Spanish for layout generation
-    const galleryLayouts = generateAllGalleryLayouts(projects, sampleCategories);
+    const galleryLayouts = generateAllGalleryLayouts(
+      projects,
+      sampleCategories
+    );
 
     // Generate content for each locale
     const allContent = {};

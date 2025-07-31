@@ -266,13 +266,40 @@ export default async function AboutPageEN() {
 
             <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-xl">
               <CardContent className="p-8 md:p-12">
-                <p className="text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
-                  {t(
-                    content,
-                    'about.philosophy.description',
-                    'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.'
-                  )}
-                </p>
+                <div
+                  className="prose prose-lg max-w-4xl mx-auto text-muted-foreground prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-em:text-foreground"
+                  dangerouslySetInnerHTML={{
+                    __html: t(
+                      content,
+                      'about.philosophy.content',
+                      'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.'
+                    )
+                      .replace(
+                        /^### (.*$)/gim,
+                        '<h3 class="text-lg font-semibold mb-2">$1</h3>'
+                      )
+                      .replace(
+                        /^## (.*$)/gim,
+                        '<h2 class="text-xl font-semibold mb-3">$1</h2>'
+                      )
+                      .replace(
+                        /^# (.*$)/gim,
+                        '<h1 class="text-2xl font-bold mb-4">$1</h1>'
+                      )
+                      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                      .replace(
+                        /`(.*?)`/gim,
+                        '<code class="bg-muted px-1 py-0.5 rounded text-sm">$1</code>'
+                      )
+                      .replace(
+                        /\[([^\]]+)\]\(([^)]+)\)/gim,
+                        '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
+                      )
+                      .replace(/\n\n/gim, '</p><p class="mb-3">')
+                      .replace(/^(.+)$/gim, '<p class="mb-3">$1</p>'),
+                  }}
+                />
               </CardContent>
             </Card>
           </section>

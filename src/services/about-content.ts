@@ -2,7 +2,6 @@ import { BaseFirebaseService } from './base-firebase-service';
 import {
   aboutContentSchema,
   AboutContentData,
-  AboutPhilosophyPointData,
   AboutMethodologyStepData,
   AboutValueData,
 } from '@/lib/validation-schemas';
@@ -150,7 +149,7 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
    * Update specific section of about content
    */
   async updateSection(
-    section: 'philosophyPoints' | 'methodologySteps' | 'values',
+    section: 'methodologySteps' | 'values',
     sectionData: Partial<AboutContentData[typeof section]>
   ): Promise<ApiResponse<void>> {
     try {
@@ -467,185 +466,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
 
   // === Philosophy Points Management ===
 
-  /**
-   * Add a new philosophy point
-   */
-  async addPhilosophyPoint(
-    newPoint: Omit<AboutPhilosophyPointData, 'order'>
-  ): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentPoints = existingResponse.data.philosophyPoints || [];
-      const maxOrder = Math.max(
-        ...currentPoints.map((p: AboutPhilosophyPointData) => p.order || 0),
-        -1
-      );
-
-      const pointWithOrder: AboutPhilosophyPointData = {
-        ...newPoint,
-        order: maxOrder + 1,
-      };
-
-      const updatedPhilosophy = [...currentPoints, pointWithOrder];
-
-      const updateResponse = await this.updateSection(
-        'philosophyPoints',
-        updatedPhilosophy
-      );
-      return updateResponse;
-    } catch (error) {
-      console.error('Error adding philosophy point:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Update an existing philosophy point
-   */
-  async updatePhilosophyPoint(
-    id: string,
-    updatedPoint: Partial<Omit<AboutPhilosophyPointData, 'id'>>
-  ): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentPoints = existingResponse.data.philosophyPoints || [];
-      const pointIndex = currentPoints.findIndex(
-        (p: AboutPhilosophyPointData) => p.id === id
-      );
-
-      if (pointIndex === -1) {
-        return {
-          success: false,
-          error: 'Philosophy point not found.',
-        };
-      }
-
-      const updatedPhilosophy = currentPoints.map(
-        (point: AboutPhilosophyPointData, index: number) =>
-          index === pointIndex ? { ...point, ...updatedPoint } : point
-      );
-
-      const updateResponse = await this.updateSection(
-        'philosophyPoints',
-        updatedPhilosophy
-      );
-      return updateResponse;
-    } catch (error) {
-      console.error('Error updating philosophy point:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Delete a philosophy point
-   */
-  async deletePhilosophyPoint(id: string): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentPoints = existingResponse.data.philosophyPoints || [];
-      const filteredPoints = currentPoints.filter(
-        (p: AboutPhilosophyPointData) => p.id !== id
-      );
-
-      if (filteredPoints.length === currentPoints.length) {
-        return {
-          success: false,
-          error: 'Philosophy point not found.',
-        };
-      }
-
-      const updateResponse = await this.updateSection(
-        'philosophyPoints',
-        filteredPoints
-      );
-      return updateResponse;
-    } catch (error) {
-      console.error('Error deleting philosophy point:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
-  /**
-   * Reorder philosophy points
-   */
-  async reorderPhilosophyPoints(
-    pointIds: string[]
-  ): Promise<ApiResponse<void>> {
-    try {
-      const existingResponse = await this.getAboutContent();
-
-      if (!existingResponse.success || !existingResponse.data) {
-        return {
-          success: false,
-          error: 'About content not found. Please create content first.',
-        };
-      }
-
-      const currentPoints = existingResponse.data.philosophyPoints || [];
-
-      // Create a map for quick lookup
-      const pointMap = new Map(
-        currentPoints.map((p: AboutPhilosophyPointData) => [p.id, p])
-      );
-
-      // Reorder points and update order numbers
-      const reorderedPoints = pointIds
-        .map(id => pointMap.get(id))
-        .filter(
-          (point): point is AboutPhilosophyPointData => point !== undefined
-        )
-        .map((point: AboutPhilosophyPointData, index: number) => ({
-          ...point,
-          order: index,
-        }));
-
-      const updateResponse = await this.updateSection(
-        'philosophyPoints',
-        reorderedPoints
-      );
-      return updateResponse;
-    } catch (error) {
-      console.error('Error reordering philosophy points:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }
-
   // === Methodology Steps Management ===
 
   /**
@@ -838,38 +658,49 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       storyTitle: { es: '', en: '', pt: '' },
       storyContent: { es: '', en: '', pt: '' },
       storyImage: '',
-      philosophyTitle: { es: '', en: '', pt: '' },
-      philosophyDescription: { es: '', en: '', pt: '' },
-      philosophyPoints: [
-        {
-          id: 'unique-events',
-          title: {
-            es: 'Eventos Únicos',
-            en: 'Unique Events',
-            pt: 'Eventos Únicos',
-          },
-          description: {
-            es: 'Creemos que cada evento es único y merece ser documentado con la máxima dedicación.',
-            en: 'We believe that every event is unique and deserves to be documented with maximum dedication.',
-            pt: 'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação.',
-          },
-          order: 0,
-        },
-        {
-          id: 'storytelling',
-          title: {
-            es: 'Narración Visual',
-            en: 'Visual Storytelling',
-            pt: 'Narrativa Visual',
-          },
-          description: {
-            es: 'Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo.',
-            en: 'Our approach is not just to capture images, but to tell stories that endure over time.',
-            pt: 'Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo.',
-          },
-          order: 1,
-        },
-      ],
+      philosophyTitle: {
+        es: 'Nuestra Filosofía',
+        en: 'Our Philosophy',
+        pt: 'Nossa Filosofia',
+      },
+      philosophyContent: {
+        es: `# Nuestra Filosofía
+
+En **Veloz**, creemos que cada momento es único e irrepetible. Nuestra filosofía se basa en tres pilares fundamentales:
+
+## Eventos Únicos
+Cada evento tiene su propia historia, su propia energía y sus propios momentos especiales. Nos dedicamos a capturar la esencia única de cada celebración.
+
+## Narración Visual
+No solo tomamos fotografías; contamos historias. Cada imagen es una página en el libro de tu evento, diseñada para transportarte de vuelta a esos momentos especiales.
+
+## Excelencia en el Detalle
+Nos enfocamos en los pequeños detalles que hacen grande tu evento. Desde la decoración hasta las expresiones de alegría, todo merece ser inmortalizado.`,
+        en: `# Our Philosophy
+
+At **Veloz**, we believe that every moment is unique and irreplaceable. Our philosophy is based on three fundamental pillars:
+
+## Unique Events
+Every event has its own story, its own energy, and its own special moments. We dedicate ourselves to capturing the unique essence of each celebration.
+
+## Visual Storytelling
+We don't just take photographs; we tell stories. Each image is a page in the book of your event, designed to transport you back to those special moments.
+
+## Excellence in Detail
+We focus on the small details that make your event great. From decoration to expressions of joy, everything deserves to be immortalized.`,
+        pt: `# Nossa Filosofia
+
+Na **Veloz**, acreditamos que cada momento é único e irrepetível. Nossa filosofia é baseada em três pilares fundamentais:
+
+## Eventos Únicos
+Cada evento tem sua própria história, sua própria energia e seus próprios momentos especiais. Nos dedicamos a capturar a essência única de cada celebração.
+
+## Narrativa Visual
+Não apenas tiramos fotografias; contamos histórias. Cada imagem é uma página no livro do seu evento, projetada para transportá-lo de volta a esses momentos especiais.
+
+## Excelência no Detalhe
+Nos concentramos nos pequenos detalhes que tornam seu evento grandioso. Da decoração às expressões de alegria, tudo merece ser imortalizado.`,
+      },
       methodologyTitle: { es: '', en: '', pt: '' },
       methodologyDescription: { es: '', en: '', pt: '' },
       methodologySteps: [

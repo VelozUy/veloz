@@ -281,8 +281,11 @@ export const aboutContentSchema = baseSchema.extend({
   storyContent: multiLanguageTextSchema,
   storyImage: z.string().url().optional(),
   philosophyTitle: multiLanguageTextSchema,
-  philosophyDescription: multiLanguageTextSchema,
-  philosophyPoints: z.array(aboutPhilosophyPointSchema).default([]),
+  philosophyContent: multiLanguageTextSchema.default({
+    es: '',
+    en: '',
+    pt: '',
+  }),
   methodologyTitle: multiLanguageTextSchema,
   methodologyDescription: multiLanguageTextSchema,
   methodologySteps: z.array(aboutMethodologyStepSchema).default([]),
@@ -541,9 +544,7 @@ export type ProjectMediaData = z.infer<typeof projectMediaSchema>;
 export type SocialPostData = z.infer<typeof socialPostSchema>;
 export type HomepageContentData = z.infer<typeof homepageContentSchema>;
 export type AboutContentData = z.infer<typeof aboutContentSchema>;
-export type AboutPhilosophyPointData = z.infer<
-  typeof aboutPhilosophyPointSchema
->;
+
 export type AboutMethodologyStepData = z.infer<
   typeof aboutMethodologyStepSchema
 >;
