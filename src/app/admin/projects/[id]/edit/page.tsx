@@ -1138,6 +1138,10 @@ export default function UnifiedProjectEditPage({
                         projectId={projectId || ''}
                         onUploadSuccess={handleUploadSuccess}
                         onUploadError={handleUploadError}
+                        onAIAnalysisSuccess={message => {
+                          setSuccess(message);
+                          setTimeout(() => setSuccess(''), 3000);
+                        }}
                       />
                     </div>
 

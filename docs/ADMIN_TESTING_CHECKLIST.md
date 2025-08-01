@@ -122,7 +122,8 @@ _Environment: Development (localhost:3001)_
 
 - [ ] Media upload within projects
 - [ ] Individual media metadata
-- [ ] AI analysis buttons work
+- [ ] AI review button for SEO content generation
+- [ ] AI analysis buttons work (existing MediaManager)
 - [ ] Media deletion functions
 
 ### Bulk Operations

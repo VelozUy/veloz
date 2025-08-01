@@ -47,7 +47,13 @@ interface MediaAnalysisRequest {
 
 // Media analysis response interface
 interface MediaAnalysisResponse {
+  altText: string;
   description: {
+    es: string;
+    en: string;
+    pt: string;
+  };
+  title: {
     es: string;
     en: string;
     pt: string;
@@ -281,7 +287,7 @@ export class OpenAIService {
           {
             role: 'system',
             content:
-              'You are an expert SEO assistant for a professional photography and videography business. Your primary goal is to create descriptions that attract people who are actively searching to hire event photographers or videographers. Focus on business-driving keywords and location-based search terms that potential clients use when looking for photography services.',
+              'You are an expert SEO assistant for a professional photography and videography business. Your primary goal is to create descriptions that attract people who are actively searching to hire event photographers or videographers. Focus on business-driving keywords and location-based search terms that potential clients use when looking for photography services. Always use inclusive, gender-neutral language that welcomes all clients regardless of gender, orientation, or family structure.',
           },
           {
             role: 'user',
@@ -483,6 +489,12 @@ export class OpenAIService {
     prompt += `Analyze this ${request.mediaType === 'video' ? 'video' : 'image'} and provide SEO-focused analysis in JSON format:\n\n`;
 
     prompt += `{
+  "altText": "Accessible description for screen readers",
+  "title": {
+    "es": "SEO title targeting people searching for photographers/videographers in Spanish",
+    "en": "SEO title targeting people searching for photographers/videographers in English", 
+    "pt": "SEO title targeting people searching for photographers/videographers in Brazilian Portuguese"
+  },
   "description": {
     "es": "SEO description targeting people searching for photographers/videographers in Spanish",
     "en": "SEO description targeting people searching for photographers/videographers in English", 
@@ -516,6 +528,7 @@ export class OpenAIService {
     prompt += 'CRITICAL SEO REQUIREMENTS:\n';
     prompt +=
       '• Focus descriptions on attracting people searching to hire photographers/videographers\n';
+    prompt += '• Use inclusive, gender-neutral language throughout\n';
     prompt +=
       '• Include service keywords: "event photographer", "wedding videographer", "professional photo session", "corporate photography", "birthday photographer"\n';
     prompt +=
@@ -525,32 +538,34 @@ export class OpenAIService {
     prompt +=
       '• Avoid generic artistic descriptions - every word should serve SEO intent\n';
     prompt +=
-      '• Make descriptions actionable for people looking to hire services\n\n';
+      '• Make descriptions actionable for people looking to hire services\n';
+    prompt +=
+      '• Use inclusive terms: "couples", "partners", "families", "guests" instead of gender-specific terms\n\n';
 
     prompt += `EXAMPLES OF GOOD SEO DESCRIPTIONS:\n`;
 
     if (request.mediaType === 'video') {
       prompt +=
-        '• "Professional wedding videographer in Montevideo filming ceremony highlights"\n';
+        '• "Professional wedding videographer in Montevideo filming ceremony highlights for couples"\n';
       prompt +=
         '• "Corporate event videography service capturing business conference in Uruguay"\n';
       prompt +=
-        '• "Birthday party videographer documenting celebration with cinematic quality"\n';
+        '• "Birthday party videographer documenting family celebration with cinematic quality"\n';
       prompt +=
-        '• "Videógrafo profesional de bodas en Montevideo filmando momentos únicos"\n';
+        '• "Videografía profesional de bodas en Montevideo filmando momentos únicos para parejas"\n';
       prompt +=
-        '• "Serviço profissional de videoografia de eventos em Montevidéu"\n\n';
+        '• "Serviço profissional de videoografia de eventos em Montevidéu para famílias"\n\n';
     } else {
       prompt +=
-        '• "Wedding photographer in Montevideo captures emotional first dance under twinkle lights"\n';
+        '• "Wedding photographer in Montevideo captures emotional first dance for couples under twinkle lights"\n';
       prompt +=
         '• "Professional corporate photographer documenting business event in Uruguay"\n';
       prompt +=
-        '• "Event photographer capturing quinceañera celebration with professional lighting"\n';
+        '• "Event photographer capturing quinceañera celebration with professional lighting for families"\n';
       prompt +=
-        '• "Fotógrafo de bodas en Montevideo registrando momentos únicos de la ceremonia"\n';
+        '• "Fotografía profesional de bodas en Montevideo registrando momentos únicos de la ceremonia para parejas"\n';
       prompt +=
-        '• "Serviço profissional de fotografia de eventos em Montevidéu"\n\n';
+        '• "Serviço profissional de fotografia de eventos em Montevidéu para famílias"\n\n';
     }
 
     prompt +=
@@ -576,6 +591,8 @@ export class OpenAIService {
       const parsed = JSON.parse(jsonMatch[0]);
 
       return {
+        altText: parsed.altText || '',
+        title: parsed.title || { es: '', en: '', pt: '' },
         description: parsed.description || { es: '', en: '', pt: '' },
         tags: parsed.tags || [],
         eventType: parsed.eventType || 'other',
@@ -596,18 +613,33 @@ export class OpenAIService {
 
       // Return fallback response
       return {
-        description: {
-          es: 'Análisis de media no disponible',
-          en: 'Media analysis unavailable',
-          pt: 'Análise de mídia indisponível',
+        altText: 'Professional event photography capturing special moments',
+        title: {
+          es: 'Fotografía profesional de eventos en Montevideo',
+          en: 'Professional event photography in Montevideo',
+          pt: 'Fotografia profissional de eventos em Montevidéu',
         },
-        tags: [],
+        description: {
+          es: 'Servicio profesional de fotografía de eventos para capturar momentos especiales. Fotógrafo de eventos en Montevideo disponible para bodas, cumpleaños, eventos corporativos y más.',
+          en: 'Professional event photography service to capture special moments. Event photographer in Montevideo available for weddings, birthdays, corporate events and more.',
+          pt: 'Serviço profissional de fotografia de eventos para capturar momentos especiais. Fotógrafo de eventos em Montevidéu disponível para casamentos, aniversários, eventos corporativos e mais.',
+        },
+        tags: [
+          'event photography',
+          'professional photographer',
+          'Montevideo',
+          'events',
+        ],
         eventType: 'other',
         colorPalette: [],
         mood: '',
         peopleCount: 0,
         composition: '',
-        seoKeywords: [],
+        seoKeywords: [
+          'event photographer',
+          'professional photography',
+          'Montevideo photographer',
+        ],
         socialMediaCaptions: { instagram: '', facebook: '' },
         confidence: 0,
         tokensUsed,

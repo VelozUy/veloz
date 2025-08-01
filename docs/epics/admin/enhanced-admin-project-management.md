@@ -40,6 +40,29 @@ Improve admin project management with advanced features and better UX, including
 
 ### 🟧 High Priority (Next Week)
 
+- [x] AI-powered media review and SEO optimization
+  - **User Intent**: Add AI review button to media upload for automatic SEO content generation
+  - **Acceptance Criteria**:
+    - [x] AI review button in MediaUpload component
+    - [x] Integration with existing media analysis API
+    - [x] Automatic generation of titles, descriptions, and tags in all languages
+    - [x] Gender-neutral, inclusive language in all generated content
+    - [x] Loading states and error handling
+    - [x] Success feedback for users
+    - [x] Fallback content for failed analysis
+  - **Files**: `src/components/admin/MediaUpload.tsx`, `src/services/openai.ts`, `src/app/admin/projects/[id]/edit/page.tsx`
+  - **Estimated Time**: 2 days
+  - **Status**: ✅ **COMPLETED** (2025-01-27)
+  - **Completion Details**:
+    - Added "AI Review" button to each file in MediaUpload component
+    - Integrated with existing `mediaAnalysisClientService`
+    - Generates SEO-optimized titles, descriptions, and tags in Spanish, English, and Portuguese
+    - Updated AI prompts to use inclusive, gender-neutral language
+    - Added proper loading states and error handling
+    - Implemented fallback content for failed analysis
+    - Added success callback for user feedback
+    - Updated dialog description to mention AI review feature
+
 - [ ] Admin contacts page redesign
   - **User Intent**: Improve the admin contacts page with better UX and functionality
   - **Acceptance Criteria**:

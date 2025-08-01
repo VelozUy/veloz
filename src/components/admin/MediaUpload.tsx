@@ -28,14 +28,17 @@ import {
   AlertCircle,
   Loader2,
   Copy,
+  Sparkles,
 } from 'lucide-react';
 import { projectMediaService, ProjectMedia } from '@/services/firebase';
+import { mediaAnalysisClientService } from '@/services/media-analysis-client';
 import Image from 'next/image';
 
 interface MediaUploadProps {
   projectId: string;
   onUploadSuccess?: (media: ProjectMedia) => void;
   onUploadError?: (error: string) => void;
+  onAIAnalysisSuccess?: (message: string) => void;
 }
 
 interface MediaMetadata {
@@ -69,14 +72,18 @@ function FileMetadataEditor({
   uploadFile,
   onUpdate,
   onCopyToAll,
+  onAIReview,
   activeLanguage,
   setActiveLanguage,
+  isAnalyzing,
 }: {
   uploadFile: UploadFile;
   onUpdate: (fileId: string, metadata: MediaMetadata) => void;
   onCopyToAll?: (metadata: MediaMetadata) => void;
+  onAIReview?: (uploadFile: UploadFile) => void;
   activeLanguage: string;
   setActiveLanguage: (lang: string) => void;
+  isAnalyzing: boolean;
 }) {
   const handleTagsChange = (value: string) => {
     const tags = value
@@ -140,18 +147,39 @@ function FileMetadataEditor({
             </div>
           </div>
 
-          {onCopyToAll && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onCopyToAll(uploadFile.metadata)}
-              title="Copy this metadata to all other files"
-              className="border-border text-foreground hover:bg-accent"
-            >
-              <Copy className="w-4 h-4 mr-1" />
-              Copy to All
-            </Button>
-          )}
+          <div className="flex items-center space-x-2">
+            {/* AI Review Button */}
+            {onAIReview && uploadFile.previewUrl && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onAIReview(uploadFile)}
+                disabled={isAnalyzing}
+                title="Analizar imagen/video con AI para generar título, descripción y etiquetas SEO"
+                className="border-border text-foreground hover:bg-accent"
+              >
+                {isAnalyzing ? (
+                  <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4 mr-1" />
+                )}
+                {isAnalyzing ? 'Analizando...' : 'AI Review'}
+              </Button>
+            )}
+
+            {onCopyToAll && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onCopyToAll(uploadFile.metadata)}
+                title="Copy this metadata to all other files"
+                className="border-border text-foreground hover:bg-accent"
+              >
+                <Copy className="w-4 h-4 mr-1" />
+                Copy to All
+              </Button>
+            )}
+          </div>
         </div>
       </CardHeader>
 
@@ -357,12 +385,14 @@ export default function MediaUpload({
   projectId,
   onUploadSuccess,
   onUploadError,
+  onAIAnalysisSuccess,
 }: MediaUploadProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [activeLanguage, setActiveLanguage] = useState('es');
+  const [analyzingFiles, setAnalyzingFiles] = useState<Set<string>>(new Set());
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
@@ -377,20 +407,23 @@ export default function MediaUpload({
     'video/mov',
   ];
 
-  const validateFile = useCallback((file: File): string | null => {
-    if (!acceptedTypes.includes(file.type)) {
-      return 'Tipo de archivo no soportado. Solo se permiten imágenes (JPG, PNG, WebP) y videos (MP4, WebM, MOV).';
-    }
+  const validateFile = useCallback(
+    (file: File): string | null => {
+      if (!acceptedTypes.includes(file.type)) {
+        return 'Tipo de archivo no soportado. Solo se permiten imágenes (JPG, PNG, WebP) y videos (MP4, WebM, MOV).';
+      }
 
-    const maxSize = file.type.startsWith('video/')
-      ? 100 * 1024 * 1024
-      : 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      return `Archivo demasiado grande. Tamaño máximo: ${maxSize / (1024 * 1024)}MB`;
-    }
+      const maxSize = file.type.startsWith('video/')
+        ? 100 * 1024 * 1024
+        : 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        return `Archivo demasiado grande. Tamaño máximo: ${maxSize / (1024 * 1024)}MB`;
+      }
 
-    return null;
-  }, []);
+      return null;
+    },
+    [acceptedTypes]
+  );
 
   const createFilePreview = (file: File): Promise<string | undefined> => {
     return new Promise(resolve => {
@@ -584,6 +617,60 @@ export default function MediaUpload({
     setUploadFiles(prev => prev.filter(f => f.status !== 'success'));
   };
 
+  const handleAIReview = async (uploadFile: UploadFile) => {
+    if (!uploadFile.previewUrl || analyzingFiles.has(uploadFile.id)) return;
+
+    // Add to analyzing set
+    setAnalyzingFiles(prev => new Set(prev).add(uploadFile.id));
+
+    try {
+      // Analyze the media using the client service
+      const analysis = await mediaAnalysisClientService.analyzeSEO(
+        uploadFile.previewUrl,
+        uploadFile.file.type.startsWith('video/') ? 'video' : 'photo',
+        {
+          eventType: 'photography_event',
+        }
+      );
+
+      // Update file metadata with analyzed content
+      const updatedMetadata: MediaMetadata = {
+        title: {
+          es: analysis.title?.es || uploadFile.metadata.title.es,
+          en: analysis.title?.en || uploadFile.metadata.title.en,
+          pt: analysis.title?.pt || uploadFile.metadata.title.pt,
+        },
+        description: {
+          es: analysis.description?.es || uploadFile.metadata.description.es,
+          en: analysis.description?.en || uploadFile.metadata.description.en,
+          pt: analysis.description?.pt || uploadFile.metadata.description.pt,
+        },
+        tags: analysis.tags || uploadFile.metadata.tags,
+        featured: uploadFile.metadata.featured,
+      };
+
+      // Update the file metadata
+      updateFileMetadata(uploadFile.id, updatedMetadata);
+
+      // Show success message
+      onAIAnalysisSuccess?.(
+        `✅ Análisis AI completado para ${uploadFile.file.name}. Título, descripción y etiquetas SEO generados.`
+      );
+    } catch (error) {
+      console.error('Error analyzing media:', error);
+      onUploadError?.(
+        `Error al analizar ${uploadFile.file.type.startsWith('video/') ? 'video' : 'foto'} para SEO`
+      );
+    } finally {
+      // Remove from analyzing set
+      setAnalyzingFiles(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(uploadFile.id);
+        return newSet;
+      });
+    }
+  };
+
   const hasCompletedUploads = uploadFiles.some(f => f.status === 'success');
   const hasPendingUploads = uploadFiles.some(f => f.status === 'pending');
 
@@ -603,7 +690,8 @@ export default function MediaUpload({
           <DialogDescription className="text-foreground">
             Sube fotos y videos para este proyecto. La información (título,
             descripción, etiquetas) es opcional - puedes usar AI para generar
-            contenido SEO después de subir.
+            contenido SEO optimizado con el botón &quot;AI Review&quot; en cada
+            archivo.
           </DialogDescription>
         </DialogHeader>
 
@@ -678,8 +766,10 @@ export default function MediaUpload({
                     onCopyToAll={
                       uploadFiles.length > 1 ? copyMetadataToAll : undefined
                     }
+                    onAIReview={handleAIReview}
                     activeLanguage={activeLanguage}
                     setActiveLanguage={setActiveLanguage}
+                    isAnalyzing={analyzingFiles.has(uploadFile.id)}
                   />
                 </div>
               ))}
