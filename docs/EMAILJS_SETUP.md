@@ -1,6 +1,6 @@
 # EmailJS Setup Guide for Veloz Contact Forms
 
-This guide explains how to set up EmailJS to handle contact form submissions for both the main contact form and the interactive CTA widget.
+This guide explains how to set up EmailJS to handle contact form submissions for both the main contact form and the interactive CTA widget with **full email content** and **multi-language support**.
 
 ## 1. Create EmailJS Account
 
@@ -28,15 +28,61 @@ You'll need to create **two templates**: one for admin notifications and one for
 
 #### Admin Template Variables:
 
+The template will receive these variables from the application:
+
+**Required Variables:**
+
 - `{{from_name}}` - Contact's name
 - `{{from_email}}` - Contact's email
 - `{{event_type}}` - Type of event
 - `{{event_date}}` - Event date
+- `{{location}}` - Event location
+- `{{services}}` - Requested services
 - `{{message}}` - Contact message
 - `{{phone}}` - Phone number (if provided)
 - `{{source}}` - Form source (contact_form or widget)
 - `{{to_name}}` - Your team name (Equipo Veloz)
 - `{{reply_to}}` - Reply email (same as from_email)
+- `{{contact_date}}` - Date when contact was submitted
+
+**Template Configuration:**
+
+- **To Email**: Your admin email(s) - you can add multiple emails separated by commas
+- **From Name**: Veloz Contact System
+- **Reply To**: `{{reply_to}}`
+
+**Template Content:**
+
+```
+Subject: Nueva solicitud de contacto - {{event_type}}
+
+Hola {{to_name}},
+
+Has recibido una nueva solicitud de contacto desde el sitio web:
+
+**Información del contacto:**
+- Nombre: {{from_name}}
+- Email: {{from_email}}
+- Teléfono: {{phone}}
+
+**Detalles del evento:**
+- Tipo de evento: {{event_type}}
+- Fecha: {{event_date}}
+- Ubicación: {{location}}
+- Servicios solicitados: {{services}}
+
+**Mensaje:**
+{{message}}
+
+**Información adicional:**
+- Fuente: {{source}}
+- Fecha de contacto: {{contact_date}}
+
+Por favor, responde a este contacto lo antes posible.
+
+Saludos,
+Sistema de Contacto Veloz
+```
 
 ### Auto-Reply Template (for users)
 
@@ -45,153 +91,150 @@ You'll need to create **two templates**: one for admin notifications and one for
 
 #### Auto-Reply Template Variables:
 
+**Required Variables:**
+
+- `{{subject}}` - Email subject line
+- `{{message}}` - Full email body content
+- `{{email}}` - Contact's email (recipient)
+- `{{name}}` - Contact's name
+- `{{to_email}}` - Contact's email (recipient)
 - `{{to_name}}` - Contact's name
-- `{{to_email}}` - Contact's email
 - `{{event_type}}` - Type of event
 - `{{event_date}}` - Event date
-- `{{message}}` - Contact message
+- `{{location}}` - Event location
+- `{{services}}` - Requested services
+- `{{user_message}}` - Original message from user
 - `{{phone}}` - Phone number (if provided)
 - `{{source}}` - Form source (contact_form or widget)
 - `{{from_name}}` - Your team name (Equipo Veloz)
 - `{{reply_to}}` - Your admin email for replies
 
-### Suggested Admin Email Template:
+**Template Configuration:**
 
-**Subject:** Nuevo contacto desde Veloz - {{event_type}}
+- **To Email**: `{{email}}`
+- **From Name**: `{{from_name}}`
+- **Reply To**: `{{reply_to}}`
 
-**Body:**
+**Template Content:**
 
 ```
-Hola {{to_name}},
+Subject: {{subject}}
 
-Has recibido un nuevo contacto desde el sitio web de Veloz:
-
-📧 Información del Cliente:
-• Nombre: {{from_name}}
-• Email: {{from_email}}
-• Teléfono: {{phone}}
-
-🎉 Información del Evento:
-• Tipo de evento: {{event_type}}
-• Fecha aproximada: {{event_date}}
-
-💬 Mensaje:
 {{message}}
-
-📋 Origen: {{source}}
-
----
-Este mensaje fue enviado automáticamente desde el formulario de contacto de Veloz.
-Para responder al cliente, usa: {{reply_to}}
 ```
 
-### Suggested Auto-Reply Email Template:
+## 4. Environment Variables Setup
 
-**Subject:** ¡Gracias por contactarnos, {{to_name}}!
+Add these environment variables to your `.env.local` file:
 
-**Body:**
-
-```
-Hola {{to_name}},
-
-¡Gracias por contactarnos! Hemos recibido tu solicitud para {{event_type}}.
-
-📋 Resumen de tu solicitud:
-• Tipo de evento: {{event_type}}
-• Fecha aproximada: {{event_date}}
-• Ubicación: {{message}}
-
-📞 Próximos pasos:
-Te contactaremos dentro de las próximas 24 horas para discutir los detalles de tu evento y proporcionarte una cotización personalizada.
-
-Si tienes alguna pregunta urgente, no dudes en responder a este email o llamarnos directamente.
-
-¡Esperamos trabajar contigo para hacer de tu evento algo extraordinario!
-
-Saludos,
-{{from_name}}
-{{reply_to}}
-```
-
-4. Save the admin template and note the **Admin Template ID** (e.g., `template_admin_xyz789`)
-
-5. Create the auto-reply template and note the **Auto-Reply Template ID** (e.g., `template_auto_reply_abc123`)
-
-## 4. Get Public Key
-
-1. Go to **Account** > **General**
-2. Find your **Public Key** (e.g., `abc123XYZ`)
-
-## 5. Configure Environment Variables
-
-Add these variables to your `.env.local` file:
-
-```bash
-# EmailJS Configuration
+```env
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id_here
 NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=your_admin_template_id_here
 NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID=your_auto_reply_template_id_here
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key_here
 ```
 
-## 6. Test Configuration
+## 5. Multi-Language Email Content
 
-1. Start your development server: `npm run dev`
-2. Go to `/contact` page
-3. Fill out and submit the contact form
-4. Check your email for the message
-5. Test the interactive widget by clicking the floating button
+The application now sends **full email content** to EmailJS with language-specific templates:
 
-## 7. Production Deployment
+### Spanish (es) - Default
 
-1. Add the same environment variables to your Netlify site settings
-2. Redeploy your site
-3. Test both forms in production
+- **Admin Subject**: "Nueva solicitud de contacto - Veloz"
+- **User Subject**: "Gracias por contactarnos - Veloz"
 
-## Troubleshooting
+### English (en)
+
+- **Admin Subject**: "New contact request - Veloz"
+- **User Subject**: "Thank you for contacting us - Veloz"
+
+### Portuguese (pt)
+
+- **Admin Subject**: "Nova solicitação de contato - Veloz"
+- **User Subject**: "Obrigado por nos contatar - Veloz"
+
+## 6. Email Content Structure
+
+### Admin Notification Email
+
+The admin email includes:
+
+- Contact information (name, email, phone)
+- Event details (type, date, location, services)
+- Original message from user
+- Source information and contact date
+- Professional formatting with clear sections
+
+### User Auto-Reply Email
+
+The user receives:
+
+- Thank you message
+- Summary of their request
+- Next steps information
+- Contact information for urgent questions
+- Professional and welcoming tone
+
+## 7. Testing Your Setup
+
+1. **Test Configuration**: Use the admin panel to test EmailJS configuration
+2. **Test Form Submission**: Submit a test contact form
+3. **Check Both Emails**: Verify both admin notification and user auto-reply are sent
+4. **Test Different Languages**: Test with different locale settings
+
+## 8. Troubleshooting
 
 ### Common Issues:
 
 1. **"EmailJS configuration is missing"**
-   - Check that all three environment variables are set
-   - Restart your development server after adding variables
+   - Check that all environment variables are set
+   - Verify the variable names match exactly
 
-2. **"Failed to send email"**
-   - Verify your Service ID, Template ID, and Public Key are correct
-   - Check EmailJS dashboard for any service issues
-   - Ensure your email service is properly connected
+2. **"Invalid template" error**
+   - Verify template IDs are correct
+   - Check that templates exist in your EmailJS account
 
-3. **Emails not received**
-   - Check spam/junk folder
-   - Verify email service is working in EmailJS dashboard
-   - Test with a different email address
+3. **"Invalid service" error**
+   - Verify service ID is correct
+   - Check that email service is properly configured
 
-4. **Template variables not showing**
-   - Ensure template variable names match exactly (case-sensitive)
-   - Check that form fields are being passed correctly
+4. **Auto-reply not sending**
+   - Check that auto-reply template ID is set
+   - Verify user email is not the widget email
+   - Check EmailJS logs for specific errors
 
-### Support
+### Debug Information:
 
-- EmailJS Documentation: https://emailjs.com/docs/
-- EmailJS Support: https://emailjs.com/support/
+The application logs detailed information about:
 
-## Template Testing
+- EmailJS configuration status
+- Template parameters being sent
+- Success/failure of each email
+- Specific error messages
 
-You can test your template by using the "Send Test" feature in EmailJS dashboard with these sample values:
+## 9. Security Considerations
 
-```json
-{
-  "from_name": "María García",
-  "from_email": "maria@example.com",
-  "event_type": "boda",
-  "event_date": "2024-09-15",
-  "message": "Estamos planeando nuestra boda y nos encantaría conocer más sobre sus servicios. Somos aproximadamente 100 invitados.",
-  "phone": "+598 99 123 456",
-  "source": "contact_form",
-  "preferred_contact": "email",
-  "to_name": "Equipo Veloz",
-  "reply_to": "maria@example.com"
-}
-```
+- EmailJS public key is safe to expose in client-side code
+- Template IDs and service IDs are also safe for client-side use
+- Sensitive information (like admin emails) is configured in EmailJS templates, not in code
+- All email content is properly sanitized before sending
 
-This will help you verify the template formatting before going live.
+## 10. Performance Notes
+
+- Emails are sent asynchronously
+- File uploads happen before email sending
+- Auto-reply failures don't prevent admin notification
+- Comprehensive error handling and logging
+- User-friendly error messages
+
+## 11. Maintenance
+
+- Monitor EmailJS usage limits
+- Review email templates periodically
+- Update contact information as needed
+- Test email delivery regularly
+- Keep environment variables secure
+
+---
+
+**Note**: This setup provides full control over email content and language while maintaining the security and reliability of EmailJS's infrastructure.

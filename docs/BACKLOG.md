@@ -18,6 +18,7 @@ This file contains future epics that are not yet active. For detailed epic infor
 - [Admin Panel & CMS Enhancement](#-epic-admin-panel--cms-enhancement) 🟧 **HIGH PRIORITY**
 - [Projects Process Page & Client Login](#-epic-projects-process-page--client-login--high-priority) ⭐ **HIGH PRIORITY** _(Temporarily on hold for launch)_
 - [Crew Listing Page & Navigation](#-epic-crew-listing-page--navigation--high-priority) ⭐ **HIGH PRIORITY**
+- [Editable User Email Templates](#-epic-editable-user-email-templates) 🟧 **MEDIUM PRIORITY**
 
 ### **🔍 Marketing & SEO Epics**
 
@@ -1046,6 +1047,95 @@ This file contains future epics that are not yet active. For detailed epic infor
 - [ ] **Video SEO enhancement** - Video sitemaps and transcript generation
 - [ ] **International SEO** - Hreflang tags and country-specific content
 - [ ] **Rich snippet testing** - Google Rich Results testing and optimization
+
+---
+
+## 🛠️ **EPIC: Editable User Email Templates**
+
+### 🎯 Objective: Allow admins to edit user auto-reply email templates through the admin panel
+
+**User Intent**: Provide admin control over user email templates without requiring code changes or EmailJS template updates
+
+**Tags**: `#admin-control` `#email-templates` `#user-communication` `#content-management`
+
+**Scope**: Create an admin interface to edit user auto-reply email templates with multi-language support
+
+**Status**: 🟧 **MEDIUM PRIORITY** - Ready for development
+
+#### 🟧 High Priority Tasks
+
+- [ ] **Phase 1: Email Template Management Interface** - Create admin interface for editing templates
+  - **User Intent**: Provide a user-friendly interface to edit email templates
+  - **Acceptance Criteria**:
+    - Admin panel section for email template management
+    - Multi-language template editing (Spanish, English, Portuguese)
+    - Rich text editor with template variable support
+    - Preview functionality for each language
+    - Save and publish functionality
+  - **Files**: `src/components/admin/EmailTemplateManager.tsx`, `src/app/admin/email-templates/page.tsx`
+  - **Estimated Time**: 2 days
+
+- [ ] **Phase 2: Template Storage & Retrieval** - Store templates in Firestore and integrate with email service
+  - **User Intent**: Store email templates in the database and use them in the email service
+  - **Acceptance Criteria**:
+    - Firestore collection for email templates
+    - Template versioning and history
+    - Integration with existing email service
+    - Fallback to default templates if custom templates not found
+    - Template validation and error handling
+  - **Files**: `src/services/email-template-service.ts`, `src/services/email.ts`
+  - **Estimated Time**: 1.5 days
+
+- [ ] **Phase 3: Template Variables System** - Implement dynamic variable replacement
+  - **User Intent**: Support dynamic content in email templates
+  - **Acceptance Criteria**:
+    - Support for all existing template variables ({{name}}, {{email}}, etc.)
+    - Variable preview and documentation
+    - Validation to ensure required variables are present
+    - Error handling for missing variables
+    - Template variable testing functionality
+  - **Files**: `src/lib/email-template-variables.ts`, `src/components/admin/TemplateVariableHelper.tsx`
+  - **Estimated Time**: 1 day
+
+- [ ] **Phase 4: Template Testing & Validation** - Add testing capabilities for email templates
+  - **User Intent**: Test email templates before publishing
+  - **Acceptance Criteria**:
+    - Send test emails with current template
+    - Preview emails in different languages
+    - Validate template syntax and variables
+    - Template performance testing
+    - Error reporting for template issues
+  - **Files**: `src/components/admin/EmailTemplateTester.tsx`
+  - **Estimated Time**: 1 day
+
+#### 🟩 Low Priority Tasks
+
+- [ ] **Phase 5: Advanced Template Features** - Add advanced template functionality
+  - **User Intent**: Provide advanced features for power users
+  - **Acceptance Criteria**:
+    - Template categories and organization
+    - Template sharing and import/export
+    - Advanced formatting options
+    - Template analytics and usage tracking
+    - A/B testing for email templates
+  - **Files**: `src/components/admin/AdvancedTemplateFeatures.tsx`
+  - **Estimated Time**: 2-3 days
+
+#### 📋 Technical Requirements
+
+- **Database**: Firestore collection for email templates
+- **Admin Interface**: React components with rich text editing
+- **Email Service**: Integration with existing EmailJS setup
+- **Multi-language**: Support for Spanish, English, Portuguese
+- **Validation**: Template syntax and variable validation
+- **Testing**: Email template testing functionality
+
+#### 🔗 Dependencies
+
+- Existing email service (`src/services/email.ts`)
+- Admin panel infrastructure
+- Firestore database access
+- EmailJS integration
 
 ---
 
