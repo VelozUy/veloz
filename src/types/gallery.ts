@@ -1,6 +1,6 @@
 /**
  * Tiled Gallery System Types
- * 
+ *
  * TypeScript definitions for the masonry-style tiled gallery layout system.
  * Compatible with existing gallery interfaces while providing enhanced layout capabilities.
  */
@@ -14,7 +14,15 @@ export interface GalleryImage {
   height: number;
   type: 'photo' | 'video';
   url: string; // For compatibility with existing FullscreenModal
-  aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4' | '4:5' | '5:4' | string;
+  aspectRatio?:
+    | '1:1'
+    | '16:9'
+    | '9:16'
+    | '4:3'
+    | '3:4'
+    | '4:5'
+    | '5:4'
+    | string;
   projectTitle?: string;
   featured?: boolean;
   order?: number;
@@ -36,12 +44,12 @@ export interface TileLayout {
   // Position and dimensions in the grid
   row: number;
   column: number;
-  width: number;  // CSS grid units or percentage
+  width: number; // CSS grid units or percentage
   height: number; // CSS grid units or percentage
   // Calculated layout properties
   aspectRatio: number;
   gridSpan: string; // CSS classes for grid spanning
-  rowSpan: string;  // CSS classes for row spanning
+  rowSpan: string; // CSS classes for row spanning
   // Animation properties
   animationDelay: number;
   // Style properties for positioning
@@ -88,6 +96,11 @@ export interface ResponsiveConfig {
     targetRowHeight: number;
   };
   desktop: {
+    columns: number;
+    gap: number;
+    targetRowHeight: number;
+  };
+  largeDesktop: {
     columns: number;
     gap: number;
     targetRowHeight: number;
@@ -169,4 +182,4 @@ export type TileAspectRatio = number;
 export type TilePosition = { row: number; column: number };
 export type TileDimensions = { width: number; height: number };
 export type GridSpanClasses = string;
-export type AnimationDelay = number; 
+export type AnimationDelay = number;

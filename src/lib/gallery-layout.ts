@@ -1,6 +1,6 @@
 /**
  * Tiled Gallery Layout Algorithm
- * 
+ *
  * Core masonry-style layout calculation based on WordPress Jetpack tiled-gallery module.
  * Implements optimal image positioning with aspect ratio balancing and visual harmony.
  * Designed to support existing animations and interaction patterns.
@@ -31,6 +31,11 @@ export const DEFAULT_RESPONSIVE_CONFIG: ResponsiveConfig = {
     columns: 3,
     gap: 8,
     targetRowHeight: 300,
+  },
+  largeDesktop: {
+    columns: 4,
+    gap: 10,
+    targetRowHeight: 350,
   },
 };
 
@@ -99,7 +104,7 @@ export function calculateTileLayout(
       );
       rows.push(calculatedRow);
       tiles.push(...calculatedRow.tiles);
-      
+
       currentRow = [];
       rowIndex++;
     }
@@ -113,13 +118,17 @@ export function calculateTileLayout(
   }
 
   // Calculate total height
-  const totalHeight = rows.reduce((sum, row) => sum + row.actualHeight + fullConfig.gap, -fullConfig.gap);
+  const totalHeight = rows.reduce(
+    (sum, row) => sum + row.actualHeight + fullConfig.gap,
+    -fullConfig.gap
+  );
 
   // Calculate metadata
-  const averageAspectRatio = images.reduce((sum, img) => {
-    const aspectRatio = img.width && img.height ? img.width / img.height : 1;
-    return sum + aspectRatio;
-  }, 0) / images.length;
+  const averageAspectRatio =
+    images.reduce((sum, img) => {
+      const aspectRatio = img.width && img.height ? img.width / img.height : 1;
+      return sum + aspectRatio;
+    }, 0) / images.length;
 
   const calculationTime = performance.now() - startTime;
 
@@ -159,7 +168,8 @@ function shouldFinalizeRow(
   }, 0);
 
   // Calculate ideal width based on target row height
-  const targetWidth = config.containerWidth - (config.gap * (currentRow.length - 1));
+  const targetWidth =
+    config.containerWidth - config.gap * (currentRow.length - 1);
   const idealWidth = aspectRatioSum * config.targetRowHeight;
 
   // Finalize if we're close to the target width
@@ -192,7 +202,8 @@ function calculateRowLayout(
   }, 0);
 
   // Calculate available width (container width minus gaps)
-  const availableWidth = config.containerWidth - (config.gap * (rowImages.length - 1));
+  const availableWidth =
+    config.containerWidth - config.gap * (rowImages.length - 1);
 
   // Calculate actual row height based on available width and aspect ratios
   const actualHeight = Math.min(
@@ -205,15 +216,21 @@ function calculateRowLayout(
 
   // Generate tiles for this row
   const tiles: TileLayout[] = rowImages.map((image, columnIndex) => {
-    const aspectRatio = image.width && image.height ? image.width / image.height : 1;
+    const aspectRatio =
+      image.width && image.height ? image.width / image.height : 1;
     const tileWidth = aspectRatio * actualHeight;
-    
+
     // Calculate animation delay preserving existing patterns
-    const originalIndex = (image as any).originalIndex || (rowIndex * rowImages.length + columnIndex);
+    const originalIndex =
+      (image as any).originalIndex || rowIndex * rowImages.length + columnIndex;
     const animationDelay = originalIndex * 0.05; // Match existing stagger delay
 
     // Generate CSS grid classes for compatibility
-    const gridSpan = calculateGridSpan(tileWidth, availableWidth, rowImages.length);
+    const gridSpan = calculateGridSpan(
+      tileWidth,
+      availableWidth,
+      rowImages.length
+    );
     const rowSpan = 'row-span-1'; // Single row span for tiled layout
 
     return {
@@ -242,7 +259,9 @@ function calculateRowLayout(
     tiles,
     targetHeight: config.targetRowHeight,
     actualHeight,
-    totalWidth: tiles.reduce((sum, tile) => sum + tile.width, 0) + (config.gap * (tiles.length - 1)),
+    totalWidth:
+      tiles.reduce((sum, tile) => sum + tile.width, 0) +
+      config.gap * (tiles.length - 1),
     aspectRatioSum,
   };
 }
@@ -257,13 +276,13 @@ function calculateGridSpan(
 ): string {
   // Calculate relative width as percentage
   const widthPercentage = (tileWidth / totalWidth) * 100;
-  
+
   // Map to CSS grid span classes based on percentage
   if (widthPercentage >= 75) return 'col-span-12 lg:col-span-12';
   if (widthPercentage >= 50) return 'col-span-12 md:col-span-6 lg:col-span-6';
   if (widthPercentage >= 33) return 'col-span-6 md:col-span-4 lg:col-span-4';
   if (widthPercentage >= 25) return 'col-span-6 md:col-span-3 lg:col-span-3';
-  
+
   // Default span for smaller tiles
   return 'col-span-6 md:col-span-2 lg:col-span-2';
 }
@@ -271,10 +290,13 @@ function calculateGridSpan(
 /**
  * Get responsive configuration based on screen width
  */
-export function getResponsiveConfig(screenWidth: number): ResponsiveConfig['mobile' | 'tablet' | 'desktop'] {
+export function getResponsiveConfig(
+  screenWidth: number
+): ResponsiveConfig['mobile' | 'tablet' | 'desktop' | 'largeDesktop'] {
   if (screenWidth < 768) return DEFAULT_RESPONSIVE_CONFIG.mobile;
   if (screenWidth < 1024) return DEFAULT_RESPONSIVE_CONFIG.tablet;
-  return DEFAULT_RESPONSIVE_CONFIG.desktop;
+  if (screenWidth < 1440) return DEFAULT_RESPONSIVE_CONFIG.desktop;
+  return DEFAULT_RESPONSIVE_CONFIG.largeDesktop;
 }
 
 /**
@@ -285,7 +307,7 @@ export function optimizeLayout(layout: TiledGalleryLayout): TiledGalleryLayout {
   const optimizedRows = layout.rows.map(row => {
     // Ensure no row is too tall or too short relative to target
     const heightRatio = row.actualHeight / layout.config.targetRowHeight;
-    
+
     if (heightRatio > 1.5 || heightRatio < 0.6) {
       // Recalculate with adjusted parameters
       return calculateRowLayout(
@@ -293,11 +315,12 @@ export function optimizeLayout(layout: TiledGalleryLayout): TiledGalleryLayout {
         parseInt(row.id.split('-')[1]),
         {
           ...layout.config,
-          targetRowHeight: layout.config.targetRowHeight * (heightRatio > 1.5 ? 0.8 : 1.2),
+          targetRowHeight:
+            layout.config.targetRowHeight * (heightRatio > 1.5 ? 0.8 : 1.2),
         }
       );
     }
-    
+
     return row;
   });
 
@@ -322,7 +345,8 @@ export function convertProjectMediaToGalleryImage(
   return {
     id: media.id || `media-${Date.now()}`,
     src: media.url || media.src,
-    alt: media.alt || media.description?.es || `${projectTitle} - ${media.type}`,
+    alt:
+      media.alt || media.description?.es || `${projectTitle} - ${media.type}`,
     width: media.width || 800,
     height: media.height || 600,
     type: media.type === 'video' ? 'video' : 'photo',
@@ -336,7 +360,8 @@ export function convertProjectMediaToGalleryImage(
     // Lightbox integration
     galleryGroup: `project-${projectId}`,
     dataType: media.type === 'video' ? 'video' : 'image',
-    dataDesc: media.description?.es || media.alt || `${projectTitle} - ${media.type}`,
+    dataDesc:
+      media.description?.es || media.alt || `${projectTitle} - ${media.type}`,
     // Performance optimization
     blurDataURL: media.blurDataURL,
     priority: media.featured || false,
@@ -353,6 +378,8 @@ export function convertProjectMediaBatch(
 ): GalleryImage[] {
   return mediaArray
     .filter(media => media && (media.url || media.src))
-    .map(media => convertProjectMediaToGalleryImage(media, projectTitle, projectId))
+    .map(media =>
+      convertProjectMediaToGalleryImage(media, projectTitle, projectId)
+    )
     .sort((a, b) => (a.order || 0) - (b.order || 0));
-} 
+}

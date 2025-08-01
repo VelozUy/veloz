@@ -18,6 +18,10 @@ import {
   optimizeLayout,
 } from '@/lib/gallery-layout';
 import {
+  useResponsiveGrid,
+  getFluidOptimalColumns,
+} from '@/hooks/useResponsiveGrid';
+import {
   GalleryImage,
   TiledGalleryProps,
   TiledGalleryLayout,
@@ -70,7 +74,10 @@ export function TiledGallery({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1200);
   const [layout, setLayout] = useState<TiledGalleryLayout | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+
+  // Use fluid responsive grid
+  const gridState = useResponsiveGrid();
+  const isMobile = gridState.isMobile;
 
   // Performance optimization - preserving current patterns while adding enhancements
   const {
@@ -104,22 +111,19 @@ export function TiledGallery({
   const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
 
   // Detect mobile viewport
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // Mobile detection is now handled by useResponsiveGrid hook
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Memoized responsive configuration
+  // Memoized responsive configuration using fluid grid
   const responsiveConfig = useMemo(() => {
     if (typeof window === 'undefined')
       return { columns: 3, gap: 8, targetRowHeight: 300 };
-    return getResponsiveConfig(window.innerWidth);
-  }, []);
+
+    const baseConfig = getResponsiveConfig(window.innerWidth);
+    return {
+      ...baseConfig,
+      columns: gridState.columns, // Use fluid columns from grid state
+    };
+  }, [containerWidth, gridState.columns]);
 
   // Calculate layout when images or container size changes
   const calculatedLayout = useMemo(() => {
@@ -183,6 +187,9 @@ export function TiledGallery({
       };
     }
 
+    // Calculate available width for layout (container width minus margins)
+    const availableWidth = containerWidth - 128; // 64px padding on each side
+
     const config = {
       targetRowHeight: responsiveConfig.targetRowHeight,
       maxRowHeight: responsiveConfig.targetRowHeight * 1.3,
@@ -191,7 +198,7 @@ export function TiledGallery({
       preserveAspectRatio: true,
     };
 
-    const baseLayout = calculateTileLayout(images, containerWidth, config);
+    const baseLayout = calculateTileLayout(images, availableWidth, config);
     return optimizeLayout(baseLayout);
   }, [
     images,
@@ -435,12 +442,15 @@ export function TiledGallery({
     );
   }
 
-  // Mobile layout - simple single column
+  // Mobile layout - simple single column with margins
   if (isMobile) {
     return (
       <div
         ref={containerRef}
-        className={cn('tiled-gallery-container relative w-full', className)}
+        className={cn(
+          'tiled-gallery-container relative w-full px-16',
+          className
+        )}
         role="region"
         aria-label={ariaLabel}
         style={{ contain: 'layout style' }}
@@ -622,11 +632,11 @@ export function TiledGallery({
     );
   }
 
-  // Desktop layout - complex masonry
+  // Desktop layout - complex masonry with fluid columns
   return (
     <div
       ref={containerRef}
-      className={cn('tiled-gallery-container relative w-full', className)}
+      className={cn('tiled-gallery-container relative w-full px-16', className)}
       role="region"
       aria-label={ariaLabel}
       style={{ contain: 'layout style' }}
