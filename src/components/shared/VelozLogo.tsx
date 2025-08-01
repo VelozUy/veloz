@@ -18,25 +18,25 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
   logoSize,
 }) => {
   const sizeClasses = {
-    sm: 'h-8 w-auto',
-    md: 'h-12 w-auto',
-    lg: 'h-16 w-auto',
-    xl: 'h-24 w-auto',
+    sm: 'h-6 md:h-8 w-auto',
+    md: 'h-8 md:h-12 w-auto',
+    lg: 'h-12 md:h-16 w-auto',
+    xl: 'h-16 md:h-24 w-auto',
   };
 
   const logoSizeClasses = {
-    sm: 'h-8 md:h-12 w-auto',
-    md: 'h-8 w-auto',
-    lg: 'h-12 w-auto',
-    xl: 'h-16 w-auto',
+    sm: 'h-6 md:h-8 w-auto',
+    md: 'h-6 md:h-8 w-auto',
+    lg: 'h-8 md:h-12 w-auto',
+    xl: 'h-12 md:h-16 w-auto',
   };
 
   // Use proper typography classes for logo text - REDJOLA font only
   const textSizeClasses = {
-    sm: 'text-xl md:text-4xl font-logo font-normal', // Never bold for REDJOLA
-    md: 'text-4xl font-logo font-normal', // Never bold for REDJOLA
-    lg: 'text-5xl font-logo font-normal', // Never bold for REDJOLA
-    xl: 'text-6xl font-logo font-normal', // Never bold for REDJOLA
+    sm: 'text-lg md:text-xl font-logo font-normal', // Never bold for REDJOLA
+    md: 'text-xl md:text-4xl font-logo font-normal', // Never bold for REDJOLA
+    lg: 'text-2xl md:text-5xl font-logo font-normal', // Never bold for REDJOLA
+    xl: 'text-3xl md:text-6xl font-logo font-normal', // Never bold for REDJOLA
   };
 
   // Get the appropriate logo file based on variant
@@ -63,7 +63,12 @@ const VelozLogo: React.FC<VelozLogoProps> = ({
       )}
     >
       {/* Logo Image */}
-      <div className={cn("relative w-auto flex-shrink-0 mr-1", logoSize ? logoSizeClasses[logoSize] : sizeClasses[size])}>
+      <div
+        className={cn(
+          'relative w-auto flex-shrink-0 mr-1',
+          logoSize ? logoSizeClasses[logoSize] : sizeClasses[size]
+        )}
+      >
         <img
           src={getLogoPath()}
           alt="Veloz Logo"

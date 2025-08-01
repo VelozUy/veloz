@@ -238,6 +238,7 @@ export default function NavigationBar({
           )}
         >
           <div className="px-4 py-6 space-y-4">
+            {/* Left Navigation Items */}
             {navItems.map(item => {
               const active = isActive(item.href);
               return (
@@ -255,6 +256,17 @@ export default function NavigationBar({
                 </Link>
               );
             })}
+
+            {/* Right Items (Contact, Language Switcher, etc.) */}
+            {rightItems.map((item, index) => (
+              <div
+                key={`right-item-${index}`}
+                className="px-4 py-3"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item}
+              </div>
+            ))}
           </div>
         </div>
       )}

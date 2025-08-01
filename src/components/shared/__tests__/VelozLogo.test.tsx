@@ -46,10 +46,10 @@ describe('VelozLogo', () => {
     expect(text).not.toBeInTheDocument();
   });
 
-  it('applies correct size classes', () => {
+  it('applies correct responsive size classes', () => {
     const { container } = render(<VelozLogo size="xl" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-24');
+    expect(logoContainer).toHaveClass('h-16', 'md:h-24');
   });
 
   it('applies custom className', () => {
