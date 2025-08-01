@@ -3,14 +3,12 @@
 import type { EventType, Language } from '@/types';
 
 // Supported Languages
-export const LANGUAGES: Language[] = ['es', 'en', 'pt', 'fr', 'zh'];
+export const LANGUAGES: Language[] = ['es', 'en', 'pt'];
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
   es: 'Español',
   en: 'English',
   pt: 'Português (Brasil)',
-  fr: 'Français',
-  zh: '中文',
 };
 
 // Event Types (Legacy - for backward compatibility)
@@ -26,7 +24,7 @@ export const EVENT_TYPES: EventType[] = [
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
   casamiento: 'Casamiento',
   corporativos: 'Corporativos',
-  'culturales': 'Culturales',
+  culturales: 'Culturales',
   photoshoot: 'Photoshoot',
   prensa: 'Prensa',
   otros: 'Otros',
@@ -36,7 +34,7 @@ export const EVENT_TYPE_LABELS: Record<EventType, string> = {
 export const EVENT_TYPE_LABELS_EN: Record<EventType, string> = {
   casamiento: 'Wedding',
   corporativos: 'Corporate',
-  'culturales': 'Cultural',
+  culturales: 'Cultural',
   photoshoot: 'Photoshoot',
   prensa: 'Press',
   otros: 'Others',
@@ -46,7 +44,7 @@ export const EVENT_TYPE_LABELS_EN: Record<EventType, string> = {
 export const EVENT_TYPE_LABELS_PT: Record<EventType, string> = {
   casamiento: 'Casamento',
   corporativos: 'Corporativo',
-  'culturales': 'Cultural',
+  culturales: 'Cultural',
   photoshoot: 'Photoshoot',
   prensa: 'Imprensa',
   otros: 'Outros',

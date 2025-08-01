@@ -82,25 +82,25 @@ const STATIC_TRANSLATIONS = {
         title: 'Formulario',
         name: {
           label: 'Tu nombre',
-          placeholder: 'Tu nombre completo',
+          placeholder: '*Nombre',
         },
         email: {
           label: 'Correo',
-          placeholder: 'tu@email.com',
+          placeholder: '*Email',
         },
         company: {
           label: 'Empresa (si corresponde)',
-          placeholder: 'Nombre de tu empresa',
+          placeholder: 'Empresa',
           optional: '(opcional)',
         },
         phone: {
           label: 'Número de celu',
-          placeholder: 'Tu número de celular',
+          placeholder: 'Teléfono',
           optional: '(opcional)',
         },
         eventType: {
           label: '¿Qué tipo de evento tienes?',
-          placeholder: 'Selecciona el tipo de evento',
+          placeholder: '*Tipo',
           options: {
             corporate: 'Evento corporativo',
             product: 'Presentación de producto',
@@ -113,15 +113,15 @@ const STATIC_TRANSLATIONS = {
         },
         location: {
           label: 'Lugar del evento (ciudad)',
-          placeholder: 'Ciudad donde será el evento',
+          placeholder: '*Ciudad',
         },
         attendees: {
           label: 'Cantidad de asistentes esperados',
-          placeholder: 'Número aproximado de invitados',
+          placeholder: '*Número',
         },
         services: {
           label: '¿Qué servicios te interesan?',
-          placeholder: 'Selecciona los servicios',
+          placeholder: '*Servicios',
           options: {
             photography: 'Fotografía',
             video: 'Video',
@@ -132,6 +132,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: '¿Cómo preferís que te contactemos?',
+          placeholder: 'Método',
           options: {
             whatsapp: 'Whatsapp',
             email: 'Mail',
@@ -146,8 +147,7 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Cuéntanos todos los detalles que te parezcan',
           optional: '(opcional)',
-          placeholder:
-            'Comparte todos los detalles que consideres importantes para tu evento...',
+          placeholder: 'Detalles',
         },
         attachments: {
           label: 'Archivos adjuntos',
@@ -373,25 +373,25 @@ const STATIC_TRANSLATIONS = {
         title: 'Form',
         name: {
           label: 'Name',
-          placeholder: 'Your full name',
+          placeholder: '*Name',
         },
         email: {
           label: 'Email',
-          placeholder: 'your@email.com',
+          placeholder: '*Email',
         },
         company: {
           label: 'Company (if applicable)',
-          placeholder: 'Your company name',
+          placeholder: 'Company',
           optional: '(optional)',
         },
         phone: {
           label: 'Mobile number',
-          placeholder: 'Your mobile number',
+          placeholder: 'Mobile',
           optional: '(optional)',
         },
         eventType: {
           label: 'What type of event do you have?',
-          placeholder: 'Select event type',
+          placeholder: '*Type',
           options: {
             corporate: 'Corporate event',
             product: 'Product presentation',
@@ -404,15 +404,15 @@ const STATIC_TRANSLATIONS = {
         },
         location: {
           label: 'Event location (city)',
-          placeholder: 'City where the event will be held',
+          placeholder: '*City',
         },
         attendees: {
           label: 'Expected number of attendees',
-          placeholder: 'Approximate number of guests',
+          placeholder: '*Number',
         },
         services: {
           label: 'What services are you interested in?',
-          placeholder: 'Select services',
+          placeholder: '*Services',
           options: {
             photography: 'Photography',
             video: 'Video',
@@ -423,6 +423,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'How would you prefer us to contact you?',
+          placeholder: 'Method',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
@@ -437,8 +438,7 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Tell us all the details you think are relevant',
           optional: '(optional)',
-          placeholder:
-            'Share all the details you consider important for your event...',
+          placeholder: 'Details',
         },
         attachments: {
           label: 'Attachments',
@@ -662,25 +662,25 @@ const STATIC_TRANSLATIONS = {
         title: 'Formulário',
         name: {
           label: 'Nome',
-          placeholder: 'Seu nome completo',
+          placeholder: '*Nome',
         },
         email: {
           label: 'Email',
-          placeholder: 'seu@email.com',
+          placeholder: '*Email',
         },
         company: {
           label: 'Empresa (se aplicável)',
-          placeholder: 'Nome da sua empresa',
+          placeholder: 'Empresa',
           optional: '(opcional)',
         },
         phone: {
           label: 'Número de celular',
-          placeholder: 'Seu número de celular',
+          placeholder: 'Celular',
           optional: '(opcional)',
         },
         eventType: {
           label: 'Que tipo de evento você tem?',
-          placeholder: 'Selecione o tipo de evento',
+          placeholder: '*Tipo',
           options: {
             corporate: 'Evento corporativo',
             product: 'Apresentação de produto',
@@ -693,15 +693,15 @@ const STATIC_TRANSLATIONS = {
         },
         location: {
           label: 'Local do evento (cidade)',
-          placeholder: 'Cidade onde o evento será realizado',
+          placeholder: '*Cidade',
         },
         attendees: {
           label: 'Número esperado de participantes',
-          placeholder: 'Número aproximado de convidados',
+          placeholder: '*Número',
         },
         services: {
           label: 'Que serviços você está interessado?',
-          placeholder: 'Selecione os serviços',
+          placeholder: '*Serviços',
           options: {
             photography: 'Fotografia',
             video: 'Vídeo',
@@ -712,6 +712,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'Como você prefere que entremos em contato?',
+          placeholder: 'Método',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
@@ -726,8 +727,7 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Conte-nos todos os detalhes que achar relevantes',
           optional: '(opcional)',
-          placeholder:
-            'Compartilhe todos os detalhes que considerar importantes para seu evento...',
+          placeholder: 'Detalhes',
         },
         attachments: {
           label: 'Anexos',
@@ -1930,6 +1930,66 @@ export function getContentForLocale(locale: Locale): LocalizedContent {
     );
     fs.writeFileSync(tsFilePath, tsContent);
     console.log(`📄 TypeScript definitions written to ${tsFilePath}`);
+
+    // Clean FAQ data to only include supported locales (es, en, pt)
+    const cleanedFaqs = faqs.map(faq => ({
+      ...faq,
+      question: {
+        es: faq.question?.es || '',
+        en: faq.question?.en || '',
+        pt: faq.question?.pt || '',
+      },
+      answer: {
+        es: faq.answer?.es || '',
+        en: faq.answer?.en || '',
+        pt: faq.answer?.pt || '',
+      },
+      // Convert date strings to Date objects for TypeScript compatibility
+      createdAt: faq.createdAt ? new Date(faq.createdAt) : new Date(),
+      updatedAt: faq.updatedAt ? new Date(faq.updatedAt) : new Date(),
+    }));
+
+    // Generate build-time data for FAQs
+    const buildTimeDataContent = `// Auto-generated at build time - do not edit manually
+// Generated on: ${new Date().toISOString()}
+
+// Build-time data types (with string dates for JSON compatibility)
+interface BuildTimeFAQ {
+  id: string;
+  question: {
+    es?: string;
+    en?: string;
+    pt?: string;
+  };
+  answer: {
+    es?: string;
+    en?: string;
+    pt?: string;
+  };
+  order: number;
+  category?: string;
+  published?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const BUILD_TIME_FAQS: BuildTimeFAQ[] = ${JSON.stringify(cleanedFaqs, null, 2)};
+
+export const BUILD_TIME_PROJECTS = ${JSON.stringify(projects, null, 2)};
+
+export const BUILD_TIME_ABOUT_CONTENT = ${JSON.stringify(aboutContent, null, 2)};
+
+export const BUILD_TIME_CREW_MEMBERS = ${JSON.stringify(crewMembers, null, 2)};
+`;
+
+    const buildTimeDataPath = path.join(
+      process.cwd(),
+      'src',
+      'lib',
+      'build-time-data.generated.ts'
+    );
+    fs.writeFileSync(buildTimeDataPath, buildTimeDataContent);
+    console.log(`📄 Build-time data written to ${buildTimeDataPath}`);
 
     console.log('✅ Static content generation completed successfully!');
     console.log(`📊 Generated content for ${LOCALES.length} locales`);

@@ -569,7 +569,359 @@ export default function ContactForm({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Contact Form - Full Top Section */}
+      <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
+        <div className="max-w-border-64 mx-auto">
+          <form onSubmit={onSubmit} className="space-y-8">
+            {/* Email-like format */}
+            <div className="text-body-lg leading-relaxed space-y-6">
+              {/* First sentence: Name, Company, and Contact */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span>Me llamo</span>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder={t.form.name.placeholder}
+                  value={formData.name}
+                  onChange={e => handleInputChange('name', e.target.value)}
+                  className={cn(
+                    errors.name && 'border-destructive',
+                    '!text-body-md w-48 inline-block'
+                  )}
+                />
+                <span>y trabajo para</span>
+                <Input
+                  id="company"
+                  type="text"
+                  placeholder={t.form.company.placeholder}
+                  value={formData.company}
+                  onChange={e => handleInputChange('company', e.target.value)}
+                  className="!text-body-md w-48 inline-block"
+                />
+                <span>Contáctenme a través de</span>
+                <div className="inline-block">
+                  <Select
+                    value={formData.contactMethod}
+                    onValueChange={value =>
+                      handleInputChange('contactMethod', value)
+                    }
+                  >
+                    <SelectTrigger className="w-32 !text-body-md">
+                      <SelectValue placeholder="método" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(t.form.contactMethod.options).map(
+                        ([key, label]) => (
+                          <SelectItem key={key} value={key}>
+                            {label}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                {formData.contactMethod === 'email' ? (
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder={t.form.email.placeholder}
+                    value={formData.email}
+                    onChange={e => handleInputChange('email', e.target.value)}
+                    className={cn(
+                      errors.email && 'border-destructive',
+                      '!text-body-md w-64 inline-block'
+                    )}
+                  />
+                ) : (
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder={t.form.phone.placeholder}
+                    value={formData.phone}
+                    onChange={e => handleInputChange('phone', e.target.value)}
+                    className="!text-body-md w-48 inline-block"
+                  />
+                )}
+              </div>
+              {errors.name && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.name}
+                </p>
+              )}
+              {errors.email && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.email}
+                </p>
+              )}
+
+              {/* Second sentence: Event details, Services, Date, and Details */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span>El evento es </span>
+                <div className="inline-block">
+                  <Select
+                    value={formData.eventType}
+                    onValueChange={value =>
+                      handleInputChange('eventType', value)
+                    }
+                  >
+                    <SelectTrigger className="w-48 !text-body-md">
+                      <SelectValue placeholder="tipo de evento" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(t.form.eventType.options).map(
+                        ([key, label]) => (
+                          <SelectItem key={key} value={key}>
+                            {label}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <span> en </span>
+                <Input
+                  id="location"
+                  type="text"
+                  placeholder={t.form.location.placeholder}
+                  value={formData.location}
+                  onChange={e => handleInputChange('location', e.target.value)}
+                  className={cn(
+                    errors.location && 'border-destructive',
+                    '!text-body-md w-48 inline-block'
+                  )}
+                />
+                <span> para aproximadamente </span>
+                <Input
+                  id="attendees"
+                  type="number"
+                  placeholder={t.form.attendees.placeholder}
+                  value={formData.attendees}
+                  onChange={e => handleInputChange('attendees', e.target.value)}
+                  className={cn(
+                    errors.attendees && 'border-destructive',
+                    '!text-body-md w-32 inline-block'
+                  )}
+                />
+                <span> personas</span>
+                <span>Me interesan los servicios de </span>
+                <div className="inline-block">
+                  <Select
+                    value={formData.services.join(',')}
+                    onValueChange={value => {
+                      const services = value ? value.split(',') : [];
+                      handleInputChange('services', services);
+                    }}
+                  >
+                    <SelectTrigger className="w-64 !text-body-md">
+                      <SelectValue placeholder="seleccionar servicios" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(t.form.services.options).map(
+                        ([key, label]) => (
+                          <SelectItem key={key} value={key}>
+                            {label}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <span>La fecha es </span>
+                <div className="inline-block">
+                  {isMobile ? (
+                    <Button
+                      variant="outline"
+                      onClick={() => openModal('datePicker')}
+                      className={cn(
+                        'w-48 justify-start text-left font-normal text-body-md',
+                        !formData.eventDate && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-5 w-5" />
+                      {formData.eventDate ? (
+                        format(new Date(formData.eventDate), 'PPP', {
+                          locale:
+                            locale === 'es'
+                              ? es
+                              : locale === 'en'
+                                ? enUS
+                                : ptBR,
+                        })
+                      ) : (
+                        <span>No tengo fecha</span>
+                      )}
+                    </Button>
+                  ) : (
+                    <Popover
+                      open={isDatePickerOpen}
+                      onOpenChange={setIsDatePickerOpen}
+                    >
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            'w-48 justify-start text-left font-normal text-body-md',
+                            !formData.eventDate && 'text-muted-foreground'
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-5 w-5" />
+                          {formData.eventDate ? (
+                            format(new Date(formData.eventDate), 'PPP', {
+                              locale:
+                                locale === 'es'
+                                  ? es
+                                  : locale === 'en'
+                                    ? enUS
+                                    : ptBR,
+                            })
+                          ) : (
+                            <span>No tengo fecha</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className={cn(
+                          'w-auto p-0 z-[9999]',
+                          isMobile &&
+                            'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                        )}
+                        side="bottom"
+                        align="center"
+                      >
+                        <Calendar
+                          mode="single"
+                          selected={
+                            formData.eventDate
+                              ? new Date(formData.eventDate)
+                              : undefined
+                          }
+                          onSelect={date => {
+                            const formattedDate = date
+                              ? format(date, 'yyyy-MM-dd')
+                              : '';
+                            handleInputChange('eventDate', formattedDate);
+                            setIsDatePickerOpen(false);
+                          }}
+                          disabled={date =>
+                            date < new Date(new Date().setHours(0, 0, 0, 0))
+                          }
+                          initialFocus
+                          locale={
+                            locale === 'es' ? es : locale === 'en' ? enUS : ptBR
+                          }
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </div>
+                <span>Más detalles:</span>
+                <Textarea
+                  id="message"
+                  placeholder={t.form.message.placeholder}
+                  rows={3}
+                  value={formData.message}
+                  onChange={e => handleInputChange('message', e.target.value)}
+                  className="!text-body-md w-96 inline-block"
+                />
+              </div>
+              {errors.eventType && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.eventType}
+                </p>
+              )}
+              {errors.location && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.location}
+                </p>
+              )}
+              {errors.attendees && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.attendees}
+                </p>
+              )}
+              {errors.services && (
+                <p className="text-body-md text-destructive flex items-center gap-1">
+                  <AlertCircle className="w-5 h-5" />
+                  {errors.services}
+                </p>
+              )}
+            </div>
+
+            {/* File Upload */}
+            <div className="space-y-2">
+              <Label className="text-body-lg font-medium text-foreground">
+                {t.form.attachments.label}{' '}
+                <span className="text-muted-foreground font-normal">
+                  {t.form.attachments.optional}
+                </span>
+              </Label>
+              <p className="text-body-md text-muted-foreground">
+                {t.form.attachments.description}
+              </p>
+              <FileUpload
+                onFilesSelected={handleFilesSelected}
+                onFilesRemoved={handleFilesRemoved}
+                selectedFiles={selectedFiles}
+                maxFiles={5}
+                maxFileSize={10 * 1024 * 1024} // 10MB
+                allowedTypes={[
+                  'image/*',
+                  'application/pdf',
+                  'application/msword',
+                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                ]}
+                disabled={isSubmitting || uploadingFiles}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="text-center space-y-4 lg:space-y-6">
+              <Button
+                type="submit"
+                disabled={isSubmitting || uploadingFiles}
+                size="lg"
+                sectionType="form"
+                priority="high"
+                className="font-semibold px-8 lg:px-12 py-4 lg:py-6 w-full lg:w-auto"
+              >
+                {isSubmitting || uploadingFiles ? (
+                  <>
+                    <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                    {uploadingFiles
+                      ? 'Uploading files...'
+                      : t.form.submit.loading}
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-6 h-6 mr-2" />
+                    {t.form.submit.button}
+                  </>
+                )}
+              </Button>
+
+              {submitError && (
+                <div className="text-destructive text-body-md bg-destructive/10 border border-destructive/20 rounded-none p-4 flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  {submitError}
+                </div>
+              )}
+
+              {/* Privacy Notice */}
+              <div className="text-body-md text-muted-foreground space-y-2 max-w-2xl mx-auto">
+                <p>{t.form.privacy.line1}</p>
+                <p>{t.form.privacy.line2}</p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Header Section - Moved to Bottom */}
       <section className="py-16 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
           <div className="text-left space-y-6 text-foreground">
@@ -602,592 +954,6 @@ export default function ContactForm({
                   {translations.contact.trust.commitment.description}
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form */}
-      <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
-        <div className="max-w-border-64 mx-auto">
-          <div className="text-left mb-8">
-            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
-              {t.form.title}
-            </h2>
-            <div className="w-24 h-1 bg-primary rounded-full"></div>
-          </div>
-          <div className="flex justify-center">
-            <div className="max-w-2xl">
-              <form onSubmit={onSubmit} className="space-y-6 lg:space-y-8">
-                <div className="bg-card rounded-none p-6 lg:p-8 shadow-sm border-border space-y-6">
-                  {/* Name */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="name"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.name.label}
-                    </Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder={t.form.name.placeholder}
-                      value={formData.name}
-                      onChange={e => handleInputChange('name', e.target.value)}
-                      className={cn(
-                        errors.name && 'border-destructive',
-                        '!text-body-sm'
-                      )}
-                    />
-                    {errors.name && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.name}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="email"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.email.label}
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder={t.form.email.placeholder}
-                      value={formData.email}
-                      onChange={e => handleInputChange('email', e.target.value)}
-                      className={cn(
-                        errors.email && 'border-destructive',
-                        '!text-body-sm'
-                      )}
-                    />
-                    {errors.email && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Company */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="company"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.company.label}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        {t.form.company.optional}
-                      </span>
-                    </Label>
-                    <Input
-                      id="company"
-                      type="text"
-                      placeholder={t.form.company.placeholder}
-                      value={formData.company}
-                      onChange={e =>
-                        handleInputChange('company', e.target.value)
-                      }
-                      className="!text-body-sm"
-                    />
-                  </div>
-
-                  {/* Phone */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="phone"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.phone.label}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        {t.form.phone.optional}
-                      </span>
-                    </Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder={t.form.phone.placeholder}
-                      value={formData.phone}
-                      onChange={e => handleInputChange('phone', e.target.value)}
-                      className="!text-body-sm"
-                    />
-                  </div>
-
-                  {/* Event Type */}
-                  <div className="space-y-2">
-                    <Label className="text-body-md font-medium text-foreground">
-                      {t.form.eventType.label}
-                    </Label>
-                    <div className="border border-input bg-background rounded-md p-2 space-y-1">
-                      {Object.entries(t.form.eventType.options).map(
-                        ([key, label]) => {
-                          const isSelected = formData.eventType === key;
-                          return (
-                            <button
-                              key={key}
-                              type="button"
-                              onClick={() =>
-                                handleInputChange('eventType', key)
-                              }
-                              className={cn(
-                                'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
-                                'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
-                                'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
-                                isSelected
-                                  ? 'bg-primary/5 text-primary'
-                                  : 'bg-transparent text-foreground'
-                              )}
-                            >
-                              {/* Checkmark indicator */}
-                              <div
-                                className={cn(
-                                  'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
-                                  isSelected
-                                    ? 'bg-primary border-primary'
-                                    : 'bg-background border-border group-hover:border-primary/50'
-                                )}
-                              >
-                                {isSelected && (
-                                  <Check className="w-2.5 h-2.5 text-primary-foreground" />
-                                )}
-                              </div>
-
-                              {/* Event type label */}
-                              <span
-                                className={cn(
-                                  'text-xs font-medium',
-                                  isSelected
-                                    ? 'text-primary'
-                                    : 'text-foreground'
-                                )}
-                              >
-                                {label}
-                              </span>
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
-                    {errors.eventType && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.eventType}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Location */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="location"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.location.label}
-                    </Label>
-                    <Input
-                      id="location"
-                      type="text"
-                      placeholder={t.form.location.placeholder}
-                      value={formData.location}
-                      onChange={e =>
-                        handleInputChange('location', e.target.value)
-                      }
-                      className={cn(
-                        errors.location && 'border-destructive',
-                        '!text-body-sm'
-                      )}
-                    />
-                    {errors.location && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.location}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Attendees */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="attendees"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.attendees.label}
-                    </Label>
-                    <Input
-                      id="attendees"
-                      type="number"
-                      placeholder={t.form.attendees.placeholder}
-                      value={formData.attendees}
-                      onChange={e =>
-                        handleInputChange('attendees', e.target.value)
-                      }
-                      className={cn(
-                        errors.attendees && 'border-destructive',
-                        '!text-body-sm'
-                      )}
-                    />
-                    {errors.attendees && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.attendees}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Services */}
-                  <div className="space-y-2">
-                    <Label className="text-body-md font-medium text-foreground">
-                      {t.form.services.label}
-                    </Label>
-                    <div className="border border-input bg-background rounded-md p-2 space-y-1">
-                      {Object.entries(t.form.services.options).map(
-                        ([key, label]) => {
-                          const isSelected = formData.services.includes(key);
-                          return (
-                            <button
-                              key={key}
-                              type="button"
-                              onClick={() => {
-                                const newServices = isSelected
-                                  ? formData.services.filter(s => s !== key)
-                                  : [...formData.services, key];
-                                handleInputChange('services', newServices);
-                              }}
-                              className={cn(
-                                'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
-                                'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
-                                'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
-                                isSelected
-                                  ? 'bg-primary/5 text-primary'
-                                  : 'bg-transparent text-foreground'
-                              )}
-                            >
-                              {/* Checkmark indicator */}
-                              <div
-                                className={cn(
-                                  'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
-                                  isSelected
-                                    ? 'bg-primary border-primary'
-                                    : 'bg-background border-border group-hover:border-primary/50'
-                                )}
-                              >
-                                {isSelected && (
-                                  <Check className="w-2.5 h-2.5 text-primary-foreground" />
-                                )}
-                              </div>
-
-                              {/* Service label */}
-                              <span
-                                className={cn(
-                                  'text-xs font-medium',
-                                  isSelected
-                                    ? 'text-primary'
-                                    : 'text-foreground'
-                                )}
-                              >
-                                {label}
-                              </span>
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
-                    {errors.services && (
-                      <p className="text-body-sm text-destructive flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.services}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Contact Method */}
-                  <div className="space-y-2">
-                    <Label className="text-body-md font-medium text-foreground">
-                      {t.form.contactMethod.label}
-                    </Label>
-                    <div className="border border-input bg-background rounded-md p-2 space-y-1">
-                      {Object.entries(t.form.contactMethod.options).map(
-                        ([key, label]) => {
-                          const isSelected = formData.contactMethod === key;
-                          return (
-                            <button
-                              key={key}
-                              type="button"
-                              onClick={() =>
-                                handleInputChange('contactMethod', key)
-                              }
-                              className={cn(
-                                'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
-                                'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
-                                'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
-                                isSelected
-                                  ? 'bg-primary/5 text-primary'
-                                  : 'bg-transparent text-foreground'
-                              )}
-                            >
-                              {/* Checkmark indicator */}
-                              <div
-                                className={cn(
-                                  'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
-                                  isSelected
-                                    ? 'bg-primary border-primary'
-                                    : 'bg-background border-border group-hover:border-primary/50'
-                                )}
-                              >
-                                {isSelected && (
-                                  <Check className="w-2.5 h-2.5 text-primary-foreground" />
-                                )}
-                              </div>
-
-                              {/* Contact method label */}
-                              <span
-                                className={cn(
-                                  'text-xs font-medium',
-                                  isSelected
-                                    ? 'text-primary'
-                                    : 'text-foreground'
-                                )}
-                              >
-                                {label}
-                              </span>
-                            </button>
-                          );
-                        }
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Event Date */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="eventDate"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.eventDate.label}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        {t.form.eventDate.optional}
-                      </span>
-                    </Label>
-                    <div className="flex gap-2">
-                      {isMobile ? (
-                        <Button
-                          variant="outline"
-                          onClick={() => openModal('datePicker')}
-                          className={cn(
-                            'flex-1 justify-start text-left font-normal text-body-sm',
-                            !formData.eventDate && 'text-muted-foreground'
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {formData.eventDate ? (
-                            format(new Date(formData.eventDate), 'PPP', {
-                              locale:
-                                locale === 'es'
-                                  ? es
-                                  : locale === 'en'
-                                    ? enUS
-                                    : ptBR,
-                            })
-                          ) : (
-                            <span>
-                              {locale === 'es'
-                                ? 'Seleccionar fecha'
-                                : locale === 'en'
-                                  ? 'Select a date'
-                                  : 'Selecionar data'}
-                            </span>
-                          )}
-                        </Button>
-                      ) : (
-                        <Popover
-                          open={isDatePickerOpen}
-                          onOpenChange={setIsDatePickerOpen}
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                'flex-1 justify-start text-left font-normal text-body-sm',
-                                !formData.eventDate && 'text-muted-foreground'
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {formData.eventDate ? (
-                                format(new Date(formData.eventDate), 'PPP', {
-                                  locale:
-                                    locale === 'es'
-                                      ? es
-                                      : locale === 'en'
-                                        ? enUS
-                                        : ptBR,
-                                })
-                              ) : (
-                                <span>
-                                  {locale === 'es'
-                                    ? 'Seleccionar fecha'
-                                    : locale === 'en'
-                                      ? 'Select a date'
-                                      : 'Selecionar data'}
-                                </span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className={cn(
-                              'w-auto p-0 z-[9999]',
-                              isMobile &&
-                                'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
-                            )}
-                            side="bottom"
-                            align="center"
-                          >
-                            <Calendar
-                              mode="single"
-                              selected={
-                                formData.eventDate
-                                  ? new Date(formData.eventDate)
-                                  : undefined
-                              }
-                              onSelect={date => {
-                                const formattedDate = date
-                                  ? format(date, 'yyyy-MM-dd')
-                                  : '';
-                                handleInputChange('eventDate', formattedDate);
-                                setIsDatePickerOpen(false);
-                              }}
-                              disabled={date =>
-                                date < new Date(new Date().setHours(0, 0, 0, 0))
-                              }
-                              initialFocus
-                              locale={
-                                locale === 'es'
-                                  ? es
-                                  : locale === 'en'
-                                    ? enUS
-                                    : ptBR
-                              }
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      )}
-                      {formData.eventDate && (
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleInputChange('eventDate', '')}
-                          className="shrink-0"
-                          title={
-                            locale === 'es'
-                              ? 'Limpiar fecha'
-                              : locale === 'en'
-                                ? 'Clear date'
-                                : 'Limpar data'
-                          }
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                    <p className="text-body-sm text-muted-foreground">
-                      {t.form.eventDate.help}
-                    </p>
-                  </div>
-
-                  {/* Message */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="message"
-                      className="text-body-md font-medium text-foreground"
-                    >
-                      {t.form.message.label}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        {t.form.message.optional}
-                      </span>
-                    </Label>
-                    <Textarea
-                      id="message"
-                      placeholder={t.form.message.placeholder}
-                      rows={5}
-                      value={formData.message}
-                      onChange={e =>
-                        handleInputChange('message', e.target.value)
-                      }
-                      className="!text-body-sm"
-                    />
-                  </div>
-
-                  {/* File Upload */}
-                  <div className="space-y-2">
-                    <Label className="text-body-md font-medium text-foreground">
-                      {t.form.attachments.label}{' '}
-                      <span className="text-muted-foreground font-normal">
-                        {t.form.attachments.optional}
-                      </span>
-                    </Label>
-                    <p className="text-body-sm text-muted-foreground">
-                      {t.form.attachments.description}
-                    </p>
-                    <FileUpload
-                      onFilesSelected={handleFilesSelected}
-                      onFilesRemoved={handleFilesRemoved}
-                      selectedFiles={selectedFiles}
-                      maxFiles={5}
-                      maxFileSize={10 * 1024 * 1024} // 10MB
-                      allowedTypes={[
-                        'image/*',
-                        'application/pdf',
-                        'application/msword',
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                      ]}
-                      disabled={isSubmitting || uploadingFiles}
-                    />
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <div className="text-center space-y-4 lg:space-y-6">
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting || uploadingFiles}
-                    size="lg"
-                    sectionType="form"
-                    priority="high"
-                    className="font-semibold px-8 lg:px-12 py-4 lg:py-6 w-full lg:w-auto"
-                  >
-                    {isSubmitting || uploadingFiles ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        {uploadingFiles
-                          ? 'Uploading files...'
-                          : t.form.submit.loading}
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5 mr-2" />
-                        {t.form.submit.button}
-                      </>
-                    )}
-                  </Button>
-
-                  {submitError && (
-                    <div className="text-destructive text-body-sm bg-destructive/10 border border-destructive/20 rounded-none p-4 flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                      {submitError}
-                    </div>
-                  )}
-
-                  {/* Privacy Notice */}
-                  <div className="text-body-sm text-muted-foreground space-y-2 max-w-2xl mx-auto">
-                    <p>{t.form.privacy.line1}</p>
-                    <p>{t.form.privacy.line2}</p>
-                  </div>
-                </div>
-              </form>
             </div>
           </div>
         </div>

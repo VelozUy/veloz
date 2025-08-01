@@ -81,6 +81,7 @@ function ContactPageContent() {
       trust: {
         response: { title: string; description: string };
         commitment: { title: string; description: string };
+        privacy: { title: string; description: string };
       };
     };
   };

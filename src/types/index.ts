@@ -1,14 +1,12 @@
 // Veloz Application Types
 
 // Language Support
-export type Language = 'es' | 'en' | 'pt' | 'fr' | 'zh';
+export type Language = 'es' | 'en' | 'pt';
 
 export interface LocalizedContent {
   es?: string;
   en?: string;
   pt?: string;
-  fr?: string;
-  zh?: string;
 }
 
 // Visual Grid Editor Types - The only layout system
@@ -151,6 +149,11 @@ export interface FormContent {
         label: LocalizedContent;
         placeholder: LocalizedContent;
       };
+      company: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+        optional: LocalizedContent;
+      };
       phone: {
         label: LocalizedContent;
         placeholder: LocalizedContent;
@@ -170,6 +173,33 @@ export interface FormContent {
           other: LocalizedContent;
         };
       };
+      location: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+      };
+      attendees: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+      };
+      services: {
+        label: LocalizedContent;
+        placeholder: LocalizedContent;
+        options: {
+          photography: LocalizedContent;
+          video: LocalizedContent;
+          drone: LocalizedContent;
+          studio: LocalizedContent;
+          other: LocalizedContent;
+        };
+      };
+      contactMethod: {
+        label: LocalizedContent;
+        options: {
+          whatsapp: LocalizedContent;
+          email: LocalizedContent;
+          call: LocalizedContent;
+        };
+      };
       eventDate: {
         label: LocalizedContent;
         optional: LocalizedContent;
@@ -179,6 +209,11 @@ export interface FormContent {
         label: LocalizedContent;
         optional: LocalizedContent;
         placeholder: LocalizedContent;
+      };
+      attachments: {
+        label: LocalizedContent;
+        optional: LocalizedContent;
+        description: LocalizedContent;
       };
       submit: {
         button: LocalizedContent;
