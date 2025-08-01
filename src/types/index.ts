@@ -164,6 +164,9 @@ export interface FormContent {
           quinceanera: LocalizedContent;
           birthday: LocalizedContent;
           corporate: LocalizedContent;
+          product: LocalizedContent;
+          concert: LocalizedContent;
+          exhibition: LocalizedContent;
           other: LocalizedContent;
         };
       };
