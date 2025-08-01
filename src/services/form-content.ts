@@ -336,282 +336,283 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               en: 'Share all the details you consider important for your event...',
               pt: 'Compartilhe todos os detalhes que considerar importantes para seu evento...',
             },
-          attachments: {
-            label: {
-              es: 'Archivos adjuntos',
-              en: 'Attachments',
-              pt: 'Anexos',
+            attachments: {
+              label: {
+                es: 'Archivos adjuntos',
+                en: 'Attachments',
+                pt: 'Anexos',
+              },
+              optional: {
+                es: '(opcional)',
+                en: '(optional)',
+                pt: '(opcional)',
+              },
+              description: {
+                es: 'Puedes adjuntar fotos o documentos',
+                en: 'You can attach photos or documents',
+                pt: 'Você pode anexar fotos ou documentos',
+              },
             },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
+            submit: {
+              button: {
+                es: 'Empezar la conversación',
+                en: 'Start the conversation',
+                pt: 'Iniciar a conversa',
+              },
+              loading: {
+                es: 'Enviando tu mensaje...',
+                en: 'Sending your message...',
+                pt: 'Enviando sua mensagem...',
+              },
             },
-            description: {
-              es: 'Puedes adjuntar fotos o documentos',
-              en: 'You can attach photos or documents',
-              pt: 'Você pode anexar fotos ou documentos',
+            privacy: {
+              line1: {
+                es: 'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
+                en: "We don't share your info. We'll only reach out to help with your event.",
+                pt: 'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
+              },
+              line2: {
+                es: 'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
+                en: "No spam, no pressure – just great photography and videography when you're ready.",
+                pt: 'Sem spam, sem pressão – apenas excelente fotografia e videografia quando estiver pronto.',
+              },
             },
           },
-          submit: {
-            button: {
-              es: 'Empezar la conversación',
-              en: 'Start the conversation',
-              pt: 'Iniciar a conversa',
-            },
-            loading: {
-              es: 'Enviando tu mensaje...',
-              en: 'Sending your message...',
-              pt: 'Enviando sua mensagem...',
-            },
-          },
-          privacy: {
-            line1: {
-              es: 'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
-              en: "We don't share your info. We'll only reach out to help with your event.",
-              pt: 'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
-            },
-            line2: {
-              es: 'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
-              en: "No spam, no pressure – just great photography and videography when you're ready.",
-              pt: 'Sem spam, sem pressão – apenas excelente fotografia e videografia quando estiver pronto.',
-            },
-          },
-        },
-        success: {
-          title: {
-            es: '¡Mensaje enviado!',
-            en: 'Message sent!',
-            pt: 'Mensagem enviada!',
-          },
-          message: {
-            es: '¡Gracias por contactarnos! te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
-            en: "Thank you for contacting us! We'll get back to you within 24 hours with all the details to make your event amazing.",
-            pt: 'Obrigado por entrar em contato! responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
-          },
-          action: {
-            es: 'Enviar otro mensaje',
-            en: 'Send another message',
-            pt: 'Enviar outra mensagem',
-          },
-        },
-        trust: {
-          response: {
+          success: {
             title: {
-              es: 'Respuesta rápida',
-              en: 'Quick Response',
-              pt: 'Resposta Rápida',
+              es: '¡Mensaje enviado!',
+              en: 'Message sent!',
+              pt: 'Mensagem enviada!',
             },
-            description: {
-              es: 'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
-              en: 'We typically respond within 2 hours after your inquiry',
-              pt: 'Normalmente respondemos dentro de 2 horas após sua consulta',
+            message: {
+              es: '¡Gracias por contactarnos! te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+              en: "Thank you for contacting us! We'll get back to you within 24 hours with all the details to make your event amazing.",
+              pt: 'Obrigado por entrar em contato! responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+            },
+            action: {
+              es: 'Enviar otro mensaje',
+              en: 'Send another message',
+              pt: 'Enviar outra mensagem',
             },
           },
-          commitment: {
-            title: {
-              es: 'Sin compromiso',
-              en: 'No Commitment',
-              pt: 'Sem Compromisso',
+          trust: {
+            response: {
+              title: {
+                es: 'Respuesta rápida',
+                en: 'Quick Response',
+                pt: 'Resposta Rápida',
+              },
+              description: {
+                es: 'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
+                en: 'We typically respond within 2 hours after your inquiry',
+                pt: 'Normalmente respondemos dentro de 2 horas após sua consulta',
+              },
             },
-            description: {
-              es: 'Obtener una cotización es completamente gratis y sin compromiso',
-              en: 'Getting a quote is completely free and without commitment',
-              pt: 'Obter um orçamento é completamente gratuito e sem compromisso',
+            commitment: {
+              title: {
+                es: 'Sin compromiso',
+                en: 'No Commitment',
+                pt: 'Sem Compromisso',
+              },
+              description: {
+                es: 'Obtener una cotización es completamente gratis y sin compromiso',
+                en: 'Getting a quote is completely free and without commitment',
+                pt: 'Obter um orçamento é completamente gratuito e sem compromisso',
+              },
             },
           },
         },
-      },
-      widget: {
-        button: {
-          desktop: {
-            es: '¿En qué evento estás pensando?',
-            en: 'What event are you thinking about?',
-            pt: 'Que evento você está pensando?',
-          },
-          mobile: {
-            es: '¿tu evento?',
-            en: 'your event?',
-            pt: 'seu evento?',
-          },
-        },
-        dialog: {
-          title: {
-            es: 'Cuéntanos sobre tu evento',
-            en: 'Tell us about your event',
-            pt: 'Conte-nos sobre seu evento',
-          },
-        },
-        eventTypes: {
-          wedding: {
-            es: 'Boda',
-            en: 'Wedding',
-            pt: 'Casamento',
-          },
-          corporate: {
-            es: 'Evento Empresarial',
-            en: 'Corporate Event',
-            pt: 'Evento Corporativo',
-          },
-          other: {
-            es: 'Otro tipo de evento',
-            en: 'Other type of event',
-            pt: 'Outro tipo de evento',
-          },
-        },
-        steps: {
-          eventType: {
-            title: {
+        widget: {
+          button: {
+            desktop: {
               es: '¿En qué evento estás pensando?',
               en: 'What event are you thinking about?',
               pt: 'Que evento você está pensando?',
             },
-            subtitle: {
-              es: 'Cuéntanos qué quieres celebrar',
-              en: 'Tell us what you want to celebrate',
-              pt: 'Conte-nos o que você quer celebrar',
+            mobile: {
+              es: '¿tu evento?',
+              en: 'your event?',
+              pt: 'seu evento?',
             },
           },
-          date: {
+          dialog: {
             title: {
-              es: '¿Ya tienes fecha?',
-              en: 'Do you have a date already?',
-              pt: 'Você já tem uma data?',
-            },
-            subtitle: {
-              es: 'No te preocupes si aún no estás seguro',
-              en: "Don't worry if you're not sure yet",
-              pt: 'Não se preocupe se ainda não tem certeza',
-            },
-            noDate: {
-              es: 'Aún no tengo fecha definida',
-              en: "I don't have a date set yet",
-              pt: 'Ainda não tenho uma data definida',
+              es: 'Cuéntanos sobre tu evento',
+              en: 'Tell us about your event',
+              pt: 'Conte-nos sobre seu evento',
             },
           },
-          location: {
-            title: {
-              es: '¿Dónde será tu evento?',
-              en: 'Where will your event be?',
-              pt: 'Onde será seu evento?',
+          eventTypes: {
+            wedding: {
+              es: 'Boda',
+              en: 'Wedding',
+              pt: 'Casamento',
             },
-            subtitle: {
-              es: 'Ayúdanos a entender mejor tu ubicación',
-              en: 'Help us understand your location better',
-              pt: 'Ajude-nos a entender melhor sua localização',
+            corporate: {
+              es: 'Evento Empresarial',
+              en: 'Corporate Event',
+              pt: 'Evento Corporativo',
             },
-            placeholder: {
-              es: 'Ciudad, barrio o lugar específico',
-              en: 'City, neighborhood or specific venue',
-              pt: 'Cidade, bairro ou local específico',
-            },
-            noLocation: {
-              es: 'Aún no tengo ubicación definida',
-              en: "I don't have a location set yet",
-              pt: 'Ainda não tenho uma localização definida',
+            other: {
+              es: 'Otro tipo de evento',
+              en: 'Other type of event',
+              pt: 'Outro tipo de evento',
             },
           },
-          contact: {
-            title: {
-              es: '¿Quieres contarnos más?',
-              en: 'Want to tell us more?',
-              pt: 'Quer nos contar mais?',
-            },
-            subtitle: {
-              es: 'Elige cómo prefieres que nos contactemos',
-              en: 'Choose how you prefer us to contact you',
-              pt: 'Escolha como prefere que entremos em contato',
-            },
-            moreInfo: {
+          steps: {
+            eventType: {
               title: {
-                es: 'Sí, quiero contarte más detalles',
-                en: 'Yes, I want to tell you more details',
-                pt: 'Sim, quero contar mais detalhes',
+                es: '¿En qué evento estás pensando?',
+                en: 'What event are you thinking about?',
+                pt: 'Que evento você está pensando?',
               },
               subtitle: {
-                es: 'te llevamos al formulario completo',
-                en: 'We take you to the complete form',
-                pt: 'Te levamos ao formulário completo',
+                es: 'Cuéntanos qué quieres celebrar',
+                en: 'Tell us what you want to celebrate',
+                pt: 'Conte-nos o que você quer celebrar',
               },
             },
-            callMe: {
+            date: {
               title: {
-                es: 'Quiero que me llamen',
-                en: 'I want you to call me',
-                pt: 'Quero que me liguem',
+                es: '¿Ya tienes fecha?',
+                en: 'Do you have a date already?',
+                pt: 'Você já tem uma data?',
               },
               subtitle: {
-                es: 'Preferimos hablar por teléfono',
-                en: 'We prefer to talk by phone',
-                pt: 'Preferimos conversar por telefone',
+                es: 'No te preocupes si aún no estás seguro',
+                en: "Don't worry if you're not sure yet",
+                pt: 'Não se preocupe se ainda não tem certeza',
+              },
+              noDate: {
+                es: 'Aún no tengo fecha definida',
+                en: "I don't have a date set yet",
+                pt: 'Ainda não tenho uma data definida',
+              },
+            },
+            location: {
+              title: {
+                es: '¿Dónde será tu evento?',
+                en: 'Where will your event be?',
+                pt: 'Onde será seu evento?',
+              },
+              subtitle: {
+                es: 'Ayúdanos a entender mejor tu ubicación',
+                en: 'Help us understand your location better',
+                pt: 'Ajude-nos a entender melhor sua localização',
+              },
+              placeholder: {
+                es: 'Ciudad, barrio o lugar específico',
+                en: 'City, neighborhood or specific venue',
+                pt: 'Cidade, bairro ou local específico',
+              },
+              noLocation: {
+                es: 'Aún no tengo ubicación definida',
+                en: "I don't have a location set yet",
+                pt: 'Ainda não tenho uma localização definida',
+              },
+            },
+            contact: {
+              title: {
+                es: '¿Quieres contarnos más?',
+                en: 'Want to tell us more?',
+                pt: 'Quer nos contar mais?',
+              },
+              subtitle: {
+                es: 'Elige cómo prefieres que nos contactemos',
+                en: 'Choose how you prefer us to contact you',
+                pt: 'Escolha como prefere que entremos em contato',
+              },
+              moreInfo: {
+                title: {
+                  es: 'Sí, quiero contarte más detalles',
+                  en: 'Yes, I want to tell you more details',
+                  pt: 'Sim, quero contar mais detalhes',
+                },
+                subtitle: {
+                  es: 'te llevamos al formulario completo',
+                  en: 'We take you to the complete form',
+                  pt: 'Te levamos ao formulário completo',
+                },
+              },
+              callMe: {
+                title: {
+                  es: 'Quiero que me llamen',
+                  en: 'I want you to call me',
+                  pt: 'Quero que me liguem',
+                },
+                subtitle: {
+                  es: 'Preferimos hablar por teléfono',
+                  en: 'We prefer to talk by phone',
+                  pt: 'Preferimos conversar por telefone',
+                },
+              },
+            },
+            phone: {
+              title: {
+                es: '¡Perfecto! te llamamos',
+                en: 'Perfect! We call you',
+                pt: 'Perfeito! Te ligamos',
+              },
+              subtitle: {
+                es: 'Déjanos tu número y te contactamos pronto',
+                en: 'Leave us your number and we contact you soon',
+                pt: 'Deixe seu número e entraremos em contato em breve',
+              },
+              placeholder: {
+                es: 'tu número de teléfono',
+                en: 'Your phone number',
+                pt: 'seu número de telefone',
+              },
+              button: {
+                es: 'Solicitar llamada',
+                en: 'Request call',
+                pt: 'Solicitar ligação',
+              },
+              loading: {
+                es: 'Enviando...',
+                en: 'Sending...',
+                pt: 'Enviando...',
+              },
+            },
+            complete: {
+              title: {
+                es: '¡Listo!',
+                en: 'Ready!',
+                pt: 'Pronto!',
+              },
+              message: {
+                es: 'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
+                en: 'We will contact you very soon to talk about your event.',
+                pt: 'entraremos em contato muito em breve para conversar sobre seu evento.',
+              },
+              button: {
+                es: 'Cerrar',
+                en: 'Close',
+                pt: 'Fechar',
               },
             },
           },
-          phone: {
-            title: {
-              es: '¡Perfecto! te llamamos',
-              en: 'Perfect! We call you',
-              pt: 'Perfeito! Te ligamos',
-            },
-            subtitle: {
-              es: 'Déjanos tu número y te contactamos pronto',
-              en: 'Leave us your number and we contact you soon',
-              pt: 'Deixe seu número e entraremos em contato em breve',
-            },
-            placeholder: {
-              es: 'tu número de teléfono',
-              en: 'Your phone number',
-              pt: 'seu número de telefone',
-            },
-            button: {
-              es: 'Solicitar llamada',
-              en: 'Request call',
-              pt: 'Solicitar ligação',
-            },
-            loading: {
-              es: 'Enviando...',
-              en: 'Sending...',
-              pt: 'Enviando...',
-            },
+        },
+        validation: {
+          required: {
+            es: 'Este campo es requerido',
+            en: 'This field is required',
+            pt: 'Este campo é obrigatório',
           },
-          complete: {
-            title: {
-              es: '¡Listo!',
-              en: 'Ready!',
-              pt: 'Pronto!',
-            },
-            message: {
-              es: 'Nos pondremos en contacto contigo muy pronto para conversar sobre tu evento.',
-              en: 'We will contact you very soon to talk about your event.',
-              pt: 'entraremos em contato muito em breve para conversar sobre seu evento.',
-            },
-            button: {
-              es: 'Cerrar',
-              en: 'Close',
-              pt: 'Fechar',
-            },
+          email: {
+            es: 'Por favor ingresa un email válido para que podamos responderte',
+            en: 'Please enter a valid email so we can get back to you',
+            pt: 'Por favor insira um email válido para podermos responder',
+          },
+          minLength: {
+            es: 'Debe tener al menos {{count}} caracteres',
+            en: 'Must be at least {{count}} characters',
+            pt: 'Deve ter pelo menos {{count}} caracteres',
           },
         },
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
-      validation: {
-        required: {
-          es: 'Este campo es requerido',
-          en: 'This field is required',
-          pt: 'Este campo é obrigatório',
-        },
-        email: {
-          es: 'Por favor ingresa un email válido para que podamos responderte',
-          en: 'Please enter a valid email so we can get back to you',
-          pt: 'Por favor insira um email válido para podermos responder',
-        },
-        minLength: {
-          es: 'Debe tener al menos {{count}} caracteres',
-          en: 'Must be at least {{count}} characters',
-          pt: 'Deve ter pelo menos {{count}} caracteres',
-        },
-      },
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
   }
 }

@@ -86,7 +86,7 @@ function ContactPageContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ContactForm translations={translations} />
+      <ContactForm translations={translations} locale="es" />
     </div>
   );
 }

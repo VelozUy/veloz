@@ -33,6 +33,7 @@ import {
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { es, enUS, ptBR } from 'date-fns/locale';
 import FileUpload from './FileUpload';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
@@ -167,9 +168,13 @@ interface ContactFormProps {
       };
     };
   };
+  locale?: string;
 }
 
-export default function ContactForm({ translations }: ContactFormProps) {
+export default function ContactForm({
+  translations,
+  locale = 'es',
+}: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -924,7 +929,14 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {formData.eventDate ? (
-                          format(new Date(formData.eventDate), 'PPP')
+                          format(new Date(formData.eventDate), 'PPP', {
+                            locale:
+                              locale === 'es'
+                                ? es
+                                : locale === 'en'
+                                  ? enUS
+                                  : ptBR,
+                          })
                         ) : (
                           <span>Select a date</span>
                         )}
@@ -945,7 +957,13 @@ export default function ContactForm({ translations }: ContactFormProps) {
                           handleInputChange('eventDate', formattedDate);
                           setIsDatePickerOpen(false);
                         }}
+                        disabled={date =>
+                          date < new Date(new Date().setHours(0, 0, 0, 0))
+                        }
                         initialFocus
+                        locale={
+                          locale === 'es' ? es : locale === 'en' ? enUS : ptBR
+                        }
                       />
                     </PopoverContent>
                   </Popover>
