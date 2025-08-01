@@ -166,12 +166,48 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
   const searchParams = useSearchParams();
 
   // Track form view
   useEffect(() => {
     trackCustomEvent('contact_form_viewed');
   }, []);
+
+  // Add backdrop blur when event type selector is open
+  useEffect(() => {
+    if (isEventTypeOpen && window.innerWidth < 768) {
+      // Create modal overlay
+      const overlay = document.createElement('div');
+      overlay.id = 'event-type-modal-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: hsl(var(--muted) / 0.8);
+        backdrop-filter: blur(4px);
+        z-index: 9998;
+        pointer-events: none;
+      `;
+      document.body.appendChild(overlay);
+    } else {
+      // Remove modal overlay
+      const overlay = document.getElementById('event-type-modal-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+    }
+
+    // Cleanup on unmount
+    return () => {
+      const overlay = document.getElementById('event-type-modal-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+    };
+  }, [isEventTypeOpen]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -637,6 +673,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       onValueChange={value =>
                         handleInputChange('eventType', value)
                       }
+                      onOpenChange={setIsEventTypeOpen}
                     >
                       <SelectTrigger
                         className={cn(errors.eventType && 'border-destructive')}
@@ -646,7 +683,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                         />
                       </SelectTrigger>
                       <SelectContent
-                        className="bg-card border-border"
+                        className="bg-card border-border z-[9999]"
                         position="popper"
                         sideOffset={4}
                         avoidCollisions={false}
@@ -719,7 +756,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   </Label>
                   <Input
                     id="attendees"
-                    type="text"
+                    type="number"
                     placeholder={t.form.attendees.placeholder}
                     value={formData.attendees}
                     onChange={e =>
