@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { TiledGallery } from '@/components/gallery/TiledGallery';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { CTASection } from '@/components/shared';
@@ -42,33 +42,84 @@ export default function OurWorkClient({
   projects,
   locale,
 }: OurWorkClientProps) {
-  // Collect all featured media from all published projects
-  const allFeaturedMedia = useMemo(() => {
-    return projects
-      .filter(project => project.status === 'published') // Only published projects
-      .flatMap((project: Project) =>
-        (project.media || [])
-          .filter(m => m.featured)
-          .map(m => {
-            // Use actual dimensions if available, otherwise use better defaults
-            const width = m.width || 1200;
-            const height = m.height || 800;
+  // Loading and error states
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
 
-            return {
-              id: m.id,
-              projectId: project.id,
-              projectTitle: project.title,
-              type: m.type,
-              url: m.url,
-              width,
-              height,
-              aspectRatio: m.aspectRatio,
-              alt: `${project.title} - ${m.type}`,
-              featured: m.featured || false,
-            };
-          })
-      );
+  // Collect all media from all published projects
+  const allMedia = useMemo(() => {
+    const publishedProjects = projects.filter(
+      project => project.status === 'published'
+    );
+
+    // Get all media from published projects (not just featured)
+    const media = publishedProjects.flatMap((project: Project) =>
+      (project.media || []).map(m => {
+        // Use actual dimensions if available, otherwise use better defaults
+        const width = m.width || 1200;
+        const height = m.height || 800;
+
+        return {
+          id: m.id,
+          projectId: project.id,
+          projectTitle: project.title,
+          type: m.type,
+          url: m.url,
+          width,
+          height,
+          aspectRatio: m.aspectRatio,
+          alt: `${project.title} - ${m.type}`,
+          featured: m.featured || false,
+        };
+      })
+    );
+
+    return media;
   }, [projects]);
+
+  // Optimize media for better loading performance
+  const optimizedMedia = useMemo(() => {
+    return allMedia.map((item, index) => ({
+      ...item,
+      order: index,
+      priority: index < 6, // Priority loading for first 6 images
+      loading: index < 6 ? ('eager' as const) : ('lazy' as const),
+    }));
+  }, [allMedia]);
+
+  // Performance monitoring
+  useEffect(() => {
+    console.log(`🎨 Our Work Gallery: Loading ${optimizedMedia.length} images`);
+    console.log(
+      `📊 Priority images: ${optimizedMedia.filter(img => img.priority).length}`
+    );
+    console.log(
+      `⚡ Eager loading: ${optimizedMedia.filter(img => img.loading === 'eager').length}`
+    );
+
+    // Set loading state - only show loading if we have no media
+    setIsLoading(optimizedMedia.length === 0);
+
+    // Add preload hints for critical images
+    if (typeof window !== 'undefined' && optimizedMedia.length > 0) {
+      // Preload first 4 critical images
+      optimizedMedia.slice(0, 4).forEach((image, index) => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = image.url;
+        link.setAttribute('data-preload-index', index.toString());
+        document.head.appendChild(link);
+
+        // Clean up after 10 seconds
+        setTimeout(() => {
+          if (document.head.contains(link)) {
+            document.head.removeChild(link);
+          }
+        }, 10000);
+      });
+    }
+  }, [optimizedMedia]);
 
   // Get localized title based on locale
   const getLocalizedTitle = (locale: string) => {
@@ -84,42 +135,71 @@ export default function OurWorkClient({
 
   return (
     <>
-      {/* Single Tiled Grid with All Featured Media */}
+      {/* Single Tiled Grid with All Media */}
       <section className="min-h-screen pb-12 md:pb-16 bg-background">
         <div className="container mx-auto px-8 md:px-16 pt-8 md:pt-12">
-          {/* Tiled Gallery - All Featured Media */}
-          <div className="mb-8 md:mb-10">
-            <TiledGallery
-              images={convertProjectMediaBatch(
-                allFeaturedMedia.map(item => ({
-                  id: item.id,
-                  url: item.url,
-                  src: item.url, // For compatibility
-                  alt: item.alt,
-                  width: item.width,
-                  height: item.height,
-                  type: item.type,
-                  aspectRatio: item.aspectRatio,
-                  featured: item.featured,
-                  order: 0, // All featured media at same level
-                })),
-                getLocalizedTitle(locale),
-                'our-work'
-              )}
-              onImageClick={(image, index) => {
-                // Handle click - can be expanded later
-                console.log('Image clicked:', image, index);
-              }}
-              galleryGroup="gallery-our-work"
-              projectTitle={getLocalizedTitle(locale)}
-              ariaLabel={`${getLocalizedTitle(locale)} photo gallery`}
-              className="editorial-tiled-gallery"
-              enableAnimations={true}
-              lazyLoad={true}
-              preloadCount={8}
-              gap={8}
-            />
-          </div>
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Cargando galería...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {loadError && (
+            <div className="text-center py-12">
+              <p className="text-destructive mb-4">
+                Error al cargar la galería: {loadError}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              >
+                Reintentar
+              </button>
+            </div>
+          )}
+
+          {/* Tiled Gallery - All Media */}
+          {!isLoading && !loadError && (
+            <div className="mb-8 md:mb-10">
+              <TiledGallery
+                images={convertProjectMediaBatch(
+                  optimizedMedia.map((item, index) => ({
+                    id: item.id,
+                    url: item.url,
+                    src: item.url, // For compatibility
+                    alt: item.alt,
+                    width: item.width,
+                    height: item.height,
+                    type: item.type,
+                    aspectRatio: item.aspectRatio,
+                    featured: item.featured,
+                    order: index, // Use index for proper ordering
+                    priority: item.priority, // Priority loading for first 6 images
+                    loading: item.loading, // Eager loading for first 6 images
+                  })),
+                  getLocalizedTitle(locale),
+                  'our-work'
+                )}
+                onImageClick={(image, index) => {
+                  // Handle click - can be expanded later
+                  console.log('Image clicked:', image, index);
+                }}
+                galleryGroup="gallery-our-work"
+                projectTitle={getLocalizedTitle(locale)}
+                ariaLabel={`${getLocalizedTitle(locale)} photo gallery`}
+                className="editorial-tiled-gallery"
+                enableAnimations={true}
+                lazyLoad={true}
+                preloadCount={16}
+                gap={8}
+              />
+            </div>
+          )}
         </div>
       </section>
 

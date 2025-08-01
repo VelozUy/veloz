@@ -114,8 +114,8 @@ function FileMetadataEditor({
   return (
     <Card className="mb-4 bg-card border border-border">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center space-x-3 min-w-0 flex-1">
             {/* File preview */}
             <div className="flex-shrink-0">
               {uploadFile.file.type.startsWith('video/') ? (
@@ -137,8 +137,8 @@ function FileMetadataEditor({
               )}
             </div>
 
-            <div>
-              <CardTitle className="text-sm font-medium truncate max-w-48 text-card-foreground">
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-sm font-medium truncate text-card-foreground">
                 {uploadFile.file.name}
               </CardTitle>
               <p className="text-xs text-card-foreground">
@@ -147,7 +147,7 @@ function FileMetadataEditor({
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-wrap gap-1">
             {/* AI Review Button */}
             {onAIReview && uploadFile.previewUrl && (
               <Button
@@ -156,14 +156,17 @@ function FileMetadataEditor({
                 onClick={() => onAIReview(uploadFile)}
                 disabled={isAnalyzing}
                 title="Analizar imagen/video con AI para generar título, descripción y etiquetas SEO"
-                className="border-border text-foreground hover:bg-accent"
+                className="border-border text-foreground hover:bg-accent text-xs sm:text-sm px-2 sm:px-3"
               >
                 {isAnalyzing ? (
-                  <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                  <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 animate-spin" />
                 ) : (
-                  <Sparkles className="w-4 h-4 mr-1" />
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                 )}
-                {isAnalyzing ? 'Analizando...' : 'AI Review'}
+                <span className="hidden sm:inline">
+                  {isAnalyzing ? 'Analizando...' : 'AI Review'}
+                </span>
+                <span className="sm:hidden">{isAnalyzing ? '...' : 'AI'}</span>
               </Button>
             )}
 
@@ -173,10 +176,11 @@ function FileMetadataEditor({
                 size="sm"
                 onClick={() => onCopyToAll(uploadFile.metadata)}
                 title="Copy this metadata to all other files"
-                className="border-border text-foreground hover:bg-accent"
+                className="border-border text-foreground hover:bg-accent text-xs sm:text-sm px-2 sm:px-3"
               >
-                <Copy className="w-4 h-4 mr-1" />
-                Copy to All
+                <Copy className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Copy to All</span>
+                <span className="sm:hidden">Copy</span>
               </Button>
             )}
           </div>
@@ -186,15 +190,24 @@ function FileMetadataEditor({
       <CardContent className="space-y-4">
         {/* Language Tabs */}
         <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
-          <TabsList className="grid w-full grid-cols-3 bg-muted border border-border">
-            <TabsTrigger value="es" className="text-foreground">
+          <TabsList className="grid w-full grid-cols-3 bg-muted border border-border min-w-0">
+            <TabsTrigger
+              value="es"
+              className="text-foreground text-xs sm:text-sm px-2 sm:px-3"
+            >
               Español
             </TabsTrigger>
-            <TabsTrigger value="en" className="text-foreground">
+            <TabsTrigger
+              value="en"
+              className="text-foreground text-xs sm:text-sm px-2 sm:px-3"
+            >
               English
             </TabsTrigger>
-            <TabsTrigger value="pt" className="text-foreground">
-              Português (Brasil)
+            <TabsTrigger
+              value="pt"
+              className="text-foreground text-xs sm:text-sm px-2 sm:px-3"
+            >
+              Português
             </TabsTrigger>
           </TabsList>
 
@@ -314,7 +327,7 @@ function FileMetadataEditor({
         </Tabs>
 
         {/* Tags and Featured */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <Label
               htmlFor={`tags-${uploadFile.id}`}
@@ -330,7 +343,7 @@ function FileMetadataEditor({
               className="bg-card border border-border text-foreground focus:ring-ring"
             />
           </div>
-          <div className="flex items-center space-x-2 pt-6">
+          <div className="flex items-center space-x-2 lg:pt-6">
             <Checkbox
               id={`featured-${uploadFile.id}`}
               checked={uploadFile.metadata.featured}
@@ -339,7 +352,7 @@ function FileMetadataEditor({
             />
             <Label
               htmlFor={`featured-${uploadFile.id}`}
-              className="text-foreground"
+              className="text-foreground text-sm"
             >
               Marcar como destacado
             </Label>
@@ -696,7 +709,7 @@ export default function MediaUpload({
           Subir Media
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-background border border-primary">
+      <DialogContent className="max-w-7xl w-[95vw] max-h-[90vh] overflow-y-auto bg-background border border-primary">
         <DialogHeader>
           <DialogTitle className="text-foreground">
             Subir Media al Proyecto
@@ -748,12 +761,12 @@ export default function MediaUpload({
           {/* Files with Individual Metadata */}
           {uploadFiles.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <h3 className="text-lg font-semibold text-foreground">
                   Archivos Seleccionados ({uploadFiles.length})
                 </h3>
                 {uploadFiles.length > 1 && (
-                  <p className="text-sm text-foreground">
+                  <p className="text-sm text-foreground text-center sm:text-left">
                     Tip: Usa &quot;Copy to All&quot; para aplicar la misma
                     información a todos los archivos
                   </p>
@@ -767,7 +780,7 @@ export default function MediaUpload({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute top-2 right-2 z-10 h-8 w-8 p-0"
+                      className="absolute top-2 right-2 z-10 h-8 w-8 p-0 hover:bg-destructive/10"
                       onClick={() => removeFile(uploadFile.id)}
                     >
                       <X className="w-4 h-4" />
@@ -792,29 +805,33 @@ export default function MediaUpload({
 
           {/* Actions */}
           {uploadFiles.length > 0 && (
-            <div className="flex justify-between items-center pt-4 border-t">
-              <div className="space-x-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t gap-4">
+              <div className="flex flex-wrap gap-2">
                 {hasCompletedUploads && (
                   <Button
                     variant="outline"
                     onClick={clearCompletedUploads}
-                    className="border-border text-foreground hover:bg-muted"
+                    className="border-border text-foreground hover:bg-muted text-sm"
                   >
                     Limpiar Completados
                   </Button>
                 )}
               </div>
 
-              <div className="space-x-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   onClick={() => setIsOpen(false)}
-                  className="border-border text-foreground hover:bg-muted"
+                  className="border-border text-foreground hover:bg-muted text-sm"
                 >
                   Cerrar
                 </Button>
                 {hasPendingUploads && (
-                  <Button onClick={handleUpload} disabled={isUploading}>
+                  <Button
+                    onClick={handleUpload}
+                    disabled={isUploading}
+                    className="text-sm"
+                  >
                     {isUploading ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
