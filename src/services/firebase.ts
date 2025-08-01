@@ -10,8 +10,9 @@ import {
   query,
   where,
   orderBy,
-  writeBatch,
   DocumentData,
+  serverTimestamp,
+  writeBatch,
   Timestamp,
 } from 'firebase/firestore';
 import {
@@ -97,7 +98,7 @@ export abstract class BaseFirebaseService<T = unknown> {
     const converted = { ...data };
     Object.keys(converted).forEach(key => {
       if (converted[key] instanceof Timestamp) {
-        converted[key] = converted[key].toDate();
+        converted[key] = (converted[key] as Timestamp).toDate();
       }
     });
     return converted;
@@ -170,10 +171,28 @@ export abstract class BaseFirebaseService<T = unknown> {
     data: Partial<Omit<T, 'id' | 'createdAt'>>
   ): Promise<ApiResponse<void>> {
     try {
-      const updateData = {
-        ...data,
+      // Use atomic field updates to prevent race conditions
+      // This ensures that concurrent updates don't overwrite each other
+      const updateData: Record<string, any> = {
         updatedAt: new Date(),
       };
+
+      // Flatten nested objects for atomic updates
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          if (typeof value === 'object' && !Array.isArray(value)) {
+            // Handle nested objects like description: { es: "...", en: "..." }
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              if (nestedValue !== undefined && nestedValue !== null) {
+                updateData[`${key}.${nestedKey}`] = nestedValue;
+              }
+            });
+          } else {
+            // Handle simple values and arrays
+            updateData[key] = value;
+          }
+        }
+      });
 
       await updateDoc(this.getDocRef(id), updateData);
       return { success: true };
@@ -769,18 +788,74 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
     mediaItems: { id: string; order: number }[]
   ): Promise<ApiResponse<void>> {
     try {
-      // Update all items with new order
-      const promises = mediaItems.map(item =>
-        updateDoc(this.getDocRef(item.id), {
-          order: item.order,
-          updatedAt: new Date(),
-        })
-      );
+      const db = getFirestoreSync();
+      if (!db) {
+        return {
+          success: false,
+          error: 'Firebase not initialized',
+        };
+      }
 
-      await Promise.all(promises);
+      const batch = writeBatch(db);
+
+      mediaItems.forEach(({ id, order }) => {
+        const docRef = this.getDocRef(id);
+        batch.update(docRef, { order, updatedAt: new Date() });
+      });
+
+      await batch.commit();
       return { success: true };
     } catch (error) {
       console.error('Error updating media order:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  /**
+   * Update media analysis results with atomic field updates to prevent race conditions
+   *
+   * This method uses Firestore's atomic field updates to prevent race conditions
+   * when multiple AI analyses are running simultaneously. Instead of replacing
+   * the entire document, it updates only the specific fields that are being
+   * analyzed, ensuring that concurrent updates don't overwrite each other.
+   *
+   * @param mediaId - The ID of the media item to update
+   * @param analysis - The analysis results to update
+   * @returns Promise<ApiResponse<void>>
+   */
+  async updateAnalysisResults(
+    mediaId: string,
+    analysis: {
+      description?: { es?: string; en?: string; pt?: string };
+      tags?: string[];
+    }
+  ): Promise<ApiResponse<void>> {
+    try {
+      const updateData: Record<string, any> = {
+        updatedAt: new Date(),
+      };
+
+      // Use atomic field updates for nested objects
+      if (analysis.description) {
+        if (analysis.description.es)
+          updateData['description.es'] = analysis.description.es;
+        if (analysis.description.en)
+          updateData['description.en'] = analysis.description.en;
+        if (analysis.description.pt)
+          updateData['description.pt'] = analysis.description.pt;
+      }
+
+      if (analysis.tags) {
+        updateData.tags = analysis.tags;
+      }
+
+      await updateDoc(this.getDocRef(mediaId), updateData);
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating media analysis results:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',

@@ -506,12 +506,20 @@ export default function MediaManager({
   onSuccess,
   onError,
 }: MediaManagerProps) {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedMedia, setSelectedMedia] = useState<Set<string>>(new Set());
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isReordering, setIsReordering] = useState(false);
   const [editingMedia, setEditingMedia] = useState<ProjectMedia | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isReordering, setIsReordering] = useState(false);
   const [analyzingMedia, setAnalyzingMedia] = useState<Set<string>>(new Set());
+  // Track current media state to prevent race conditions
+  const [currentMediaState, setCurrentMediaState] =
+    useState<ProjectMedia[]>(media);
+
+  // Update local state when media prop changes
+  useEffect(() => {
+    setCurrentMediaState(media);
+  }, [media]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -523,43 +531,42 @@ export default function MediaManager({
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (over && active.id !== over.id) {
-      const oldIndex = media.findIndex(item => item.id === active.id);
-      const newIndex = media.findIndex(item => item.id === over.id);
+    if (active.id !== over?.id) {
+      setIsReordering(true);
 
-      const reorderedMedia = arrayMove(media, oldIndex, newIndex);
-
-      // Update order numbers
-      const mediaWithNewOrders = reorderedMedia.map((item, index) => ({
-        ...item,
-        order: index + 1,
-      }));
-
-      // Optimistically update UI
-      onMediaUpdate(mediaWithNewOrders);
-
-      // Update in backend
       try {
-        setIsReordering(true);
-        const orderUpdates = mediaWithNewOrders.map(item => ({
-          id: item.id!,
-          order: item.order,
+        const oldIndex = currentMediaState.findIndex(m => m.id === active.id);
+        const newIndex = currentMediaState.findIndex(m => m.id === over?.id);
+
+        const reorderedMedia = arrayMove(currentMediaState, oldIndex, newIndex);
+
+        // Update order numbers
+        const updatedMedia = reorderedMedia.map((item, index) => ({
+          ...item,
+          order: index + 1,
         }));
 
-        const result = await projectMediaService.updateMediaOrder(orderUpdates);
+        // Update local state first
+        setCurrentMediaState(updatedMedia);
+
+        // Update database
+        const result = await projectMediaService.updateMediaOrder(
+          updatedMedia.map(m => ({ id: m.id!, order: m.order }))
+        );
 
         if (result.success) {
-          onSuccess?.('Media reordenado exitosamente');
+          // Update parent component with the new state
+          onMediaUpdate(updatedMedia);
         } else {
-          onError?.(result.error || 'Error al reordenar media');
           // Revert on error
-          onMediaUpdate(media);
+          setCurrentMediaState(media);
+          onError?.(result.error || 'Error al reordenar media');
         }
       } catch (error) {
         console.error('Error reordering media:', error);
-        onError?.('Error al reordenar media');
         // Revert on error
-        onMediaUpdate(media);
+        setCurrentMediaState(media);
+        onError?.('Error al reordenar media');
       } finally {
         setIsReordering(false);
       }
@@ -577,10 +584,10 @@ export default function MediaManager({
   };
 
   const handleSelectAll = () => {
-    if (selectedMedia.size === media.length) {
+    if (selectedMedia.size === currentMediaState.length) {
       setSelectedMedia(new Set());
     } else {
-      setSelectedMedia(new Set(media.map(m => m.id!)));
+      setSelectedMedia(new Set(currentMediaState.map(m => m.id!)));
     }
   };
 
@@ -607,6 +614,27 @@ export default function MediaManager({
     }
   };
 
+  const handleBulkAnalyze = async () => {
+    if (selectedMedia.size === 0) return;
+
+    if (
+      !confirm(
+        `¿Estás seguro de que quieres analizar ${selectedMedia.size} elementos seleccionados? Esto puede tomar varios minutos.`
+      )
+    ) {
+      return;
+    }
+
+    // Start analyzing all selected media
+    const mediaIds = Array.from(selectedMedia);
+    for (const mediaId of mediaIds) {
+      const mediaItem = currentMediaState.find(m => m.id === mediaId);
+      if (mediaItem && !analyzingMedia.has(mediaId)) {
+        await handleAnalyzeMedia(mediaItem);
+      }
+    }
+  };
+
   const handleEditMedia = (media: ProjectMedia) => {
     setEditingMedia(media);
     setIsEditModalOpen(true);
@@ -620,11 +648,18 @@ export default function MediaManager({
       const result = await projectMediaService.update(mediaId, updates);
 
       if (result.success) {
-        // Update local state
-        const updatedMedia = media.map(m =>
-          m.id === mediaId ? { ...m, ...updates } : m
-        );
-        onMediaUpdate(updatedMedia);
+        // Use functional update to ensure we're working with the latest state
+        setCurrentMediaState(prevMedia => {
+          const updatedMedia = prevMedia.map(m =>
+            m.id === mediaId ? { ...m, ...updates } : m
+          );
+
+          // Update parent component with the new state
+          onMediaUpdate(updatedMedia);
+
+          return updatedMedia;
+        });
+
         onSuccess?.('Media actualizado exitosamente');
       } else {
         onError?.(result.error || 'Error al actualizar media');
@@ -651,25 +686,57 @@ export default function MediaManager({
         }
       );
 
-      // Update media with analyzed metadata
-      const updates: Partial<ProjectMedia> = {
-        description: {
-          es: analysis.description.es || mediaItem.description?.es || '',
-          en: analysis.description.en || mediaItem.description?.en || '',
-          pt: analysis.description.pt || mediaItem.description?.pt || '',
-        },
-        tags: analysis.tags || mediaItem.tags || [],
-      };
-
       // Save to database
-      const result = await projectMediaService.update(mediaItem.id, updates);
+      if (!mediaItem.id) {
+        throw new Error('Media item ID is missing');
+      }
+      const result = await projectMediaService.updateAnalysisResults(
+        mediaItem.id,
+        {
+          description: {
+            es: analysis.description.es || mediaItem.description?.es || '',
+            en: analysis.description.en || mediaItem.description?.en || '',
+            pt: analysis.description.pt || mediaItem.description?.pt || '',
+          },
+          tags: analysis.tags || mediaItem.tags || [],
+        }
+      );
 
       if (result.success) {
-        // Update local state
-        const updatedMedia = media.map(m =>
-          m.id === mediaItem.id ? { ...m, ...updates } : m
-        );
-        onMediaUpdate(updatedMedia);
+        // Update local state with the analysis results using functional update
+        // to ensure we're working with the most current state
+        const updates = {
+          description: {
+            es: analysis.description.es || mediaItem.description?.es || '',
+            en: analysis.description.en || mediaItem.description?.en || '',
+            pt: analysis.description.pt || mediaItem.description?.pt || '',
+          },
+          tags: analysis.tags || mediaItem.tags || [],
+        };
+
+        console.log(`🔍 Analysis completed for media ${mediaItem.id}:`, {
+          originalDescription: mediaItem.description,
+          newDescription: updates.description,
+        });
+
+        // Use functional update to ensure we're working with the latest state
+        setCurrentMediaState(prevMedia => {
+          const updatedMedia = prevMedia.map(m =>
+            m.id === mediaItem.id ? { ...m, ...updates } : m
+          );
+
+          console.log(`🔍 State update for media ${mediaItem.id}:`, {
+            prevMediaCount: prevMedia.length,
+            updatedMediaCount: updatedMedia.length,
+            updatedItem: updatedMedia.find(m => m.id === mediaItem.id),
+          });
+
+          // Update parent component with the new state
+          onMediaUpdate(updatedMedia);
+
+          return updatedMedia;
+        });
+
         onSuccess?.(
           `Análisis SEO de ${mediaItem.type === 'video' ? 'video' : 'foto'} completado exitosamente`
         );
@@ -696,10 +763,18 @@ export default function MediaManager({
       const result = await projectMediaService.update(mediaId, { featured });
 
       if (result.success) {
-        const updatedMedia = media.map(m =>
-          m.id === mediaId ? { ...m, featured } : m
-        );
-        onMediaUpdate(updatedMedia);
+        // Use functional update to ensure we're working with the latest state
+        setCurrentMediaState(prevMedia => {
+          const updatedMedia = prevMedia.map(m =>
+            m.id === mediaId ? { ...m, featured } : m
+          );
+
+          // Update parent component with the new state
+          onMediaUpdate(updatedMedia);
+
+          return updatedMedia;
+        });
+
         onSuccess?.(
           `Media marcada como ${featured ? 'destacada' : 'no destacada'} exitosamente`
         );
@@ -712,7 +787,7 @@ export default function MediaManager({
     }
   };
 
-  if (media.length === 0) {
+  if (currentMediaState.length === 0) {
     return null;
   }
 
@@ -721,7 +796,7 @@ export default function MediaManager({
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">
-            Project Media ({media.length})
+            Project Media ({currentMediaState.length})
           </CardTitle>
           <div className="flex items-center space-x-2">
             {/* Bulk actions */}
@@ -730,6 +805,15 @@ export default function MediaManager({
                 <span className="text-sm text-muted-foreground">
                   {selectedMedia.size} seleccionados
                 </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkAnalyze}
+                  disabled={analyzingMedia.size > 0}
+                >
+                  <Sparkles className="w-4 h-4 mr-1" />
+                  Analizar SEO
+                </Button>
                 <Button
                   variant="destructive"
                   size="sm"
@@ -743,7 +827,7 @@ export default function MediaManager({
 
             {/* Select all */}
             <Button variant="outline" size="sm" onClick={handleSelectAll}>
-              {selectedMedia.size === media.length ? (
+              {selectedMedia.size === currentMediaState.length ? (
                 <>
                   <X className="w-4 h-4 mr-1" />
                   Deseleccionar
@@ -781,13 +865,22 @@ export default function MediaManager({
           </Alert>
         )}
 
+        {analyzingMedia.size > 0 && (
+          <Alert className="mb-4">
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <AlertDescription>
+              Procesando análisis SEO... ({analyzingMedia.size} analizando)
+            </AlertDescription>
+          </Alert>
+        )}
+
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={media.map(m => m.id!)}
+            items={currentMediaState.map(m => m.id!)}
             strategy={
               viewMode === 'grid'
                 ? rectSortingStrategy
@@ -801,7 +894,7 @@ export default function MediaManager({
                   : 'space-y-4'
               }
             >
-              {media.map(mediaItem => (
+              {currentMediaState.map(mediaItem => (
                 <SortableMediaItem
                   key={mediaItem.id}
                   media={mediaItem}
