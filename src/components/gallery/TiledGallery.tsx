@@ -408,7 +408,7 @@ export function TiledGallery({
 
   if (!images.length) {
     return (
-      <div className={cn('text-center py-16', className)}>
+      <div className={cn('text-center py-16 px-16', className)}>
         <p className="text-muted-foreground">No images to display</p>
       </div>
     );
@@ -417,7 +417,7 @@ export function TiledGallery({
   if (!activeLayout || !activeLayout.tiles.length) {
     // This should rarely happen now, but keep as final fallback
     return (
-      <div className={cn('w-full', className)}>
+      <div className={cn('w-full px-16', className)}>
         <div className="space-y-4">
           {images.map((image, index) => (
             <div

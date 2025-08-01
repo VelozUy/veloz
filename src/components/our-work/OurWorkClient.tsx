@@ -137,10 +137,10 @@ export default function OurWorkClient({
     <>
       {/* Single Tiled Grid with All Media */}
       <section className="min-h-screen pb-12 md:pb-16 bg-background">
-        <div className="container mx-auto px-8 md:px-16 pt-8 md:pt-12">
+        <div className="w-full pt-8 md:pt-12">
           {/* Loading State */}
           {isLoading && (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 px-8 md:px-16">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
                 <p className="text-muted-foreground">Cargando galería...</p>
@@ -150,7 +150,7 @@ export default function OurWorkClient({
 
           {/* Error State */}
           {loadError && (
-            <div className="text-center py-12">
+            <div className="text-center py-12 px-8 md:px-16">
               <p className="text-destructive mb-4">
                 Error al cargar la galería: {loadError}
               </p>
