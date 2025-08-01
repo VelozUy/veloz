@@ -95,7 +95,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
   if (!mounted) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-        <div className="w-full px-16">
+        <div className="w-full px-4 sm:px-8 lg:px-16">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link
@@ -166,7 +166,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
           : 'bg-transparent'
       }`}
     >
-      <div className="w-full px-16">
+      <div className="w-full px-4 sm:px-8 lg:px-16">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link

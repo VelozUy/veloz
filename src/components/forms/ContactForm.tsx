@@ -569,7 +569,7 @@ export default function ContactForm({
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-16 px-16">
+      <section className="py-16 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
           <div className="text-left space-y-6 text-foreground">
             <h1 className="text-section-title-lg font-body font-bold uppercase">
@@ -607,7 +607,7 @@ export default function ContactForm({
       </section>
 
       {/* Contact Form */}
-      <section className="py-16 px-16 bg-muted/30">
+      <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-border-64 mx-auto">
           <div className="flex justify-center">
             <div className="max-w-2xl">

@@ -72,7 +72,7 @@ export default function FAQSection({
   }
 
   return (
-    <section className="py-16 px-16 bg-muted/30">
+    <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
       <div className="max-w-border-64 mx-auto space-y-8">
         <div className="text-left">
           <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
