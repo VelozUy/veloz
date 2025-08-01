@@ -480,9 +480,15 @@ export default function MediaUpload({
 
   const updateFileMetadata = useCallback(
     (fileId: string, metadata: MediaMetadata) => {
-      setUploadFiles(prev =>
-        prev.map(f => (f.id === fileId ? { ...f, metadata } : f))
-      );
+      setUploadFiles(prev => {
+        const fileIndex = prev.findIndex(f => f.id === fileId);
+        if (fileIndex === -1) return prev;
+
+        // Create a new array with the updated file
+        const newFiles = [...prev];
+        newFiles[fileIndex] = { ...newFiles[fileIndex], metadata };
+        return newFiles;
+      });
     },
     []
   );
@@ -633,24 +639,32 @@ export default function MediaUpload({
         }
       );
 
-      // Update file metadata with analyzed content
-      const updatedMetadata: MediaMetadata = {
-        title: {
-          es: analysis.title?.es || uploadFile.metadata.title.es,
-          en: analysis.title?.en || uploadFile.metadata.title.en,
-          pt: analysis.title?.pt || uploadFile.metadata.title.pt,
-        },
-        description: {
-          es: analysis.description?.es || uploadFile.metadata.description.es,
-          en: analysis.description?.en || uploadFile.metadata.description.en,
-          pt: analysis.description?.pt || uploadFile.metadata.description.pt,
-        },
-        tags: analysis.tags || uploadFile.metadata.tags,
-        featured: uploadFile.metadata.featured,
-      };
+      // Get the current file state to ensure we're working with the latest metadata
+      setUploadFiles(prev => {
+        const currentFile = prev.find(f => f.id === uploadFile.id);
+        if (!currentFile) return prev;
 
-      // Update the file metadata
-      updateFileMetadata(uploadFile.id, updatedMetadata);
+        // Update file metadata with analyzed content, preserving any manual changes
+        const updatedMetadata: MediaMetadata = {
+          title: {
+            es: analysis.title?.es || currentFile.metadata.title.es,
+            en: analysis.title?.en || currentFile.metadata.title.en,
+            pt: analysis.title?.pt || currentFile.metadata.title.pt,
+          },
+          description: {
+            es: analysis.description?.es || currentFile.metadata.description.es,
+            en: analysis.description?.en || currentFile.metadata.description.en,
+            pt: analysis.description?.pt || currentFile.metadata.description.pt,
+          },
+          tags: analysis.tags || currentFile.metadata.tags,
+          featured: currentFile.metadata.featured,
+        };
+
+        // Update the file with new metadata
+        return prev.map(f =>
+          f.id === uploadFile.id ? { ...f, metadata: updatedMetadata } : f
+        );
+      });
 
       // Show success message
       onAIAnalysisSuccess?.(
