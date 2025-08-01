@@ -10,6 +10,7 @@ A modern Next.js website for Veloz, a professional event photography and videogr
 - **Firebase Integration** for content management and file storage
 - **Professional Landing Page** with video/image backgrounds and smooth animations
 - **Comprehensive About/FAQ Page** with accordion-style questions
+- **Interactive Gallery** with fullscreen modal viewing and smart preloading
 - **SEO Optimized** with proper meta tags and structured data
 - **Accessibility First** with WCAG compliance and keyboard navigation
 

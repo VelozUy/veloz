@@ -2,6 +2,7 @@
 
 import React, { useMemo, useEffect } from 'react';
 import { ClientOnlyTiledGallery } from '@/components/gallery/ClientOnlyTiledGallery';
+import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { CTASection } from '@/components/shared';
 
@@ -45,6 +46,10 @@ export default function OurWorkClient({
   // Loading and error states
   const [isLoading, setIsLoading] = React.useState(false);
   const [loadError, setLoadError] = React.useState<string | null>(null);
+
+  // Fullscreen modal state
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [modalStartIndex, setModalStartIndex] = React.useState(0);
 
   // Collect all media from all published projects
   const allMedia = useMemo(() => {
@@ -136,6 +141,39 @@ export default function OurWorkClient({
     }
   }, [optimizedMedia]);
 
+  // Preload critical images for better UX
+  useEffect(() => {
+    if (optimizedMedia.length > 0 && typeof window !== 'undefined') {
+      // Preload first 6 images for immediate fullscreen modal experience
+      const criticalImages = optimizedMedia.slice(0, 6);
+
+      criticalImages.forEach((mediaItem, index) => {
+        if (mediaItem.type === 'photo') {
+          const img = new Image();
+          img.src = mediaItem.url;
+
+          img.onload = () => {
+            if (process.env.NODE_ENV === 'development') {
+              console.log(
+                `🎨 Preloaded critical image ${index + 1}:`,
+                mediaItem.id
+              );
+            }
+          };
+
+          img.onerror = () => {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(
+                `⚠️ Failed to preload critical image ${index + 1}:`,
+                mediaItem.id
+              );
+            }
+          };
+        }
+      });
+    }
+  }, [optimizedMedia]);
+
   // Get localized title based on locale
   const getLocalizedTitle = (locale: string) => {
     switch (locale) {
@@ -202,8 +240,9 @@ export default function OurWorkClient({
                     'our-work'
                   )}
                   onImageClick={(image, index) => {
-                    // Handle click - can be expanded later
-                    console.log('Image clicked:', image, index);
+                    // Open fullscreen modal with the clicked image
+                    setModalStartIndex(index);
+                    setIsModalOpen(true);
                   }}
                   galleryGroup="gallery-our-work"
                   projectTitle={getLocalizedTitle(locale)}
@@ -228,6 +267,24 @@ export default function OurWorkClient({
           )}
         </div>
       </section>
+
+      {/* Fullscreen Modal */}
+      <FullscreenModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        media={optimizedMedia.map(item => ({
+          id: item.id,
+          type: item.type,
+          url: item.url,
+          thumbnailUrl: item.url, // Use same URL as thumbnail for now
+          alt: item.alt,
+          width: item.width,
+          height: item.height,
+          projectTitle: item.projectTitle,
+        }))}
+        startIndex={modalStartIndex}
+        onNavigate={index => setModalStartIndex(index)}
+      />
 
       {/* CTA Section */}
       <CTASection />

@@ -36,6 +36,7 @@ interface FullscreenModalProps {
  * - No artificial delays
  * - Aggressive image preloading
  * - Immediate state updates
+ * - Smart preloading of adjacent images
  */
 export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   isOpen,
@@ -58,6 +59,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   const [fullResolutionLoaded, setFullResolutionLoaded] = useState<
     Record<string, boolean>
   >({});
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(
+    new Set()
+  );
+  const [preloadingInProgress, setPreloadingInProgress] = useState<Set<string>>(
+    new Set()
+  );
+
+  // Preloading refs for tracking preload operations
+  const preloadRefs = useRef<Map<string, HTMLImageElement>>(new Map());
+  const preloadTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   // Handle mounting for portal - instant mount
   useEffect(() => {
@@ -93,6 +104,142 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       });
     }
   }, [isOpen, media.length, currentIndex, startIndex, currentMedia]);
+
+  // Preload image function
+  const preloadImage = useCallback(
+    (mediaItem: FullscreenMedia) => {
+      if (
+        mediaItem.type !== 'photo' ||
+        preloadedImages.has(mediaItem.id) ||
+        preloadingInProgress.has(mediaItem.id)
+      ) {
+        return;
+      }
+
+      // Mark as preloading
+      setPreloadingInProgress(prev => new Set(prev).add(mediaItem.id));
+
+      const img = new Image();
+      img.src = mediaItem.url;
+
+      // Store reference for cleanup
+      preloadRefs.current.set(mediaItem.id, img);
+
+      // Set timeout for cleanup (5 minutes)
+      const timeout = setTimeout(
+        () => {
+          preloadRefs.current.delete(mediaItem.id);
+          preloadTimeouts.current.delete(mediaItem.id);
+        },
+        5 * 60 * 1000
+      );
+
+      preloadTimeouts.current.set(mediaItem.id, timeout);
+
+      img.onload = () => {
+        console.log('Preloaded image:', mediaItem.id);
+        setPreloadedImages(prev => new Set(prev).add(mediaItem.id));
+        setPreloadingInProgress(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(mediaItem.id);
+          return newSet;
+        });
+        setFullResolutionLoaded(prev => ({
+          ...prev,
+          [mediaItem.id]: true,
+        }));
+      };
+
+      img.onerror = () => {
+        console.warn('Failed to preload image:', mediaItem.id);
+        preloadRefs.current.delete(mediaItem.id);
+        preloadTimeouts.current.delete(mediaItem.id);
+        setPreloadingInProgress(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(mediaItem.id);
+          return newSet;
+        });
+      };
+    },
+    [preloadedImages, preloadingInProgress]
+  );
+
+  // Preload adjacent images when modal opens
+  useEffect(() => {
+    if (!isOpen || media.length === 0) return;
+
+    const preloadAdjacentImages = () => {
+      // Preload current image if not already loaded
+      if (currentMedia && currentMedia.type === 'photo') {
+        preloadImage(currentMedia);
+      }
+
+      // Preload next 2 images
+      for (let i = 1; i <= 2; i++) {
+        const nextIndex = (currentIndex + i) % media.length;
+        const nextMedia = media[nextIndex];
+        if (nextMedia && nextMedia.type === 'photo') {
+          preloadImage(nextMedia);
+        }
+      }
+
+      // Preload previous 2 images
+      for (let i = 1; i <= 2; i++) {
+        const prevIndex =
+          currentIndex - i < 0
+            ? media.length + (currentIndex - i)
+            : currentIndex - i;
+        const prevMedia = media[prevIndex];
+        if (prevMedia && prevMedia.type === 'photo') {
+          preloadImage(prevMedia);
+        }
+      }
+    };
+
+    // Small delay to ensure modal is fully rendered
+    const timeout = setTimeout(preloadAdjacentImages, 100);
+    return () => clearTimeout(timeout);
+  }, [isOpen, currentIndex, media, preloadImage]);
+
+  // Preload images when navigating
+  useEffect(() => {
+    if (!isOpen || media.length === 0) return;
+
+    const preloadForNavigation = () => {
+      // Preload next image
+      const nextIndex = (currentIndex + 1) % media.length;
+      const nextMedia = media[nextIndex];
+      if (nextMedia && nextMedia.type === 'photo') {
+        preloadImage(nextMedia);
+      }
+
+      // Preload previous image
+      const prevIndex =
+        currentIndex - 1 < 0 ? media.length - 1 : currentIndex - 1;
+      const prevMedia = media[prevIndex];
+      if (prevMedia && prevMedia.type === 'photo') {
+        preloadImage(prevMedia);
+      }
+    };
+
+    preloadForNavigation();
+  }, [currentIndex, isOpen, media, preloadImage]);
+
+  // Cleanup preloaded images when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      // Clear all preload timeouts
+      preloadTimeouts.current.forEach(timeout => clearTimeout(timeout));
+      preloadTimeouts.current.clear();
+
+      // Clear preload refs
+      preloadRefs.current.clear();
+
+      // Reset preloaded images set
+      setPreloadedImages(new Set());
+      setPreloadingInProgress(new Set());
+    }
+  }, [isOpen]);
 
   // Initialize loading state for current media - instant response
   useEffect(() => {
@@ -207,7 +354,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     navigateTo((currentIndex + 1) % media.length);
   }, [currentIndex, media.length, navigateTo]);
 
-  const handlePrev = useCallback(() => {
+  const handlePrevious = useCallback(() => {
     console.log(
       'Prev button clicked, currentIndex:',
       currentIndex,
@@ -224,13 +371,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         onClose();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        handlePrev();
+        handlePrevious();
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         handleNext();
       }
     },
-    [onClose, handlePrev, handleNext]
+    [onClose, handleNext, handlePrevious]
   );
 
   // Add/remove event listeners
@@ -282,7 +429,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         if (deltaX > 0) {
           handleNext();
         } else {
-          handlePrev();
+          handlePrevious();
         }
       } else if (Math.abs(deltaY) > minSwipeDistance) {
         if (deltaY > 0) {
@@ -290,7 +437,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         }
       }
     },
-    [handleNext, handlePrev, onClose]
+    [handleNext, handlePrevious, onClose]
   );
 
   // Handle background click to close
@@ -345,15 +492,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
         </svg>
       </button>
 
-      {/* Navigation arrows */}
+      {/* Navigation arrows - hidden on mobile, replaced with invisible touch areas */}
       {media.length > 1 && (
         <>
+          {/* Previous button - hidden on mobile */}
           <button
-            onClick={handlePrev}
-            onTouchStart={handleTouch}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer"
-            style={{ opacity: `${buttonOpacity}%` }}
             aria-label="Anterior"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer hidden md:block"
+            style={{ opacity: `${buttonOpacity}%` }}
+            onClick={handlePrevious}
+            onTouchStart={handleTouch}
           >
             <svg
               className="w-6 h-6"
@@ -370,12 +518,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
             </svg>
           </button>
 
+          {/* Next button - hidden on mobile */}
           <button
+            aria-label="Siguiente"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer hidden md:block"
+            style={{ opacity: `${buttonOpacity}%` }}
             onClick={handleNext}
             onTouchStart={handleTouch}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[60] p-6 md:p-4 rounded-full bg-background/80 text-foreground hover:bg-background/90 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-foreground/50 cursor-pointer"
-            style={{ opacity: `${buttonOpacity}%` }}
-            aria-label="Siguiente"
           >
             <svg
               className="w-6 h-6"
@@ -391,6 +540,24 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
               />
             </svg>
           </button>
+
+          {/* Mobile invisible touch areas */}
+          <div className="md:hidden absolute inset-0 z-[60] pointer-events-none">
+            {/* Left touch area for previous */}
+            <button
+              aria-label="Anterior"
+              className="absolute left-0 top-16 w-1/3 h-[calc(100%-4rem)] pointer-events-auto focus:outline-none"
+              onClick={handlePrevious}
+              onTouchStart={handleTouch}
+            />
+            {/* Right touch area for next */}
+            <button
+              aria-label="Siguiente"
+              className="absolute right-0 top-16 w-1/3 h-[calc(100%-4rem)] pointer-events-auto focus:outline-none"
+              onClick={handleNext}
+              onTouchStart={handleTouch}
+            />
+          </div>
         </>
       )}
 
