@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,7 @@ import {
   Heart,
   AlertCircle,
   Check,
+  X,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
@@ -180,47 +181,75 @@ export default function ContactForm({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [modalContent, setModalContent] = useState<
+    'eventType' | 'datePicker' | null
+  >(null);
   const searchParams = useSearchParams();
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (modalContent && isMobile) {
+      // Prevent body scrolling without changing position
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    } else {
+      // Restore body scrolling
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [modalContent, isMobile]);
+
+  // Handle modal open/close
+  const openModal = (content: 'eventType' | 'datePicker') => {
+    setModalContent(content);
+  };
+
+  const closeModal = () => {
+    setModalContent(null);
+  };
+
+  // Reusable Modal Component
+  const Modal = ({ children }: { children: React.ReactNode }) => {
+    if (!modalContent || !isMobile) return null;
+
+    return (
+      <div
+        className="fixed inset-0 z-[9998] bg-muted/60 backdrop-blur-[2px]"
+        onClick={closeModal}
+      >
+        <div
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
+          onClick={e => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  };
 
   // Track form view
   useEffect(() => {
     trackCustomEvent('contact_form_viewed');
   }, []);
-
-  // Add backdrop blur when event type selector is open
-  useEffect(() => {
-    if (isEventTypeOpen && window.innerWidth < 768) {
-      // Create modal overlay
-      const overlay = document.createElement('div');
-      overlay.id = 'event-type-modal-overlay';
-      overlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: hsl(var(--muted) / 0.8);
-        backdrop-filter: blur(4px);
-        z-index: 9998;
-        pointer-events: none;
-      `;
-      document.body.appendChild(overlay);
-    } else {
-      // Remove modal overlay
-      const overlay = document.getElementById('event-type-modal-overlay');
-      if (overlay) {
-        overlay.remove();
-      }
-    }
-
-    // Cleanup on unmount
-    return () => {
-      const overlay = document.getElementById('event-type-modal-overlay');
-      if (overlay) {
-        overlay.remove();
-      }
-    };
-  }, [isEventTypeOpen]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -681,49 +710,67 @@ export default function ContactForm({
                     {t.form.eventType.label}
                   </Label>
                   <div className="relative" style={{ contain: 'layout' }}>
-                    <Select
-                      value={formData.eventType}
-                      onValueChange={value =>
-                        handleInputChange('eventType', value)
-                      }
-                      onOpenChange={setIsEventTypeOpen}
-                    >
-                      <SelectTrigger
-                        className={cn(errors.eventType && 'border-destructive')}
+                    {isMobile ? (
+                      <Button
+                        variant="outline"
+                        onClick={() => openModal('eventType')}
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !formData.eventType && 'text-muted-foreground'
+                        )}
                       >
-                        <SelectValue
-                          placeholder={t.form.eventType.placeholder}
-                        />
-                      </SelectTrigger>
-                      <SelectContent
-                        className="bg-card border-border z-[9999]"
-                        position="popper"
-                        sideOffset={4}
-                        avoidCollisions={false}
+                        {formData.eventType
+                          ? t.form.eventType.options[
+                              formData.eventType as keyof typeof t.form.eventType.options
+                            ]
+                          : t.form.eventType.placeholder}
+                      </Button>
+                    ) : (
+                      <Select
+                        value={formData.eventType}
+                        onValueChange={value =>
+                          handleInputChange('eventType', value)
+                        }
                       >
-                        <SelectItem value="corporate">
-                          {t.form.eventType.options.corporate}
-                        </SelectItem>
-                        <SelectItem value="product">
-                          {t.form.eventType.options.product}
-                        </SelectItem>
-                        <SelectItem value="birthday">
-                          {t.form.eventType.options.birthday}
-                        </SelectItem>
-                        <SelectItem value="wedding">
-                          {t.form.eventType.options.wedding}
-                        </SelectItem>
-                        <SelectItem value="concert">
-                          {t.form.eventType.options.concert}
-                        </SelectItem>
-                        <SelectItem value="exhibition">
-                          {t.form.eventType.options.exhibition}
-                        </SelectItem>
-                        <SelectItem value="other">
-                          {t.form.eventType.options.other}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                        <SelectTrigger
+                          className={cn(
+                            errors.eventType && 'border-destructive'
+                          )}
+                        >
+                          <SelectValue
+                            placeholder={t.form.eventType.placeholder}
+                          />
+                        </SelectTrigger>
+                        <SelectContent
+                          className="bg-card border-border z-[9999]"
+                          position="popper"
+                          sideOffset={4}
+                          avoidCollisions={false}
+                        >
+                          <SelectItem value="corporate">
+                            {t.form.eventType.options.corporate}
+                          </SelectItem>
+                          <SelectItem value="product">
+                            {t.form.eventType.options.product}
+                          </SelectItem>
+                          <SelectItem value="birthday">
+                            {t.form.eventType.options.birthday}
+                          </SelectItem>
+                          <SelectItem value="wedding">
+                            {t.form.eventType.options.wedding}
+                          </SelectItem>
+                          <SelectItem value="concert">
+                            {t.form.eventType.options.concert}
+                          </SelectItem>
+                          <SelectItem value="exhibition">
+                            {t.form.eventType.options.exhibition}
+                          </SelectItem>
+                          <SelectItem value="other">
+                            {t.form.eventType.options.other}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
                   </div>
                   {errors.eventType && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -915,15 +962,13 @@ export default function ContactForm({
                       {t.form.eventDate.optional}
                     </span>
                   </Label>
-                  <Popover
-                    open={isDatePickerOpen}
-                    onOpenChange={setIsDatePickerOpen}
-                  >
-                    <PopoverTrigger asChild>
+                  <div className="flex gap-2">
+                    {isMobile ? (
                       <Button
                         variant="outline"
+                        onClick={() => openModal('datePicker')}
                         className={cn(
-                          'w-full justify-start text-left font-normal',
+                          'flex-1 justify-start text-left font-normal',
                           !formData.eventDate && 'text-muted-foreground'
                         )}
                       >
@@ -938,35 +983,105 @@ export default function ContactForm({
                                   : ptBR,
                           })
                         ) : (
-                          <span>Select a date</span>
+                          <span>
+                            {locale === 'es'
+                              ? 'Seleccionar fecha'
+                              : locale === 'en'
+                                ? 'Select a date'
+                                : 'Selecionar data'}
+                          </span>
                         )}
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={
-                          formData.eventDate
-                            ? new Date(formData.eventDate)
-                            : undefined
+                    ) : (
+                      <Popover
+                        open={isDatePickerOpen}
+                        onOpenChange={setIsDatePickerOpen}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              'flex-1 justify-start text-left font-normal',
+                              !formData.eventDate && 'text-muted-foreground'
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {formData.eventDate ? (
+                              format(new Date(formData.eventDate), 'PPP', {
+                                locale:
+                                  locale === 'es'
+                                    ? es
+                                    : locale === 'en'
+                                      ? enUS
+                                      : ptBR,
+                              })
+                            ) : (
+                              <span>
+                                {locale === 'es'
+                                  ? 'Seleccionar fecha'
+                                  : locale === 'en'
+                                    ? 'Select a date'
+                                    : 'Selecionar data'}
+                              </span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className={cn(
+                            'w-auto p-0 z-[9999]',
+                            isMobile &&
+                              'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                          )}
+                          side="bottom"
+                          align="center"
+                        >
+                          <Calendar
+                            mode="single"
+                            selected={
+                              formData.eventDate
+                                ? new Date(formData.eventDate)
+                                : undefined
+                            }
+                            onSelect={date => {
+                              const formattedDate = date
+                                ? format(date, 'yyyy-MM-dd')
+                                : '';
+                              handleInputChange('eventDate', formattedDate);
+                              setIsDatePickerOpen(false);
+                            }}
+                            disabled={date =>
+                              date < new Date(new Date().setHours(0, 0, 0, 0))
+                            }
+                            initialFocus
+                            locale={
+                              locale === 'es'
+                                ? es
+                                : locale === 'en'
+                                  ? enUS
+                                  : ptBR
+                            }
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                    {formData.eventDate && (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleInputChange('eventDate', '')}
+                        className="shrink-0"
+                        title={
+                          locale === 'es'
+                            ? 'Limpiar fecha'
+                            : locale === 'en'
+                              ? 'Clear date'
+                              : 'Limpar data'
                         }
-                        onSelect={date => {
-                          const formattedDate = date
-                            ? format(date, 'yyyy-MM-dd')
-                            : '';
-                          handleInputChange('eventDate', formattedDate);
-                          setIsDatePickerOpen(false);
-                        }}
-                        disabled={date =>
-                          date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
-                        initialFocus
-                        locale={
-                          locale === 'es' ? es : locale === 'en' ? enUS : ptBR
-                        }
-                      />
-                    </PopoverContent>
-                  </Popover>
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                   <p className="text-body-sm text-muted-foreground">
                     {t.form.eventDate.help}
                   </p>
@@ -1062,6 +1177,61 @@ export default function ContactForm({
           </div>
         </div>
       </div>
+
+      {/* Reusable Modal */}
+      <Modal>
+        {modalContent === 'eventType' && (
+          <div className="bg-card border border-border rounded-lg p-4 shadow-lg max-w-sm w-full mx-4">
+            <div className="space-y-3">
+              <h3 className="text-lg font-medium text-foreground">
+                {t.form.eventType.label}
+              </h3>
+              <div className="space-y-2">
+                {Object.entries(t.form.eventType.options).map(
+                  ([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        handleInputChange('eventType', key);
+                        closeModal();
+                      }}
+                      className={cn(
+                        'w-full text-left p-3 rounded-md border transition-colors',
+                        formData.eventType === key
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-border hover:bg-accent hover:text-accent-foreground'
+                      )}
+                    >
+                      {label}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {modalContent === 'datePicker' && (
+          <div className="bg-card border border-border rounded-lg p-4 shadow-lg">
+            <Calendar
+              mode="single"
+              selected={
+                formData.eventDate ? new Date(formData.eventDate) : undefined
+              }
+              onSelect={date => {
+                const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
+                handleInputChange('eventDate', formattedDate);
+                closeModal();
+              }}
+              disabled={date =>
+                date < new Date(new Date().setHours(0, 0, 0, 0))
+              }
+              initialFocus
+              locale={locale === 'es' ? es : locale === 'en' ? enUS : ptBR}
+            />
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
