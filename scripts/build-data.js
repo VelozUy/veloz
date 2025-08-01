@@ -79,6 +79,7 @@ const STATIC_TRANSLATIONS = {
       title: 'Contacto',
       subtitle: 'Contáctanos',
       form: {
+        title: 'Formulario',
         name: {
           label: 'Tu nombre',
           placeholder: 'Tu nombre completo',
@@ -145,7 +146,8 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Cuéntanos todos los detalles que te parezcan',
           optional: '(opcional)',
-          placeholder: 'Comparte todos los detalles que consideres importantes para tu evento...',
+          placeholder:
+            'Comparte todos los detalles que consideres importantes para tu evento...',
         },
         attachments: {
           label: 'Archivos adjuntos',
@@ -368,6 +370,7 @@ const STATIC_TRANSLATIONS = {
       title: 'Contact Us',
       subtitle: 'Tell us about your event',
       form: {
+        title: 'Form',
         name: {
           label: 'Name',
           placeholder: 'Your full name',
@@ -434,7 +437,8 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Tell us all the details you think are relevant',
           optional: '(optional)',
-          placeholder: 'Share all the details you consider important for your event...',
+          placeholder:
+            'Share all the details you consider important for your event...',
         },
         attachments: {
           label: 'Attachments',
@@ -459,8 +463,7 @@ const STATIC_TRANSLATIONS = {
       trust: {
         response: {
           title: 'Quick Response',
-          description:
-            'We typically respond within 2 hours after your inquiry',
+          description: 'We typically respond within 2 hours after your inquiry',
         },
         commitment: {
           title: 'No Commitment',
@@ -656,6 +659,7 @@ const STATIC_TRANSLATIONS = {
       title: 'Contato',
       subtitle: 'Entre em contato conosco',
       form: {
+        title: 'Formulário',
         name: {
           label: 'Nome',
           placeholder: 'Seu nome completo',
@@ -722,7 +726,8 @@ const STATIC_TRANSLATIONS = {
         message: {
           label: 'Conte-nos todos os detalhes que achar relevantes',
           optional: '(opcional)',
-          placeholder: 'Compartilhe todos os detalhes que considerar importantes para seu evento...',
+          placeholder:
+            'Compartilhe todos os detalhes que considerar importantes para seu evento...',
         },
         attachments: {
           label: 'Anexos',
@@ -752,9 +757,9 @@ const STATIC_TRANSLATIONS = {
         },
         commitment: {
           title: 'Sem Compromisso',
-          description: 'Obter um orçamento é completamente gratuito e sem compromisso',
+          description:
+            'Obter um orçamento é completamente gratuito e sem compromisso',
         },
-
       },
     },
     widget: {

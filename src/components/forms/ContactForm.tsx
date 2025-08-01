@@ -70,6 +70,7 @@ interface ContactFormProps {
       title: string;
       subtitle: string;
       form: {
+        title: string;
         name: {
           label: string;
           placeholder: string;
@@ -578,26 +579,26 @@ export default function ContactForm({
 
             {/* Trust Indicators */}
             <div className="grid md:grid-cols-2 gap-4 lg:gap-6 mt-6 lg:mt-8">
-              <div className="bg-card rounded-none p-4 lg:p-6 shadow-sm border-border">
+              <div>
                 <div className="flex items-center gap-2 mb-3 lg:mb-4">
                   <Clock className="text-primary size-5" />
-                  <h3 className="font-display text-lg font-normal">
+                  <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
                     {translations.contact.trust.response.title}
                   </h3>
                 </div>
-                <p className="text-body-sm text-muted-foreground">
+                <p className="text-body-md text-foreground">
                   {translations.contact.trust.response.description}
                 </p>
               </div>
 
-              <div className="bg-card rounded-none p-4 lg:p-6 shadow-sm border-border">
+              <div>
                 <div className="flex items-center gap-2 mb-3 lg:mb-4">
                   <Heart className="text-primary size-5" />
-                  <h3 className="font-display text-lg font-normal">
+                  <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
                     {translations.contact.trust.commitment.title}
                   </h3>
                 </div>
-                <p className="text-body-sm text-muted-foreground">
+                <p className="text-body-md text-foreground">
                   {translations.contact.trust.commitment.description}
                 </p>
               </div>
@@ -609,6 +610,12 @@ export default function ContactForm({
       {/* Contact Form */}
       <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-border-64 mx-auto">
+          <div className="text-left mb-8">
+            <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
+              {t.form.title}
+            </h2>
+            <div className="w-24 h-1 bg-primary rounded-full"></div>
+          </div>
           <div className="flex justify-center">
             <div className="max-w-2xl">
               <form onSubmit={onSubmit} className="space-y-6 lg:space-y-8">

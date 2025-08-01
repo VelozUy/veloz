@@ -26,6 +26,7 @@ function ContactPageContent() {
       title: string;
       subtitle: string;
       form: {
+        title: string;
         name: { label: string; placeholder: string };
         email: { label: string; placeholder: string };
         company: { label: string; placeholder: string; optional: string };
