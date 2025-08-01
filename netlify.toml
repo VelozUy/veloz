@@ -5,26 +5,14 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
+  # Enable Next.js build cache
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Optimize build performance
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 # Build cache configuration for faster builds
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Cache directories for faster builds
-[[plugins]]
-  package = "@netlify/plugin-cache"
-    [plugins.inputs]
-      paths = [
-        ".next/cache",
-        "node_modules/.cache",
-        ".npm"
-      ]
-      # Exclude generated files that should be rebuilt each time
-      exclude = [
-        "src/data/content-*.json",
-        "src/lib/static-content.generated.ts",
-        "src/lib/build-time-data.generated.ts"
-      ]
 
 [dev]
   framework = "nextjs"
