@@ -525,7 +525,7 @@ export class OpenAIService {
       prompt += '\n';
     }
 
-    prompt += 'CRITICAL ANALYSIS REQUIREMENTS:\n';
+    prompt += 'CRITICAL SEO REQUIREMENTS:\n';
     prompt +=
       '• FIRST: Analyze and describe what you actually see in the image/video\n';
     prompt +=
@@ -534,42 +534,46 @@ export class OpenAIService {
       '• Identify the event type based on visual clues (wedding, corporate, birthday, etc.)\n';
     prompt += '• Use inclusive, gender-neutral language throughout\n';
     prompt +=
-      '• THEN: Naturally incorporate SEO keywords for photography services\n';
+      '• THEN: Focus on attracting people searching to hire professional photographers/videographers for events\n';
     prompt +=
       '• Include service keywords: "event photographer", "wedding videographer", "professional photo session", "corporate photography", "birthday photographer"\n';
     prompt +=
       '• Add location context: "in Montevideo", "in Uruguay", "fotógrafo en Montevideo"\n';
     prompt +=
+      '• Use long-tail keywords people actually search: "hire wedding photographer", "professional event videography service"\n';
+    prompt +=
+      '• Make descriptions actionable for people looking to hire services\n';
+    prompt +=
       '• Use inclusive terms: "couples", "partners", "families", "guests" instead of gender-specific terms\n\n';
 
-    prompt += `EXAMPLES OF GOOD IMAGE DESCRIPTIONS:\n`;
+    prompt += `EXAMPLES OF GOOD SEO DESCRIPTIONS:\n`;
 
     if (request.mediaType === 'video') {
       prompt +=
-        '• "Elegant couple sharing their first dance under twinkle lights at sunset ceremony - professional wedding videography in Montevideo"\n';
+        '• "Elegant couple sharing their first dance under twinkle lights at sunset ceremony - hire professional wedding videographer in Montevideo"\n';
       prompt +=
-        '• "Business professionals networking at modern conference center - corporate event videography service in Uruguay"\n';
+        '• "Business professionals networking at modern conference center - professional corporate event videography service in Uruguay"\n';
       prompt +=
-        '• "Family celebrating birthday with colorful decorations and cake - birthday party videography with cinematic quality"\n';
+        '• "Family celebrating birthday with colorful decorations and cake - professional birthday party videography with cinematic quality"\n';
       prompt +=
-        '• "Pareja elegante bailando su primer baile bajo luces brillantes al atardecer - videografía profesional de bodas en Montevideo"\n';
+        '• "Pareja elegante bailando su primer baile bajo luces brillantes al atardecer - contrata videógrafo profesional de bodas en Montevideo"\n';
       prompt +=
-        '• "Família celebrando aniversário com decorações coloridas - serviço de videoografia profissional em Montevidéu"\n\n';
+        '• "Família celebrando aniversário com decorações coloridas - serviço profissional de videoografia de eventos em Montevidéu"\n\n';
     } else {
       prompt +=
-        '• "Bride and groom sharing intimate moment during golden hour ceremony - professional wedding photography in Montevideo"\n';
+        '• "Bride and groom sharing intimate moment during golden hour ceremony - hire professional wedding photographer in Montevideo"\n';
       prompt +=
-        '• "Corporate team presenting in modern boardroom setting - professional business photography in Uruguay"\n';
+        '• "Corporate team presenting in modern boardroom setting - professional business photography services in Uruguay"\n';
       prompt +=
-        '• "Young woman in traditional dress celebrating quinceañera with family - event photography with professional lighting"\n';
+        '• "Young woman in traditional dress celebrating quinceañera with family - professional event photography with expert lighting"\n';
       prompt +=
-        '• "Novios compartiendo momento íntimo durante ceremonia de hora dorada - fotografía profesional de bodas en Montevideo"\n';
+        '• "Novios compartiendo momento íntimo durante ceremonia de hora dorada - contrata fotógrafo profesional de bodas en Montevideo"\n';
       prompt +=
         '• "Jovem em vestido tradicional celebrando quinze anos com família - fotografia profissional de eventos em Montevidéu"\n\n';
     }
 
     prompt +=
-      'Generate SEO-optimized content that helps potential clients find and hire our photography/videography services. Provide only valid JSON.';
+      'Generate SEO-optimized content that attracts people searching to hire professional photographers/videographers for events. Focus on business-driving keywords while describing the actual image content. Provide only valid JSON.';
 
     return prompt;
   }
