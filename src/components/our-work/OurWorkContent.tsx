@@ -422,7 +422,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
   return (
     <div className="min-h-screen pt-20 pb-16 bg-background">
       {/* Title and Subtitle Section */}
-      <section className="px-4 md:px-8 lg:px-12">
+      <section className="px-4 md:px-8 lg:px-8 xl:px-16">
         <div className="w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -442,7 +442,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
 
       {/* Projects Full-Width Wall-to-Wall Layout */}
       {filteredProjects.length === 0 ? (
-        <section className="px-4 md:px-8 lg:px-12">
+        <section className="px-4 md:px-8 lg:px-8 xl:px-16">
           <div className="w-full">
             <motion.div
               initial={{ opacity: 0 }}
@@ -481,7 +481,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                     className="w-full hover:bg-accent/20 transition-colors duration-300 cursor-pointer bg-background hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
                   >
                     {/* Project Content - Full Width */}
-                    <div className="w-full px-4 md:px-8 lg:px-12 py-8">
+                    <div className="w-full px-4 md:px-8 lg:px-8 xl:px-16 py-8">
                       {/* Category Badge */}
                       <div className="flex justify-center mb-6">
                         <CategoryBadge

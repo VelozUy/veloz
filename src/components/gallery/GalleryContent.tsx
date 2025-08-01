@@ -47,7 +47,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
   // If no projects available, show message
   if (!content.content.projects || content.content.projects.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         {/* No Projects Message */}
         <div className="text-center py-16">
           <div className="max-w-md mx-auto">
@@ -69,7 +69,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
       <SideNavigation projects={projects} />
 
       {/* Main Content */}
-      <div className="max-w-border-64 mx-auto px-4 py-8">
+      <div className="max-w-border-64 mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         {/* Main Title - Eventos */}
         <div className="text-center py-16">
           <h1

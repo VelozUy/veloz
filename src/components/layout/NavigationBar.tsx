@@ -125,7 +125,7 @@ export default function NavigationBar({
         )}
         aria-label={ariaLabel}
       >
-        <div className="w-full px-16">
+        <div className="w-full px-4 md:px-8 lg:px-16">
           <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
@@ -180,7 +180,7 @@ export default function NavigationBar({
         )}
         aria-label={ariaLabel}
       >
-        <div className="w-full px-16">
+        <div className="w-full px-4 md:px-8 lg:px-16">
           <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">

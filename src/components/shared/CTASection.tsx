@@ -24,7 +24,7 @@ export default function CTASection({
 
   return (
     <section
-      className={`py-16 px-4 bg-primary text-primary-foreground ${className}`}
+      className={`py-16 px-4 md:px-8 lg:px-8 xl:px-16 bg-primary text-primary-foreground ${className}`}
     >
       <div className="max-w-border-64 mx-auto text-center">
         <h2 className="text-3xl font-bold mb-6">{title}</h2>

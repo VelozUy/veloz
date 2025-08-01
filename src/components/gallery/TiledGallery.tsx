@@ -68,18 +68,66 @@ export function TiledGallery({
   ariaLabel = 'Tiled gallery',
   galleryGroup,
   projectTitle = '',
-}: TiledGalleryProps) {
+  isMobileOverride,
+}: TiledGalleryProps & { isMobileOverride?: boolean }) {
+  // Debug incoming props (only in development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🎨 TiledGallery: Received props', {
+      imagesCount: images.length,
+      images: images
+        .slice(0, 3)
+        .map(img => ({ id: img.id, type: img.type, url: img.url })),
+      columns,
+      gap,
+      ariaLabel,
+      projectTitle,
+    });
+  }
   // TiledGallery component initialized
   // Container and layout state
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(1200);
+  const [containerWidth, setContainerWidth] = useState(() => {
+    // Initialize with a reasonable mobile width for better SSR/CSR consistency
+    if (typeof window === 'undefined') {
+      return 375; // Default mobile width
+    }
+    // Ensure we have a stable width for mobile
+    const width =
+      window.innerWidth < 768 ? Math.max(window.innerWidth, 320) : 1200;
+    return width;
+  });
   const [layout, setLayout] = useState<TiledGalleryLayout | null>(null);
 
   // Use fluid responsive grid
   const gridState = useResponsiveGrid();
-  const isMobile = gridState.isMobile;
+
+  // Use override if provided, otherwise use simple detection
+  const isMobile =
+    isMobileOverride !== undefined
+      ? isMobileOverride
+      : typeof window === 'undefined'
+        ? false
+        : window.innerWidth < 768;
+
+  // Debug layout changes (only in development)
+  useEffect(() => {
+    if (
+      isMobile &&
+      typeof window !== 'undefined' &&
+      process.env.NODE_ENV === 'development'
+    ) {
+      console.log(
+        '🎨 TiledGallery: Mobile layout ready with',
+        images.length,
+        'images'
+      );
+    }
+  }, [isMobile, images.length]);
 
   // Performance optimization - preserving current patterns while adding enhancements
+  // Disable lazy loading on mobile for better performance and to prevent disappearing issues
+  const effectiveLazyLoad = isMobile ? false : lazyLoad;
+
   const {
     visibleItems,
     loadedImages,
@@ -99,7 +147,7 @@ export function TiledGallery({
     virtualScrolling,
     maxConcurrentLoads: 4,
     memoryLimit: 50,
-    lazyLoad,
+    lazyLoad: effectiveLazyLoad,
   });
 
   // Animation states - preserving current patterns
@@ -115,22 +163,40 @@ export function TiledGallery({
 
   // Memoized responsive configuration using fluid grid
   const responsiveConfig = useMemo(() => {
-    if (typeof window === 'undefined')
-      return { columns: 3, gap: 8, targetRowHeight: 300 };
+    // Use a consistent default for both server and client initial render
+    const defaultConfig = { columns: 3, gap: 8, targetRowHeight: 300 };
+
+    // For mobile, use simple single-column layout
+    if (isMobile) {
+      return {
+        columns: 1,
+        gap: 4,
+        targetRowHeight: 300,
+      };
+    }
+
+    // Only calculate responsive config on client after hydration
+    if (typeof window === 'undefined' || containerWidth === 1200) {
+      return defaultConfig;
+    }
 
     const baseConfig = getResponsiveConfig(window.innerWidth);
     return {
       ...baseConfig,
       columns: gridState.columns, // Use fluid columns from grid state
     };
-  }, [containerWidth, gridState.columns]);
+  }, [containerWidth, gridState.columns, isMobile]);
 
   // Calculate layout when images or container size changes
   const calculatedLayout = useMemo(() => {
     if (!images.length || !containerWidth) return null;
 
     // For mobile, use simple single-column layout
+    // Ensure consistent layout between server and client
     if (isMobile) {
+      // Calculate available width for mobile (container width minus padding)
+      const mobileContainerWidth = Math.max(containerWidth - 32, 343); // 16px padding on each side, min 343px
+
       const mobileTiles = images.map((image, index) => ({
         id: `tile-${image.id}`,
         image,
@@ -151,9 +217,9 @@ export function TiledGallery({
 
       return {
         totalHeight: images.length * 300, // Approximate height
-        containerWidth,
+        containerWidth: mobileContainerWidth,
         config: {
-          containerWidth,
+          containerWidth: mobileContainerWidth,
           targetRowHeight: 300,
           maxRowHeight: 400,
           gap: gap || 4,
@@ -188,7 +254,9 @@ export function TiledGallery({
     }
 
     // Calculate available width for layout (container width minus margins)
-    const availableWidth = containerWidth - 128; // 64px padding on each side
+    const availableWidth = isMobile
+      ? containerWidth - 32
+      : containerWidth - 128; // 16px padding on mobile, 64px on desktop
 
     const config = {
       targetRowHeight: responsiveConfig.targetRowHeight,
@@ -220,7 +288,7 @@ export function TiledGallery({
       calculatedLayout.tiles.forEach(tile => {
         newAnimationStates[tile.image.id] = {
           id: tile.image.id,
-          isVisible: !lazyLoad, // If lazy loading disabled, all are visible
+          isVisible: !effectiveLazyLoad, // If lazy loading disabled, all are visible
           isLoaded: false,
           hasError: false,
           animationPhase: 'entering',
@@ -228,7 +296,7 @@ export function TiledGallery({
       });
       setAnimationStates(newAnimationStates);
     }
-  }, [calculatedLayout, lazyLoad]);
+  }, [calculatedLayout, effectiveLazyLoad]);
 
   // Handle container resize - preserving current responsive behavior
   useEffect(() => {
@@ -250,11 +318,11 @@ export function TiledGallery({
 
   // Handle lazy loading initialization - using new performance hook
   useEffect(() => {
-    if (!lazyLoad || typeof window === 'undefined') {
+    if (!effectiveLazyLoad || typeof window === 'undefined') {
       // If no lazy loading, the hook will handle marking all as visible
       return;
     }
-  }, [lazyLoad]);
+  }, [effectiveLazyLoad]);
 
   // Observe tiles when layout changes - using new performance hook
   useEffect(() => {
@@ -408,7 +476,7 @@ export function TiledGallery({
 
   if (!images.length) {
     return (
-      <div className={cn('text-center py-16 px-16', className)}>
+      <div className={cn('text-center py-16 px-4 md:px-16', className)}>
         <p className="text-muted-foreground">No images to display</p>
       </div>
     );
@@ -417,7 +485,7 @@ export function TiledGallery({
   if (!activeLayout || !activeLayout.tiles.length) {
     // This should rarely happen now, but keep as final fallback
     return (
-      <div className={cn('w-full px-16', className)}>
+      <div className={cn('w-full px-4 md:px-16', className)}>
         <div className="space-y-4">
           {images.map((image, index) => (
             <div
@@ -448,7 +516,7 @@ export function TiledGallery({
       <div
         ref={containerRef}
         className={cn(
-          'tiled-gallery-container relative w-full px-16',
+          'tiled-gallery-container relative w-full px-4 md:px-16',
           className
         )}
         role="region"
@@ -458,20 +526,27 @@ export function TiledGallery({
         {/* Mobile Single Column Layout */}
         <div className="space-y-4">
           {images.map((image, index) => {
-            // TEMPORARY: Force all images to be visible for debugging
-            const isVisible = true; // Force all images to be visible
+            // On mobile, always render images for better UX (lazy loading disabled)
+            const isVisible =
+              typeof window === 'undefined'
+                ? true
+                : visibleItems.has(image.id) || !effectiveLazyLoad;
             const isLoaded = loadedImages.has(image.id);
             const hasError = errorImages.has(image.id);
 
-            // Skip rendering if not visible
-            if (!isVisible) {
+            // Skip rendering if not visible (but ensure server always renders and lazy loading disabled always renders)
+            if (
+              !isVisible &&
+              typeof window !== 'undefined' &&
+              effectiveLazyLoad
+            ) {
               return null;
             }
 
             return (
               <motion.div
                 key={image.id}
-                data-item-id={image.id}
+                data-item-id={image.id || `mobile-${index}`}
                 className={cn(
                   'tiled-gallery-item group cursor-pointer relative overflow-hidden w-full',
                   // PRESERVE CURRENT ANIMATIONS: hover and transition effects
@@ -487,8 +562,8 @@ export function TiledGallery({
                 animate={
                   enableAnimations
                     ? {
-                        opacity: isVisible ? 1 : 0,
-                        y: isVisible ? 0 : 20,
+                        opacity: 1, // Always visible on mobile since lazy loading is disabled
+                        y: 0,
                       }
                     : undefined
                 }
@@ -633,10 +708,22 @@ export function TiledGallery({
   }
 
   // Desktop layout - complex masonry with fluid columns
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🎨 TiledGallery: Rendering desktop layout', {
+      imagesCount: images.length,
+      isMobile,
+      containerWidth,
+      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 'server',
+      window: typeof window !== 'undefined' ? 'client' : 'server',
+    });
+  }
   return (
     <div
       ref={containerRef}
-      className={cn('tiled-gallery-container relative w-full px-16', className)}
+      className={cn(
+        'tiled-gallery-container relative w-full px-4 md:px-16',
+        className
+      )}
       role="region"
       aria-label={ariaLabel}
       style={{ contain: 'layout style' }}
@@ -665,7 +752,10 @@ export function TiledGallery({
           >
             {row.tiles.map((tile, tileIndex) => {
               const image = tile.image;
-              const isVisible = visibleItems.has(image.id);
+              const isVisible =
+                typeof window === 'undefined'
+                  ? true
+                  : visibleItems.has(image.id);
               const isLoaded = loadedImages.has(image.id);
               const hasError = errorImages.has(image.id);
               const animationState = animationStates[image.id];
@@ -678,7 +768,7 @@ export function TiledGallery({
               return (
                 <motion.div
                   key={tile.id}
-                  data-item-id={image.id}
+                  data-item-id={image.id || tile.id}
                   className={cn(
                     'tiled-gallery-item group cursor-pointer relative overflow-hidden',
                     // PRESERVE CURRENT ANIMATIONS: hover and transition effects

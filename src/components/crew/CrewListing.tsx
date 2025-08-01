@@ -193,7 +193,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="max-w-border-64 mx-auto px-4 py-12">
+        <div className="max-w-border-64 mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-12">
           <div className="text-center">
             <h1 className="text-section-title-lg font-body font-semibold mb-4">
               Nuestro Equipo
@@ -207,7 +207,7 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
       </div>
 
       {/* Search and Filters */}
-      <div className="max-w-border-64 mx-auto px-4 py-8">
+      <div className="max-w-border-64 mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         <div className="space-y-4">
           {/* Search Bar */}
           <div className="relative">

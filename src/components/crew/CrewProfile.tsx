@@ -129,7 +129,7 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="bg-foreground text-background">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
           <div className="flex items-center gap-4 mb-6">
             <Link href="/crew">
               <Button
@@ -216,7 +216,7 @@ export default function CrewProfile({ crewMember }: CrewProfileProps) {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}

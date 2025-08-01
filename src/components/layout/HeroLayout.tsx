@@ -156,7 +156,7 @@ export default function HeroLayout({
       {/* Project Title Overlay */}
       {projectTitle && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-primary-foreground px-4">
+          <div className="text-center text-primary-foreground px-4 md:px-8 lg:px-8 xl:px-16">
             <h1 className="text-section-title-lg font-body font-semibold mb-4 drop-shadow-lg">
               {projectTitle}
             </h1>

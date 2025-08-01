@@ -57,23 +57,32 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
         try {
           // Initialize Firestore with better error handling
           try {
+            // Check if Firestore is already initialized
             const { getFirestore } = await import('firebase/firestore');
-            db = getFirestore(app);
 
-            // Enable offline persistence using the new cache settings
-            const { initializeFirestore } = await import('firebase/firestore');
             try {
-              // Use the new cache settings instead of deprecated enableIndexedDbPersistence
-              db = initializeFirestore(app, {
-                cacheSizeBytes: 50 * 1024 * 1024, // 50MB cache
-                experimentalForceLongPolling: false,
-              });
-            } catch (persistenceError) {
-              // If persistence fails, continue without it
-              console.warn(
-                'Firestore cache initialization failed:',
-                persistenceError
+              // Try to get existing Firestore instance first
+              db = getFirestore(app);
+            } catch (error) {
+              // If getFirestore fails, try to initialize with custom settings
+              const { initializeFirestore } = await import(
+                'firebase/firestore'
               );
+              try {
+                // Use the new cache settings instead of deprecated enableIndexedDbPersistence
+                db = initializeFirestore(app, {
+                  cacheSizeBytes: 50 * 1024 * 1024, // 50MB cache
+                  experimentalForceLongPolling: false,
+                });
+              } catch (persistenceError) {
+                // If persistence fails, continue without it
+                console.warn(
+                  'Firestore cache initialization failed:',
+                  persistenceError
+                );
+                // Fallback to basic getFirestore
+                db = getFirestore(app);
+              }
             }
           } catch (firestoreError) {
             console.error(
@@ -121,7 +130,7 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
 };
 
 // Initialize Firebase only on client side to prevent SSR issues
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && !app) {
   // Initialize Firebase asynchronously to prevent blocking
   initializeFirebase().catch(error => {
     console.error('❌ Firebase client initialization failed:', error);
@@ -131,7 +140,7 @@ if (typeof window !== 'undefined') {
     auth = null;
     storage = null;
   });
-} else {
+} else if (typeof window === 'undefined') {
   // Server-side: Initialize with dummy values to prevent errors
   app = null;
   db = null;

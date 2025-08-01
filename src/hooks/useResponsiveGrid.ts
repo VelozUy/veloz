@@ -104,6 +104,11 @@ export function useResponsiveGrid(
     const touchSupported =
       'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+    // Only log significant changes to avoid spam
+    if (Math.abs(screenWidth - gridState.screenWidth) > 50) {
+      console.log('📱 useResponsiveGrid: Screen size changed to', screenWidth);
+    }
+
     // Calculate fluid optimal columns based on available width
     const fluidColumns = getFluidOptimalColumns(
       screenWidth,
@@ -226,12 +231,7 @@ export function useResponsiveGrid(
         clearTimeout(debounceRef.current);
       }
     };
-  }, [
-    handleResize,
-    handleOrientationChange,
-    gridState.screenWidth,
-    updateGridConfig,
-  ]);
+  }, [handleResize, handleOrientationChange, updateGridConfig]);
 
   return gridState;
 }
@@ -274,8 +274,16 @@ export function getFluidOptimalColumns(
   minGap: number = 8,
   maxColumns: number = 6
 ): number {
-  // Account for container padding (64px on each side as per project rules)
-  const availableWidth = containerWidth - 128; // 64px * 2
+  // Account for responsive container padding
+  const containerPadding =
+    screenWidth < 768
+      ? 32
+      : screenWidth < 1024
+        ? 64
+        : screenWidth < 1440
+          ? 64
+          : 128; // 16px*2 mobile, 32px*2 tablet, 32px*2 desktop, 64px*2 large desktop
+  const availableWidth = containerWidth - containerPadding;
 
   // Calculate how many tiles can fit with the desired width and gap
   const tilesWithGaps = Math.floor(
@@ -307,10 +315,19 @@ export function getFluidOptimalColumns(
 export function getAdaptiveTileWidth(
   containerWidth: number,
   columns: number,
-  gap: number
+  gap: number,
+  screenWidth: number = 1200
 ): number {
-  // Account for container padding
-  const availableWidth = containerWidth - 128;
+  // Account for responsive container padding
+  const containerPadding =
+    screenWidth < 768
+      ? 32
+      : screenWidth < 1024
+        ? 64
+        : screenWidth < 1440
+          ? 64
+          : 128;
+  const availableWidth = containerWidth - containerPadding;
 
   // Calculate tile width: (available width - total gaps) / number of columns
   const totalGaps = (columns - 1) * gap;

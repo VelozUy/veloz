@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useEffect } from 'react';
-import { TiledGallery } from '@/components/gallery/TiledGallery';
+import { ClientOnlyTiledGallery } from '@/components/gallery/ClientOnlyTiledGallery';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { CTASection } from '@/components/shared';
 
@@ -89,13 +89,28 @@ export default function OurWorkClient({
 
   // Performance monitoring
   useEffect(() => {
-    console.log(`🎨 Our Work Gallery: Loading ${optimizedMedia.length} images`);
-    console.log(
-      `📊 Priority images: ${optimizedMedia.filter(img => img.priority).length}`
-    );
-    console.log(
-      `⚡ Eager loading: ${optimizedMedia.filter(img => img.loading === 'eager').length}`
-    );
+    if (process.env.NODE_ENV === 'development') {
+      console.log(
+        `🎨 Our Work Gallery: Loading ${optimizedMedia.length} images`
+      );
+      console.log(
+        `📊 Priority images: ${optimizedMedia.filter(img => img.priority).length}`
+      );
+      console.log(
+        `⚡ Eager loading: ${optimizedMedia.filter(img => img.loading === 'eager').length}`
+      );
+      console.log(`🔍 Projects count: ${projects.length}`);
+      console.log(
+        `🔍 Published projects: ${projects.filter(p => p.status === 'published').length}`
+      );
+      console.log(`🔍 All media count: ${allMedia.length}`);
+      console.log(
+        `🔍 Window type: ${typeof window !== 'undefined' ? 'client' : 'server'}`
+      );
+      console.log(
+        `🔍 Screen width: ${typeof window !== 'undefined' ? window.innerWidth : 'server'}`
+      );
+    }
 
     // Set loading state - only show loading if we have no media
     setIsLoading(optimizedMedia.length === 0);
@@ -166,38 +181,49 @@ export default function OurWorkClient({
           {/* Tiled Gallery - All Media */}
           {!isLoading && !loadError && (
             <div className="mb-8 md:mb-10">
-              <TiledGallery
-                images={convertProjectMediaBatch(
-                  optimizedMedia.map((item, index) => ({
-                    id: item.id,
-                    url: item.url,
-                    src: item.url, // For compatibility
-                    alt: item.alt,
-                    width: item.width,
-                    height: item.height,
-                    type: item.type,
-                    aspectRatio: item.aspectRatio,
-                    featured: item.featured,
-                    order: index, // Use index for proper ordering
-                    priority: item.priority, // Priority loading for first 6 images
-                    loading: item.loading, // Eager loading for first 6 images
-                  })),
-                  getLocalizedTitle(locale),
-                  'our-work'
-                )}
-                onImageClick={(image, index) => {
-                  // Handle click - can be expanded later
-                  console.log('Image clicked:', image, index);
-                }}
-                galleryGroup="gallery-our-work"
-                projectTitle={getLocalizedTitle(locale)}
-                ariaLabel={`${getLocalizedTitle(locale)} photo gallery`}
-                className="editorial-tiled-gallery"
-                enableAnimations={true}
-                lazyLoad={true}
-                preloadCount={16}
-                gap={8}
-              />
+              {optimizedMedia.length > 0 ? (
+                <ClientOnlyTiledGallery
+                  images={convertProjectMediaBatch(
+                    optimizedMedia.map((item, index) => ({
+                      id: item.id,
+                      url: item.url,
+                      src: item.url, // For compatibility
+                      alt: item.alt,
+                      width: item.width,
+                      height: item.height,
+                      type: item.type,
+                      aspectRatio: item.aspectRatio,
+                      featured: item.featured,
+                      order: index, // Use index for proper ordering
+                      priority: item.priority, // Priority loading for first 6 images
+                      loading: item.loading, // Eager loading for first 6 images
+                    })),
+                    getLocalizedTitle(locale),
+                    'our-work'
+                  )}
+                  onImageClick={(image, index) => {
+                    // Handle click - can be expanded later
+                    console.log('Image clicked:', image, index);
+                  }}
+                  galleryGroup="gallery-our-work"
+                  projectTitle={getLocalizedTitle(locale)}
+                  ariaLabel={`${getLocalizedTitle(locale)} photo gallery`}
+                  className="editorial-tiled-gallery"
+                  enableAnimations={true}
+                  lazyLoad={true}
+                  preloadCount={16}
+                  gap={8}
+                />
+              ) : (
+                <div className="text-center py-12 px-8 md:px-16">
+                  <p className="text-muted-foreground">
+                    No hay imágenes disponibles en este momento.
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    optimizedMedia.length: {optimizedMedia.length}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>

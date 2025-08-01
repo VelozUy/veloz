@@ -170,7 +170,7 @@ export default function Hero({
 
       {/* Main content */}
       <div
-        className={`relative z-10 text-center px-4 animate-fade-in ${heroClasses.text}`}
+        className={`relative z-10 text-center px-4 md:px-8 lg:px-8 xl:px-16 animate-fade-in ${heroClasses.text}`}
       >
         {/* Logo and Brand Section - Dynamic centering based on animation phase */}
         <div

@@ -71,7 +71,7 @@ export default async function CrewPage() {
     if (!crewMembers || crewMembers.length === 0) {
       return (
         <div className="min-h-screen bg-background">
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
             <div className="text-center">
               <h1 className="text-section-title-md font-body font-semibold mb-4">
                 Nuestro Equipo
@@ -154,7 +154,7 @@ export default async function CrewPage() {
     console.error('Error loading crew members:', error);
     return (
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
           <div className="text-center">
             <h1 className="text-section-title-md font-body font-semibold mb-4">
               Nuestro Equipo
