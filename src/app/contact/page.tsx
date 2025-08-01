@@ -34,29 +34,45 @@ function ContactPageContent() {
       form: {
         name: { label: string; placeholder: string };
         email: { label: string; placeholder: string };
+        company: { label: string; placeholder: string; optional: string };
         phone: { label: string; placeholder: string; optional: string };
-        communicationPreference: {
-          label: string;
-          call: string;
-          whatsapp: string;
-          email: string;
-          zoom: string;
-        };
         eventType: {
           label: string;
           placeholder: string;
           options: {
-            wedding: string;
-            quinceanera: string;
-            birthday: string;
             corporate: string;
+            product: string;
+            birthday: string;
+            wedding: string;
+            concert: string;
+            exhibition: string;
             other: string;
+          };
+        };
+        location: { label: string; placeholder: string };
+        attendees: { label: string; placeholder: string };
+        services: {
+          label: string;
+          placeholder: string;
+          options: {
+            photography: string;
+            video: string;
+            drone: string;
+            studio: string;
+            other: string;
+          };
+        };
+        contactMethod: {
+          label: string;
+          options: {
+            whatsapp: string;
+            email: string;
+            call: string;
           };
         };
         eventDate: { label: string; optional: string; help: string };
         message: { label: string; optional: string; placeholder: string };
         attachments: { label: string; optional: string; description: string };
-        zoomCall: { label: string; description: string };
         submit: { button: string; loading: string };
         privacy: { line1: string; line2: string };
       };
@@ -64,7 +80,6 @@ function ContactPageContent() {
       trust: {
         response: { title: string; description: string };
         commitment: { title: string; description: string };
-        privacy: { title: string; description: string };
       };
     };
   };

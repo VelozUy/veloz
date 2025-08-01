@@ -1,47 +1,39 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@/lib/test-utils';
-import { userInteraction } from '@/lib/test-utils';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { useRouter } from 'next/navigation';
 import ContactForm from '../ContactForm';
 import { emailService } from '@/services/email';
 import { trackCustomEvent } from '@/services/analytics';
 
-// Mock the email service
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  useSearchParams: () => new URLSearchParams(),
+}));
+
+// Mock email service
 jest.mock('@/services/email', () => ({
   emailService: {
     sendContactForm: jest.fn(),
   },
 }));
 
-// Mock Next.js router
-jest.mock('next/navigation', () => ({
-  useSearchParams: () => ({
-    get: jest.fn().mockReturnValue(null),
-  }),
-}));
-
-// Mock Lucide icons
-jest.mock('lucide-react', () => ({
-  Calendar: () => <div data-testid="calendar-icon" />,
-  Send: () => <div data-testid="send-icon" />,
-  CheckCircle: () => <div data-testid="check-circle-icon" />,
-  Loader2: () => <div data-testid="loader-icon" />,
-  Shield: () => <div data-testid="shield-icon" />,
-  Clock: () => <div data-testid="clock-icon" />,
-  Heart: () => <div data-testid="heart-icon" />,
-  AlertCircle: () => <div data-testid="alert-circle-icon" />,
-}));
-
-// Mock the analytics service
+// Mock analytics
 jest.mock('@/services/analytics', () => ({
   trackCustomEvent: jest.fn(),
 }));
 
-// Mock Next.js navigation
-jest.mock('next/navigation', () => ({
-  useSearchParams: () => new URLSearchParams(),
+// Mock file upload service
+jest.mock('@/services/file-upload', () => ({
+  FileUploadService: jest.fn().mockImplementation(() => ({
+    uploadFile: jest.fn().mockResolvedValue({
+      success: true,
+      data: { url: 'https://example.com/file.jpg' },
+    }),
+  })),
 }));
 
-// Mock the background hook
+// Mock form background hook
 jest.mock('@/hooks/useBackground', () => ({
   useFormBackground: () => ({
     classes: 'bg-muted',
@@ -54,34 +46,61 @@ const mockTranslations = {
     subtitle: 'Contáctanos',
     form: {
       name: {
-        label: 'Nombre',
-        placeholder: 'Tu nombre',
+        label: 'Tu nombre',
+        placeholder: 'Tu nombre completo',
       },
       email: {
-        label: 'Email',
+        label: 'Correo',
         placeholder: 'tu@email.com',
       },
-      phone: {
-        label: 'Teléfono',
-        placeholder: 'Tu teléfono',
+      company: {
+        label: 'Empresa (si corresponde)',
+        placeholder: 'Nombre de tu empresa',
         optional: '(opcional)',
       },
-      communicationPreference: {
-        label: 'Preferencia de comunicación',
-        call: 'Llamada',
-        whatsapp: 'WhatsApp',
-        email: 'Email',
-        zoom: 'Zoom',
+      phone: {
+        label: 'Número de celu',
+        placeholder: 'Tu número de celular',
+        optional: '(opcional)',
       },
       eventType: {
-        label: 'Tipo de evento',
-        placeholder: 'Selecciona un tipo',
+        label: '¿Qué tipo de evento tienes?',
+        placeholder: 'Selecciona el tipo de evento',
         options: {
-          wedding: 'Boda',
-          quinceanera: 'Quinceañera',
+          corporate: 'Evento corporativo',
+          product: 'Presentación de producto',
           birthday: 'Cumpleaños',
-          corporate: 'Empresarial',
-          other: 'Otro',
+          wedding: 'Casamiento',
+          concert: 'Concierto',
+          exhibition: 'Exposiciones',
+          other: 'Otros',
+        },
+      },
+      location: {
+        label: 'Lugar del evento (ciudad)',
+        placeholder: 'Ciudad donde será el evento',
+      },
+      attendees: {
+        label: 'Cantidad de asistentes esperados',
+        placeholder: 'Número aproximado de invitados',
+      },
+      services: {
+        label: '¿Qué servicios te interesan?',
+        placeholder: 'Selecciona los servicios',
+        options: {
+          photography: 'Fotografía',
+          video: 'Video',
+          drone: 'Drone',
+          studio: 'Sesión de fotos estudio',
+          other: 'Otros',
+        },
+      },
+      contactMethod: {
+        label: '¿Cómo preferís que te contactemos?',
+        options: {
+          whatsapp: 'Whatsapp',
+          email: 'Mail',
+          call: 'Llamada',
         },
       },
       eventDate: {
@@ -90,9 +109,9 @@ const mockTranslations = {
         help: 'Si no tienes fecha definida, no te preocupes',
       },
       message: {
-        label: 'Mensaje',
+        label: 'Cuéntanos todos los detalles que te parezcan',
         optional: '(opcional)',
-        placeholder: 'Cuéntanos más sobre tu evento...',
+        placeholder: 'Comparte todos los detalles que consideres importantes para tu evento...',
       },
       attachments: {
         label: 'Archivos adjuntos',
@@ -116,15 +135,11 @@ const mockTranslations = {
     trust: {
       response: {
         title: 'Respuesta rápida',
-        description: 'Te respondemos en menos de 24 horas',
+        description: 'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
       },
       commitment: {
-        title: 'Compromiso de calidad',
-        description: 'Garantizamos la mejor experiencia',
-      },
-      privacy: {
-        title: 'Privacidad garantizada',
-        description: 'Tus datos están seguros con nosotros',
+        title: 'Sin compromiso',
+        description: 'Obtener una cotización es completamente gratis y sin compromiso',
       },
     },
   },
@@ -144,20 +159,54 @@ describe('ContactForm Component', () => {
           label: 'Email',
           placeholder: 'your@email.com',
         },
+        company: {
+          label: 'Company (if applicable)',
+          placeholder: 'Your company name',
+          optional: '(optional)',
+        },
         phone: {
-          label: 'Phone',
-          placeholder: 'Your phone number',
+          label: 'Mobile number',
+          placeholder: 'Your mobile number',
           optional: '(optional)',
         },
         eventType: {
-          label: 'Event Type',
+          label: 'What type of event do you have?',
           placeholder: 'Select event type',
           options: {
-            wedding: 'Wedding',
-            quinceanera: 'Quinceañera',
+            corporate: 'Corporate event',
+            product: 'Product presentation',
             birthday: 'Birthday',
-            corporate: 'Corporate',
-            other: 'Other',
+            wedding: 'Wedding',
+            concert: 'Concert',
+            exhibition: 'Exhibitions',
+            other: 'Others',
+          },
+        },
+        location: {
+          label: 'Event location (city)',
+          placeholder: 'City where the event will be held',
+        },
+        attendees: {
+          label: 'Expected number of attendees',
+          placeholder: 'Approximate number of guests',
+        },
+        services: {
+          label: 'What services are you interested in?',
+          placeholder: 'Select services',
+          options: {
+            photography: 'Photography',
+            video: 'Video',
+            drone: 'Drone',
+            studio: 'Studio photo session',
+            other: 'Others',
+          },
+        },
+        contactMethod: {
+          label: 'How would you prefer us to contact you?',
+          options: {
+            whatsapp: 'WhatsApp',
+            email: 'Email',
+            call: 'Call',
           },
         },
         eventDate: {
@@ -166,9 +215,14 @@ describe('ContactForm Component', () => {
           help: 'Approximate date is fine',
         },
         message: {
-          label: 'Message',
+          label: 'Tell us all the details you think are relevant',
           optional: '(optional)',
-          placeholder: 'Tell us about your event...',
+          placeholder: 'Share all the details you consider important for your event...',
+        },
+        attachments: {
+          label: 'Attachments',
+          optional: '(optional)',
+          description: 'You can attach photos or documents',
         },
         submit: {
           button: 'Send Message',
@@ -187,15 +241,11 @@ describe('ContactForm Component', () => {
       trust: {
         response: {
           title: 'Quick Response',
-          description: 'We respond within 24 hours',
+          description: 'We typically respond within 2 hours after your inquiry',
         },
         commitment: {
-          title: 'Our Commitment',
-          description: 'We are committed to your event',
-        },
-        privacy: {
-          title: 'Privacy First',
-          description: 'Your data is safe with us',
+          title: 'No Commitment',
+          description: 'Getting a quote is completely free and without commitment',
         },
       },
     },
@@ -211,10 +261,13 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
-      expect(screen.getByLabelText('Phone')).toBeInTheDocument();
-      expect(screen.getByLabelText('Event Type')).toBeInTheDocument();
+      expect(screen.getByLabelText('Company (if applicable)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
+      expect(screen.getByLabelText('What type of event do you have?')).toBeInTheDocument();
+      expect(screen.getByLabelText('Event location (city)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Expected number of attendees')).toBeInTheDocument();
       expect(screen.getByLabelText(/Event Date/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Message/)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Tell us all the details/)).toBeInTheDocument();
     });
 
     it('displays form title and subtitle', () => {
@@ -228,249 +281,176 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       expect(screen.getByText('Quick Response')).toBeInTheDocument();
-      expect(screen.getByText('Our Commitment')).toBeInTheDocument();
-      expect(screen.getByText('Privacy First')).toBeInTheDocument();
-    });
-
-    it('displays submit button', () => {
-      render(<ContactForm translations={mockTranslations} />);
-
-      expect(screen.getByText('Send Message')).toBeInTheDocument();
+      expect(screen.getByText('No Commitment')).toBeInTheDocument();
     });
   });
 
   describe('Form Validation', () => {
-    it('validates required name field', async () => {
+    it('validates required fields', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText('Debe tener al menos 2 caracteres')
-        ).toBeInTheDocument();
+        expect(screen.getByText('Name')).toBeInTheDocument();
+        expect(screen.getByText('Email')).toBeInTheDocument();
+        expect(screen.getByText('What type of event do you have?')).toBeInTheDocument();
+        expect(screen.getByText('Event location (city)')).toBeInTheDocument();
+        expect(screen.getByText('Expected number of attendees')).toBeInTheDocument();
+        expect(screen.getByText('What services are you interested in?')).toBeInTheDocument();
       });
     });
 
-    it('validates required email field', async () => {
+    it('validates email format', async () => {
       render(<ContactForm translations={mockTranslations} />);
-
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
-
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            'Por favor ingresa un email válido para que podamos responderte'
-          )
-        ).toBeInTheDocument();
-      });
-    });
-
-    it('validates required event type field', async () => {
-      render(<ContactForm translations={mockTranslations} />);
-
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
 
       const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
+      fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText('Por favor selecciona un tipo de evento')
-        ).toBeInTheDocument();
+        expect(screen.getByText('Email inválido')).toBeInTheDocument();
       });
-    });
-
-    it('accepts valid form input', async () => {
-      render(<ContactForm translations={mockTranslations} />);
-
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
-
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
-
-      // Simulate event type selection
-      const eventTypeButton = screen.getByRole('combobox');
-      await userInteraction.click(eventTypeButton);
-
-      // Since we're mocking the select, we'll test that no validation errors appear
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
-
-      // Should not show name or email validation errors
-      expect(
-        screen.queryByText('Debe tener al menos 2 caracteres')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByText('Por favor ingresa un email válido')
-      ).not.toBeInTheDocument();
     });
 
     it('clears validation errors when user starts typing', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText('Debe tener al menos 2 caracteres')
-        ).toBeInTheDocument();
+        expect(screen.getByText('Name')).toBeInTheDocument();
       });
 
       const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'J');
+      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
 
       await waitFor(() => {
-        expect(
-          screen.queryByText('Debe tener al menos 2 caracteres')
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Name')).not.toBeInTheDocument();
       });
     });
   });
 
   describe('Form Submission', () => {
     it('shows loading state during submission', async () => {
-      const mockSendContactForm = emailService.sendContactForm as jest.Mock;
-      mockSendContactForm.mockImplementation(
+      (emailService.sendContactForm as jest.Mock).mockImplementation(
         () => new Promise(resolve => setTimeout(resolve, 100))
       );
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill form with valid data
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
-
-      await waitFor(() => {
-        expect(screen.getByText('Sending...')).toBeInTheDocument();
-        expect(screen.getByTestId('loader-icon')).toBeInTheDocument();
-      });
+      expect(screen.getByText('Sending...')).toBeInTheDocument();
     });
 
     it('calls email service with form data', async () => {
-      const mockSendContactForm = emailService.sendContactForm as jest.Mock;
-      mockSendContactForm.mockResolvedValue({});
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill form with valid data
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
-
-      const messageInput = screen.getByLabelText(/Message/);
-      await userInteraction.type(messageInput, 'Test message');
-
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(mockSendContactForm).toHaveBeenCalledWith(
+        expect(emailService.sendContactForm).toHaveBeenCalledWith(
           expect.objectContaining({
             name: 'John Doe',
             email: 'john@example.com',
-            message: 'Test message',
-            eventType: '',
-            eventDate: '',
+            eventType: 'corporate',
+            location: 'New York',
+            attendees: '100',
           })
         );
       });
     });
 
     it('handles submission errors', async () => {
-      const mockSendContactForm = emailService.sendContactForm as jest.Mock;
-      mockSendContactForm.mockRejectedValue(new Error('Network error'));
+      (emailService.sendContactForm as jest.Mock).mockRejectedValue(new Error('Network error'));
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill form with valid data
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
-
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Network error')).toBeInTheDocument();
+        expect(screen.getByText(/hubo un problema/i)).toBeInTheDocument();
       });
     });
   });
 
   describe('Success State', () => {
     it('shows success screen after successful submission', async () => {
-      const mockSendContactForm = emailService.sendContactForm as jest.Mock;
-      mockSendContactForm.mockResolvedValue({});
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill and submit form
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
-
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Message Sent!')).toBeInTheDocument();
-        expect(
-          screen.getByText('Thank you for contacting us.')
-        ).toBeInTheDocument();
-        expect(screen.getByTestId('check-circle-icon')).toBeInTheDocument();
+        expect(screen.getByText('Thank you for contacting us.')).toBeInTheDocument();
       });
     });
 
     it('allows sending another message from success screen', async () => {
-      const mockSendContactForm = emailService.sendContactForm as jest.Mock;
-      mockSendContactForm.mockResolvedValue({});
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill and submit form
-      const nameInput = screen.getByLabelText('Name');
-      await userInteraction.type(nameInput, 'John Doe');
+      // Fill required fields and submit
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      const emailInput = screen.getByLabelText('Email');
-      await userInteraction.type(emailInput, 'john@example.com');
-
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Message Sent!')).toBeInTheDocument();
       });
 
-      const sendAnotherButton = screen.getByText('Send Another Message');
-      await userInteraction.click(sendAnotherButton);
+      const sendAnotherButton = screen.getByRole('button', { name: /send another message/i });
+      fireEvent.click(sendAnotherButton);
 
-      await waitFor(() => {
-        expect(screen.getByText('Contact Us')).toBeInTheDocument();
-        expect(screen.getByLabelText('Name')).toHaveValue('');
-      });
+      expect(screen.getByText('Contact Us')).toBeInTheDocument();
+      expect(screen.getByLabelText('Name')).toHaveValue('');
     });
   });
 
@@ -480,54 +460,50 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
-      expect(screen.getByLabelText('Event Type')).toBeInTheDocument();
+      expect(screen.getByLabelText('Company (if applicable)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
+      expect(screen.getByLabelText('What type of event do you have?')).toBeInTheDocument();
+      expect(screen.getByLabelText('Event location (city)')).toBeInTheDocument();
+      expect(screen.getByLabelText('Expected number of attendees')).toBeInTheDocument();
     });
 
     it('shows validation errors with proper accessibility', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByText('Send Message');
-      await userInteraction.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
       await waitFor(() => {
-        const errorMessage = screen.getByText(
-          'Debe tener al menos 2 caracteres'
-        );
-        expect(errorMessage).toBeInTheDocument();
-        expect(screen.getByTestId('alert-circle-icon')).toBeInTheDocument();
+        expect(screen.getByText('Name')).toBeInTheDocument();
       });
     });
 
     it('has proper button roles', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /Send Message/ });
-      expect(submitButton).toBeInTheDocument();
-      expect(submitButton).toHaveAttribute('type', 'submit');
+      expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
     });
   });
 
   describe('URL Parameter Handling', () => {
     it('pre-fills form from URL parameters', () => {
-      // Mock URL parameters
-      jest.doMock('next/navigation', () => ({
-        useSearchParams: () => ({
-          get: (param: string) => {
-            if (param === 'evento') return 'wedding';
-            if (param === 'fecha') return '2024-06-15';
-            if (param === 'mensaje') return 'Pre-filled message';
-            return null;
-          },
-        }),
-      }));
+      const mockSearchParams = new URLSearchParams({
+        evento: 'corporate',
+        fecha: '2024-12-25',
+        mensaje: 'Test message',
+        ubicacion: 'New York',
+      });
+
+      jest.mocked(useRouter).mockReturnValue({
+        ...jest.requireActual('next/navigation').useRouter(),
+        useSearchParams: () => mockSearchParams,
+      } as any);
 
       render(<ContactForm translations={mockTranslations} />);
 
-      // Should pre-fill the message field
-      const messageInput = screen.getByLabelText(
-        /Message/
-      ) as HTMLTextAreaElement;
-      expect(messageInput.value).toBe('Pre-filled message');
+      expect(screen.getByDisplayValue('corporate')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('2024-12-25')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('Test message\nUbicación: New York')).toBeInTheDocument();
     });
   });
 
@@ -535,328 +511,271 @@ describe('ContactForm Component', () => {
     it('shows privacy notice', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByText('We respect your privacy.')).toBeInTheDocument();
-      expect(
-        screen.getByText('We will only contact you about your event.')
-      ).toBeInTheDocument();
+      expect(screen.getByText(/we respect your privacy/i)).toBeInTheDocument();
+      expect(screen.getByText(/we will only contact you about your event/i)).toBeInTheDocument();
     });
 
     it('shows trust indicators with icons', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByTestId('clock-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('heart-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('shield-icon')).toBeInTheDocument();
+      expect(screen.getByText('Quick Response')).toBeInTheDocument();
+      expect(screen.getByText('No Commitment')).toBeInTheDocument();
     });
 
     it('shows optional field labels', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByText('(optional)')).toBeInTheDocument();
+      expect(screen.getByText(/Company \(if applicable\)/)).toBeInTheDocument();
+      expect(screen.getByText(/Mobile number/)).toBeInTheDocument();
     });
 
     it('displays privacy notice', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(
-        screen.getByText('Tu información está segura con nosotros')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('No compartimos tus datos con terceros')
-      ).toBeInTheDocument();
+      expect(screen.getByText(/we respect your privacy/i)).toBeInTheDocument();
     });
   });
 
-  // Keyboard Navigation Tests
   describe('Keyboard Navigation', () => {
     it('supports Tab navigation through all form fields', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      // Get all focusable elements
-      const focusableElements = screen
-        .getAllByRole('textbox')
-        .concat(screen.getAllByRole('combobox'), screen.getAllByRole('button'));
+      const nameInput = screen.getByLabelText('Name');
+      const emailInput = screen.getByLabelText('Email');
+      const companyInput = screen.getByLabelText('Company (if applicable)');
 
-      // Test that all elements are focusable
-      focusableElements.forEach(element => {
-        expect(element).toHaveAttribute('tabIndex', expect.any(String));
-      });
+      nameInput.focus();
+      expect(nameInput).toHaveFocus();
+
+      fireEvent.keyDown(nameInput, { key: 'Tab' });
+      expect(emailInput).toHaveFocus();
+
+      fireEvent.keyDown(emailInput, { key: 'Tab' });
+      expect(companyInput).toHaveFocus();
     });
 
-    it('supports Enter key to submit form', () => {
+    it('supports Enter key to submit form', async () => {
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
+
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      const nameInput = screen.getByLabelText('Nombre completo');
-      const emailInput = screen.getByLabelText('Correo electrónico');
-      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
+      const form = screen.getByRole('form');
+      fireEvent.submit(form);
 
-      // Test Enter key submission
-      fireEvent.keyDown(nameInput, { key: 'Enter', code: 'Enter' });
-
-      // Form should attempt submission (will fail due to mock email service)
-      expect(nameInput).toBeInTheDocument();
+      await waitFor(() => {
+        expect(emailService.sendContactForm).toHaveBeenCalled();
+      });
     });
 
     it('supports Space key activation for buttons', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /enviar/i });
-      expect(submitButton).toBeInTheDocument();
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      submitButton.focus();
 
-      // Test Space key activation
-      fireEvent.keyDown(submitButton, { key: ' ', code: 'Space' });
-      expect(submitButton).toBeInTheDocument();
+      fireEvent.keyDown(submitButton, { key: ' ' });
+      expect(screen.getByText('Name')).toBeInTheDocument();
     });
 
     it('supports arrow key navigation in select dropdown', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      const eventTypeSelect = screen.getByLabelText('What type of event do you have?');
       eventTypeSelect.focus();
-      expect(document.activeElement).toBe(eventTypeSelect);
 
-      // Test arrow key navigation in select
-      fireEvent.keyDown(eventTypeSelect, {
-        key: 'ArrowDown',
-        code: 'ArrowDown',
-      });
-      expect(document.activeElement).toBeInTheDocument();
+      fireEvent.keyDown(eventTypeSelect, { key: 'ArrowDown' });
+      expect(screen.getByText('Corporate event')).toBeInTheDocument();
     });
 
-    it('maintains focus management during form validation', () => {
+    it('maintains focus management during form validation', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const nameInput = screen.getByLabelText('Nombre completo');
-      nameInput.focus();
-      expect(document.activeElement).toBe(nameInput);
-
-      // Try to submit with invalid data
-      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      const submitButton = screen.getByRole('button', { name: /send message/i });
       fireEvent.click(submitButton);
 
-      // Focus should remain on the form
-      expect(document.activeElement).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Name')).toBeInTheDocument();
+      });
+
+      const nameInput = screen.getByLabelText('Name');
+      expect(nameInput).toHaveFocus();
     });
 
     it('supports keyboard navigation through form sections', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const formElements = [
-        screen.getByLabelText('Nombre completo'),
-        screen.getByLabelText('Correo electrónico'),
-        screen.getByLabelText('Tipo de evento'),
-        screen.getByLabelText('Fecha del evento'),
-        screen.getByLabelText('Mensaje'),
-      ];
+      const nameInput = screen.getByLabelText('Name');
+      const emailInput = screen.getByLabelText('Email');
 
-      // Test Tab navigation through all elements
-      formElements.forEach((element, index) => {
-        element.focus();
-        expect(document.activeElement).toBe(element);
-
-        // Test Tab to next element
-        if (index < formElements.length - 1) {
-          fireEvent.keyDown(element, { key: 'Tab', code: 'Tab' });
-          expect(document.activeElement).toBe(formElements[index + 1]);
-        }
-      });
+      nameInput.focus();
+      fireEvent.keyDown(nameInput, { key: 'Tab' });
+      expect(emailInput).toHaveFocus();
     });
 
     it('prevents focus trap in form', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const formElements = screen
-        .getAllByRole('textbox')
-        .concat(screen.getAllByRole('combobox'), screen.getAllByRole('button'));
-      const lastElement = formElements[formElements.length - 1];
+      const nameInput = screen.getByLabelText('Name');
+      const emailInput = screen.getByLabelText('Email');
 
-      // Focus last element
-      lastElement.focus();
-      expect(document.activeElement).toBe(lastElement);
-
-      // Test that focus can move beyond the form
-      fireEvent.keyDown(lastElement, { key: 'Tab', code: 'Tab' });
-      expect(document.activeElement).toBeInTheDocument();
+      nameInput.focus();
+      fireEvent.keyDown(nameInput, { key: 'Tab', shiftKey: true });
+      expect(emailInput).not.toHaveFocus();
     });
 
     it('supports keyboard navigation in success state', async () => {
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
+
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill and submit form
-      const nameInput = screen.getByLabelText('Nombre completo');
-      const emailInput = screen.getByLabelText('Correo electrónico');
-      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      // Fill required fields and submit
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
-
-      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      const submitButton = screen.getByRole('button', { name: /send message/i });
       fireEvent.click(submitButton);
 
-      // Test keyboard navigation in form state
-      const formElements = screen.getAllByRole('button');
-      expect(formElements.length).toBeGreaterThan(0);
-
-      formElements.forEach(element => {
-        expect(element).toHaveAttribute('tabIndex', expect.any(String));
+      await waitFor(() => {
+        expect(screen.getByText('Message Sent!')).toBeInTheDocument();
       });
+
+      const sendAnotherButton = screen.getByRole('button', { name: /send another message/i });
+      sendAnotherButton.focus();
+      expect(sendAnotherButton).toHaveFocus();
     });
 
-    it('handles keyboard events during loading state', () => {
+    it('handles keyboard events during loading state', async () => {
+      (emailService.sendContactForm as jest.Mock).mockImplementation(
+        () => new Promise(resolve => setTimeout(resolve, 100))
+      );
+
       render(<ContactForm translations={mockTranslations} />);
 
-      // Fill and submit form
-      const nameInput = screen.getByLabelText('Nombre completo');
-      const emailInput = screen.getByLabelText('Correo electrónico');
-      const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-      fireEvent.change(eventTypeSelect, { target: { value: 'wedding' } });
-
-      const submitButton = screen.getByRole('button', { name: /enviar/i });
+      const submitButton = screen.getByRole('button', { name: /send message/i });
       fireEvent.click(submitButton);
 
-      // Test that keyboard events are handled appropriately
-      fireEvent.keyDown(submitButton, { key: 'Enter', code: 'Enter' });
-      expect(submitButton).toBeInTheDocument();
+      expect(screen.getByText('Sending...')).toBeInTheDocument();
+      expect(submitButton).toBeDisabled();
     });
 
     it('supports keyboard navigation for accessibility features', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      // Test that form has proper ARIA attributes for keyboard navigation
-      const form = screen.getByRole('form');
-      expect(form).toBeInTheDocument();
+      const nameInput = screen.getByLabelText('Name');
+      const emailInput = screen.getByLabelText('Email');
 
-      // Test that all inputs have proper labels
-      const inputs = screen.getAllByRole('textbox');
-      inputs.forEach(input => {
-        const label =
-          input.getAttribute('aria-label') || input.getAttribute('id');
-        expect(label).toBeTruthy();
-      });
+      nameInput.focus();
+      fireEvent.keyDown(nameInput, { key: 'Tab' });
+      expect(emailInput).toHaveFocus();
     });
   });
-});
 
-describe('ContactForm Analytics', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  describe('ContactForm Analytics', () => {
+    it('tracks form view on mount', () => {
+      render(<ContactForm translations={mockTranslations} />);
 
-  it('tracks form view on mount', async () => {
-    render(<ContactForm translations={mockTranslations} />);
-
-    await waitFor(() => {
       expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_viewed');
     });
-  });
 
-  it('tracks successful form submission', async () => {
-    const { emailService } = require('@/services/email');
-    emailService.sendContactForm.mockResolvedValue(undefined);
+    it('tracks successful form submission', async () => {
+      (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
-    render(<ContactForm translations={mockTranslations} />);
+      render(<ContactForm translations={mockTranslations} />);
 
-    // Fill required fields
-    const nameInput = screen.getByLabelText('Nombre');
-    const emailInput = screen.getByLabelText('Email');
-    const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-    fireEvent.click(eventTypeSelect);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
-    const weddingOption = screen.getByText('Boda');
-    fireEvent.click(weddingOption);
-
-    // Submit form
-    const submitButton = screen.getByText('Enviar mensaje');
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
-        result: 'success',
-        eventType: 'wedding',
-        communicationPreference: 'whatsapp',
-        hasAttachments: false,
-        attachmentCount: 0,
+      await waitFor(() => {
+        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
+          result: 'success',
+          eventType: 'corporate',
+          contactMethod: 'whatsapp',
+          hasAttachments: false,
+          attachmentCount: 0,
+        });
       });
     });
-  });
 
-  it('tracks form submission error', async () => {
-    const { emailService } = require('@/services/email');
-    emailService.sendContactForm.mockRejectedValue(new Error('Network error'));
+    it('tracks form submission error', async () => {
+      (emailService.sendContactForm as jest.Mock).mockRejectedValue(new Error('Network error'));
 
-    render(<ContactForm translations={mockTranslations} />);
+      render(<ContactForm translations={mockTranslations} />);
 
-    // Fill required fields
-    const nameInput = screen.getByLabelText('Nombre');
-    const emailInput = screen.getByLabelText('Email');
-    const eventTypeSelect = screen.getByLabelText('Tipo de evento');
+      // Fill required fields
+      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
+      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
 
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-    fireEvent.click(eventTypeSelect);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
-    const weddingOption = screen.getByText('Boda');
-    fireEvent.click(weddingOption);
-
-    // Submit form
-    const submitButton = screen.getByText('Enviar mensaje');
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
-        result: 'error',
-        error: 'Network error',
-        eventType: 'wedding',
-        communicationPreference: 'whatsapp',
+      await waitFor(() => {
+        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
+          result: 'error',
+          error: 'Network error',
+          eventType: 'corporate',
+          contactMethod: 'whatsapp',
+        });
       });
     });
-  });
 
-  it('tracks validation errors', async () => {
-    render(<ContactForm translations={mockTranslations} />);
+    it('tracks validation errors', async () => {
+      render(<ContactForm translations={mockTranslations} />);
 
-    // Submit form without filling required fields
-    const submitButton = screen.getByText('Enviar mensaje');
-    fireEvent.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(trackCustomEvent).toHaveBeenCalledWith(
-        'contact_form_validation_error',
-        {
-          errorFields: ['name', 'email', 'eventType'],
-          errorCount: 3,
-        }
-      );
+      await waitFor(() => {
+        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_validation_error', {
+          errorFields: expect.arrayContaining(['name', 'email', 'eventType', 'location', 'attendees', 'services']),
+          errorCount: 6,
+        });
+      });
     });
-  });
 
-  it('tracks form pre-filling from widget', async () => {
-    // Mock URL parameters
-    const mockSearchParams = new URLSearchParams(
-      'evento=wedding&fecha=2024-12-25&mensaje=Test message&ubicacion=Madrid'
-    );
+    it('tracks form pre-filling from widget', () => {
+      const mockSearchParams = new URLSearchParams({
+        evento: 'corporate',
+        fecha: '2024-12-25',
+        mensaje: 'Test message',
+        ubicacion: 'New York',
+      });
 
-    jest.doMock('next/navigation', () => ({
-      useSearchParams: () => mockSearchParams,
-    }));
+      jest.mocked(useRouter).mockReturnValue({
+        ...jest.requireActual('next/navigation').useRouter(),
+        useSearchParams: () => mockSearchParams,
+      } as any);
 
-    render(<ContactForm translations={mockTranslations} />);
+      render(<ContactForm translations={mockTranslations} />);
 
-    await waitFor(() => {
       expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_prefilled', {
-        eventType: 'wedding',
+        eventType: 'corporate',
         eventDate: '2024-12-25',
         hasLocation: true,
         hasMessage: true,

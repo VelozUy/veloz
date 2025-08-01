@@ -33,10 +33,14 @@ import { trackCustomEvent } from '@/services/analytics';
 interface ContactFormData {
   name: string;
   email: string;
+  company?: string;
   phone?: string;
-  communicationPreference: 'call' | 'whatsapp' | 'email' | 'zoom';
   eventType: string;
-  eventDate: string;
+  location: string;
+  attendees: string;
+  services: string[];
+  contactMethod: 'whatsapp' | 'email' | 'call';
+  eventDate?: string;
   message: string;
   attachments?: string[]; // URLs of uploaded files
 }
@@ -64,27 +68,54 @@ interface ContactFormProps {
           label: string;
           placeholder: string;
         };
+        company: {
+          label: string;
+          placeholder: string;
+          optional: string;
+        };
         phone: {
           label: string;
           placeholder: string;
           optional: string;
         };
-        communicationPreference: {
-          label: string;
-          call: string;
-          whatsapp: string;
-          email: string;
-          zoom: string;
-        };
         eventType: {
           label: string;
           placeholder: string;
           options: {
-            wedding: string;
-            quinceanera: string;
-            birthday: string;
             corporate: string;
+            product: string;
+            birthday: string;
+            wedding: string;
+            concert: string;
+            exhibition: string;
             other: string;
+          };
+        };
+        location: {
+          label: string;
+          placeholder: string;
+        };
+        attendees: {
+          label: string;
+          placeholder: string;
+        };
+        services: {
+          label: string;
+          placeholder: string;
+          options: {
+            photography: string;
+            video: string;
+            drone: string;
+            studio: string;
+            other: string;
+          };
+        };
+        contactMethod: {
+          label: string;
+          options: {
+            whatsapp: string;
+            email: string;
+            call: string;
           };
         };
         eventDate: {
@@ -125,10 +156,6 @@ interface ContactFormProps {
           title: string;
           description: string;
         };
-        privacy: {
-          title: string;
-          description: string;
-        };
       };
     };
   };
@@ -149,13 +176,13 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    company: '',
     phone: '',
-    communicationPreference: 'whatsapp' as
-      | 'call'
-      | 'whatsapp'
-      | 'email'
-      | 'zoom',
     eventType: '',
+    location: '',
+    attendees: '',
+    services: [] as string[],
+    contactMethod: 'whatsapp' as 'whatsapp' | 'email' | 'call',
     eventDate: '',
     message: '',
   });
@@ -194,26 +221,19 @@ export default function ContactForm({ translations }: ContactFormProps) {
 
     console.log('Updating form data:', updatedFormData);
 
-    // Force update by setting the entire form data
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      communicationPreference: 'whatsapp' as
-        | 'call'
-        | 'whatsapp'
-        | 'email'
-        | 'zoom',
-      eventType: eventType || '',
-      eventDate: eventDate || '',
-      message: fullMessage,
-    });
-    setErrors({});
-    setSelectedFiles([]);
-    setUploadingFiles(false);
-
-    // Track if form was pre-filled from widget
+    // Only update if we have URL parameters to avoid infinite loops
     if (eventType || eventDate || message || ubicacion) {
+      setFormData(prevData => ({
+        ...prevData,
+        eventType: eventType || '',
+        eventDate: eventDate || '',
+        message: fullMessage,
+      }));
+      setErrors({});
+      setSelectedFiles([]);
+      setUploadingFiles(false);
+
+      // Track if form was pre-filled from widget
       trackCustomEvent('contact_form_prefilled', {
         eventType: eventType || null,
         eventDate: eventDate || null,
@@ -238,6 +258,18 @@ export default function ContactForm({ translations }: ContactFormProps) {
 
     if (!formData.eventType.trim()) {
       newErrors.eventType = translations.contact.form.eventType.label;
+    }
+
+    if (!formData.location.trim()) {
+      newErrors.location = translations.contact.form.location.label;
+    }
+
+    if (!formData.attendees.trim()) {
+      newErrors.attendees = translations.contact.form.attendees.label;
+    }
+
+    if (formData.services.length === 0) {
+      newErrors.services = translations.contact.form.services.label;
     }
 
     setErrors(newErrors);
@@ -280,7 +312,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
       trackCustomEvent('contact_form_submitted', {
         result: 'success',
         eventType: formData.eventType,
-        communicationPreference: formData.communicationPreference,
+        contactMethod: formData.contactMethod,
         hasAttachments: uploadedUrls.length > 0,
         attachmentCount: uploadedUrls.length,
       });
@@ -297,7 +329,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
         result: 'error',
         error: error instanceof Error ? error.message : 'Unknown error',
         eventType: formData.eventType,
-        communicationPreference: formData.communicationPreference,
+        contactMethod: formData.contactMethod,
       });
     } finally {
       setIsSubmitting(false);
@@ -310,13 +342,13 @@ export default function ContactForm({ translations }: ContactFormProps) {
     setFormData({
       name: '',
       email: '',
+      company: '',
       phone: '',
-      communicationPreference: 'whatsapp' as
-        | 'call'
-        | 'whatsapp'
-        | 'email'
-        | 'zoom',
       eventType: '',
+      location: '',
+      attendees: '',
+      services: [],
+      contactMethod: 'whatsapp' as 'whatsapp' | 'email' | 'call',
       eventDate: '',
       message: '',
     });
@@ -325,7 +357,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
     setUploadingFiles(false);
   };
 
-  const handleInputChange = (field: string, value: string | boolean) => {
+  const handleInputChange = (field: string, value: string | boolean | string[]) => {
     console.log('handleInputChange:', field, value);
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
@@ -472,7 +504,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
           <div className="lg:col-span-1 space-y-6 lg:space-y-8 order-2 lg:order-1">
             <div className="bg-card rounded-none p-4 lg:p-6 shadow-sm border-border">
               <div className="flex items-center gap-2 mb-3 lg:mb-4">
-                <Shield className="text-primary size-5" />
+                <Clock className="text-primary size-5" />
                 <h3 className="font-display text-lg font-normal">
                   {translations.contact.trust.response.title}
                 </h3>
@@ -484,25 +516,13 @@ export default function ContactForm({ translations }: ContactFormProps) {
 
             <div className="bg-card rounded-none p-4 lg:p-6 shadow-sm border-border">
               <div className="flex items-center gap-2 mb-3 lg:mb-4">
-                <Clock className="text-primary size-5" />
+                <Heart className="text-primary size-5" />
                 <h3 className="font-display text-lg font-normal">
                   {translations.contact.trust.commitment.title}
                 </h3>
               </div>
               <p className="text-body-sm text-muted-foreground">
                 {translations.contact.trust.commitment.description}
-              </p>
-            </div>
-
-            <div className="bg-card rounded-none p-4 lg:p-6 shadow-sm border-border">
-              <div className="flex items-center gap-2 mb-3 lg:mb-4">
-                <Heart className="text-primary size-5" />
-                <h3 className="font-display text-lg font-normal">
-                  {translations.contact.trust.privacy.title}
-                </h3>
-              </div>
-              <p className="text-body-sm text-muted-foreground">
-                {translations.contact.trust.privacy.description}
               </p>
             </div>
           </div>
@@ -542,22 +562,6 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     className="text-body-md font-medium text-foreground"
                   >
                     {t.form.email.label}
-                    {formData.communicationPreference === 'email' && (
-                      <span className="text-destructive"> *</span>
-                    )}
-                    {formData.communicationPreference === 'zoom' && (
-                      <span className="text-muted-foreground font-normal">
-                        {' '}
-                        (recomendado)
-                      </span>
-                    )}
-                    {(formData.communicationPreference === 'call' ||
-                      formData.communicationPreference === 'whatsapp') && (
-                      <span className="text-muted-foreground font-normal">
-                        {' '}
-                        (opcional)
-                      </span>
-                    )}
                   </Label>
                   <Input
                     id="email"
@@ -575,29 +579,36 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   )}
                 </div>
 
+                {/* Company */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="company"
+                    className="text-body-md font-medium text-foreground"
+                  >
+                    {t.form.company.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.company.optional}
+                    </span>
+                  </Label>
+                  <Input
+                    id="company"
+                    type="text"
+                    placeholder={t.form.company.placeholder}
+                    value={formData.company}
+                    onChange={e => handleInputChange('company', e.target.value)}
+                  />
+                </div>
+
                 {/* Phone */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="phone"
                     className="text-body-md font-medium text-foreground"
                   >
-                    {t.form.phone.label}
-                    {(formData.communicationPreference === 'call' ||
-                      formData.communicationPreference === 'whatsapp') && (
-                      <span className="text-destructive"> *</span>
-                    )}
-                    {formData.communicationPreference === 'zoom' && (
-                      <span className="text-muted-foreground font-normal">
-                        {' '}
-                        (recomendado)
-                      </span>
-                    )}
-                    {formData.communicationPreference === 'email' && (
-                      <span className="text-muted-foreground font-normal">
-                        {' '}
-                        (opcional)
-                      </span>
-                    )}
+                    {t.form.phone.label}{' '}
+                    <span className="text-muted-foreground font-normal">
+                      {t.form.phone.optional}
+                    </span>
                   </Label>
                   <Input
                     id="phone"
@@ -605,80 +616,10 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     placeholder={t.form.phone.placeholder}
                     value={formData.phone}
                     onChange={e => handleInputChange('phone', e.target.value)}
-                    className={cn(errors.phone && 'border-destructive')}
                   />
-                  {errors.phone && (
-                    <p className="text-body-sm text-destructive flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
-                      {errors.phone}
-                    </p>
-                  )}
                 </div>
 
-                {/* Communication Preference */}
-                <div className="space-y-2">
-                  <Label className="text-body-md font-medium text-foreground">
-                    {t.form.communicationPreference.label}
-                  </Label>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleInputChange('communicationPreference', 'call')
-                      }
-                      className={cn(
-                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                        formData.communicationPreference === 'call'
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                      )}
-                    >
-                      {t.form.communicationPreference.call}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleInputChange('communicationPreference', 'whatsapp')
-                      }
-                      className={cn(
-                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                        formData.communicationPreference === 'whatsapp'
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                      )}
-                    >
-                      {t.form.communicationPreference.whatsapp}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleInputChange('communicationPreference', 'email')
-                      }
-                      className={cn(
-                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                        formData.communicationPreference === 'email'
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                      )}
-                    >
-                      {t.form.communicationPreference.email}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleInputChange('communicationPreference', 'zoom')
-                      }
-                      className={cn(
-                        'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                        formData.communicationPreference === 'zoom'
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                      )}
-                    >
-                      {t.form.communicationPreference.zoom}
-                    </button>
-                  </div>
-                </div>
+
 
                 {/* Event Type */}
                 <div className="space-y-2">
@@ -700,17 +641,23 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       <SelectValue placeholder={t.form.eventType.placeholder} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="wedding">
-                        {t.form.eventType.options.wedding}
+                      <SelectItem value="corporate">
+                        {t.form.eventType.options.corporate}
                       </SelectItem>
-                      <SelectItem value="quinceanera">
-                        {t.form.eventType.options.quinceanera}
+                      <SelectItem value="product">
+                        {t.form.eventType.options.product}
                       </SelectItem>
                       <SelectItem value="birthday">
                         {t.form.eventType.options.birthday}
                       </SelectItem>
-                      <SelectItem value="corporate">
-                        {t.form.eventType.options.corporate}
+                      <SelectItem value="wedding">
+                        {t.form.eventType.options.wedding}
+                      </SelectItem>
+                      <SelectItem value="concert">
+                        {t.form.eventType.options.concert}
+                      </SelectItem>
+                      <SelectItem value="exhibition">
+                        {t.form.eventType.options.exhibition}
                       </SelectItem>
                       <SelectItem value="other">
                         {t.form.eventType.options.other}
@@ -723,6 +670,113 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       {errors.eventType}
                     </p>
                   )}
+                </div>
+
+                {/* Location */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="location"
+                    className="text-body-md font-medium text-foreground"
+                  >
+                    {t.form.location.label}
+                  </Label>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder={t.form.location.placeholder}
+                    value={formData.location}
+                    onChange={e => handleInputChange('location', e.target.value)}
+                    className={cn(errors.location && 'border-destructive')}
+                  />
+                  {errors.location && (
+                    <p className="text-body-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.location}
+                    </p>
+                  )}
+                </div>
+
+                {/* Attendees */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="attendees"
+                    className="text-body-md font-medium text-foreground"
+                  >
+                    {t.form.attendees.label}
+                  </Label>
+                  <Input
+                    id="attendees"
+                    type="text"
+                    placeholder={t.form.attendees.placeholder}
+                    value={formData.attendees}
+                    onChange={e => handleInputChange('attendees', e.target.value)}
+                    className={cn(errors.attendees && 'border-destructive')}
+                  />
+                  {errors.attendees && (
+                    <p className="text-body-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.attendees}
+                    </p>
+                  )}
+                </div>
+
+                {/* Services */}
+                <div className="space-y-2">
+                  <Label className="text-body-md font-medium text-foreground">
+                    {t.form.services.label}
+                  </Label>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(t.form.services.options).map(([key, label]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          const newServices = formData.services.includes(key)
+                            ? formData.services.filter(s => s !== key)
+                            : [...formData.services, key];
+                          handleInputChange('services', newServices);
+                        }}
+                        className={cn(
+                          'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
+                          formData.services.includes(key)
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
+                        )}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  {errors.services && (
+                    <p className="text-body-sm text-destructive flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.services}
+                    </p>
+                  )}
+                </div>
+
+                {/* Contact Method */}
+                <div className="space-y-2">
+                  <Label className="text-body-md font-medium text-foreground">
+                    {t.form.contactMethod.label}
+                  </Label>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(t.form.contactMethod.options).map(([key, label]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => handleInputChange('contactMethod', key)}
+                        className={cn(
+                          'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
+                          formData.contactMethod === key
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
+                        )}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Event Date */}

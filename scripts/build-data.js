@@ -76,90 +76,107 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Cuéntanos sobre tu evento',
-      subtitle:
-        'Mientras más sepamos, mejor podremos hacer que tu día sea perfecto',
+      title: 'Contacto',
+      subtitle: 'Contáctanos',
       form: {
         name: {
           label: 'Tu nombre',
-          placeholder: '¿Cómo deberíamos llamarte?',
+          placeholder: 'Tu nombre completo',
         },
         email: {
-          label: 'Correo electrónico',
-          placeholder: 'tu.email@ejemplo.com',
+          label: 'Correo',
+          placeholder: 'tu@email.com',
         },
-        phone: {
-          label: 'Teléfono',
-          placeholder: 'Tu número de teléfono',
+        company: {
+          label: 'Empresa (si corresponde)',
+          placeholder: 'Nombre de tu empresa',
           optional: '(opcional)',
         },
-        communicationPreference: {
-          label: 'Forma de contacto preferida',
-          call: 'Llamada',
-          whatsapp: 'WhatsApp',
-          email: 'Email',
-          zoom: 'Videollamada',
+        phone: {
+          label: 'Número de celu',
+          placeholder: 'Tu número de celular',
+          optional: '(opcional)',
         },
         eventType: {
-          label: '¿Qué estás celebrando?',
-          placeholder: 'Elige tu tipo de evento',
+          label: '¿Qué tipo de evento tienes?',
+          placeholder: 'Selecciona el tipo de evento',
           options: {
-            wedding: 'Boda',
-            quinceanera: 'Fiesta de 15 Años',
-            birthday: 'Fiesta de Cumpleaños',
-            corporate: 'Evento Corporativo',
-            other: 'Otro (¡cuéntanos en el mensaje!)',
+            corporate: 'Evento corporativo',
+            product: 'Presentación de producto',
+            birthday: 'Cumpleaños',
+            wedding: 'Casamiento',
+            concert: 'Concierto',
+            exhibition: 'Exposiciones',
+            other: 'Otros',
+          },
+        },
+        location: {
+          label: 'Lugar del evento (ciudad)',
+          placeholder: 'Ciudad donde será el evento',
+        },
+        attendees: {
+          label: 'Cantidad de asistentes esperados',
+          placeholder: 'Número aproximado de invitados',
+        },
+        services: {
+          label: '¿Qué servicios te interesan?',
+          placeholder: 'Selecciona los servicios',
+          options: {
+            photography: 'Fotografía',
+            video: 'Video',
+            drone: 'Drone',
+            studio: 'Sesión de fotos estudio',
+            other: 'Otros',
+          },
+        },
+        contactMethod: {
+          label: '¿Cómo preferís que te contactemos?',
+          options: {
+            whatsapp: 'Whatsapp',
+            email: 'Mail',
+            call: 'Llamada',
           },
         },
         eventDate: {
-          label: 'Fecha aproximada',
+          label: 'Fecha del evento',
           optional: '(opcional)',
-          help: '¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!',
+          help: 'Si no tienes fecha definida, no te preocupes',
         },
         message: {
-          label: 'Cuéntanos sobre tu visión',
+          label: 'Cuéntanos todos los detalles que te parezcan',
           optional: '(opcional)',
-          placeholder:
-            'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
+          placeholder: 'Comparte todos los detalles que consideres importantes para tu evento...',
         },
         attachments: {
-          label: 'Materiales de referencia',
+          label: 'Archivos adjuntos',
           optional: '(opcional)',
-          description:
-            'Sube imágenes, documentos o archivos que nos ayuden a entender mejor tu visión',
+          description: 'Puedes adjuntar fotos o documentos',
         },
         submit: {
-          button: 'Empezar la conversación',
-          loading: 'Enviando tu mensaje...',
+          button: 'Enviar mensaje',
+          loading: 'Enviando...',
         },
         privacy: {
-          line1:
-            'No compartimos tu información. Solo te contactaremos para ayudarte con tu evento.',
-          line2:
-            'Sin spam, sin presión: solo excelente fotografía y videografía cuando estés listo.',
+          line1: 'Al enviar este formulario, aceptas nuestra',
+          line2: 'política de privacidad',
         },
       },
       success: {
         title: '¡Mensaje enviado!',
         message:
-          '¡Gracias por contactarnos! Te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
+          '¡Gracias por contactarnos! te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.',
         action: 'Enviar otro mensaje',
       },
       trust: {
         response: {
-          title: 'Respuesta Rápida',
+          title: 'Respuesta rápida',
           description:
-            'Típicamente respondemos dentro de 24 horas con una cotización personalizada',
+            'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
         },
         commitment: {
-          title: 'Sin Compromiso',
+          title: 'Sin compromiso',
           description:
-            'Obtener una cotización es completamente gratis y sin ataduras',
-        },
-        privacy: {
-          title: 'Privacidad Primero',
-          description:
-            'Nunca compartimos tu información y solo te contactamos sobre tu evento',
+            'Obtener una cotización es completamente gratis y sin compromiso',
         },
       },
     },
@@ -348,90 +365,107 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Tell us about your event',
-      subtitle:
-        'The more we know, the better we can help make your day perfect',
+      title: 'Contact Us',
+      subtitle: 'Tell us about your event',
       form: {
         name: {
-          label: 'Your name',
-          placeholder: 'What should we call you?',
+          label: 'Name',
+          placeholder: 'Your full name',
         },
         email: {
-          label: 'Email address',
-          placeholder: 'your.email@example.com',
+          label: 'Email',
+          placeholder: 'your@email.com',
         },
-        phone: {
-          label: 'Phone',
-          placeholder: 'Your phone number',
+        company: {
+          label: 'Company (if applicable)',
+          placeholder: 'Your company name',
           optional: '(optional)',
         },
-        communicationPreference: {
-          label: 'Preferred contact method',
-          call: 'Call',
-          whatsapp: 'WhatsApp',
-          email: 'Email',
-          zoom: 'Video Call',
+        phone: {
+          label: 'Mobile number',
+          placeholder: 'Your mobile number',
+          optional: '(optional)',
         },
         eventType: {
-          label: 'What are you celebrating?',
-          placeholder: 'Choose your event type',
+          label: 'What type of event do you have?',
+          placeholder: 'Select event type',
           options: {
+            corporate: 'Corporate event',
+            product: 'Product presentation',
+            birthday: 'Birthday',
             wedding: 'Wedding',
-            quinceanera: '15th Birthday (Quinceañera)',
-            birthday: 'Birthday Party',
-            corporate: 'Corporate Event',
-            other: 'Other (tell us in the message!)',
+            concert: 'Concert',
+            exhibition: 'Exhibitions',
+            other: 'Others',
+          },
+        },
+        location: {
+          label: 'Event location (city)',
+          placeholder: 'City where the event will be held',
+        },
+        attendees: {
+          label: 'Expected number of attendees',
+          placeholder: 'Approximate number of guests',
+        },
+        services: {
+          label: 'What services are you interested in?',
+          placeholder: 'Select services',
+          options: {
+            photography: 'Photography',
+            video: 'Video',
+            drone: 'Drone',
+            studio: 'Studio photo session',
+            other: 'Others',
+          },
+        },
+        contactMethod: {
+          label: 'How would you prefer us to contact you?',
+          options: {
+            whatsapp: 'WhatsApp',
+            email: 'Email',
+            call: 'Call',
           },
         },
         eventDate: {
-          label: 'Approximate date',
+          label: 'Event Date',
           optional: '(optional)',
-          help: "Don't worry if you're not sure yet – we can work with flexible dates!",
+          help: 'Approximate date is fine',
         },
         message: {
-          label: 'Tell us about your vision',
+          label: 'Tell us all the details you think are relevant',
           optional: '(optional)',
-          placeholder:
-            'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
+          placeholder: 'Share all the details you consider important for your event...',
         },
         attachments: {
-          label: 'Reference Materials',
+          label: 'Attachments',
           optional: '(optional)',
-          description:
-            'Upload images, documents, or files that help us understand your vision better',
+          description: 'You can attach photos or documents',
         },
         submit: {
-          button: 'Start the conversation',
-          loading: 'Sending your message...',
+          button: 'Send Message',
+          loading: 'Sending...',
         },
         privacy: {
-          line1:
-            "We don't share your info. We'll only reach out to help with your event.",
-          line2:
-            "No spam, no pressure – just great photography and videography when you're ready.",
+          line1: 'We respect your privacy.',
+          line2: 'We will only contact you about your event.',
         },
       },
       success: {
         title: 'Message sent!',
         message:
-          "Thanks for reaching out! We'll get back to you within 24 hours with all the details about making your event amazing.",
+          "Thank you for contacting us! We'll get back to you within 24 hours with all the details to make your event amazing.",
         action: 'Send another message',
       },
       trust: {
         response: {
           title: 'Quick Response',
           description:
-            'We typically respond within 24 hours with a personalized quote',
+            'We typically respond within 2 hours after your inquiry',
         },
         commitment: {
           title: 'No Commitment',
           description:
-            'Getting a quote is completely free with no strings attached',
-        },
-        privacy: {
-          title: 'Privacy First',
-          description:
-            'We never share your information and only contact you about your event',
+            'Getting a quote is completely free and without commitment',
         },
       },
     },
@@ -619,90 +653,108 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Conte-nos sobre seu evento',
-      subtitle:
-        'Quanto mais soubermos, melhor poderemos tornar seu dia perfeito',
+      title: 'Contato',
+      subtitle: 'Entre em contato conosco',
       form: {
         name: {
-          label: 'Seu nome',
-          placeholder: 'Como devemos chamá-lo?',
+          label: 'Nome',
+          placeholder: 'Seu nome completo',
         },
         email: {
-          label: 'Endereço de email',
-          placeholder: 'seu.email@exemplo.com',
+          label: 'Email',
+          placeholder: 'seu@email.com',
         },
-        phone: {
-          label: 'Telefone',
-          placeholder: 'Seu número de telefone',
+        company: {
+          label: 'Empresa (se aplicável)',
+          placeholder: 'Nome da sua empresa',
           optional: '(opcional)',
         },
-        communicationPreference: {
-          label: 'Método de contato preferido',
-          call: 'Ligação',
-          whatsapp: 'WhatsApp',
-          email: 'Email',
-          zoom: 'Videoconferência',
+        phone: {
+          label: 'Número de celular',
+          placeholder: 'Seu número de celular',
+          optional: '(opcional)',
         },
         eventType: {
-          label: 'O que você está comemorando?',
-          placeholder: 'Escolha seu tipo de evento',
+          label: 'Que tipo de evento você tem?',
+          placeholder: 'Selecione o tipo de evento',
           options: {
+            corporate: 'Evento corporativo',
+            product: 'Apresentação de produto',
+            birthday: 'Aniversário',
             wedding: 'Casamento',
-            quinceanera: 'Festa de 15 Anos',
-            birthday: 'Festa de Aniversário',
-            corporate: 'Evento Corporativo',
-            other: 'Outro (conte-nos na mensagem!)',
+            concert: 'Show',
+            exhibition: 'Exposições',
+            other: 'Outros',
+          },
+        },
+        location: {
+          label: 'Local do evento (cidade)',
+          placeholder: 'Cidade onde o evento será realizado',
+        },
+        attendees: {
+          label: 'Número esperado de participantes',
+          placeholder: 'Número aproximado de convidados',
+        },
+        services: {
+          label: 'Que serviços você está interessado?',
+          placeholder: 'Selecione os serviços',
+          options: {
+            photography: 'Fotografia',
+            video: 'Vídeo',
+            drone: 'Drone',
+            studio: 'Sessão de fotos estúdio',
+            other: 'Outros',
+          },
+        },
+        contactMethod: {
+          label: 'Como você prefere que entremos em contato?',
+          options: {
+            whatsapp: 'WhatsApp',
+            email: 'Email',
+            call: 'Ligação',
           },
         },
         eventDate: {
-          label: 'Data aproximada',
+          label: 'Data do evento',
           optional: '(opcional)',
-          help: 'Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!',
+          help: 'Se você não tem data definida, não se preocupe',
         },
         message: {
-          label: 'Conte-nos sobre sua visão',
+          label: 'Conte-nos todos os detalhes que achar relevantes',
           optional: '(opcional)',
-          placeholder:
-            'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+          placeholder: 'Compartilhe todos os detalhes que considerar importantes para seu evento...',
         },
         attachments: {
-          label: 'Materiais de Referência',
+          label: 'Anexos',
           optional: '(opcional)',
-          description:
-            'Faça upload de imagens, documentos ou arquivos que nos ajudem a entender melhor sua visão',
+          description: 'Você pode anexar fotos ou documentos',
         },
         submit: {
-          button: 'Iniciar a conversa',
-          loading: 'Enviando sua mensagem...',
+          button: 'Enviar mensagem',
+          loading: 'Enviando...',
         },
         privacy: {
-          line1:
-            'Não compartilhamos suas informações. Só entraremos em contato para ajudar com seu evento.',
-          line2:
-            'Sem spam, sem pressão – apenas excelente fotografia e videografia quando você estiver pronto.',
+          line1: 'Respeitamos sua privacidade.',
+          line2: 'Só entraremos em contato sobre seu evento.',
         },
       },
       success: {
         title: 'Mensagem enviada!',
         message:
-          'Obrigado por entrar em contato! Retornaremos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
+          'Obrigado por entrar em contato! responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.',
         action: 'Enviar outra mensagem',
       },
       trust: {
         response: {
           title: 'Resposta Rápida',
           description:
-            'Normalmente respondemos dentro de 24 horas com uma cotação personalizada',
+            'Normalmente respondemos dentro de 2 horas após sua consulta',
         },
         commitment: {
           title: 'Sem Compromisso',
-          description: 'Obter uma cotação é completamente grátis sem amarras',
+          description: 'Obter um orçamento é completamente gratuito e sem compromisso',
         },
-        privacy: {
-          title: 'Privacidade em Primeiro Lugar',
-          description:
-            'Nunca compartilhamos suas informações e só entramos em contato sobre seu evento',
-        },
+
       },
     },
     widget: {

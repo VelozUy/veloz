@@ -111,21 +111,21 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
         form: {
           name: {
             label: {
-              es: 'tu nombre',
-              en: 'your name',
-              pt: 'seu nome',
+              es: 'Tu nombre',
+              en: 'Your name',
+              pt: 'Seu nome',
             },
             placeholder: {
-              es: '¿Cómo deberíamos llamarte?',
-              en: 'What should we call you?',
-              pt: 'Como devemos chamá-lo?',
+              es: 'Tu nombre completo',
+              en: 'Your full name',
+              pt: 'Seu nome completo',
             },
           },
           email: {
             label: {
-              es: 'Correo electrónico',
-              en: 'Email address',
-              pt: 'Endereço de email',
+              es: 'Correo',
+              en: 'Email',
+              pt: 'Email',
             },
             placeholder: {
               es: 'tu.email@ejemplo.com',
@@ -133,16 +133,33 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               pt: 'seu.email@exemplo.com',
             },
           },
-          phone: {
+          company: {
             label: {
-              es: 'Teléfono',
-              en: 'Phone',
-              pt: 'Telefone',
+              es: 'Empresa (si corresponde)',
+              en: 'Company (if applicable)',
+              pt: 'Empresa (se aplicável)',
             },
             placeholder: {
-              es: 'Tu número de teléfono',
-              en: 'Your phone number',
-              pt: 'Seu número de telefone',
+              es: 'Nombre de tu empresa',
+              en: 'Your company name',
+              pt: 'Nome da sua empresa',
+            },
+            optional: {
+              es: '(opcional)',
+              en: '(optional)',
+              pt: '(opcional)',
+            },
+          },
+          phone: {
+            label: {
+              es: 'Número de celu',
+              en: 'Mobile number',
+              pt: 'Número de celular',
+            },
+            placeholder: {
+              es: 'Tu número de celular',
+              en: 'Your mobile number',
+              pt: 'Seu número de celular',
             },
             optional: {
               es: '(opcional)',
@@ -152,40 +169,137 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           eventType: {
             label: {
-              es: '¿Qué estás celebrando?',
-              en: 'What are you celebrating?',
-              pt: 'O que você está comemorando?',
+              es: '¿Qué tipo de evento tienes?',
+              en: 'What type of event do you have?',
+              pt: 'Que tipo de evento você tem?',
             },
             placeholder: {
-              es: 'Elige tu tipo de evento',
-              en: 'Choose your event type',
-              pt: 'Escolha seu tipo de evento',
+              es: 'Selecciona el tipo de evento',
+              en: 'Select event type',
+              pt: 'Selecione o tipo de evento',
             },
             options: {
+              corporate: {
+                es: 'Evento corporativo',
+                en: 'Corporate event',
+                pt: 'Evento corporativo',
+              },
+              product: {
+                es: 'Presentación de producto',
+                en: 'Product presentation',
+                pt: 'Apresentação de produto',
+              },
+              birthday: {
+                es: 'Cumpleaños',
+                en: 'Birthday',
+                pt: 'Aniversário',
+              },
               wedding: {
-                es: 'Boda',
+                es: 'Casamiento',
                 en: 'Wedding',
                 pt: 'Casamento',
               },
-              quinceanera: {
-                es: 'Fiesta de 15 Años',
-                en: '15th Birthday (Quinceañera)',
-                pt: 'Festa de 15 Anos',
+              concert: {
+                es: 'Concierto',
+                en: 'Concert',
+                pt: 'Show',
               },
-              birthday: {
-                es: 'Fiesta de Cumpleaños',
-                en: 'Birthday Party',
-                pt: 'Festa de Aniversário',
-              },
-              corporate: {
-                es: 'Evento Corporativo',
-                en: 'Corporate Event',
-                pt: 'Evento Corporativo',
+              exhibition: {
+                es: 'Exposiciones',
+                en: 'Exhibitions',
+                pt: 'Exposições',
               },
               other: {
-                es: 'Otro (¡cuéntanos en el mensaje!)',
-                en: 'Other (tell us in the message!)',
-                pt: 'Outro (conte-nos na mensagem!)',
+                es: 'Otros',
+                en: 'Others',
+                pt: 'Outros',
+              },
+            },
+          },
+          location: {
+            label: {
+              es: 'Lugar del evento (ciudad)',
+              en: 'Event location (city)',
+              pt: 'Local do evento (cidade)',
+            },
+            placeholder: {
+              es: 'Ciudad donde será el evento',
+              en: 'City where the event will be held',
+              pt: 'Cidade onde o evento será realizado',
+            },
+          },
+          attendees: {
+            label: {
+              es: 'Cantidad de asistentes esperados',
+              en: 'Expected number of attendees',
+              pt: 'Número esperado de participantes',
+            },
+            placeholder: {
+              es: 'Número aproximado de invitados',
+              en: 'Approximate number of guests',
+              pt: 'Número aproximado de convidados',
+            },
+          },
+          services: {
+            label: {
+              es: '¿Qué servicios te interesan?',
+              en: 'What services are you interested in?',
+              pt: 'Que serviços você está interessado?',
+            },
+            placeholder: {
+              es: 'Selecciona los servicios',
+              en: 'Select services',
+              pt: 'Selecione os serviços',
+            },
+            options: {
+              photography: {
+                es: 'Fotografía',
+                en: 'Photography',
+                pt: 'Fotografia',
+              },
+              video: {
+                es: 'Video',
+                en: 'Video',
+                pt: 'Vídeo',
+              },
+              drone: {
+                es: 'Drone',
+                en: 'Drone',
+                pt: 'Drone',
+              },
+              studio: {
+                es: 'Sesión de fotos estudio',
+                en: 'Studio photo session',
+                pt: 'Sessão de fotos estúdio',
+              },
+              other: {
+                es: 'Otros',
+                en: 'Others',
+                pt: 'Outros',
+              },
+            },
+          },
+          contactMethod: {
+            label: {
+              es: '¿Cómo preferís que te contactemos?',
+              en: 'How would you prefer us to contact you?',
+              pt: 'Como você prefere que entremos em contato?',
+            },
+            options: {
+              whatsapp: {
+                es: 'Whatsapp',
+                en: 'WhatsApp',
+                pt: 'WhatsApp',
+              },
+              email: {
+                es: 'Mail',
+                en: 'Email',
+                pt: 'Email',
+              },
+              call: {
+                es: 'Llamada',
+                en: 'Call',
+                pt: 'Ligação',
               },
             },
           },
@@ -208,9 +322,9 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           message: {
             label: {
-              es: 'Cuéntanos sobre tu visión',
-              en: 'Tell us about your vision',
-              pt: 'Conte-nos sobre sua visão',
+              es: 'Cuéntanos todos los detalles que te parezcan',
+              en: 'Tell us all the details you think are relevant',
+              pt: 'Conte-nos todos os detalhes que achar relevantes',
             },
             optional: {
               es: '(opcional)',
@@ -218,9 +332,25 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               pt: '(opcional)',
             },
             placeholder: {
-              es: 'Comparte tus ideas, lugar, número de invitados, momentos especiales que quieres capturar, o cualquier otra cosa que nos ayude a entender mejor tu evento...',
-              en: 'Share your ideas, venue, number of guests, special moments you want captured, or anything else that would help us understand your event better...',
-              pt: 'Compartilhe suas ideias, local, número de convidados, momentos especiais que quer capturar, ou qualquer outra coisa que nos ajude a entender melhor seu evento...',
+              es: 'Comparte todos los detalles que consideres importantes para tu evento...',
+              en: 'Share all the details you consider important for your event...',
+              pt: 'Compartilhe todos os detalhes que considerar importantes para seu evento...',
+            },
+          attachments: {
+            label: {
+              es: 'Archivos adjuntos',
+              en: 'Attachments',
+              pt: 'Anexos',
+            },
+            optional: {
+              es: '(opcional)',
+              en: '(optional)',
+              pt: '(opcional)',
+            },
+            description: {
+              es: 'Puedes adjuntar fotos o documentos',
+              en: 'You can attach photos or documents',
+              pt: 'Você pode anexar fotos ou documentos',
             },
           },
           submit: {
@@ -268,38 +398,26 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
         trust: {
           response: {
             title: {
-              es: 'Respuesta Rápida',
+              es: 'Respuesta rápida',
               en: 'Quick Response',
               pt: 'Resposta Rápida',
             },
             description: {
-              es: 'Típicamente respondemos dentro de 24 horas con una cotización personalizada',
-              en: 'We typically respond within 24 hours with a personalized quote',
-              pt: 'Normalmente respondemos dentro de 24 horas com um orçamento personalizado',
+              es: 'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
+              en: 'We typically respond within 2 hours after your inquiry',
+              pt: 'Normalmente respondemos dentro de 2 horas após sua consulta',
             },
           },
           commitment: {
             title: {
-              es: 'Sin Compromiso',
+              es: 'Sin compromiso',
               en: 'No Commitment',
               pt: 'Sem Compromisso',
             },
             description: {
-              es: 'Obtener una cotización es completamente gratis y sin ataduras',
-              en: 'Getting a quote is completely free with no strings attached',
+              es: 'Obtener una cotización es completamente gratis y sin compromiso',
+              en: 'Getting a quote is completely free and without commitment',
               pt: 'Obter um orçamento é completamente gratuito e sem compromisso',
-            },
-          },
-          privacy: {
-            title: {
-              es: 'Privacidad Primero',
-              en: 'Privacy First',
-              pt: 'Privacidade Primeiro',
-            },
-            description: {
-              es: 'Nunca compartimos tu información y solo te contactamos sobre tu evento',
-              en: 'We never share your information and only contact you about your event',
-              pt: 'Nunca compartilhamos suas informações e só entramos em contato sobre seu evento',
             },
           },
         },
