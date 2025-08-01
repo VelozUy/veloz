@@ -627,7 +627,10 @@ export default function ContactForm({
                     placeholder={t.form.name.placeholder}
                     value={formData.name}
                     onChange={e => handleInputChange('name', e.target.value)}
-                    className={cn(errors.name && 'border-destructive')}
+                    className={cn(
+                      errors.name && 'border-destructive',
+                      '!text-body-sm'
+                    )}
                   />
                   {errors.name && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -651,7 +654,10 @@ export default function ContactForm({
                     placeholder={t.form.email.placeholder}
                     value={formData.email}
                     onChange={e => handleInputChange('email', e.target.value)}
-                    className={cn(errors.email && 'border-destructive')}
+                    className={cn(
+                      errors.email && 'border-destructive',
+                      '!text-body-sm'
+                    )}
                   />
                   {errors.email && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -678,6 +684,7 @@ export default function ContactForm({
                     placeholder={t.form.company.placeholder}
                     value={formData.company}
                     onChange={e => handleInputChange('company', e.target.value)}
+                    className="!text-body-sm"
                   />
                 </div>
 
@@ -698,6 +705,7 @@ export default function ContactForm({
                     placeholder={t.form.phone.placeholder}
                     value={formData.phone}
                     onChange={e => handleInputChange('phone', e.target.value)}
+                    className="!text-body-sm"
                   />
                 </div>
 
@@ -734,7 +742,8 @@ export default function ContactForm({
                       >
                         <SelectTrigger
                           className={cn(
-                            errors.eventType && 'border-destructive'
+                            errors.eventType && 'border-destructive',
+                            'text-body-sm'
                           )}
                         >
                           <SelectValue
@@ -796,7 +805,10 @@ export default function ContactForm({
                     onChange={e =>
                       handleInputChange('location', e.target.value)
                     }
-                    className={cn(errors.location && 'border-destructive')}
+                    className={cn(
+                      errors.location && 'border-destructive',
+                      '!text-body-sm'
+                    )}
                   />
                   {errors.location && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -822,7 +834,10 @@ export default function ContactForm({
                     onChange={e =>
                       handleInputChange('attendees', e.target.value)
                     }
-                    className={cn(errors.attendees && 'border-destructive')}
+                    className={cn(
+                      errors.attendees && 'border-destructive',
+                      '!text-body-sm'
+                    )}
                   />
                   {errors.attendees && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -968,7 +983,7 @@ export default function ContactForm({
                         variant="outline"
                         onClick={() => openModal('datePicker')}
                         className={cn(
-                          'flex-1 justify-start text-left font-normal',
+                          'flex-1 justify-start text-left font-normal text-body-sm',
                           !formData.eventDate && 'text-muted-foreground'
                         )}
                       >
@@ -1001,7 +1016,7 @@ export default function ContactForm({
                           <Button
                             variant="outline"
                             className={cn(
-                              'flex-1 justify-start text-left font-normal',
+                              'flex-1 justify-start text-left font-normal text-body-sm',
                               !formData.eventDate && 'text-muted-foreground'
                             )}
                           >
@@ -1104,6 +1119,7 @@ export default function ContactForm({
                     rows={5}
                     value={formData.message}
                     onChange={e => handleInputChange('message', e.target.value)}
+                    className="!text-body-sm"
                   />
                 </div>
 
@@ -1213,22 +1229,27 @@ export default function ContactForm({
 
         {modalContent === 'datePicker' && (
           <div className="bg-card border border-border rounded-lg p-4 shadow-lg">
-            <Calendar
-              mode="single"
-              selected={
-                formData.eventDate ? new Date(formData.eventDate) : undefined
-              }
-              onSelect={date => {
-                const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
-                handleInputChange('eventDate', formattedDate);
-                closeModal();
-              }}
-              disabled={date =>
-                date < new Date(new Date().setHours(0, 0, 0, 0))
-              }
-              initialFocus
-              locale={locale === 'es' ? es : locale === 'en' ? enUS : ptBR}
-            />
+            <div className="space-y-3">
+              <h3 className="text-base font-medium text-foreground text-center">
+                {t.form.eventDate.label}
+              </h3>
+              <Calendar
+                mode="single"
+                selected={
+                  formData.eventDate ? new Date(formData.eventDate) : undefined
+                }
+                onSelect={date => {
+                  const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
+                  handleInputChange('eventDate', formattedDate);
+                  closeModal();
+                }}
+                disabled={date =>
+                  date < new Date(new Date().setHours(0, 0, 0, 0))
+                }
+                initialFocus
+                locale={locale === 'es' ? es : locale === 'en' ? enUS : ptBR}
+              />
+            </div>
           </div>
         )}
       </Modal>
