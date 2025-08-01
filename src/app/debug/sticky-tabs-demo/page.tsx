@@ -201,7 +201,7 @@ export default function StickyTabsDemoPage() {
         <footer className="bg-background py-16 border-t border-border">
           <div className="mx-auto max-w-7xl px-16 text-center">
             <h2 className="text-2xl font-semibold text-foreground mb-4">
-              ¿Listo para comenzar?
+              ¿Comenzamos?
             </h2>
             <p className="text-muted-foreground mb-8">
               Contáctanos para discutir cómo podemos hacer de tu próximo evento

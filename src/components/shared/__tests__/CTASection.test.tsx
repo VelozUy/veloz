@@ -7,7 +7,7 @@ describe('CTASection', () => {
   it('renders with default props', () => {
     render(<CTASection />);
 
-    expect(screen.getByText('¿Listo para Comenzar?')).toBeInTheDocument();
+    expect(screen.getByText('¿Comenzamos?')).toBeInTheDocument();
     expect(
       screen.getByText(
         'Cuéntanos sobre tu evento y descubre cómo podemos hacerlo inolvidable.'

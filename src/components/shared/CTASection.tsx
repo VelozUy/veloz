@@ -13,7 +13,7 @@ interface CTASectionProps {
 }
 
 export default function CTASection({
-  title = '¿Listo para Comenzar?',
+  title = '¿Comenzamos?',
   description = 'Cuéntanos sobre tu evento y descubre cómo podemos hacerlo inolvidable.',
   primaryButtonText = 'Contactar Ahora',
   primaryButtonHref = '/contact',

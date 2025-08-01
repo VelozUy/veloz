@@ -49,7 +49,7 @@ export default function MyPage() {
 
 | Prop                  | Type                  | Default                                                                    | Description                         |
 | --------------------- | --------------------- | -------------------------------------------------------------------------- | ----------------------------------- |
-| `title`               | `string`              | `'¿Listo para Comenzar?'`                                                  | The main heading text               |
+| `title`               | `string`              | `'¿Comenzamos?'`                                                           | The main heading text               |
 | `description`         | `string`              | `'Cuéntanos sobre tu evento y descubre cómo podemos hacerlo inolvidable.'` | The description text                |
 | `primaryButtonText`   | `string`              | `'Contactar Ahora'`                                                        | Text for the primary button         |
 | `primaryButtonHref`   | `string`              | `'/contact'`                                                               | Link for the primary button         |
@@ -87,7 +87,7 @@ The component uses:
 
 ```tsx
 <CTASection
-  title="¿Listo para Comenzar?"
+  title="¿Comenzamos?"
   description="Cuéntanos sobre tu evento y descubre cómo podemos hacerlo inolvidable."
   primaryButtonText="Contactar Ahora"
   primaryButtonHref="/contact"
