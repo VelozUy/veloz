@@ -287,7 +287,7 @@ export class OpenAIService {
           {
             role: 'system',
             content:
-              'You are an expert SEO assistant for a professional photography and videography business. Your primary goal is to create descriptions that attract people who are actively searching to hire event photographers or videographers. Focus on business-driving keywords and location-based search terms that potential clients use when looking for photography services. Always use inclusive, gender-neutral language that welcomes all clients regardless of gender, orientation, or family structure.',
+              'You are an expert SEO assistant for a professional photography and videography business. Your primary goal is to create descriptions that attract people who are actively searching to hire photographers or videographers for various services (events, commercial, fashion, product, portraits, etc.). Focus on business-driving keywords and location-based search terms that potential clients use when looking for photography services. Always use inclusive, gender-neutral language that welcomes all clients regardless of gender, orientation, or family structure.',
           },
           {
             role: 'user',
@@ -484,7 +484,7 @@ export class OpenAIService {
    */
   private buildMediaAnalysisPrompt(request: MediaAnalysisRequest): string {
     let prompt =
-      'You are an expert SEO assistant for a professional photo and video service business. Your goal is to create descriptions that attract people searching to hire event photographers or videographers.\n\n';
+      'You are an expert SEO assistant for a professional photo and video service business. Your goal is to create descriptions that attract people searching to hire photographers or videographers for various services (events, commercial, fashion, product, portraits, etc.).\n\n';
 
     prompt += `Analyze this ${request.mediaType === 'video' ? 'video' : 'image'} and provide SEO-focused analysis in JSON format:\n\n`;
 
@@ -530,17 +530,28 @@ export class OpenAIService {
       '• FIRST: Analyze and describe what you actually see in the image/video\n';
     prompt +=
       '• Describe the visual content: people, objects, setting, lighting, colors, mood\n';
+    prompt += '• Identify the service type based on visual clues:\n';
     prompt +=
-      '• Identify the event type based on visual clues (wedding, corporate, birthday, etc.)\n';
+      '  - Events: wedding, corporate event, birthday party, quinceañera, graduation, etc.\n';
+    prompt +=
+      '  - Commercial: product photography, fashion shoot, corporate headshots, etc.\n';
+    prompt +=
+      '  - Lifestyle: family portraits, engagement sessions, maternity photos, etc.\n';
     prompt += '• Use inclusive, gender-neutral language throughout\n';
     prompt +=
-      '• THEN: Focus on attracting people searching to hire professional photographers/videographers for events\n';
+      '• THEN: Focus on attracting people searching to hire professional photographers/videographers for the specific service type\n';
     prompt +=
-      '• Include service keywords: "event photographer", "wedding videographer", "professional photo session", "corporate photography", "birthday photographer"\n';
+      '• Identify the specific service type and use appropriate keywords:\n';
+    prompt +=
+      '  - Events: "event photographer", "wedding photographer", "corporate event photographer", "birthday photographer"\n';
+    prompt +=
+      '  - Commercial: "product photographer", "fashion photographer", "commercial photographer", "portrait photographer"\n';
+    prompt +=
+      '  - Lifestyle: "lifestyle photographer", "family photographer", "portrait session"\n';
     prompt +=
       '• Add location context: "in Montevideo", "in Uruguay", "fotógrafo en Montevideo"\n';
     prompt +=
-      '• Use long-tail keywords people actually search: "hire wedding photographer", "professional event videography service"\n';
+      '• Use long-tail keywords people actually search: "hire wedding photographer", "professional product photography", "fashion photographer Montevideo"\n';
     prompt +=
       '• Make descriptions actionable for people looking to hire services\n';
     prompt +=
@@ -563,17 +574,25 @@ export class OpenAIService {
       prompt +=
         '• "Bride and groom sharing intimate moment during golden hour ceremony - hire professional wedding photographer in Montevideo"\n';
       prompt +=
-        '• "Corporate team presenting in modern boardroom setting - professional business photography services in Uruguay"\n';
+        '• "Corporate team presenting in modern boardroom setting - professional corporate event photography services in Uruguay"\n';
       prompt +=
         '• "Young woman in traditional dress celebrating quinceañera with family - professional event photography with expert lighting"\n';
       prompt +=
+        '• "Fashion model showcasing designer clothing in studio setting - hire professional fashion photographer in Montevideo"\n';
+      prompt +=
+        '• "Product photography with professional lighting and clean background - commercial photography services in Uruguay"\n';
+      prompt +=
         '• "Novios compartiendo momento íntimo durante ceremonia de hora dorada - contrata fotógrafo profesional de bodas en Montevideo"\n';
+      prompt +=
+        '• "Modelo de moda mostrando ropa de diseñador en estudio - contrata fotógrafo profesional de moda en Montevideo"\n';
+      prompt +=
+        '• "Fotografía de producto con iluminación profesional y fondo limpio - servicios de fotografía comercial en Uruguay"\n';
       prompt +=
         '• "Jovem em vestido tradicional celebrando quinze anos com família - fotografia profissional de eventos em Montevidéu"\n\n';
     }
 
     prompt +=
-      'Generate SEO-optimized content that attracts people searching to hire professional photographers/videographers for events. Focus on business-driving keywords while describing the actual image content. Provide only valid JSON.';
+      'Generate SEO-optimized content that attracts people searching to hire professional photographers/videographers for various services. Focus on business-driving keywords while describing the actual image content and identifying the appropriate service category. Provide only valid JSON.';
 
     return prompt;
   }
