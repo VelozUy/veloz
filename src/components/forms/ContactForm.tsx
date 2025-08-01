@@ -22,6 +22,7 @@ import {
   Clock,
   Heart,
   AlertCircle,
+  Check,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
@@ -357,7 +358,10 @@ export default function ContactForm({ translations }: ContactFormProps) {
     setUploadingFiles(false);
   };
 
-  const handleInputChange = (field: string, value: string | boolean | string[]) => {
+  const handleInputChange = (
+    field: string,
+    value: string | boolean | string[]
+  ) => {
     console.log('handleInputChange:', field, value);
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
@@ -619,8 +623,6 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   />
                 </div>
 
-
-
                 {/* Event Type */}
                 <div className="space-y-2">
                   <Label
@@ -629,41 +631,50 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   >
                     {t.form.eventType.label}
                   </Label>
-                  <Select
-                    value={formData.eventType}
-                    onValueChange={value =>
-                      handleInputChange('eventType', value)
-                    }
-                  >
-                    <SelectTrigger
-                      className={cn(errors.eventType && 'border-destructive')}
+                  <div className="relative" style={{ contain: 'layout' }}>
+                    <Select
+                      value={formData.eventType}
+                      onValueChange={value =>
+                        handleInputChange('eventType', value)
+                      }
                     >
-                      <SelectValue placeholder={t.form.eventType.placeholder} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="corporate">
-                        {t.form.eventType.options.corporate}
-                      </SelectItem>
-                      <SelectItem value="product">
-                        {t.form.eventType.options.product}
-                      </SelectItem>
-                      <SelectItem value="birthday">
-                        {t.form.eventType.options.birthday}
-                      </SelectItem>
-                      <SelectItem value="wedding">
-                        {t.form.eventType.options.wedding}
-                      </SelectItem>
-                      <SelectItem value="concert">
-                        {t.form.eventType.options.concert}
-                      </SelectItem>
-                      <SelectItem value="exhibition">
-                        {t.form.eventType.options.exhibition}
-                      </SelectItem>
-                      <SelectItem value="other">
-                        {t.form.eventType.options.other}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <SelectTrigger
+                        className={cn(errors.eventType && 'border-destructive')}
+                      >
+                        <SelectValue
+                          placeholder={t.form.eventType.placeholder}
+                        />
+                      </SelectTrigger>
+                      <SelectContent
+                        className="bg-card border-border"
+                        position="popper"
+                        sideOffset={4}
+                        avoidCollisions={false}
+                      >
+                        <SelectItem value="corporate">
+                          {t.form.eventType.options.corporate}
+                        </SelectItem>
+                        <SelectItem value="product">
+                          {t.form.eventType.options.product}
+                        </SelectItem>
+                        <SelectItem value="birthday">
+                          {t.form.eventType.options.birthday}
+                        </SelectItem>
+                        <SelectItem value="wedding">
+                          {t.form.eventType.options.wedding}
+                        </SelectItem>
+                        <SelectItem value="concert">
+                          {t.form.eventType.options.concert}
+                        </SelectItem>
+                        <SelectItem value="exhibition">
+                          {t.form.eventType.options.exhibition}
+                        </SelectItem>
+                        <SelectItem value="other">
+                          {t.form.eventType.options.other}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   {errors.eventType && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
                       <AlertCircle className="w-4 h-4" />
@@ -685,7 +696,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     type="text"
                     placeholder={t.form.location.placeholder}
                     value={formData.location}
-                    onChange={e => handleInputChange('location', e.target.value)}
+                    onChange={e =>
+                      handleInputChange('location', e.target.value)
+                    }
                     className={cn(errors.location && 'border-destructive')}
                   />
                   {errors.location && (
@@ -709,7 +722,9 @@ export default function ContactForm({ translations }: ContactFormProps) {
                     type="text"
                     placeholder={t.form.attendees.placeholder}
                     value={formData.attendees}
-                    onChange={e => handleInputChange('attendees', e.target.value)}
+                    onChange={e =>
+                      handleInputChange('attendees', e.target.value)
+                    }
                     className={cn(errors.attendees && 'border-destructive')}
                   />
                   {errors.attendees && (
@@ -725,27 +740,56 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   <Label className="text-body-md font-medium text-foreground">
                     {t.form.services.label}
                   </Label>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(t.form.services.options).map(([key, label]) => (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => {
-                          const newServices = formData.services.includes(key)
-                            ? formData.services.filter(s => s !== key)
-                            : [...formData.services, key];
-                          handleInputChange('services', newServices);
-                        }}
-                        className={cn(
-                          'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                          formData.services.includes(key)
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                        )}
-                      >
-                        {label}
-                      </button>
-                    ))}
+                  <div className="border border-input bg-background rounded-md p-2 space-y-1">
+                    {Object.entries(t.form.services.options).map(
+                      ([key, label]) => {
+                        const isSelected = formData.services.includes(key);
+                        return (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => {
+                              const newServices = isSelected
+                                ? formData.services.filter(s => s !== key)
+                                : [...formData.services, key];
+                              handleInputChange('services', newServices);
+                            }}
+                            className={cn(
+                              'relative group p-2 rounded-md transition-all duration-200 text-left w-full',
+                              'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
+                              'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
+                              isSelected
+                                ? 'bg-primary/5 text-primary'
+                                : 'bg-transparent text-foreground'
+                            )}
+                          >
+                            {/* Checkmark indicator */}
+                            <div
+                              className={cn(
+                                'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
+                                isSelected
+                                  ? 'bg-primary border-primary'
+                                  : 'bg-background border-border group-hover:border-primary/50'
+                              )}
+                            >
+                              {isSelected && (
+                                <Check className="w-2.5 h-2.5 text-primary-foreground" />
+                              )}
+                            </div>
+
+                            {/* Service label */}
+                            <span
+                              className={cn(
+                                'text-body-sm font-medium',
+                                isSelected ? 'text-primary' : 'text-foreground'
+                              )}
+                            >
+                              {label}
+                            </span>
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
                   {errors.services && (
                     <p className="text-body-sm text-destructive flex items-center gap-1">
@@ -760,22 +804,53 @@ export default function ContactForm({ translations }: ContactFormProps) {
                   <Label className="text-body-md font-medium text-foreground">
                     {t.form.contactMethod.label}
                   </Label>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(t.form.contactMethod.options).map(([key, label]) => (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => handleInputChange('contactMethod', key)}
-                        className={cn(
-                          'flex-1 min-w-[120px] px-3 py-2 text-body-sm rounded-md border transition-colors',
-                          formData.contactMethod === key
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-secondary border-secondary hover:bg-secondary/80 hover:text-secondary-foreground'
-                        )}
-                      >
-                        {label}
-                      </button>
-                    ))}
+                  <div className="border border-input bg-background rounded-md p-2 space-y-1">
+                    {Object.entries(t.form.contactMethod.options).map(
+                      ([key, label]) => {
+                        const isSelected = formData.contactMethod === key;
+                        return (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() =>
+                              handleInputChange('contactMethod', key)
+                            }
+                            className={cn(
+                              'relative group p-2 rounded-md transition-all duration-200 text-left w-full',
+                              'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
+                              'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
+                              isSelected
+                                ? 'bg-primary/5 text-primary'
+                                : 'bg-transparent text-foreground'
+                            )}
+                          >
+                            {/* Checkmark indicator */}
+                            <div
+                              className={cn(
+                                'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
+                                isSelected
+                                  ? 'bg-primary border-primary'
+                                  : 'bg-background border-border group-hover:border-primary/50'
+                              )}
+                            >
+                              {isSelected && (
+                                <Check className="w-2.5 h-2.5 text-primary-foreground" />
+                              )}
+                            </div>
+
+                            {/* Contact method label */}
+                            <span
+                              className={cn(
+                                'text-body-sm font-medium',
+                                isSelected ? 'text-primary' : 'text-foreground'
+                              )}
+                            >
+                              {label}
+                            </span>
+                          </button>
+                        );
+                      }
+                    )}
                   </div>
                 </div>
 
