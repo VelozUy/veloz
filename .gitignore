@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated build files (should be regenerated on each build)
+src/data/content-*.json
+src/lib/static-content.generated.ts
+src/lib/build-time-data.generated.ts

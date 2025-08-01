@@ -19,6 +19,12 @@
         "node_modules/.cache",
         ".npm"
       ]
+      # Exclude generated files that should be rebuilt each time
+      exclude = [
+        "src/data/content-*.json",
+        "src/lib/static-content.generated.ts",
+        "src/lib/build-time-data.generated.ts"
+      ]
 
 [dev]
   framework = "nextjs"
