@@ -1181,12 +1181,12 @@ export default function ContactForm({
       {/* Reusable Modal */}
       <Modal>
         {modalContent === 'eventType' && (
-          <div className="bg-card border border-border rounded-lg p-4 shadow-lg max-w-sm w-full mx-4">
-            <div className="space-y-3">
-              <h3 className="text-lg font-medium text-foreground">
+          <div className="bg-card border border-border rounded-lg p-3 shadow-lg w-80 max-w-xl mx-4">
+            <div className="space-y-2">
+              <h3 className="text-base font-medium text-foreground text-center">
                 {t.form.eventType.label}
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {Object.entries(t.form.eventType.options).map(
                   ([key, label]) => (
                     <button
@@ -1196,7 +1196,7 @@ export default function ContactForm({
                         closeModal();
                       }}
                       className={cn(
-                        'w-full text-left p-3 rounded-md border transition-colors',
+                        'w-full text-left p-2 rounded-md border transition-colors text-sm whitespace-nowrap',
                         formData.eventType === key
                           ? 'bg-primary text-primary-foreground border-primary'
                           : 'bg-background border-border hover:bg-accent hover:text-accent-foreground'
