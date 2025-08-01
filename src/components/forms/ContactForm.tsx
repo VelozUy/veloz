@@ -182,9 +182,7 @@ export default function ContactForm({
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [modalContent, setModalContent] = useState<
-    'eventType' | 'datePicker' | null
-  >(null);
+  const [modalContent, setModalContent] = useState<'datePicker' | null>(null);
   const searchParams = useSearchParams();
 
   // Check if mobile on mount and resize
@@ -219,7 +217,7 @@ export default function ContactForm({
   }, [modalContent, isMobile]);
 
   // Handle modal open/close
-  const openModal = (content: 'eventType' | 'datePicker') => {
+  const openModal = (content: 'datePicker') => {
     setModalContent(content);
   };
 
@@ -711,74 +709,53 @@ export default function ContactForm({
 
                 {/* Event Type */}
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="eventType"
-                    className="text-body-md font-medium text-foreground"
-                  >
+                  <Label className="text-body-md font-medium text-foreground">
                     {t.form.eventType.label}
                   </Label>
-                  <div className="relative" style={{ contain: 'layout' }}>
-                    {isMobile ? (
-                      <Button
-                        variant="outline"
-                        onClick={() => openModal('eventType')}
-                        className={cn(
-                          'w-full justify-start text-left font-normal',
-                          !formData.eventType && 'text-muted-foreground'
-                        )}
-                      >
-                        {formData.eventType
-                          ? t.form.eventType.options[
-                              formData.eventType as keyof typeof t.form.eventType.options
-                            ]
-                          : t.form.eventType.placeholder}
-                      </Button>
-                    ) : (
-                      <Select
-                        value={formData.eventType}
-                        onValueChange={value =>
-                          handleInputChange('eventType', value)
-                        }
-                      >
-                        <SelectTrigger
-                          className={cn(
-                            errors.eventType && 'border-destructive',
-                            'text-body-sm'
-                          )}
-                        >
-                          <SelectValue
-                            placeholder={t.form.eventType.placeholder}
-                          />
-                        </SelectTrigger>
-                        <SelectContent
-                          className="bg-card border-border z-[9999]"
-                          position="popper"
-                          sideOffset={4}
-                          avoidCollisions={false}
-                        >
-                          <SelectItem value="corporate">
-                            {t.form.eventType.options.corporate}
-                          </SelectItem>
-                          <SelectItem value="product">
-                            {t.form.eventType.options.product}
-                          </SelectItem>
-                          <SelectItem value="birthday">
-                            {t.form.eventType.options.birthday}
-                          </SelectItem>
-                          <SelectItem value="wedding">
-                            {t.form.eventType.options.wedding}
-                          </SelectItem>
-                          <SelectItem value="concert">
-                            {t.form.eventType.options.concert}
-                          </SelectItem>
-                          <SelectItem value="exhibition">
-                            {t.form.eventType.options.exhibition}
-                          </SelectItem>
-                          <SelectItem value="other">
-                            {t.form.eventType.options.other}
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                  <div className="border border-input bg-background rounded-md p-2 space-y-1">
+                    {Object.entries(t.form.eventType.options).map(
+                      ([key, label]) => {
+                        const isSelected = formData.eventType === key;
+                        return (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => handleInputChange('eventType', key)}
+                            className={cn(
+                              'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
+                              'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
+                              'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
+                              isSelected
+                                ? 'bg-primary/5 text-primary'
+                                : 'bg-transparent text-foreground'
+                            )}
+                          >
+                            {/* Checkmark indicator */}
+                            <div
+                              className={cn(
+                                'inline-flex items-center justify-center w-4 h-4 rounded-full border-2 transition-all duration-200 mr-3',
+                                isSelected
+                                  ? 'bg-primary border-primary'
+                                  : 'bg-background border-border group-hover:border-primary/50'
+                              )}
+                            >
+                              {isSelected && (
+                                <Check className="w-2.5 h-2.5 text-primary-foreground" />
+                              )}
+                            </div>
+
+                            {/* Event type label */}
+                            <span
+                              className={cn(
+                                'text-xs font-medium',
+                                isSelected ? 'text-primary' : 'text-foreground'
+                              )}
+                            >
+                              {label}
+                            </span>
+                          </button>
+                        );
+                      }
                     )}
                   </div>
                   {errors.eventType && (
@@ -867,7 +844,7 @@ export default function ContactForm({
                               handleInputChange('services', newServices);
                             }}
                             className={cn(
-                              'relative group p-2 rounded-md transition-all duration-200 text-left w-full',
+                              'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
                               'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
                               'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
                               isSelected
@@ -892,7 +869,7 @@ export default function ContactForm({
                             {/* Service label */}
                             <span
                               className={cn(
-                                'text-body-sm font-medium',
+                                'text-xs font-medium',
                                 isSelected ? 'text-primary' : 'text-foreground'
                               )}
                             >
@@ -928,7 +905,7 @@ export default function ContactForm({
                               handleInputChange('contactMethod', key)
                             }
                             className={cn(
-                              'relative group p-2 rounded-md transition-all duration-200 text-left w-full',
+                              'relative group px-2 py-1 rounded-md transition-all duration-200 text-left w-full',
                               'hover:bg-primary/5 hover:scale-[1.01] active:scale-[0.99]',
                               'focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1',
                               isSelected
@@ -953,7 +930,7 @@ export default function ContactForm({
                             {/* Contact method label */}
                             <span
                               className={cn(
-                                'text-body-sm font-medium',
+                                'text-xs font-medium',
                                 isSelected ? 'text-primary' : 'text-foreground'
                               )}
                             >
@@ -1196,37 +1173,6 @@ export default function ContactForm({
 
       {/* Reusable Modal */}
       <Modal>
-        {modalContent === 'eventType' && (
-          <div className="bg-card border border-border rounded-lg p-3 shadow-lg w-80 max-w-xl mx-4">
-            <div className="space-y-2">
-              <h3 className="text-base font-medium text-foreground text-center">
-                {t.form.eventType.label}
-              </h3>
-              <div className="space-y-1">
-                {Object.entries(t.form.eventType.options).map(
-                  ([key, label]) => (
-                    <button
-                      key={key}
-                      onClick={() => {
-                        handleInputChange('eventType', key);
-                        closeModal();
-                      }}
-                      className={cn(
-                        'w-full text-left p-2 rounded-md border transition-colors text-sm whitespace-nowrap',
-                        formData.eventType === key
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-background border-border hover:bg-accent hover:text-accent-foreground'
-                      )}
-                    >
-                      {label}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
         {modalContent === 'datePicker' && (
           <div className="bg-card border border-border rounded-lg p-4 shadow-lg">
             <div className="space-y-3">
