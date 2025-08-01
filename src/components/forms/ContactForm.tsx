@@ -14,7 +14,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Calendar,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Calendar as CalendarIcon,
   Send,
   CheckCircle,
   Loader2,
@@ -26,6 +32,7 @@ import {
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 import FileUpload from './FileUpload';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
@@ -167,6 +174,7 @@ export default function ContactForm({ translations }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const searchParams = useSearchParams();
 
   // Track form view
@@ -902,18 +910,45 @@ export default function ContactForm({ translations }: ContactFormProps) {
                       {t.form.eventDate.optional}
                     </span>
                   </Label>
-                  <div className="relative">
-                    <Input
-                      id="eventDate"
-                      type="date"
-                      value={formData.eventDate}
-                      onChange={e =>
-                        handleInputChange('eventDate', e.target.value)
-                      }
-                      className="pl-10"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  </div>
+                  <Popover
+                    open={isDatePickerOpen}
+                    onOpenChange={setIsDatePickerOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !formData.eventDate && 'text-muted-foreground'
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {formData.eventDate ? (
+                          format(new Date(formData.eventDate), 'PPP')
+                        ) : (
+                          <span>Select a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          formData.eventDate
+                            ? new Date(formData.eventDate)
+                            : undefined
+                        }
+                        onSelect={date => {
+                          const formattedDate = date
+                            ? format(date, 'yyyy-MM-dd')
+                            : '';
+                          handleInputChange('eventDate', formattedDate);
+                          setIsDatePickerOpen(false);
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <p className="text-body-sm text-muted-foreground">
                     {t.form.eventDate.help}
                   </p>
