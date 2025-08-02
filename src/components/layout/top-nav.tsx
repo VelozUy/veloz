@@ -112,7 +112,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
               </Link>
               <LocaleSwitcher
                 currentLocale={locale}
-                className="text-primary-foreground hover:text-primary"
+                textClassName="text-primary-foreground hover:text-primary"
               />
             </div>
 
@@ -210,7 +210,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
               </Link>
               <LocaleSwitcher
                 currentLocale={locale}
-                className="text-primary-foreground hover:text-primary"
+                textClassName="text-primary-foreground hover:text-primary"
               />
             </div>
 
@@ -268,7 +268,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
               <div className="flex justify-center">
                 <LocaleSwitcher
                   currentLocale={locale}
-                  className="text-primary-foreground hover:text-primary"
+                  textClassName="text-primary-foreground hover:text-primary"
                 />
               </div>
             </div>

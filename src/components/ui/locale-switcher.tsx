@@ -1,32 +1,26 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { getPriorityClasses } from '@/lib/utils';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
   className?: string;
+  textClassName?: string;
   priority?: 'top' | 'mid' | 'low';
 }
 
 const LOCALES = [
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷' },
+  { code: 'es', name: 'ES' },
+  { code: 'en', name: 'EN' },
+  { code: 'pt', name: 'BR' },
 ];
 
 export function LocaleSwitcher({
   currentLocale,
   className,
+  textClassName,
   priority = 'top',
 }: LocaleSwitcherProps) {
   const router = useRouter();
@@ -54,50 +48,23 @@ export function LocaleSwitcher({
     router.push(newPath);
   };
 
-  const currentLocaleData =
-    LOCALES.find(locale => locale.code === currentLocale) || LOCALES[0];
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
+    <div className={cn('flex items-center gap-2', className)}>
+      {LOCALES.map(locale => (
+        <button
+          key={locale.code}
+          onClick={() => switchLocale(locale.code)}
           className={cn(
-            'p-2 h-auto w-auto',
-            priorityClasses.bg,
-            priorityClasses.text,
-            priorityClasses.border,
-            className
+            'text-sm font-medium transition-colors',
+            currentLocale === locale.code ? 'font-semibold' : '',
+            // Use textClassName if provided, otherwise use priority classes
+            textClassName || priorityClasses.text
           )}
-          aria-label="Change language"
+          aria-label={`Switch to ${locale.name}`}
         >
-          <Globe className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="min-w-[150px]"
-        priority={priority}
-      >
-        {LOCALES.map(locale => (
-          <DropdownMenuItem
-            key={locale.code}
-            onClick={() => switchLocale(locale.code)}
-            className={`flex items-center justify-between cursor-pointer ${
-              currentLocale === locale.code ? 'bg-accent' : ''
-            }`}
-          >
-            <div className="flex items-center">
-              <span className="mr-2">{locale.flag}</span>
-              <span>{locale.name}</span>
-            </div>
-            {currentLocale === locale.code && (
-              <div className="w-2 h-2 bg-primary rounded-full" />
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+          {locale.name}
+        </button>
+      ))}
+    </div>
   );
 }

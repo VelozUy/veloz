@@ -143,7 +143,7 @@ export default function VelozBannerNav({
                 <div className="ml-4">
                   <LocaleSwitcher
                     currentLocale={locale}
-                    className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
+                    textClassName="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                   />
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default function VelozBannerNav({
                 <div className="ml-4">
                   <LocaleSwitcher
                     currentLocale={locale}
-                    className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
+                    textClassName="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
                   />
                 </div>
               </div>
@@ -274,7 +274,7 @@ export default function VelozBannerNav({
           <div className="flex justify-center">
             <LocaleSwitcher
               currentLocale={locale}
-              className="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
+              textClassName="text-[var(--background)] hover:text-[var(--accent-soft-gold)]"
             />
           </div>
         </div>

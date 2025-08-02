@@ -62,7 +62,7 @@ export default function TopNavV2({ translations, locale }: TopNavV2Props) {
     <LocaleSwitcher
       key="locale"
       currentLocale={locale}
-      className="text-primary-foreground hover:text-primary"
+      textClassName="text-primary-foreground hover:text-primary-foreground"
     />,
   ];
 
