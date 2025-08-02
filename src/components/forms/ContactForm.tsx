@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Send,
   CheckCircle,
@@ -159,6 +160,7 @@ export default function ContactForm({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const searchParams = useSearchParams();
 
   // Check if mobile on mount and resize
@@ -474,6 +476,16 @@ export default function ContactForm({
       {/* Contact Form - Full Top Section */}
       <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-border-64 mx-auto">
+          {/* Title and Subtitle */}
+          <div className="text-left mb-12 space-y-4">
+            <h1 className="text-section-title-lg font-body font-semibold text-foreground">
+              {t.title}
+            </h1>
+            <p className="text-body-lg text-muted-foreground leading-relaxed">
+              {t.subtitle}
+            </p>
+          </div>
+
           <form onSubmit={onSubmit} className="space-y-8">
             {/* Multi-line format */}
             <div className="text-[2.25rem] leading-relaxed space-y-8">
@@ -481,26 +493,29 @@ export default function ContactForm({
               <div className="md:flex md:flex-wrap md:items-center md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">Me llamo</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
-                      errors.name && 'border-b-destructive border-b-2'
-                    )}
-                  >
+                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
                     <Input
                       id="name"
                       type="text"
                       placeholder={t.form.name.placeholder}
                       value={formData.name}
                       onChange={e => handleInputChange('name', e.target.value)}
+                      onFocus={() => setFocusedField('name')}
+                      onBlur={() => setFocusedField(null)}
                       data-field="name"
-                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      className={cn(
+                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                        focusedField === 'name'
+                          ? '!border-b-2 !border-primary'
+                          : '!border-border',
+                        errors.name && '!border-b-2 !border-destructive'
+                      )}
                     />
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">y trabajo para</span>
-                  <div className="w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2">
+                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
                     <Input
                       id="company"
                       type="text"
@@ -509,7 +524,14 @@ export default function ContactForm({
                       onChange={e =>
                         handleInputChange('company', e.target.value)
                       }
-                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      onFocus={() => setFocusedField('company')}
+                      onBlur={() => setFocusedField(null)}
+                      className={cn(
+                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                        focusedField === 'company'
+                          ? '!border-b-2 !border-primary'
+                          : '!border-border'
+                      )}
                     />
                   </div>
                 </div>
@@ -521,14 +543,21 @@ export default function ContactForm({
                     Contáctenme a través de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-48 h-9 bg-background border-b border-border px-2">
+                    <div className="w-full md:w-48 h-9 bg-background px-2">
                       <select
                         value={formData.contactMethod}
                         onChange={e =>
                           handleInputChange('contactMethod', e.target.value)
                         }
+                        onFocus={() => setFocusedField('contactMethod')}
+                        onBlur={() => setFocusedField(null)}
                         required
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
+                        className={cn(
+                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center transition-colors',
+                          focusedField === 'contactMethod'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border'
+                        )}
                       >
                         <option
                           value=""
@@ -554,12 +583,7 @@ export default function ContactForm({
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   {formData.contactMethod === 'email' ? (
-                    <div
-                      className={cn(
-                        'w-full md:w-64 md:inline-block h-auto bg-background border-b border-border px-2',
-                        errors.email && 'border-b-destructive border-b-2'
-                      )}
-                    >
+                    <div className="w-full md:w-64 md:inline-block h-auto bg-background px-2">
                       <Input
                         id="email"
                         type="email"
@@ -568,17 +592,20 @@ export default function ContactForm({
                         onChange={e =>
                           handleInputChange('email', e.target.value)
                         }
+                        onFocus={() => setFocusedField('email')}
+                        onBlur={() => setFocusedField(null)}
                         data-field="email"
-                        className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                        className={cn(
+                          '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                          focusedField === 'email'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border',
+                          errors.email && '!border-b-2 !border-destructive'
+                        )}
                       />
                     </div>
                   ) : (
-                    <div
-                      className={cn(
-                        'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
-                        errors.phone && 'border-b-destructive border-b-2'
-                      )}
-                    >
+                    <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
                       <Input
                         id="phone"
                         type="tel"
@@ -587,8 +614,16 @@ export default function ContactForm({
                         onChange={e =>
                           handleInputChange('phone', e.target.value)
                         }
+                        onFocus={() => setFocusedField('phone')}
+                        onBlur={() => setFocusedField(null)}
                         data-field="phone"
-                        className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                        className={cn(
+                          '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                          focusedField === 'phone'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border',
+                          errors.phone && '!border-b-2 !border-destructive'
+                        )}
                       />
                     </div>
                   )}
@@ -600,20 +635,23 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">El evento es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div
-                      className={cn(
-                        'w-full md:w-48 h-9 bg-background border-b border-border px-2',
-                        errors.eventType && 'border-b-destructive border-b-2'
-                      )}
-                    >
+                    <div className="w-full md:w-48 h-9 bg-background px-2">
                       <select
                         value={formData.eventType}
                         onChange={e =>
                           handleInputChange('eventType', e.target.value)
                         }
+                        onFocus={() => setFocusedField('eventType')}
+                        onBlur={() => setFocusedField(null)}
                         data-field="eventType"
                         required
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
+                        className={cn(
+                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center transition-colors',
+                          focusedField === 'eventType'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border',
+                          errors.eventType && '!border-b-2 !border-destructive'
+                        )}
                       >
                         <option
                           value=""
@@ -639,12 +677,7 @@ export default function ContactForm({
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">en</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
-                      errors.location && 'border-b-destructive border-b-2'
-                    )}
-                  >
+                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
                     <Input
                       id="location"
                       type="text"
@@ -653,19 +686,22 @@ export default function ContactForm({
                       onChange={e =>
                         handleInputChange('location', e.target.value)
                       }
+                      onFocus={() => setFocusedField('location')}
+                      onBlur={() => setFocusedField(null)}
                       data-field="location"
-                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      className={cn(
+                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                        focusedField === 'location'
+                          ? '!border-b-2 !border-primary'
+                          : '!border-border',
+                        errors.location && '!border-b-2 !border-destructive'
+                      )}
                     />
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">para aproximadamente</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-32 md:inline-block h-auto bg-background border-b border-border px-2',
-                      errors.attendees && 'border-b-destructive border-b-2'
-                    )}
-                  >
+                  <div className="w-full md:w-32 md:inline-block h-auto bg-background px-2">
                     <Input
                       id="attendees"
                       type="number"
@@ -674,8 +710,16 @@ export default function ContactForm({
                       onChange={e =>
                         handleInputChange('attendees', e.target.value)
                       }
+                      onFocus={() => setFocusedField('attendees')}
+                      onBlur={() => setFocusedField(null)}
                       data-field="attendees"
-                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      className={cn(
+                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                        focusedField === 'attendees'
+                          ? '!border-b-2 !border-primary'
+                          : '!border-border',
+                        errors.attendees && '!border-b-2 !border-destructive'
+                      )}
                     />
                   </div>
                   <span className="block md:inline">personas</span>
@@ -689,36 +733,29 @@ export default function ContactForm({
                     Me interesan los servicios de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <Select
-                      value={formData.services.join(',')}
-                      onValueChange={value => {
-                        const services = value ? value.split(',') : [];
-                        handleInputChange('services', services);
-                      }}
-                    >
-                      <div
+                    <div className="w-full md:w-64 h-auto bg-background px-2">
+                      <MultiSelect
+                        options={Object.entries(t.form.services.options).map(
+                          ([key, label]) => ({
+                            value: key,
+                            label: label,
+                          })
+                        )}
+                        value={formData.services}
+                        onValueChange={services =>
+                          handleInputChange('services', services)
+                        }
+                        placeholder="seleccionar servicios"
+                        data-field="services"
                         className={cn(
-                          'w-full md:w-64 h-auto bg-background border-b border-border px-2',
-                          errors.services && 'border-b-destructive border-b-2'
+                          'w-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
+                          focusedField === 'services'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border',
+                          errors.services && '!border-b-2 !border-destructive'
                         )}
-                      >
-                        <SelectTrigger
-                          data-field="services"
-                          className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
-                        >
-                          <SelectValue placeholder="seleccionar servicios" />
-                        </SelectTrigger>
-                      </div>
-                      <SelectContent>
-                        {Object.entries(t.form.services.options).map(
-                          ([key, label]) => (
-                            <SelectItem key={key} value={key}>
-                              {label}
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -728,7 +765,7 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">La fecha es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-64 h-9 bg-background border-b border-border px-2 relative">
+                    <div className="w-full md:w-64 h-9 bg-background px-2 relative">
                       <input
                         ref={dateInputRef}
                         type="date"
@@ -736,8 +773,15 @@ export default function ContactForm({
                         onChange={e =>
                           handleInputChange('eventDate', e.target.value)
                         }
+                        onFocus={() => setFocusedField('eventDate')}
+                        onBlur={() => setFocusedField(null)}
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground text-left cursor-pointer flex items-center"
+                        className={cn(
+                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center transition-colors',
+                          focusedField === 'eventDate'
+                            ? '!border-b-2 !border-primary'
+                            : '!border-border'
+                        )}
                       />
                     </div>
                   </div>
@@ -748,14 +792,25 @@ export default function ContactForm({
               <div className="md:flex md:flex-wrap md:items-start md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-start md:gap-2">
                   <span className="block md:inline">Más detalles</span>
-                  <Textarea
-                    id="message"
-                    placeholder={t.form.message.placeholder}
-                    rows={3}
-                    value={formData.message}
-                    onChange={e => handleInputChange('message', e.target.value)}
-                    className="!text-[1rem] w-full md:w-96 md:inline-block"
-                  />
+                  <div className="w-full md:w-96 md:inline-block bg-background px-2">
+                    <Textarea
+                      id="message"
+                      placeholder={t.form.message.placeholder}
+                      rows={3}
+                      value={formData.message}
+                      onChange={e =>
+                        handleInputChange('message', e.target.value)
+                      }
+                      onFocus={() => setFocusedField('message')}
+                      onBlur={() => setFocusedField(null)}
+                      className={cn(
+                        '!text-[1rem] w-full !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none transition-colors !outline-none',
+                        focusedField === 'message'
+                          ? '!border-b-2 !border-primary'
+                          : '!border-border'
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -791,44 +846,6 @@ export default function ContactForm({
               )}
             </div>
           </form>
-        </div>
-      </section>
-
-      {/* Header Section - Moved to Bottom */}
-      <section className="py-16 px-4 sm:px-8 lg:px-16">
-        <div className="max-w-border-64 mx-auto">
-          <div className="text-left space-y-6 text-foreground">
-            <h1 className="text-section-title-lg font-body font-bold uppercase">
-              {t.title}
-            </h1>
-
-            {/* Trust Indicators */}
-            <div className="grid md:grid-cols-2 gap-4 lg:gap-6 mt-6 lg:mt-8">
-              <div>
-                <div className="flex items-center gap-2 mb-3 lg:mb-4">
-                  <Clock className="text-primary size-5" />
-                  <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
-                    {translations.contact.trust.response.title}
-                  </h3>
-                </div>
-                <p className="text-body-md text-foreground">
-                  {translations.contact.trust.response.description}
-                </p>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-3 lg:mb-4">
-                  <Heart className="text-primary size-5" />
-                  <h3 className="text-body-lg font-body font-bold text-foreground uppercase">
-                    {translations.contact.trust.commitment.title}
-                  </h3>
-                </div>
-                <p className="text-body-md text-foreground">
-                  {translations.contact.trust.commitment.description}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </div>
