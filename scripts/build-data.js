@@ -100,7 +100,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: '¿Qué tipo de evento tienes?',
-          placeholder: '*Tipo',
+          placeholder: '*seleccionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Presentación de producto',
@@ -132,7 +132,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: '¿Cómo preferís que te contactemos?',
-          placeholder: 'Método',
+          placeholder: '*seleccionar',
           options: {
             whatsapp: 'Whatsapp',
             email: 'Mail',
@@ -391,7 +391,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'What type of event do you have?',
-          placeholder: '*Type',
+          placeholder: '*select',
           options: {
             corporate: 'Corporate event',
             product: 'Product presentation',
@@ -423,7 +423,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'How would you prefer us to contact you?',
-          placeholder: 'Method',
+          placeholder: '*select',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
@@ -680,7 +680,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'Que tipo de evento você tem?',
-          placeholder: '*Tipo',
+          placeholder: '*selecionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Apresentação de produto',
@@ -712,7 +712,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'Como você prefere que entremos em contato?',
-          placeholder: 'Método',
+          placeholder: '*selecionar',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',

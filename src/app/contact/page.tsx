@@ -65,6 +65,7 @@ function ContactPageContent() {
         };
         contactMethod: {
           label: string;
+          placeholder: string;
           options: {
             whatsapp: string;
             email: string;

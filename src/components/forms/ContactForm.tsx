@@ -112,6 +112,7 @@ interface ContactFormProps {
         };
         contactMethod: {
           label: string;
+          placeholder: string;
           options: {
             whatsapp: string;
             email: string;
@@ -577,27 +578,35 @@ export default function ContactForm({
                     Contáctenme a través de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <Select
-                      value={formData.contactMethod}
-                      onValueChange={value =>
-                        handleInputChange('contactMethod', value)
-                      }
-                    >
-                      <div className="w-full md:w-32 h-auto bg-background border-b border-border">
-                        <SelectTrigger className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none">
-                          <SelectValue placeholder="método" />
-                        </SelectTrigger>
-                      </div>
-                      <SelectContent>
+                    <div className="w-full md:w-48 h-9 bg-background border-b border-border">
+                      <select
+                        value={formData.contactMethod}
+                        onChange={e =>
+                          handleInputChange('contactMethod', e.target.value)
+                        }
+                        required
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-center flex items-center justify-center"
+                      >
+                        <option
+                          value=""
+                          disabled
+                          className="text-muted-foreground"
+                        >
+                          {t.form.contactMethod.placeholder}
+                        </option>
                         {Object.entries(t.form.contactMethod.options).map(
                           ([key, label]) => (
-                            <SelectItem key={key} value={key}>
+                            <option
+                              key={key}
+                              value={key}
+                              className="text-foreground"
+                            >
                               {label}
-                            </SelectItem>
+                            </option>
                           )
                         )}
-                      </SelectContent>
-                    </Select>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
@@ -648,35 +657,41 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">El evento es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <Select
-                      value={formData.eventType}
-                      onValueChange={value =>
-                        handleInputChange('eventType', value)
-                      }
+                    <div
+                      className={cn(
+                        'w-full md:w-48 h-9 bg-background border-b border-border',
+                        errors.eventType && 'border-b-destructive border-b-2'
+                      )}
                     >
-                      <div
-                        className={cn(
-                          'w-full md:w-48 h-auto bg-background border-b border-border',
-                          errors.eventType && 'border-b-destructive border-b-2'
-                        )}
+                      <select
+                        value={formData.eventType}
+                        onChange={e =>
+                          handleInputChange('eventType', e.target.value)
+                        }
+                        data-field="eventType"
+                        required
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-center flex items-center justify-center"
                       >
-                        <SelectTrigger
-                          data-field="eventType"
-                          className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                        <option
+                          value=""
+                          disabled
+                          className="text-muted-foreground"
                         >
-                          <SelectValue placeholder="tipo de evento" />
-                        </SelectTrigger>
-                      </div>
-                      <SelectContent>
+                          {t.form.eventType.placeholder}
+                        </option>
                         {Object.entries(t.form.eventType.options).map(
                           ([key, label]) => (
-                            <SelectItem key={key} value={key}>
+                            <option
+                              key={key}
+                              value={key}
+                              className="text-foreground"
+                            >
                               {label}
-                            </SelectItem>
+                            </option>
                           )
                         )}
-                      </SelectContent>
-                    </Select>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
