@@ -495,7 +495,7 @@ export default function ContactForm({
                   <span className="block md:inline">Me llamo</span>
                   <div
                     className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'name'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30',
@@ -530,7 +530,7 @@ export default function ContactForm({
                   <span className="block md:inline">y trabajo para</span>
                   <div
                     className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'company'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30'
@@ -567,7 +567,7 @@ export default function ContactForm({
                   <div className="w-full md:w-auto md:inline-block">
                     <div
                       className={cn(
-                        'w-full md:w-48 h-9 bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                        'w-full md:w-64 h-[52px] bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                         focusedField === 'contactMethod'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30'
@@ -618,7 +618,7 @@ export default function ContactForm({
                   {formData.contactMethod === 'email' ? (
                     <div
                       className={cn(
-                        'w-full md:w-64 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                        'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                         focusedField === 'email'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30',
@@ -649,7 +649,7 @@ export default function ContactForm({
                   ) : (
                     <div
                       className={cn(
-                        'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                        'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                         focusedField === 'phone'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30',
@@ -688,7 +688,7 @@ export default function ContactForm({
                   <div className="w-full md:w-auto md:inline-block">
                     <div
                       className={cn(
-                        'w-full md:w-48 h-9 bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                        'w-full md:w-64 h-[52px] bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                         focusedField === 'eventType'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30',
@@ -741,7 +741,7 @@ export default function ContactForm({
                   <span className="block md:inline">en</span>
                   <div
                     className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'location'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30',
@@ -773,10 +773,10 @@ export default function ContactForm({
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">para aproximadamente</span>
+                  <span className="block md:inline">para</span>
                   <div
                     className={cn(
-                      'w-full md:w-32 md:inline-block h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'attendees'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30',
@@ -819,7 +819,7 @@ export default function ContactForm({
                   <div className="w-full md:w-auto md:inline-block">
                     <div
                       className={cn(
-                        'w-full md:w-64 h-auto bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                        'w-full md:w-64 h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                         focusedField === 'services'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30',
@@ -862,7 +862,7 @@ export default function ContactForm({
                   <div className="w-full md:w-auto md:inline-block">
                     <div
                       className={cn(
-                        'w-full md:w-64 h-9 bg-background px-2 relative transition-all duration-300 ease-out border-b overflow-hidden',
+                        'w-full md:w-64 h-[52px] bg-background px-2 py-2 relative transition-all duration-300 ease-out border-b overflow-hidden',
                         focusedField === 'eventDate'
                           ? 'border-b-2 !border-primary'
                           : '!border-primary/30'
@@ -900,7 +900,7 @@ export default function ContactForm({
                   <span className="block md:inline">Más detalles</span>
                   <div
                     className={cn(
-                      'w-full md:w-96 md:inline-block bg-background px-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-96 md:inline-block bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'message'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30'
