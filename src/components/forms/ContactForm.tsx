@@ -776,7 +776,7 @@ export default function ContactForm({
                   <span className="block md:inline">para</span>
                   <div
                     className={cn(
-                      'w-full md:w-64 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                      'w-full md:w-36 md:inline-block h-auto bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
                       focusedField === 'attendees'
                         ? 'border-b-2 !border-primary'
                         : '!border-primary/30',
@@ -895,37 +895,35 @@ export default function ContactForm({
               </div>
 
               {/* Line 6: Details */}
-              <div className="md:flex md:flex-wrap md:items-start md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-start md:gap-2">
-                  <span className="block md:inline">Más detalles</span>
+              <div className="space-y-2">
+                <div className="mb-4">
+                  <span className="block">{t.form.message.label}</span>
+                </div>
+                <div
+                  className={cn(
+                    'w-full bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
+                    focusedField === 'message'
+                      ? 'border-b-2 !border-primary'
+                      : '!border-primary/30'
+                  )}
+                >
                   <div
                     className={cn(
-                      'w-full md:w-96 md:inline-block bg-background px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                      focusedField === 'message'
-                        ? 'border-b-2 !border-primary'
-                        : '!border-primary/30'
+                      'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
+                      focusedField === 'message' ? 'scale-x-100' : 'scale-x-0'
                     )}
-                  >
-                    <div
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                        focusedField === 'message' ? 'scale-x-100' : 'scale-x-0'
-                      )}
-                      style={{ width: '100%' }}
-                    />
-                    <Textarea
-                      id="message"
-                      placeholder={t.form.message.placeholder}
-                      rows={3}
-                      value={formData.message}
-                      onChange={e =>
-                        handleInputChange('message', e.target.value)
-                      }
-                      onFocus={() => setFocusedField('message')}
-                      onBlur={() => setFocusedField(null)}
-                      className="!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
-                    />
-                  </div>
+                    style={{ width: '100%' }}
+                  />
+                  <Textarea
+                    id="message"
+                    placeholder={t.form.message.placeholder}
+                    rows={3}
+                    value={formData.message}
+                    onChange={e => handleInputChange('message', e.target.value)}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField(null)}
+                    className="!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
+                  />
                 </div>
               </div>
             </div>
