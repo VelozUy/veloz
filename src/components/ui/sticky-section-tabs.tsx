@@ -38,7 +38,7 @@ const StickyTabs: React.FC<StickyTabsProps> & {
   headerContentWrapperClassName = 'border-b border-t border-border bg-background',
   headerContentLayoutClassName = 'mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8',
   titleClassName = 'my-0 text-2xl font-medium leading-none md:text-3xl lg:text-4xl',
-  contentLayoutClassName = 'mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8',
+  contentLayoutClassName = 'mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8',
 }) => {
   const stickyTopValue = `calc(${mainNavHeight} - 1px)`;
   const navHeightStyle = { height: mainNavHeight };

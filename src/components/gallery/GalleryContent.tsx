@@ -49,7 +49,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
     return (
       <div className="container mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         {/* No Projects Message */}
-        <div className="text-center py-16">
+        <div className="text-center py-8">
           <div className="max-w-md mx-auto">
             <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
               No se encontraron proyectos
@@ -71,7 +71,7 @@ export function GalleryContent({ content }: GalleryContentProps) {
       {/* Main Content */}
       <div className="max-w-border-64 mx-auto px-4 md:px-8 lg:px-8 xl:px-16 py-8">
         {/* Main Title - Eventos */}
-        <div className="text-center py-16">
+        <div className="text-center py-8">
           <h1
             className="font-body font-semibold tracking-tight text-center w-full text-foreground mb-8 leading-none whitespace-nowrap uppercase"
             style={{

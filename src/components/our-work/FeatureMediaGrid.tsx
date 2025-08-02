@@ -190,7 +190,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
 
   if (!media.length) {
     return (
-      <div className={`text-center py-16 ${className}`}>
+      <div className={`text-center py-8 ${className}`}>
         <h3 className="text-xl font-semibold text-foreground mb-4">
           No hay medios destacados disponibles
         </h3>

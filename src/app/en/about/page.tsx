@@ -212,7 +212,7 @@ export default async function AboutPageEN() {
       )}
 
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16 space-y-16">
+        <div className="container mx-auto px-4 py-8 space-y-16">
           {/* Hero Section */}
           <div className="text-center space-y-6">
             <h1 className="text-section-title-lg font-body font-semibold text-primary">

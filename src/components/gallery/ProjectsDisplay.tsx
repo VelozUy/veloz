@@ -51,7 +51,7 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
   // Handle null/undefined projects
   if (!projects || !Array.isArray(projects) || projects.length === 0) {
     return (
-      <div className={`text-center py-16 ${className}`}>
+      <div className={`text-center py-8 ${className}`}>
         <h2 className="text-section-title-md font-body font-semibold text-foreground mb-4">
           No se encontraron proyectos
         </h2>

@@ -474,7 +474,7 @@ export default function ContactForm({
   return (
     <div className="min-h-screen bg-background">
       {/* Contact Form - Full Top Section */}
-      <section className="py-16 px-4 sm:px-8 lg:px-16 bg-background">
+      <section className="py-8 px-4 sm:px-8 lg:px-16 bg-background">
         <div className="max-w-border-64 mx-auto">
           {/* Title and Subtitle */}
           <div className="text-left mb-12 space-y-4">

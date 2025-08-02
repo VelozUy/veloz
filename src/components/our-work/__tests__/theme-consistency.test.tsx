@@ -152,7 +152,7 @@ describe('Theme Consistency Verification', () => {
       // Check for theme spacing
       const section = container.querySelector('section');
       expect(section).toHaveClass('py-12');
-      expect(section).toHaveClass('md:py-16');
+      expect(section).toHaveClass('md:py-8');
 
       const containerDiv = container.querySelector('.container');
       expect(containerDiv).toHaveClass('px-8');

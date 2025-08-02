@@ -428,7 +428,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className={`text-center py-16 ${contentClasses.text}`}
+            className={`text-center py-8 ${contentClasses.text}`}
           >
             <h1 className="text-section-title-lg font-body font-semibold mb-6">
               {uiText.title}
@@ -447,7 +447,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className={`text-center py-16 ${contentClasses.text}`}
+              className={`text-center py-8 ${contentClasses.text}`}
             >
               <div className="text-lg">{uiText.noProjects}</div>
             </motion.div>

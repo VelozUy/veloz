@@ -27,7 +27,7 @@ const PlaceholderContent: React.FC<{ title: string; description: string }> = ({
   title,
   description,
 }) => (
-  <div className="flex flex-col items-center justify-center text-center py-16">
+  <div className="flex flex-col items-center justify-center text-center py-8">
     <PlaceholderSvg />
     <h3 className="text-xl font-semibold mt-4 mb-2 text-foreground">{title}</h3>
     <p className="text-muted-foreground max-w-xl">{description}</p>
@@ -126,7 +126,7 @@ export default function StickyTabsDemoPage() {
           headerContentWrapperClassName="border-b border-t border-border bg-background"
           headerContentLayoutClassName="mx-auto max-w-7xl px-16 py-5"
           titleClassName="my-0 text-2xl font-medium leading-none md:text-3xl lg:text-4xl"
-          contentLayoutClassName="mx-auto max-w-7xl px-16 py-16"
+          contentLayoutClassName="mx-auto max-w-7xl px-16 py-8"
         >
           <StickyTabs.Item title="Paso 1: Consulta Inicial" id="consulta">
             <ProcessStep
@@ -198,7 +198,7 @@ export default function StickyTabsDemoPage() {
         </StickyTabs>
 
         {/* Footer */}
-        <footer className="bg-background py-16 border-t border-border">
+        <footer className="bg-background py-8 border-t border-border">
           <div className="mx-auto max-w-7xl px-16 text-center">
             <h2 className="text-2xl font-semibold text-foreground mb-4">
               ¿Comenzamos?

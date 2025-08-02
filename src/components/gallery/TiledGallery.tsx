@@ -476,7 +476,7 @@ export function TiledGallery({
 
   if (!images.length) {
     return (
-      <div className={cn('text-center py-16 px-4 md:px-16', className)}>
+      <div className={cn('text-center py-8 px-4 md:px-16', className)}>
         <p className="text-muted-foreground">No images to display</p>
       </div>
     );
