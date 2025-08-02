@@ -322,35 +322,64 @@ export default function ContactForm({
   }, [searchParams]);
 
   const validateForm = () => {
+    console.log('Starting form validation...');
+    console.log('Current form data:', formData);
+
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = translations.contact.form.name.label;
+      console.log('Name validation failed');
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = translations.contact.form.email.label;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
+    // Validate email only if contact method is email
+    if (formData.contactMethod === 'email') {
+      if (!formData.email.trim()) {
+        newErrors.email = translations.contact.form.email.label;
+        console.log('Email validation failed - empty');
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Email inválido';
+        console.log('Email validation failed - invalid format');
+      }
+    }
+
+    // Validate phone only if contact method is whatsapp or call
+    if (
+      formData.contactMethod === 'whatsapp' ||
+      formData.contactMethod === 'call'
+    ) {
+      if (!formData.phone.trim()) {
+        newErrors.phone = translations.contact.form.phone.label;
+        console.log('Phone validation failed');
+      }
     }
 
     if (!formData.eventType.trim()) {
       newErrors.eventType = translations.contact.form.eventType.label;
+      console.log('Event type validation failed');
     }
 
     if (!formData.location.trim()) {
       newErrors.location = translations.contact.form.location.label;
+      console.log('Location validation failed');
     }
 
     if (!formData.attendees.trim()) {
       newErrors.attendees = translations.contact.form.attendees.label;
+      console.log('Attendees validation failed');
     }
 
     if (formData.services.length === 0) {
       newErrors.services = translations.contact.form.services.label;
+      console.log('Services validation failed');
     }
 
+    console.log('Validation errors found:', newErrors);
+    console.log('Setting errors state to:', newErrors);
     setErrors(newErrors);
+
+    // Debug: Check if errors state is being set correctly
+    console.log('Current errors state after setErrors:', errors);
 
     // Track validation errors if any
     if (Object.keys(newErrors).length > 0) {
@@ -358,24 +387,76 @@ export default function ContactForm({
         errorFields: Object.keys(newErrors),
         errorCount: Object.keys(newErrors).length,
       });
+
+      // Scroll to first error field
+      setTimeout(() => {
+        const firstErrorField = Object.keys(newErrors)[0];
+        console.log('First error field:', firstErrorField);
+
+        // Find element by data-field attribute
+        const errorElement = document.querySelector(
+          `[data-field="${firstErrorField}"]`
+        ) as HTMLElement;
+        console.log('Found error element:', errorElement);
+
+        if (errorElement) {
+          console.log('Scrolling to error element');
+          errorElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          errorElement.focus();
+        } else {
+          console.log('Error element not found, trying fallback approach');
+          // Fallback: try to find any input or select in the form
+          const formElement = document.querySelector('form');
+          if (formElement) {
+            const firstInput = formElement.querySelector(
+              'input, select, textarea'
+            ) as HTMLElement;
+            if (firstInput) {
+              console.log('Using fallback element, scrolling to first input');
+              firstInput.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+              });
+              firstInput.focus();
+            }
+          }
+        }
+      }, 200);
     }
 
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    console.log('Form validation result:', isValid);
+    return isValid;
   };
 
   const onSubmit = async (e: React.FormEvent) => {
+    console.log('Form submission started');
     e.preventDefault();
 
-    if (!validateForm()) {
+    console.log('Form data:', formData);
+    console.log('Current errors:', errors);
+
+    const isValid = validateForm();
+    console.log('Form validation result:', isValid);
+
+    if (!isValid) {
+      console.log('Form validation failed, returning early');
+      console.log('Errors after validation:', errors);
       return;
     }
 
+    console.log('Form validation passed, proceeding with submission');
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
+      console.log('Starting file upload...');
       // Upload files first
       const uploadedUrls = await uploadFiles();
+      console.log('File upload completed:', uploadedUrls);
 
       // Prepare form data with attachments
       const formDataWithAttachments = {
@@ -383,7 +464,9 @@ export default function ContactForm({
         attachments: uploadedUrls,
       } as ContactFormData;
 
+      console.log('Sending contact form with data:', formDataWithAttachments);
       await emailService.sendContactForm(formDataWithAttachments);
+      console.log('Contact form sent successfully');
       setIsSubmitted(true);
 
       // Track successful form submission
@@ -573,283 +656,356 @@ export default function ContactForm({
       <section className="py-16 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-border-64 mx-auto">
           <form onSubmit={onSubmit} className="space-y-8">
-            {/* Email-like format */}
-            <div className="text-body-lg leading-relaxed space-y-6">
-              {/* First sentence: Name, Company, and Contact */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span>Me llamo</span>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder={t.form.name.placeholder}
-                  value={formData.name}
-                  onChange={e => handleInputChange('name', e.target.value)}
-                  className={cn(
-                    errors.name && 'border-destructive',
-                    '!text-body-md w-48 inline-block'
-                  )}
-                />
-                <span>y trabajo para</span>
-                <Input
-                  id="company"
-                  type="text"
-                  placeholder={t.form.company.placeholder}
-                  value={formData.company}
-                  onChange={e => handleInputChange('company', e.target.value)}
-                  className="!text-body-md w-48 inline-block"
-                />
-                <span>Contáctenme a través de</span>
-                <div className="inline-block">
-                  <Select
-                    value={formData.contactMethod}
-                    onValueChange={value =>
-                      handleInputChange('contactMethod', value)
-                    }
-                  >
-                    <SelectTrigger className="w-32 !text-body-md">
-                      <SelectValue placeholder="método" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(t.form.contactMethod.options).map(
-                        ([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {formData.contactMethod === 'email' ? (
+            {/* Multi-line format */}
+            <div className="text-[2.25rem] leading-relaxed space-y-8">
+              {/* Line 1: Name and Company */}
+              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">Me llamo</span>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder={t.form.email.placeholder}
-                    value={formData.email}
-                    onChange={e => handleInputChange('email', e.target.value)}
+                    id="name"
+                    type="text"
+                    placeholder={t.form.name.placeholder}
+                    value={formData.name}
+                    onChange={e => handleInputChange('name', e.target.value)}
+                    data-field="name"
                     className={cn(
-                      errors.email && 'border-destructive',
-                      '!text-body-md w-64 inline-block'
+                      '!text-[2rem] w-full md:w-48 md:inline-block',
+                      errors.name && 'border-destructive border-2'
                     )}
-                  />
-                ) : (
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder={t.form.phone.placeholder}
-                    value={formData.phone}
-                    onChange={e => handleInputChange('phone', e.target.value)}
-                    className="!text-body-md w-48 inline-block"
-                  />
-                )}
-              </div>
-              {errors.name && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.name}
-                </p>
-              )}
-              {errors.email && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.email}
-                </p>
-              )}
-
-              {/* Second sentence: Event details, Services, Date, and Details */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span>El evento es </span>
-                <div className="inline-block">
-                  <Select
-                    value={formData.eventType}
-                    onValueChange={value =>
-                      handleInputChange('eventType', value)
-                    }
-                  >
-                    <SelectTrigger className="w-48 !text-body-md">
-                      <SelectValue placeholder="tipo de evento" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(t.form.eventType.options).map(
-                        ([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <span> en </span>
-                <Input
-                  id="location"
-                  type="text"
-                  placeholder={t.form.location.placeholder}
-                  value={formData.location}
-                  onChange={e => handleInputChange('location', e.target.value)}
-                  className={cn(
-                    errors.location && 'border-destructive',
-                    '!text-body-md w-48 inline-block'
-                  )}
-                />
-                <span> para aproximadamente </span>
-                <Input
-                  id="attendees"
-                  type="number"
-                  placeholder={t.form.attendees.placeholder}
-                  value={formData.attendees}
-                  onChange={e => handleInputChange('attendees', e.target.value)}
-                  className={cn(
-                    errors.attendees && 'border-destructive',
-                    '!text-body-md w-32 inline-block'
-                  )}
-                />
-                <span> personas</span>
-                <span>Me interesan los servicios de </span>
-                <div className="inline-block">
-                  <Select
-                    value={formData.services.join(',')}
-                    onValueChange={value => {
-                      const services = value ? value.split(',') : [];
-                      handleInputChange('services', services);
+                    style={{
+                      borderColor: errors.name
+                        ? 'var(--destructive)'
+                        : undefined,
+                      borderWidth: errors.name ? '2px' : undefined,
                     }}
-                  >
-                    <SelectTrigger className="w-64 !text-body-md">
-                      <SelectValue placeholder="seleccionar servicios" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(t.form.services.options).map(
-                        ([key, label]) => (
-                          <SelectItem key={key} value={key}>
-                            {label}
-                          </SelectItem>
-                        )
-                      )}
-                    </SelectContent>
-                  </Select>
+                  />
                 </div>
-                <span>La fecha es </span>
-                <div className="inline-block">
-                  {isMobile ? (
-                    <Button
-                      variant="outline"
-                      onClick={() => openModal('datePicker')}
-                      className={cn(
-                        'w-48 justify-start text-left font-normal text-body-md',
-                        !formData.eventDate && 'text-muted-foreground'
-                      )}
+                <div className="md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">y trabajo para</span>
+                  <Input
+                    id="company"
+                    type="text"
+                    placeholder={t.form.company.placeholder}
+                    value={formData.company}
+                    onChange={e => handleInputChange('company', e.target.value)}
+                    className="!text-[2rem] w-full md:w-48 md:inline-block"
+                  />
+                </div>
+              </div>
+              {/* Line 2: Contact Method */}
+              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">
+                    Contáctenme a través de
+                  </span>
+                  <div className="w-full md:w-auto md:inline-block">
+                    <Select
+                      value={formData.contactMethod}
+                      onValueChange={value =>
+                        handleInputChange('contactMethod', value)
+                      }
                     >
-                      <CalendarIcon className="mr-2 h-5 w-5" />
-                      {formData.eventDate ? (
-                        format(new Date(formData.eventDate), 'PPP', {
-                          locale:
-                            locale === 'es'
-                              ? es
-                              : locale === 'en'
-                                ? enUS
-                                : ptBR,
-                        })
-                      ) : (
-                        <span>No tengo fecha</span>
-                      )}
-                    </Button>
-                  ) : (
-                    <Popover
-                      open={isDatePickerOpen}
-                      onOpenChange={setIsDatePickerOpen}
-                    >
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            'w-48 justify-start text-left font-normal text-body-md',
-                            !formData.eventDate && 'text-muted-foreground'
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-5 w-5" />
-                          {formData.eventDate ? (
-                            format(new Date(formData.eventDate), 'PPP', {
-                              locale:
-                                locale === 'es'
-                                  ? es
-                                  : locale === 'en'
-                                    ? enUS
-                                    : ptBR,
-                            })
-                          ) : (
-                            <span>No tengo fecha</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className={cn(
-                          'w-auto p-0 z-[9999]',
-                          isMobile &&
-                            'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                      <SelectTrigger className="w-full md:w-32 !text-[2rem]">
+                        <SelectValue placeholder="método" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(t.form.contactMethod.options).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          )
                         )}
-                        side="bottom"
-                        align="center"
-                      >
-                        <Calendar
-                          mode="single"
-                          selected={
-                            formData.eventDate
-                              ? new Date(formData.eventDate)
-                              : undefined
-                          }
-                          onSelect={date => {
-                            const formattedDate = date
-                              ? format(date, 'yyyy-MM-dd')
-                              : '';
-                            handleInputChange('eventDate', formattedDate);
-                            setIsDatePickerOpen(false);
-                          }}
-                          disabled={date =>
-                            date < new Date(new Date().setHours(0, 0, 0, 0))
-                          }
-                          initialFocus
-                          locale={
-                            locale === 'es' ? es : locale === 'en' ? enUS : ptBR
-                          }
-                        />
-                      </PopoverContent>
-                    </Popover>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="md:flex md:items-center md:gap-2">
+                  {formData.contactMethod === 'email' ? (
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={t.form.email.placeholder}
+                      value={formData.email}
+                      onChange={e => handleInputChange('email', e.target.value)}
+                      data-field="email"
+                      className={cn(
+                        '!text-[2rem] w-full md:w-64 md:inline-block',
+                        errors.email && 'border-destructive border-2'
+                      )}
+                      style={{
+                        borderColor: errors.email
+                          ? 'var(--destructive)'
+                          : undefined,
+                        borderWidth: errors.email ? '2px' : undefined,
+                      }}
+                    />
+                  ) : (
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder={t.form.phone.placeholder}
+                      value={formData.phone}
+                      onChange={e => handleInputChange('phone', e.target.value)}
+                      data-field="phone"
+                      className={cn(
+                        '!text-[2rem] w-full md:w-48 md:inline-block',
+                        errors.phone && 'border-destructive border-2'
+                      )}
+                      style={{
+                        borderColor: errors.phone
+                          ? 'var(--destructive)'
+                          : undefined,
+                        borderWidth: errors.phone ? '2px' : undefined,
+                      }}
+                    />
                   )}
                 </div>
-                <span>Más detalles:</span>
-                <Textarea
-                  id="message"
-                  placeholder={t.form.message.placeholder}
-                  rows={3}
-                  value={formData.message}
-                  onChange={e => handleInputChange('message', e.target.value)}
-                  className="!text-body-md w-96 inline-block"
-                />
               </div>
-              {errors.eventType && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.eventType}
-                </p>
-              )}
-              {errors.location && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.location}
-                </p>
-              )}
-              {errors.attendees && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.attendees}
-                </p>
-              )}
-              {errors.services && (
-                <p className="text-body-md text-destructive flex items-center gap-1">
-                  <AlertCircle className="w-5 h-5" />
-                  {errors.services}
-                </p>
-              )}
+
+              {/* Line 3: Event Details */}
+              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">El evento es</span>
+                  <div className="w-full md:w-auto md:inline-block">
+                    <Select
+                      value={formData.eventType}
+                      onValueChange={value =>
+                        handleInputChange('eventType', value)
+                      }
+                    >
+                      <SelectTrigger
+                        data-field="eventType"
+                        className={cn(
+                          'w-full md:w-48 !text-[2rem]',
+                          errors.eventType && 'border-destructive border-2'
+                        )}
+                        style={{
+                          borderColor: errors.eventType
+                            ? 'var(--destructive)'
+                            : undefined,
+                          borderWidth: errors.eventType ? '2px' : undefined,
+                        }}
+                      >
+                        <SelectValue placeholder="tipo de evento" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(t.form.eventType.options).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">en</span>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder={t.form.location.placeholder}
+                    value={formData.location}
+                    onChange={e =>
+                      handleInputChange('location', e.target.value)
+                    }
+                    data-field="location"
+                    className={cn(
+                      '!text-[2rem] w-full md:w-48 md:inline-block',
+                      errors.location && 'border-destructive border-2'
+                    )}
+                    style={{
+                      borderColor: errors.location
+                        ? 'var(--destructive)'
+                        : undefined,
+                      borderWidth: errors.location ? '2px' : undefined,
+                    }}
+                  />
+                </div>
+                <div className="md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">para aproximadamente</span>
+                  <Input
+                    id="attendees"
+                    type="number"
+                    placeholder={t.form.attendees.placeholder}
+                    value={formData.attendees}
+                    onChange={e =>
+                      handleInputChange('attendees', e.target.value)
+                    }
+                    data-field="attendees"
+                    className={cn(
+                      '!text-[2rem] w-full md:w-32 md:inline-block',
+                      errors.attendees && 'border-destructive border-2'
+                    )}
+                    style={{
+                      borderColor: errors.attendees
+                        ? 'var(--destructive)'
+                        : undefined,
+                      borderWidth: errors.attendees ? '2px' : undefined,
+                    }}
+                  />
+                  <span className="block md:inline">personas</span>
+                </div>
+              </div>
+
+              {/* Line 4: Services */}
+              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">
+                    Me interesan los servicios de
+                  </span>
+                  <div className="w-full md:w-auto md:inline-block">
+                    <Select
+                      value={formData.services.join(',')}
+                      onValueChange={value => {
+                        const services = value ? value.split(',') : [];
+                        handleInputChange('services', services);
+                      }}
+                    >
+                      <SelectTrigger
+                        data-field="services"
+                        className={cn(
+                          'w-full md:w-64 !text-[2rem]',
+                          errors.services && 'border-destructive border-2'
+                        )}
+                        style={{
+                          borderColor: errors.services
+                            ? 'var(--destructive)'
+                            : undefined,
+                          borderWidth: errors.services ? '2px' : undefined,
+                        }}
+                      >
+                        <SelectValue placeholder="seleccionar servicios" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(t.form.services.options).map(
+                          ([key, label]) => (
+                            <SelectItem key={key} value={key}>
+                              {label}
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Line 5: Date */}
+              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
+                  <span className="block md:inline">La fecha es</span>
+                  <div className="w-full md:w-auto md:inline-block">
+                    {isMobile ? (
+                      <Button
+                        variant="outline"
+                        onClick={() => openModal('datePicker')}
+                        className={cn(
+                          'w-full md:w-48 justify-start text-left font-normal text-[2rem]',
+                          !formData.eventDate && 'text-muted-foreground'
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-5 w-5" />
+                        {formData.eventDate ? (
+                          format(new Date(formData.eventDate), 'PPP', {
+                            locale:
+                              locale === 'es'
+                                ? es
+                                : locale === 'en'
+                                  ? enUS
+                                  : ptBR,
+                          })
+                        ) : (
+                          <span>No tengo fecha</span>
+                        )}
+                      </Button>
+                    ) : (
+                      <Popover
+                        open={isDatePickerOpen}
+                        onOpenChange={setIsDatePickerOpen}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              'w-full md:w-48 justify-start text-left font-normal text-[2rem]',
+                              !formData.eventDate && 'text-muted-foreground'
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-5 w-5" />
+                            {formData.eventDate ? (
+                              format(new Date(formData.eventDate), 'PPP', {
+                                locale:
+                                  locale === 'es'
+                                    ? es
+                                    : locale === 'en'
+                                      ? enUS
+                                      : ptBR,
+                              })
+                            ) : (
+                              <span>No tengo fecha</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className={cn(
+                            'w-auto p-0 z-[9999]',
+                            isMobile &&
+                              'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                          )}
+                          side="bottom"
+                          align="center"
+                        >
+                          <Calendar
+                            mode="single"
+                            selected={
+                              formData.eventDate
+                                ? new Date(formData.eventDate)
+                                : undefined
+                            }
+                            onSelect={date => {
+                              const formattedDate = date
+                                ? format(date, 'yyyy-MM-dd')
+                                : '';
+                              handleInputChange('eventDate', formattedDate);
+                              setIsDatePickerOpen(false);
+                            }}
+                            disabled={date =>
+                              date < new Date(new Date().setHours(0, 0, 0, 0))
+                            }
+                            initialFocus
+                            locale={
+                              locale === 'es'
+                                ? es
+                                : locale === 'en'
+                                  ? enUS
+                                  : ptBR
+                            }
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Line 6: Details */}
+              <div className="md:flex md:flex-wrap md:items-start md:gap-2">
+                <div className="mb-4 md:mb-0 md:flex md:items-start md:gap-2">
+                  <span className="block md:inline">Más detalles</span>
+                  <Textarea
+                    id="message"
+                    placeholder={t.form.message.placeholder}
+                    rows={3}
+                    value={formData.message}
+                    onChange={e => handleInputChange('message', e.target.value)}
+                    className="!text-[2rem] w-full md:w-96 md:inline-block"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* File Upload */}
