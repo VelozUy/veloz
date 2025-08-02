@@ -884,7 +884,7 @@ export default function ContactForm({
             </div>
 
             {/* Submit Button */}
-            <div className="text-center space-y-4 lg:space-y-6">
+            <div className="space-y-4 lg:space-y-6">
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -912,12 +912,6 @@ export default function ContactForm({
                   {submitError}
                 </div>
               )}
-
-              {/* Privacy Notice */}
-              <div className="text-body-md text-muted-foreground space-y-2 max-w-2xl mx-auto">
-                <p>{t.form.privacy.line1}</p>
-                <p>{t.form.privacy.line2}</p>
-              </div>
             </div>
           </form>
         </div>
