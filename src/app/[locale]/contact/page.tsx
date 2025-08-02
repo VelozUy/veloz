@@ -3,22 +3,52 @@ import { getStaticContent } from '@/lib/utils';
 import ContactForm from '@/components/forms/ContactForm';
 import type { Metadata } from 'next';
 
-// Generate metadata for SEO
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: `Veloz - Contato`,
-    description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
-    openGraph: {
-      title: `Veloz - Contato`,
-      description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
-      type: 'website',
-    },
-  };
+// Generate static params for English and Portuguese only (Spanish is default)
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'pt' }];
 }
 
-function ContactPageContent() {
-  // Get static content for Brazilian Portuguese
-  const content = getStaticContent('pt');
+// Generate metadata for each locale
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+
+  const metadata: Record<string, Metadata> = {
+    en: {
+      title: 'Veloz - Contact',
+      description: 'Tell us about your event and let us make it perfect',
+      openGraph: {
+        title: 'Veloz - Contact',
+        description: 'Tell us about your event and let us make it perfect',
+        type: 'website',
+      },
+    },
+    pt: {
+      title: 'Veloz - Contato',
+      description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
+      openGraph: {
+        title: 'Veloz - Contato',
+        description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
+        type: 'website',
+      },
+    },
+  };
+
+  return metadata[locale] || metadata.en;
+}
+
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
+function ContactPageContent({ locale }: { locale: string }) {
+  // Get static content for the specific locale
+  const content = getStaticContent(locale);
 
   // Cast translations to expected type for ContactForm
   const translations = content.translations as {
@@ -82,12 +112,18 @@ function ContactPageContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ContactForm translations={translations} locale="pt" />
+      <ContactForm translations={translations} locale={locale} />
     </div>
   );
 }
 
-export default function ContactPagePT() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
   return (
     <Suspense
       fallback={
@@ -96,7 +132,7 @@ export default function ContactPagePT() {
         </div>
       }
     >
-      <ContactPageContent />
+      <ContactPageContent locale={locale} />
     </Suspense>
   );
 }

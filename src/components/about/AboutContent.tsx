@@ -33,6 +33,7 @@ interface AboutContentProps {
       };
     };
     translations: Record<string, unknown>;
+    locale: string;
   };
   faqs: FAQ[];
   methodologySteps: Array<{
@@ -148,7 +149,7 @@ export default function AboutContent({
         <FAQSection
           faqs={faqs}
           title={content.content.about.faq.title || 'Preguntas Frecuentes'}
-          locale="es"
+          locale={content.locale}
         />
       )}
 
