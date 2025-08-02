@@ -60,15 +60,20 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 ## 🌍 Multilanguage Support ✅ COMPLETED
 
-- **Static Localized Routes Implementation**: Build-time content generation for SEO optimization
-- **Supported Languages**: Spanish (es - base), English (en), Brazilian Portuguese (pt)
+- **Unified Language Page Structure**: Single page components generate multiple language versions at build time
+- **Supported Languages**: Spanish (es - default), English (en), Brazilian Portuguese (pt)
+- **URL Structure**:
+  - Spanish (default): `/about`, `/contact`, `/our-work`
+  - English: `/en/about`, `/en/contact`, `/en/our-work`
+  - Portuguese: `/pt/about`, `/pt/contact`, `/pt/our-work`
+- **Dynamic Route Implementation**: `src/app/[locale]/` pages handle English and Portuguese with `generateStaticParams`
 - **Build-Time Data Fetching**: `scripts/build-data.js` fetches all admin-editable content from Firestore
 - **Static Content Generation**: Generates `content-es.json`, `content-en.json`, `content-pt.json` in `src/data/`
 - **TypeScript Integration**: Auto-generated types in `src/lib/static-content.generated.ts`
 - **Content Access**: `getStaticContent()` utility function for accessing localized content
 - **SEO Benefits**: All content rendered at build time for optimal search engine crawlability
 - **Performance**: No client-side translation loading, faster page loads
-- **Future Ready**: Foundation prepared for full locale routing (/en, /es, /pt) implementation
+- **Component Reusability**: Shared components (`AboutContent`, `ContactForm`, `OurWorkClient`) render content for all locales
 
 ---
 
@@ -157,7 +162,7 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 **URL Structure**:
 
-- **Main Page**: `/our-work` (shows all featured media from published projects)
+- **Main Page**: `/our-work` (Spanish - shows all featured media from published projects)
 - **Language Versions**: `/en/our-work`, `/pt/our-work` for English and Portuguese
 - **Category Pages**: `/our-work/[category-slug]` (still available but not linked from main page)
 

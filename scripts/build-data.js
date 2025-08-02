@@ -1342,51 +1342,59 @@ function generateLocaleContent(
                 aboutContent.methodologyTitle?.[locale] ||
                 aboutContent.methodologyTitle?.es ||
                 STATIC_TRANSLATIONS[locale].about.methodology.title,
-              planning: {
-                title:
-                  aboutContent.methodologySteps?.[0]?.title?.[locale] ||
-                  aboutContent.methodologySteps?.[0]?.title?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.planning.title,
-                description:
-                  aboutContent.methodologySteps?.[0]?.description?.[locale] ||
-                  aboutContent.methodologySteps?.[0]?.description?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.planning
-                    .description,
-              },
-              coverage: {
-                title:
-                  aboutContent.methodologySteps?.[1]?.title?.[locale] ||
-                  aboutContent.methodologySteps?.[1]?.title?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.coverage.title,
-                description:
-                  aboutContent.methodologySteps?.[1]?.description?.[locale] ||
-                  aboutContent.methodologySteps?.[1]?.description?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.coverage
-                    .description,
-              },
-              capture: {
-                title:
-                  aboutContent.methodologySteps?.[2]?.title?.[locale] ||
-                  aboutContent.methodologySteps?.[2]?.title?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.capture.title,
-                description:
-                  aboutContent.methodologySteps?.[2]?.description?.[locale] ||
-                  aboutContent.methodologySteps?.[2]?.description?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.capture
-                    .description,
-              },
-              postproduction: {
-                title:
-                  aboutContent.methodologySteps?.[3]?.title?.[locale] ||
-                  aboutContent.methodologySteps?.[3]?.title?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.postproduction
-                    .title,
-                description:
-                  aboutContent.methodologySteps?.[3]?.description?.[locale] ||
-                  aboutContent.methodologySteps?.[3]?.description?.es ||
-                  STATIC_TRANSLATIONS[locale].about.methodology.postproduction
-                    .description,
-              },
+              // Use methodology steps from admin panel if available
+              steps:
+                Array.isArray(aboutContent.methodologySteps) &&
+                aboutContent.methodologySteps.length > 0
+                  ? aboutContent.methodologySteps
+                      .sort((a, b) => (a.order || 0) - (b.order || 0))
+                      .map((step, index) => ({
+                        step: String(index + 1).padStart(2, '0'),
+                        title: step.title?.[locale] || step.title?.es || '',
+                        description:
+                          step.description?.[locale] ||
+                          step.description?.es ||
+                          '',
+                      }))
+                  : [
+                      // Fallback to static translations if no admin content
+                      {
+                        step: '01',
+                        title:
+                          STATIC_TRANSLATIONS[locale].about.methodology.planning
+                            .title,
+                        description:
+                          STATIC_TRANSLATIONS[locale].about.methodology.planning
+                            .description,
+                      },
+                      {
+                        step: '02',
+                        title:
+                          STATIC_TRANSLATIONS[locale].about.methodology.coverage
+                            .title,
+                        description:
+                          STATIC_TRANSLATIONS[locale].about.methodology.coverage
+                            .description,
+                      },
+                      {
+                        step: '03',
+                        title:
+                          STATIC_TRANSLATIONS[locale].about.methodology.capture
+                            .title,
+                        description:
+                          STATIC_TRANSLATIONS[locale].about.methodology.capture
+                            .description,
+                      },
+                      {
+                        step: '04',
+                        title:
+                          STATIC_TRANSLATIONS[locale].about.methodology
+                            .postproduction.title,
+                        description:
+                          STATIC_TRANSLATIONS[locale].about.methodology
+                            .postproduction.description,
+                      },
+                    ],
             },
             values: {
               title:
@@ -1678,22 +1686,11 @@ export interface LocalizedContent {
       };
       methodology: {
         title: string;
-        planning: {
+        steps: Array<{
+          step: string;
           title: string;
           description: string;
-        };
-        coverage: {
-          title: string;
-          description: string;
-        };
-        capture: {
-          title: string;
-          description: string;
-        };
-        postproduction: {
-          title: string;
-          description: string;
-        };
+        }>;
       };
       values: {
         title: string;

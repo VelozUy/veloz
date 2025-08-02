@@ -303,15 +303,6 @@ export default function AboutAdminPage() {
             response.data
           );
 
-          // Debug: Log the data structure to understand what we're working with
-          console.log('About content data structure:', {
-            hasMethodologySteps: !!contentData.methodologySteps,
-            methodologyStepsType: typeof contentData.methodologySteps,
-            isMethodologyStepsArray: Array.isArray(
-              contentData.methodologySteps
-            ),
-          });
-
           // Ensure all array items have IDs and validate data structure
           const processedData = {
             ...contentData,
@@ -331,6 +322,9 @@ export default function AboutAdminPage() {
               : [],
           };
 
+          console.log('📥 Loaded methodology steps from database:', {
+            count: processedData.methodologySteps?.length || 0,
+          });
           setFormData(processedData);
         } else {
           // No content exists, use default
@@ -360,19 +354,32 @@ export default function AboutAdminPage() {
       setError('');
       setSuccess('');
 
+      console.log('Saving about content with methodology steps:', {
+        count: formData.methodologySteps?.length || 0,
+        steps: formData.methodologySteps,
+      });
+
       const response = await aboutContentService.upsertAboutContent({
         ...formData,
         lastModifiedBy: user.uid,
       });
 
       if (response.success && response.data) {
+        console.log('✅ Save successful, updating UI with methodology steps:', {
+          count: response.data.methodologySteps?.length || 0,
+        });
+
         setAboutContent(response.data);
         setHasChanges(false);
         setSuccess('Contenido guardado exitosamente!');
 
+        // Reload the content to ensure we have the latest data
+        await loadAboutContent();
+
         // Auto-hide success message after 3 seconds
         setTimeout(() => setSuccess(''), 3000);
       } else {
+        console.error('Save failed:', response.error);
         setError(response.error || 'Error al guardar el contenido');
       }
     } catch (error) {
@@ -473,11 +480,19 @@ export default function AboutAdminPage() {
       stepNumber: currentSteps.length + 1,
     };
 
+    console.log('Adding new methodology step:', newStep);
+    console.log('Current steps count:', currentSteps.length);
+
     setFormData(prev => {
       if (!prev) return prev;
 
       const updated = { ...prev };
       updated.methodologySteps = [...updated.methodologySteps, newStep];
+
+      console.log(
+        'Updated methodology steps count:',
+        updated.methodologySteps.length
+      );
       return updated;
     });
 
@@ -1010,6 +1025,13 @@ export default function AboutAdminPage() {
                 </div>
 
                 {/* Dynamic Methodology Steps */}
+                {(() => {
+                  console.log('🖼️ Rendering UI - methodology steps:', {
+                    isArray: Array.isArray(formData.methodologySteps),
+                    length: formData.methodologySteps?.length || 0,
+                  });
+                  return null;
+                })()}
                 {!Array.isArray(formData.methodologySteps) ||
                 formData.methodologySteps.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">

@@ -256,8 +256,16 @@ export const aboutPhilosophyPointSchema = z.object({
 export const aboutMethodologyStepSchema = z.object({
   id: z.string().optional(),
   order: z.number().int().min(0).optional(),
-  title: multiLanguageTextSchema,
-  description: multiLanguageTextSchema,
+  title: optionalMultiLanguageTextSchema.default({
+    es: '',
+    en: '',
+    pt: '',
+  }),
+  description: optionalMultiLanguageTextSchema.default({
+    es: '',
+    en: '',
+    pt: '',
+  }),
   stepNumber: z.number().int().min(1),
   image: z.string().url().optional(),
 });
@@ -267,10 +275,10 @@ export const aboutContentSchema = baseSchema.extend({
   heroTitle: multiLanguageTextSchema,
   heroSubtitle: optionalMultiLanguageTextSchema,
   heroDescription: multiLanguageTextSchema,
-  heroImage: z.string().url().optional(),
+  heroImage: z.string().url().optional().or(z.literal('')),
   storyTitle: multiLanguageTextSchema,
   storyContent: multiLanguageTextSchema,
-  storyImage: z.string().url().optional(),
+  storyImage: z.string().url().optional().or(z.literal('')),
   philosophyTitle: multiLanguageTextSchema,
   philosophyContent: multiLanguageTextSchema.default({
     es: '',
@@ -279,18 +287,47 @@ export const aboutContentSchema = baseSchema.extend({
   }),
   methodologyTitle: multiLanguageTextSchema,
   methodologyDescription: multiLanguageTextSchema,
-  methodologySteps: z.array(aboutMethodologyStepSchema).default([]),
+  methodologySteps: z
+    .union([
+      z.array(aboutMethodologyStepSchema),
+      z.record(z.string(), aboutMethodologyStepSchema).transform(obj => {
+        // Convert object with numeric keys back to array (Firestore behavior)
+        return Object.keys(obj)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .map(key => obj[key]);
+      }),
+      z.undefined(),
+      z.null(),
+    ])
+    .default([])
+    .transform(val => {
+      // Ensure we always return an array
+      if (Array.isArray(val)) return val;
+      if (val && typeof val === 'object') {
+        return Object.keys(val)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .map(key => val[key]);
+      }
+      return [];
+    }),
   teamTitle: multiLanguageTextSchema,
   teamDescription: multiLanguageTextSchema,
   ctaTitle: multiLanguageTextSchema,
   ctaDescription: multiLanguageTextSchema,
   ctaButtonText: multiLanguageTextSchema,
-  ctaButtonUrl: z.string().optional(),
+  ctaButtonUrl: z.string().optional().or(z.literal('')),
   seo: z
     .object({
       title: z.string().optional(),
       description: z.string().optional(),
-      keywords: z.array(z.string()).default([]),
+      keywords: z
+        .union([
+          z.array(z.string()),
+          z.object({}).transform(() => []), // Transform empty object to empty array
+          z.undefined(),
+          z.null(),
+        ])
+        .default([]),
     })
     .optional(),
   lastModifiedBy: z.string().optional(),

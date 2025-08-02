@@ -143,6 +143,18 @@ export abstract class BaseFirebaseService<T = unknown> {
     this.cache.clear();
   }
 
+  // Cache management methods
+  getCacheStats(): { size: number; maxSize: number } {
+    return {
+      size: this.cache.size,
+      maxSize: this.cacheConfig.maxSize,
+    };
+  }
+
+  async refreshCache(): Promise<void> {
+    this.cache.clear();
+  }
+
   // Network management
   protected async ensureNetworkEnabled(): Promise<void> {
     const db = await getFirestoreService();
@@ -155,7 +167,9 @@ export abstract class BaseFirebaseService<T = unknown> {
   // Document processing
   protected processDocument<R>(doc: QueryDocumentSnapshot<DocumentData>): R;
   protected processDocument<R>(doc: DocumentSnapshot<DocumentData>): R;
-  protected processDocument<R>(doc: QueryDocumentSnapshot<DocumentData> | DocumentSnapshot<DocumentData>): R {
+  protected processDocument<R>(
+    doc: QueryDocumentSnapshot<DocumentData> | DocumentSnapshot<DocumentData>
+  ): R {
     const data = doc.data();
     if (!data) {
       throw new Error(`Document ${doc.id} has no data`);
@@ -244,6 +258,7 @@ export abstract class BaseFirebaseService<T = unknown> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
       const docRef = await this.getDocRef(id);
+
       await updateDoc(docRef, data);
 
       this.invalidateCache();

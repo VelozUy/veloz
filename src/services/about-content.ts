@@ -25,7 +25,19 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       const response: ApiResponse<AboutContentData[]> = await this.getAll();
 
       if (response.success && response.data && response.data.length > 0) {
-        return { success: true, data: response.data[0] };
+        const rawData = response.data[0];
+
+        // Apply validation transformation to ensure proper data structure
+        const validationResult = aboutContentSchema.safeParse(rawData);
+        if (validationResult.success) {
+          return { success: true, data: validationResult.data };
+        } else {
+          console.error(
+            'AboutContentService: Validation failed on raw data:',
+            validationResult.error
+          );
+          return { success: true, data: rawData };
+        }
       }
 
       // Return null if no content exists - admin needs to create it
@@ -46,6 +58,19 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
     data: Omit<AboutContentData, 'id' | 'createdAt' | 'updatedAt'>
   ): Promise<ApiResponse<AboutContentData>> {
     try {
+      // Validate the data first
+      const validationResult = aboutContentSchema.safeParse(data);
+      if (!validationResult.success) {
+        console.error(
+          'AboutContentService: Validation failed:',
+          validationResult.error
+        );
+        return {
+          success: false,
+          error: `Validation failed: ${validationResult.error.message}`,
+        };
+      }
+
       // Check if content already exists
       const existingResponse = await this.getAll();
 
@@ -70,17 +95,11 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
           if (updateResponse.success) {
             // Invalidate cache and return updated content
             this.invalidateCache();
-            const updatedResponse = await this.getById(existingContent.id);
+
+            // Use the same method as getAboutContent to ensure consistency
+            const updatedResponse = await this.getAboutContent();
             if (updatedResponse.success && updatedResponse.data) {
-              const parsed = aboutContentSchema.safeParse(updatedResponse.data);
-              if (parsed.success) {
-                return { success: true, data: parsed.data };
-              } else {
-                return {
-                  success: false,
-                  error: 'Fetched about content after update is invalid',
-                };
-              }
+              return { success: true, data: updatedResponse.data };
             } else {
               return {
                 success: false,
@@ -108,25 +127,16 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         ) {
           // Invalidate cache and return new content
           this.invalidateCache();
-          const newId = (createResponse.data as AboutContentData).id;
-          if (typeof newId === 'string') {
-            const newResponse = await this.getById(newId);
-            if (newResponse.success && newResponse.data) {
-              const parsed = aboutContentSchema.safeParse(newResponse.data);
-              if (parsed.success) {
-                return { success: true, data: parsed.data };
-              } else {
-                return {
-                  success: false,
-                  error: 'Fetched about content after create is invalid',
-                };
-              }
-            } else {
-              return {
-                success: false,
-                error: 'Failed to fetch about content after create',
-              };
-            }
+
+          // Use the same method as getAboutContent to ensure consistency
+          const newResponse = await this.getAboutContent();
+          if (newResponse.success && newResponse.data) {
+            return { success: true, data: newResponse.data };
+          } else {
+            return {
+              success: false,
+              error: 'Failed to fetch about content after create',
+            };
           }
         }
 

@@ -60,66 +60,9 @@ export default async function AboutPage() {
   // Get static content for Spanish (default locale)
   const content = getStaticContent('es');
 
-  // Get FAQs from static content
+  // Get FAQs from static content for structured data
   const faqs: FAQ[] = content.content.faqs || [];
   const faqStructuredData = generateFAQStructuredData(faqs);
-
-  // Fetch methodology data from database
-  let methodologySteps: Array<{
-    step: string;
-    title: string;
-    description: string;
-  }> = [];
-  try {
-    const dbResponse = await aboutContentService.getAboutContent();
-    if (
-      dbResponse.success &&
-      dbResponse.data &&
-      dbResponse.data.methodologySteps
-    ) {
-      // Use database methodology steps if available
-      methodologySteps = dbResponse.data.methodologySteps
-        .sort((a, b) => (a.order || 0) - (b.order || 0))
-        .map((step, index) => ({
-          step: String(index + 1).padStart(2, '0'),
-          title:
-            typeof step.title === 'string' ? step.title : step.title?.es || '',
-          description:
-            typeof step.description === 'string'
-              ? step.description
-              : step.description?.es || '',
-        }));
-    }
-  } catch (error) {
-    console.error('Error fetching methodology from database:', error);
-  }
-
-  // Fallback to static content if no database content
-  if (methodologySteps.length === 0) {
-    methodologySteps = [
-      {
-        step: '01',
-        title: content.content.about.methodology.planning.title,
-        description: content.content.about.methodology.planning.description,
-      },
-      {
-        step: '02',
-        title: content.content.about.methodology.coverage.title,
-        description: content.content.about.methodology.coverage.description,
-      },
-      {
-        step: '03',
-        title: content.content.about.methodology.capture.title,
-        description: content.content.about.methodology.capture.description,
-      },
-      {
-        step: '04',
-        title: content.content.about.methodology.postproduction.title,
-        description:
-          content.content.about.methodology.postproduction.description,
-      },
-    ];
-  }
 
   return (
     <>
@@ -133,11 +76,7 @@ export default async function AboutPage() {
         />
       )}
 
-      <AboutContent
-        content={content}
-        faqs={faqs}
-        methodologySteps={methodologySteps}
-      />
+      <AboutContent content={content} />
     </>
   );
 }

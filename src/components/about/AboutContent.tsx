@@ -3,51 +3,16 @@
 import { Card, CardContent } from '@/components/ui/card';
 import FAQSection from './FAQSection';
 import CTASection from '@/components/shared/CTASection';
+import { getStaticContent } from '@/lib/utils';
+import type { LocalizedContent } from '@/lib/static-content.generated';
 
 import { Heart, Users, Camera, Zap, Trophy, Shield } from 'lucide-react';
 
-// FAQ interface matching the static content structure
-interface FAQ {
-  id: string;
-  question: string;
-  answer: string;
-  order: number;
-}
-
 interface AboutContentProps {
-  content: {
-    content: {
-      about: {
-        title: string;
-        subtitle: string;
-        philosophy: {
-          title: string;
-          description: string;
-        };
-        methodology: {
-          title: string;
-        };
-        faq: {
-          title: string;
-        };
-      };
-    };
-    translations: Record<string, unknown>;
-    locale: string;
-  };
-  faqs: FAQ[];
-  methodologySteps: Array<{
-    step: string;
-    title: string;
-    description: string;
-  }>;
+  content: LocalizedContent;
 }
 
-export default function AboutContent({
-  content,
-  faqs,
-  methodologySteps,
-}: AboutContentProps) {
+export default function AboutContent({ content }: AboutContentProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -122,7 +87,7 @@ export default function AboutContent({
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {methodologySteps.map((item, index) => (
+            {content.content.about.methodology.steps.map((item, index) => (
               <Card
                 key={index}
                 className="group hover:shadow-lg transition-all duration-300 bg-card border-border"
@@ -145,9 +110,9 @@ export default function AboutContent({
       </section>
 
       {/* FAQ Section */}
-      {faqs.length > 0 && (
+      {content.content.faqs.length > 0 && (
         <FAQSection
-          faqs={faqs}
+          faqs={content.content.faqs}
           title={content.content.about.faq.title || 'Preguntas Frecuentes'}
           locale={content.locale}
         />
