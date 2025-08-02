@@ -493,7 +493,15 @@ export default function ContactForm({
               <div className="md:flex md:flex-wrap md:items-center md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">Me llamo</span>
-                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
+                  <div
+                    className={cn(
+                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-colors',
+                      focusedField === 'name'
+                        ? 'border-b-2 border-primary'
+                        : 'border-b border-border',
+                      errors.name && 'border-b-2 border-destructive'
+                    )}
+                  >
                     <Input
                       id="name"
                       type="text"
@@ -503,19 +511,20 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('name')}
                       onBlur={() => setFocusedField(null)}
                       data-field="name"
-                      className={cn(
-                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                        focusedField === 'name'
-                          ? '!border-b-2 !border-primary'
-                          : '!border-border',
-                        errors.name && '!border-b-2 !border-destructive'
-                      )}
+                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">y trabajo para</span>
-                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
+                  <div
+                    className={cn(
+                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-colors',
+                      focusedField === 'company'
+                        ? 'border-b-2 border-primary'
+                        : 'border-b border-border'
+                    )}
+                  >
                     <Input
                       id="company"
                       type="text"
@@ -526,12 +535,7 @@ export default function ContactForm({
                       }
                       onFocus={() => setFocusedField('company')}
                       onBlur={() => setFocusedField(null)}
-                      className={cn(
-                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                        focusedField === 'company'
-                          ? '!border-b-2 !border-primary'
-                          : '!border-border'
-                      )}
+                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                 </div>
@@ -543,7 +547,14 @@ export default function ContactForm({
                     Contáctenme a través de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-48 h-9 bg-background px-2">
+                    <div
+                      className={cn(
+                        'w-full md:w-48 h-9 bg-background px-2 transition-colors',
+                        focusedField === 'contactMethod'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border'
+                      )}
+                    >
                       <select
                         value={formData.contactMethod}
                         onChange={e =>
@@ -552,12 +563,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('contactMethod')}
                         onBlur={() => setFocusedField(null)}
                         required
-                        className={cn(
-                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center transition-colors',
-                          focusedField === 'contactMethod'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border'
-                        )}
+                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -583,7 +589,15 @@ export default function ContactForm({
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   {formData.contactMethod === 'email' ? (
-                    <div className="w-full md:w-64 md:inline-block h-auto bg-background px-2">
+                    <div
+                      className={cn(
+                        'w-full md:w-64 md:inline-block h-auto bg-background px-2 transition-colors',
+                        focusedField === 'email'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border',
+                        errors.email && 'border-b-2 border-destructive'
+                      )}
+                    >
                       <Input
                         id="email"
                         type="email"
@@ -595,17 +609,19 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('email')}
                         onBlur={() => setFocusedField(null)}
                         data-field="email"
-                        className={cn(
-                          '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                          focusedField === 'email'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border',
-                          errors.email && '!border-b-2 !border-destructive'
-                        )}
+                        className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   ) : (
-                    <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
+                    <div
+                      className={cn(
+                        'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-colors',
+                        focusedField === 'phone'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border',
+                        errors.phone && 'border-b-2 border-destructive'
+                      )}
+                    >
                       <Input
                         id="phone"
                         type="tel"
@@ -617,13 +633,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('phone')}
                         onBlur={() => setFocusedField(null)}
                         data-field="phone"
-                        className={cn(
-                          '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                          focusedField === 'phone'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border',
-                          errors.phone && '!border-b-2 !border-destructive'
-                        )}
+                        className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   )}
@@ -635,7 +645,15 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">El evento es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-48 h-9 bg-background px-2">
+                    <div
+                      className={cn(
+                        'w-full md:w-48 h-9 bg-background px-2 transition-colors',
+                        focusedField === 'eventType'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border',
+                        errors.eventType && 'border-b-2 border-destructive'
+                      )}
+                    >
                       <select
                         value={formData.eventType}
                         onChange={e =>
@@ -645,13 +663,7 @@ export default function ContactForm({
                         onBlur={() => setFocusedField(null)}
                         data-field="eventType"
                         required
-                        className={cn(
-                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center transition-colors',
-                          focusedField === 'eventType'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border',
-                          errors.eventType && '!border-b-2 !border-destructive'
-                        )}
+                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -677,7 +689,15 @@ export default function ContactForm({
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">en</span>
-                  <div className="w-full md:w-48 md:inline-block h-auto bg-background px-2">
+                  <div
+                    className={cn(
+                      'w-full md:w-48 md:inline-block h-auto bg-background px-2 transition-colors',
+                      focusedField === 'location'
+                        ? 'border-b-2 border-primary'
+                        : 'border-b border-border',
+                      errors.location && 'border-b-2 border-destructive'
+                    )}
+                  >
                     <Input
                       id="location"
                       type="text"
@@ -689,19 +709,21 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('location')}
                       onBlur={() => setFocusedField(null)}
                       data-field="location"
-                      className={cn(
-                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                        focusedField === 'location'
-                          ? '!border-b-2 !border-primary'
-                          : '!border-border',
-                        errors.location && '!border-b-2 !border-destructive'
-                      )}
+                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">para aproximadamente</span>
-                  <div className="w-full md:w-32 md:inline-block h-auto bg-background px-2">
+                  <div
+                    className={cn(
+                      'w-full md:w-32 md:inline-block h-auto bg-background px-2 transition-colors',
+                      focusedField === 'attendees'
+                        ? 'border-b-2 border-primary'
+                        : 'border-b border-border',
+                      errors.attendees && 'border-b-2 border-destructive'
+                    )}
+                  >
                     <Input
                       id="attendees"
                       type="number"
@@ -713,13 +735,7 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('attendees')}
                       onBlur={() => setFocusedField(null)}
                       data-field="attendees"
-                      className={cn(
-                        '!text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                        focusedField === 'attendees'
-                          ? '!border-b-2 !border-primary'
-                          : '!border-border',
-                        errors.attendees && '!border-b-2 !border-destructive'
-                      )}
+                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                   <span className="block md:inline">personas</span>
@@ -733,7 +749,15 @@ export default function ContactForm({
                     Me interesan los servicios de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-64 h-auto bg-background px-2">
+                    <div
+                      className={cn(
+                        'w-full md:w-64 h-auto bg-background px-2 transition-colors',
+                        focusedField === 'services'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border',
+                        errors.services && 'border-b-2 border-destructive'
+                      )}
+                    >
                       <MultiSelect
                         options={Object.entries(t.form.services.options).map(
                           ([key, label]) => ({
@@ -747,13 +771,7 @@ export default function ContactForm({
                         }
                         placeholder="seleccionar servicios"
                         data-field="services"
-                        className={cn(
-                          'w-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none transition-colors !outline-none',
-                          focusedField === 'services'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border',
-                          errors.services && '!border-b-2 !border-destructive'
-                        )}
+                        className="w-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   </div>
@@ -765,7 +783,14 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">La fecha es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-64 h-9 bg-background px-2 relative">
+                    <div
+                      className={cn(
+                        'w-full md:w-64 h-9 bg-background px-2 relative transition-colors',
+                        focusedField === 'eventDate'
+                          ? 'border-b-2 border-primary'
+                          : 'border-b border-border'
+                      )}
+                    >
                       <input
                         ref={dateInputRef}
                         type="date"
@@ -776,12 +801,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('eventDate')}
                         onBlur={() => setFocusedField(null)}
                         min={new Date().toISOString().split('T')[0]}
-                        className={cn(
-                          'w-full h-full !text-[1rem] !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center transition-colors',
-                          focusedField === 'eventDate'
-                            ? '!border-b-2 !border-primary'
-                            : '!border-border'
-                        )}
+                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center"
                       />
                     </div>
                   </div>
@@ -792,7 +812,14 @@ export default function ContactForm({
               <div className="md:flex md:flex-wrap md:items-start md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-start md:gap-2">
                   <span className="block md:inline">Más detalles</span>
-                  <div className="w-full md:w-96 md:inline-block bg-background px-2">
+                  <div
+                    className={cn(
+                      'w-full md:w-96 md:inline-block bg-background px-2 transition-colors',
+                      focusedField === 'message'
+                        ? 'border-b-2 border-primary'
+                        : 'border-b border-border'
+                    )}
+                  >
                     <Textarea
                       id="message"
                       placeholder={t.form.message.placeholder}
@@ -803,12 +830,7 @@ export default function ContactForm({
                       }
                       onFocus={() => setFocusedField('message')}
                       onBlur={() => setFocusedField(null)}
-                      className={cn(
-                        '!text-[1rem] w-full !border-0 !border-b bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none transition-colors !outline-none',
-                        focusedField === 'message'
-                          ? '!border-b-2 !border-primary'
-                          : '!border-border'
-                      )}
+                      className="!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
                     />
                   </div>
                 </div>
