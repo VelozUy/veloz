@@ -483,7 +483,7 @@ export default function ContactForm({
                   <span className="block md:inline">Me llamo</span>
                   <div
                     className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
                       errors.name && 'border-b-destructive border-b-2'
                     )}
                   >
@@ -500,7 +500,7 @@ export default function ContactForm({
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">y trabajo para</span>
-                  <div className="w-full md:w-48 md:inline-block h-auto bg-background border-b border-border">
+                  <div className="w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2">
                     <Input
                       id="company"
                       type="text"
@@ -521,14 +521,14 @@ export default function ContactForm({
                     Contáctenme a través de
                   </span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-48 h-9 bg-background border-b border-border">
+                    <div className="w-full md:w-48 h-9 bg-background border-b border-border px-2">
                       <select
                         value={formData.contactMethod}
                         onChange={e =>
                           handleInputChange('contactMethod', e.target.value)
                         }
                         required
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-center flex items-center justify-center"
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -556,7 +556,7 @@ export default function ContactForm({
                   {formData.contactMethod === 'email' ? (
                     <div
                       className={cn(
-                        'w-full md:w-64 md:inline-block h-auto bg-background border-b border-border',
+                        'w-full md:w-64 md:inline-block h-auto bg-background border-b border-border px-2',
                         errors.email && 'border-b-destructive border-b-2'
                       )}
                     >
@@ -575,7 +575,7 @@ export default function ContactForm({
                   ) : (
                     <div
                       className={cn(
-                        'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                        'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
                         errors.phone && 'border-b-destructive border-b-2'
                       )}
                     >
@@ -602,7 +602,7 @@ export default function ContactForm({
                   <div className="w-full md:w-auto md:inline-block">
                     <div
                       className={cn(
-                        'w-full md:w-48 h-9 bg-background border-b border-border',
+                        'w-full md:w-48 h-9 bg-background border-b border-border px-2',
                         errors.eventType && 'border-b-destructive border-b-2'
                       )}
                     >
@@ -613,7 +613,7 @@ export default function ContactForm({
                         }
                         data-field="eventType"
                         required
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-center flex items-center justify-center"
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -641,7 +641,7 @@ export default function ContactForm({
                   <span className="block md:inline">en</span>
                   <div
                     className={cn(
-                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border px-2',
                       errors.location && 'border-b-destructive border-b-2'
                     )}
                   >
@@ -662,7 +662,7 @@ export default function ContactForm({
                   <span className="block md:inline">para aproximadamente</span>
                   <div
                     className={cn(
-                      'w-full md:w-32 md:inline-block h-auto bg-background border-b border-border',
+                      'w-full md:w-32 md:inline-block h-auto bg-background border-b border-border px-2',
                       errors.attendees && 'border-b-destructive border-b-2'
                     )}
                   >
@@ -698,7 +698,7 @@ export default function ContactForm({
                     >
                       <div
                         className={cn(
-                          'w-full md:w-64 h-auto bg-background border-b border-border',
+                          'w-full md:w-64 h-auto bg-background border-b border-border px-2',
                           errors.services && 'border-b-destructive border-b-2'
                         )}
                       >
@@ -728,7 +728,7 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">La fecha es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    <div className="w-full md:w-64 h-9 bg-background border-b border-border relative">
+                    <div className="w-full md:w-64 h-9 bg-background border-b border-border px-2 relative">
                       <input
                         ref={dateInputRef}
                         type="date"
@@ -737,7 +737,7 @@ export default function ContactForm({
                           handleInputChange('eventDate', e.target.value)
                         }
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground text-center cursor-pointer flex items-center justify-center"
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground text-left cursor-pointer flex items-center"
                       />
                     </div>
                   </div>
