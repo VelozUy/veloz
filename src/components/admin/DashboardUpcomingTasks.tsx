@@ -123,7 +123,6 @@ export default function DashboardUpcomingTasks({
       setError(null);
       const db = await getFirestoreService();
       if (!db) {
-        console.error('Firestore not available');
         setLoading(false);
         return;
       }
@@ -179,13 +178,8 @@ export default function DashboardUpcomingTasks({
         }
       });
 
-      console.log(
-        `Loaded ${taskList.length} tasks from ${tasksSnapshot.size} total tasks`
-      );
-
       // If no tasks found, show a message
       if (taskList.length === 0) {
-        console.log('No tasks found in the database');
       }
 
       // Enhanced sorting with priority-based ordering
@@ -229,8 +223,6 @@ export default function DashboardUpcomingTasks({
       setTasks(sortedTasks.slice(0, taskLimit));
       setLoading(false);
     } catch (error) {
-      console.error('Error loading upcoming tasks:', error);
-
       // Check if it's a permissions error
       if (error instanceof Error && error.message.includes('permissions')) {
         console.error(
@@ -356,14 +348,18 @@ export default function DashboardUpcomingTasks({
     const category = task.category;
 
     if (category === 'shooting') {
-      if (task.dueDate && isToday(task.dueDate)) return `Shooting hoy - ${baseTitle}`;
-      if (task.dueDate && isTomorrow(task.dueDate)) return `Shooting mañana - ${baseTitle}`;
+      if (task.dueDate && isToday(task.dueDate))
+        return `Shooting hoy - ${baseTitle}`;
+      if (task.dueDate && isTomorrow(task.dueDate))
+        return `Shooting mañana - ${baseTitle}`;
       return `Shooting ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
 
     if (category === 'meeting') {
-      if (task.dueDate && isToday(task.dueDate)) return `Reunión hoy - ${baseTitle}`;
-      if (task.dueDate && isTomorrow(task.dueDate)) return `Reunión mañana - ${baseTitle}`;
+      if (task.dueDate && isToday(task.dueDate))
+        return `Reunión hoy - ${baseTitle}`;
+      if (task.dueDate && isTomorrow(task.dueDate))
+        return `Reunión mañana - ${baseTitle}`;
       return `Reunión ${getDueDateText(task.dueDate)} - ${baseTitle}`;
     }
 
@@ -373,8 +369,12 @@ export default function DashboardUpcomingTasks({
   const getStats = () => {
     const total = tasks.length;
     const overdue = tasks.filter(task => task.overdue).length;
-    const today = tasks.filter(task => task.dueDate && isToday(task.dueDate)).length;
-    const tomorrow = tasks.filter(task => task.dueDate && isTomorrow(task.dueDate)).length;
+    const today = tasks.filter(
+      task => task.dueDate && isToday(task.dueDate)
+    ).length;
+    const tomorrow = tasks.filter(
+      task => task.dueDate && isTomorrow(task.dueDate)
+    ).length;
     const highPriority = tasks.filter(task => task.priority === 'high').length;
     const shootings = tasks.filter(task => task.category === 'shooting').length;
     const meetings = tasks.filter(task => task.category === 'meeting').length;
@@ -400,11 +400,11 @@ export default function DashboardUpcomingTasks({
         break;
       case 'mark-complete':
         // TODO: Implement mark as complete
-        console.log('Mark as complete:', taskId);
+
         break;
       case 'reschedule':
         // TODO: Implement reschedule
-        console.log('Reschedule:', taskId);
+
         break;
     }
   };
@@ -448,17 +448,27 @@ export default function DashboardUpcomingTasks({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left p-2 font-medium text-muted-foreground">Tarea</th>
-                  <th className="text-left p-2 font-medium text-muted-foreground">Proyecto</th>
-                  <th className="text-left p-2 font-medium text-muted-foreground">Fecha</th>
-                  <th className="text-left p-2 font-medium text-muted-foreground">Prioridad</th>
-                  <th className="text-left p-2 font-medium text-muted-foreground">Estado</th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">
+                    Tarea
+                  </th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">
+                    Proyecto
+                  </th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">
+                    Fecha
+                  </th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">
+                    Prioridad
+                  </th>
+                  <th className="text-left p-2 font-medium text-muted-foreground">
+                    Estado
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {tasks.map(task => (
-                  <tr 
-                    key={task.id} 
+                  <tr
+                    key={task.id}
                     className={`border-b border-border/50 hover:bg-muted/50 ${
                       task.overdue ? 'bg-destructive/5' : ''
                     }`}
@@ -472,7 +482,7 @@ export default function DashboardUpcomingTasks({
                       </div>
                     </td>
                     <td className="p-2 text-muted-foreground">
-                      <a 
+                      <a
                         href={`/admin/projects/${task.projectId}/edit`}
                         className="truncate max-w-[150px] block hover:text-primary hover:underline cursor-pointer"
                         title={`Editar proyecto: ${task.projectTitle}`}
@@ -481,9 +491,13 @@ export default function DashboardUpcomingTasks({
                       </a>
                     </td>
                     <td className="p-2">
-                      <span className={`text-xs ${
-                        task.overdue ? 'text-destructive font-medium' : 'text-muted-foreground'
-                      }`}>
+                      <span
+                        className={`text-xs ${
+                          task.overdue
+                            ? 'text-destructive font-medium'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
                         {getDueDateText(task.dueDate)}
                         {task.overdue && ' (Vencido)'}
                       </span>
@@ -496,9 +510,7 @@ export default function DashboardUpcomingTasks({
                         {task.priority}
                       </Badge>
                     </td>
-                    <td className="p-2">
-                      {getStatusIcon(task)}
-                    </td>
+                    <td className="p-2">{getStatusIcon(task)}</td>
                   </tr>
                 ))}
               </tbody>

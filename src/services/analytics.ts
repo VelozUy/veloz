@@ -142,9 +142,7 @@ class AnalyticsService {
       }
 
       // Analytics event logged
-    } catch (error) {
-      console.error('Failed to log analytics event:', error);
-    }
+    } catch (error) {}
   }
 
   // Project view tracking
@@ -257,9 +255,7 @@ class AnalyticsService {
 
     try {
       await setUserId(this.analytics, userId);
-    } catch (error) {
-      console.error('Failed to set user ID:', error);
-    }
+    } catch (error) {}
   }
 
   // Set user properties
@@ -269,9 +265,7 @@ class AnalyticsService {
 
     try {
       await setUserProperties(this.analytics, properties);
-    } catch (error) {
-      console.error('Failed to set user properties:', error);
-    }
+    } catch (error) {}
   }
 
   // Get current session ID

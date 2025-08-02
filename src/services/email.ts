@@ -201,14 +201,6 @@ Equipe Veloz
 
 export const emailService = {
   async sendContactForm(data: ContactFormData): Promise<void> {
-    // Debug EmailJS configuration
-    console.log('EmailJS Config Check:', {
-      serviceId: EMAILJS_SERVICE_ID ? 'Set' : 'Missing',
-      adminTemplateId: EMAILJS_ADMIN_TEMPLATE_ID ? 'Set' : 'Missing',
-      publicKey: EMAILJS_PUBLIC_KEY ? 'Set' : 'Missing',
-      autoReplyTemplateId: EMAILJS_AUTO_REPLY_TEMPLATE_ID ? 'Set' : 'Missing',
-    });
-
     if (
       !EMAILJS_SERVICE_ID ||
       !EMAILJS_ADMIN_TEMPLATE_ID ||
@@ -256,18 +248,10 @@ export const emailService = {
           adminTemplateParams
         )
         .catch(error => {
-          console.error('EmailJS send error:', error);
           throw error;
         });
 
       // Send auto-reply to user if they provided an email
-      console.log('Auto-reply check:', {
-        email: data.email,
-        isWidgetEmail: data.email === 'widget@veloz.com.uy',
-        hasTemplateId: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-        emailTrimmed: data.email?.trim(),
-      });
-
       if (
         data.email &&
         data.email !== 'widget@veloz.com.uy' &&
@@ -294,36 +278,13 @@ export const emailService = {
           reply_to: 'admin@veloz.com.uy',
         };
 
-        console.log('Auto-reply params being sent:', autoReplyParams);
-
         try {
-          console.log('Attempting to send auto-reply...');
-          const autoReplyResponse = await emailjs.send(
+          await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_AUTO_REPLY_TEMPLATE_ID,
             autoReplyParams
           );
-          console.log('Auto-reply sent successfully');
         } catch (autoReplyError) {
-          console.error('=== AUTO-REPLY ERROR DETAILS ===');
-          console.error('EmailJS auto-reply send error:', autoReplyError);
-          console.error('Auto-reply error type:', typeof autoReplyError);
-          console.error(
-            'Auto-reply error message:',
-            autoReplyError instanceof Error
-              ? autoReplyError.message
-              : 'Unknown error'
-          );
-          console.error(
-            'Auto-reply error keys:',
-            Object.keys(autoReplyError || {})
-          );
-          console.error(
-            'Auto-reply error stringified:',
-            JSON.stringify(autoReplyError, null, 2)
-          );
-          console.error('Auto-reply params sent:', autoReplyParams);
-          console.error('=== END AUTO-REPLY ERROR DETAILS ===');
           // Don't throw error for auto-reply failure, just log it
           // The main admin notification was successful
         }
@@ -335,53 +296,7 @@ export const emailService = {
         );
       }
     } catch (error) {
-      console.error('❌ EmailJS Error Details:', error);
-      console.error('  Error type:', typeof error);
-      console.error(
-        '  Error message:',
-        error instanceof Error ? error.message : 'Unknown error'
-      );
-      console.error(
-        '  Error stack:',
-        error instanceof Error ? error.stack : 'No stack'
-      );
-      console.error('  Error keys:', Object.keys(error || {}));
-      console.error('  Error stringified:', JSON.stringify(error, null, 2));
-
-      // Check for specific EmailJS errors
-      if (error instanceof Error) {
-        if (error.message.includes('Failed to fetch')) {
-          throw new Error(
-            'EmailJS network error. Please check your internet connection and EmailJS configuration.'
-          );
-        }
-        if (error.message.includes('Invalid template')) {
-          throw new Error(
-            'EmailJS template error. Please check your template IDs.'
-          );
-        }
-        if (error.message.includes('Invalid service')) {
-          throw new Error(
-            'EmailJS service error. Please check your service ID.'
-          );
-        }
-        if (error.message.includes('User ID')) {
-          throw new Error(
-            'EmailJS authentication error. Please check your public key.'
-          );
-        }
-      }
-
-      // Check if it's an EmailJS specific error object
-      if (error && typeof error === 'object' && 'text' in error) {
-        throw new Error(`EmailJS error: ${(error as any).text}`);
-      }
-
-      throw new Error(
-        error instanceof Error
-          ? error.message
-          : 'Failed to send email. Please try again or contact us directly.'
-      );
+      throw error;
     }
   },
 
@@ -420,7 +335,6 @@ export const emailService = {
 
       return true;
     } catch (error) {
-      console.error('❌ EmailJS configuration test failed:', error);
       return false;
     }
   },

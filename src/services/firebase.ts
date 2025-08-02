@@ -114,7 +114,6 @@ export abstract class BaseFirebaseService<T = unknown> {
 
       return { success: true, data };
     } catch (error) {
-      console.error(`Error fetching ${this.collectionName}:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -136,7 +135,6 @@ export abstract class BaseFirebaseService<T = unknown> {
         return { success: true, data: null };
       }
     } catch (error) {
-      console.error(`Error fetching ${this.collectionName} by ID:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -158,7 +156,6 @@ export abstract class BaseFirebaseService<T = unknown> {
       const docRef = await addDoc(this.getCollection(), docData);
       return { success: true, data: docRef.id };
     } catch (error) {
-      console.error(`Error creating ${this.collectionName}:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -197,7 +194,6 @@ export abstract class BaseFirebaseService<T = unknown> {
       await updateDoc(this.getDocRef(id), updateData);
       return { success: true };
     } catch (error) {
-      console.error(`Error updating ${this.collectionName}:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -210,7 +206,6 @@ export abstract class BaseFirebaseService<T = unknown> {
       await deleteDoc(this.getDocRef(id));
       return { success: true };
     } catch (error) {
-      console.error(`Error deleting ${this.collectionName}:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -222,7 +217,6 @@ export abstract class BaseFirebaseService<T = unknown> {
     error: unknown,
     defaultMessage: string
   ): ApiResponse<T> {
-    console.error(defaultMessage, error);
     return {
       success: false,
       error: error instanceof Error ? error.message : defaultMessage,
@@ -252,7 +246,6 @@ export class FAQService extends BaseFirebaseService<FAQ> {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching FAQs by category:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -276,7 +269,6 @@ export class FAQService extends BaseFirebaseService<FAQ> {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching published FAQs:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -306,7 +298,6 @@ export class PhotoService extends BaseFirebaseService<Photo> {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching photos by event type:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -336,7 +327,6 @@ export class VideoService extends BaseFirebaseService<Video> {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching videos by event type:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -371,7 +361,6 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
         return { success: true, data: null };
       }
     } catch (error) {
-      console.error('Error fetching homepage content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -396,7 +385,6 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
       await updateDoc(docRef, updateData);
       return { success: true };
     } catch (error) {
-      console.error('Error updating homepage content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -434,7 +422,6 @@ export class ContactMessageService extends BaseFirebaseService<ContactMessage> {
       const result = await this.create<ContactMessage>(messageData);
       return result;
     } catch (error) {
-      console.error('Error creating contact message:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -450,7 +437,6 @@ export class ContactMessageService extends BaseFirebaseService<ContactMessage> {
       });
       return { success: true };
     } catch (error) {
-      console.error('Error marking message as read:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -469,7 +455,6 @@ export class ContactMessageService extends BaseFirebaseService<ContactMessage> {
       });
       return { success: true };
     } catch (error) {
-      console.error('Error updating message status:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -483,7 +468,6 @@ export class ContactMessageService extends BaseFirebaseService<ContactMessage> {
       const snapshot = await getDocs(q);
       return { success: true, data: snapshot.size };
     } catch (error) {
-      console.error('Error getting unread count:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -626,7 +610,6 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Error fetching project media:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -680,7 +663,7 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
           },
           error => {
             // Handle upload error
-            console.error('Upload error:', error);
+
             resolve({
               success: false,
               error: `Upload failed: ${error.message}`,
@@ -744,7 +727,6 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
         );
       });
     } catch (error) {
-      console.error('Error uploading file:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -776,7 +758,6 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
       const result = await this.delete(id);
       return result;
     } catch (error) {
-      console.error('Error deleting media:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -806,7 +787,6 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
       await batch.commit();
       return { success: true };
     } catch (error) {
-      console.error('Error updating media order:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -855,7 +835,6 @@ export class ProjectMediaService extends BaseFirebaseService<ProjectMedia> {
       await updateDoc(this.getDocRef(mediaId), updateData);
       return { success: true };
     } catch (error) {
-      console.error('Error updating media analysis results:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -871,7 +850,6 @@ export class StorageService {
       // Check if storage is initialized
       const storageService = getStorageSync();
       if (!storageService) {
-        console.error('Firebase Storage not initialized');
         return {
           success: false,
           error:
@@ -883,7 +861,6 @@ export class StorageService {
       const downloadURL = await getDownloadURL(fileRef);
       return { success: true, data: downloadURL };
     } catch (error) {
-      console.error('Error getting file URL from Storage:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',

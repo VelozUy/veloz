@@ -115,7 +115,6 @@ export default function ProjectStatusDashboard({
       // Load projects for selected status
       await loadProjectsForStatus(selectedStatus);
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
       setError('Error al cargar los datos del dashboard');
     } finally {
       setLoading(false);
@@ -139,9 +138,7 @@ export default function ProjectStatusDashboard({
           await projectStatusService.getProjectsByStatus(status);
         setProjects(statusProjects);
       }
-    } catch (error) {
-      console.error('Error loading projects for status:', error);
-    }
+    } catch (error) {}
   };
 
   const handleStatusFilterChange = async (status: ProjectStatus | 'all') => {

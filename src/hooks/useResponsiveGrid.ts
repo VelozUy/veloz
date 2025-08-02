@@ -106,7 +106,6 @@ export function useResponsiveGrid(
 
     // Only log significant changes to avoid spam
     if (Math.abs(screenWidth - gridState.screenWidth) > 50) {
-      console.log('📱 useResponsiveGrid: Screen size changed to', screenWidth);
     }
 
     // Calculate fluid optimal columns based on available width

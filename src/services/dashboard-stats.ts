@@ -46,7 +46,6 @@ export class DashboardStatsService {
         recentActivity,
       };
     } catch (error) {
-      console.error('Error fetching dashboard stats:', error);
       throw new Error('Failed to fetch dashboard statistics');
     }
   }

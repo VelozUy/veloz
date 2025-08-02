@@ -18,13 +18,11 @@ export class ThemeDebugger {
   enable(): void {
     this.isEnabled = true;
     this.scanForHardcodedColors();
-    console.log('🔍 Theme Debug Mode: ENABLED');
   }
 
   disable(): void {
     this.isEnabled = false;
     this.clearHighlights();
-    console.log('🔍 Theme Debug Mode: DISABLED');
   }
 
   toggle(): void {
@@ -64,7 +62,7 @@ export class ThemeDebugger {
         !this.isThemeVariable(borderColor)
       ) {
         this.highlightElement(element);
-        console.warn('🎨 Hardcoded color detected:', {
+        console.warn('Hardcoded colors detected:', {
           element: element.tagName,
           className: element.className,
           backgroundColor,

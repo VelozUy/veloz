@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -83,7 +83,7 @@ export default function CrewAvailabilityCalendar({
     }
   }, [selectedCrewMember, currentDate]);
 
-  const loadCrewMembers = async () => {
+  const loadCrewMembers = useCallback(async () => {
     try {
       const response = await crewMemberService.getAllCrewMembers();
       if (response.success && response.data) {
@@ -96,9 +96,9 @@ export default function CrewAvailabilityCalendar({
       console.error('Error loading crew members:', error);
       setError('Error al cargar miembros del equipo');
     }
-  };
+  }, [selectedCrewMember]);
 
-  const loadCalendar = async () => {
+  const loadCalendar = useCallback(async () => {
     if (!selectedCrewMember) return;
 
     try {
@@ -131,7 +131,7 @@ export default function CrewAvailabilityCalendar({
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCrewMember, currentDate]);
 
   const handleCrewMemberChange = (crewMemberId: string) => {
     setSelectedCrewMember(crewMemberId);
@@ -165,7 +165,7 @@ export default function CrewAvailabilityCalendar({
         setError(response.error || 'Error al crear el slot');
       }
     } catch (error) {
-      console.error('Error adding slot:', error);
+      console.error('Error creating slot:', error);
       setError('Error al crear el slot');
     } finally {
       setLoading(false);

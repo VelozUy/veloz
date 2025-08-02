@@ -57,9 +57,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     try {
       await signOut();
       router.push('/admin/login');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
+    } catch (error) {}
   };
 
   // Handle redirect when user is not authenticated

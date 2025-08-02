@@ -95,26 +95,6 @@ export default function OurWorkClient({
   // Performance monitoring
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(
-        `🎨 Our Work Gallery: Loading ${optimizedMedia.length} images`
-      );
-      console.log(
-        `📊 Priority images: ${optimizedMedia.filter(img => img.priority).length}`
-      );
-      console.log(
-        `⚡ Eager loading: ${optimizedMedia.filter(img => img.loading === 'eager').length}`
-      );
-      console.log(`🔍 Projects count: ${projects.length}`);
-      console.log(
-        `🔍 Published projects: ${projects.filter(p => p.status === 'published').length}`
-      );
-      console.log(`🔍 All media count: ${allMedia.length}`);
-      console.log(
-        `🔍 Window type: ${typeof window !== 'undefined' ? 'client' : 'server'}`
-      );
-      console.log(
-        `🔍 Screen width: ${typeof window !== 'undefined' ? window.innerWidth : 'server'}`
-      );
     }
 
     // Set loading state - only show loading if we have no media
@@ -154,19 +134,11 @@ export default function OurWorkClient({
 
           img.onload = () => {
             if (process.env.NODE_ENV === 'development') {
-              console.log(
-                `🎨 Preloaded critical image ${index + 1}:`,
-                mediaItem.id
-              );
             }
           };
 
           img.onerror = () => {
             if (process.env.NODE_ENV === 'development') {
-              console.warn(
-                `⚠️ Failed to preload critical image ${index + 1}:`,
-                mediaItem.id
-              );
             }
           };
         }

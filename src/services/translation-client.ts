@@ -49,7 +49,9 @@ export class TranslationClientService {
   /**
    * Translate a single text
    */
-  async translateText(request: TranslationRequest): Promise<TranslationResponse> {
+  async translateText(
+    request: TranslationRequest
+  ): Promise<TranslationResponse> {
     try {
       const response = await fetch('/api/translate', {
         method: 'POST',
@@ -67,15 +69,18 @@ export class TranslationClientService {
 
       return result.data!;
     } catch (error) {
-      console.error('Translation API call failed:', error);
-      throw new Error(`Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
   /**
    * Translate multiple texts in batch
    */
-  async batchTranslate(request: BatchTranslationRequest): Promise<TranslationResponse[]> {
+  async batchTranslate(
+    request: BatchTranslationRequest
+  ): Promise<TranslationResponse[]> {
     try {
       const response = await fetch('/api/translate/batch', {
         method: 'POST',
@@ -93,8 +98,9 @@ export class TranslationClientService {
 
       return result.data!;
     } catch (error) {
-      console.error('Batch translation API call failed:', error);
-      throw new Error(`Batch translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Batch translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -106,15 +112,14 @@ export class TranslationClientService {
       const response = await fetch('/api/translate', {
         method: 'GET',
       });
-      
+
       // Even if it returns method not allowed, the service is available
       return response.status === 405;
     } catch (error) {
-      console.error('Translation service unavailable:', error);
       return false;
     }
   }
 }
 
 // Export singleton instance
-export const translationClientService = TranslationClientService.getInstance(); 
+export const translationClientService = TranslationClientService.getInstance();

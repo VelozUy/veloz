@@ -16,11 +16,9 @@ export class EmergencyFirestoreFix {
 
   private addResult(step: string, success: boolean, error?: string) {
     this.results.push({ step, success, error });
-    console.log(`${success ? '✅' : '❌'} ${step}${error ? `: ${error}` : ''}`);
   }
 
   async executeEmergencyFix(): Promise<EmergencyFixResult[]> {
-    console.log('🚨 EMERGENCY: Executing cascading assertion error fix...');
     this.results = [];
 
     // Step 1: Clear all localStorage/sessionStorage
@@ -81,7 +79,6 @@ export class EmergencyFirestoreFix {
   private async terminateAllFirebaseApps() {
     try {
       const apps = getApps();
-      console.log(`Found ${apps.length} Firebase apps to terminate`);
 
       for (const app of apps) {
         try {
@@ -89,12 +86,7 @@ export class EmergencyFirestoreFix {
           const db = getFirestore(app);
           await disableNetwork(db);
           await terminate(db);
-        } catch (error) {
-          console.log(
-            `Could not terminate Firestore for app ${app.name}:`,
-            error
-          );
-        }
+        } catch (error) {}
 
         // Delete the app
         await deleteApp(app);
@@ -120,9 +112,7 @@ export class EmergencyFirestoreFix {
           if (db.name?.includes('firebase') || db.name?.includes('firestore')) {
             try {
               indexedDB.deleteDatabase(db.name);
-            } catch (error) {
-              console.log(`Could not delete IndexedDB ${db.name}:`, error);
-            }
+            } catch (error) {}
           }
         }
 
@@ -163,7 +153,6 @@ export class EmergencyFirestoreFix {
 
   private forcePageReload() {
     try {
-      console.log('🔄 Force reloading page in 2 seconds...');
       setTimeout(() => {
         if (typeof window !== 'undefined') {
           window.location.reload();

@@ -201,7 +201,6 @@ export class OpenAIService {
         tokensUsed,
       };
     } catch (error) {
-      console.error('Translation error:', error);
       throw new Error(
         `Translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -261,7 +260,6 @@ export class OpenAIService {
         tokensUsed
       );
     } catch (error) {
-      console.error('Batch translation error:', error);
       throw new Error(
         `Batch translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -320,7 +318,6 @@ export class OpenAIService {
       // Parse the structured response
       return this.parseMediaAnalysisResponse(analysisResult, tokensUsed);
     } catch (error) {
-      console.error('Media analysis error:', error);
       throw new Error(
         `Media analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -608,12 +605,10 @@ export class OpenAIService {
       // Try to extract JSON from the response
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        console.error('No JSON found in AI response:', response);
         throw new Error('No JSON found in response');
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
-      console.log('AI Analysis Result:', parsed);
 
       return {
         altText: parsed.altText || '',
@@ -634,9 +629,6 @@ export class OpenAIService {
         tokensUsed,
       };
     } catch (error) {
-      console.error('Failed to parse media analysis response:', error);
-      console.log('Using fallback response due to parsing error');
-
       // Return fallback response
       return {
         altText: 'Professional event photography capturing special moments',

@@ -70,19 +70,6 @@ export function TiledGallery({
   projectTitle = '',
   isMobileOverride,
 }: TiledGalleryProps & { isMobileOverride?: boolean }) {
-  // Debug incoming props (only in development)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🎨 TiledGallery: Received props', {
-      imagesCount: images.length,
-      images: images
-        .slice(0, 3)
-        .map(img => ({ id: img.id, type: img.type, url: img.url })),
-      columns,
-      gap,
-      ariaLabel,
-      projectTitle,
-    });
-  }
   // TiledGallery component initialized
   // Container and layout state
   const containerRef = useRef<HTMLDivElement>(null);
@@ -108,21 +95,6 @@ export function TiledGallery({
       : typeof window === 'undefined'
         ? false
         : window.innerWidth < 768;
-
-  // Debug layout changes (only in development)
-  useEffect(() => {
-    if (
-      isMobile &&
-      typeof window !== 'undefined' &&
-      process.env.NODE_ENV === 'development'
-    ) {
-      console.log(
-        '🎨 TiledGallery: Mobile layout ready with',
-        images.length,
-        'images'
-      );
-    }
-  }, [isMobile, images.length]);
 
   // Performance optimization - preserving current patterns while adding enhancements
   // Disable lazy loading on mobile for better performance and to prevent disappearing issues
@@ -708,15 +680,6 @@ export function TiledGallery({
   }
 
   // Desktop layout - complex masonry with fluid columns
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🎨 TiledGallery: Rendering desktop layout', {
-      imagesCount: images.length,
-      isMobile,
-      containerWidth,
-      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 'server',
-      window: typeof window !== 'undefined' ? 'client' : 'server',
-    });
-  }
   return (
     <div
       ref={containerRef}

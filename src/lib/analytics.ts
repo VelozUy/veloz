@@ -276,7 +276,6 @@ export class AnalyticsService {
         },
       };
     } catch (error) {
-      console.error('Error getting project metrics:', error);
       throw new Error('Failed to get project metrics');
     }
   }
@@ -384,7 +383,6 @@ export class AnalyticsService {
         averageClientSatisfaction,
       };
     } catch (error) {
-      console.error('Error getting business metrics:', error);
       throw new Error('Failed to get business metrics');
     }
   }
@@ -465,7 +463,6 @@ export class AnalyticsService {
         },
       };
     } catch (error) {
-      console.error('Error getting timeline analysis:', error);
       throw new Error('Failed to get timeline analysis');
     }
   }
@@ -501,7 +498,6 @@ export class AnalyticsService {
         clientValueAnalysis,
       };
     } catch (error) {
-      console.error('Error getting revenue analysis:', error);
       throw new Error('Failed to get revenue analysis');
     }
   }
@@ -543,9 +539,7 @@ export class AnalyticsService {
   /**
    * Calculate project type revenue
    */
-  private calculateProjectTypeRevenue(
-    projects: any[]
-  ): Array<{
+  private calculateProjectTypeRevenue(projects: any[]): Array<{
     eventType: string;
     revenue: number;
     projects: number;
@@ -578,9 +572,7 @@ export class AnalyticsService {
   /**
    * Calculate client value analysis
    */
-  private calculateClientValueAnalysis(
-    projects: any[]
-  ): Array<{
+  private calculateClientValueAnalysis(projects: any[]): Array<{
     clientName: string;
     totalValue: number;
     projects: number;
@@ -732,7 +724,6 @@ export class AnalyticsService {
         timeSeriesData,
       };
     } catch (error) {
-      console.error('Error fetching crew member analytics:', error);
       return null;
     }
   }
@@ -848,7 +839,6 @@ export class AnalyticsService {
         },
       };
     } catch (error) {
-      console.error('Error fetching crew analytics summary:', error);
       throw new Error('Failed to fetch crew analytics summary');
     }
   }

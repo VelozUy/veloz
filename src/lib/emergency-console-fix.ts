@@ -64,9 +64,7 @@ const emergencyFirebaseFix = async (): Promise<void> => {
     setTimeout(() => {
       window.location.reload();
     }, 2000);
-  } catch (error) {
-    console.error('❌ Emergency fix failed:', error);
-  }
+  } catch (error) {}
 };
 
 // Make it globally available

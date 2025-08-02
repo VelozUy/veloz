@@ -134,7 +134,6 @@ export default function CrewAnalytics({ crewMember }: CrewAnalyticsProps) {
       // For now, use mock data
       setAnalyticsData(mockAnalyticsData);
     } catch (error) {
-      console.error('Error loading analytics:', error);
     } finally {
       setLoading(false);
     }
@@ -142,7 +141,6 @@ export default function CrewAnalytics({ crewMember }: CrewAnalyticsProps) {
 
   const exportAnalytics = () => {
     // TODO: Implement analytics export functionality
-    console.log('Exporting analytics for:', crewMember.name.es);
   };
 
   return (

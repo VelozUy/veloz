@@ -203,7 +203,7 @@ export default function CommunicationHub() {
   const handleSendMessage = async () => {
     try {
       // TODO: Implement actual message sending
-      console.log('Sending message:', newMessage);
+
       setNewMessageDialogOpen(false);
       setNewMessage({
         clientId: '',

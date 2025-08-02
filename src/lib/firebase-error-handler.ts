@@ -427,9 +427,7 @@ export class FirebaseErrorHandler {
 
     // Console logging based on severity
     if (error.severity === 'critical') {
-      console.error('🚨 Critical Firebase Error:', error, context);
     } else if (error.severity === 'high') {
-      console.error('❌ High Priority Firebase Error:', error, context);
     } else if (error.severity === 'medium') {
       // Firebase Warning
     } else {
@@ -773,10 +771,6 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
     // 3. Reinitialize Firebase completely
     const reinitSuccess = await reinitializeFirebase();
     if (!reinitSuccess) {
-      console.error(
-        '❌ Firebase reinitialization failed during automatic recovery'
-      );
-
       // Track failed recovery
       const lastError = errorHistory[errorHistory.length - 1];
       if (lastError) {
@@ -810,8 +804,6 @@ export const triggerAutomaticRecovery = async (): Promise<boolean> => {
 
     return true;
   } catch (error) {
-    console.error('❌ Automatic Firestore recovery failed:', error);
-
     // Track failed recovery
     const lastError = errorHistory[errorHistory.length - 1];
     if (lastError) {
@@ -856,10 +848,6 @@ export const withFirestoreRecovery = async <T>(
           // Retrying operation after automatic recovery...
           return await operation();
         } catch (retryError) {
-          console.error(
-            '🔥 Operation failed after automatic recovery:',
-            retryError
-          );
           trackError(retryError);
           if (fallback !== undefined) {
             // Using fallback value
@@ -868,7 +856,6 @@ export const withFirestoreRecovery = async <T>(
           throw retryError;
         }
       } else {
-        console.error('🔥 Automatic Firestore recovery failed, cannot recover');
         if (fallback !== undefined) {
           // Using fallback value
           return fallback;

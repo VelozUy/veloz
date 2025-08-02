@@ -54,7 +54,6 @@ export class QRCodeGenerator {
       const dataUrl = await QRCode.toDataURL(url, mergedOptions);
       return dataUrl;
     } catch (error) {
-      console.error('Error generating QR code:', error);
       throw new Error('Failed to generate QR code');
     }
   }
@@ -195,15 +194,11 @@ export class QRCodeGenerator {
     try {
       // Here you would typically send analytics data to your analytics service
       // For now, we'll just log the scan
-      console.log(`QR Code scan tracked: ${qrId}`);
-
       // TODO: Implement actual analytics tracking
       // - Send to Google Analytics
       // - Store in Firestore for custom analytics
       // - Track conversion events
-    } catch (error) {
-      console.error('Error tracking QR code scan:', error);
-    }
+    } catch (error) {}
   }
 
   /**
@@ -225,7 +220,6 @@ export class QRCodeGenerator {
         lastScanned: new Date(),
       };
     } catch (error) {
-      console.error('Error getting QR code analytics:', error);
       return null;
     }
   }

@@ -461,10 +461,8 @@ export function initAccessibilityTesting(): void {
   // Run tests in development mode
   if (process.env.NODE_ENV === 'development') {
     const results = runAccessibilityTests();
-    console.log('Accessibility test results:', results);
 
     if (!results.passed) {
-      console.warn('Accessibility issues detected:', results.issues);
     }
   }
 }

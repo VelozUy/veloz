@@ -19,9 +19,6 @@ const MAX_REINIT_ATTEMPTS = 3;
 
 export const reinitializeFirebase = async (): Promise<boolean> => {
   if (isReinitializing || reinitAttempts >= MAX_REINIT_ATTEMPTS) {
-    console.warn(
-      '🔥 Firebase reinitialization skipped - already in progress or max attempts reached'
-    );
     return false;
   }
 
@@ -63,7 +60,6 @@ export const reinitializeFirebase = async (): Promise<boolean> => {
     // Firebase reinitialized successfully
     return true;
   } catch (error) {
-    console.error('❌ Firebase reinitialization failed:', error);
     return false;
   } finally {
     isReinitializing = false;
@@ -114,20 +110,13 @@ export const withFirestoreRecovery = async <T>(
           // Retrying operation after reinitialization...
           return await operation();
         } catch (retryError) {
-          console.error(
-            '🔥 Operation failed after reinitialization:',
-            retryError
-          );
           if (fallback !== undefined) {
-            console.warn('🔥 Using fallback value');
             return fallback;
           }
           throw retryError;
         }
       } else {
-        console.error('🔥 Firebase reinitialization failed, cannot recover');
         if (fallback !== undefined) {
-          console.warn('🔥 Using fallback value');
           return fallback;
         }
         throw error;

@@ -25,7 +25,6 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
       // Return default form content if none exists
       return this.getDefaultFormContent();
     } catch (error) {
-      console.error('Error fetching form content:', error);
       return this.getDefaultFormContent();
     }
   }
@@ -86,7 +85,6 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
         return this.getDefaultFormContent();
       }
     } catch (error) {
-      console.error('Error upserting form content:', error);
       throw error;
     }
   }

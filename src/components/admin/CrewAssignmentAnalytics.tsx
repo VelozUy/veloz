@@ -56,7 +56,6 @@ export default function CrewAssignmentAnalytics() {
         setError(response.error || 'Error al cargar los datos');
       }
     } catch (error) {
-      console.error('Error loading crew assignment analytics:', error);
       setError('Error al cargar los datos');
     } finally {
       setLoading(false);

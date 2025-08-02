@@ -65,8 +65,6 @@ export class GalleryPerformanceMonitor {
     this.setupUserEngagement();
     this.setupImagePerformance();
     this.setupInteractionTracking();
-
-    console.log('🚀 Gallery Performance Monitor initialized');
   }
 
   /**

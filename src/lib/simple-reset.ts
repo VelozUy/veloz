@@ -48,7 +48,6 @@ export const simpleBrowserReset = () => {
         window.location.reload();
       }, 1000);
     } catch (error) {
-      console.error('❌ Browser reset failed:', error);
       // Fallback - just reload
       window.location.reload();
     }

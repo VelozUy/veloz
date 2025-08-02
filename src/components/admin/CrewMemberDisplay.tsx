@@ -36,7 +36,6 @@ export default function CrewMemberDisplay({
           setCrewMembers(projectCrewMembers);
         }
       } catch (error) {
-        console.error('Error loading crew members:', error);
       } finally {
         // setLoading(false);
       }

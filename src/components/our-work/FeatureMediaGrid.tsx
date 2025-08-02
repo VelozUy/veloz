@@ -144,7 +144,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
         cssAspectRatio = (mediaItem.height / mediaItem.width) * 100;
 
         // Debug logging for all images
-        console.log(`Image ${mediaItem.id}:`, {
+        console.log('Processing media item:', {
           width: mediaItem.width,
           height: mediaItem.height,
           aspectRatio,

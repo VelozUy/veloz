@@ -104,7 +104,6 @@ export class MediaAnalysisClientService {
 
       return result.data;
     } catch (error) {
-      console.error('Media analysis client error:', error);
       throw new Error(
         error instanceof Error ? error.message : 'Failed to analyze media'
       );
@@ -151,7 +150,6 @@ export class MediaAnalysisClientService {
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
       } catch (error) {
-        console.error(`Failed to analyze image ${i + 1}:`, error);
         // Continue with other images even if one fails
         onProgress?.(i + 1, requests.length);
       }

@@ -93,7 +93,6 @@ class ProjectStatusService {
         updatedAt: projectData.updatedAt?.toDate() || new Date(),
       };
     } catch (error) {
-      console.error('Error getting project:', error);
       throw error;
     }
   }
@@ -138,7 +137,6 @@ class ProjectStatusService {
 
       // Project status updated
     } catch (error) {
-      console.error('Error updating project status:', error);
       throw error;
     }
   }
@@ -166,7 +164,6 @@ class ProjectStatusService {
 
       return projects;
     } catch (error) {
-      console.error('Error getting projects by status:', error);
       throw error;
     }
   }
@@ -196,7 +193,6 @@ class ProjectStatusService {
 
       return projects;
     } catch (error) {
-      console.error('Error getting projects by status range:', error);
       throw error;
     }
   }
@@ -233,7 +229,6 @@ class ProjectStatusService {
 
       return stats;
     } catch (error) {
-      console.error('Error getting status statistics:', error);
       throw error;
     }
   }
@@ -268,7 +263,6 @@ class ProjectStatusService {
 
       return changes;
     } catch (error) {
-      console.error('Error getting recent status changes:', error);
       throw error;
     }
   }
@@ -300,7 +294,6 @@ class ProjectStatusService {
 
       return timeline;
     } catch (error) {
-      console.error('Error getting project status timeline:', error);
       throw error;
     }
   }

@@ -54,11 +54,6 @@ const StickyTabs: React.FC<StickyTabsProps> & {
 
       {Children.map(children, child => {
         if (!isValidElement(child) || child.type !== StickyTabItem) {
-          if (process.env.NODE_ENV === 'development' && child != null) {
-            console.warn(
-              'StickyTabs component expects <StickyTabs.Item> components as direct children.'
-            );
-          }
           return null;
         }
 

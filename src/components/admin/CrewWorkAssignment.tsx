@@ -54,7 +54,6 @@ export default function CrewWorkAssignment({
         setCrewMembers(crewResult.data || []);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
@@ -98,9 +97,7 @@ export default function CrewWorkAssignment({
       );
 
       onAssignmentChange?.(selectedProject, selectedCrewMembers);
-    } catch (error) {
-      console.error('Error updating crew assignment:', error);
-    }
+    } catch (error) {}
   };
 
   const filteredProjects = projects.filter(

@@ -135,8 +135,6 @@ export default function GalleryGrid({
       newSet.delete(mediaId);
       return newSet;
     });
-
-    console.error(`Failed to load image: ${mediaId}`);
   }, []);
 
   // Calculate aspect ratio for responsive sizing

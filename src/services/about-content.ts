@@ -32,10 +32,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         if (validationResult.success) {
           return { success: true, data: validationResult.data };
         } else {
-          console.error(
-            'AboutContentService: Validation failed on raw data:',
-            validationResult.error
-          );
           return { success: true, data: rawData };
         }
       }
@@ -43,7 +39,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       // Return null if no content exists - admin needs to create it
       return { success: true, data: null };
     } catch (error) {
-      console.error('Error fetching about content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -61,10 +56,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       // Validate the data first
       const validationResult = aboutContentSchema.safeParse(data);
       if (!validationResult.success) {
-        console.error(
-          'AboutContentService: Validation failed:',
-          validationResult.error
-        );
         return {
           success: false,
           error: `Validation failed: ${validationResult.error.message}`,
@@ -146,7 +137,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
     } catch (error) {
-      console.error('Error upserting about content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -193,7 +183,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
     } catch (error) {
-      console.error(`Error updating ${section} section:`, error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -233,7 +222,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
     } catch (error) {
-      console.error('Error updating main content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -283,7 +271,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         };
       }
     } catch (error) {
-      console.error('Error updating SEO content:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -302,7 +289,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
         data: response.success && response.data !== null,
       };
     } catch (error) {
-      console.error('Error checking if about content exists:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -349,7 +335,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       );
       return updateResponse;
     } catch (error) {
-      console.error('Error adding methodology step:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -397,7 +382,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       );
       return updateResponse;
     } catch (error) {
-      console.error('Error updating methodology step:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -437,7 +421,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       );
       return updateResponse;
     } catch (error) {
-      console.error('Error deleting methodology step:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -481,7 +464,6 @@ export class AboutContentService extends BaseFirebaseService<AboutContentData> {
       );
       return updateResponse;
     } catch (error) {
-      console.error('Error reordering methodology steps:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',

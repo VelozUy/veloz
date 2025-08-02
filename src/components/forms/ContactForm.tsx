@@ -203,13 +203,6 @@ export default function ContactForm({
     const message = searchParams.get('mensaje');
     const ubicacion = searchParams.get('ubicacion');
 
-    console.log('URL Parameters:', {
-      eventType,
-      eventDate,
-      message,
-      ubicacion,
-    });
-
     // Build message from parameters
     let fullMessage = message || '';
     if (ubicacion && !fullMessage.includes('Ubicación:')) {
@@ -222,8 +215,6 @@ export default function ContactForm({
       eventDate: eventDate || '',
       message: fullMessage,
     };
-
-    console.log('Updating form data:', updatedFormData);
 
     // Only update if we have URL parameters to avoid infinite loops
     if (eventType || eventDate || message || ubicacion) {
@@ -246,24 +237,18 @@ export default function ContactForm({
   }, [searchParams]);
 
   const validateForm = () => {
-    console.log('Starting form validation...');
-    console.log('Current form data:', formData);
-
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
       newErrors.name = translations.contact.form.name.label;
-      console.log('Name validation failed');
     }
 
     // Validate email only if contact method is email
     if (formData.contactMethod === 'email') {
       if (!formData.email.trim()) {
         newErrors.email = translations.contact.form.email.label;
-        console.log('Email validation failed - empty');
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
         newErrors.email = 'Email inválido';
-        console.log('Email validation failed - invalid format');
       }
     }
 
@@ -274,64 +259,44 @@ export default function ContactForm({
     ) {
       if (!formData.phone.trim()) {
         newErrors.phone = translations.contact.form.phone.label;
-        console.log('Phone validation failed');
       }
     }
 
     if (!formData.eventType.trim()) {
       newErrors.eventType = translations.contact.form.eventType.label;
-      console.log('Event type validation failed');
     }
 
     if (!formData.location.trim()) {
       newErrors.location = translations.contact.form.location.label;
-      console.log('Location validation failed');
     }
 
     if (!formData.attendees.trim()) {
       newErrors.attendees = translations.contact.form.attendees.label;
-      console.log('Attendees validation failed');
     }
 
     if (formData.services.length === 0) {
       newErrors.services = translations.contact.form.services.label;
-      console.log('Services validation failed');
     }
 
-    console.log('Validation errors found:', newErrors);
-    console.log('Setting errors state to:', newErrors);
     setErrors(newErrors);
 
-    // Debug: Check if errors state is being set correctly
-    console.log('Current errors state after setErrors:', errors);
-
-    // Track validation errors if any
+    // Scroll to first error field
     if (Object.keys(newErrors).length > 0) {
-      trackCustomEvent('contact_form_validation_error', {
-        errorFields: Object.keys(newErrors),
-        errorCount: Object.keys(newErrors).length,
-      });
-
-      // Scroll to first error field
       setTimeout(() => {
         const firstErrorField = Object.keys(newErrors)[0];
-        console.log('First error field:', firstErrorField);
 
         // Find element by data-field attribute
         const errorElement = document.querySelector(
           `[data-field="${firstErrorField}"]`
         ) as HTMLElement;
-        console.log('Found error element:', errorElement);
 
         if (errorElement) {
-          console.log('Scrolling to error element');
           errorElement.scrollIntoView({
             behavior: 'smooth',
             block: 'center',
           });
           errorElement.focus();
         } else {
-          console.log('Error element not found, trying fallback approach');
           // Fallback: try to find any input or select in the form
           const formElement = document.querySelector('form');
           if (formElement) {
@@ -339,7 +304,6 @@ export default function ContactForm({
               'input, select, textarea'
             ) as HTMLElement;
             if (firstInput) {
-              console.log('Using fallback element, scrolling to first input');
               firstInput.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
@@ -352,34 +316,23 @@ export default function ContactForm({
     }
 
     const isValid = Object.keys(newErrors).length === 0;
-    console.log('Form validation result:', isValid);
     return isValid;
   };
 
   const onSubmit = async (e: React.FormEvent) => {
-    console.log('Form submission started');
     e.preventDefault();
 
-    console.log('Form data:', formData);
-    console.log('Current errors:', errors);
-
     const isValid = validateForm();
-    console.log('Form validation result:', isValid);
 
     if (!isValid) {
-      console.log('Form validation failed, returning early');
-      console.log('Errors after validation:', errors);
       return;
     }
 
-    console.log('Form validation passed, proceeding with submission');
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      console.log('Sending contact form with data:', formData);
       await emailService.sendContactForm(formData);
-      console.log('Contact form sent successfully');
       setIsSubmitted(true);
 
       // Track successful form submission
@@ -389,7 +342,6 @@ export default function ContactForm({
         contactMethod: formData.contactMethod,
       });
     } catch (error) {
-      console.error('Error submitting contact form:', error);
       setSubmitError(
         error instanceof Error
           ? error.message
@@ -431,7 +383,6 @@ export default function ContactForm({
     field: string,
     value: string | boolean | string[]
   ) => {
-    console.log('handleInputChange:', field, value);
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {

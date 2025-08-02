@@ -17,11 +17,9 @@ export function useQRCodeTracking() {
 
           // Track the QR code scan
           await QRCodeAnalyticsService.trackQRCodeScanFromURL(currentUrl);
-
-          console.log(`QR Code scan tracked: ${qrParam} from ${currentUrl}`);
         }
       } catch (error) {
-        console.error('Error tracking QR code scan:', error);
+        // Error tracking QR code scan silently
       }
     };
 

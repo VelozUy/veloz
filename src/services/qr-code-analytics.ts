@@ -11,6 +11,7 @@ import {
   increment,
   updateDoc,
   Timestamp,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { QRCodeAnalytics } from '@/lib/qr-code';
 
@@ -27,6 +28,7 @@ export interface QRCodeScanEvent {
     country?: string;
     city?: string;
   };
+  timestamp: number;
 }
 
 export interface QRCodeAnalyticsData {
@@ -43,35 +45,31 @@ export interface QRCodeAnalyticsData {
   conversionRate?: number;
 }
 
-export class QRCodeAnalyticsService {
-  private static readonly QR_CODES_COLLECTION = 'qrCodes';
-  private static readonly QR_SCANS_COLLECTION = 'qrScans';
+export interface AnalyticsSummary {
+  totalQRCodes: number;
+  totalScans: number;
+  scansToday: number;
+  scansThisWeek: number;
+  scansThisMonth: number;
+  topSources: { source: string; count: number }[];
+  recentActivity: QRCodeScanEvent[];
+}
 
-  /**
-   * Track a QR code scan event
-   */
-  static async trackQRCodeScan(scanEvent: QRCodeScanEvent): Promise<void> {
+export const qrCodeAnalyticsService = {
+  async trackQRCodeScan(scanEvent: QRCodeScanEvent): Promise<void> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return;
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        throw new Error('Firestore service not available');
-      }
-
-      const scanRef = doc(collection(db, this.QR_SCANS_COLLECTION));
-      const qrRef = doc(db, this.QR_CODES_COLLECTION, scanEvent.qrId);
+      const scanRef = doc(collection(db, 'qrCodeScans'));
+      const qrRef = doc(db, 'qrCodes', scanEvent.qrId);
 
       // Store the scan event
       await setDoc(scanRef, {
-        qrId: scanEvent.qrId,
-        source: scanEvent.source,
-        sourceId: scanEvent.sourceId,
-        url: scanEvent.url,
-        scannedAt: Timestamp.fromDate(scanEvent.scannedAt),
-        userAgent: scanEvent.userAgent,
-        ipAddress: scanEvent.ipAddress,
-        referrer: scanEvent.referrer,
-        location: scanEvent.location,
+        ...scanEvent,
+        timestamp: serverTimestamp(),
       });
 
       // Update QR code analytics
@@ -97,28 +95,19 @@ export class QRCodeAnalyticsService {
           uniqueScans: 1,
         });
       }
-
-      console.log(`QR Code scan tracked: ${scanEvent.qrId}`);
     } catch (error) {
-      console.error('Error tracking QR code scan:', error);
-      throw new Error('Failed to track QR code scan');
+      // Error tracking QR code scan silently
     }
-  }
+  },
 
-  /**
-   * Get QR code analytics by QR ID
-   */
-  static async getQRCodeAnalytics(
-    qrId: string
-  ): Promise<QRCodeAnalyticsData | null> {
+  async getQRCodeAnalytics(qrId: string): Promise<QRCodeAnalyticsData | null> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return null;
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return null;
-      }
-
-      const qrRef = doc(db, this.QR_CODES_COLLECTION, qrId);
+      const qrRef = doc(db, 'qrCodes', qrId);
       const qrDoc = await getDoc(qrRef);
 
       if (!qrDoc.exists()) {
@@ -140,23 +129,18 @@ export class QRCodeAnalyticsService {
         conversionRate: data.conversionRate,
       };
     } catch (error) {
-      console.error('Error getting QR code analytics:', error);
       return null;
     }
-  }
+  },
 
-  /**
-   * Get all QR code analytics
-   */
-  static async getAllQRCodeAnalytics(): Promise<QRCodeAnalyticsData[]> {
+  async getAllQRCodeAnalytics(): Promise<QRCodeAnalyticsData[]> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return [];
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return [];
-      }
-
-      const qrCodesRef = collection(db, this.QR_CODES_COLLECTION);
+      const qrCodesRef = collection(db, 'qrCodes');
       const q = query(qrCodesRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
@@ -177,25 +161,20 @@ export class QRCodeAnalyticsService {
         };
       });
     } catch (error) {
-      console.error('Error getting all QR code analytics:', error);
       return [];
     }
-  }
+  },
 
-  /**
-   * Get QR code analytics by source
-   */
-  static async getQRCodeAnalyticsBySource(
+  async getQRCodeAnalyticsBySource(
     source: 'project' | 'gallery' | 'contact'
   ): Promise<QRCodeAnalyticsData[]> {
-    try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return [];
-      }
+    const db = await getFirestoreService();
+    if (!db) {
+      return [];
+    }
 
-      const qrCodesRef = collection(db, this.QR_CODES_COLLECTION);
+    try {
+      const qrCodesRef = collection(db, 'qrCodes');
       const q = query(
         qrCodesRef,
         where('source', '==', source),
@@ -220,23 +199,18 @@ export class QRCodeAnalyticsService {
         };
       });
     } catch (error) {
-      console.error('Error getting QR code analytics by source:', error);
       return [];
     }
-  }
+  },
 
-  /**
-   * Get QR code scan events
-   */
-  static async getQRCodeScanEvents(qrId: string): Promise<QRCodeScanEvent[]> {
+  async getQRCodeScanEvents(qrId: string): Promise<QRCodeScanEvent[]> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return [];
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return [];
-      }
-
-      const scansRef = collection(db, this.QR_SCANS_COLLECTION);
+      const scansRef = collection(db, 'qrCodeScans');
       const q = query(
         scansRef,
         where('qrId', '==', qrId),
@@ -256,98 +230,115 @@ export class QRCodeAnalyticsService {
           ipAddress: data.ipAddress,
           referrer: data.referrer,
           location: data.location,
+          timestamp: data.timestamp,
         };
       });
     } catch (error) {
-      console.error('Error getting QR code scan events:', error);
       return [];
     }
-  }
+  },
 
-  /**
-   * Get analytics summary
-   */
-  static async getAnalyticsSummary(): Promise<{
-    totalScans: number;
-    totalQRCodes: number;
-    scansThisMonth: number;
-    topPerformingQR: QRCodeAnalyticsData | null;
-  }> {
+  async getAnalyticsSummary(): Promise<AnalyticsSummary> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return {
+        totalQRCodes: 0,
+        totalScans: 0,
+        scansToday: 0,
+        scansThisWeek: 0,
+        scansThisMonth: 0,
+        topSources: [],
+        recentActivity: [],
+      };
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return {
-          totalScans: 0,
-          totalQRCodes: 0,
-          scansThisMonth: 0,
-          topPerformingQR: null,
-        };
-      }
+      // Get total QR codes
+      const qrCodesQuery = query(collection(db, 'qrCodes'));
+      const qrCodesSnapshot = await getDocs(qrCodesQuery);
+      const totalQRCodes = qrCodesSnapshot.size;
 
-      const qrCodesRef = collection(db, this.QR_CODES_COLLECTION);
-      const q = query(qrCodesRef, orderBy('scanCount', 'desc'));
-      const querySnapshot = await getDocs(q);
-
-      const qrCodes = querySnapshot.docs.map(doc => {
+      // Get all scans
+      const scansQuery = query(collection(db, 'qrCodeScans'));
+      const scansSnapshot = await getDocs(scansQuery);
+      const scans = scansSnapshot.docs.map(doc => {
         const data = doc.data();
         return {
+          id: doc.id,
           qrId: data.qrId,
           source: data.source,
           sourceId: data.sourceId,
           url: data.url,
-          createdAt: data.createdAt.toDate(),
-          scanCount: data.scanCount || 0,
-          lastScanned: data.lastScanned?.toDate(),
-          metadata: data.metadata,
-          totalScans: data.totalScans || 0,
-          uniqueScans: data.uniqueScans || 0,
-          conversionRate: data.conversionRate,
-        };
+          scannedAt: data.scannedAt?.toDate() || new Date(),
+          userAgent: data.userAgent,
+          ipAddress: data.ipAddress,
+          referrer: data.referrer,
+          location: data.location,
+          timestamp: data.timestamp,
+        } as QRCodeScanEvent;
       });
 
-      const totalScans = qrCodes.reduce((sum, qr) => sum + qr.totalScans, 0);
-      const totalQRCodes = qrCodes.length;
-      const topPerformingQR = qrCodes.length > 0 ? qrCodes[0] : null;
+      const totalScans = scans.length;
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000;
+      const oneWeek = 7 * oneDay;
+      const oneMonth = 30 * oneDay;
 
-      // Calculate scans this month
-      const now = new Date();
-      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const scansThisMonth = qrCodes.reduce((sum, qr) => {
-        if (qr.lastScanned && qr.lastScanned >= firstDayOfMonth) {
-          return sum + qr.scanCount;
-        }
-        return sum;
-      }, 0);
+      const scansToday = scans.filter(
+        scan => scan.timestamp > now - oneDay
+      ).length;
+      const scansThisWeek = scans.filter(
+        scan => scan.timestamp > now - oneWeek
+      ).length;
+      const scansThisMonth = scans.filter(
+        scan => scan.timestamp > now - oneMonth
+      ).length;
+
+      // Get top sources
+      const sourceCounts: { [source: string]: number } = {};
+      scans.forEach(scan => {
+        sourceCounts[scan.source] = (sourceCounts[scan.source] || 0) + 1;
+      });
+
+      const topSources = Object.entries(sourceCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 5)
+        .map(([source, count]) => ({ source, count }));
+
+      // Get recent activity
+      const recentActivity = scans
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 10);
 
       return {
-        totalScans,
         totalQRCodes,
+        totalScans,
+        scansToday,
+        scansThisWeek,
         scansThisMonth,
-        topPerformingQR,
+        topSources,
+        recentActivity,
       };
     } catch (error) {
-      console.error('Error getting analytics summary:', error);
       return {
-        totalScans: 0,
         totalQRCodes: 0,
+        totalScans: 0,
+        scansToday: 0,
+        scansThisWeek: 0,
         scansThisMonth: 0,
-        topPerformingQR: null,
+        topSources: [],
+        recentActivity: [],
       };
     }
-  }
+  },
 
-  /**
-   * Track QR code scan from URL
-   */
-  static async trackQRCodeScanFromURL(url: string): Promise<void> {
+  async trackQRCodeScanFromURL(url: string): Promise<void> {
+    const db = await getFirestoreService();
+    if (!db) {
+      return;
+    }
+
     try {
-      const db = await getFirestoreService();
-      if (!db) {
-        console.error('Firestore not available');
-        return;
-      }
-
       // Extract QR ID from URL
       const urlParts = url.split('/');
       const qrId = urlParts[urlParts.length - 1];
@@ -367,11 +358,12 @@ export class QRCodeAnalyticsService {
             ? window.navigator.userAgent
             : undefined,
         referrer: typeof window !== 'undefined' ? document.referrer : undefined,
+        timestamp: Date.now(),
       };
 
       await this.trackQRCodeScan(scanEvent);
     } catch (error) {
-      console.error('Error tracking QR code scan from URL:', error);
+      // Error tracking QR code scan from URL silently
     }
-  }
-}
+  },
+};

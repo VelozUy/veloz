@@ -2,7 +2,12 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ChevronDown, Languages } from 'lucide-react';
 import { translationClientService } from '@/services/translation-client';
 
@@ -42,7 +47,6 @@ export function TranslationDropdown({
 
       onTranslated(targetLanguage, result.translatedText);
     } catch (error) {
-      console.error('Translation failed:', error);
     } finally {
       setTranslating(null);
     }
@@ -53,10 +57,14 @@ export function TranslationDropdown({
 
     setTranslating('all');
     try {
-      const languages: ('en' | 'pt')[] = sourceLanguage === 'es' ? ['en', 'pt'] : 
-                                       sourceLanguage === 'en' ? ['pt'] : ['en'];
+      const languages: ('en' | 'pt')[] =
+        sourceLanguage === 'es'
+          ? ['en', 'pt']
+          : sourceLanguage === 'en'
+            ? ['pt']
+            : ['en'];
 
-      const promises = languages.map(lang => 
+      const promises = languages.map(lang =>
         translationClientService.translateText({
           text: sourceText,
           fromLanguage: sourceLanguage,
@@ -67,12 +75,11 @@ export function TranslationDropdown({
       );
 
       const results = await Promise.all(promises);
-      
+
       results.forEach((result, index) => {
         onTranslated(languages[index], result.translatedText);
       });
     } catch (error) {
-      console.error('Batch translation failed:', error);
     } finally {
       setTranslating(null);
     }
@@ -143,4 +150,4 @@ export function TranslationDropdown({
       </DropdownMenuContent>
     </DropdownMenu>
   );
-} 
+}

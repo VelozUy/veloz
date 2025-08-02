@@ -10,18 +10,22 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Bell, 
-  Mail, 
-  MessageSquare, 
-  AlertTriangle, 
-  CheckCircle, 
+import {
+  Bell,
+  Mail,
+  MessageSquare,
+  AlertTriangle,
+  CheckCircle,
   Clock,
   Settings,
   Send,
-  Trash2
+  Trash2,
 } from 'lucide-react';
-import { notificationService, Notification, NotificationPreferences } from '@/lib/notifications';
+import {
+  notificationService,
+  Notification,
+  NotificationPreferences,
+} from '@/lib/notifications';
 
 interface NotificationManagerProps {
   projectId: string;
@@ -55,17 +59,19 @@ export default function NotificationManager({
   const loadNotifications = async () => {
     try {
       setLoading(true);
-      const projectNotifications = await notificationService.getProjectNotifications(projectId);
+      const projectNotifications =
+        await notificationService.getProjectNotifications(projectId);
       setNotifications(projectNotifications);
     } catch (err) {
-      console.error('Error loading notifications:', err);
       setError('Error loading notifications');
     } finally {
       setLoading(false);
     }
   };
 
-  const sendTestNotification = async (type: 'milestone' | 'deadline' | 'status' | 'file' | 'urgent') => {
+  const sendTestNotification = async (
+    type: 'milestone' | 'deadline' | 'status' | 'file' | 'urgent'
+  ) => {
     try {
       setLoading(true);
       setError('');
@@ -128,7 +134,6 @@ export default function NotificationManager({
       // Reload notifications
       await loadNotifications();
     } catch (err) {
-      console.error('Error sending test notification:', err);
       setError('Error sending test notification');
     } finally {
       setLoading(false);
@@ -140,7 +145,6 @@ export default function NotificationManager({
       await notificationService.markNotificationAsRead(notificationId);
       await loadNotifications();
     } catch (err) {
-      console.error('Error marking notification as read:', err);
       setError('Error marking notification as read');
     }
   };
@@ -148,10 +152,9 @@ export default function NotificationManager({
   const deleteNotification = async (notificationId: string) => {
     try {
       // TODO: Implement delete notification functionality
-      console.log('Delete notification:', notificationId);
+
       await loadNotifications();
     } catch (err) {
-      console.error('Error deleting notification:', err);
       setError('Error deleting notification');
     }
   };
@@ -206,63 +209,81 @@ export default function NotificationManager({
               <Checkbox
                 id="emailNotifications"
                 checked={preferences.emailNotifications}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, emailNotifications: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    emailNotifications: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="emailNotifications">Email Notifications</Label>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="smsNotifications"
                 checked={preferences.smsNotifications}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, smsNotifications: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    smsNotifications: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="smsNotifications">SMS Notifications</Label>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="inAppNotifications"
                 checked={preferences.inAppNotifications}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, inAppNotifications: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    inAppNotifications: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="inAppNotifications">In-App Notifications</Label>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="milestoneReminders"
                 checked={preferences.milestoneReminders}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, milestoneReminders: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    milestoneReminders: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="milestoneReminders">Milestone Reminders</Label>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="deadlineAlerts"
                 checked={preferences.deadlineAlerts}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, deadlineAlerts: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    deadlineAlerts: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="deadlineAlerts">Deadline Alerts</Label>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="urgentUpdates"
                 checked={preferences.urgentUpdates}
-                onCheckedChange={(checked) => 
-                  setPreferences(prev => ({ ...prev, urgentUpdates: !!checked }))
+                onCheckedChange={checked =>
+                  setPreferences(prev => ({
+                    ...prev,
+                    urgentUpdates: !!checked,
+                  }))
                 }
               />
               <Label htmlFor="urgentUpdates">Urgent Updates</Label>
@@ -349,7 +370,7 @@ export default function NotificationManager({
             </div>
           ) : (
             <div className="space-y-3">
-              {notifications.map((notification) => (
+              {notifications.map(notification => (
                 <div
                   key={notification.id}
                   className={`flex items-center justify-between p-3 border rounded-lg ${
@@ -361,7 +382,9 @@ export default function NotificationManager({
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <p className="font-medium">{notification.title}</p>
-                        <Badge className={getPriorityColor(notification.priority)}>
+                        <Badge
+                          className={getPriorityColor(notification.priority)}
+                        >
                           {notification.priority}
                         </Badge>
                         {!notification.read && (
@@ -403,4 +426,4 @@ export default function NotificationManager({
       </Card>
     </div>
   );
-} 
+}

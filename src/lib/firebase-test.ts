@@ -9,7 +9,6 @@ export const testFirebaseConnection = async () => {
     const db = await getFirestoreService();
 
     if (!db) {
-      console.error('❌ Firebase Firestore is not available');
       return false;
     }
 
@@ -26,7 +25,6 @@ export const testFirebaseConnection = async () => {
 
     return true;
   } catch (error) {
-    console.error('❌ Firebase connection test failed:', error);
     return false;
   }
 };
@@ -43,7 +41,6 @@ export async function testFirebaseStorage() {
     const storage = await getStorageService();
 
     if (!storage) {
-      console.error('❌ Firebase Storage is not available');
       return false;
     }
 
@@ -52,7 +49,6 @@ export async function testFirebaseStorage() {
 
     return true;
   } catch (error) {
-    console.error('❌ Firebase Storage test failed:', error);
     return false;
   }
 }
@@ -74,7 +70,6 @@ export async function testFileUploadService() {
 
     return true;
   } catch (error) {
-    console.error('❌ File Upload Service test failed:', error);
     return false;
   }
 }
@@ -102,7 +97,6 @@ export async function testFirebaseAuth() {
 
     return { syncAuth, asyncAuth };
   } catch (error) {
-    console.error('❌ Firebase auth test failed:', error);
     return { syncAuth: null, asyncAuth: null };
   }
 }

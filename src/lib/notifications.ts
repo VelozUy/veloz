@@ -2,17 +2,17 @@
 // Handles automated notifications and alerts for project progress
 
 import { getFirestoreService } from '@/lib/firebase';
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  doc, 
-  query, 
-  where, 
-  orderBy, 
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  query,
+  where,
+  orderBy,
   getDocs,
   serverTimestamp,
-  Timestamp 
+  Timestamp,
 } from 'firebase/firestore';
 import { emailService } from '@/services/email';
 
@@ -27,7 +27,12 @@ export interface NotificationPreferences {
 
 export interface NotificationTemplate {
   id: string;
-  type: 'milestone_update' | 'deadline_alert' | 'status_change' | 'file_upload' | 'reminder';
+  type:
+    | 'milestone_update'
+    | 'deadline_alert'
+    | 'status_change'
+    | 'file_upload'
+    | 'reminder';
   subject: string;
   message: string;
   emailTemplate?: string;
@@ -38,7 +43,13 @@ export interface NotificationTemplate {
 export interface Notification {
   id: string;
   projectId: string;
-  type: 'milestone_update' | 'deadline_alert' | 'status_change' | 'file_upload' | 'reminder' | 'urgent';
+  type:
+    | 'milestone_update'
+    | 'deadline_alert'
+    | 'status_change'
+    | 'file_upload'
+    | 'reminder'
+    | 'urgent';
   title: string;
   message: string;
   recipient: string;
@@ -63,7 +74,8 @@ export class NotificationService {
       id: 'milestone_completed',
       type: 'milestone_update',
       subject: 'Milestone Completed - {projectTitle}',
-      message: 'Great news! The milestone "{milestoneName}" has been completed for your project.',
+      message:
+        'Great news! The milestone "{milestoneName}" has been completed for your project.',
       emailTemplate: `
         <h2>Milestone Completed</h2>
         <p>Hello {clientName},</p>
@@ -72,8 +84,10 @@ export class NotificationService {
         <p>Next milestone: {nextMilestone}</p>
         <p>Best regards,<br>The Veloz Team</p>
       `,
-      smsTemplate: 'Milestone "{milestoneName}" completed for {projectTitle}. Progress: {progressPercentage}%.',
-      inAppTemplate: 'Milestone "{milestoneName}" completed. Progress: {progressPercentage}%.'
+      smsTemplate:
+        'Milestone "{milestoneName}" completed for {projectTitle}. Progress: {progressPercentage}%.',
+      inAppTemplate:
+        'Milestone "{milestoneName}" completed. Progress: {progressPercentage}%.',
     },
     {
       id: 'deadline_approaching',
@@ -89,8 +103,10 @@ export class NotificationService {
         <p>Please let us know if you have any questions or need to adjust the timeline.</p>
         <p>Best regards,<br>The Veloz Team</p>
       `,
-      smsTemplate: 'Deadline approaching for {milestoneName} in {projectTitle}. Due: {deadline}.',
-      inAppTemplate: 'Deadline approaching for "{milestoneName}". Due: {deadline}.'
+      smsTemplate:
+        'Deadline approaching for {milestoneName} in {projectTitle}. Due: {deadline}.',
+      inAppTemplate:
+        'Deadline approaching for "{milestoneName}". Due: {deadline}.',
     },
     {
       id: 'status_change',
@@ -105,8 +121,10 @@ export class NotificationService {
         <p>Next steps: {nextSteps}</p>
         <p>Best regards,<br>The Veloz Team</p>
       `,
-      smsTemplate: 'Project {projectTitle} status updated to {newStatus}. Progress: {progressPercentage}%.',
-      inAppTemplate: 'Project status updated to "{newStatus}". Progress: {progressPercentage}%.'
+      smsTemplate:
+        'Project {projectTitle} status updated to {newStatus}. Progress: {progressPercentage}%.',
+      inAppTemplate:
+        'Project status updated to "{newStatus}". Progress: {progressPercentage}%.',
     },
     {
       id: 'file_uploaded',
@@ -122,14 +140,16 @@ export class NotificationService {
         <p>You can download these files from your project dashboard.</p>
         <p>Best regards,<br>The Veloz Team</p>
       `,
-      smsTemplate: 'New files uploaded for {projectTitle}: {fileCount} files available.',
-      inAppTemplate: 'New files uploaded: {fileCount} files available.'
+      smsTemplate:
+        'New files uploaded for {projectTitle}: {fileCount} files available.',
+      inAppTemplate: 'New files uploaded: {fileCount} files available.',
     },
     {
       id: 'urgent_update',
       type: 'reminder',
       subject: 'URGENT: {projectTitle} - Action Required',
-      message: 'Urgent update regarding your project that requires immediate attention.',
+      message:
+        'Urgent update regarding your project that requires immediate attention.',
       emailTemplate: `
         <h2>URGENT: Action Required</h2>
         <p>Hello {clientName},</p>
@@ -138,15 +158,18 @@ export class NotificationService {
         <p>Please respond as soon as possible to avoid delays.</p>
         <p>Best regards,<br>The Veloz Team</p>
       `,
-      smsTemplate: 'URGENT: {urgentMessage} for {projectTitle}. Please respond immediately.',
-      inAppTemplate: 'URGENT: {urgentMessage} - Action required immediately.'
-    }
+      smsTemplate:
+        'URGENT: {urgentMessage} for {projectTitle}. Please respond immediately.',
+      inAppTemplate: 'URGENT: {urgentMessage} - Action required immediately.',
+    },
   ];
 
   /**
    * Create a new notification
    */
-  async createNotification(notificationData: Omit<Notification, 'id' | 'createdAt' | 'read' | 'sent'>): Promise<string> {
+  async createNotification(
+    notificationData: Omit<Notification, 'id' | 'createdAt' | 'read' | 'sent'>
+  ): Promise<string> {
     try {
       const db = await getFirestoreService();
       if (!db) throw new Error('Firestore not available');
@@ -160,7 +183,6 @@ export class NotificationService {
 
       return notificationRef.id;
     } catch (error) {
-      console.error('Error creating notification:', error);
       throw new Error('Failed to create notification');
     }
   }
@@ -168,14 +190,21 @@ export class NotificationService {
   /**
    * Send notification via email
    */
-  async sendEmailNotification(notification: Notification, template: NotificationTemplate, data: Record<string, string>): Promise<boolean> {
+  async sendEmailNotification(
+    notification: Notification,
+    template: NotificationTemplate,
+    data: Record<string, string>
+  ): Promise<boolean> {
     try {
       const subject = this.replaceTemplateVariables(template.subject, data);
-      const message = this.replaceTemplateVariables(template.emailTemplate || template.message, data);
+      const message = this.replaceTemplateVariables(
+        template.emailTemplate || template.message,
+        data
+      );
 
       // TODO: Implement proper email sending using emailService
       // For now, log the email details
-      console.log('Email Notification:', {
+      console.log('Email notification:', {
         to: notification.recipient,
         subject,
         message,
@@ -185,7 +214,7 @@ export class NotificationService {
       await this.markNotificationAsSent(notification.id);
       return true;
     } catch (error) {
-      console.error('Error sending email notification:', error);
+      console.error('Email notification failed:', error);
       return false;
     }
   }
@@ -193,12 +222,19 @@ export class NotificationService {
   /**
    * Send notification via SMS (placeholder for SMS service integration)
    */
-  async sendSMSNotification(notification: Notification, template: NotificationTemplate, data: Record<string, string>): Promise<boolean> {
+  async sendSMSNotification(
+    notification: Notification,
+    template: NotificationTemplate,
+    data: Record<string, string>
+  ): Promise<boolean> {
     try {
-      const message = this.replaceTemplateVariables(template.smsTemplate || template.message, data);
-      
+      const message = this.replaceTemplateVariables(
+        template.smsTemplate || template.message,
+        data
+      );
+
       // TODO: Integrate with SMS service (Twilio, etc.)
-      console.log('SMS Notification:', {
+      console.log('SMS notification:', {
         to: notification.recipient,
         message,
       });
@@ -206,7 +242,7 @@ export class NotificationService {
       await this.markNotificationAsSent(notification.id);
       return true;
     } catch (error) {
-      console.error('Error sending SMS notification:', error);
+      console.error('SMS notification failed:', error);
       return false;
     }
   }
@@ -241,7 +277,7 @@ export class NotificationService {
 
       return notifications;
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      console.error('Failed to fetch notifications:', error);
       throw new Error('Failed to fetch notifications');
     }
   }
@@ -259,7 +295,7 @@ export class NotificationService {
         read: true,
       });
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      console.error('Failed to mark notification as read:', error);
       throw new Error('Failed to mark notification as read');
     }
   }
@@ -278,7 +314,7 @@ export class NotificationService {
         sentAt: serverTimestamp(),
       });
     } catch (error) {
-      console.error('Error marking notification as sent:', error);
+      console.error('Failed to mark notification as sent:', error);
       throw new Error('Failed to mark notification as sent');
     }
   }
@@ -579,7 +615,10 @@ export class NotificationService {
   /**
    * Replace template variables with actual data
    */
-  private replaceTemplateVariables(template: string, data: Record<string, string>): string {
+  private replaceTemplateVariables(
+    template: string,
+    data: Record<string, string>
+  ): string {
     let result = template;
     for (const [key, value] of Object.entries(data)) {
       result = result.replace(new RegExp(`{${key}}`, 'g'), value);
@@ -603,4 +642,4 @@ export class NotificationService {
 }
 
 // Export singleton instance
-export const notificationService = new NotificationService(); 
+export const notificationService = new NotificationService();

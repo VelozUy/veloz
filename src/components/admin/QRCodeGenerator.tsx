@@ -130,7 +130,6 @@ export default function QRCodeGeneratorComponent() {
       setQrCodeDataUrl(dataUrl);
       toast.success('Project QR code generated successfully');
     } catch (error) {
-      console.error('Error generating project QR code:', error);
       toast.error('Error generating QR code');
     } finally {
       setIsGenerating(false);
@@ -165,7 +164,6 @@ export default function QRCodeGeneratorComponent() {
       setQrCodeDataUrl(dataUrl);
       toast.success('Gallery QR code generated successfully');
     } catch (error) {
-      console.error('Error generating gallery QR code:', error);
       toast.error('Error generating QR code');
     } finally {
       setIsGenerating(false);
@@ -202,7 +200,6 @@ export default function QRCodeGeneratorComponent() {
       setQrCodeDataUrl(dataUrl);
       toast.success('Custom QR code generated successfully');
     } catch (error) {
-      console.error('Error generating custom QR code:', error);
       toast.error('Error generating QR code');
     } finally {
       setIsGenerating(false);
@@ -224,7 +221,6 @@ export default function QRCodeGeneratorComponent() {
       document.body.removeChild(link);
       toast.success('QR code downloaded successfully');
     } catch (error) {
-      console.error('Error downloading QR code:', error);
       toast.error('Error downloading QR code');
     }
   };
@@ -239,7 +235,6 @@ export default function QRCodeGeneratorComponent() {
       await navigator.clipboard.writeText(generatedQR.url);
       toast.success('QR code URL copied to clipboard');
     } catch (error) {
-      console.error('Error copying URL:', error);
       toast.error('Error copying URL');
     }
   };

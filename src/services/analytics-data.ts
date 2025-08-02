@@ -1,10 +1,27 @@
-import { collection, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  Timestamp,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { z } from 'zod';
 
 // Analytics Event Schema for Firestore
 export const AnalyticsEventFirestoreSchema = z.object({
-  eventType: z.enum(['project_view', 'media_interaction', 'cta_interaction', 'crew_interaction', 'page_view', 'scroll_depth', 'session_start', 'session_end', 'error']),
+  eventType: z.enum([
+    'project_view',
+    'media_interaction',
+    'cta_interaction',
+    'crew_interaction',
+    'page_view',
+    'scroll_depth',
+    'session_start',
+    'session_end',
+    'error',
+  ]),
   projectId: z.string().optional(),
   eventData: z.record(z.unknown()),
   sessionId: z.string(),
@@ -35,19 +52,23 @@ export const AnalyticsSummarySchema = z.object({
     completes: z.number(),
     zooms: z.number(),
   }),
-  topProjects: z.array(z.object({
-    projectId: z.string(),
-    projectTitle: z.string(),
-    views: z.number(),
-    interactions: z.number(),
-  })),
+  topProjects: z.array(
+    z.object({
+      projectId: z.string(),
+      projectTitle: z.string(),
+      views: z.number(),
+      interactions: z.number(),
+    })
+  ),
   deviceBreakdown: z.record(z.number()),
   languageBreakdown: z.record(z.number()),
   conversionRate: z.number(),
   bounceRate: z.number(),
 });
 
-export type AnalyticsEventFirestore = z.infer<typeof AnalyticsEventFirestoreSchema>;
+export type AnalyticsEventFirestore = z.infer<
+  typeof AnalyticsEventFirestoreSchema
+>;
 export type AnalyticsSummary = z.infer<typeof AnalyticsSummarySchema>;
 
 // Enhanced analytics data processing functions
@@ -59,13 +80,17 @@ export async function processAnalyticsData(
   try {
     // Get raw analytics events for the period
     const events = await getAnalyticsEvents(startDate, endDate);
-    
+
     // Process events into summary data
-    const summary = await aggregateAnalyticsEvents(events, startDate, endDate, period);
-    
+    const summary = await aggregateAnalyticsEvents(
+      events,
+      startDate,
+      endDate,
+      period
+    );
+
     return summary;
   } catch (error) {
-    console.error('Error processing analytics data:', error);
     throw error;
   }
 }
@@ -74,10 +99,9 @@ export async function processAnalyticsData(
 export async function getAnalyticsEvents(startDate: Date, endDate: Date) {
   try {
     if (!db) {
-      console.error('Firebase db is not initialized');
       return [];
     }
-    
+
     const eventsRef = collection(db, 'analytics');
     const q = query(
       eventsRef,
@@ -85,17 +109,16 @@ export async function getAnalyticsEvents(startDate: Date, endDate: Date) {
       where('timestamp', '<=', Timestamp.fromDate(endDate)),
       orderBy('timestamp', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => {
       const data = doc.data();
       return {
         id: doc.id,
-        ...data
+        ...data,
       } as unknown as AnalyticsEventFirestore;
     });
   } catch (error) {
-    console.error('Error fetching analytics events:', error);
     return [];
   }
 }
@@ -107,16 +130,19 @@ export async function aggregateAnalyticsEvents(
   period: 'daily' | 'weekly' | 'monthly'
 ): Promise<AnalyticsSummary> {
   // Group events by project
-  const projectStats = new Map<string, {
-    views: number;
-    interactions: number;
-    title: string;
-  }>();
-  
+  const projectStats = new Map<
+    string,
+    {
+      views: number;
+      interactions: number;
+      title: string;
+    }
+  >();
+
   // Device and language breakdown
   const deviceBreakdown: Record<string, number> = {};
   const languageBreakdown: Record<string, number> = {};
-  
+
   // Session tracking
   const sessions = new Set<string>();
   const sessionDurations: number[] = [];
@@ -124,7 +150,7 @@ export async function aggregateAnalyticsEvents(
   let ctaClicks = 0;
   let mediaInteractions = 0;
   let crewInteractions = 0;
-  
+
   // Enhanced media interaction tracking
   const mediaInteractionBreakdown = {
     views: 0,
@@ -133,15 +159,17 @@ export async function aggregateAnalyticsEvents(
     completes: 0,
     zooms: 0,
   };
-  
+
   events.forEach(event => {
     // Track sessions
     sessions.add(event.sessionId);
-    
+
     // Device and language breakdown
-    deviceBreakdown[event.deviceType] = (deviceBreakdown[event.deviceType] || 0) + 1;
-    languageBreakdown[event.userLanguage] = (languageBreakdown[event.userLanguage] || 0) + 1;
-    
+    deviceBreakdown[event.deviceType] =
+      (deviceBreakdown[event.deviceType] || 0) + 1;
+    languageBreakdown[event.userLanguage] =
+      (languageBreakdown[event.userLanguage] || 0) + 1;
+
     // Event type processing
     switch (event.eventType) {
       case 'project_view':
@@ -149,27 +177,31 @@ export async function aggregateAnalyticsEvents(
           const projectData = projectStats.get(event.projectId) || {
             views: 0,
             interactions: 0,
-            title: (event.eventData as { projectTitle: string }).projectTitle || 'Unknown Project'
+            title:
+              (event.eventData as { projectTitle: string }).projectTitle ||
+              'Unknown Project',
           };
           projectData.views++;
           projectStats.set(event.projectId, projectData);
         }
         break;
-        
+
       case 'media_interaction':
         mediaInteractions++;
         if (event.projectId) {
           const projectData = projectStats.get(event.projectId) || {
             views: 0,
             interactions: 0,
-            title: 'Unknown Project'
+            title: 'Unknown Project',
           };
           projectData.interactions++;
           projectStats.set(event.projectId, projectData);
         }
-        
+
         // Track specific media interaction types
-        const interactionType = (event.eventData as { interaction_type: string }).interaction_type;
+        const interactionType = (
+          event.eventData as { interaction_type: string }
+        ).interaction_type;
         if (interactionType) {
           switch (interactionType) {
             case 'view':
@@ -194,21 +226,21 @@ export async function aggregateAnalyticsEvents(
           mediaInteractionBreakdown.views++;
         }
         break;
-        
+
       case 'cta_interaction':
         ctaClicks++;
         break;
-        
+
       case 'crew_interaction':
         crewInteractions++;
         break;
-        
+
       case 'page_view':
         pageViews.push(1);
         break;
     }
   });
-  
+
   // Calculate top projects
   const topProjects = Array.from(projectStats.entries())
     .map(([projectId, stats]) => ({
@@ -219,18 +251,20 @@ export async function aggregateAnalyticsEvents(
     }))
     .sort((a, b) => b.views - a.views)
     .slice(0, 10);
-  
+
   // Calculate metrics
   const totalViews = pageViews.length;
   const uniqueVisitors = sessions.size;
-  const avgTimeOnPage = sessionDurations.length > 0 
-    ? sessionDurations.reduce((a, b) => a + b, 0) / sessionDurations.length 
-    : 0;
-  
+  const avgTimeOnPage =
+    sessionDurations.length > 0
+      ? sessionDurations.reduce((a, b) => a + b, 0) / sessionDurations.length
+      : 0;
+
   // Calculate conversion and bounce rates
   const conversionRate = totalViews > 0 ? (ctaClicks / totalViews) * 100 : 0;
-  const bounceRate = totalViews > 0 ? ((totalViews - uniqueVisitors) / totalViews) * 100 : 0;
-  
+  const bounceRate =
+    totalViews > 0 ? ((totalViews - uniqueVisitors) / totalViews) * 100 : 0;
+
   return {
     period,
     startDate: Timestamp.fromDate(startDate),
@@ -259,15 +293,19 @@ export async function getAnalyticsSummaries(
   const endDate = new Date();
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
-  
+
   try {
     const events = await getAnalyticsEvents(startDate, endDate);
-    const summary = await aggregateAnalyticsEvents(events, startDate, endDate, period);
+    const summary = await aggregateAnalyticsEvents(
+      events,
+      startDate,
+      endDate,
+      period
+    );
     summaries.push(summary);
-    
+
     return summaries;
   } catch (error) {
-    console.error('Error getting analytics summaries:', error);
     return [];
   }
 }
@@ -281,17 +319,16 @@ export async function getRealTimeAnalytics(): Promise<{
   try {
     const now = new Date();
     const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
-    
+
     const events = await getAnalyticsEvents(fiveMinutesAgo, now);
     const activeSessions = new Set(events.map(e => e.sessionId));
-    
+
     return {
       activeUsers: activeSessions.size,
       currentSessions: activeSessions.size,
       recentEvents: events.slice(0, 10), // Last 10 events
     };
   } catch (error) {
-    console.error('Error getting real-time analytics:', error);
     return {
       activeUsers: 0,
       currentSessions: 0,
@@ -315,11 +352,14 @@ export async function getProjectAnalytics(projectId: string): Promise<{
     completes: number;
     zooms: number;
   };
-  topMedia: Array<{ mediaId: string; interactions: number; interactionType: string }>;
+  topMedia: Array<{
+    mediaId: string;
+    interactions: number;
+    interactionType: string;
+  }>;
 }> {
   try {
     if (!db) {
-      console.error('Firebase db is not initialized');
       return {
         totalViews: 0,
         uniqueVisitors: 0,
@@ -337,36 +377,44 @@ export async function getProjectAnalytics(projectId: string): Promise<{
         topMedia: [],
       };
     }
-    
+
     const eventsRef = collection(db, 'analytics');
     const q = query(
       eventsRef,
       where('projectId', '==', projectId),
       orderBy('timestamp', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     const events = snapshot.docs.map(doc => {
       const data = doc.data();
       return {
         id: doc.id,
-        ...data
+        ...data,
       } as unknown as AnalyticsEventFirestore;
     });
-    
+
     // Process project-specific data
-    const totalViews = events.filter(e => e.eventType === 'project_view').length;
+    const totalViews = events.filter(
+      e => e.eventType === 'project_view'
+    ).length;
     const uniqueVisitors = new Set(events.map(e => e.sessionId)).size;
-    const mediaInteractions = events.filter(e => e.eventType === 'media_interaction').length;
-    const crewInteractions = events.filter(e => e.eventType === 'crew_interaction').length;
-    
+    const mediaInteractions = events.filter(
+      e => e.eventType === 'media_interaction'
+    ).length;
+    const crewInteractions = events.filter(
+      e => e.eventType === 'crew_interaction'
+    ).length;
+
     // Calculate average time on page (simplified)
     const avgTimeOnPage = totalViews > 0 ? 120 : 0; // Placeholder calculation
-    
+
     // Calculate conversion rate
-    const ctaClicks = events.filter(e => e.eventType === 'cta_interaction').length;
+    const ctaClicks = events.filter(
+      e => e.eventType === 'cta_interaction'
+    ).length;
     const conversionRate = totalViews > 0 ? (ctaClicks / totalViews) * 100 : 0;
-    
+
     // Enhanced media interaction breakdown
     const mediaInteractionBreakdown = {
       views: 0,
@@ -375,22 +423,30 @@ export async function getProjectAnalytics(projectId: string): Promise<{
       completes: 0,
       zooms: 0,
     };
-    
+
     // Get top media interactions with interaction types
-    const mediaStats = new Map<string, { interactions: number; types: Set<string> }>();
+    const mediaStats = new Map<
+      string,
+      { interactions: number; types: Set<string> }
+    >();
     events
       .filter(e => e.eventType === 'media_interaction')
       .forEach(event => {
         const mediaId = (event.eventData as { mediaId: string }).mediaId;
-        const interactionType = (event.eventData as { interaction_type: string }).interaction_type || 'view';
-        
+        const interactionType =
+          (event.eventData as { interaction_type: string }).interaction_type ||
+          'view';
+
         if (mediaId) {
-          const stats = mediaStats.get(mediaId) || { interactions: 0, types: new Set() };
+          const stats = mediaStats.get(mediaId) || {
+            interactions: 0,
+            types: new Set(),
+          };
           stats.interactions++;
           stats.types.add(interactionType);
           mediaStats.set(mediaId, stats);
         }
-        
+
         // Update breakdown
         switch (interactionType) {
           case 'view':
@@ -410,16 +466,16 @@ export async function getProjectAnalytics(projectId: string): Promise<{
             break;
         }
       });
-    
+
     const topMedia = Array.from(mediaStats.entries())
-      .map(([mediaId, stats]) => ({ 
-        mediaId, 
+      .map(([mediaId, stats]) => ({
+        mediaId,
         interactions: stats.interactions,
-        interactionType: Array.from(stats.types).join(', ')
+        interactionType: Array.from(stats.types).join(', '),
       }))
       .sort((a, b) => b.interactions - a.interactions)
       .slice(0, 5);
-    
+
     return {
       totalViews,
       uniqueVisitors,
@@ -431,7 +487,6 @@ export async function getProjectAnalytics(projectId: string): Promise<{
       topMedia,
     };
   } catch (error) {
-    console.error('Error getting project analytics:', error);
     return {
       totalViews: 0,
       uniqueVisitors: 0,
@@ -459,11 +514,11 @@ export async function exportAnalyticsData(
 ): Promise<string> {
   try {
     const events = await getAnalyticsEvents(startDate, endDate);
-    
+
     if (format === 'json') {
       return JSON.stringify(events, null, 2);
     }
-    
+
     // CSV format
     const headers = [
       'Event Type',
@@ -476,9 +531,9 @@ export async function exportAnalyticsData(
       'Media ID',
       'Media Type',
     ];
-    
+
     const csvRows = [headers.join(',')];
-    
+
     events.forEach(event => {
       const row = [
         event.eventType,
@@ -487,17 +542,19 @@ export async function exportAnalyticsData(
         event.deviceType,
         event.userLanguage,
         event.timestamp.toDate().toISOString(),
-        (event.eventData as { interaction_type: string }).interaction_type || '',
+        (event.eventData as { interaction_type: string }).interaction_type ||
+          '',
         (event.eventData as { media_id: string }).media_id || '',
         (event.eventData as { media_type: string }).media_type || '',
-      ].map(field => `"${field}"`).join(',');
-      
+      ]
+        .map(field => `"${field}"`)
+        .join(',');
+
       csvRows.push(row);
     });
-    
+
     return csvRows.join('\n');
   } catch (error) {
-    console.error('Error exporting analytics data:', error);
     throw new Error('Failed to export analytics data');
   }
-} 
+}

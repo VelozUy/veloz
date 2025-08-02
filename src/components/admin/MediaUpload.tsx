@@ -684,7 +684,6 @@ export default function MediaUpload({
         `✅ Análisis AI completado para ${uploadFile.file.name}. Título, descripción y etiquetas SEO generados.`
       );
     } catch (error) {
-      console.error('Error analyzing media:', error);
       onUploadError?.(
         `Error al analizar ${uploadFile.file.type.startsWith('video/') ? 'video' : 'foto'} para SEO`
       );

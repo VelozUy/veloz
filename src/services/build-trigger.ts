@@ -37,7 +37,6 @@ export async function triggerBuild(): Promise<BuildTriggerResponse> {
 
     return data;
   } catch (error) {
-    console.error('Error triggering build:', error);
     return {
       success: false,
       message: 'Failed to trigger build',

@@ -120,7 +120,6 @@ export class FirestoreReset {
 
   async performLightReset(): Promise<ResetResult[]> {
     this.results = [];
-    console.log('🔄 Starting light Firestore reset...');
 
     await this.step1_DisableNetwork();
     await this.step2_ClearLocalStorage();
@@ -128,7 +127,6 @@ export class FirestoreReset {
     await this.step5_EnableNetwork();
     await this.step6_TestConnection();
 
-    console.log('🔄 Light Firestore reset complete:', this.results);
     return this.results;
   }
 
@@ -168,7 +166,6 @@ export class FirestoreReset {
 
   async performTargetIdReset(): Promise<ResetResult[]> {
     this.results = [];
-    console.log('🔄 Starting Target ID collision reset...');
 
     // Specific sequence for Target ID issues
     await this.step2_ClearLocalStorage();
@@ -186,7 +183,6 @@ export class FirestoreReset {
     await this.step5_EnableNetwork();
     await this.step6_TestConnection();
 
-    console.log('🔄 Target ID reset complete:', this.results);
     return this.results;
   }
 
@@ -222,15 +218,12 @@ export const resetTargetIdCollision = async (): Promise<ResetResult[]> => {
 
 // Emergency page reload (last resort)
 export const emergencyReload = (): void => {
-  console.log('🚨 Performing emergency page reload...');
   if (typeof window !== 'undefined') {
     // Clear all storage before reload
     try {
       window.localStorage.clear();
       window.sessionStorage.clear();
-    } catch (error) {
-      console.warn('Could not clear storage:', error);
-    }
+    } catch (error) {}
 
     // Force reload with cache bypass
     window.location.reload();

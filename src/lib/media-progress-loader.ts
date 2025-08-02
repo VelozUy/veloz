@@ -28,15 +28,13 @@ export class MediaProgressLoader {
       timeout = this.DEFAULT_TIMEOUT,
       retries = this.DEFAULT_RETRIES,
       useBlob = false, // Disable blob for CSP compliance
-      fallbackToDirect = true
+      fallbackToDirect = true,
     } = options;
 
     // Try native Image/Video loading with progress events
     try {
       return await this.loadWithNative(url, timeout, callbacks);
-    } catch (error) {
-      console.warn('Native loading failed:', error);
-    }
+    } catch (error) {}
 
     // Final fallback: direct loading with simulated progress
     if (fallbackToDirect) {
@@ -82,7 +80,7 @@ export class MediaProgressLoader {
         callbacks.onProgress(0);
       };
 
-      img.onprogress = (e) => {
+      img.onprogress = e => {
         if (e.lengthComputable) {
           const percent = Math.round((e.loaded / e.total) * 100);
           callbacks.onProgress(percent);
@@ -129,7 +127,7 @@ export class MediaProgressLoader {
       }, timeout);
 
       const img = new Image();
-      
+
       img.onload = () => {
         clearInterval(progressInterval);
         clearTimeout(timeoutId);
@@ -180,8 +178,7 @@ export class MediaProgressLoader {
       // Return null to indicate unknown size
       return null;
     } catch (error) {
-      console.warn('Could not get file size:', error);
       return null;
     }
   }
-} 
+}

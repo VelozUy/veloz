@@ -68,7 +68,6 @@ export class ProjectTrackingService {
 
       return projectRef.id;
     } catch (error) {
-      console.error('Error creating project:', error);
       throw new Error('Failed to create project');
     }
   }
@@ -106,7 +105,6 @@ export class ProjectTrackingService {
         updatedAt: projectData.updatedAt?.toDate() || new Date(),
       } as EnhancedProject;
     } catch (error) {
-      console.error('Error fetching project:', error);
       throw new Error('Failed to fetch project');
     }
   }
@@ -126,7 +124,6 @@ export class ProjectTrackingService {
         updatedAt: serverTimestamp(),
       });
     } catch (error) {
-      console.error('Error updating project:', error);
       throw new Error('Failed to update project');
     }
   }
@@ -157,7 +154,6 @@ export class ProjectTrackingService {
 
       return projects;
     } catch (error) {
-      console.error('Error fetching projects:', error);
       throw new Error('Failed to fetch projects');
     }
   }
@@ -187,7 +183,6 @@ export class ProjectTrackingService {
 
       return milestoneRef.id;
     } catch (error) {
-      console.error('Error creating milestone:', error);
       throw new Error('Failed to create milestone');
     }
   }
@@ -218,7 +213,6 @@ export class ProjectTrackingService {
 
       return milestones;
     } catch (error) {
-      console.error('Error fetching milestones:', error);
       throw new Error('Failed to fetch milestones');
     }
   }
@@ -248,7 +242,6 @@ export class ProjectTrackingService {
       // Update project progress
       await this.updateProjectProgress(projectId);
     } catch (error) {
-      console.error('Error updating milestone:', error);
       throw new Error('Failed to update milestone');
     }
   }
@@ -274,7 +267,6 @@ export class ProjectTrackingService {
 
       return communicationRef.id;
     } catch (error) {
-      console.error('Error creating communication:', error);
       throw new Error('Failed to create communication');
     }
   }
@@ -304,7 +296,6 @@ export class ProjectTrackingService {
 
       return communications;
     } catch (error) {
-      console.error('Error fetching communications:', error);
       throw new Error('Failed to fetch communications');
     }
   }
@@ -331,7 +322,6 @@ export class ProjectTrackingService {
 
       return fileRef.id;
     } catch (error) {
-      console.error('Error creating project file:', error);
       throw new Error('Failed to create project file');
     }
   }
@@ -362,7 +352,6 @@ export class ProjectTrackingService {
 
       return files;
     } catch (error) {
-      console.error('Error fetching project files:', error);
       throw new Error('Failed to fetch project files');
     }
   }
@@ -385,7 +374,6 @@ export class ProjectTrackingService {
         lastDownloaded: serverTimestamp(),
       });
     } catch (error) {
-      console.error('Error updating file download count:', error);
       throw new Error('Failed to update file download count');
     }
   }
@@ -408,7 +396,6 @@ export class ProjectTrackingService {
 
       return notificationRef.id;
     } catch (error) {
-      console.error('Error creating notification:', error);
       throw new Error('Failed to create notification');
     }
   }
@@ -440,7 +427,6 @@ export class ProjectTrackingService {
 
       return notifications;
     } catch (error) {
-      console.error('Error fetching notifications:', error);
       throw new Error('Failed to fetch notifications');
     }
   }
@@ -465,7 +451,6 @@ export class ProjectTrackingService {
         read: true,
       });
     } catch (error) {
-      console.error('Error marking notification as read:', error);
       throw new Error('Failed to mark notification as read');
     }
   }
@@ -499,7 +484,6 @@ export class ProjectTrackingService {
 
       return sessionRef.id;
     } catch (error) {
-      console.error('Error creating client session:', error);
       throw new Error('Failed to create client session');
     }
   }
@@ -515,7 +499,6 @@ export class ProjectTrackingService {
       const project = await this.getProject(projectId);
       return project?.client.accessCode === accessCode;
     } catch (error) {
-      console.error('Error validating client access:', error);
       return false;
     }
   }
@@ -545,9 +528,7 @@ export class ProjectTrackingService {
           lastUpdated: new Date().toISOString(),
         },
       });
-    } catch (error) {
-      console.error('Error updating project progress:', error);
-    }
+    } catch (error) {}
   }
 
   /**
@@ -601,7 +582,6 @@ export class ProjectTrackingService {
         unreadNotifications,
       };
     } catch (error) {
-      console.error('Error getting project summary:', error);
       throw new Error('Failed to get project summary');
     }
   }

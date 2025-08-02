@@ -117,7 +117,6 @@ export default function ProjectAnalytics({
       // Load project summaries for overview
       await loadProjectSummaries();
     } catch (err) {
-      console.error('Error loading analytics data:', err);
       setError('Error loading analytics data');
     } finally {
       setLoading(false);
@@ -206,7 +205,6 @@ export default function ProjectAnalytics({
 
   const handleExportData = () => {
     // Export functionality would be implemented here
-    console.log('Exporting analytics data...');
   };
 
   if (loading) {

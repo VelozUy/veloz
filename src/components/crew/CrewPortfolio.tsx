@@ -148,12 +148,11 @@ export default function CrewPortfolio({ crewMember }: CrewPortfolioProps) {
         setUseMockData(false);
       } else {
         // Fallback to mock data if service fails
-        console.warn('Crew portfolio service failed, using mock data');
+
         setWorks(mockWorks);
         setUseMockData(true);
       }
     } catch (error) {
-      console.error('Error loading crew works:', error);
       // Fallback to mock data
       setWorks(mockWorks);
       setUseMockData(true);
@@ -375,7 +374,6 @@ export default function CrewPortfolio({ crewMember }: CrewPortfolioProps) {
                       className="flex-1"
                       onClick={() => {
                         // TODO: Implement lightbox or modal for viewing work
-                        console.log('View work:', work.id);
                       }}
                     >
                       Ver Detalles

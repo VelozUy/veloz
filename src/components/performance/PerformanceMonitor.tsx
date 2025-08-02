@@ -108,9 +108,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
           'layout-shift',
         ],
       });
-    } catch (error) {
-      console.warn('Performance monitoring not supported:', error);
-    }
+    } catch (error) {}
 
     // Calculate Total Blocking Time
     const calculateTBT = () => {

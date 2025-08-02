@@ -51,8 +51,6 @@ export const useLazyLoadPerformance = (): UseLazyLoadPerformanceReturn => {
     metricsRef.current.errorCount += 1;
     loadStartTimes.current.delete(imageId);
     visibilityStartTimes.current.delete(imageId);
-
-    console.error(`Image ${imageId} failed to load`);
   }, []);
 
   const trackVisibility = useCallback((imageId: string) => {

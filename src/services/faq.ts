@@ -54,8 +54,6 @@ export class FAQService {
 
       return faqs;
     } catch (error) {
-      console.error('Error fetching published FAQs:', error);
-
       // Fallback: try getting all FAQs without ordering if order index fails
       try {
         const db = await getFirestoreService();
@@ -74,7 +72,6 @@ export class FAQService {
         // Sort by order in code
         return fallbackFaqs.sort((a, b) => (a.order || 0) - (b.order || 0));
       } catch (fallbackError) {
-        console.error('Fallback query also failed:', fallbackError);
         return [];
       }
     }
@@ -88,7 +85,6 @@ export class FAQService {
       const allFaqs = await this.getPublishedFAQs();
       return allFaqs.filter(faq => faq.category === category);
     } catch (error) {
-      console.error('Error fetching FAQs by category:', error);
       return [];
     }
   }
@@ -102,7 +98,6 @@ export class FAQService {
       const categories = new Set(faqs.map(faq => faq.category || 'General'));
       return Array.from(categories).sort();
     } catch (error) {
-      console.error('Error fetching FAQ categories:', error);
       return [];
     }
   }

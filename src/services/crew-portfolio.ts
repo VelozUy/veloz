@@ -96,7 +96,6 @@ export class CrewPortfolioService {
 
       return { success: true, data: works };
     } catch (error) {
-      console.error('Error fetching crew member works:', error);
       return { success: false, error: 'Failed to fetch crew member works' };
     }
   }
@@ -154,7 +153,6 @@ export class CrewPortfolioService {
 
       return { success: true, data: stats };
     } catch (error) {
-      console.error('Error calculating crew member stats:', error);
       return { success: false, error: 'Failed to calculate crew member stats' };
     }
   }
@@ -176,7 +174,6 @@ export class CrewPortfolioService {
 
       return { success: true, data: filteredWorks };
     } catch (error) {
-      console.error('Error fetching crew member works by category:', error);
       return {
         success: false,
         error: 'Failed to fetch crew member works by category',
@@ -219,7 +216,6 @@ export class CrewPortfolioService {
 
       return { success: true, data: crewWithStats };
     } catch (error) {
-      console.error('Error fetching crew members with stats:', error);
       return {
         success: false,
         error: 'Failed to fetch crew members with stats',
@@ -259,7 +255,6 @@ export class CrewPortfolioService {
 
       return { success: true, data: featuredWorks };
     } catch (error) {
-      console.error('Error fetching crew member featured works:', error);
       return {
         success: false,
         error: 'Failed to fetch crew member featured works',

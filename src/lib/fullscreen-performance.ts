@@ -109,7 +109,6 @@ class FullscreenPerformanceOptimizer {
   ) {
     // Check memory usage before preloading
     if (!this.isMemoryUsageAcceptable()) {
-      console.warn('Memory usage high, skipping preload');
       this.cleanupOldPreloads();
       return;
     }
@@ -157,9 +156,7 @@ class FullscreenPerformanceOptimizer {
           preloadItem.element = img;
           this.performanceMetrics.preloadCount++;
         };
-        img.onerror = () => {
-          console.warn(`Failed to preload image: ${item.src}`);
-        };
+        img.onerror = () => {};
         img.src = item.src;
       } else {
         const video = document.createElement('video');
@@ -170,9 +167,7 @@ class FullscreenPerformanceOptimizer {
           preloadItem.element = video;
           this.performanceMetrics.preloadCount++;
         };
-        video.onerror = () => {
-          console.warn(`Failed to preload video: ${item.src}`);
-        };
+        video.onerror = () => {};
         video.src = item.src;
       }
 

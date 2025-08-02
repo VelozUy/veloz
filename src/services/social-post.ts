@@ -1,4 +1,16 @@
-import { collection, addDoc, getDocs, query, where, orderBy, doc, getDoc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  writeBatch,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { ApiResponse } from '@/types';
 import { validateSocialPost } from '@/lib/validation-schemas';
@@ -71,7 +83,6 @@ export class SocialPostService {
 
       return { success: true, data: newPost };
     } catch (error) {
-      console.error('Failed to create social post:', error);
       return {
         success: false,
         error:
@@ -102,7 +113,6 @@ export class SocialPostService {
 
       return { success: true, data };
     } catch (error) {
-      console.error('Failed to fetch social post:', error);
       return {
         success: false,
         error:
@@ -136,7 +146,6 @@ export class SocialPostService {
 
       return { success: true, data: socialPosts };
     } catch (error) {
-      console.error('Failed to fetch social posts:', error);
       return {
         success: false,
         error:
@@ -171,7 +180,6 @@ export class SocialPostService {
 
       return { success: true, data: updatedData };
     } catch (error) {
-      console.error('Failed to update social post:', error);
       return {
         success: false,
         error:
@@ -189,7 +197,6 @@ export class SocialPostService {
       await deleteDoc(docRef);
       return { success: true };
     } catch (error) {
-      console.error('Failed to delete social post:', error);
       return {
         success: false,
         error:
@@ -220,7 +227,6 @@ export class SocialPostService {
       await batch.commit();
       return { success: true };
     } catch (error) {
-      console.error('Failed to update social post order:', error);
       return {
         success: false,
         error:

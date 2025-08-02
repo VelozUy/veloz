@@ -13,7 +13,6 @@ export async function checkAdminStatus(userEmail: string): Promise<boolean> {
   try {
     const db = await getFirestoreService();
     if (!db) {
-      console.error('Firestore not available');
       return false;
     }
 
@@ -27,16 +26,16 @@ export async function checkAdminStatus(userEmail: string): Promise<boolean> {
 
     return isActive;
   } catch (error) {
-    console.error('Error checking admin status:', error);
     return false;
   }
 }
 
-export async function getCurrentAdminUser(userEmail: string): Promise<AdminUser | null> {
+export async function getCurrentAdminUser(
+  userEmail: string
+): Promise<AdminUser | null> {
   try {
     const db = await getFirestoreService();
     if (!db) {
-      console.error('Firestore not available');
       return null;
     }
 
@@ -47,7 +46,6 @@ export async function getCurrentAdminUser(userEmail: string): Promise<AdminUser 
 
     return adminDoc.data() as AdminUser;
   } catch (error) {
-    console.error('Error getting admin user:', error);
     return null;
   }
-} 
+}

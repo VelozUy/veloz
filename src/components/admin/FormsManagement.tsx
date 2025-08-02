@@ -54,7 +54,6 @@ export default function FormsManagement() {
       const formContent = await formContentService.getFormContent();
       setContent(formContent);
     } catch (error) {
-      console.error('Error loading form content:', error);
       setSaveStatus('error');
       setSaveMessage(
         error instanceof Error ? error.message : 'Error loading form content'
@@ -88,7 +87,6 @@ export default function FormsManagement() {
         setSaveMessage('');
       }, 3000);
     } catch (error) {
-      console.error('Error saving form content:', error);
       setSaveStatus('error');
       setSaveMessage(
         error instanceof Error ? error.message : 'Error saving form content'

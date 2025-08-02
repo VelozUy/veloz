@@ -26,14 +26,11 @@ export class FirestoreSecurityRulesChecker {
   async checkSecurityRules(): Promise<SecurityRulesResult[]> {
     this.results = [];
 
-    console.log('🔒 Checking Firestore Security Rules...');
-
     await this.testBasicRead();
     await this.testBasicWrite();
     await this.testCollectionRead();
     await this.testAuthenticatedAccess();
 
-    console.log('🔒 Security Rules Check Complete:', this.results);
     return this.results;
   }
 
@@ -45,14 +42,13 @@ export class FirestoreSecurityRulesChecker {
   ) {
     this.results.push({ test, status, message, solution });
     const emoji = status === 'pass' ? '✅' : status === 'fail' ? '❌' : '⚠️';
-    console.log(`${emoji} ${test}: ${message}`);
   }
 
   private async testBasicRead() {
     try {
       const db = await getFirestoreService();
       if (!db) throw new Error('Firestore not available');
-      console.log('🔄 Testing basic read access...');
+
       const testDoc = doc(db, 'test', 'read-test');
 
       // Add timeout to prevent hanging

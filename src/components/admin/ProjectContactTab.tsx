@@ -127,7 +127,6 @@ export default function ProjectContactTab({
         setContacts(projectContacts);
       }
     } catch (error) {
-      console.error('Error loading project contacts:', error);
       setError('Error al cargar los contactos del proyecto');
       onError?.('Error al cargar los contactos del proyecto');
     } finally {
@@ -167,7 +166,6 @@ export default function ProjectContactTab({
         onError?.(response.error || 'Error al agregar el contacto');
       }
     } catch (error) {
-      console.error('Error adding contact:', error);
       setError('Error al agregar el contacto');
       onError?.('Error al agregar el contacto');
     }
@@ -208,7 +206,6 @@ export default function ProjectContactTab({
         onError?.(response.error || 'Error al actualizar el contacto');
       }
     } catch (error) {
-      console.error('Error updating contact:', error);
       setError('Error al actualizar el contacto');
       onError?.('Error al actualizar el contacto');
     }
@@ -226,7 +223,6 @@ export default function ProjectContactTab({
         onError?.(response.error || 'Error al eliminar el contacto');
       }
     } catch (error) {
-      console.error('Error deleting contact:', error);
       setError('Error al eliminar el contacto');
       onError?.('Error al eliminar el contacto');
     }

@@ -112,9 +112,9 @@ export class CrewAvailabilityService {
       );
 
       if (conflicts.length > 0) {
-        return { 
-          success: false, 
-          error: `Conflicts detected: ${conflicts.map(c => c.conflictType).join(', ')}` 
+        return {
+          success: false,
+          error: `Conflicts detected: ${conflicts.map(c => c.conflictType).join(', ')}`,
         };
       }
 
@@ -138,7 +138,6 @@ export class CrewAvailabilityService {
 
       return { success: true, data: slot };
     } catch (error) {
-      console.error('Error creating availability slot:', error);
       return { success: false, error: 'Failed to create availability slot' };
     }
   }
@@ -178,9 +177,9 @@ export class CrewAvailabilityService {
       );
 
       if (conflicts.length > 0) {
-        return { 
-          success: false, 
-          error: `Conflicts detected: ${conflicts.map(c => c.conflictType).join(', ')}` 
+        return {
+          success: false,
+          error: `Conflicts detected: ${conflicts.map(c => c.conflictType).join(', ')}`,
         };
       }
 
@@ -188,7 +187,8 @@ export class CrewAvailabilityService {
         updatedAt: Timestamp.now(),
       };
 
-      if (data.startTime) updateData.startTime = Timestamp.fromDate(data.startTime);
+      if (data.startTime)
+        updateData.startTime = Timestamp.fromDate(data.startTime);
       if (data.endTime) updateData.endTime = Timestamp.fromDate(data.endTime);
       if (data.type) updateData.type = data.type;
       if (data.reason !== undefined) updateData.reason = data.reason;
@@ -199,7 +199,6 @@ export class CrewAvailabilityService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error updating availability slot:', error);
       return { success: false, error: 'Failed to update availability slot' };
     }
   }
@@ -216,7 +215,6 @@ export class CrewAvailabilityService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error deleting availability slot:', error);
       return { success: false, error: 'Failed to delete availability slot' };
     }
   }
@@ -272,13 +270,14 @@ export class CrewAvailabilityService {
         where('crewMemberId', '==', crewMemberId)
       );
       const scheduleSnapshot = await getDocs(scheduleQuery);
-      
+
       let schedule: AvailabilitySchedule;
       if (scheduleSnapshot.empty) {
         // Create default schedule
         schedule = {
           crewMemberId,
-          crewMemberName: crewMember.name?.es || crewMember.name?.en || 'Unknown',
+          crewMemberName:
+            crewMember.name?.es || crewMember.name?.en || 'Unknown',
           weeklySchedule: {
             monday: { start: '09:00', end: '17:00', available: true },
             tuesday: { start: '09:00', end: '17:00', available: true },
@@ -308,25 +307,32 @@ export class CrewAvailabilityService {
       const totalAvailableHours = slots
         .filter(s => s.type === 'available')
         .reduce((sum, slot) => {
-          const hours = (slot.endTime.getTime() - slot.startTime.getTime()) / (1000 * 60 * 60);
+          const hours =
+            (slot.endTime.getTime() - slot.startTime.getTime()) /
+            (1000 * 60 * 60);
           return sum + hours;
         }, 0);
 
       const totalBusyHours = slots
         .filter(s => s.type === 'busy')
         .reduce((sum, slot) => {
-          const hours = (slot.endTime.getTime() - slot.startTime.getTime()) / (1000 * 60 * 60);
+          const hours =
+            (slot.endTime.getTime() - slot.startTime.getTime()) /
+            (1000 * 60 * 60);
           return sum + hours;
         }, 0);
 
       const totalHours = totalAvailableHours + totalBusyHours;
-      const availabilityPercentage = totalHours > 0 ? (totalAvailableHours / totalHours) * 100 : 0;
+      const availabilityPercentage =
+        totalHours > 0 ? (totalAvailableHours / totalHours) * 100 : 0;
 
       // Find next available slot
       const now = new Date();
       const nextAvailableSlot = slots
         .filter(s => s.type === 'available' && s.startTime > now)
-        .sort((a, b) => a.startTime.getTime() - b.startTime.getTime())[0]?.startTime;
+        .sort(
+          (a, b) => a.startTime.getTime() - b.startTime.getTime()
+        )[0]?.startTime;
 
       // Check for conflicts
       const conflicts = await this.detectConflicts(crewMemberId, slots);
@@ -345,8 +351,10 @@ export class CrewAvailabilityService {
 
       return { success: true, data: calendar };
     } catch (error) {
-      console.error('Error fetching crew member availability:', error);
-      return { success: false, error: 'Failed to fetch crew member availability' };
+      return {
+        success: false,
+        error: 'Failed to fetch crew member availability',
+      };
     }
   }
 
@@ -373,7 +381,7 @@ export class CrewAvailabilityService {
         where('endTime', '>', Timestamp.fromDate(startTime))
       );
       const overlappingSnapshot = await getDocs(overlappingQuery);
-      
+
       const overlappingSlots: AvailabilitySlot[] = overlappingSnapshot.docs
         .filter(doc => !excludeSlotId || doc.id !== excludeSlotId)
         .map(doc => {
@@ -394,9 +402,13 @@ export class CrewAvailabilityService {
 
       if (overlappingSlots.length > 0) {
         // Get crew member name
-        const crewMemberDoc = await getDoc(doc(db, 'crewMembers', crewMemberId));
-        const crewMemberName = crewMemberDoc.exists() 
-          ? crewMemberDoc.data().name?.es || crewMemberDoc.data().name?.en || 'Unknown'
+        const crewMemberDoc = await getDoc(
+          doc(db, 'crewMembers', crewMemberId)
+        );
+        const crewMemberName = crewMemberDoc.exists()
+          ? crewMemberDoc.data().name?.es ||
+            crewMemberDoc.data().name?.en ||
+            'Unknown'
           : 'Unknown';
 
         conflicts.push({
@@ -409,7 +421,6 @@ export class CrewAvailabilityService {
 
       return conflicts;
     } catch (error) {
-      console.error('Error checking availability conflicts:', error);
       return [];
     }
   }
@@ -486,7 +497,6 @@ export class CrewAvailabilityService {
 
       return { success: true, data: calendars };
     } catch (error) {
-      console.error('Error fetching all crew availability:', error);
       return { success: false, error: 'Failed to fetch all crew availability' };
     }
   }
@@ -498,7 +508,15 @@ export class CrewAvailabilityService {
     startTime: Date,
     endTime: Date,
     requiredSkills?: string[]
-  ): Promise<ApiResponse<Array<{ crewMemberId: string; crewMemberName: string; availabilityPercentage: number }>>> {
+  ): Promise<
+    ApiResponse<
+      Array<{
+        crewMemberId: string;
+        crewMemberName: string;
+        availabilityPercentage: number;
+      }>
+    >
+  > {
     try {
       const db = await getFirestoreService();
       if (!db) throw new Error('Firestore not available');
@@ -520,7 +538,7 @@ export class CrewAvailabilityService {
 
       // Filter by skills if specified
       const filteredCrewMembers = requiredSkills
-        ? crewMembers.filter(crew => 
+        ? crewMembers.filter(crew =>
             requiredSkills.some(skill => crew.skills?.includes(skill))
           )
         : crewMembers;
@@ -537,10 +555,11 @@ export class CrewAvailabilityService {
 
         if (availability.success && availability.data) {
           const hasConflicts = availability.data.conflicts.length > 0;
-          const hasBusySlots = availability.data.slots.some(s => 
-            s.type === 'busy' &&
-            s.startTime < endTime &&
-            s.endTime > startTime
+          const hasBusySlots = availability.data.slots.some(
+            s =>
+              s.type === 'busy' &&
+              s.startTime < endTime &&
+              s.endTime > startTime
           );
 
           if (!hasConflicts && !hasBusySlots) {
@@ -554,15 +573,16 @@ export class CrewAvailabilityService {
       }
 
       // Sort by availability percentage
-      availableCrewMembers.sort((a, b) => b.availabilityPercentage - a.availabilityPercentage);
+      availableCrewMembers.sort(
+        (a, b) => b.availabilityPercentage - a.availabilityPercentage
+      );
 
       return { success: true, data: availableCrewMembers };
     } catch (error) {
-      console.error('Error finding available crew members:', error);
       return { success: false, error: 'Failed to find available crew members' };
     }
   }
 }
 
 // Export singleton instance
-export const crewAvailabilityService = new CrewAvailabilityService(); 
+export const crewAvailabilityService = new CrewAvailabilityService();

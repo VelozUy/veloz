@@ -266,8 +266,18 @@ export default function UnifiedCommunicationHub() {
             source: 'contact_form',
             isRead: false,
             archived: false,
-            createdAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
-            updatedAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
+            createdAt: {
+              seconds: Math.floor(
+                new Date('2025-01-27T14:30:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
+            updatedAt: {
+              seconds: Math.floor(
+                new Date('2025-01-27T14:30:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
           },
           {
             id: '2',
@@ -282,8 +292,18 @@ export default function UnifiedCommunicationHub() {
             source: 'contact_form',
             isRead: true,
             archived: false,
-            createdAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
-            updatedAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
+            createdAt: {
+              seconds: Math.floor(
+                new Date('2025-01-26T10:15:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
+            updatedAt: {
+              seconds: Math.floor(
+                new Date('2025-01-26T10:15:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
           },
           {
             id: '3',
@@ -298,8 +318,18 @@ export default function UnifiedCommunicationHub() {
             source: 'contact_form',
             isRead: true,
             archived: false,
-            createdAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
-            updatedAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
+            createdAt: {
+              seconds: Math.floor(
+                new Date('2025-01-25T16:45:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
+            updatedAt: {
+              seconds: Math.floor(
+                new Date('2025-01-25T16:45:00').getTime() / 1000
+              ),
+              nanoseconds: 0,
+            },
           },
         ];
         setContacts(mockContacts);
@@ -326,8 +356,18 @@ export default function UnifiedCommunicationHub() {
           source: 'contact_form',
           isRead: false,
           archived: false,
-          createdAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
-          updatedAt: { seconds: Math.floor(new Date('2025-01-27T14:30:00').getTime() / 1000), nanoseconds: 0 },
+          createdAt: {
+            seconds: Math.floor(
+              new Date('2025-01-27T14:30:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
+          updatedAt: {
+            seconds: Math.floor(
+              new Date('2025-01-27T14:30:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
         },
         {
           id: '2',
@@ -342,8 +382,18 @@ export default function UnifiedCommunicationHub() {
           source: 'contact_form',
           isRead: true,
           archived: false,
-          createdAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
-          updatedAt: { seconds: Math.floor(new Date('2025-01-26T10:15:00').getTime() / 1000), nanoseconds: 0 },
+          createdAt: {
+            seconds: Math.floor(
+              new Date('2025-01-26T10:15:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
+          updatedAt: {
+            seconds: Math.floor(
+              new Date('2025-01-26T10:15:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
         },
         {
           id: '3',
@@ -358,8 +408,18 @@ export default function UnifiedCommunicationHub() {
           source: 'contact_form',
           isRead: true,
           archived: false,
-          createdAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
-          updatedAt: { seconds: Math.floor(new Date('2025-01-25T16:45:00').getTime() / 1000), nanoseconds: 0 },
+          createdAt: {
+            seconds: Math.floor(
+              new Date('2025-01-25T16:45:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
+          updatedAt: {
+            seconds: Math.floor(
+              new Date('2025-01-25T16:45:00').getTime() / 1000
+            ),
+            nanoseconds: 0,
+          },
         },
       ];
       setContacts(mockContacts);
@@ -400,7 +460,6 @@ export default function UnifiedCommunicationHub() {
         await communicationsService.sendCommunication(communicationData);
 
       if (response.success) {
-        console.log('Message sent successfully:', response.data);
         setNewMessageDialogOpen(false);
         setNewMessage({
           clientId: '',
@@ -460,7 +519,6 @@ export default function UnifiedCommunicationHub() {
     try {
       setCreatingProject(true);
       // Implementation for creating project from contact
-      console.log('Creating project from contact:', contact);
 
       // Here you would implement the actual project creation logic
       // For now, we'll just simulate success
@@ -868,7 +926,9 @@ export default function UnifiedCommunicationHub() {
                             {contact.message || 'Sin mensaje'}
                           </div>
                           <div className="text-xs text-muted-foreground mt-1">
-                            {new Date(contact.createdAt.seconds * 1000).toLocaleDateString()}
+                            {new Date(
+                              contact.createdAt.seconds * 1000
+                            ).toLocaleDateString()}
                           </div>
                         </div>
                       </TableCell>

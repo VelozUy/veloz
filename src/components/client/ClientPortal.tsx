@@ -116,7 +116,9 @@ export default function ClientPortal({
 }: ClientPortalProps) {
   const [activeTab, setActiveTab] = useState(mode);
   const [projects, setProjects] = useState<ClientProject[]>([]);
-  const [selectedProject, setSelectedProject] = useState<ClientProject | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ClientProject | null>(
+    null
+  );
   const [projectFiles, setProjectFiles] = useState<ProjectFile[]>([]);
   const [messages, setMessages] = useState<ProjectMessage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,25 +165,28 @@ export default function ClientPortal({
       projectsSnapshot.forEach(doc => {
         const projectData = doc.data() as ClientProject;
         const project = { ...projectData, id: doc.id };
-        
+
         // Calculate progress based on milestones
         if (project.milestones) {
-          const completed = project.milestones.filter(m => m.status === 'completed').length;
-          project.progress = Math.round((completed / project.milestones.length) * 100);
+          const completed = project.milestones.filter(
+            m => m.status === 'completed'
+          ).length;
+          project.progress = Math.round(
+            (completed / project.milestones.length) * 100
+          );
         } else {
           project.progress = 0;
         }
-        
+
         projectsData.push(project);
       });
 
       setProjects(projectsData);
-      
+
       if (projectsData.length > 0) {
         setSelectedProject(projectsData[0]);
       }
     } catch (error) {
-      console.error('Error loading client data:', error);
       setError('Error loading client data');
     } finally {
       setLoading(false);
@@ -190,7 +195,7 @@ export default function ClientPortal({
 
   const loadProjectFiles = async () => {
     if (!selectedProject) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -210,14 +215,12 @@ export default function ClientPortal({
       });
 
       setProjectFiles(filesData);
-    } catch (error) {
-      console.error('Error loading project files:', error);
-    }
+    } catch (error) {}
   };
 
   const loadProjectMessages = async () => {
     if (!selectedProject) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -237,14 +240,13 @@ export default function ClientPortal({
       });
 
       setMessages(messagesData);
-    } catch (error) {
-      console.error('Error loading project messages:', error);
-    }
+    } catch (error) {}
   };
 
   const sendMessage = async () => {
-    if (!selectedProject || !messageForm.subject || !messageForm.content) return;
-    
+    if (!selectedProject || !messageForm.subject || !messageForm.content)
+      return;
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -262,19 +264,17 @@ export default function ClientPortal({
       };
 
       await addDoc(messagesRef, newMessage);
-      
+
       // Reset form
       setMessageForm({
         subject: '',
         content: '',
         type: 'note',
       });
-      
+
       // Reload messages
       loadProjectMessages();
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+    } catch (error) {}
   };
 
   const getStatusColor = (status: string) => {
@@ -338,7 +338,7 @@ export default function ClientPortal({
             Manage your projects and communicate with the team
           </p>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
@@ -372,18 +372,20 @@ export default function ClientPortal({
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-medium">
-                        {project.title.es || project.title.en || project.title.pt}
+                        {project.title.es ||
+                          project.title.en ||
+                          project.title.pt}
                       </h3>
                       <Badge className={getStatusColor(project.status)}>
                         {getStatusIcon(project.status)}
                         <span className="ml-1">{project.status}</span>
                       </Badge>
                     </div>
-                    
+
                     <p className="text-sm text-muted-foreground mb-2">
                       {project.eventType} • {project.location}
                     </p>
-                    
+
                     {project.progress > 0 && (
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-xs">
@@ -393,7 +395,7 @@ export default function ClientPortal({
                         <Progress value={project.progress} />
                       </div>
                     )}
-                    
+
                     <div className="flex items-center space-x-2 mt-2">
                       {project.mediaCount.photos > 0 && (
                         <Badge variant="outline" className="text-xs">
@@ -417,7 +419,10 @@ export default function ClientPortal({
       )}
 
       {selectedProject && (
-        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
+        <Tabs
+          value={activeTab}
+          onValueChange={value => setActiveTab(value as any)}
+        >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="files">Files</TabsTrigger>
@@ -442,21 +447,21 @@ export default function ClientPortal({
                       </Badge>
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium">Event Type</label>
                     <p className="text-sm text-muted-foreground mt-1">
                       {selectedProject.eventType}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium">Location</label>
                     <p className="text-sm text-muted-foreground mt-1">
                       {selectedProject.location}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium">Event Date</label>
                     <p className="text-sm text-muted-foreground mt-1">
@@ -472,10 +477,14 @@ export default function ClientPortal({
                   <CardTitle>Milestones</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {selectedProject.milestones && selectedProject.milestones.length > 0 ? (
+                  {selectedProject.milestones &&
+                  selectedProject.milestones.length > 0 ? (
                     <div className="space-y-3">
                       {selectedProject.milestones.map(milestone => (
-                        <div key={milestone.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={milestone.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div>
                             <p className="font-medium">{milestone.title}</p>
                             <p className="text-sm text-muted-foreground">
@@ -487,8 +496,8 @@ export default function ClientPortal({
                               milestone.status === 'completed'
                                 ? 'default'
                                 : milestone.status === 'overdue'
-                                ? 'destructive'
-                                : 'secondary'
+                                  ? 'destructive'
+                                  : 'secondary'
                             }
                           >
                             {milestone.status}
@@ -497,7 +506,9 @@ export default function ClientPortal({
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground">No milestones defined</p>
+                    <p className="text-sm text-muted-foreground">
+                      No milestones defined
+                    </p>
                   )}
                 </CardContent>
               </Card>
@@ -531,17 +542,23 @@ export default function ClientPortal({
               </CardHeader>
               <CardContent>
                 {projectFiles.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No files uploaded yet</p>
+                  <p className="text-sm text-muted-foreground">
+                    No files uploaded yet
+                  </p>
                 ) : (
                   <div className="space-y-2">
                     {projectFiles.map(file => (
-                      <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div
+                        key={file.id}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
                         <div className="flex items-center space-x-3">
                           <Download className="w-4 h-4 text-muted-foreground" />
                           <div>
                             <p className="font-medium">{file.name}</p>
                             <p className="text-xs text-muted-foreground">
-                              {file.type} • {(file.size / 1024 / 1024).toFixed(2)} MB
+                              {file.type} •{' '}
+                              {(file.size / 1024 / 1024).toFixed(2)} MB
                             </p>
                           </div>
                         </div>
@@ -573,24 +590,37 @@ export default function ClientPortal({
                   <input
                     type="text"
                     value={messageForm.subject}
-                    onChange={(e) => setMessageForm(prev => ({ ...prev, subject: e.target.value }))}
+                    onChange={e =>
+                      setMessageForm(prev => ({
+                        ...prev,
+                        subject: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-input rounded-md bg-background mt-1"
                     placeholder="Message subject"
                   />
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium">Message</label>
                   <textarea
                     value={messageForm.content}
-                    onChange={(e) => setMessageForm(prev => ({ ...prev, content: e.target.value }))}
+                    onChange={e =>
+                      setMessageForm(prev => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-input rounded-md bg-background mt-1"
                     rows={4}
                     placeholder="Your message..."
                   />
                 </div>
-                
-                <Button onClick={sendMessage} disabled={!messageForm.subject || !messageForm.content}>
+
+                <Button
+                  onClick={sendMessage}
+                  disabled={!messageForm.subject || !messageForm.content}
+                >
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
                 </Button>
@@ -604,7 +634,9 @@ export default function ClientPortal({
               </CardHeader>
               <CardContent>
                 {messages.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No messages yet</p>
+                  <p className="text-sm text-muted-foreground">
+                    No messages yet
+                  </p>
                 ) : (
                   <div className="space-y-4">
                     {messages.map(message => (
@@ -620,7 +652,9 @@ export default function ClientPortal({
                           </span>
                         </div>
                         <h4 className="font-medium mb-1">{message.subject}</h4>
-                        <p className="text-sm text-muted-foreground">{message.content}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {message.content}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -649,4 +683,4 @@ export default function ClientPortal({
       )}
     </div>
   );
-} 
+}

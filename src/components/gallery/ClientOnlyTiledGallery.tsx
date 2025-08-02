@@ -22,7 +22,7 @@ export function ClientOnlyTiledGallery({
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (process.env.NODE_ENV === 'development') {
-        console.log('🎨 ClientOnlyTiledGallery: Mobile check', {
+        console.log('Mobile detection:', {
           screenWidth: window.innerWidth,
           isMobile: mobile,
           isClient: true,

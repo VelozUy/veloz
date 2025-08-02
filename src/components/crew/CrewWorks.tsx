@@ -162,12 +162,11 @@ export default function CrewWorks({ crewMember }: CrewWorksProps) {
         setUseMockData(false);
       } else {
         // Fallback to mock data if service fails
-        console.warn('Crew works service failed, using mock data');
+
         setRecentWorks(mockRecentWorks);
         setUseMockData(true);
       }
     } catch (error) {
-      console.error('Error loading crew works:', error);
       // Fallback to mock data
       setRecentWorks(mockRecentWorks);
       setUseMockData(true);

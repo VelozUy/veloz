@@ -37,7 +37,6 @@ export default function SocialFeed({
         setError(result.error || 'Error loading social posts');
       }
     } catch (error) {
-      console.error('Error loading social posts:', error);
       setError('Error loading social posts');
     } finally {
       setLoading(false);
