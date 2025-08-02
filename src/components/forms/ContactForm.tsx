@@ -537,35 +537,37 @@ export default function ContactForm({
               <div className="md:flex md:flex-wrap md:items-center md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">Me llamo</span>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder={t.form.name.placeholder}
-                    value={formData.name}
-                    onChange={e => handleInputChange('name', e.target.value)}
-                    data-field="name"
+                  <div
                     className={cn(
-                      '!text-[2rem] w-full md:w-48 md:inline-block',
-                      errors.name && 'border-destructive border-2'
+                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                      errors.name && 'border-b-destructive border-b-2'
                     )}
-                    style={{
-                      borderColor: errors.name
-                        ? 'var(--destructive)'
-                        : undefined,
-                      borderWidth: errors.name ? '2px' : undefined,
-                    }}
-                  />
+                  >
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder={t.form.name.placeholder}
+                      value={formData.name}
+                      onChange={e => handleInputChange('name', e.target.value)}
+                      data-field="name"
+                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                    />
+                  </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">y trabajo para</span>
-                  <Input
-                    id="company"
-                    type="text"
-                    placeholder={t.form.company.placeholder}
-                    value={formData.company}
-                    onChange={e => handleInputChange('company', e.target.value)}
-                    className="!text-[2rem] w-full md:w-48 md:inline-block"
-                  />
+                  <div className="w-full md:w-48 md:inline-block h-auto bg-background border-b border-border">
+                    <Input
+                      id="company"
+                      type="text"
+                      placeholder={t.form.company.placeholder}
+                      value={formData.company}
+                      onChange={e =>
+                        handleInputChange('company', e.target.value)
+                      }
+                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                    />
+                  </div>
                 </div>
               </div>
               {/* Line 2: Contact Method */}
@@ -581,9 +583,11 @@ export default function ContactForm({
                         handleInputChange('contactMethod', value)
                       }
                     >
-                      <SelectTrigger className="w-full md:w-32 !text-[2rem]">
-                        <SelectValue placeholder="método" />
-                      </SelectTrigger>
+                      <div className="w-full md:w-32 h-auto bg-background border-b border-border">
+                        <SelectTrigger className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none">
+                          <SelectValue placeholder="método" />
+                        </SelectTrigger>
+                      </div>
                       <SelectContent>
                         {Object.entries(t.form.contactMethod.options).map(
                           ([key, label]) => (
@@ -598,43 +602,43 @@ export default function ContactForm({
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   {formData.contactMethod === 'email' ? (
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder={t.form.email.placeholder}
-                      value={formData.email}
-                      onChange={e => handleInputChange('email', e.target.value)}
-                      data-field="email"
+                    <div
                       className={cn(
-                        '!text-[2rem] w-full md:w-64 md:inline-block',
-                        errors.email && 'border-destructive border-2'
+                        'w-full md:w-64 md:inline-block h-auto bg-background border-b border-border',
+                        errors.email && 'border-b-destructive border-b-2'
                       )}
-                      style={{
-                        borderColor: errors.email
-                          ? 'var(--destructive)'
-                          : undefined,
-                        borderWidth: errors.email ? '2px' : undefined,
-                      }}
-                    />
+                    >
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder={t.form.email.placeholder}
+                        value={formData.email}
+                        onChange={e =>
+                          handleInputChange('email', e.target.value)
+                        }
+                        data-field="email"
+                        className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      />
+                    </div>
                   ) : (
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder={t.form.phone.placeholder}
-                      value={formData.phone}
-                      onChange={e => handleInputChange('phone', e.target.value)}
-                      data-field="phone"
+                    <div
                       className={cn(
-                        '!text-[2rem] w-full md:w-48 md:inline-block',
-                        errors.phone && 'border-destructive border-2'
+                        'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                        errors.phone && 'border-b-destructive border-b-2'
                       )}
-                      style={{
-                        borderColor: errors.phone
-                          ? 'var(--destructive)'
-                          : undefined,
-                        borderWidth: errors.phone ? '2px' : undefined,
-                      }}
-                    />
+                    >
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder={t.form.phone.placeholder}
+                        value={formData.phone}
+                        onChange={e =>
+                          handleInputChange('phone', e.target.value)
+                        }
+                        data-field="phone"
+                        className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
@@ -650,21 +654,19 @@ export default function ContactForm({
                         handleInputChange('eventType', value)
                       }
                     >
-                      <SelectTrigger
-                        data-field="eventType"
+                      <div
                         className={cn(
-                          'w-full md:w-48 !text-[2rem]',
-                          errors.eventType && 'border-destructive border-2'
+                          'w-full md:w-48 h-auto bg-background border-b border-border',
+                          errors.eventType && 'border-b-destructive border-b-2'
                         )}
-                        style={{
-                          borderColor: errors.eventType
-                            ? 'var(--destructive)'
-                            : undefined,
-                          borderWidth: errors.eventType ? '2px' : undefined,
-                        }}
                       >
-                        <SelectValue placeholder="tipo de evento" />
-                      </SelectTrigger>
+                        <SelectTrigger
+                          data-field="eventType"
+                          className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                        >
+                          <SelectValue placeholder="tipo de evento" />
+                        </SelectTrigger>
+                      </div>
                       <SelectContent>
                         {Object.entries(t.form.eventType.options).map(
                           ([key, label]) => (
@@ -679,49 +681,45 @@ export default function ContactForm({
                 </div>
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">en</span>
-                  <Input
-                    id="location"
-                    type="text"
-                    placeholder={t.form.location.placeholder}
-                    value={formData.location}
-                    onChange={e =>
-                      handleInputChange('location', e.target.value)
-                    }
-                    data-field="location"
+                  <div
                     className={cn(
-                      '!text-[2rem] w-full md:w-48 md:inline-block',
-                      errors.location && 'border-destructive border-2'
+                      'w-full md:w-48 md:inline-block h-auto bg-background border-b border-border',
+                      errors.location && 'border-b-destructive border-b-2'
                     )}
-                    style={{
-                      borderColor: errors.location
-                        ? 'var(--destructive)'
-                        : undefined,
-                      borderWidth: errors.location ? '2px' : undefined,
-                    }}
-                  />
+                  >
+                    <Input
+                      id="location"
+                      type="text"
+                      placeholder={t.form.location.placeholder}
+                      value={formData.location}
+                      onChange={e =>
+                        handleInputChange('location', e.target.value)
+                      }
+                      data-field="location"
+                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                    />
+                  </div>
                 </div>
                 <div className="md:flex md:items-center md:gap-2">
                   <span className="block md:inline">para aproximadamente</span>
-                  <Input
-                    id="attendees"
-                    type="number"
-                    placeholder={t.form.attendees.placeholder}
-                    value={formData.attendees}
-                    onChange={e =>
-                      handleInputChange('attendees', e.target.value)
-                    }
-                    data-field="attendees"
+                  <div
                     className={cn(
-                      '!text-[2rem] w-full md:w-32 md:inline-block',
-                      errors.attendees && 'border-destructive border-2'
+                      'w-full md:w-32 md:inline-block h-auto bg-background border-b border-border',
+                      errors.attendees && 'border-b-destructive border-b-2'
                     )}
-                    style={{
-                      borderColor: errors.attendees
-                        ? 'var(--destructive)'
-                        : undefined,
-                      borderWidth: errors.attendees ? '2px' : undefined,
-                    }}
-                  />
+                  >
+                    <Input
+                      id="attendees"
+                      type="number"
+                      placeholder={t.form.attendees.placeholder}
+                      value={formData.attendees}
+                      onChange={e =>
+                        handleInputChange('attendees', e.target.value)
+                      }
+                      data-field="attendees"
+                      className="!text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                    />
+                  </div>
                   <span className="block md:inline">personas</span>
                 </div>
               </div>
@@ -740,21 +738,19 @@ export default function ContactForm({
                         handleInputChange('services', services);
                       }}
                     >
-                      <SelectTrigger
-                        data-field="services"
+                      <div
                         className={cn(
-                          'w-full md:w-64 !text-[2rem]',
-                          errors.services && 'border-destructive border-2'
+                          'w-full md:w-64 h-auto bg-background border-b border-border',
+                          errors.services && 'border-b-destructive border-b-2'
                         )}
-                        style={{
-                          borderColor: errors.services
-                            ? 'var(--destructive)'
-                            : undefined,
-                          borderWidth: errors.services ? '2px' : undefined,
-                        }}
                       >
-                        <SelectValue placeholder="seleccionar servicios" />
-                      </SelectTrigger>
+                        <SelectTrigger
+                          data-field="services"
+                          className="w-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none"
+                        >
+                          <SelectValue placeholder="seleccionar servicios" />
+                        </SelectTrigger>
+                      </div>
                       <SelectContent>
                         {Object.entries(t.form.services.options).map(
                           ([key, label]) => (
@@ -775,55 +771,59 @@ export default function ContactForm({
                   <span className="block md:inline">La fecha es</span>
                   <div className="w-full md:w-auto md:inline-block">
                     {isMobile ? (
-                      <Button
-                        variant="outline"
-                        onClick={() => openModal('datePicker')}
-                        className={cn(
-                          'w-full md:w-48 justify-start text-left font-normal text-[2rem]',
-                          !formData.eventDate && 'text-muted-foreground'
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-5 w-5" />
-                        {formData.eventDate ? (
-                          format(new Date(formData.eventDate), 'PPP', {
-                            locale:
-                              locale === 'es'
-                                ? es
-                                : locale === 'en'
-                                  ? enUS
-                                  : ptBR,
-                          })
-                        ) : (
-                          <span>No tengo fecha</span>
-                        )}
-                      </Button>
+                      <div className="w-full md:w-48 h-auto bg-background border-b border-border">
+                        <Button
+                          variant="outline"
+                          onClick={() => openModal('datePicker')}
+                          className={cn(
+                            'w-full justify-start text-left font-normal text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none',
+                            !formData.eventDate && 'text-muted-foreground'
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-5 w-5" />
+                          {formData.eventDate ? (
+                            format(new Date(formData.eventDate), 'PPP', {
+                              locale:
+                                locale === 'es'
+                                  ? es
+                                  : locale === 'en'
+                                    ? enUS
+                                    : ptBR,
+                            })
+                          ) : (
+                            <span>No tengo fecha</span>
+                          )}
+                        </Button>
+                      </div>
                     ) : (
                       <Popover
                         open={isDatePickerOpen}
                         onOpenChange={setIsDatePickerOpen}
                       >
                         <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              'w-full md:w-48 justify-start text-left font-normal text-[2rem]',
-                              !formData.eventDate && 'text-muted-foreground'
-                            )}
-                          >
-                            <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.eventDate ? (
-                              format(new Date(formData.eventDate), 'PPP', {
-                                locale:
-                                  locale === 'es'
-                                    ? es
-                                    : locale === 'en'
-                                      ? enUS
-                                      : ptBR,
-                              })
-                            ) : (
-                              <span>No tengo fecha</span>
-                            )}
-                          </Button>
+                          <div className="w-full md:w-48 h-auto bg-background border-b border-border">
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                'w-full justify-start text-left font-normal text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none',
+                                !formData.eventDate && 'text-muted-foreground'
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-5 w-5" />
+                              {formData.eventDate ? (
+                                format(new Date(formData.eventDate), 'PPP', {
+                                  locale:
+                                    locale === 'es'
+                                      ? es
+                                      : locale === 'en'
+                                        ? enUS
+                                        : ptBR,
+                                })
+                              ) : (
+                                <span>No tengo fecha</span>
+                              )}
+                            </Button>
+                          </div>
                         </PopoverTrigger>
                         <PopoverContent
                           className={cn(
@@ -877,7 +877,7 @@ export default function ContactForm({
                     rows={3}
                     value={formData.message}
                     onChange={e => handleInputChange('message', e.target.value)}
-                    className="!text-[2rem] w-full md:w-96 md:inline-block"
+                    className="!text-[1rem] w-full md:w-96 md:inline-block"
                   />
                 </div>
               </div>
