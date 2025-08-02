@@ -14,13 +14,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Calendar as CalendarIcon,
   Send,
   CheckCircle,
   Loader2,
@@ -33,8 +26,6 @@ import {
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { es, enUS, ptBR } from 'date-fns/locale';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
 
@@ -162,13 +153,12 @@ export default function ContactForm({
   translations,
   locale = 'es',
 }: ContactFormProps) {
+  const dateInputRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [modalContent, setModalContent] = useState<'datePicker' | null>(null);
   const searchParams = useSearchParams();
 
   // Check if mobile on mount and resize
@@ -182,53 +172,6 @@ export default function ContactForm({
 
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  // Prevent scrolling when modal is open
-  useEffect(() => {
-    if (modalContent && isMobile) {
-      // Prevent body scrolling without changing position
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
-    } else {
-      // Restore body scrolling
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
-
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
-  }, [modalContent, isMobile]);
-
-  // Handle modal open/close
-  const openModal = (content: 'datePicker') => {
-    setModalContent(content);
-  };
-
-  const closeModal = () => {
-    setModalContent(null);
-  };
-
-  // Reusable Modal Component
-  const Modal = ({ children }: { children: React.ReactNode }) => {
-    if (!modalContent || !isMobile) return null;
-
-    return (
-      <div
-        className="fixed inset-0 z-[9998] bg-muted/60 backdrop-blur-[2px]"
-        onClick={closeModal}
-      >
-        <div
-          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
-          onClick={e => e.stopPropagation()}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  };
 
   // Track form view
   useEffect(() => {
@@ -785,99 +728,18 @@ export default function ContactForm({
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
                   <span className="block md:inline">La fecha es</span>
                   <div className="w-full md:w-auto md:inline-block">
-                    {isMobile ? (
-                      <div className="w-full md:w-48 h-auto bg-background border-b border-border">
-                        <Button
-                          variant="outline"
-                          onClick={() => openModal('datePicker')}
-                          className={cn(
-                            'w-full justify-start text-left font-normal text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none',
-                            !formData.eventDate && 'text-muted-foreground'
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-5 w-5" />
-                          {formData.eventDate ? (
-                            format(new Date(formData.eventDate), 'PPP', {
-                              locale:
-                                locale === 'es'
-                                  ? es
-                                  : locale === 'en'
-                                    ? enUS
-                                    : ptBR,
-                            })
-                          ) : (
-                            <span>No tengo fecha</span>
-                          )}
-                        </Button>
-                      </div>
-                    ) : (
-                      <Popover
-                        open={isDatePickerOpen}
-                        onOpenChange={setIsDatePickerOpen}
-                      >
-                        <PopoverTrigger asChild>
-                          <div className="w-full md:w-48 h-auto bg-background border-b border-border">
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                'w-full justify-start text-left font-normal text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none',
-                                !formData.eventDate && 'text-muted-foreground'
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-5 w-5" />
-                              {formData.eventDate ? (
-                                format(new Date(formData.eventDate), 'PPP', {
-                                  locale:
-                                    locale === 'es'
-                                      ? es
-                                      : locale === 'en'
-                                        ? enUS
-                                        : ptBR,
-                                })
-                              ) : (
-                                <span>No tengo fecha</span>
-                              )}
-                            </Button>
-                          </div>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className={cn(
-                            'w-auto p-0 z-[9999]',
-                            isMobile &&
-                              'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
-                          )}
-                          side="bottom"
-                          align="center"
-                        >
-                          <Calendar
-                            mode="single"
-                            selected={
-                              formData.eventDate
-                                ? new Date(formData.eventDate)
-                                : undefined
-                            }
-                            onSelect={date => {
-                              const formattedDate = date
-                                ? format(date, 'yyyy-MM-dd')
-                                : '';
-                              handleInputChange('eventDate', formattedDate);
-                              setIsDatePickerOpen(false);
-                            }}
-                            disabled={date =>
-                              date < new Date(new Date().setHours(0, 0, 0, 0))
-                            }
-                            initialFocus
-                            locale={
-                              locale === 'es'
-                                ? es
-                                : locale === 'en'
-                                  ? enUS
-                                  : ptBR
-                            }
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    )}
+                    <div className="w-full md:w-64 h-9 bg-background border-b border-border relative">
+                      <input
+                        ref={dateInputRef}
+                        type="date"
+                        value={formData.eventDate}
+                        onChange={e =>
+                          handleInputChange('eventDate', e.target.value)
+                        }
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full h-full !text-[1rem] border-0 bg-transparent focus:ring-0 focus:border-0 shadow-none outline-none text-foreground text-center cursor-pointer flex items-center justify-center"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -969,35 +831,6 @@ export default function ContactForm({
           </div>
         </div>
       </section>
-
-      {/* Reusable Modal */}
-      <Modal>
-        {modalContent === 'datePicker' && (
-          <div className="bg-card border border-border rounded-lg p-4 shadow-lg">
-            <div className="space-y-3">
-              <h3 className="text-base font-medium text-foreground text-center">
-                {t.form.eventDate.label}
-              </h3>
-              <Calendar
-                mode="single"
-                selected={
-                  formData.eventDate ? new Date(formData.eventDate) : undefined
-                }
-                onSelect={date => {
-                  const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
-                  handleInputChange('eventDate', formattedDate);
-                  closeModal();
-                }}
-                disabled={date =>
-                  date < new Date(new Date().setHours(0, 0, 0, 0))
-                }
-                initialFocus
-                locale={locale === 'es' ? es : locale === 'en' ? enUS : ptBR}
-              />
-            </div>
-          </div>
-        )}
-      </Modal>
     </div>
   );
 }
