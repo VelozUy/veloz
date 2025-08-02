@@ -573,7 +573,7 @@ Create a contact form that:
 | ------------------ | ------------------ | -------- | ---------------------------------------------------------------- |
 | Name               | Short text         | Yes      | Adds a human touch to the conversation                           |
 | Email              | Email              | Yes      | Main method of contact                                           |
-| Event Type         | Dropdown / Buttons | Yes      | Options: Wedding, 15th Birthday, Birthday, Corporate, Other      |
+| Event Type         | Native HTML Select | Yes      | Options: Wedding, 15th Birthday, Birthday, Corporate, Other      |
 | Approx. Date       | Date or Free text  | No       | Optional – helps but not mandatory                               |
 | Message / Comments | Textarea           | No       | Prompt: "Tell us about your idea, location, number of guests..." |
 
@@ -604,6 +604,22 @@ Below the form or submit button:
 - Keep validation minimal (only name and email required)
 - Friendly placeholder text to inspire the user
 - Use padding, icons, and soft colors to make the form feel approachable
+
+### Technical Implementation Notes
+
+**Form Element Choices:**
+
+- **Contact Preference & Event Type**: Native HTML `<select>` elements for better accessibility and consistent browser behavior
+- **Services Selection**: Custom Select component (shadcn/ui) to handle multiple selections
+- **Date Picker**: Custom Calendar component with mobile-responsive modal fallback
+- **Text Inputs**: Standard HTML inputs with consistent styling
+
+**Styling Approach:**
+
+- Fixed height containers (`h-9`) for consistent vertical alignment
+- Theme-based colors using CSS variables for maintainability
+- Responsive design with proper mobile optimization
+- Disabled placeholder options to enforce mandatory field selection
 
 ---
 

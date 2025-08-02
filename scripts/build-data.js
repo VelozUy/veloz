@@ -76,8 +76,9 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Contacto',
-      subtitle: 'Contáctanos',
+      title: '¿Nos ponemos en contacto?',
+      subtitle:
+        'Obtener una cotización es completamente gratis y sin compromiso. Típicamente respondemos dentro de las 2 horas posteriores a tu consulta.',
       form: {
         title: 'Formulario',
         name: {
@@ -100,7 +101,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: '¿Qué tipo de evento tienes?',
-          placeholder: '*seleccionar',
+          placeholder: '*Seleccionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Presentación de producto',
@@ -117,7 +118,7 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Cantidad de asistentes esperados',
-          placeholder: '*Número',
+          placeholder: '*Cantidad',
         },
         services: {
           label: '¿Qué servicios te interesan?',
@@ -132,7 +133,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: '¿Cómo preferís que te contactemos?',
-          placeholder: '*seleccionar',
+          placeholder: '*Seleccionar',
           options: {
             whatsapp: 'Whatsapp',
             email: 'Mail',
@@ -367,8 +368,9 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Contact Us',
-      subtitle: 'Tell us about your event',
+      title: 'Shall we get in touch?',
+      subtitle:
+        'Getting a quote is completely free and without commitment. We typically respond within 2 hours of your inquiry.',
       form: {
         title: 'Form',
         name: {
@@ -391,7 +393,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'What type of event do you have?',
-          placeholder: '*select',
+          placeholder: '*Select',
           options: {
             corporate: 'Corporate event',
             product: 'Product presentation',
@@ -408,7 +410,7 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Expected number of attendees',
-          placeholder: '*Number',
+          placeholder: '*Quantity',
         },
         services: {
           label: 'What services are you interested in?',
@@ -423,7 +425,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'How would you prefer us to contact you?',
-          placeholder: '*select',
+          placeholder: '*Select',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
@@ -656,8 +658,9 @@ const STATIC_TRANSLATIONS = {
       },
     },
     contact: {
-      title: 'Contato',
-      subtitle: 'Entre em contato conosco',
+      title: 'Vamos entrar em contato?',
+      subtitle:
+        'Obter uma cotação é completamente gratuito e sem compromisso. Normalmente respondemos dentro de 2 horas após sua consulta.',
       form: {
         title: 'Formulário',
         name: {
@@ -680,7 +683,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'Que tipo de evento você tem?',
-          placeholder: '*selecionar',
+          placeholder: '*Selecionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Apresentação de produto',
@@ -697,7 +700,7 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Número esperado de participantes',
-          placeholder: '*Número',
+          placeholder: '*Quantidade',
         },
         services: {
           label: 'Que serviços você está interessado?',
@@ -712,7 +715,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'Como você prefere que entremos em contato?',
-          placeholder: '*selecionar',
+          placeholder: '*Selecionar',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',

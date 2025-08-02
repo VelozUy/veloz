@@ -4,6 +4,21 @@ _Last updated: 2025-01-27_
 
 ## ✅ **RECENTLY COMPLETED**
 
+### Contact Form Select Elements Enhancement
+
+- **Status**: ✅ Completed (2025-01-27)
+- **Objective**: Replace custom select components with native HTML select elements for better UX
+- **Impact**: Improved accessibility, consistent browser behavior, and better mobile experience
+- **Files**: `src/components/forms/ContactForm.tsx`, `scripts/build-data.js`, contact page type definitions
+- **Features**:
+  - Native HTML `<select>` elements for contact preference and event type
+  - Fixed height containers (`h-9`) for consistent vertical alignment
+  - Updated placeholder text to "\*seleccionar" across all languages (es/en/pt)
+  - Disabled placeholder options to enforce mandatory field selection
+  - Maintained custom Select component for services (handles multiple selections)
+  - Updated TypeScript interfaces to include placeholder properties
+  - Comprehensive translation support for all three languages
+
 ### Fluid Responsive Grid System Implementation
 
 - **Status**: ✅ Completed (2025-01-27)

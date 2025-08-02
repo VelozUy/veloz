@@ -98,6 +98,7 @@ const mockTranslations = {
       },
       contactMethod: {
         label: '¿Cómo preferís que te contactemos?',
+        placeholder: 'Selecciona método de contacto',
         options: {
           whatsapp: 'Whatsapp',
           email: 'Mail',
@@ -203,6 +204,7 @@ describe('ContactForm Component', () => {
         },
         contactMethod: {
           label: 'How would you prefer us to contact you?',
+          placeholder: 'Select contact method',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
