@@ -150,7 +150,6 @@ export class EmergencyFirestoreFix {
       const freshDb = getFirestore(freshApp);
 
       // Export fresh instances for immediate use
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).__EMERGENCY_FIREBASE = {
         app: freshApp,
         db: freshDb,
@@ -187,6 +186,5 @@ export const executeEmergencyFirestoreFix = async (): Promise<
 
 // Console-accessible emergency function
 if (typeof window !== 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).emergencyFirestoreFix = executeEmergencyFirestoreFix;
 }

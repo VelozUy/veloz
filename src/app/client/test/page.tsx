@@ -7,7 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Eye,
   EyeOff,
@@ -40,7 +46,10 @@ export default function ClientTestPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginForm.email === 'test@client.com' && loginForm.password === 'test123') {
+    if (
+      loginForm.email === 'test@client.com' &&
+      loginForm.password === 'test123'
+    ) {
       setIsLoggedIn(true);
       localStorage.setItem('clientId', 'test-client-id');
     } else {
@@ -55,7 +64,9 @@ export default function ClientTestPage() {
 
   const sendMessage = () => {
     if (messageForm.subject && messageForm.content) {
-      alert(`Message sent!\nSubject: ${messageForm.subject}\nContent: ${messageForm.content}`);
+      alert(
+        `Message sent!\nSubject: ${messageForm.subject}\nContent: ${messageForm.content}`
+      );
       setMessageForm({ subject: '', content: '' });
     } else {
       alert('Please fill in both subject and content');
@@ -106,14 +117,16 @@ export default function ClientTestPage() {
       from: 'Veloz Team',
       to: 'Client',
       subject: 'Wedding Photos Ready',
-      content: 'Your wedding photos are ready for review. Please check the files section.',
+      content:
+        'Your wedding photos are ready for review. Please check the files section.',
       date: '2 hours ago',
     },
     {
       from: 'Client',
       to: 'Veloz Team',
       subject: 'Photo Selection Questions',
-      content: 'I have some questions about the photo selection process. Can we schedule a call?',
+      content:
+        'I have some questions about the photo selection process. Can we schedule a call?',
       date: '1 day ago',
     },
   ];
@@ -149,7 +162,9 @@ export default function ClientTestPage() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Client Portal Test</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              Client Portal Test
+            </CardTitle>
             <p className="text-muted-foreground">
               Test the client portal features with sample data
             </p>
@@ -162,11 +177,13 @@ export default function ClientTestPage() {
                   id="email"
                   type="email"
                   value={loginForm.email}
-                  onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={e =>
+                    setLoginForm(prev => ({ ...prev, email: e.target.value }))
+                  }
                   required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
@@ -174,7 +191,12 @@ export default function ClientTestPage() {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     value={loginForm.password}
-                    onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                    onChange={e =>
+                      setLoginForm(prev => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
                     required
                   />
                   <button
@@ -182,20 +204,26 @@ export default function ClientTestPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
-              
+
               <Button type="submit" className="w-full">
                 Sign In
               </Button>
             </form>
-            
+
             <div className="mt-4 p-3 bg-primary/5 rounded-lg">
               <p className="text-sm text-primary">
-                <strong>Test Credentials:</strong><br />
-                Email: test@client.com<br />
+                <strong>Test Credentials:</strong>
+                <br />
+                Email: test@client.com
+                <br />
                 Password: test123
               </p>
             </div>
@@ -215,7 +243,7 @@ export default function ClientTestPage() {
               <h1 className="text-xl font-bold">Client Portal Test</h1>
               <Badge variant="secondary">Test Mode</Badge>
             </div>
-            
+
             <Button variant="outline" onClick={handleLogout}>
               Logout
             </Button>
@@ -258,7 +286,7 @@ export default function ClientTestPage() {
               <div>
                 <h1 className="text-2xl font-bold">Welcome back!</h1>
                 <p className="text-muted-foreground">
-                  Here's what's happening with your projects
+                  Here&apos;s what&apos;s happening with your projects
                 </p>
               </div>
               <Button>
@@ -271,7 +299,9 @@ export default function ClientTestPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Total Projects
+                  </CardTitle>
                   <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
@@ -282,34 +312,46 @@ export default function ClientTestPage() {
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Completed</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Completed
+                  </CardTitle>
                   <CheckCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">1</div>
-                  <p className="text-xs text-muted-foreground">50% success rate</p>
+                  <p className="text-xs text-muted-foreground">
+                    50% success rate
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Files</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Total Files
+                  </CardTitle>
                   <Download className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">3</div>
-                  <p className="text-xs text-muted-foreground">Photos and videos</p>
+                  <p className="text-xs text-muted-foreground">
+                    Photos and videos
+                  </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Upcoming</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Upcoming
+                  </CardTitle>
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">3</div>
-                  <p className="text-xs text-muted-foreground">Milestones due soon</p>
+                  <p className="text-xs text-muted-foreground">
+                    Milestones due soon
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -339,11 +381,11 @@ export default function ClientTestPage() {
                             <span className="ml-1">{project.status}</span>
                           </Badge>
                         </div>
-                        
+
                         <p className="text-sm text-muted-foreground mb-2">
                           {project.eventType} • {project.location}
                         </p>
-                        
+
                         <div className="space-y-2">
                           <div className="flex items-center justify-between text-xs">
                             <span>Progress</span>
@@ -356,7 +398,7 @@ export default function ClientTestPage() {
                             ></div>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center space-x-2 mt-2">
                           <Badge variant="outline" className="text-xs">
                             <ImageIcon className="w-3 h-3 mr-1" />
@@ -379,7 +421,8 @@ export default function ClientTestPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {testProjects.find(p => p.id === selectedProject)?.title} - Details
+                    {testProjects.find(p => p.id === selectedProject)?.title} -
+                    Details
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -390,39 +433,66 @@ export default function ClientTestPage() {
                       <div className="space-y-2">
                         <div>
                           <span className="text-sm font-medium">Status: </span>
-                          <Badge className={getStatusColor(testProjects.find(p => p.id === selectedProject)?.status || '')}>
-                            {testProjects.find(p => p.id === selectedProject)?.status}
+                          <Badge
+                            className={getStatusColor(
+                              testProjects.find(p => p.id === selectedProject)
+                                ?.status || ''
+                            )}
+                          >
+                            {
+                              testProjects.find(p => p.id === selectedProject)
+                                ?.status
+                            }
                           </Badge>
                         </div>
                         <div>
-                          <span className="text-sm font-medium">Event Type: </span>
+                          <span className="text-sm font-medium">
+                            Event Type:{' '}
+                          </span>
                           <span className="text-sm text-muted-foreground">
-                            {testProjects.find(p => p.id === selectedProject)?.eventType}
+                            {
+                              testProjects.find(p => p.id === selectedProject)
+                                ?.eventType
+                            }
                           </span>
                         </div>
                         <div>
-                          <span className="text-sm font-medium">Location: </span>
+                          <span className="text-sm font-medium">
+                            Location:{' '}
+                          </span>
                           <span className="text-sm text-muted-foreground">
-                            {testProjects.find(p => p.id === selectedProject)?.location}
+                            {
+                              testProjects.find(p => p.id === selectedProject)
+                                ?.location
+                            }
                           </span>
                         </div>
                       </div>
                     </div>
-                    
+
                     <div>
                       <h4 className="font-medium mb-2">Milestones</h4>
                       <div className="space-y-2">
-                        {testProjects.find(p => p.id === selectedProject)?.milestones.map((milestone, index) => (
-                          <div key={index} className="flex items-center justify-between p-2 border rounded">
-                            <span className="text-sm">{milestone.title}</span>
-                            <Badge
-                              variant={milestone.status === 'completed' ? 'default' : 'secondary'}
-                              className="text-xs"
+                        {testProjects
+                          .find(p => p.id === selectedProject)
+                          ?.milestones.map((milestone, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between p-2 border rounded"
                             >
-                              {milestone.status}
-                            </Badge>
-                          </div>
-                        ))}
+                              <span className="text-sm">{milestone.title}</span>
+                              <Badge
+                                variant={
+                                  milestone.status === 'completed'
+                                    ? 'default'
+                                    : 'secondary'
+                                }
+                                className="text-xs"
+                              >
+                                {milestone.status}
+                              </Badge>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
@@ -432,7 +502,10 @@ export default function ClientTestPage() {
                     <h4 className="font-medium mb-2">Project Files</h4>
                     <div className="space-y-2">
                       {testFiles.map((file, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div className="flex items-center space-x-3">
                             <Download className="w-4 h-4 text-muted-foreground" />
                             <div>
@@ -459,23 +532,36 @@ export default function ClientTestPage() {
                         <Input
                           id="subject"
                           value={messageForm.subject}
-                          onChange={(e) => setMessageForm(prev => ({ ...prev, subject: e.target.value }))}
+                          onChange={e =>
+                            setMessageForm(prev => ({
+                              ...prev,
+                              subject: e.target.value,
+                            }))
+                          }
                           placeholder="Message subject"
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="content">Message</Label>
                         <Textarea
                           id="content"
                           value={messageForm.content}
-                          onChange={(e) => setMessageForm(prev => ({ ...prev, content: e.target.value }))}
+                          onChange={e =>
+                            setMessageForm(prev => ({
+                              ...prev,
+                              content: e.target.value,
+                            }))
+                          }
                           placeholder="Your message..."
                           rows={4}
                         />
                       </div>
-                      
-                      <Button onClick={sendMessage} disabled={!messageForm.subject || !messageForm.content}>
+
+                      <Button
+                        onClick={sendMessage}
+                        disabled={!messageForm.subject || !messageForm.content}
+                      >
                         <Send className="w-4 h-4 mr-2" />
                         Send Message
                       </Button>
@@ -490,14 +576,22 @@ export default function ClientTestPage() {
                         <div key={index} className="border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center space-x-2">
-                              <span className="font-medium">{message.from}</span>
+                              <span className="font-medium">
+                                {message.from}
+                              </span>
                               <span className="text-muted-foreground">→</span>
                               <span className="font-medium">{message.to}</span>
                             </div>
-                            <span className="text-xs text-muted-foreground">{message.date}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {message.date}
+                            </span>
                           </div>
-                          <h5 className="font-medium mb-1">{message.subject}</h5>
-                          <p className="text-sm text-muted-foreground">{message.content}</p>
+                          <h5 className="font-medium mb-1">
+                            {message.subject}
+                          </h5>
+                          <p className="text-sm text-muted-foreground">
+                            {message.content}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -510,4 +604,4 @@ export default function ClientTestPage() {
       </div>
     </div>
   );
-} 
+}

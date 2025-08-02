@@ -117,12 +117,16 @@ export default function ClientDashboard() {
       projectsSnapshot.forEach(doc => {
         const projectData = doc.data() as ClientProject;
         const project = { ...projectData, id: doc.id };
-        
+
         // Calculate progress based on milestones
         if (project.milestones) {
-          const completed = project.milestones.filter(m => m.status === 'completed').length;
-          project.progress = Math.round((completed / project.milestones.length) * 100);
-          
+          const completed = project.milestones.filter(
+            m => m.status === 'completed'
+          ).length;
+          project.progress = Math.round(
+            (completed / project.milestones.length) * 100
+          );
+
           // Count upcoming milestones
           const now = new Date();
           upcomingMilestones += project.milestones.filter(m => {
@@ -134,16 +138,21 @@ export default function ClientDashboard() {
         }
 
         // Count total files
-        totalFiles += (project.mediaCount?.photos || 0) + (project.mediaCount?.videos || 0);
-        
+        totalFiles +=
+          (project.mediaCount?.photos || 0) + (project.mediaCount?.videos || 0);
+
         projectsData.push(project);
       });
 
       setProjects(projectsData);
 
       // Calculate stats
-      const inProgress = projectsData.filter(p => p.status === 'in-progress').length;
-      const completed = projectsData.filter(p => p.status === 'completed').length;
+      const inProgress = projectsData.filter(
+        p => p.status === 'in-progress'
+      ).length;
+      const completed = projectsData.filter(
+        p => p.status === 'completed'
+      ).length;
 
       setStats({
         totalProjects: projectsData.length,
@@ -153,7 +162,6 @@ export default function ClientDashboard() {
         recentMessages: 0, // TODO: Implement message counting
         upcomingMilestones,
       });
-
     } catch (error) {
       console.error('Error loading client data:', error);
       setError('Error loading dashboard data');
@@ -220,7 +228,7 @@ export default function ClientDashboard() {
         <div>
           <h1 className="text-2xl font-bold">Welcome back!</h1>
           <p className="text-muted-foreground">
-            Here's what's happening with your projects
+            Here&apos;s what&apos;s happening with your projects
           </p>
         </div>
         <Button>
@@ -233,7 +241,9 @@ export default function ClientDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Projects
+            </CardTitle>
             <FolderOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -252,7 +262,10 @@ export default function ClientDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{stats.completed}</div>
             <p className="text-xs text-muted-foreground">
-              {stats.totalProjects > 0 ? Math.round((stats.completed / stats.totalProjects) * 100) : 0}% success rate
+              {stats.totalProjects > 0
+                ? Math.round((stats.completed / stats.totalProjects) * 100)
+                : 0}
+              % success rate
             </p>
           </CardContent>
         </Card>
@@ -264,9 +277,7 @@ export default function ClientDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalFiles}</div>
-            <p className="text-xs text-muted-foreground">
-              Photos and videos
-            </p>
+            <p className="text-xs text-muted-foreground">Photos and videos</p>
           </CardContent>
         </Card>
 
@@ -277,9 +288,7 @@ export default function ClientDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.upcomingMilestones}</div>
-            <p className="text-xs text-muted-foreground">
-              Milestones due soon
-            </p>
+            <p className="text-xs text-muted-foreground">Milestones due soon</p>
           </CardContent>
         </Card>
       </div>
@@ -295,25 +304,32 @@ export default function ClientDashboard() {
               <FolderOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-medium mb-2">No projects yet</h3>
               <p className="text-muted-foreground">
-                Your projects will appear here once they're created
+                Your projects will appear here once they&apos;re created
               </p>
             </div>
           ) : (
             <div className="space-y-4">
               {projects.slice(0, 5).map(project => (
-                <div key={project.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div
+                  key={project.id}
+                  className="flex items-center justify-between p-4 border rounded-lg"
+                >
                   <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
                       <Avatar>
                         <AvatarFallback>
-                          {project.title.es?.charAt(0) || project.title.en?.charAt(0) || 'P'}
+                          {project.title.es?.charAt(0) ||
+                            project.title.en?.charAt(0) ||
+                            'P'}
                         </AvatarFallback>
                       </Avatar>
                     </div>
-                    
+
                     <div className="flex-1">
                       <h3 className="font-medium">
-                        {project.title.es || project.title.en || project.title.pt}
+                        {project.title.es ||
+                          project.title.en ||
+                          project.title.pt}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         {project.eventType} • {project.location}
@@ -325,7 +341,10 @@ export default function ClientDashboard() {
                         </Badge>
                         {project.progress > 0 && (
                           <div className="flex items-center space-x-2">
-                            <Progress value={project.progress} className="w-20" />
+                            <Progress
+                              value={project.progress}
+                              className="w-20"
+                            />
                             <span className="text-xs text-muted-foreground">
                               {project.progress}%
                             </span>
@@ -334,7 +353,7 @@ export default function ClientDashboard() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {project.mediaCount.photos > 0 && (
                       <Badge variant="outline" className="text-xs">
@@ -354,12 +373,10 @@ export default function ClientDashboard() {
                   </div>
                 </div>
               ))}
-              
+
               {projects.length > 5 && (
                 <div className="text-center pt-4">
-                  <Button variant="outline">
-                    View All Projects
-                  </Button>
+                  <Button variant="outline">View All Projects</Button>
                 </div>
               )}
             </div>
@@ -429,21 +446,27 @@ export default function ClientDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">Final Review</p>
-                  <p className="text-xs text-muted-foreground">Wedding Project</p>
+                  <p className="text-xs text-muted-foreground">
+                    Wedding Project
+                  </p>
                 </div>
                 <Badge variant="secondary">Tomorrow</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">Photo Selection</p>
-                  <p className="text-xs text-muted-foreground">Corporate Event</p>
+                  <p className="text-xs text-muted-foreground">
+                    Corporate Event
+                  </p>
                 </div>
                 <Badge variant="outline">3 days</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium">Video Edit</p>
-                  <p className="text-xs text-muted-foreground">Product Launch</p>
+                  <p className="text-xs text-muted-foreground">
+                    Product Launch
+                  </p>
                 </div>
                 <Badge variant="outline">1 week</Badge>
               </div>
@@ -453,4 +476,4 @@ export default function ClientDashboard() {
       </div>
     </div>
   );
-} 
+}

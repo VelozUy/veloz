@@ -35,7 +35,6 @@ import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { es, enUS, ptBR } from 'date-fns/locale';
-import FileUpload from './FileUpload';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
 
@@ -52,16 +51,6 @@ interface ContactFormData {
   contactMethod: 'whatsapp' | 'email' | 'call';
   eventDate?: string;
   message: string;
-  attachments?: string[]; // URLs of uploaded files
-}
-
-interface FileUploadItem {
-  id: string;
-  file: File;
-  progress: number;
-  status: 'pending' | 'uploading' | 'success' | 'error';
-  error?: string;
-  url?: string;
 }
 
 interface ContactFormProps {
@@ -138,11 +127,6 @@ interface ContactFormProps {
           label: string;
           optional: string;
           placeholder: string;
-        };
-        attachments: {
-          label: string;
-          optional: string;
-          description: string;
         };
         submit: {
           button: string;
@@ -266,10 +250,6 @@ export default function ContactForm({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // File upload state
-  const [selectedFiles, setSelectedFiles] = useState<FileUploadItem[]>([]);
-  const [uploadingFiles, setUploadingFiles] = useState(false);
-
   // Pre-fill form from URL parameters
   useEffect(() => {
     const eventType = searchParams.get('evento');
@@ -308,8 +288,6 @@ export default function ContactForm({
         message: fullMessage,
       }));
       setErrors({});
-      setSelectedFiles([]);
-      setUploadingFiles(false);
 
       // Track if form was pre-filled from widget
       trackCustomEvent('contact_form_prefilled', {
@@ -453,19 +431,8 @@ export default function ContactForm({
     setSubmitError(null);
 
     try {
-      console.log('Starting file upload...');
-      // Upload files first
-      const uploadedUrls = await uploadFiles();
-      console.log('File upload completed:', uploadedUrls);
-
-      // Prepare form data with attachments
-      const formDataWithAttachments = {
-        ...formData,
-        attachments: uploadedUrls,
-      } as ContactFormData;
-
-      console.log('Sending contact form with data:', formDataWithAttachments);
-      await emailService.sendContactForm(formDataWithAttachments);
+      console.log('Sending contact form with data:', formData);
+      await emailService.sendContactForm(formData);
       console.log('Contact form sent successfully');
       setIsSubmitted(true);
 
@@ -474,8 +441,6 @@ export default function ContactForm({
         result: 'success',
         eventType: formData.eventType,
         contactMethod: formData.contactMethod,
-        hasAttachments: uploadedUrls.length > 0,
-        attachmentCount: uploadedUrls.length,
       });
     } catch (error) {
       console.error('Error submitting contact form:', error);
@@ -514,8 +479,6 @@ export default function ContactForm({
       message: '',
     });
     setErrors({});
-    setSelectedFiles([]);
-    setUploadingFiles(false);
   };
 
   const handleInputChange = (
@@ -528,94 +491,6 @@ export default function ContactForm({
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
-  };
-
-  // File upload handlers
-  const handleFilesSelected = (files: File[]) => {
-    const newFileItems: FileUploadItem[] = files.map(file => ({
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      file,
-      progress: 0,
-      status: 'pending',
-    }));
-    setSelectedFiles(prev => [...prev, ...newFileItems]);
-  };
-
-  const handleFilesRemoved = (fileIds: string[]) => {
-    setSelectedFiles(prev => prev.filter(item => !fileIds.includes(item.id)));
-  };
-
-  const uploadFiles = async (): Promise<string[]> => {
-    if (selectedFiles.length === 0) return [];
-
-    setUploadingFiles(true);
-    const uploadedUrls: string[] = [];
-
-    try {
-      const { FileUploadService } = await import('@/services/file-upload');
-      const fileUploadService = new FileUploadService();
-
-      for (const fileItem of selectedFiles) {
-        if (fileItem.status === 'pending') {
-          // Update status to uploading
-          setSelectedFiles(prev =>
-            prev.map(item =>
-              item.id === fileItem.id ? { ...item, status: 'uploading' } : item
-            )
-          );
-
-          const result = await fileUploadService.uploadFile(
-            fileItem.file,
-            'uploads/contacts',
-            {
-              maxFileSizeBytes: 10 * 1024 * 1024, // 10MB
-              allowedMimeTypes: [
-                'image/*',
-                'application/pdf',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-              ],
-            },
-            progress => {
-              setSelectedFiles(prev =>
-                prev.map(item =>
-                  item.id === fileItem.id
-                    ? { ...item, progress: progress.percentage }
-                    : item
-                )
-              );
-            }
-          );
-
-          if (result.success && result.data) {
-            setSelectedFiles(prev =>
-              prev.map(item =>
-                item.id === fileItem.id
-                  ? { ...item, status: 'success', url: result.data!.url }
-                  : item
-              )
-            );
-            uploadedUrls.push(result.data.url);
-          } else {
-            setSelectedFiles(prev =>
-              prev.map(item =>
-                item.id === fileItem.id
-                  ? { ...item, status: 'error', error: result.error }
-                  : item
-              )
-            );
-          }
-        } else if (fileItem.status === 'success' && fileItem.url) {
-          uploadedUrls.push(fileItem.url);
-        }
-      }
-    } catch (error) {
-      console.error('Error uploading files:', error);
-    } finally {
-      setUploadingFiles(false);
-    }
-
-    return uploadedUrls;
   };
 
   const t = translations.contact;
@@ -1008,49 +883,20 @@ export default function ContactForm({
               </div>
             </div>
 
-            {/* File Upload */}
-            <div className="space-y-2">
-              <Label className="text-body-lg font-medium text-foreground">
-                {t.form.attachments.label}{' '}
-                <span className="text-muted-foreground font-normal">
-                  {t.form.attachments.optional}
-                </span>
-              </Label>
-              <p className="text-body-md text-muted-foreground">
-                {t.form.attachments.description}
-              </p>
-              <FileUpload
-                onFilesSelected={handleFilesSelected}
-                onFilesRemoved={handleFilesRemoved}
-                selectedFiles={selectedFiles}
-                maxFiles={5}
-                maxFileSize={10 * 1024 * 1024} // 10MB
-                allowedTypes={[
-                  'image/*',
-                  'application/pdf',
-                  'application/msword',
-                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                ]}
-                disabled={isSubmitting || uploadingFiles}
-              />
-            </div>
-
             {/* Submit Button */}
             <div className="text-center space-y-4 lg:space-y-6">
               <Button
                 type="submit"
-                disabled={isSubmitting || uploadingFiles}
+                disabled={isSubmitting}
                 size="lg"
                 sectionType="form"
                 priority="high"
                 className="font-semibold px-8 lg:px-12 py-4 lg:py-6 w-full lg:w-auto"
               >
-                {isSubmitting || uploadingFiles ? (
+                {isSubmitting ? (
                   <>
                     <Loader2 className="w-6 h-6 mr-2 animate-spin" />
-                    {uploadingFiles
-                      ? 'Uploading files...'
-                      : t.form.submit.loading}
+                    {t.form.submit.loading}
                   </>
                 ) : (
                   <>

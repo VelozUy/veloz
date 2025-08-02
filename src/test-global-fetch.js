@@ -1,6 +1,5 @@
 // Polyfill fetch for Firebase in Node.js
 if (typeof global.fetch === 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fetch = require('node-fetch');
   global.fetch = fetch;
   global.Headers = fetch.Headers;

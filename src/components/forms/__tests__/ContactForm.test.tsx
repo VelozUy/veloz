@@ -45,6 +45,7 @@ const mockTranslations = {
     title: 'Contacto',
     subtitle: 'Contáctanos',
     form: {
+      title: 'Formulario de Contacto',
       name: {
         label: 'Tu nombre',
         placeholder: 'Tu nombre completo',
@@ -111,12 +112,8 @@ const mockTranslations = {
       message: {
         label: 'Cuéntanos todos los detalles que te parezcan',
         optional: '(opcional)',
-        placeholder: 'Comparte todos los detalles que consideres importantes para tu evento...',
-      },
-      attachments: {
-        label: 'Archivos adjuntos',
-        optional: '(opcional)',
-        description: 'Puedes adjuntar fotos o documentos',
+        placeholder:
+          'Comparte todos los detalles que consideres importantes para tu evento...',
       },
       submit: {
         button: 'Enviar mensaje',
@@ -135,11 +132,13 @@ const mockTranslations = {
     trust: {
       response: {
         title: 'Respuesta rápida',
-        description: 'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
+        description:
+          'Típicamente respondemos dentro de las 2 horas posteriores a tu consulta',
       },
       commitment: {
         title: 'Sin compromiso',
-        description: 'Obtener una cotización es completamente gratis y sin compromiso',
+        description:
+          'Obtener una cotización es completamente gratis y sin compromiso',
       },
     },
   },
@@ -151,6 +150,7 @@ describe('ContactForm Component', () => {
       title: 'Contact Us',
       subtitle: 'Tell us about your event',
       form: {
+        title: 'Contact Form',
         name: {
           label: 'Name',
           placeholder: 'Your full name',
@@ -217,12 +217,8 @@ describe('ContactForm Component', () => {
         message: {
           label: 'Tell us all the details you think are relevant',
           optional: '(optional)',
-          placeholder: 'Share all the details you consider important for your event...',
-        },
-        attachments: {
-          label: 'Attachments',
-          optional: '(optional)',
-          description: 'You can attach photos or documents',
+          placeholder:
+            'Share all the details you consider important for your event...',
         },
         submit: {
           button: 'Send Message',
@@ -245,7 +241,8 @@ describe('ContactForm Component', () => {
         },
         commitment: {
           title: 'No Commitment',
-          description: 'Getting a quote is completely free and without commitment',
+          description:
+            'Getting a quote is completely free and without commitment',
         },
       },
     },
@@ -261,13 +258,23 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
-      expect(screen.getByLabelText('Company (if applicable)')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Company (if applicable)')
+      ).toBeInTheDocument();
       expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
-      expect(screen.getByLabelText('What type of event do you have?')).toBeInTheDocument();
-      expect(screen.getByLabelText('Event location (city)')).toBeInTheDocument();
-      expect(screen.getByLabelText('Expected number of attendees')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('What type of event do you have?')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Event location (city)')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Expected number of attendees')
+      ).toBeInTheDocument();
       expect(screen.getByLabelText(/Event Date/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Tell us all the details/)).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/Tell us all the details/)
+      ).toBeInTheDocument();
     });
 
     it('displays form title and subtitle', () => {
@@ -289,16 +296,24 @@ describe('ContactForm Component', () => {
     it('validates required fields', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Name')).toBeInTheDocument();
         expect(screen.getByText('Email')).toBeInTheDocument();
-        expect(screen.getByText('What type of event do you have?')).toBeInTheDocument();
+        expect(
+          screen.getByText('What type of event do you have?')
+        ).toBeInTheDocument();
         expect(screen.getByText('Event location (city)')).toBeInTheDocument();
-        expect(screen.getByText('Expected number of attendees')).toBeInTheDocument();
-        expect(screen.getByText('What services are you interested in?')).toBeInTheDocument();
+        expect(
+          screen.getByText('Expected number of attendees')
+        ).toBeInTheDocument();
+        expect(
+          screen.getByText('What services are you interested in?')
+        ).toBeInTheDocument();
       });
     });
 
@@ -308,7 +323,9 @@ describe('ContactForm Component', () => {
       const emailInput = screen.getByLabelText('Email');
       fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -319,7 +336,9 @@ describe('ContactForm Component', () => {
     it('clears validation errors when user starts typing', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -344,13 +363,26 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       expect(screen.getByText('Sending...')).toBeInTheDocument();
@@ -362,13 +394,26 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -385,18 +430,33 @@ describe('ContactForm Component', () => {
     });
 
     it('handles submission errors', async () => {
-      (emailService.sendContactForm as jest.Mock).mockRejectedValue(new Error('Network error'));
+      (emailService.sendContactForm as jest.Mock).mockRejectedValue(
+        new Error('Network error')
+      );
 
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -412,18 +472,33 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Message Sent!')).toBeInTheDocument();
-        expect(screen.getByText('Thank you for contacting us.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Thank you for contacting us.')
+        ).toBeInTheDocument();
       });
     });
 
@@ -433,20 +508,35 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields and submit
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Message Sent!')).toBeInTheDocument();
       });
 
-      const sendAnotherButton = screen.getByRole('button', { name: /send another message/i });
+      const sendAnotherButton = screen.getByRole('button', {
+        name: /send another message/i,
+      });
       fireEvent.click(sendAnotherButton);
 
       expect(screen.getByText('Contact Us')).toBeInTheDocument();
@@ -460,17 +550,27 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
-      expect(screen.getByLabelText('Company (if applicable)')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Company (if applicable)')
+      ).toBeInTheDocument();
       expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
-      expect(screen.getByLabelText('What type of event do you have?')).toBeInTheDocument();
-      expect(screen.getByLabelText('Event location (city)')).toBeInTheDocument();
-      expect(screen.getByLabelText('Expected number of attendees')).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('What type of event do you have?')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Event location (city)')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('Expected number of attendees')
+      ).toBeInTheDocument();
     });
 
     it('shows validation errors with proper accessibility', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -481,7 +581,9 @@ describe('ContactForm Component', () => {
     it('has proper button roles', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /send message/i })
+      ).toBeInTheDocument();
     });
   });
 
@@ -503,7 +605,9 @@ describe('ContactForm Component', () => {
 
       expect(screen.getByDisplayValue('corporate')).toBeInTheDocument();
       expect(screen.getByDisplayValue('2024-12-25')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('Test message\nUbicación: New York')).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue('Test message\nUbicación: New York')
+      ).toBeInTheDocument();
     });
   });
 
@@ -512,7 +616,9 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       expect(screen.getByText(/we respect your privacy/i)).toBeInTheDocument();
-      expect(screen.getByText(/we will only contact you about your event/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/we will only contact you about your event/i)
+      ).toBeInTheDocument();
     });
 
     it('shows trust indicators with icons', () => {
@@ -560,11 +666,22 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
       const form = screen.getByRole('form');
       fireEvent.submit(form);
@@ -577,7 +694,9 @@ describe('ContactForm Component', () => {
     it('supports Space key activation for buttons', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       submitButton.focus();
 
       fireEvent.keyDown(submitButton, { key: ' ' });
@@ -587,7 +706,9 @@ describe('ContactForm Component', () => {
     it('supports arrow key navigation in select dropdown', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const eventTypeSelect = screen.getByLabelText('What type of event do you have?');
+      const eventTypeSelect = screen.getByLabelText(
+        'What type of event do you have?'
+      );
       eventTypeSelect.focus();
 
       fireEvent.keyDown(eventTypeSelect, { key: 'ArrowDown' });
@@ -597,7 +718,9 @@ describe('ContactForm Component', () => {
     it('maintains focus management during form validation', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
@@ -636,20 +759,35 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields and submit
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
         expect(screen.getByText('Message Sent!')).toBeInTheDocument();
       });
 
-      const sendAnotherButton = screen.getByRole('button', { name: /send another message/i });
+      const sendAnotherButton = screen.getByRole('button', {
+        name: /send another message/i,
+      });
       sendAnotherButton.focus();
       expect(sendAnotherButton).toHaveFocus();
     });
@@ -662,13 +800,26 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       expect(screen.getByText('Sending...')).toBeInTheDocument();
@@ -700,62 +851,106 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
-          result: 'success',
-          eventType: 'corporate',
-          contactMethod: 'whatsapp',
-          hasAttachments: false,
-          attachmentCount: 0,
-        });
+        expect(trackCustomEvent).toHaveBeenCalledWith(
+          'contact_form_submitted',
+          {
+            result: 'success',
+            eventType: 'corporate',
+            contactMethod: 'whatsapp',
+          }
+        );
       });
     });
 
     it('tracks form submission error', async () => {
-      (emailService.sendContactForm as jest.Mock).mockRejectedValue(new Error('Network error'));
+      (emailService.sendContactForm as jest.Mock).mockRejectedValue(
+        new Error('Network error')
+      );
 
       render(<ContactForm translations={mockTranslations} />);
 
       // Fill required fields
-      fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText('What type of event do you have?'), { target: { value: 'corporate' } });
-      fireEvent.change(screen.getByLabelText('Event location (city)'), { target: { value: 'New York' } });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), { target: { value: '100' } });
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' },
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' },
+      });
+      fireEvent.change(
+        screen.getByLabelText('What type of event do you have?'),
+        { target: { value: 'corporate' } }
+      );
+      fireEvent.change(screen.getByLabelText('Event location (city)'), {
+        target: { value: 'New York' },
+      });
+      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
+        target: { value: '100' },
+      });
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_submitted', {
-          result: 'error',
-          error: 'Network error',
-          eventType: 'corporate',
-          contactMethod: 'whatsapp',
-        });
+        expect(trackCustomEvent).toHaveBeenCalledWith(
+          'contact_form_submitted',
+          {
+            result: 'error',
+            error: 'Network error',
+            eventType: 'corporate',
+            contactMethod: 'whatsapp',
+          }
+        );
       });
     });
 
     it('tracks validation errors', async () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const submitButton = screen.getByRole('button', { name: /send message/i });
+      const submitButton = screen.getByRole('button', {
+        name: /send message/i,
+      });
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(trackCustomEvent).toHaveBeenCalledWith('contact_form_validation_error', {
-          errorFields: expect.arrayContaining(['name', 'email', 'eventType', 'location', 'attendees', 'services']),
-          errorCount: 6,
-        });
+        expect(trackCustomEvent).toHaveBeenCalledWith(
+          'contact_form_validation_error',
+          {
+            errorFields: expect.arrayContaining([
+              'name',
+              'email',
+              'eventType',
+              'location',
+              'attendees',
+              'services',
+            ]),
+            errorCount: 6,
+          }
+        );
       });
     });
 

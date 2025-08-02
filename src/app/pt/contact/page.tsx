@@ -67,7 +67,6 @@ function ContactPageContent() {
         };
         eventDate: { label: string; optional: string; help: string };
         message: { label: string; optional: string; placeholder: string };
-        attachments: { label: string; optional: string; description: string };
         submit: { button: string; loading: string };
         privacy: { line1: string; line2: string };
       };
