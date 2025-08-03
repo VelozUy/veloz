@@ -110,17 +110,6 @@ export interface EnhancedProject {
   // Crew assignments
   crewMembers: string[];
 
-  // Legacy fields for compatibility
-  mediaCount: {
-    photos: number;
-    videos: number;
-  };
-  mediaBlocks?: MediaBlock[];
-  detailPageBlocks?: MediaBlock[];
-  heroMediaConfig?: HeroMediaConfig;
-  media?: ProjectMedia[];
-  detailPageGridHeight?: number;
-
   // Metadata
   createdAt: Date;
   updatedAt: Date;
@@ -203,35 +192,6 @@ export interface ClientSession {
   userAgent?: string;
   isActive: boolean;
   expiresAt: Date;
-}
-
-// Legacy interfaces for compatibility
-export interface MediaBlock {
-  id: string;
-  mediaId?: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  type: 'image' | 'video' | 'title';
-  zIndex: number;
-  title?: string;
-  font?: string;
-  color?: string;
-  mediaOffsetX?: number;
-  mediaOffsetY?: number;
-}
-
-export interface HeroMediaConfig {
-  mediaId?: string;
-  aspectRatio: '1:1' | '16:9' | '4:5' | '9:16' | 'custom';
-  customRatio?: {
-    width: number;
-    height: number;
-  };
-  autoplay?: boolean;
-  muted?: boolean;
-  loop?: boolean;
 }
 
 export interface ProjectMedia {

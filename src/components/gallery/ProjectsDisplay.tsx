@@ -68,9 +68,12 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
       projectTitle: project.title,
     });
 
-    // Use slug if available, otherwise fall back to ID
-    const projectIdentifier = project.slug || project.id;
-    router.push(`/our-work/${projectIdentifier}`);
+    // Use slug-based routing only
+    if (!project.slug) {
+      console.error(`Project ${project.id} missing slug, cannot navigate`);
+      return;
+    }
+    router.push(`/our-work/${project.slug}`);
   };
 
   const handleImageClick = (project: Project, media: Project['media'][0]) => {

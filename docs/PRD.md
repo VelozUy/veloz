@@ -471,7 +471,7 @@ src/
 - **Automatic slug generation** from project title using the existing `createSlug()` utility
 - **Unique slug validation** - ensures no duplicate slugs when creating or updating projects
 - **Slug-based routing** - URLs like `/our-work/boda-maria-y-juan` instead of `/our-work/proj123`
-- **Fallback handling** - maintains backward compatibility with existing ID-based URLs
+- **Slug-based routing** - URLs use project slugs for better SEO and readability
 - **Slug updates** - when project title changes, slug updates automatically with uniqueness validation
 
 **Technical Implementation**:
@@ -493,9 +493,9 @@ src/
 
 **URL Structure**:
 
-- **Primary**: `/projects/[slug]` (e.g., `/projects/boda-maria-y-juan`)
-- **Fallback**: `/projects/[id]` (e.g., `/projects/proj123`) for backward compatibility
-- **Redirects**: Old ID-based URLs redirect to slug-based URLs
+- **Primary**: `/our-work/[slug]` (e.g., `/our-work/boda-maria-y-juan`)
+- **URL structure**: `/our-work/[slug]` (e.g., `/our-work/boda-maria-y-juan`)
+- **URL structure**: Clean, SEO-friendly URLs using project slugs
 - **404 handling**: Proper 404 page for non-existent slugs
 
 #### 🧩 Modular Project Presentation

@@ -78,21 +78,23 @@ _Last updated: 2025-01-27_
 
 **Reference**: `docs/epics/infrastructure/backward-compatibility-cleanup.md`
 **Objective**: Remove all backward compatibility code since no release has been made yet
-**Status**: Active (Week 1 of 1)
+**Status**: Active (Week 1 of 2)
 **Business Impact**: HIGH
 **User Value**: MEDIUM
 
 #### 🟥 Critical (This Week)
 
-- [ ] Remove legacy URL routing and redirects
-  - File: `src/app/our-work/[slug]/page.tsx`
-  - Notes: Remove ID-based URL fallback logic, keep only slug-based routing
+- [x] Remove legacy URL routing and redirects
+  - File: `src/components/gallery/ProjectsDisplay.tsx`, `src/app/admin/projects/[id]/edit/page.tsx`
+  - Notes: Removed ID-based URL fallback logic, updated to use slug-based routing only
   - Time: 1 day
+  - Status: Completed (2025-01-27)
 
-- [ ] Clean up Firebase legacy synchronous getters
-  - File: `src/lib/firebase.ts`
-  - Notes: Remove getAuthSync, getStorageSync, getFirestoreSync functions
-  - Time: 0.5 days
+- [~] Clean up Firebase legacy synchronous getters
+  - File: `src/lib/firebase.ts`, `src/services/firebase.ts`, `src/lib/firebase-error-handler.ts`, `src/lib/firebase-test.ts`, `src/app/admin/login/page.tsx`, `jest.setup.js`
+  - Notes: Complex refactor needed - Firebase service architecture needs systematic update to use async services. Many files still use sync getters.
+  - Time: 3 days
+  - Status: In Progress - Requires comprehensive service layer refactor across multiple files
 
 - [x] Remove legacy analytics exports
   - File: `src/lib/gallery-analytics.ts`
@@ -112,10 +114,11 @@ _Last updated: 2025-01-27_
   - Time: 0.5 days
   - Status: Completed (2025-01-27)
 
-- [ ] Clean up project tracking legacy fields
-  - File: `src/types/project-tracking.ts`
-  - Notes: Remove mediaCount, mediaBlocks, detailPageBlocks legacy fields
-  - Time: 1 day
+- [~] Clean up project tracking legacy fields
+  - File: `src/types/project-tracking.ts` (types removed), `src/services/firebase.ts`, `src/components/client/ClientPortal.tsx`, `src/components/layout/HeroLayout.tsx`, `src/components/admin/ProjectDashboard.tsx`, `src/components/admin/HeroMediaSelector.tsx`, `src/components/admin/VisualGridEditor.tsx`
+  - Notes: Types removed but many components still use legacy fields - requires systematic component updates across multiple files
+  - Time: 4 days
+  - Status: In Progress - Types cleaned up, components need updating
 
 - [x] Remove backward compatibility tests
   - File: `src/app/__tests__/our-work-backward-compatibility.test.tsx`
@@ -123,17 +126,25 @@ _Last updated: 2025-01-27_
   - Time: 0.5 days
   - Status: Completed (2025-01-27)
 
-- [ ] Update documentation to remove BC references
-  - Files: Various docs files
-  - Notes: Remove all backward compatibility mentions from documentation
+- [x] Update documentation to remove BC references
+  - Files: `docs/PRD.md`, `docs/THEME_IMPLEMENTATION_CHECKLIST.md`
+  - Notes: Removed backward compatibility mentions from PRD and theme documentation
   - Time: 1 day
+  - Status: Completed (2025-01-27)
 
 #### 🟡 High (Next Week)
 
 - [ ] Audit and remove any remaining legacy code
   - Files: Codebase-wide search
-  - Notes: Search for any remaining backward compatibility patterns
+  - Notes: Search for any remaining backward compatibility patterns, run full test suite
   - Time: 1 day
+
+#### 🟨 Medium (Future)
+
+- [ ] Remove empty projects directory structure
+  - Files: `src/app/projects/`, `src/app/projects/[slug]/`, `src/app/projects/login/`
+  - Notes: Clean up empty directories left from old routing structure
+  - Time: 0.5 days
 
 ### 🧱 EPIC: Unified Communication Center
 

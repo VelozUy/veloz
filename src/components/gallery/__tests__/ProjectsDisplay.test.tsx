@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
-import ProjectsDisplay from '../ProjectsDisplay';
+import { ProjectsDisplay } from '../ProjectsDisplay';
 import { useGalleryAnalytics } from '@/lib/gallery-analytics';
 
 // Mock Next.js router
@@ -15,9 +15,9 @@ jest.mock('@/lib/gallery-analytics', () => ({
   trackProjectView: jest.fn(),
 }));
 
-// Mock GalleryGrid
-jest.mock('../GalleryGrid', () => {
-  return function MockGalleryGrid({
+// Mock TiledGallery
+jest.mock('../TiledGallery', () => {
+  return function MockTiledGallery({
     media,
     onItemClick,
     projectId,
@@ -42,6 +42,15 @@ jest.mock('../GalleryGrid', () => {
     );
   };
 });
+
+// Mock useAnalytics hook
+jest.mock('@/hooks/useAnalytics', () => ({
+  useAnalytics: () => ({
+    trackProjectView: jest.fn(),
+    trackGalleryView: jest.fn(),
+    trackImageClick: jest.fn(),
+  }),
+}));
 
 describe('ProjectsDisplay', () => {
   const mockProjects = [
@@ -299,7 +308,7 @@ describe('ProjectsDisplay', () => {
       expect(mockRouter.push).toHaveBeenCalledWith('/our-work/test-project-2');
     });
 
-    it('falls back to ID when slug is not available', () => {
+    it('handles missing slug gracefully', () => {
       const projectsWithoutSlug = [
         {
           id: 'project-no-slug',
@@ -319,12 +328,20 @@ describe('ProjectsDisplay', () => {
         },
       ];
 
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
       render(<ProjectsDisplay projects={projectsWithoutSlug} />);
 
       const button = screen.getByRole('button');
       fireEvent.click(button);
 
-      expect(mockRouter.push).toHaveBeenCalledWith('/projects/project-no-slug');
+      // Should not navigate when slug is missing
+      expect(mockRouter.push).not.toHaveBeenCalled();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Project project-no-slug missing slug, cannot navigate'
+      );
+
+      consoleSpy.mockRestore();
     });
   });
 
