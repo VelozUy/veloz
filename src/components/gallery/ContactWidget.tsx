@@ -17,6 +17,8 @@ import { MessageCircle, Phone, CheckCircle } from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 import { trackCustomEvent } from '@/services/analytics';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
+import { emailService } from '@/services/email';
+import { ContactMessageService } from '@/services/firebase';
 
 interface ContactWidgetProps {
   language?: 'es' | 'en' | 'pt';
@@ -244,17 +246,17 @@ const ContactStep = memo(
         <Button
           variant="outline"
           onClick={() => onChoice('moreInfo')}
-          className="justify-start"
+          className="justify-start h-20 p-3 whitespace-normal text-left"
           role="radio"
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
-          <div className="text-left">
-            <div className="font-medium">
+          <MessageCircle className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
+          <div className="text-left flex-1 min-w-0 overflow-hidden">
+            <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
               {content.steps.contact.moreInfo.title}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere">
               {content.steps.contact.moreInfo.subtitle}
             </div>
           </div>
@@ -262,17 +264,17 @@ const ContactStep = memo(
         <Button
           variant="outline"
           onClick={() => onChoice('callMe')}
-          className="justify-start"
+          className="justify-start h-20 p-3 whitespace-normal text-left"
           role="radio"
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
-          <div className="text-left">
-            <div className="font-medium">
+          <Phone className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
+          <div className="text-left flex-1 min-w-0 overflow-hidden">
+            <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
               {content.steps.contact.callMe.title}
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere">
               {content.steps.contact.callMe.subtitle}
             </div>
           </div>
@@ -331,6 +333,9 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  
+  // Initialize contact message service
+  const contactMessageService = new ContactMessageService();
 
   // Memoize static content to prevent unnecessary re-computations
   const content = useMemo(() => getStaticContent(language), [language]);
@@ -448,10 +453,47 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
     async (phone: string) => {
       setIsSubmitting(true);
       try {
-        // Simulate API call for phone submission
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Create contact data for database
+        const contactMessageData = {
+          name: 'Cliente Widget',
+          email: 'widget@veloz.com.uy',
+          phone: phone,
+          eventType: widgetData.eventType,
+          eventDate: widgetData.eventDate,
+          location: widgetData.location,
+          message: `Solicitud de llamada desde el widget de contacto. Evento: ${widgetData.eventType}${widgetData.eventDate ? `, Fecha: ${widgetData.eventDate}` : ''}${widgetData.location ? `, Ubicación: ${widgetData.location}` : ''}`,
+          source: 'widget' as const,
+          isRead: false,
+          status: 'new' as const,
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+          metadata: {
+            timestamp: new Date().toISOString(),
+            locale: language,
+          },
+          archived: false,
+        };
 
-        // In a real implementation, you would call your API here
+        // Save to database using the base service create method
+        const saveResult = await contactMessageService.create(contactMessageData);
+        if (!saveResult.success) {
+          throw new Error('Failed to save contact data');
+        }
+
+        // Send email notification with separate data structure
+        await emailService.sendContactForm({
+          name: 'Cliente Widget',
+          email: 'widget@veloz.com.uy',
+          phone: phone,
+          eventType: widgetData.eventType,
+          eventDate: widgetData.eventDate,
+          location: widgetData.location,
+          attendees: 'No especificado',
+          services: ['No especificado'],
+          contactMethod: 'call' as const,
+          message: `Solicitud de llamada desde el widget de contacto. Evento: ${widgetData.eventType}${widgetData.eventDate ? `, Fecha: ${widgetData.eventDate}` : ''}${widgetData.location ? `, Ubicación: ${widgetData.location}` : ''}`,
+          source: 'widget',
+          locale: language,
+        });
 
         setCurrentStep('complete');
 
@@ -480,7 +522,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
         setIsSubmitting(false);
       }
     },
-    [widgetData]
+    [widgetData, language]
   );
 
   const resetWidget = useCallback(() => {
@@ -653,21 +695,12 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
               </Button>
             )}
             {currentStep === 'location' && (
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={handleLocationSkip}
-                  aria-label="Skip location input"
-                >
-                  {widgetContent.steps.location.noLocation}
-                </Button>
-                <Button
-                  onClick={handleLocationSubmit}
-                  aria-label="Continue with location"
-                >
-                  {widgetContent.steps.location.continue || 'Continuar'}
-                </Button>
-              </div>
+              <Button
+                onClick={handleLocationSubmit}
+                aria-label="Continue with location"
+              >
+                {widgetContent.steps.location.continue || 'Continuar'}
+              </Button>
             )}
             {currentStep === 'phone' && (
               <Button

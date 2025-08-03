@@ -461,15 +461,35 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
         },
         eventTypes: {
+          corporate: {
+            es: 'Evento Empresarial',
+            en: 'Corporate Event',
+            pt: 'Evento Corporativo',
+          },
+          product: {
+            es: 'Presentación de Producto',
+            en: 'Product Presentation',
+            pt: 'Apresentação de Produto',
+          },
+          birthday: {
+            es: 'Cumpleaños',
+            en: 'Birthday',
+            pt: 'Aniversário',
+          },
           wedding: {
             es: 'Boda',
             en: 'Wedding',
             pt: 'Casamento',
           },
-          corporate: {
-            es: 'Evento Empresarial',
-            en: 'Corporate Event',
-            pt: 'Evento Corporativo',
+          concert: {
+            es: 'Concierto',
+            en: 'Concert',
+            pt: 'Show',
+          },
+          exhibition: {
+            es: 'Exposición',
+            en: 'Exhibition',
+            pt: 'Exposição',
           },
           other: {
             es: 'Otro tipo de evento',
