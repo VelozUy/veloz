@@ -16,6 +16,7 @@ import {
 import { MessageCircle, Phone, CheckCircle } from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 import { trackCustomEvent } from '@/services/analytics';
+import { VisuallyHidden } from '@/components/ui/visually-hidden';
 
 interface ContactWidgetProps {
   language?: 'es' | 'en' | 'pt';
@@ -595,79 +596,67 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
     isSubmitting,
   ]);
 
-  // Memoize dialog content to prevent unnecessary re-renders
-  const dialogContent = useMemo(
-    () => (
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button
-            variant="default"
-            className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
-            aria-label="Open contact widget"
-          >
-            <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
-            <span className="hidden sm:inline">
-              {widgetContent.button.desktop}
-            </span>
-            <span className="sm:hidden">{widgetContent.button.mobile}</span>
-          </Button>
-        </DialogTrigger>
-        <DialogContent
-          className="sm:max-w-md"
-          role="dialog"
-          aria-labelledby="dialog-title"
-          sectionType="form"
-          priority="high"
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="default"
+          className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
+          aria-label="Open contact widget"
         >
-          <DialogTitle id="dialog-title">
-            {typeof widgetContent.dialog.title === 'string' 
-              ? widgetContent.dialog.title 
-              : widgetContent.dialog.title?.[language] || 'Contact Widget'}
+          <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
+          <span className="hidden sm:inline">
+            {widgetContent.button.desktop}
+          </span>
+          <span className="sm:hidden">{widgetContent.button.mobile}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle asChild>
+            <VisuallyHidden>Contact Widget</VisuallyHidden>
           </DialogTitle>
-          <div className="py-4" role="main">
-            {renderStep}
-          </div>
-          {currentStep !== 'complete' && (
-            <div
-              className="flex justify-between pt-4 border-t"
-              role="navigation"
-              aria-label="Dialog navigation"
+        </DialogHeader>
+        <div className="py-4" role="main">
+          {renderStep}
+        </div>
+        {currentStep !== 'complete' && (
+          <div
+            className="flex justify-between pt-4 border-t"
+            role="navigation"
+            aria-label="Dialog navigation"
+          >
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              aria-label="Cancel and close dialog"
             >
+              Cancelar
+            </Button>
+            {currentStep !== 'eventType' && (
               <Button
                 variant="outline"
-                onClick={handleClose}
-                aria-label="Cancel and close dialog"
+                onClick={() => {
+                  const steps: Step[] = [
+                    'eventType',
+                    'date',
+                    'location',
+                    'contact',
+                    'phone',
+                  ];
+                  const currentIndex = steps.indexOf(currentStep);
+                  if (currentIndex > 0) {
+                    setCurrentStep(steps[currentIndex - 1]);
+                  }
+                }}
+                aria-label="Go to previous step"
               >
-                Cancelar
+                Atrás
               </Button>
-              {currentStep !== 'eventType' && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const steps: Step[] = [
-                      'eventType',
-                      'date',
-                      'location',
-                      'contact',
-                      'phone',
-                    ];
-                    const currentIndex = steps.indexOf(currentStep);
-                    if (currentIndex > 0) {
-                      setCurrentStep(steps[currentIndex - 1]);
-                    }
-                  }}
-                  aria-label="Go to previous step"
-                >
-                  Atrás
-                </Button>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    ),
-    [isOpen, currentStep, widgetContent, renderStep, handleClose]
+            )}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
-
-  return dialogContent;
 }
