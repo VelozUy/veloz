@@ -21,6 +21,95 @@ import { Textarea } from '@/components/ui/textarea';
 import { emailService } from '@/services/email';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
+// Import translation functions (we'll need to export them from email.ts)
+// For now, let's create them inline to avoid circular dependencies
+const EVENT_TYPE_TRANSLATIONS = {
+  es: {
+    wedding: 'Boda',
+    corporate: 'Evento Empresarial',
+    product: 'Producto',
+    birthday: 'Cumpleaños',
+    concert: 'Concierto',
+    exhibition: 'Exposición',
+    other: 'Otro',
+  },
+  en: {
+    wedding: 'Wedding',
+    corporate: 'Corporate Event',
+    product: 'Product',
+    birthday: 'Birthday',
+    concert: 'Concert',
+    exhibition: 'Exhibition',
+    other: 'Other',
+  },
+  pt: {
+    wedding: 'Casamento',
+    corporate: 'Evento Corporativo',
+    product: 'Produto',
+    birthday: 'Aniversário',
+    concert: 'Show',
+    exhibition: 'Exposição',
+    other: 'Outro',
+  },
+};
+
+const SERVICE_TRANSLATIONS = {
+  es: {
+    photography: 'Fotografía',
+    video: 'Video',
+    drone: 'Drone',
+    studio: 'Estudio',
+    other: 'Otro',
+  },
+  en: {
+    photography: 'Photography',
+    video: 'Video',
+    drone: 'Drone',
+    studio: 'Studio',
+    other: 'Other',
+  },
+  pt: {
+    photography: 'Fotografia',
+    video: 'Vídeo',
+    drone: 'Drone',
+    studio: 'Estúdio',
+    other: 'Outro',
+  },
+};
+
+const CONTACT_METHOD_TRANSLATIONS = {
+  es: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Llamada',
+  },
+  en: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Call',
+  },
+  pt: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Ligação',
+  },
+};
+
+function translateEventType(eventType: string, locale: string = 'es'): string {
+  const translations = EVENT_TYPE_TRANSLATIONS[locale as keyof typeof EVENT_TYPE_TRANSLATIONS] || EVENT_TYPE_TRANSLATIONS.es;
+  return translations[eventType as keyof typeof translations] || eventType;
+}
+
+function translateServices(services: string[], locale: string = 'es'): string {
+  const translations = SERVICE_TRANSLATIONS[locale as keyof typeof SERVICE_TRANSLATIONS] || SERVICE_TRANSLATIONS.es;
+  return services.map(service => translations[service as keyof typeof translations] || service).join(', ');
+}
+
+function translateContactMethod(contactMethod: string, locale: string = 'es'): string {
+  const translations = CONTACT_METHOD_TRANSLATIONS[locale as keyof typeof CONTACT_METHOD_TRANSLATIONS] || CONTACT_METHOD_TRANSLATIONS.es;
+  return translations[contactMethod as keyof typeof translations] || contactMethod;
+}
+
 interface EmailTestPanelProps {
   className?: string;
 }
@@ -43,11 +132,11 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
     name: 'Test User',
     email: 'test@example.com',
     company: 'Test Company',
-    eventType: 'Boda',
+    eventType: 'wedding', // Use form key, will be translated in email
     eventDate: '2024-09-15',
     location: 'Montevideo, Uruguay',
     attendees: '50-100',
-    services: ['Fotografía', 'Video'],
+    services: ['photography', 'video'], // Use form keys, will be translated in email
     message:
       'Este es un mensaje de prueba para verificar el funcionamiento del sistema de emails.',
     phone: '+598 99 123 456',
@@ -216,12 +305,12 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
                   .replace('{{email}}', testEmailData.email)
                   .replace('{{company}}', testEmailData.company)
                   .replace('{{phone}}', testEmailData.phone)
-                  .replace('{{contactMethod}}', testEmailData.contactMethod)
-                  .replace('{{eventType}}', testEmailData.eventType)
+                  .replace('{{contactMethod}}', translateContactMethod(testEmailData.contactMethod, selectedLocale))
+                  .replace('{{eventType}}', translateEventType(testEmailData.eventType, selectedLocale))
                   .replace('{{eventDate}}', testEmailData.eventDate)
                   .replace('{{location}}', testEmailData.location)
                   .replace('{{attendees}}', testEmailData.attendees)
-                  .replace('{{services}}', testEmailData.services.join(', '))
+                  .replace('{{services}}', translateServices(testEmailData.services, selectedLocale))
                   .replace('{{message}}', testEmailData.message)
                   .replace('{{source}}', testEmailData.source)
                   .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES'))}
@@ -263,10 +352,10 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
                 value={templates.user.body
                   .replace('{{name}}', testEmailData.name)
                   .replace('{{email}}', testEmailData.email)
-                  .replace('{{eventType}}', testEmailData.eventType)
+                  .replace('{{eventType}}', translateEventType(testEmailData.eventType, selectedLocale))
                   .replace('{{eventDate}}', testEmailData.eventDate)
                   .replace('{{location}}', testEmailData.location)
-                  .replace('{{services}}', testEmailData.services.join(', '))}
+                  .replace('{{services}}', translateServices(testEmailData.services, selectedLocale))}
                 readOnly
                 className="min-h-[200px] text-sm"
                 placeholder="Vista previa del email con datos de prueba..."

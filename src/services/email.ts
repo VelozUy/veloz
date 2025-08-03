@@ -30,6 +30,99 @@ export interface ContactFormData {
   locale?: string; // Add locale support
 }
 
+// Event type translations
+const EVENT_TYPE_TRANSLATIONS = {
+  es: {
+    wedding: 'Boda',
+    corporate: 'Evento Empresarial',
+    product: 'Producto',
+    birthday: 'Cumpleaños',
+    concert: 'Concierto',
+    exhibition: 'Exposición',
+    other: 'Otro',
+  },
+  en: {
+    wedding: 'Wedding',
+    corporate: 'Corporate Event',
+    product: 'Product',
+    birthday: 'Birthday',
+    concert: 'Concert',
+    exhibition: 'Exhibition',
+    other: 'Other',
+  },
+  pt: {
+    wedding: 'Casamento',
+    corporate: 'Evento Corporativo',
+    product: 'Produto',
+    birthday: 'Aniversário',
+    concert: 'Show',
+    exhibition: 'Exposição',
+    other: 'Outro',
+  },
+};
+
+// Service translations
+const SERVICE_TRANSLATIONS = {
+  es: {
+    photography: 'Fotografía',
+    video: 'Video',
+    drone: 'Drone',
+    studio: 'Estudio',
+    other: 'Otro',
+  },
+  en: {
+    photography: 'Photography',
+    video: 'Video',
+    drone: 'Drone',
+    studio: 'Studio',
+    other: 'Other',
+  },
+  pt: {
+    photography: 'Fotografia',
+    video: 'Vídeo',
+    drone: 'Drone',
+    studio: 'Estúdio',
+    other: 'Outro',
+  },
+};
+
+// Contact method translations
+const CONTACT_METHOD_TRANSLATIONS = {
+  es: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Llamada',
+  },
+  en: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Call',
+  },
+  pt: {
+    whatsapp: 'WhatsApp',
+    email: 'Email',
+    call: 'Ligação',
+  },
+};
+
+// Helper function to translate event types
+function translateEventType(eventType: string, locale: string = 'es'): string {
+  const translations = EVENT_TYPE_TRANSLATIONS[locale as keyof typeof EVENT_TYPE_TRANSLATIONS] || EVENT_TYPE_TRANSLATIONS.es;
+  return translations[eventType as keyof typeof translations] || eventType;
+}
+
+// Helper function to translate services
+function translateServices(services: string[], locale: string = 'es'): string {
+  const translations = SERVICE_TRANSLATIONS[locale as keyof typeof SERVICE_TRANSLATIONS] || SERVICE_TRANSLATIONS.es;
+  return services.map(service => translations[service as keyof typeof translations] || service).join(', ');
+}
+
+// Helper function to translate contact method
+function translateContactMethod(contactMethod: string, locale: string = 'es'): string {
+  const translations = CONTACT_METHOD_TRANSLATIONS[locale as keyof typeof CONTACT_METHOD_TRANSLATIONS] || CONTACT_METHOD_TRANSLATIONS.es;
+  return translations[contactMethod as keyof typeof translations] || contactMethod;
+}
+
 // Email templates for different languages
 const emailTemplates = {
   es: {
@@ -244,12 +337,12 @@ export const emailService = {
           .replace('{{email}}', data.email)
           .replace('{{company}}', data.company || 'No especificada')
           .replace('{{phone}}', data.phone || 'No proporcionado')
-          .replace('{{contactMethod}}', data.contactMethod || 'No especificado')
-          .replace('{{eventType}}', data.eventType)
+          .replace('{{contactMethod}}', translateContactMethod(data.contactMethod, locale))
+          .replace('{{eventType}}', translateEventType(data.eventType, locale))
           .replace('{{eventDate}}', data.eventDate || 'No especificada')
           .replace('{{location}}', data.location || 'No especificada')
           .replace('{{attendees}}', data.attendees || 'No especificados')
-          .replace('{{services}}', data.services?.join(', ') || 'No especificados')
+          .replace('{{services}}', translateServices(data.services, locale))
           .replace('{{message}}', data.message || 'Sin mensaje adicional')
           .replace('{{source}}', data.source || 'contact_form')
           .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES')),
@@ -293,13 +386,13 @@ export const emailService = {
           message: templates.user.body
             .replace('{{name}}', data.name)
             .replace('{{email}}', data.email)
-            .replace('{{eventType}}', data.eventType)
+            .replace('{{eventType}}', translateEventType(data.eventType, locale))
             .replace('{{eventDate}}', data.eventDate || 'No especificada')
             .replace('{{location}}', data.location || 'No especificada')
             .replace('{{attendees}}', data.attendees || 'No especificados')
             .replace(
               '{{services}}',
-              data.services?.join(', ') || 'No especificados'
+              translateServices(data.services, locale)
             ),
 
           // Required EmailJS fields - try different field names that EmailJS might expect
@@ -361,12 +454,12 @@ export const emailService = {
           .replace('{{email}}', 'test@example.com')
           .replace('{{company}}', 'Test Company')
           .replace('{{phone}}', '123456789')
-          .replace('{{contactMethod}}', 'WhatsApp')
-          .replace('{{eventType}}', 'test')
+          .replace('{{contactMethod}}', translateContactMethod('whatsapp', 'es'))
+          .replace('{{eventType}}', translateEventType('wedding', 'es'))
           .replace('{{eventDate}}', '2024-01-01')
           .replace('{{location}}', 'Test Location')
           .replace('{{attendees}}', '50-100')
-          .replace('{{services}}', 'Test Services')
+          .replace('{{services}}', translateServices(['photography', 'video'], 'es'))
           .replace('{{message}}', 'This is a test message from the Veloz contact system.')
           .replace('{{source}}', 'test')
           .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES')),
@@ -419,11 +512,11 @@ export const emailService = {
         message: templates.user.body
           .replace('{{name}}', 'Test User')
           .replace('{{email}}', 'test@example.com')
-          .replace('{{eventType}}', 'test')
+          .replace('{{eventType}}', translateEventType('wedding', 'es'))
           .replace('{{eventDate}}', '2024-01-01')
           .replace('{{location}}', 'Test Location')
           .replace('{{attendees}}', '50-100')
-          .replace('{{services}}', 'Test Services'),
+          .replace('{{services}}', translateServices(['photography', 'video'], 'es')),
 
         // Required EmailJS fields - try different field names that EmailJS might expect
         to_email: 'test@example.com',
