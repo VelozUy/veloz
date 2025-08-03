@@ -253,8 +253,12 @@ export interface FormContent {
       title: LocalizedContent;
     };
     eventTypes: {
-      wedding: LocalizedContent;
       corporate: LocalizedContent;
+      product: LocalizedContent;
+      birthday: LocalizedContent;
+      wedding: LocalizedContent;
+      concert: LocalizedContent;
+      exhibition: LocalizedContent;
       other: LocalizedContent;
     };
     steps: {

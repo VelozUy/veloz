@@ -192,8 +192,12 @@ const STATIC_TRANSLATIONS = {
         title: 'Cuéntanos sobre tu evento',
       },
       eventTypes: {
-        wedding: 'Boda',
         corporate: 'Evento Empresarial',
+        product: 'Presentación de Producto',
+        birthday: 'Cumpleaños',
+        wedding: 'Boda',
+        concert: 'Concierto',
+        exhibition: 'Exposición',
         other: 'Otro tipo de evento',
       },
       steps: {
@@ -204,7 +208,7 @@ const STATIC_TRANSLATIONS = {
         date: {
           title: '¿Ya tienes fecha?',
           subtitle: 'No te preocupes si aún no estás seguro',
-          noDate: 'Aún no tengo fecha definida',
+          noDate: 'No tengo fecha',
         },
         location: {
           title: '¿Dónde será tu evento?',
@@ -483,8 +487,12 @@ const STATIC_TRANSLATIONS = {
         title: 'Tell us about your event',
       },
       eventTypes: {
-        wedding: 'Wedding',
         corporate: 'Corporate Event',
+        product: 'Product Launch',
+        birthday: 'Birthday',
+        wedding: 'Wedding',
+        concert: 'Concert',
+        exhibition: 'Exhibition',
         other: 'Other type of event',
       },
       steps: {
@@ -495,7 +503,7 @@ const STATIC_TRANSLATIONS = {
         date: {
           title: 'Do you have a date already?',
           subtitle: "Don't worry if you're not sure yet",
-          noDate: "I don't have a date set yet",
+          noDate: "No date",
         },
         location: {
           title: 'Where will your event be?',
@@ -774,8 +782,12 @@ const STATIC_TRANSLATIONS = {
         title: 'Conte-nos sobre seu evento',
       },
       eventTypes: {
-        wedding: 'Casamento',
         corporate: 'Evento Corporativo',
+        product: 'Lançamento de Produto',
+        birthday: 'Aniversário',
+        wedding: 'Casamento',
+        concert: 'Show',
+        exhibition: 'Exposição',
         other: 'Outro tipo de evento',
       },
       steps: {
@@ -786,7 +798,7 @@ const STATIC_TRANSLATIONS = {
         date: {
           title: 'Já tem uma data?',
           subtitle: 'Não se preocupe se ainda não tem certeza',
-          noDate: 'Ainda não tenho data definida',
+          noDate: 'Sem data',
         },
         location: {
           title: 'Onde será seu evento?',

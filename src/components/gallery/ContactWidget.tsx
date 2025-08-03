@@ -52,11 +52,8 @@ const EventTypeStep = memo(
     <div className="space-y-4" role="region" aria-label="Event type selection">
       <div className="text-center">
         <h3 className="text-lg font-semibold" id="event-type-title">
-          {content.steps.eventType.title}
-        </h3>
-        <p className="text-sm text-muted-foreground" id="event-type-subtitle">
           {content.steps.eventType.subtitle}
-        </p>
+        </h3>
       </div>
       <div
         className="grid grid-cols-1 gap-3"
@@ -64,24 +61,64 @@ const EventTypeStep = memo(
         aria-labelledby="event-type-title"
       >
         <Button
-          variant={selectedType === 'wedding' ? 'default' : 'outline'}
-          onClick={() => onSelect('wedding')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'wedding'}
-          aria-describedby="event-type-subtitle"
-        >
-          {content.eventTypes.wedding}
-        </Button>
-        <Button
           variant={selectedType === 'corporate' ? 'default' : 'outline'}
           onClick={() => onSelect('corporate')}
           className="justify-start"
           role="radio"
           aria-checked={selectedType === 'corporate'}
-          aria-describedby="event-type-subtitle"
+          aria-describedby="event-type-title"
         >
           {content.eventTypes.corporate}
+        </Button>
+        <Button
+          variant={selectedType === 'product' ? 'default' : 'outline'}
+          onClick={() => onSelect('product')}
+          className="justify-start"
+          role="radio"
+          aria-checked={selectedType === 'product'}
+          aria-describedby="event-type-title"
+        >
+          {content.eventTypes.product}
+        </Button>
+        <Button
+          variant={selectedType === 'birthday' ? 'default' : 'outline'}
+          onClick={() => onSelect('birthday')}
+          className="justify-start"
+          role="radio"
+          aria-checked={selectedType === 'birthday'}
+          aria-describedby="event-type-title"
+        >
+          {content.eventTypes.birthday}
+        </Button>
+        <Button
+          variant={selectedType === 'wedding' ? 'default' : 'outline'}
+          onClick={() => onSelect('wedding')}
+          className="justify-start"
+          role="radio"
+          aria-checked={selectedType === 'wedding'}
+          aria-describedby="event-type-title"
+        >
+          {content.eventTypes.wedding}
+        </Button>
+        <Button
+          variant={selectedType === 'concert' ? 'default' : 'outline'}
+          onClick={() => onSelect('concert')}
+          className="justify-start"
+          role="radio"
+          aria-checked={selectedType === 'concert'}
+          aria-describedby="event-type-title"
+        >
+          {content.eventTypes.concert}
+        </Button>
+        <Button
+          variant={selectedType === 'exhibition' ? 'default' : 'outline'}
+          onClick={() => onSelect('exhibition')}
+          className="justify-start"
+          role="radio"
+          aria-checked={selectedType === 'exhibition'}
+          aria-describedby="event-type-title"
+        >
+          {content.eventTypes.exhibition}
         </Button>
         <Button
           variant={selectedType === 'other' ? 'default' : 'outline'}
@@ -89,7 +126,7 @@ const EventTypeStep = memo(
           className="justify-start"
           role="radio"
           aria-checked={selectedType === 'other'}
-          aria-describedby="event-type-subtitle"
+          aria-describedby="event-type-title"
         >
           {content.eventTypes.other}
         </Button>
@@ -117,26 +154,20 @@ const DateStep = memo(
         <h3 className="text-lg font-semibold" id="date-title">
           {content.steps.date.title}
         </h3>
-        <p className="text-sm text-muted-foreground" id="date-subtitle">
-          {content.steps.date.subtitle}
-        </p>
       </div>
-      <Calendar
-        mode="single"
-        selected={selectedDate}
-        onSelect={onSelect}
-        className="rounded-md border"
-        aria-labelledby="date-title"
-        aria-describedby="date-subtitle"
-      />
-      <Button
-        variant="outline"
-        onClick={onSkip}
-        className="w-full"
-        aria-label="Skip date selection"
-      >
-        {content.steps.date.noDate}
-      </Button>
+      <div className="flex justify-center">
+        <Input
+          type="date"
+          value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+          onChange={(e) => {
+            const date = e.target.value ? new Date(e.target.value) : undefined;
+            onSelect(date);
+          }}
+          className="w-48"
+          aria-labelledby="date-title"
+          aria-describedby="date-title"
+        />
+      </div>
     </div>
   )
 );
@@ -162,9 +193,6 @@ const LocationStep = memo(
         <h3 className="text-lg font-semibold" id="location-title">
           {content.steps.location.title}
         </h3>
-        <p className="text-sm text-muted-foreground" id="location-subtitle">
-          {content.steps.location.subtitle}
-        </p>
       </div>
       <div className="space-y-3">
         <Input
@@ -172,26 +200,17 @@ const LocationStep = memo(
           value={value}
           onChange={e => onInput(e.target.value)}
           aria-labelledby="location-title"
-          aria-describedby="location-subtitle"
+          aria-describedby="location-title"
           aria-label="Event location"
         />
-        <div className="grid grid-cols-1 gap-2">
-          <Button
-            onClick={onSubmit}
-            className="w-full"
-            aria-label="Continue with location"
-          >
-            {content.steps.location.continue || 'Continuar'}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={onSkip}
-            className="w-full"
-            aria-label="Skip location input"
-          >
-            {content.steps.location.noLocation}
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          onClick={onSkip}
+          className="w-full"
+          aria-label="Skip location input"
+        >
+          {content.steps.location.noLocation}
+        </Button>
       </div>
     </div>
   )
@@ -216,9 +235,6 @@ const ContactStep = memo(
         <h3 className="text-lg font-semibold" id="contact-title">
           {content.steps.contact.title}
         </h3>
-        <p className="text-sm text-muted-foreground" id="contact-subtitle">
-          {content.steps.contact.subtitle}
-        </p>
       </div>
       <div
         className="grid grid-cols-1 gap-3"
@@ -231,7 +247,7 @@ const ContactStep = memo(
           className="justify-start"
           role="radio"
           aria-checked={false}
-          aria-describedby="contact-subtitle"
+          aria-describedby="contact-title"
         >
           <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
           <div className="text-left">
@@ -249,7 +265,7 @@ const ContactStep = memo(
           className="justify-start"
           role="radio"
           aria-checked={false}
-          aria-describedby="contact-subtitle"
+          aria-describedby="contact-title"
         >
           <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
           <div className="text-left">
@@ -271,52 +287,30 @@ ContactStep.displayName = 'ContactStep';
 const PhoneStep = memo(
   ({
     content,
-    onSubmit,
-    isSubmitting,
+    phone,
+    onPhoneChange,
   }: {
     content: any;
-    onSubmit: (phone: string) => void;
-    isSubmitting: boolean;
+    phone: string;
+    onPhoneChange: (phone: string) => void;
   }) => {
-    const [phone, setPhone] = useState('');
-
-    const handleSubmit = useCallback(() => {
-      if (phone.trim()) {
-        onSubmit(phone.trim());
-      }
-    }, [phone, onSubmit]);
-
     return (
       <div className="space-y-4" role="region" aria-label="Phone number input">
         <div className="text-center">
           <h3 className="text-lg font-semibold" id="phone-title">
             {content.steps.phone.title}
           </h3>
-          <p className="text-sm text-muted-foreground" id="phone-subtitle">
-            {content.steps.phone.subtitle}
-          </p>
         </div>
         <div className="space-y-3">
           <Input
             type="tel"
             placeholder={content.steps.phone.placeholder}
             value={phone}
-            onChange={e => setPhone(e.target.value)}
+            onChange={e => onPhoneChange(e.target.value)}
             aria-labelledby="phone-title"
-            aria-describedby="phone-subtitle"
+            aria-describedby="phone-title"
             aria-label="Phone number"
           />
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !phone.trim()}
-            aria-label={
-              isSubmitting ? 'Submitting phone number' : 'Submit phone number'
-            }
-          >
-            {isSubmitting
-              ? content.steps.phone.loading
-              : content.steps.phone.button}
-          </Button>
         </div>
       </div>
     );
@@ -554,8 +548,8 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
         return (
           <PhoneStep
             content={widgetContent}
-            onSubmit={handlePhoneSubmit}
-            isSubmitting={isSubmitting}
+            phone={widgetData.phone}
+            onPhoneChange={(phone) => setWidgetData(prev => ({ ...prev, phone }))}
           />
         );
       case 'complete':
@@ -611,7 +605,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
           <span className="sm:hidden">{widgetContent.button.mobile}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" sectionType="form">
         <DialogHeader>
           <DialogTitle asChild>
             <VisuallyHidden>Contact Widget</VisuallyHidden>
@@ -626,14 +620,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
             role="navigation"
             aria-label="Dialog navigation"
           >
-            <Button
-              variant="outline"
-              onClick={handleClose}
-              aria-label="Cancel and close dialog"
-            >
-              Cancelar
-            </Button>
-            {currentStep !== 'eventType' && (
+            {currentStep !== 'eventType' ? (
               <Button
                 variant="outline"
                 onClick={() => {
@@ -652,6 +639,51 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
                 aria-label="Go to previous step"
               >
                 Atrás
+              </Button>
+            ) : (
+              <div></div>
+            )}
+            {currentStep === 'date' && (
+              <Button
+                variant="outline"
+                onClick={handleDateSkip}
+                aria-label="Skip date selection"
+              >
+                {widgetContent.steps.date.noDate}
+              </Button>
+            )}
+            {currentStep === 'location' && (
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={handleLocationSkip}
+                  aria-label="Skip location input"
+                >
+                  {widgetContent.steps.location.noLocation}
+                </Button>
+                <Button
+                  onClick={handleLocationSubmit}
+                  aria-label="Continue with location"
+                >
+                  {widgetContent.steps.location.continue || 'Continuar'}
+                </Button>
+              </div>
+            )}
+            {currentStep === 'phone' && (
+              <Button
+                onClick={() => {
+                  if (widgetData.phone.trim()) {
+                    handlePhoneSubmit(widgetData.phone.trim());
+                  }
+                }}
+                disabled={isSubmitting || !widgetData.phone.trim()}
+                aria-label={
+                  isSubmitting ? 'Submitting phone number' : 'Submit phone number'
+                }
+              >
+                {isSubmitting
+                  ? widgetContent.steps.phone.loading
+                  : widgetContent.steps.phone.button}
               </Button>
             )}
           </div>
