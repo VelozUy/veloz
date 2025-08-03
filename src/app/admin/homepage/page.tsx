@@ -39,6 +39,8 @@ import {
 } from '@/lib/firebase-test';
 import { quickDiagnostics, attemptAutoFix } from '@/lib/firebase-diagnostics';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { HomepageService } from '@/services/firebase';
+import { HomepageContent as ServiceHomepageContent } from '@/types';
 import {
   ref,
   uploadBytes,
@@ -188,16 +190,71 @@ export default function HomepageAdminPage() {
           throw new Error('Firebase connection test failed');
         }
 
-        // Note: Removed enableNetwork call to prevent assertion errors
-        // Firebase should be online by default
-
-        const docRef = doc(db!, 'homepage', 'content');
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setContent({ id: docSnap.id, ...docSnap.data() } as HomepageContent);
+        // Use HomepageService to safely get content
+        const homepageService = new HomepageService();
+        const response = await homepageService.getContent();
+        
+        if (response.success && response.data) {
+          // Convert service response to local interface
+          const serviceData = response.data as ServiceHomepageContent;
+          const localContent: HomepageContent = {
+            id: serviceData.id,
+            headline: {
+              en: serviceData.headline.en || '',
+              es: serviceData.headline.es || '',
+              pt: serviceData.headline.pt || '',
+            },
+            subheadline: {
+              en: serviceData.subtitle?.en || '',
+              es: serviceData.subtitle?.es || '',
+              pt: serviceData.subtitle?.pt || '',
+            },
+            ctaButtons: {
+              primary: {
+                text: {
+                  en: serviceData.ctaText.en || '',
+                  es: serviceData.ctaText.es || '',
+                  pt: serviceData.ctaText.pt || '',
+                },
+                link: '/about',
+                enabled: true,
+              },
+              secondary: {
+                text: {
+                  en: 'Our Work',
+                  es: 'Nuestro Trabajo',
+                  pt: 'Nosso Trabalho',
+                },
+                link: '/our-work',
+                enabled: true,
+              },
+            },
+            backgroundVideo: {
+              url: serviceData.backgroundVideos?.[0] || '',
+              enabled: !!serviceData.backgroundVideos?.[0],
+              filename: '',
+            },
+            backgroundImages: {
+              urls: serviceData.backgroundImages || [],
+              enabled: serviceData.backgroundImages.length > 0,
+              filenames: [],
+            },
+            logo: {
+              url: '',
+              enabled: false,
+              filename: '',
+            },
+            theme: {
+              overlayOpacity: 20,
+              gradientColors: ['hsl(var(--foreground))', 'hsl(var(--muted))', 'hsl(var(--foreground))'],
+            },
+            updatedAt: serviceData.updatedAt ? { toDate: () => serviceData.updatedAt } : null,
+          };
+          setContent(localContent);
         } else {
-          // Create default content
+          // No content found (possibly due to "Target ID already exists" error)
+          // Create default content locally (don't save to DB yet)
+          console.log('📝 Creating default content locally due to no existing content');
           const defaultWithId = {
             ...DEFAULT_CONTENT,
             id: 'content',
@@ -252,16 +309,23 @@ export default function HomepageAdminPage() {
     setError('');
 
     try {
-      // Note: Removed enableNetwork call to prevent assertion errors
-      // Firebase should be online by default
+      // Use HomepageService to safely save content
+      const homepageService = new HomepageService();
+      
+      // Convert local interface to service format
+      const serviceData = {
+        headline: content.headline,
+        subtitle: content.subheadline,
+        ctaText: content.ctaButtons.primary.text,
+        backgroundImages: content.backgroundImages.urls,
+        backgroundVideos: content.backgroundVideo.enabled ? [content.backgroundVideo.url] : [],
+      };
 
-      const docRef = doc(db!, 'homepage', 'content');
-      const contentData = (({ id, ...rest }) => rest)(content);
-
-      await setDoc(docRef, {
-        ...contentData,
-        updatedAt: serverTimestamp(),
-      });
+      const response = await homepageService.updateContent(serviceData);
+      
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to save content');
+      }
 
       setSuccess('¡Contenido de la página principal guardado exitosamente!');
       setTimeout(() => setSuccess(''), 3000);

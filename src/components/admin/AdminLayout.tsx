@@ -60,19 +60,23 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     } catch (error) {}
   };
 
-  // Handle redirect when user is not authenticated
+  // Combined authentication and admin check
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/admin/login');
-    }
-  }, [user, loading, router]);
+    const checkAuthAndAdmin = async () => {
+      // If still loading, wait
+      if (loading) return;
 
-  // Check admin status when user is authenticated
-  useEffect(() => {
-    const checkAdmin = async () => {
-      if (!user?.email) {
+      // If no user, redirect to login
+      if (!user) {
+        router.push('/admin/login');
+        return;
+      }
+
+      // Check admin status
+      if (!user.email) {
         setIsAdmin(false);
         setAdminLoading(false);
+        router.push('/admin/login');
         return;
       }
 
@@ -85,6 +89,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
           router.push('/admin/login');
         }
       } catch (error) {
+        console.error('Admin status check failed:', error);
         setIsAdmin(false);
         router.push('/admin/login');
       } finally {
@@ -92,9 +97,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       }
     };
 
-    if (!loading && user) {
-      checkAdmin();
-    }
+    checkAuthAndAdmin();
   }, [user, loading, router]);
 
   if (loading || adminLoading) {

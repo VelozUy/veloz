@@ -33,8 +33,19 @@ export const validateFirebaseConfig = () => {
 // Debug function
 export const debugFirebaseConfig = () => {
   const validation = validateFirebaseConfig();
-
-
+  
+  if (typeof window !== 'undefined') {
+    console.log('Firebase Config Debug:', {
+      isValid: validation.isValid,
+      missing: validation.missing,
+      hasApiKey: !!firebaseConfig.apiKey,
+      hasAuthDomain: !!firebaseConfig.authDomain,
+      hasProjectId: !!firebaseConfig.projectId,
+      hasStorageBucket: !!firebaseConfig.storageBucket,
+      hasMessagingSenderId: !!firebaseConfig.messagingSenderId,
+      hasAppId: !!firebaseConfig.appId,
+    });
+  }
 
   return validation;
 };

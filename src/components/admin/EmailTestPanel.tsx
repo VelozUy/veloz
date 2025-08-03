@@ -42,13 +42,16 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
   const testEmailData = {
     name: 'Test User',
     email: 'test@example.com',
+    company: 'Test Company',
     eventType: 'Boda',
     eventDate: '2024-09-15',
     location: 'Montevideo, Uruguay',
+    attendees: '50-100',
     services: ['Fotografía', 'Video'],
     message:
       'Este es un mensaje de prueba para verificar el funcionamiento del sistema de emails.',
     phone: '+598 99 123 456',
+    contactMethod: 'whatsapp' as 'whatsapp' | 'email' | 'call',
     source: 'contact_form' as const,
     locale: selectedLocale,
   };
@@ -100,6 +103,36 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
           error instanceof Error
             ? error.message
             : 'Error al verificar configuración',
+      });
+    } finally {
+      setIsTesting(false);
+    }
+  };
+
+  const handleTestAutoReplyConfiguration = async () => {
+    setIsTesting(true);
+    setTestResult({ type: null, message: '' });
+
+    try {
+      const isConfigured = await emailService.testAutoReplyConfiguration();
+      if (isConfigured) {
+        setTestResult({
+          type: 'success',
+          message: 'Configuración de auto-reply válida',
+        });
+      } else {
+        setTestResult({
+          type: 'error',
+          message: 'Configuración de auto-reply inválida o faltante',
+        });
+      }
+    } catch (error) {
+      setTestResult({
+        type: 'error',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Error al verificar configuración de auto-reply',
       });
     } finally {
       setIsTesting(false);
@@ -168,6 +201,37 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
             </div>
           </div>
 
+          {/* Admin Template with Test Data Preview */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Vista Previa del Email para Administradores (con datos de prueba)
+            </Label>
+            <div className="p-3 bg-muted rounded-md">
+              <div className="text-sm font-medium mb-1">
+                Asunto: {templates.admin.subject}
+              </div>
+              <Textarea
+                value={templates.admin.body
+                  .replace('{{name}}', testEmailData.name)
+                  .replace('{{email}}', testEmailData.email)
+                  .replace('{{company}}', testEmailData.company)
+                  .replace('{{phone}}', testEmailData.phone)
+                  .replace('{{contactMethod}}', testEmailData.contactMethod)
+                  .replace('{{eventType}}', testEmailData.eventType)
+                  .replace('{{eventDate}}', testEmailData.eventDate)
+                  .replace('{{location}}', testEmailData.location)
+                  .replace('{{attendees}}', testEmailData.attendees)
+                  .replace('{{services}}', testEmailData.services.join(', '))
+                  .replace('{{message}}', testEmailData.message)
+                  .replace('{{source}}', testEmailData.source)
+                  .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES'))}
+                readOnly
+                className="min-h-[200px] text-sm"
+                placeholder="Vista previa del email con datos de prueba..."
+              />
+            </div>
+          </div>
+
           {/* User Template */}
           <div className="space-y-2">
             <Label className="text-sm font-medium">
@@ -185,10 +249,34 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
               />
             </div>
           </div>
+
+          {/* User Template with Test Data Preview */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Vista Previa del Email de Respuesta Automática (con datos de prueba)
+            </Label>
+            <div className="p-3 bg-muted rounded-md">
+              <div className="text-sm font-medium mb-1">
+                Asunto: {templates.user.subject}
+              </div>
+              <Textarea
+                value={templates.user.body
+                  .replace('{{name}}', testEmailData.name)
+                  .replace('{{email}}', testEmailData.email)
+                  .replace('{{eventType}}', testEmailData.eventType)
+                  .replace('{{eventDate}}', testEmailData.eventDate)
+                  .replace('{{location}}', testEmailData.location)
+                  .replace('{{services}}', testEmailData.services.join(', '))}
+                readOnly
+                className="min-h-[200px] text-sm"
+                placeholder="Vista previa del email con datos de prueba..."
+              />
+            </div>
+          </div>
         </div>
 
         {/* Test Buttons */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <Button
             onClick={handleTestConfiguration}
             disabled={isTesting}
@@ -201,6 +289,20 @@ export default function EmailTestPanel({ className }: EmailTestPanelProps) {
               <CheckCircle className="w-4 h-4" />
             )}
             Verificar Configuración
+          </Button>
+
+          <Button
+            onClick={handleTestAutoReplyConfiguration}
+            disabled={isTesting}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            {isTesting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <CheckCircle className="w-4 h-4" />
+            )}
+            Verificar Auto-Reply
           </Button>
 
           <Button

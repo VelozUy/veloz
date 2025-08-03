@@ -17,12 +17,15 @@ if (typeof window !== 'undefined' && EMAILJS_PUBLIC_KEY) {
 export interface ContactFormData {
   name: string;
   email: string;
-  eventType: string;
-  eventDate?: string;
-  location?: string;
-  services?: string[];
-  message?: string;
+  company?: string;
   phone?: string;
+  eventType: string;
+  location: string;
+  attendees: string;
+  services: string[];
+  contactMethod: 'whatsapp' | 'email' | 'call';
+  eventDate?: string;
+  message: string;
   source?: 'contact_form' | 'widget';
   locale?: string; // Add locale support
 }
@@ -40,12 +43,15 @@ Has recibido una nueva solicitud de contacto desde el sitio web:
 **Información del contacto:**
 - Nombre: {{name}}
 - Email: {{email}}
+- Empresa: {{company}}
 - Teléfono: {{phone}}
+- Método de contacto preferido: {{contactMethod}}
 
 **Detalles del evento:**
 - Tipo de evento: {{eventType}}
 - Fecha: {{eventDate}}
 - Ubicación: {{location}}
+- Asistentes: {{attendees}}
 - Servicios solicitados: {{services}}
 
 **Mensaje:**
@@ -96,12 +102,15 @@ You have received a new contact request from the website:
 **Contact Information:**
 - Name: {{name}}
 - Email: {{email}}
+- Company: {{company}}
 - Phone: {{phone}}
+- Preferred contact method: {{contactMethod}}
 
 **Event Details:**
 - Event Type: {{eventType}}
 - Date: {{eventDate}}
 - Location: {{location}}
+- Attendees: {{attendees}}
 - Requested Services: {{services}}
 
 **Message:**
@@ -152,12 +161,15 @@ Você recebeu uma nova solicitação de contato do site:
 **Informações do contato:**
 - Nome: {{name}}
 - Email: {{email}}
+- Empresa: {{company}}
 - Telefone: {{phone}}
+- Método de contato preferido: {{contactMethod}}
 
 **Detalhes do evento:**
 - Tipo de evento: {{eventType}}
 - Data: {{eventDate}}
 - Localização: {{location}}
+- Participantes: {{attendees}}
 - Serviços solicitados: {{services}}
 
 **Mensagem:**
@@ -223,21 +235,28 @@ export const emailService = {
       emailTemplates.es;
 
     try {
-      // Prepare admin template parameters (always in Spanish, just contact data)
+      // Prepare admin template parameters with subject and message (like auto-reply)
       const adminTemplateParams = {
-        // Contact data only (no full email body)
-        from_name: data.name,
-        from_email: data.email,
-        event_type: data.eventType,
-        event_date: data.eventDate || 'No especificada',
-        location: data.location || 'No especificada',
-        services: data.services?.join(', ') || 'No especificados',
-        message: data.message || 'Sin mensaje adicional',
-        phone: data.phone || 'No proporcionado',
-        source: data.source || 'contact_form',
+        // Full email content with subject and message (like auto-reply)
+        subject: templates.admin.subject,
+        message: templates.admin.body
+          .replace('{{name}}', data.name)
+          .replace('{{email}}', data.email)
+          .replace('{{company}}', data.company || 'No especificada')
+          .replace('{{phone}}', data.phone || 'No proporcionado')
+          .replace('{{contactMethod}}', data.contactMethod || 'No especificado')
+          .replace('{{eventType}}', data.eventType)
+          .replace('{{eventDate}}', data.eventDate || 'No especificada')
+          .replace('{{location}}', data.location || 'No especificada')
+          .replace('{{attendees}}', data.attendees || 'No especificados')
+          .replace('{{services}}', data.services?.join(', ') || 'No especificados')
+          .replace('{{message}}', data.message || 'Sin mensaje adicional')
+          .replace('{{source}}', data.source || 'contact_form')
+          .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES')),
+
+        // Required EmailJS fields
         to_name: 'Equipo Veloz',
         reply_to: data.email,
-        contact_date: new Date().toLocaleDateString('es-ES'),
       };
 
       // Send admin notification
@@ -252,6 +271,16 @@ export const emailService = {
         });
 
       // Send auto-reply to user if they provided an email
+      console.log('Auto-reply conditions check:', {
+        hasEmail: !!data.email,
+        emailValue: data.email,
+        isNotWidget: data.email !== 'widget@veloz.com.uy',
+        hasAutoReplyTemplate: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+        autoReplyTemplateId: EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+        emailNotEmpty: data.email.trim() !== '',
+        allConditionsMet: !!(data.email && data.email !== 'widget@veloz.com.uy' && EMAILJS_AUTO_REPLY_TEMPLATE_ID && data.email.trim() !== '')
+      });
+
       if (
         data.email &&
         data.email !== 'widget@veloz.com.uy' &&
@@ -259,7 +288,7 @@ export const emailService = {
         data.email.trim() !== ''
       ) {
         const autoReplyParams = {
-          // Email content
+          // Full email content with subject and message (like admin email)
           subject: templates.user.subject,
           message: templates.user.body
             .replace('{{name}}', data.name)
@@ -267,27 +296,38 @@ export const emailService = {
             .replace('{{eventType}}', data.eventType)
             .replace('{{eventDate}}', data.eventDate || 'No especificada')
             .replace('{{location}}', data.location || 'No especificada')
+            .replace('{{attendees}}', data.attendees || 'No especificados')
             .replace(
               '{{services}}',
               data.services?.join(', ') || 'No especificados'
             ),
 
-          // Required EmailJS fields
-          email: data.email,
+          // Required EmailJS fields - try different field names that EmailJS might expect
+          to_email: data.email,
+          to_name: data.name,
           from_name: 'Equipo Veloz',
           reply_to: 'admin@veloz.com.uy',
+          user_email: data.email, // Alternative field name
+          email: data.email, // Keep original for compatibility
         };
 
+        console.log('Auto-reply parameters:', autoReplyParams);
+
         try {
-          await emailjs.send(
+          console.log('Sending auto-reply email to:', data.email);
+          const autoReplyResponse = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_AUTO_REPLY_TEMPLATE_ID,
             autoReplyParams
           );
+          console.log('Auto-reply email sent successfully:', autoReplyResponse);
         } catch (autoReplyError) {
           // Don't throw error for auto-reply failure, just log it
           // The main admin notification was successful
+          console.error('Auto-reply email failed:', autoReplyError);
         }
+      } else {
+        console.log('Auto-reply email skipped - conditions not met');
       }
 
       if (adminResponse.status !== 200) {
@@ -311,20 +351,29 @@ export const emailService = {
         return false;
       }
 
-      // Test with a simple email send
+      // Test with a simple email send using subject and message (like auto-reply)
+      const templates = emailTemplates.es; // Use Spanish templates for testing
       const testParams = {
-        from_name: 'Test User',
-        from_email: 'test@example.com',
-        event_type: 'test',
-        event_date: '2024-01-01',
-        location: 'Test Location',
-        services: 'Test Services',
-        message: 'This is a test message from the Veloz contact system.',
-        phone: '123456789',
-        source: 'test',
+        // Full email content with subject and message (like auto-reply)
+        subject: templates.admin.subject,
+        message: templates.admin.body
+          .replace('{{name}}', 'Test User')
+          .replace('{{email}}', 'test@example.com')
+          .replace('{{company}}', 'Test Company')
+          .replace('{{phone}}', '123456789')
+          .replace('{{contactMethod}}', 'WhatsApp')
+          .replace('{{eventType}}', 'test')
+          .replace('{{eventDate}}', '2024-01-01')
+          .replace('{{location}}', 'Test Location')
+          .replace('{{attendees}}', '50-100')
+          .replace('{{services}}', 'Test Services')
+          .replace('{{message}}', 'This is a test message from the Veloz contact system.')
+          .replace('{{source}}', 'test')
+          .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES')),
+
+        // Required EmailJS fields
         to_name: 'Test Team',
         reply_to: 'test@example.com',
-        contact_date: new Date().toLocaleDateString('es-ES'),
       };
 
       const response = await emailjs.send(
@@ -344,5 +393,58 @@ export const emailService = {
     return (
       emailTemplates[locale as keyof typeof emailTemplates] || emailTemplates.es
     );
+  },
+
+  // Test auto-reply configuration
+  async testAutoReplyConfiguration(): Promise<boolean> {
+    try {
+      if (
+        !EMAILJS_SERVICE_ID ||
+        !EMAILJS_AUTO_REPLY_TEMPLATE_ID ||
+        !EMAILJS_PUBLIC_KEY
+      ) {
+        console.log('Auto-reply configuration missing:', {
+          serviceId: !!EMAILJS_SERVICE_ID,
+          autoReplyTemplateId: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+          publicKey: !!EMAILJS_PUBLIC_KEY
+        });
+        return false;
+      }
+
+      // Test with a simple auto-reply email send
+      const templates = emailTemplates.es; // Use Spanish templates for testing
+      const testParams = {
+        // Full email content with subject and message (like admin email)
+        subject: templates.user.subject,
+        message: templates.user.body
+          .replace('{{name}}', 'Test User')
+          .replace('{{email}}', 'test@example.com')
+          .replace('{{eventType}}', 'test')
+          .replace('{{eventDate}}', '2024-01-01')
+          .replace('{{location}}', 'Test Location')
+          .replace('{{attendees}}', '50-100')
+          .replace('{{services}}', 'Test Services'),
+
+        // Required EmailJS fields - try different field names that EmailJS might expect
+        to_email: 'test@example.com',
+        to_name: 'Test User',
+        from_name: 'Equipo Veloz',
+        reply_to: 'admin@veloz.com.uy',
+        user_email: 'test@example.com', // Alternative field name
+        email: 'test@example.com', // Keep original for compatibility
+      };
+
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+        testParams
+      );
+
+      console.log('Auto-reply test successful:', response);
+      return true;
+    } catch (error) {
+      console.error('Auto-reply test failed:', error);
+      return false;
+    }
   },
 };

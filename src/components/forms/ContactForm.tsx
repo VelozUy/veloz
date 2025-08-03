@@ -243,13 +243,11 @@ export default function ContactForm({
       newErrors.name = translations.contact.form.name.label;
     }
 
-    // Validate email only if contact method is email
-    if (formData.contactMethod === 'email') {
-      if (!formData.email.trim()) {
-        newErrors.email = translations.contact.form.email.label;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Email inválido';
-      }
+    // Validate email (always required for auto-reply functionality)
+    if (!formData.email.trim()) {
+      newErrors.email = translations.contact.form.email.label;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email inválido';
     }
 
     // Validate phone only if contact method is whatsapp or call
@@ -332,6 +330,7 @@ export default function ContactForm({
     setSubmitError(null);
 
     try {
+      console.log('Contact form data being sent:', formData);
       await emailService.sendContactForm(formData);
       setIsSubmitted(true);
 
