@@ -49,8 +49,8 @@ export default function AuthStatusDebugPage() {
   };
 
   const getStatusColor = (status: boolean | null) => {
-    if (status === null) return 'text-yellow-600';
-    return status ? 'text-green-600' : 'text-red-600';
+    if (status === null) return 'text-muted-foreground';
+    return status ? 'text-primary' : 'text-destructive';
   };
 
   return (

@@ -81,8 +81,8 @@ export function getBackgroundClasses(
     case 'cta':
       if (priority === 'high') {
         return {
-          background: 'bg-primary',
-          text: 'text-primary-foreground',
+          background: 'bg-card',
+          text: 'text-card-foreground',
           border: 'border-primary',
           shadow: 'shadow-lg',
         };

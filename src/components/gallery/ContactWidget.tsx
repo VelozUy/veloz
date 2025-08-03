@@ -601,8 +601,8 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
-            variant="outline"
-            className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow"
+            variant="default"
+            className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
             aria-label="Open contact widget"
           >
             <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -616,6 +616,8 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
           className="sm:max-w-md"
           role="dialog"
           aria-labelledby="dialog-title"
+          sectionType="form"
+          priority="high"
         >
           <DialogHeader>
             <DialogTitle id="dialog-title">
