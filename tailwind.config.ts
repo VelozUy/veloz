@@ -79,12 +79,6 @@ const config: Config = {
           '4': 'var(--chart-4)',
           '5': 'var(--chart-5)',
         },
-        // Legacy colors for backward compatibility
-        charcoal: '#212223',
-        'gray-light': '#d4d4d4',
-        'gray-medium': '#afafaf',
-        'blue-accent': '#0019AA',
-        white: '#ffffff',
       },
 
       // Typography for Veloz brand - REDJOLA only for logo, Roboto for everything else

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { QRCodeAnalyticsService } from '@/services/qr-code-analytics';
+import { qrCodeAnalyticsService } from '@/services/qr-code-analytics';
 
 export function useQRCodeTracking() {
   const pathname = usePathname();
@@ -16,7 +16,7 @@ export function useQRCodeTracking() {
           const currentUrl = `${window.location.origin}${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
 
           // Track the QR code scan
-          await QRCodeAnalyticsService.trackQRCodeScanFromURL(currentUrl);
+          await qrCodeAnalyticsService.trackQRCodeScanFromURL(currentUrl);
         }
       } catch (error) {
         // Error tracking QR code scan silently

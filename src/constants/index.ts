@@ -11,16 +11,6 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   pt: 'Português (Brasil)',
 };
 
-// Event Types (Legacy - for backward compatibility)
-export const EVENT_TYPES: EventType[] = [
-  'casamiento',
-  'corporativos',
-  'culturales',
-  'photoshoot',
-  'prensa',
-  'otros',
-];
-
 export const EVENT_TYPE_LABELS: Record<EventType, string> = {
   casamiento: 'Casamiento',
   corporativos: 'Corporativos',
@@ -113,7 +103,7 @@ export const FIREBASE_COLLECTIONS = {
   VIDEOS: 'videos',
   PROJECTS: 'projects',
   PROJECT_MEDIA: 'projectMedia',
-  CONTACTS: 'contacts', // Legacy collection
+
   CONTACT_MESSAGES: 'contactMessages', // Enhanced contact system
   USERS: 'users',
   ADMIN_USERS: 'adminUsers',

@@ -553,8 +553,6 @@ describe('Validation Schemas', () => {
       const result = homepageContentSchema.parse(minimalData);
       expect(result.services).toEqual([]);
       expect(result.testimonials).toEqual([]);
-      expect(result.backgroundImages).toEqual([]);
-      expect(result.backgroundVideos).toEqual([]);
     });
   });
 

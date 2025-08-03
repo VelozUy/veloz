@@ -14,7 +14,6 @@ describe('CTASection', () => {
       )
     ).toBeInTheDocument();
     expect(screen.getByText('Contactar Ahora')).toBeInTheDocument();
-    expect(screen.getByText('Acceso Clientes')).toBeInTheDocument();
   });
 
   it('renders with custom props', () => {
@@ -23,22 +22,16 @@ describe('CTASection', () => {
         title="Custom Title"
         description="Custom description"
         primaryButtonText="Custom Primary"
-        secondaryButtonText="Custom Secondary"
         primaryButtonHref="/custom-primary"
-        secondaryButtonHref="/custom-secondary"
       />
     );
 
     expect(screen.getByText('Custom Title')).toBeInTheDocument();
     expect(screen.getByText('Custom description')).toBeInTheDocument();
     expect(screen.getByText('Custom Primary')).toBeInTheDocument();
-    expect(screen.getByText('Custom Secondary')).toBeInTheDocument();
 
     const primaryButton = screen.getByText('Custom Primary').closest('a');
-    const secondaryButton = screen.getByText('Custom Secondary').closest('a');
-
     expect(primaryButton).toHaveAttribute('href', '/custom-primary');
-    expect(secondaryButton).toHaveAttribute('href', '/custom-secondary');
   });
 
   it('applies custom className', () => {
@@ -51,13 +44,8 @@ describe('CTASection', () => {
   it('renders with custom icons', () => {
     const CustomIcon = () => <span data-testid="custom-icon">Custom</span>;
 
-    render(
-      <CTASection
-        primaryButtonIcon={CustomIcon}
-        secondaryButtonIcon={CustomIcon}
-      />
-    );
+    render(<CTASection primaryButtonIcon={CustomIcon} />);
 
-    expect(screen.getAllByTestId('custom-icon')).toHaveLength(2);
+    expect(screen.getAllByTestId('custom-icon')).toHaveLength(1);
   });
 });

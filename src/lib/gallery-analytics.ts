@@ -334,30 +334,4 @@ export const galleryPerformance = {
   },
 };
 
-// Legacy exports for backward compatibility
-export const initializeGalleryAnalytics = () => {
-  const analytics = GalleryAnalytics.getInstance();
-  analytics.resetMetrics();
-  return analytics;
-};
-
-export const trackCategoryFilter = (category: string, count: number) => {
-  const analytics = GalleryAnalytics.getInstance();
-  analytics.trackEvent({
-    action: 'gallery_view',
-    performance: {
-      viewportSize: `${window.innerWidth}x${window.innerHeight}`,
-    },
-  });
-};
-
-export const trackProjectView = (
-  projectId: string,
-  projectTitle: string,
-  eventType: string
-) => {
-  const analytics = GalleryAnalytics.getInstance();
-  analytics.trackGalleryView(projectId, projectTitle);
-};
-
 export default GalleryAnalytics;

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import { trackProjectView } from '@/lib/gallery-analytics';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
 import FullscreenModal from '@/components/gallery/FullscreenModal';
 
@@ -44,6 +44,8 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
   categoryId,
   className = '',
 }: FeatureMediaGridProps) => {
+  const { trackProjectView } = useAnalytics();
+
   // Track loading states for each media item
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
     {}
@@ -93,11 +95,10 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
       // Track analytics
       const mediaItem = media[index];
       if (mediaItem) {
-        trackProjectView(
-          mediaItem.projectId,
-          mediaItem.projectTitle || 'Proyecto',
-          'fullscreen_open'
-        );
+        trackProjectView({
+          projectId: mediaItem.projectId,
+          projectTitle: mediaItem.projectTitle || 'Proyecto',
+        });
       }
     },
     [media]
@@ -108,26 +109,24 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
     setIsFullscreenOpen(false);
 
     // Track analytics
-    trackProjectView(
-      'fullscreen',
-      'Vista de Pantalla Completa',
-      'fullscreen_close'
-    );
-  }, []);
+    trackProjectView({
+      projectId: 'fullscreen',
+      projectTitle: 'Vista de Pantalla Completa',
+    });
+  }, [trackProjectView]);
 
   // Handle fullscreen navigation
   const handleFullscreenNavigate = useCallback(
     (index: number) => {
       const mediaItem = media[index];
       if (mediaItem) {
-        trackProjectView(
-          mediaItem.projectId,
-          mediaItem.projectTitle || 'Proyecto',
-          'fullscreen_navigate'
-        );
+        trackProjectView({
+          projectId: mediaItem.projectId,
+          projectTitle: mediaItem.projectTitle || 'Proyecto',
+        });
       }
     },
-    [media]
+    [media, trackProjectView]
   );
 
   // Memoize media processing for performance

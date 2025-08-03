@@ -12,25 +12,29 @@ describe('LogoHorizontalWhite', () => {
   it('applies correct responsive size classes for sm size', () => {
     const { container } = render(<LogoHorizontalWhite size="sm" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-6', 'md:h-8');
+    expect(logoContainer).toHaveClass('h-6');
+    expect(logoContainer).toHaveClass('md:h-8');
   });
 
   it('applies correct responsive size classes for md size', () => {
     const { container } = render(<LogoHorizontalWhite size="md" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-8', 'md:h-12');
+    expect(logoContainer).toHaveClass('h-8');
+    expect(logoContainer).toHaveClass('md:h-12');
   });
 
   it('applies correct responsive size classes for lg size', () => {
     const { container } = render(<LogoHorizontalWhite size="lg" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-12', 'md:h-16');
+    expect(logoContainer).toHaveClass('h-12');
+    expect(logoContainer).toHaveClass('md:h-16');
   });
 
   it('applies correct responsive size classes for xl size', () => {
     const { container } = render(<LogoHorizontalWhite size="xl" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-16', 'md:h-24');
+    expect(logoContainer).toHaveClass('h-16');
+    expect(logoContainer).toHaveClass('md:h-24');
   });
 
   it('applies custom className', () => {

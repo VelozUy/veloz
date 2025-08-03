@@ -4,8 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { TiledGallery } from './TiledGallery';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
-import { trackProjectView } from '@/lib/gallery-analytics';
-import { useGalleryAnalytics } from '@/lib/gallery-analytics';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 interface Project {
   id: string;
@@ -46,7 +45,7 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
   className = '',
 }: ProjectsDisplayProps) => {
   const router = useRouter();
-  const { trackGalleryView } = useGalleryAnalytics();
+  const { trackProjectView } = useAnalytics();
 
   // Handle null/undefined projects
   if (!projects || !Array.isArray(projects) || projects.length === 0) {
@@ -64,7 +63,10 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
 
   const handleProjectClick = (project: Project) => {
     // Track the project view for analytics
-    trackProjectView(project.id, project.title, project.eventType);
+    trackProjectView({
+      projectId: project.id,
+      projectTitle: project.title,
+    });
 
     // Use slug if available, otherwise fall back to ID
     const projectIdentifier = project.slug || project.id;
@@ -73,7 +75,10 @@ export const ProjectsDisplay: React.FC<ProjectsDisplayProps> = ({
 
   const handleImageClick = (project: Project, media: Project['media'][0]) => {
     // Track the image view for analytics
-    trackProjectView(project.id, project.title, project.eventType);
+    trackProjectView({
+      projectId: project.id,
+      projectTitle: project.title,
+    });
 
     // The lightbox will be handled by FullscreenModal automatically
     // since we have the proper onImageClick handlers

@@ -36,7 +36,7 @@ describe('StickyTabs', () => {
 
   it('applies theme classes correctly', () => {
     const { container } = render(
-      <StickyTabs sectionType="content" priority="medium">
+      <StickyTabs>
         <StickyTabs.Item title="Test Section" id="section1">
           <div>Content</div>
         </StickyTabs.Item>
@@ -49,7 +49,7 @@ describe('StickyTabs', () => {
 
   it('ignores non-StickyTabItem children', () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    
+
     render(
       <StickyTabs>
         <div>Invalid child</div>
@@ -62,16 +62,13 @@ describe('StickyTabs', () => {
     expect(screen.getByText('Valid Section')).toBeInTheDocument();
     expect(screen.getByText('Content')).toBeInTheDocument();
     expect(screen.queryByText('Invalid child')).not.toBeInTheDocument();
-    
+
     consoleSpy.mockRestore();
   });
 
   it('renders with custom className props', () => {
     const { container } = render(
-      <StickyTabs 
-        rootClassName="custom-root"
-        titleClassName="custom-title"
-      >
+      <StickyTabs rootClassName="custom-root" titleClassName="custom-title">
         <StickyTabs.Item title="Test Section" id="section1">
           <div>Content</div>
         </StickyTabs.Item>
@@ -81,4 +78,4 @@ describe('StickyTabs', () => {
     const rootElement = container.firstChild as HTMLElement;
     expect(rootElement).toHaveClass('custom-root');
   });
-}); 
+});

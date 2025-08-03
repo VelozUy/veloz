@@ -513,7 +513,7 @@ export function OurWorkContent({ content }: OurWorkContentProps) {
                 {/* Separator between projects (except for the last one) */}
                 {index < filteredProjects.length - 1 && (
                   <div
-                    className={`w-full py-20 ${contentClasses.border} bg-gradient-to-r from-transparent via-gray-medium/20 to-transparent`}
+                    className={`w-full py-20 ${contentClasses.border} bg-gradient-to-r from-transparent via-muted/20 to-transparent`}
                   />
                 )}
               </motion.section>

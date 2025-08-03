@@ -145,6 +145,12 @@ if (typeof window !== 'undefined' && !app) {
 // Synchronous getter for auth (for backward compatibility)
 export const getAuthSync = (): Auth | null => auth;
 
+// Synchronous getter for storage (for backward compatibility)
+export const getStorageSync = (): FirebaseStorage | null => storage;
+
+// Synchronous getter for firestore (for backward compatibility)
+export const getFirestoreSync = (): Firestore | null => db;
+
 // Function to get Firestore service only when needed
 export const getFirestoreService = async (retries = 5, delay = 300) => {
   if (typeof window === 'undefined') {
@@ -245,12 +251,6 @@ export const getAuthService = async (): Promise<Auth | null> => {
 
   return auth;
 };
-
-// Synchronous getter for storage (for backward compatibility)
-export const getStorageSync = (): FirebaseStorage | null => storage;
-
-// Synchronous getter for firestore (for backward compatibility)
-export const getFirestoreSync = (): Firestore | null => db;
 
 export default app;
 export { db, auth, storage };
