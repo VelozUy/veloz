@@ -619,11 +619,11 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
           sectionType="form"
           priority="high"
         >
-          <DialogHeader>
-            <DialogTitle id="dialog-title">
-              {widgetContent.dialog.title}
-            </DialogTitle>
-          </DialogHeader>
+          <DialogTitle id="dialog-title">
+            {typeof widgetContent.dialog.title === 'string' 
+              ? widgetContent.dialog.title 
+              : widgetContent.dialog.title?.[language] || 'Contact Widget'}
+          </DialogTitle>
           <div className="py-4" role="main">
             {renderStep}
           </div>
