@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import AuthGuard from '@/components/admin/AuthGuard';
 import GlobalTranslationButtons from '@/components/admin/GlobalTranslationButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -157,12 +157,15 @@ const DEFAULT_CONTENT: Omit<HomepageContent, 'id' | 'updatedAt'> = {
   },
   theme: {
     overlayOpacity: 20,
-    gradientColors: ['hsl(var(--foreground))', 'hsl(var(--muted))', 'hsl(var(--foreground))'],
+    gradientColors: [
+      'hsl(var(--foreground))',
+      'hsl(var(--muted))',
+      'hsl(var(--foreground))',
+    ],
   },
 };
 
 export default function HomepageAdminPage() {
-  const { user } = useAuth();
   const [content, setContent] = useState<HomepageContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -174,8 +177,6 @@ export default function HomepageAdminPage() {
   const [connectionRetries, setConnectionRetries] = useState(0);
 
   useEffect(() => {
-    if (!user) return;
-
     const loadContent = async () => {
       try {
         setLoading(true);
@@ -193,7 +194,7 @@ export default function HomepageAdminPage() {
         // Use HomepageService to safely get content
         const homepageService = new HomepageService();
         const response = await homepageService.getContent();
-        
+
         if (response.success && response.data) {
           // Convert service response to local interface
           const serviceData = response.data as ServiceHomepageContent;
@@ -246,15 +247,23 @@ export default function HomepageAdminPage() {
             },
             theme: {
               overlayOpacity: 20,
-              gradientColors: ['hsl(var(--foreground))', 'hsl(var(--muted))', 'hsl(var(--foreground))'],
+              gradientColors: [
+                'hsl(var(--foreground))',
+                'hsl(var(--muted))',
+                'hsl(var(--foreground))',
+              ],
             },
-            updatedAt: serviceData.updatedAt ? { toDate: () => serviceData.updatedAt } : null,
+            updatedAt: serviceData.updatedAt
+              ? { toDate: () => serviceData.updatedAt }
+              : null,
           };
           setContent(localContent);
         } else {
           // No content found (possibly due to "Target ID already exists" error)
           // Create default content locally (don't save to DB yet)
-          console.log('📝 Creating default content locally due to no existing content');
+          console.log(
+            '📝 Creating default content locally due to no existing content'
+          );
           const defaultWithId = {
             ...DEFAULT_CONTENT,
             id: 'content',
@@ -300,7 +309,7 @@ export default function HomepageAdminPage() {
     };
 
     loadContent();
-  }, [user, connectionRetries]);
+  }, [connectionRetries]);
 
   const handleSave = async () => {
     if (!content) return;
@@ -311,18 +320,20 @@ export default function HomepageAdminPage() {
     try {
       // Use HomepageService to safely save content
       const homepageService = new HomepageService();
-      
+
       // Convert local interface to service format
       const serviceData = {
         headline: content.headline,
         subtitle: content.subheadline,
         ctaText: content.ctaButtons.primary.text,
         backgroundImages: content.backgroundImages.urls,
-        backgroundVideos: content.backgroundVideo.enabled ? [content.backgroundVideo.url] : [],
+        backgroundVideos: content.backgroundVideo.enabled
+          ? [content.backgroundVideo.url]
+          : [],
       };
 
       const response = await homepageService.updateContent(serviceData);
-      
+
       if (!response.success) {
         throw new Error(response.error || 'Failed to save content');
       }
@@ -556,459 +567,491 @@ export default function HomepageAdminPage() {
   }
 
   return (
-    <AdminLayout title="Gestión de Página Principal">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Gestión de Página Principal
-            </h1>
-            <p className="text-muted-foreground">
-              Gestiona el contenido y medios de la sección hero de tu página
-              principal
-            </p>
+    <AuthGuard>
+      <AdminLayout title="Gestión de Página Principal">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                Gestión de Página Principal
+              </h1>
+              <p className="text-muted-foreground">
+                Gestiona el contenido y medios de la sección hero de tu página
+                principal
+              </p>
+            </div>
+
+            <div className="flex space-x-2">
+              <Button variant="outline" onClick={togglePreview}>
+                <Eye className="w-4 h-4 mr-2" />
+                Vista Previa
+              </Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Guardando...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Guardar Cambios
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
 
-          <div className="flex space-x-2">
-            <Button variant="outline" onClick={togglePreview}>
-              <Eye className="w-4 h-4 mr-2" />
-              Vista Previa
-            </Button>
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Guardando...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Guardar Cambios
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
+          {/* Success/Error Messages */}
+          {success && (
+            <Alert>
+              <AlertDescription>{success}</AlertDescription>
+            </Alert>
+          )}
 
-        {/* Success/Error Messages */}
-        {success && (
-          <Alert>
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
-
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription className="flex items-center justify-between">
-              <span>{error}</span>
-              {error.includes('offline') || error.includes('connection') ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRetryConnection}
-                  className="ml-4"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Reintentar
-                </Button>
-              ) : null}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Content Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Text Content */}
-          <div className="space-y-6">
-            {/* Language Configuration & Translation - Half Width */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center text-sm">
-                  <Globe className="w-4 h-4 mr-2" />
-                  Idioma y Traducción
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {/* Language Selector */}
-                <div className="flex items-center space-x-2">
-                  <Label className="text-xs whitespace-nowrap">Editando:</Label>
-                  <Select
-                    value={currentLanguage}
-                    onValueChange={setCurrentLanguage}
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription className="flex items-center justify-between">
+                <span>{error}</span>
+                {error.includes('offline') || error.includes('connection') ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRetryConnection}
+                    className="ml-4"
                   >
-                    <SelectTrigger className="w-32 h-8 text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {LANGUAGES.map(lang => (
-                        <SelectItem key={lang.code} value={lang.code}>
-                          {lang.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Reintentar
+                  </Button>
+                ) : null}
+              </AlertDescription>
+            </Alert>
+          )}
 
-                {/* Translation Buttons */}
-                <div className="border-t pt-2">
-                  <Label className="text-xs font-medium mb-2 block">
-                    Auto-traducir:
-                  </Label>
-                  <GlobalTranslationButtons
-                    contentData={{
-                      headline: content.headline,
-                      subheadline: content.subheadline,
-                      primaryButtonText: content.ctaButtons.primary.text,
-                      secondaryButtonText: content.ctaButtons.secondary.text,
-                    }}
-                    onTranslated={(language, updates) => {
-                      setContent(prev => {
-                        if (!prev) return prev;
-
-                        return {
-                          ...prev,
-                          headline: {
-                            ...prev.headline,
-                            [language]:
-                              updates.headline?.[language] ||
-                              prev.headline[language],
-                          },
-                          subheadline: {
-                            ...prev.subheadline,
-                            [language]:
-                              updates.subheadline?.[language] ||
-                              prev.subheadline[language],
-                          },
-                          ctaButtons: {
-                            ...prev.ctaButtons,
-                            primary: {
-                              ...prev.ctaButtons.primary,
-                              text: {
-                                ...prev.ctaButtons.primary.text,
-                                [language]:
-                                  updates.primaryButtonText?.[language] ||
-                                  prev.ctaButtons.primary.text[language],
-                              },
-                            },
-                            secondary: {
-                              ...prev.ctaButtons.secondary,
-                              text: {
-                                ...prev.ctaButtons.secondary.text,
-                                [language]:
-                                  updates.secondaryButtonText?.[language] ||
-                                  prev.ctaButtons.secondary.text[language],
-                              },
-                            },
-                          },
-                        };
-                      });
-                    }}
-                    contentType="marketing"
-                    disabled={saving}
-                    showTranslateAll
-                    compact
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Headlines */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Type className="w-5 h-5 mr-2" />
-                  Títulos
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="headline">
-                    Título Principal (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
-                  <Input
-                    id="headline"
-                    value={
-                      content.headline[
-                        currentLanguage as keyof typeof content.headline
-                      ] || ''
-                    }
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              headline: {
-                                ...prev.headline,
-                                [currentLanguage]: e.target.value,
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="Ingresa el título principal..."
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="subheadline">
-                    Subtítulo (
-                    {LANGUAGES.find(l => l.code === currentLanguage)?.name})
-                  </Label>
-                  <Textarea
-                    id="subheadline"
-                    value={
-                      content.subheadline[
-                        currentLanguage as keyof typeof content.subheadline
-                      ] || ''
-                    }
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              subheadline: {
-                                ...prev.subheadline,
-                                [currentLanguage]: e.target.value,
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="Ingresa el subtítulo..."
-                    rows={2}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* CTA Buttons */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Link className="w-5 h-5 mr-2" />
-                  Botones de Llamada a la Acción
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Primary CTA */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-medium">
-                      Botón Primario
-                    </Label>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="primary-enabled"
-                        checked={content.ctaButtons.primary.enabled}
-                        onChange={e =>
-                          setContent(prev =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  ctaButtons: {
-                                    ...prev.ctaButtons,
-                                    primary: {
-                                      ...prev.ctaButtons.primary,
-                                      enabled: e.target.checked,
-                                    },
-                                  },
-                                }
-                              : prev
-                          )
-                        }
-                        className="rounded border-border"
-                      />
-                      <Label htmlFor="primary-enabled" className="text-sm">
-                        Activado
-                      </Label>
-                    </div>
-                  </div>
-                  <Input
-                    value={
-                      content.ctaButtons.primary.text[
-                        currentLanguage as keyof typeof content.ctaButtons.primary.text
-                      ] || ''
-                    }
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              ctaButtons: {
-                                ...prev.ctaButtons,
-                                primary: {
-                                  ...prev.ctaButtons.primary,
-                                  text: {
-                                    ...prev.ctaButtons.primary.text,
-                                    [currentLanguage]: e.target.value,
-                                  },
-                                },
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="Texto del botón..."
-                  />
-                  <Input
-                    value={content.ctaButtons.primary.link}
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              ctaButtons: {
-                                ...prev.ctaButtons,
-                                primary: {
-                                  ...prev.ctaButtons.primary,
-                                  link: e.target.value,
-                                },
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="/about"
-                  />
-                </div>
-
-                {/* Secondary CTA */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-medium">
-                      Botón Secundario
-                    </Label>
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="secondary-enabled"
-                        checked={content.ctaButtons.secondary.enabled}
-                        onChange={e =>
-                          setContent(prev =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  ctaButtons: {
-                                    ...prev.ctaButtons,
-                                    secondary: {
-                                      ...prev.ctaButtons.secondary,
-                                      enabled: e.target.checked,
-                                    },
-                                  },
-                                }
-                              : prev
-                          )
-                        }
-                        className="rounded border-border"
-                      />
-                      <Label htmlFor="secondary-enabled" className="text-sm">
-                        Activado
-                      </Label>
-                    </div>
-                  </div>
-                  <Input
-                    value={
-                      content.ctaButtons.secondary.text[
-                        currentLanguage as keyof typeof content.ctaButtons.secondary.text
-                      ] || ''
-                    }
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              ctaButtons: {
-                                ...prev.ctaButtons,
-                                secondary: {
-                                  ...prev.ctaButtons.secondary,
-                                  text: {
-                                    ...prev.ctaButtons.secondary.text,
-                                    [currentLanguage]: e.target.value,
-                                  },
-                                },
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="Texto del botón..."
-                  />
-                  <Input
-                    value={content.ctaButtons.secondary.link}
-                    onChange={e =>
-                      setContent(prev =>
-                        prev
-                          ? {
-                              ...prev,
-                              ctaButtons: {
-                                ...prev.ctaButtons,
-                                secondary: {
-                                  ...prev.ctaButtons.secondary,
-                                  link: e.target.value,
-                                },
-                              },
-                            }
-                          : prev
-                      )
-                    }
-                    placeholder="/our-work"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Media Content */}
-          <div className="space-y-6">
-            {/* Logo */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <ImageIcon className="w-5 h-5 mr-2" />
-                    Logo
-                  </span>
+          {/* Content Sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Text Content */}
+            <div className="space-y-6">
+              {/* Language Configuration & Translation - Half Width */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center text-sm">
+                    <Globe className="w-4 h-4 mr-2" />
+                    Idioma y Traducción
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {/* Language Selector */}
                   <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="logo-enabled"
-                      checked={content.logo.enabled}
+                    <Label className="text-xs whitespace-nowrap">
+                      Editando:
+                    </Label>
+                    <Select
+                      value={currentLanguage}
+                      onValueChange={setCurrentLanguage}
+                    >
+                      <SelectTrigger className="w-32 h-8 text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {LANGUAGES.map(lang => (
+                          <SelectItem key={lang.code} value={lang.code}>
+                            {lang.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Translation Buttons */}
+                  <div className="border-t pt-2">
+                    <Label className="text-xs font-medium mb-2 block">
+                      Auto-traducir:
+                    </Label>
+                    <GlobalTranslationButtons
+                      contentData={{
+                        headline: content.headline,
+                        subheadline: content.subheadline,
+                        primaryButtonText: content.ctaButtons.primary.text,
+                        secondaryButtonText: content.ctaButtons.secondary.text,
+                      }}
+                      onTranslated={(language, updates) => {
+                        setContent(prev => {
+                          if (!prev) return prev;
+
+                          return {
+                            ...prev,
+                            headline: {
+                              ...prev.headline,
+                              [language]:
+                                updates.headline?.[language] ||
+                                prev.headline[language],
+                            },
+                            subheadline: {
+                              ...prev.subheadline,
+                              [language]:
+                                updates.subheadline?.[language] ||
+                                prev.subheadline[language],
+                            },
+                            ctaButtons: {
+                              ...prev.ctaButtons,
+                              primary: {
+                                ...prev.ctaButtons.primary,
+                                text: {
+                                  ...prev.ctaButtons.primary.text,
+                                  [language]:
+                                    updates.primaryButtonText?.[language] ||
+                                    prev.ctaButtons.primary.text[language],
+                                },
+                              },
+                              secondary: {
+                                ...prev.ctaButtons.secondary,
+                                text: {
+                                  ...prev.ctaButtons.secondary.text,
+                                  [language]:
+                                    updates.secondaryButtonText?.[language] ||
+                                    prev.ctaButtons.secondary.text[language],
+                                },
+                              },
+                            },
+                          };
+                        });
+                      }}
+                      contentType="marketing"
+                      disabled={saving}
+                      showTranslateAll
+                      compact
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Headlines */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Type className="w-5 h-5 mr-2" />
+                    Títulos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="headline">
+                      Título Principal (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <Input
+                      id="headline"
+                      value={
+                        content.headline[
+                          currentLanguage as keyof typeof content.headline
+                        ] || ''
+                      }
                       onChange={e =>
                         setContent(prev =>
                           prev
                             ? {
                                 ...prev,
-                                logo: {
-                                  ...prev.logo,
-                                  enabled: e.target.checked,
+                                headline: {
+                                  ...prev.headline,
+                                  [currentLanguage]: e.target.value,
                                 },
                               }
                             : prev
                         )
                       }
-                      className="rounded border-border"
+                      placeholder="Ingresa el título principal..."
                     />
-                    <Label htmlFor="logo-enabled" className="text-sm">
-                      Activado
-                    </Label>
                   </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {content.logo.url ? (
-                  <div className="space-y-4">
-                    <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
-                      <Image
-                        src={content.logo.url}
-                        alt="Logo"
-                        fill
-                        className="object-contain"
-                      />
+
+                  <div className="space-y-2">
+                    <Label htmlFor="subheadline">
+                      Subtítulo (
+                      {LANGUAGES.find(l => l.code === currentLanguage)?.name})
+                    </Label>
+                    <Textarea
+                      id="subheadline"
+                      value={
+                        content.subheadline[
+                          currentLanguage as keyof typeof content.subheadline
+                        ] || ''
+                      }
+                      onChange={e =>
+                        setContent(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                subheadline: {
+                                  ...prev.subheadline,
+                                  [currentLanguage]: e.target.value,
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      placeholder="Ingresa el subtítulo..."
+                      rows={2}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* CTA Buttons */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Link className="w-5 h-5 mr-2" />
+                    Botones de Llamada a la Acción
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Primary CTA */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-medium">
+                        Botón Primario
+                      </Label>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="primary-enabled"
+                          checked={content.ctaButtons.primary.enabled}
+                          onChange={e =>
+                            setContent(prev =>
+                              prev
+                                ? {
+                                    ...prev,
+                                    ctaButtons: {
+                                      ...prev.ctaButtons,
+                                      primary: {
+                                        ...prev.ctaButtons.primary,
+                                        enabled: e.target.checked,
+                                      },
+                                    },
+                                  }
+                                : prev
+                            )
+                          }
+                          className="rounded border-border"
+                        />
+                        <Label htmlFor="primary-enabled" className="text-sm">
+                          Activado
+                        </Label>
+                      </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <Input
+                      value={
+                        content.ctaButtons.primary.text[
+                          currentLanguage as keyof typeof content.ctaButtons.primary.text
+                        ] || ''
+                      }
+                      onChange={e =>
+                        setContent(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                ctaButtons: {
+                                  ...prev.ctaButtons,
+                                  primary: {
+                                    ...prev.ctaButtons.primary,
+                                    text: {
+                                      ...prev.ctaButtons.primary.text,
+                                      [currentLanguage]: e.target.value,
+                                    },
+                                  },
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      placeholder="Texto del botón..."
+                    />
+                    <Input
+                      value={content.ctaButtons.primary.link}
+                      onChange={e =>
+                        setContent(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                ctaButtons: {
+                                  ...prev.ctaButtons,
+                                  primary: {
+                                    ...prev.ctaButtons.primary,
+                                    link: e.target.value,
+                                  },
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      placeholder="/about"
+                    />
+                  </div>
+
+                  {/* Secondary CTA */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm font-medium">
+                        Botón Secundario
+                      </Label>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="secondary-enabled"
+                          checked={content.ctaButtons.secondary.enabled}
+                          onChange={e =>
+                            setContent(prev =>
+                              prev
+                                ? {
+                                    ...prev,
+                                    ctaButtons: {
+                                      ...prev.ctaButtons,
+                                      secondary: {
+                                        ...prev.ctaButtons.secondary,
+                                        enabled: e.target.checked,
+                                      },
+                                    },
+                                  }
+                                : prev
+                            )
+                          }
+                          className="rounded border-border"
+                        />
+                        <Label htmlFor="secondary-enabled" className="text-sm">
+                          Activado
+                        </Label>
+                      </div>
+                    </div>
+                    <Input
+                      value={
+                        content.ctaButtons.secondary.text[
+                          currentLanguage as keyof typeof content.ctaButtons.secondary.text
+                        ] || ''
+                      }
+                      onChange={e =>
+                        setContent(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                ctaButtons: {
+                                  ...prev.ctaButtons,
+                                  secondary: {
+                                    ...prev.ctaButtons.secondary,
+                                    text: {
+                                      ...prev.ctaButtons.secondary.text,
+                                      [currentLanguage]: e.target.value,
+                                    },
+                                  },
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      placeholder="Texto del botón..."
+                    />
+                    <Input
+                      value={content.ctaButtons.secondary.link}
+                      onChange={e =>
+                        setContent(prev =>
+                          prev
+                            ? {
+                                ...prev,
+                                ctaButtons: {
+                                  ...prev.ctaButtons,
+                                  secondary: {
+                                    ...prev.ctaButtons.secondary,
+                                    link: e.target.value,
+                                  },
+                                },
+                              }
+                            : prev
+                        )
+                      }
+                      placeholder="/our-work"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Media Content */}
+            <div className="space-y-6">
+              {/* Logo */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="flex items-center">
+                      <ImageIcon className="w-5 h-5 mr-2" />
+                      Logo
+                    </span>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="logo-enabled"
+                        checked={content.logo.enabled}
+                        onChange={e =>
+                          setContent(prev =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  logo: {
+                                    ...prev.logo,
+                                    enabled: e.target.checked,
+                                  },
+                                }
+                              : prev
+                          )
+                        }
+                        className="rounded border-border"
+                      />
+                      <Label htmlFor="logo-enabled" className="text-sm">
+                        Activado
+                      </Label>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {content.logo.url ? (
+                    <div className="space-y-4">
+                      <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
+                        <Image
+                          src={content.logo.url}
+                          alt="Logo"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={e => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, 'logo');
+                          }}
+                          className="hidden"
+                          id="logo-upload"
+                          disabled={uploading}
+                        />
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            document.getElementById('logo-upload')?.click()
+                          }
+                          disabled={uploading}
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Reemplazar
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        No se ha subido un logo
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1027,99 +1070,99 @@ export default function HomepageAdminPage() {
                         }
                         disabled={uploading}
                       >
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                        Reemplazar
+                        {uploading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Subiendo...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4 mr-2" />
+                            Subir Logo
+                          </>
+                        )}
                       </Button>
                     </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">
-                      No se ha subido un logo
-                    </p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'logo');
-                      }}
-                      className="hidden"
-                      id="logo-upload"
-                      disabled={uploading}
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        document.getElementById('logo-upload')?.click()
-                      }
-                      disabled={uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Subiendo...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Subir Logo
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
 
-            {/* Background Video */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <VideoIcon className="w-5 h-5 mr-2" />
-                    Background Video
-                  </span>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="video-enabled"
-                      checked={content.backgroundVideo.enabled}
-                      onChange={e =>
-                        setContent(prev =>
-                          prev
-                            ? {
-                                ...prev,
-                                backgroundVideo: {
-                                  ...prev.backgroundVideo,
-                                  enabled: e.target.checked,
-                                },
-                              }
-                            : prev
-                        )
-                      }
-                      className="rounded border-border"
-                    />
-                    <Label htmlFor="video-enabled" className="text-sm">
-                      Enabled
-                    </Label>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {content.backgroundVideo.url ? (
-                  <div className="space-y-4">
-                    <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
-                      <video
-                        src={content.backgroundVideo.url}
-                        className="w-full h-full object-cover"
-                        muted
-                        loop
-                        controls
+              {/* Background Video */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="flex items-center">
+                      <VideoIcon className="w-5 h-5 mr-2" />
+                      Background Video
+                    </span>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="video-enabled"
+                        checked={content.backgroundVideo.enabled}
+                        onChange={e =>
+                          setContent(prev =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  backgroundVideo: {
+                                    ...prev.backgroundVideo,
+                                    enabled: e.target.checked,
+                                  },
+                                }
+                              : prev
+                          )
+                        }
+                        className="rounded border-border"
                       />
+                      <Label htmlFor="video-enabled" className="text-sm">
+                        Enabled
+                      </Label>
                     </div>
-                    <div className="flex space-x-2">
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {content.backgroundVideo.url ? (
+                    <div className="space-y-4">
+                      <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
+                        <video
+                          src={content.backgroundVideo.url}
+                          className="w-full h-full object-cover"
+                          muted
+                          loop
+                          controls
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={e => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, 'video');
+                          }}
+                          className="hidden"
+                          id="video-upload"
+                          disabled={uploading}
+                        />
+                        <Button
+                          variant="outline"
+                          onClick={() =>
+                            document.getElementById('video-upload')?.click()
+                          }
+                          disabled={uploading}
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Replace
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <VideoIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        No background video uploaded
+                      </p>
                       <input
                         type="file"
                         accept="video/*"
@@ -1138,235 +1181,211 @@ export default function HomepageAdminPage() {
                         }
                         disabled={uploading}
                       >
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                        Replace
+                        {uploading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4 mr-2" />
+                            Upload Video
+                          </>
+                        )}
                       </Button>
                     </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <VideoIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">
-                      No background video uploaded
-                    </p>
-                    <input
-                      type="file"
-                      accept="video/*"
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'video');
-                      }}
-                      className="hidden"
-                      id="video-upload"
-                      disabled={uploading}
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        document.getElementById('video-upload')?.click()
-                      }
-                      disabled={uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload Video
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
 
-            {/* Background Images */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center">
-                    <ImageIcon className="w-5 h-5 mr-2" />
-                    Background Images ({content.backgroundImages.urls.length})
-                  </span>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="images-enabled"
-                      checked={content.backgroundImages.enabled}
-                      onChange={e =>
-                        setContent(prev =>
-                          prev
-                            ? {
-                                ...prev,
-                                backgroundImages: {
-                                  ...prev.backgroundImages,
-                                  enabled: e.target.checked,
-                                },
-                              }
-                            : prev
-                        )
-                      }
-                      className="rounded border-border"
-                    />
-                    <Label htmlFor="images-enabled" className="text-sm">
-                      Enabled
-                    </Label>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {content.backgroundImages.urls.length > 0 ? (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      {content.backgroundImages.urls.map((url, index) => (
-                        <div key={index} className="relative group">
-                          <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
-                            <Image
-                              src={url}
-                              alt={`Background ${index + 1}`}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                              quality={85}
-                            />
-                            <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                                onClick={() =>
-                                  handleDeleteBackgroundImage(index)
+              {/* Background Images */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span className="flex items-center">
+                      <ImageIcon className="w-5 h-5 mr-2" />
+                      Background Images ({content.backgroundImages.urls.length})
+                    </span>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="images-enabled"
+                        checked={content.backgroundImages.enabled}
+                        onChange={e =>
+                          setContent(prev =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  backgroundImages: {
+                                    ...prev.backgroundImages,
+                                    enabled: e.target.checked,
+                                  },
                                 }
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+                              : prev
+                          )
+                        }
+                        className="rounded border-border"
+                      />
+                      <Label htmlFor="images-enabled" className="text-sm">
+                        Enabled
+                      </Label>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {content.backgroundImages.urls.length > 0 ? (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        {content.backgroundImages.urls.map((url, index) => (
+                          <div key={index} className="relative group">
+                            <div className="relative aspect-video bg-muted rounded-none overflow-hidden">
+                              <Image
+                                src={url}
+                                alt={`Background ${index + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 50vw, 25vw"
+                                quality={85}
+                              />
+                              <div className="absolute inset-0 bg-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() =>
+                                    handleDeleteBackgroundImage(index)
+                                  }
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={e => {
-                        const files = Array.from(e.target.files || []);
-                        files.forEach(file => handleFileUpload(file, 'image'));
-                      }}
-                      className="hidden"
-                      id="images-upload"
-                      disabled={uploading}
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        document.getElementById('images-upload')?.click()
-                      }
-                      disabled={uploading}
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      Add More Images
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground mb-4">
-                      No background images uploaded
-                    </p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={e => {
-                        const files = Array.from(e.target.files || []);
-                        files.forEach(file => handleFileUpload(file, 'image'));
-                      }}
-                      className="hidden"
-                      id="images-upload"
-                      disabled={uploading}
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={() =>
-                        document.getElementById('images-upload')?.click()
-                      }
-                      disabled={uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Uploading...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload Images
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Theme Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Palette className="w-5 h-5 mr-2" />
-              Theme Settings
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="overlay-opacity">
-                Overlay Opacity ({content.theme.overlayOpacity}%)
-              </Label>
-              <input
-                type="range"
-                id="overlay-opacity"
-                min="0"
-                max="80"
-                value={content.theme.overlayOpacity}
-                onChange={e =>
-                  setContent(prev =>
-                    prev
-                      ? {
-                          ...prev,
-                          theme: {
-                            ...prev.theme,
-                            overlayOpacity: parseInt(e.target.value),
-                          },
+                        ))}
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={e => {
+                          const files = Array.from(e.target.files || []);
+                          files.forEach(file =>
+                            handleFileUpload(file, 'image')
+                          );
+                        }}
+                        className="hidden"
+                        id="images-upload"
+                        disabled={uploading}
+                      />
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          document.getElementById('images-upload')?.click()
                         }
-                      : prev
-                  )
-                }
-                className="w-full"
-              />
-              <p className="text-sm text-muted-foreground">
-                Controls the darkness of the overlay for text readability
-              </p>
+                        disabled={uploading}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Add More Images
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground mb-4">
+                        No background images uploaded
+                      </p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={e => {
+                          const files = Array.from(e.target.files || []);
+                          files.forEach(file =>
+                            handleFileUpload(file, 'image')
+                          );
+                        }}
+                        className="hidden"
+                        id="images-upload"
+                        disabled={uploading}
+                      />
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          document.getElementById('images-upload')?.click()
+                        }
+                        disabled={uploading}
+                      >
+                        {uploading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4 mr-2" />
+                            Upload Images
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Last Updated */}
-        {content.updatedAt && (
+          {/* Theme Settings */}
           <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground">
-                Last updated: {content.updatedAt.toDate().toLocaleString()}
-              </p>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Palette className="w-5 h-5 mr-2" />
+                Theme Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="overlay-opacity">
+                  Overlay Opacity ({content.theme.overlayOpacity}%)
+                </Label>
+                <input
+                  type="range"
+                  id="overlay-opacity"
+                  min="0"
+                  max="80"
+                  value={content.theme.overlayOpacity}
+                  onChange={e =>
+                    setContent(prev =>
+                      prev
+                        ? {
+                            ...prev,
+                            theme: {
+                              ...prev.theme,
+                              overlayOpacity: parseInt(e.target.value),
+                            },
+                          }
+                        : prev
+                    )
+                  }
+                  className="w-full"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Controls the darkness of the overlay for text readability
+                </p>
+              </div>
             </CardContent>
           </Card>
-        )}
-      </div>
-    </AdminLayout>
+
+          {/* Last Updated */}
+          {content.updatedAt && (
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-sm text-muted-foreground">
+                  Last updated: {content.updatedAt.toDate().toLocaleString()}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </AdminLayout>
+    </AuthGuard>
   );
 }

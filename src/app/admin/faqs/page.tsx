@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
+import AuthGuard from '@/components/admin/AuthGuard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -80,7 +80,6 @@ const FAQ_CATEGORIES = [
 ];
 
 export default function FAQsAdminPage() {
-  const { user } = useAuth();
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [loading, setLoading] = useState(true);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -131,9 +130,8 @@ export default function FAQsAdminPage() {
   });
 
   useEffect(() => {
-    if (!user) return;
     loadFAQs();
-  }, [user]);
+  }, []);
 
   const loadFAQs = async () => {
     try {
@@ -178,7 +176,6 @@ export default function FAQsAdminPage() {
 
   const handleCreateFAQ = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
 
     setSubmitLoading(true);
     setError('');
@@ -227,7 +224,7 @@ export default function FAQsAdminPage() {
 
   const handleEditFAQ = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !editFAQ) return;
+    if (!editFAQ) return;
 
     setSubmitLoading(true);
     setError('');
@@ -318,468 +315,481 @@ export default function FAQsAdminPage() {
   }
 
   return (
-    <AdminLayout title="Preguntas Frecuentes">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Preguntas Frecuentes
-            </h1>
-            <p className="text-muted-foreground">
-              Gestiona las preguntas y respuestas más comunes de tus usuarios
-            </p>
-          </div>
+    <AuthGuard>
+      <AdminLayout title="Preguntas Frecuentes">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">
+                Preguntas Frecuentes
+              </h1>
+              <p className="text-muted-foreground">
+                Gestiona las preguntas y respuestas más comunes de tus usuarios
+              </p>
+            </div>
 
-          <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Nueva Pregunta
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Crear Nueva Pregunta Frecuente</DialogTitle>
-                <DialogDescription>
-                  Agrega una nueva pregunta y respuesta para ayudar a tus
-                  usuarios.
-                </DialogDescription>
-              </DialogHeader>
+            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nueva Pregunta
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Crear Nueva Pregunta Frecuente</DialogTitle>
+                  <DialogDescription>
+                    Agrega una nueva pregunta y respuesta para ayudar a tus
+                    usuarios.
+                  </DialogDescription>
+                </DialogHeader>
 
-              <form onSubmit={handleCreateFAQ} className="space-y-6">
-                {error && (
-                  <Alert variant="destructive">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
+                <form onSubmit={handleCreateFAQ} className="space-y-6">
+                  {error && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
 
-                {success && (
-                  <Alert>
-                    <CheckCircle className="h-4 w-4" />
-                    <AlertDescription>{success}</AlertDescription>
-                  </Alert>
-                )}
+                  {success && (
+                    <Alert>
+                      <CheckCircle className="h-4 w-4" />
+                      <AlertDescription>{success}</AlertDescription>
+                    </Alert>
+                  )}
 
-                {/* Question */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="question-es">Pregunta (Español)</Label>
-                  </div>
-                  <Input
-                    id="question-es"
-                    value={createForm.question.es || ''}
-                    onChange={e =>
-                      setCreateForm(prev => ({
-                        ...prev,
-                        question: {
-                          ...prev.question,
-                          es: e.target.value,
-                        },
-                      }))
-                    }
-                    placeholder="¿Qué tipo de eventos cubren?"
-                    required
-                  />
-                </div>
-
-                {/* Answer */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="answer-es">Respuesta (Español)</Label>
-                  </div>
-                  <Textarea
-                    id="answer-es"
-                    value={createForm.answer.es || ''}
-                    onChange={e =>
-                      setCreateForm(prev => ({
-                        ...prev,
-                        answer: {
-                          ...prev.answer,
-                          es: e.target.value,
-                        },
-                      }))
-                    }
-                    placeholder="Cubrimos todo tipo de eventos: bodas, cumpleaños, eventos corporativos..."
-                    rows={4}
-                    required
-                  />
-                </div>
-
-                {/* Category and Published */}
-                <div className="grid grid-cols-2 gap-4">
+                  {/* Question */}
                   <div className="space-y-2">
-                    <Label>Categoría</Label>
-                    <Select
-                      value={createForm.category}
-                      onValueChange={value =>
-                        setCreateForm(prev => ({ ...prev, category: value }))
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="question-es">Pregunta (Español)</Label>
+                    </div>
+                    <Input
+                      id="question-es"
+                      value={createForm.question.es || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            es: e.target.value,
+                          },
+                        }))
                       }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {FAQ_CATEGORIES.map(category => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      placeholder="¿Qué tipo de eventos cubren?"
+                      required
+                    />
                   </div>
 
+                  {/* Answer */}
                   <div className="space-y-2">
-                    <Label>Estado</Label>
-                    <div className="flex items-center space-x-2 pt-2">
-                      <input
-                        type="checkbox"
-                        id="published"
-                        checked={createForm.published}
-                        onChange={e =>
-                          setCreateForm(prev => ({
-                            ...prev,
-                            published: e.target.checked,
-                          }))
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="answer-es">Respuesta (Español)</Label>
+                    </div>
+                    <Textarea
+                      id="answer-es"
+                      value={createForm.answer.es || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            es: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Cubrimos todo tipo de eventos: bodas, cumpleaños, eventos corporativos..."
+                      rows={4}
+                      required
+                    />
+                  </div>
+
+                  {/* Category and Published */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Categoría</Label>
+                      <Select
+                        value={createForm.category}
+                        onValueChange={value =>
+                          setCreateForm(prev => ({ ...prev, category: value }))
                         }
-                        className="rounded border-border"
-                      />
-                      <Label htmlFor="published" className="text-sm">
-                        Publicado
-                      </Label>
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {FAQ_CATEGORIES.map(category => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Estado</Label>
+                      <div className="flex items-center space-x-2 pt-2">
+                        <input
+                          type="checkbox"
+                          id="published"
+                          checked={createForm.published}
+                          onChange={e =>
+                            setCreateForm(prev => ({
+                              ...prev,
+                              published: e.target.checked,
+                            }))
+                          }
+                          className="rounded border-border"
+                        />
+                        <Label htmlFor="published" className="text-sm">
+                          Publicado
+                        </Label>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex gap-2">
-                  <Button type="submit" disabled={submitLoading}>
-                    {submitLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Creando...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4 mr-2" />
-                        Crear Pregunta
-                      </>
-                    )}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setCreateDialogOpen(false)}
-                    disabled={submitLoading}
-                  >
-                    Cancelar
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+                  <div className="flex gap-2">
+                    <Button type="submit" disabled={submitLoading}>
+                      {submitLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Creando...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Crear Pregunta
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setCreateDialogOpen(false)}
+                      disabled={submitLoading}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Preguntas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Publicadas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.published}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Categorías
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.categories}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Este Mes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.thisMonth}</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Success/Error Messages */}
+          {success && (
+            <Alert>
+              <CheckCircle className="h-4 w-4" />
+              <AlertDescription>{success}</AlertDescription>
+            </Alert>
+          )}
+
+          {error && (
+            <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* FAQs List */}
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Preguntas
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <HelpCircle className="w-5 h-5 mr-2" />
+                Lista de Preguntas Frecuentes
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Publicadas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.published}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Categorías</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.categories}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Este Mes</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.thisMonth}</div>
-            </CardContent>
-          </Card>
-        </div>
+              {faqs.length === 0 ? (
+                <div className="text-center py-12">
+                  <HelpCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    No hay preguntas frecuentes
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Crea tu primera pregunta frecuente para ayudar a los
+                    usuarios
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {faqs.map((faq, index) => {
+                    const questionTranslation = getTranslationStatus(
+                      faq.question
+                    );
+                    const answerTranslation = getTranslationStatus(faq.answer);
 
-        {/* Success/Error Messages */}
-        {success && (
-          <Alert>
-            <CheckCircle className="h-4 w-4" />
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
+                    return (
+                      <div
+                        key={faq.id}
+                        className="border rounded-none p-4 hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-2">
+                              <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab" />
+                              <Badge
+                                variant={
+                                  faq.published ? 'default' : 'secondary'
+                                }
+                              >
+                                {faq.published ? 'Publicado' : 'Borrador'}
+                              </Badge>
+                              <Badge variant="outline">{faq.category}</Badge>
+                              <Badge variant="outline" className="text-xs">
+                                #{index + 1}
+                              </Badge>
+                            </div>
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+                            <h3 className="font-semibold text-foreground mb-1">
+                              {faq.question.es ||
+                                faq.question.en ||
+                                faq.question.pt ||
+                                'Sin título'}
+                            </h3>
 
-        {/* FAQs List */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <HelpCircle className="w-5 h-5 mr-2" />
-              Lista de Preguntas Frecuentes
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {faqs.length === 0 ? (
-              <div className="text-center py-12">
-                <HelpCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">
-                  No hay preguntas frecuentes
-                </h3>
-                <p className="text-muted-foreground">
-                  Crea tu primera pregunta frecuente para ayudar a los usuarios
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {faqs.map((faq, index) => {
-                  const questionTranslation = getTranslationStatus(
-                    faq.question
-                  );
-                  const answerTranslation = getTranslationStatus(faq.answer);
+                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                              {faq.answer.es ||
+                                faq.answer.en ||
+                                faq.answer.pt ||
+                                'Sin respuesta'}
+                            </p>
 
-                  return (
-                    <div
-                      key={faq.id}
-                      className="border rounded-none p-4 hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab" />
-                            <Badge
-                              variant={faq.published ? 'default' : 'secondary'}
+                            {/* Translation Status */}
+                            <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                              <div className="flex items-center space-x-1">
+                                <Globe className="w-3 h-3" />
+                                <span>
+                                  Pregunta: {questionTranslation.completed}/3
+                                  idiomas
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Globe className="w-3 h-3" />
+                                <span>
+                                  Respuesta: {answerTranslation.completed}/3
+                                  idiomas
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center space-x-2 ml-4">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => openEditDialog(faq)}
                             >
-                              {faq.published ? 'Publicado' : 'Borrador'}
-                            </Badge>
-                            <Badge variant="outline">{faq.category}</Badge>
-                            <Badge variant="outline" className="text-xs">
-                              #{index + 1}
-                            </Badge>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeleteFAQ(faq)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
-
-                          <h3 className="font-semibold text-foreground mb-1">
-                            {faq.question.es ||
-                              faq.question.en ||
-                              faq.question.pt ||
-                              'Sin título'}
-                          </h3>
-
-                          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                            {faq.answer.es ||
-                              faq.answer.en ||
-                              faq.answer.pt ||
-                              'Sin respuesta'}
-                          </p>
-
-                          {/* Translation Status */}
-                          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                            <div className="flex items-center space-x-1">
-                              <Globe className="w-3 h-3" />
-                              <span>
-                                Pregunta: {questionTranslation.completed}/3
-                                idiomas
-                              </span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Globe className="w-3 h-3" />
-                              <span>
-                                Respuesta: {answerTranslation.completed}/3
-                                idiomas
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center space-x-2 ml-4">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openEditDialog(faq)}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDeleteFAQ(faq)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Edit Dialog */}
-        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Editar Pregunta Frecuente</DialogTitle>
-              <DialogDescription>
-                Modifica la pregunta y respuesta existente.
-              </DialogDescription>
-            </DialogHeader>
-
-            {editFAQ && (
-              <form onSubmit={handleEditFAQ} className="space-y-6">
-                {error && (
-                  <Alert variant="destructive">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-
-                {success && (
-                  <Alert>
-                    <CheckCircle className="h-4 w-4" />
-                    <AlertDescription>{success}</AlertDescription>
-                  </Alert>
-                )}
-
-                {/* Question */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="edit-question-es">Pregunta (Español)</Label>
-                  </div>
-                  <Input
-                    id="edit-question-es"
-                    value={editForm.question.es || ''}
-                    onChange={e =>
-                      setEditForm(prev => ({
-                        ...prev,
-                        question: {
-                          ...prev.question,
-                          es: e.target.value,
-                        },
-                      }))
-                    }
-                    placeholder="¿Qué tipo de eventos cubren?"
-                  />
+                    );
+                  })}
                 </div>
+              )}
+            </CardContent>
+          </Card>
 
-                {/* Answer */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="edit-answer-es">Respuesta (Español)</Label>
-                  </div>
-                  <Textarea
-                    id="edit-answer-es"
-                    value={editForm.answer.es || ''}
-                    onChange={e =>
-                      setEditForm(prev => ({
-                        ...prev,
-                        answer: {
-                          ...prev.answer,
-                          es: e.target.value,
-                        },
-                      }))
-                    }
-                    placeholder="Cubrimos todo tipo de eventos..."
-                    rows={4}
-                  />
-                </div>
+          {/* Edit Dialog */}
+          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Editar Pregunta Frecuente</DialogTitle>
+                <DialogDescription>
+                  Modifica la pregunta y respuesta existente.
+                </DialogDescription>
+              </DialogHeader>
 
-                {/* Category and Published */}
-                <div className="grid grid-cols-2 gap-4">
+              {editFAQ && (
+                <form onSubmit={handleEditFAQ} className="space-y-6">
+                  {error && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                  )}
+
+                  {success && (
+                    <Alert>
+                      <CheckCircle className="h-4 w-4" />
+                      <AlertDescription>{success}</AlertDescription>
+                    </Alert>
+                  )}
+
+                  {/* Question */}
                   <div className="space-y-2">
-                    <Label>Categoría</Label>
-                    <Select
-                      value={editForm.category}
-                      onValueChange={value =>
-                        setEditForm(prev => ({ ...prev, category: value }))
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {FAQ_CATEGORIES.map(category => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Estado</Label>
-                    <div className="flex items-center space-x-2 pt-2">
-                      <input
-                        type="checkbox"
-                        id="edit-published"
-                        checked={editForm.published}
-                        onChange={e =>
-                          setEditForm(prev => ({
-                            ...prev,
-                            published: e.target.checked,
-                          }))
-                        }
-                        className="rounded border-border"
-                      />
-                      <Label htmlFor="edit-published" className="text-sm">
-                        Publicado
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="edit-question-es">
+                        Pregunta (Español)
                       </Label>
                     </div>
+                    <Input
+                      id="edit-question-es"
+                      value={editForm.question.es || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            es: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="¿Qué tipo de eventos cubren?"
+                    />
                   </div>
-                </div>
 
-                <div className="flex gap-2">
-                  <Button type="submit" disabled={submitLoading}>
-                    {submitLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Guardando...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4 mr-2" />
-                        Guardar Cambios
-                      </>
-                    )}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setEditDialogOpen(false)}
-                    disabled={submitLoading}
-                  >
-                    Cancelar
-                  </Button>
-                </div>
-              </form>
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
-    </AdminLayout>
+                  {/* Answer */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="edit-answer-es">
+                        Respuesta (Español)
+                      </Label>
+                    </div>
+                    <Textarea
+                      id="edit-answer-es"
+                      value={editForm.answer.es || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            es: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Cubrimos todo tipo de eventos..."
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Category and Published */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Categoría</Label>
+                      <Select
+                        value={editForm.category}
+                        onValueChange={value =>
+                          setEditForm(prev => ({ ...prev, category: value }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {FAQ_CATEGORIES.map(category => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Estado</Label>
+                      <div className="flex items-center space-x-2 pt-2">
+                        <input
+                          type="checkbox"
+                          id="edit-published"
+                          checked={editForm.published}
+                          onChange={e =>
+                            setEditForm(prev => ({
+                              ...prev,
+                              published: e.target.checked,
+                            }))
+                          }
+                          className="rounded border-border"
+                        />
+                        <Label htmlFor="edit-published" className="text-sm">
+                          Publicado
+                        </Label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button type="submit" disabled={submitLoading}>
+                      {submitLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Guardando...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Guardar Cambios
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setEditDialogOpen(false)}
+                      disabled={submitLoading}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+      </AdminLayout>
+    </AuthGuard>
   );
 }

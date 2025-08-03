@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import AdminLayout from '@/components/admin/AdminLayout';
+import AuthGuard from '@/components/admin/AuthGuard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -82,7 +82,6 @@ interface Project {
 const PROJECTS_PER_PAGE = 12;
 
 export default function ProjectsPage() {
-  const { user } = useAuth();
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -98,8 +97,6 @@ export default function ProjectsPage() {
   });
 
   useEffect(() => {
-    if (!user) return;
-
     const loadProjects = async () => {
       try {
         setLoading(true);
@@ -157,7 +154,7 @@ export default function ProjectsPage() {
     };
 
     loadProjects();
-  }, [user]);
+  }, []);
 
   const handleDeleteProject = async (project: Project) => {
     if (
@@ -210,242 +207,254 @@ export default function ProjectsPage() {
   }
 
   return (
-    <AdminLayout title="Gestión de Proyectos">
-      <div className="space-y-4">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-foreground">
-              Gestión de Proyectos
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              Administra tus proyectos de fotografía y videografía
-            </p>
+    <AuthGuard>
+      <AdminLayout title="Gestión de Proyectos">
+        <div className="space-y-4">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-foreground">
+                Gestión de Proyectos
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                Administra tus proyectos de fotografía y videografía
+              </p>
+            </div>
+
+            <Button
+              onClick={() => router.push('/admin/projects/new/edit')}
+              size="sm"
+            >
+              <Plus className="w-3 h-3 mr-1.5" />
+              Nuevo Proyecto
+            </Button>
           </div>
 
-          <Button
-            onClick={() => router.push('/admin/projects/new/edit')}
-            size="sm"
-          >
-            <Plus className="w-3 h-3 mr-1.5" />
-            Nuevo Proyecto
-          </Button>
-        </div>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <Card>
+              <CardHeader className="pb-2 px-4 py-3">
+                <CardTitle className="text-xs font-medium">
+                  Total de Proyectos
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-3">
+                <div className="text-xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2 px-4 py-3">
+                <CardTitle className="text-xs font-medium">
+                  Publicados
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-3">
+                <div className="text-xl font-bold">{stats.published}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2 px-4 py-3">
+                <CardTitle className="text-xs font-medium">
+                  Destacados
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-3">
+                <div className="text-xl font-bold">{stats.featured}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2 px-4 py-3">
+                <CardTitle className="text-xs font-medium">Este Mes</CardTitle>
+              </CardHeader>
+              <CardContent className="px-4 pb-3">
+                <div className="text-xl font-bold">{stats.thisMonth}</div>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <Card>
-            <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">
-                Total de Proyectos
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-3">
-              <div className="text-xl font-bold">{stats.total}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">Publicados</CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-3">
-              <div className="text-xl font-bold">{stats.published}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">Destacados</CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-3">
-              <div className="text-xl font-bold">{stats.featured}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2 px-4 py-3">
-              <CardTitle className="text-xs font-medium">Este Mes</CardTitle>
-            </CardHeader>
-            <CardContent className="px-4 pb-3">
-              <div className="text-xl font-bold">{stats.thisMonth}</div>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Success/Error Messages */}
+          {success && (
+            <Alert>
+              <AlertDescription className="text-sm">{success}</AlertDescription>
+            </Alert>
+          )}
 
-        {/* Success/Error Messages */}
-        {success && (
-          <Alert>
-            <AlertDescription className="text-sm">{success}</AlertDescription>
-          </Alert>
-        )}
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription className="text-sm">{error}</AlertDescription>
+            </Alert>
+          )}
 
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription className="text-sm">{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Projects List */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Proyectos</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            {projects.length === 0 ? (
-              <div className="text-center py-8">
-                <FolderOpen className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-                <h3 className="text-base font-medium text-foreground mb-1">
-                  Aún no hay proyectos
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  Crea tu primer proyecto para comenzar a organizar tu trabajo
-                </p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b">
-                    <tr className="text-left">
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Project Name
-                      </th>
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Location
-                      </th>
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Event Date
-                      </th>
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Crew
-                      </th>
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Status
-                      </th>
-                      <th className="p-3 font-medium text-muted-foreground text-xs">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {projects.map(project => (
-                      <tr
-                        key={project.id}
-                        className="border-b hover:bg-muted/50"
-                      >
-                        <td className="p-3">
-                          <div className="flex items-center space-x-3">
-                            <div>
-                              <div className="font-medium text-foreground text-sm">
-                                {project.title.en ||
-                                  project.title.es ||
-                                  project.title.pt}
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                {project.eventType}
-                              </div>
-                              <div className="flex items-center space-x-1.5 mt-1">
-                                {project.featured && (
-                                  <Badge
-                                    variant="secondary"
-                                    className="text-xs"
-                                  >
-                                    <Star className="w-2.5 h-2.5 mr-0.5" />
-                                    Featured
-                                  </Badge>
-                                )}
-                                {project.mediaCount.photos > 0 && (
-                                  <Badge variant="outline" className="text-xs">
-                                    <ImageIcon className="w-2.5 h-2.5 mr-0.5" />
-                                    {project.mediaCount.photos}
-                                  </Badge>
-                                )}
-                                {project.mediaCount.videos > 0 && (
-                                  <Badge variant="outline" className="text-xs">
-                                    <VideoIcon className="w-2.5 h-2.5 mr-0.5" />
-                                    {project.mediaCount.videos}
-                                  </Badge>
-                                )}
+          {/* Projects List */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Proyectos</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              {projects.length === 0 ? (
+                <div className="text-center py-8">
+                  <FolderOpen className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
+                  <h3 className="text-base font-medium text-foreground mb-1">
+                    Aún no hay proyectos
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    Crea tu primer proyecto para comenzar a organizar tu trabajo
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="border-b">
+                      <tr className="text-left">
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Project Name
+                        </th>
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Location
+                        </th>
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Event Date
+                        </th>
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Crew
+                        </th>
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Status
+                        </th>
+                        <th className="p-3 font-medium text-muted-foreground text-xs">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projects.map(project => (
+                        <tr
+                          key={project.id}
+                          className="border-b hover:bg-muted/50"
+                        >
+                          <td className="p-3">
+                            <div className="flex items-center space-x-3">
+                              <div>
+                                <div className="font-medium text-foreground text-sm">
+                                  {project.title.en ||
+                                    project.title.es ||
+                                    project.title.pt}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {project.eventType}
+                                </div>
+                                <div className="flex items-center space-x-1.5 mt-1">
+                                  {project.featured && (
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-xs"
+                                    >
+                                      <Star className="w-2.5 h-2.5 mr-0.5" />
+                                      Featured
+                                    </Badge>
+                                  )}
+                                  {project.mediaCount.photos > 0 && (
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      <ImageIcon className="w-2.5 h-2.5 mr-0.5" />
+                                      {project.mediaCount.photos}
+                                    </Badge>
+                                  )}
+                                  {project.mediaCount.videos > 0 && (
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      <VideoIcon className="w-2.5 h-2.5 mr-0.5" />
+                                      {project.mediaCount.videos}
+                                    </Badge>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="p-3">
-                          <div className="flex items-center text-xs text-muted-foreground">
-                            {project.location ? (
-                              <>
-                                <MapPin className="w-3 h-3 mr-1" />
-                                {project.location}
-                              </>
-                            ) : (
-                              <span className="text-muted-foreground">
-                                No location
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-3">
-                          <div className="flex items-center text-xs text-muted-foreground">
-                            {project.eventDate ? (
-                              <>
-                                <Calendar className="w-3 h-3 mr-1" />
-                                {new Date(
-                                  project.eventDate
-                                ).toLocaleDateString()}
-                              </>
-                            ) : (
-                              <span className="text-muted-foreground">
-                                No date
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-3">
-                          <CrewMemberDisplay
-                            crewMemberIds={project.crewMembers || []}
-                            maxDisplay={2}
-                            showCount={true}
-                          />
-                        </td>
-                        <td className="p-3">
-                          <Badge
-                            variant={getStatusVariant(project.status)}
-                            className="text-xs"
-                          >
-                            {project.status}
-                          </Badge>
-                        </td>
-                        <td className="p-3">
-                          <div className="flex items-center space-x-1.5">
-                            <Button
-                              size="sm"
-                              onClick={() =>
-                                router.push(
-                                  `/admin/projects/${project.id}/edit`
-                                )
-                              }
+                          </td>
+                          <td className="p-3">
+                            <div className="flex items-center text-xs text-muted-foreground">
+                              {project.location ? (
+                                <>
+                                  <MapPin className="w-3 h-3 mr-1" />
+                                  {project.location}
+                                </>
+                              ) : (
+                                <span className="text-muted-foreground">
+                                  No location
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex items-center text-xs text-muted-foreground">
+                              {project.eventDate ? (
+                                <>
+                                  <Calendar className="w-3 h-3 mr-1" />
+                                  {new Date(
+                                    project.eventDate
+                                  ).toLocaleDateString()}
+                                </>
+                              ) : (
+                                <span className="text-muted-foreground">
+                                  No date
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-3">
+                            <CrewMemberDisplay
+                              crewMemberIds={project.crewMembers || []}
+                              maxDisplay={2}
+                              showCount={true}
+                            />
+                          </td>
+                          <td className="p-3">
+                            <Badge
+                              variant={getStatusVariant(project.status)}
                               className="text-xs"
                             >
-                              <Edit className="w-3 h-3 mr-1" />
-                              Edit
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleDeleteProject(project)}
-                              className="text-xs"
-                            >
-                              <Trash2 className="w-3 h-3 mr-1" />
-                              Delete
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </AdminLayout>
+                              {project.status}
+                            </Badge>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex items-center space-x-1.5">
+                              <Button
+                                size="sm"
+                                onClick={() =>
+                                  router.push(
+                                    `/admin/projects/${project.id}/edit`
+                                  )
+                                }
+                                className="text-xs"
+                              >
+                                <Edit className="w-3 h-3 mr-1" />
+                                Edit
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleDeleteProject(project)}
+                                className="text-xs"
+                              >
+                                <Trash2 className="w-3 h-3 mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </AdminLayout>
+    </AuthGuard>
   );
 }

@@ -503,7 +503,7 @@ const STATIC_TRANSLATIONS = {
         date: {
           title: 'Do you have a date already?',
           subtitle: "Don't worry if you're not sure yet",
-          noDate: "No date",
+          noDate: 'No date',
         },
         location: {
           title: 'Where will your event be?',
@@ -958,7 +958,16 @@ async function fetchHomepageContent(db) {
     if (docSnap.exists()) {
       const data = docSnap.data();
       console.log('✅ Homepage content found');
-      return data;
+      // Ensure all required properties exist
+      return {
+        headline: data.headline || {
+          es: 'Capturamos lo irrepetible',
+          en: 'Capturing the Unrepeatable',
+          pt: 'Capturamos o que não se repete',
+        },
+        logo: data.logo || { url: '', enabled: false },
+        backgroundVideo: data.backgroundVideo || { url: '', enabled: false },
+      };
     } else {
       console.log('ℹ️ No homepage content found, using defaults');
       return {

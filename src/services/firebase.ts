@@ -147,8 +147,10 @@ export abstract class BaseFirebaseService<T = unknown> {
     data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>
   ): Promise<ApiResponse<string>> {
     try {
-      console.log(`🔄 BaseFirebaseService.create() called for collection: ${this.collectionName}`);
-      
+      console.log(
+        `🔄 BaseFirebaseService.create() called for collection: ${this.collectionName}`
+      );
+
       const now = new Date();
       const docData = {
         ...data,
@@ -157,18 +159,33 @@ export abstract class BaseFirebaseService<T = unknown> {
       };
 
       const docRef = await addDoc(this.getCollection(), docData);
-      console.log(`✅ Document created successfully with ID: ${docRef.id} in collection: ${this.collectionName}`);
+      console.log(
+        `✅ Document created successfully with ID: ${docRef.id} in collection: ${this.collectionName}`
+      );
       return { success: true, data: docRef.id };
     } catch (error) {
-      console.error(`❌ Error creating document in collection ${this.collectionName}:`, error);
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-      
+      console.error(
+        `❌ Error creating document in collection ${this.collectionName}:`,
+        error
+      );
+      console.error(
+        'Error stack:',
+        error instanceof Error ? error.stack : 'No stack trace'
+      );
+
       // Handle specific Firebase errors
-      if (error instanceof Error && error.message.includes('Target ID already exists')) {
-        console.error(`🚨 Target ID conflict detected in collection: ${this.collectionName}`);
-        console.error('This suggests a component is trying to create a document with a specific ID instead of using auto-generated IDs');
+      if (
+        error instanceof Error &&
+        error.message.includes('Target ID already exists')
+      ) {
+        console.error(
+          `🚨 Target ID conflict detected in collection: ${this.collectionName}`
+        );
+        console.error(
+          'This suggests a component is trying to create a document with a specific ID instead of using auto-generated IDs'
+        );
       }
-      
+
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -357,19 +374,19 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
   async getContent(): Promise<ApiResponse<HomepageContent | null>> {
     try {
       console.log('🔄 HomepageService.getContent() called');
-      
+
       // Try using collection query instead of direct doc access to avoid ID conflicts
       const collectionRef = collection(
         getFirestoreSync()!,
         FIREBASE_COLLECTIONS.HOMEPAGE
       );
       console.log('📄 Attempting to query homepage collection');
-      
+
       const querySnapshot = await getDocs(collectionRef);
-      
+
       // Look for the 'content' document
       let contentDoc: any = null;
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(doc => {
         if (doc.id === 'content') {
           contentDoc = doc;
         }
@@ -388,24 +405,32 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
       }
     } catch (error) {
       console.error('❌ Error getting homepage content:', error);
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-      
+      console.error(
+        'Error stack:',
+        error instanceof Error ? error.stack : 'No stack trace'
+      );
+
       // If collection query fails, try direct doc access as fallback
-      if (error instanceof Error && error.message.includes('Target ID already exists')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Target ID already exists')
+      ) {
         console.log('🔄 Collection query failed, trying direct doc access...');
         try {
           // Wait a bit before retrying
           await new Promise(resolve => setTimeout(resolve, 2000));
-          
+
           const docRef = doc(
             getFirestoreSync()!,
             FIREBASE_COLLECTIONS.HOMEPAGE,
             'content'
           );
           const docSnap = await getDoc(docRef);
-          
+
           if (docSnap.exists()) {
-            console.log('✅ Direct doc access successful, homepage content found');
+            console.log(
+              '✅ Direct doc access successful, homepage content found'
+            );
             const data = {
               id: docSnap.id,
               ...this.convertTimestamp(docSnap.data()),
@@ -416,10 +441,14 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
           console.error('❌ Direct doc access also failed:', retryError);
         }
       }
-      
+
       // For any error, return null to prevent dashboard crash
-      console.warn('⚠️ Homepage content loading failed, returning null to prevent dashboard crash');
-      console.warn('   This allows the admin page to load with default content instead of crashing');
+      console.warn(
+        '⚠️ Homepage content loading failed, returning null to prevent dashboard crash'
+      );
+      console.warn(
+        '   This allows the admin page to load with default content instead of crashing'
+      );
       return { success: true, data: null };
     }
   }
@@ -429,7 +458,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
   ): Promise<ApiResponse<void>> {
     try {
       console.log('🔄 HomepageService.updateContent() called');
-      
+
       const docRef = doc(
         getFirestoreSync()!,
         FIREBASE_COLLECTIONS.HOMEPAGE,
@@ -447,14 +476,22 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
       return { success: true };
     } catch (error) {
       console.error('❌ Error updating homepage content:', error);
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-      
+      console.error(
+        'Error stack:',
+        error instanceof Error ? error.stack : 'No stack trace'
+      );
+
       // Handle specific Firebase errors
-      if (error instanceof Error && error.message.includes('Target ID already exists')) {
-        console.warn('⚠️ Target ID conflict detected, skipping update to prevent crash');
+      if (
+        error instanceof Error &&
+        error.message.includes('Target ID already exists')
+      ) {
+        console.warn(
+          '⚠️ Target ID conflict detected, skipping update to prevent crash'
+        );
         return { success: true }; // Return success to prevent dashboard from breaking
       }
-      
+
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -469,7 +506,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
         FIREBASE_COLLECTIONS.HOMEPAGE,
         'content'
       );
-      
+
       const defaultContent = {
         headline: {
           en: 'Welcome to Veloz',
@@ -518,7 +555,7 @@ export class HomepageService extends BaseFirebaseService<HomepageContent> {
         },
         theme: {
           overlayOpacity: 0.5,
-          gradientColors: ['#000000', '#000000'],
+          gradientColors: ['hsl(var(--foreground))', 'hsl(var(--foreground))'],
         },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -1096,7 +1133,7 @@ export const safeHomepageContentOperation = async <T>(
     // Wait for the current operation to complete
     await homepageContentOperation;
   }
-  
+
   homepageContentOperation = operation();
   try {
     const result = await homepageContentOperation;
