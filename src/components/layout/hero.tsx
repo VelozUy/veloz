@@ -156,64 +156,57 @@ export default function Hero({
       <div
         className={`relative z-10 flex flex-col items-center justify-center text-center px-4 md:px-8 lg:px-8 xl:px-16 animate-fade-in h-full ${heroClasses.text}`}
       >
-        {/* Logo Section - Responsive sizing with flexible spacing */}
-        <div
-          className="flex justify-center items-center w-full flex-shrink-0"
-          style={{ flex: '0 0 auto' }}
-        >
-          <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 aspect-[2/1]">
+        {/* Centered content container */}
+        <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16">
+          {/* Logo Section - Massive logo in center */}
+          <div className="w-11/12 sm:w-10/12 md:w-11/12 lg:w-10/12 xl:w-9/12 aspect-[2/1]">
             <Image
               src="/veloz-logo-blue.svg"
               alt="Veloz Logo"
-              width={800}
-              height={400}
+              width={1600}
+              height={800}
               className="w-full h-full object-contain"
               priority
             />
           </div>
-        </div>
 
-        {/* Spacer - Flexible space between logo and headline */}
-        <div className="flex-1 min-h-0 flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center">
-            {/* Headline - Responsive text sizing */}
-            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl max-w-3xl mx-auto font-medium px-4">
-              {displayHeadline}
-            </h2>
+          {/* Headline - Right under the logo */}
+          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl max-w-4xl mx-auto font-medium px-4">
+            {displayHeadline}
+          </h2>
+
+          {/* CTA Buttons - Right under the headline */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center">
+            <Button
+              size="lg"
+              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              asChild
+            >
+              <Link href={getLocalizedPath('/about', locale)}>
+                {translations?.homepage?.hero?.cta?.about || 'Sobre Nosotros'}
+              </Link>
+            </Button>
+
+            <Button
+              size="lg"
+              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              asChild
+            >
+              <Link href={getLocalizedPath('/our-work', locale)}>
+                {translations?.homepage?.hero?.cta?.work || 'Nuestro Trabajo'}
+              </Link>
+            </Button>
+
+            <Button
+              size="lg"
+              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              asChild
+            >
+              <Link href={getLocalizedPath('/contact', locale)}>
+                {translations?.navigation?.contact || 'Contacto'}
+              </Link>
+            </Button>
           </div>
-        </div>
-
-        {/* CTA Buttons - Fixed at bottom with flexible spacing */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center flex-shrink-0 pb-4 sm:pb-6 md:pb-8">
-          <Button
-            size="lg"
-            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
-            asChild
-          >
-            <Link href={getLocalizedPath('/about', locale)}>
-              {translations?.homepage?.hero?.cta?.about || 'Sobre Nosotros'}
-            </Link>
-          </Button>
-
-          <Button
-            size="lg"
-            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
-            asChild
-          >
-            <Link href={getLocalizedPath('/our-work', locale)}>
-              {translations?.homepage?.hero?.cta?.work || 'Nuestro Trabajo'}
-            </Link>
-          </Button>
-
-          <Button
-            size="lg"
-            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
-            asChild
-          >
-            <Link href={getLocalizedPath('/contact', locale)}>
-              {translations?.navigation?.contact || 'Contacto'}
-            </Link>
-          </Button>
         </div>
       </div>
     </section>
