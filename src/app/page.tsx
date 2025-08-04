@@ -62,8 +62,12 @@ export default function Home() {
         headline={headline}
         backgroundVideo={backgroundVideo}
         logoUrl={logoUrl}
-        backgroundImages={fallbackImages.length > 0 ? fallbackImages : undefined}
+        backgroundImages={
+          fallbackImages.length > 0 ? fallbackImages : undefined
+        }
         isLogoLoading={false} // Static content, no loading needed
+        translations={staticContent.translations}
+        locale={locale}
       />
     </main>
   );

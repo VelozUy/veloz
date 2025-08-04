@@ -191,6 +191,11 @@ body {
   padding-top: 5rem; /* 80px to match navigation height */
 }
 
+/* Remove top padding on homepage since it doesn't have navigation */
+body:has(main > section:first-child) {
+  padding-top: 0;
+}
+
 html {
   overflow-x: hidden;
 }

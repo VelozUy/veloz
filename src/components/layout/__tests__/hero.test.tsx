@@ -129,15 +129,15 @@ describe('Hero Component', () => {
 
       const logo = screen.getByAltText('Veloz Logo');
       expect(logo).toBeInTheDocument();
-      expect(logo).toHaveAttribute('src', 'logo.png');
+      expect(logo).toHaveAttribute('src', '/veloz-logo-blue.svg');
     });
 
-    it('hides logo when loading', () => {
+    it('always shows logo regardless of loading state', () => {
       render(
         <Hero {...defaultProps} logoUrl="logo.png" isLogoLoading={true} />
       );
 
-      expect(screen.queryByAltText('Veloz Logo')).not.toBeInTheDocument();
+      expect(screen.getByAltText('Veloz Logo')).toBeInTheDocument();
     });
 
     it('animates logo appearance', async () => {
@@ -156,7 +156,7 @@ describe('Hero Component', () => {
 
       expect(screen.getByText('Sobre Nosotros')).toBeInTheDocument();
       expect(screen.getByText('Nuestro Trabajo')).toBeInTheDocument();
-      expect(screen.getByText('Trabaja con Nosotros')).toBeInTheDocument();
+      expect(screen.getByText('Contacto')).toBeInTheDocument();
     });
 
     it('handles CTA button clicks', async () => {

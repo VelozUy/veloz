@@ -4,8 +4,15 @@ import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { VelozLogo } from '@/components/shared';
 import { useHeroBackground } from '@/hooks/useBackground';
+
+// Helper function for localized paths (same as navigation component)
+function getLocalizedPath(path: string, locale: string): string {
+  if (locale === 'es') {
+    return path; // Spanish is default, no prefix
+  }
+  return `/${locale}${path}`;
+}
 
 interface HeroProps {
   headline?: string;
@@ -13,6 +20,8 @@ interface HeroProps {
   backgroundImages?: string[];
   logoUrl?: string;
   isLogoLoading?: boolean;
+  translations?: Record<string, any>;
+  locale?: string;
 }
 
 export default function Hero({
@@ -21,12 +30,11 @@ export default function Hero({
   backgroundImages = [],
   logoUrl,
   isLogoLoading = false,
+  translations,
+  locale = 'es',
 }: HeroProps) {
   const [videoCanPlay, setVideoCanPlay] = useState(false);
   const [previousVideoUrl, setPreviousVideoUrl] = useState<string>('');
-  const [logoAnimationPhase, setLogoAnimationPhase] = useState<
-    'hidden' | 'small' | 'large'
-  >('hidden');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Use the new background system for hero sections
@@ -60,28 +68,6 @@ export default function Hero({
     }
   }, [backgroundVideo, previousVideoUrl]);
 
-  // Faster coordinated logo and title animation (independent of video)
-  useEffect(() => {
-    if (logoUrl && !isLogoLoading) {
-      // Step 1: Show logo small after 150ms (faster)
-      const timer1 = setTimeout(() => {
-        setLogoAnimationPhase('small');
-      }, 150);
-
-      // Step 2: Grow logo and shrink title after another 300ms (faster)
-      const timer2 = setTimeout(() => {
-        setLogoAnimationPhase('large');
-      }, 400);
-
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-      };
-    } else {
-      setLogoAnimationPhase('hidden');
-    }
-  }, [logoUrl, isLogoLoading]);
-
   // Video event handlers - ensure video stays visible once ready
   const handleVideoCanPlay = () => {
     console.log('🎥 Video can play - setting visible');
@@ -102,14 +88,12 @@ export default function Hero({
     console.log('🎥 Video state:', {
       videoCanPlay,
       backgroundVideo: !!backgroundVideo,
-      logoAnimationPhase,
-      logoUrl: !!logoUrl,
     });
-  }, [videoCanPlay, backgroundVideo, logoAnimationPhase, logoUrl]);
+  }, [videoCanPlay, backgroundVideo]);
 
   return (
     <section
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden rounded-tl-[3rem] ${heroClasses.background}`}
+      className={`relative h-screen flex items-center justify-center overflow-hidden ${heroClasses.background}`}
     >
       {/* Background Video or Images */}
       {backgroundVideo ? (
@@ -170,92 +154,65 @@ export default function Hero({
 
       {/* Main content */}
       <div
-        className={`relative z-10 text-center px-4 md:px-8 lg:px-8 xl:px-16 animate-fade-in ${heroClasses.text}`}
+        className={`relative z-10 flex flex-col items-center justify-center text-center px-4 md:px-8 lg:px-8 xl:px-16 animate-fade-in h-full ${heroClasses.text}`}
       >
-        {/* Logo and Brand Section - Dynamic centering based on animation phase */}
+        {/* Logo Section - Responsive sizing with flexible spacing */}
         <div
-          className={`transition-all duration-500 ease-out ${
-            logoAnimationPhase === 'hidden'
-              ? 'mb-16' // More space when title is centered
-              : 'mb-12' // Normal space when logo is present
-          }`}
+          className="flex justify-center items-center w-full flex-shrink-0"
+          style={{ flex: '0 0 auto' }}
         >
-          {/* Logo Container - Animates from top to center */}
-          <div
-            className={`relative w-full flex justify-center transition-all duration-500 ease-out ${
-              logoAnimationPhase === 'hidden'
-                ? 'h-0 overflow-hidden opacity-0 -translate-y-8' // Hidden above, no space
-                : logoAnimationPhase === 'small'
-                  ? 'h-32 md:h-40 opacity-100 translate-y-0' // Small, visible
-                  : 'h-48 md:h-64 opacity-100 translate-y-0' // Large, centered
-            }`}
-          >
-            <div className="relative w-2/3 max-w-2xl h-full flex items-center justify-center">
-              {logoUrl && !isLogoLoading && logoAnimationPhase !== 'hidden' && (
-                <Image
-                  src={logoUrl}
-                  alt="Veloz Logo"
-                  width={800}
-                  height={600}
-                  className={`object-contain transition-all duration-500 ease-out ${
-                    logoAnimationPhase === 'small'
-                      ? 'w-1/3 h-auto opacity-100' // Small logo within container
-                      : 'w-full h-auto opacity-100' // Large logo fills container
-                  }`}
-                  priority
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                  quality={90}
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Brand Title - Starts centered, moves down but doesn't shrink */}
-          <div
-            className={`relative transition-all duration-500 ease-out ${
-              logoAnimationPhase === 'hidden'
-                ? 'transform translate-y-0' // Centered when no logo
-                : 'transform translate-y-8' // Move down when logo present
-            }`}
-          >
-            <VelozLogo
-              variant="full"
-              size="sm"
-              logoSize="sm"
-              className="text-primary-foreground"
+          <div className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 aspect-[2/1]">
+            <Image
+              src="/veloz-logo-blue.svg"
+              alt="Veloz Logo"
+              width={800}
+              height={400}
+              className="w-full h-full object-contain"
+              priority
             />
           </div>
         </div>
 
-        {/* Headline - Always visible immediately */}
-        <h2 className="text-body-lg mb-16 max-w-3xl mx-auto font-medium">
-          {displayHeadline}
-        </h2>
+        {/* Spacer - Flexible space between logo and headline */}
+        <div className="flex-1 min-h-0 flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
+            {/* Headline - Responsive text sizing */}
+            <h2 className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl max-w-3xl mx-auto font-medium px-4">
+              {displayHeadline}
+            </h2>
+          </div>
+        </div>
 
-        {/* CTA Buttons - Always visible immediately */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        {/* CTA Buttons - Fixed at bottom with flexible spacing */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center flex-shrink-0 pb-4 sm:pb-6 md:pb-8">
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
-            <Link href="/about">Sobre Nosotros</Link>
+            <Link href={getLocalizedPath('/about', locale)}>
+              {translations?.homepage?.hero?.cta?.about || 'Sobre Nosotros'}
+            </Link>
           </Button>
 
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
-            <Link href="/our-work">Nuestro Trabajo</Link>
+            <Link href={getLocalizedPath('/our-work', locale)}>
+              {translations?.homepage?.hero?.cta?.work || 'Nuestro Trabajo'}
+            </Link>
           </Button>
 
           <Button
             size="lg"
-            className="px-8 py-6 text-body-md font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+            className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
             asChild
           >
-            <Link href="/contact">Trabaja con Nosotros</Link>
+            <Link href={getLocalizedPath('/contact', locale)}>
+              {translations?.navigation?.contact || 'Contacto'}
+            </Link>
           </Button>
         </div>
       </div>
