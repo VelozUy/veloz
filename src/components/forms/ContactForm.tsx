@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
+import { getBackgroundClasses } from '@/lib/background-utils';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
 
@@ -423,20 +424,46 @@ export default function ContactForm({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Contact Form - Full Top Section */}
-      <section className="py-8 px-4 sm:px-8 lg:px-16 bg-background">
+      {/* Hero Section - Enhanced hierarchy */}
+      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
+        {' '}
+        {/* Enhanced spacing */}
         <div className="max-w-border-64 mx-auto">
-          {/* Title and Subtitle */}
-          <div className="text-left mb-12 space-y-4">
-            <h1 className="text-section-title-lg font-body font-semibold text-foreground">
-              {t.title}
+          <div className="text-center space-y-8">
+            {' '}
+            {/* Enhanced spacing */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-body font-bold uppercase tracking-wide leading-tight">
+              {translations.contact.title}
             </h1>
-            <p className="text-body-lg text-muted-foreground leading-relaxed">
-              {t.subtitle}
+            <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed">
+              {translations.contact.subtitle}
             </p>
           </div>
+        </div>
+      </section>
 
-          <form onSubmit={onSubmit} className="space-y-8">
+      {/* Contact Form Section - Enhanced hierarchy */}
+      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16 bg-muted/30">
+        {' '}
+        {/* Enhanced spacing */}
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            {' '}
+            {/* Enhanced spacing */}
+            <h2 className="text-3xl md:text-4xl font-body font-bold mb-6 text-foreground uppercase tracking-wide">
+              {translations.contact.form.title}
+            </h2>
+            <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>{' '}
+            {/* Enhanced accent */}
+          </div>
+
+          <form
+            onSubmit={onSubmit}
+            className={cn(
+              'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12', // Enhanced visual hierarchy
+              getBackgroundClasses('form').background
+            )}
+          >
             {/* Multi-line format */}
             <div className="text-lg sm:text-xl md:text-[2.25rem] leading-relaxed space-y-8">
               {/* Line 1: Name and Company */}
