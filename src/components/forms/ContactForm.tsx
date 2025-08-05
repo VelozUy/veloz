@@ -438,7 +438,7 @@ export default function ContactForm({
 
           <form onSubmit={onSubmit} className="space-y-8">
             {/* Multi-line format */}
-            <div className="text-[2.25rem] leading-relaxed space-y-8">
+            <div className="text-lg sm:text-xl md:text-[2.25rem] leading-relaxed space-y-8">
               {/* Line 1: Name and Company */}
               <div className="md:flex md:flex-wrap md:items-center md:gap-2">
                 <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
@@ -468,7 +468,7 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('name')}
                       onBlur={() => setFocusedField(null)}
                       data-field="name"
-                      className="!text-[1rem] !border-none !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none !ring-0 !ring-offset-0"
+                      className="!text-sm sm:!text-base md:!text-[1rem] !border-none !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none !ring-0 !ring-offset-0"
                       style={{
                         border: 'none !important',
                         outline: 'none !important',
@@ -503,7 +503,7 @@ export default function ContactForm({
                       }
                       onFocus={() => setFocusedField('company')}
                       onBlur={() => setFocusedField(null)}
-                      className="!text-[1rem] !border-0 !border-transparent bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 !border-transparent bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                 </div>
@@ -540,7 +540,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('contactMethod')}
                         onBlur={() => setFocusedField(null)}
                         required
-                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
+                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -593,7 +593,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('email')}
                         onBlur={() => setFocusedField(null)}
                         data-field="email"
-                        className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                        className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   ) : (
@@ -624,7 +624,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('phone')}
                         onBlur={() => setFocusedField(null)}
                         data-field="phone"
-                        className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                        className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   )}
@@ -663,7 +663,7 @@ export default function ContactForm({
                         onBlur={() => setFocusedField(null)}
                         data-field="eventType"
                         required
-                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
+                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
                       >
                         <option
                           value=""
@@ -718,7 +718,7 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('location')}
                       onBlur={() => setFocusedField(null)}
                       data-field="location"
-                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                 </div>
@@ -753,7 +753,7 @@ export default function ContactForm({
                       onFocus={() => setFocusedField('attendees')}
                       onBlur={() => setFocusedField(null)}
                       data-field="attendees"
-                      className="!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                     />
                   </div>
                   <span className="block md:inline">personas</span>
@@ -798,7 +798,7 @@ export default function ContactForm({
                         }
                         placeholder="seleccionar servicios"
                         data-field="services"
-                        className="w-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
+                        className="w-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
                       />
                     </div>
                   </div>
@@ -837,7 +837,7 @@ export default function ContactForm({
                         onFocus={() => setFocusedField('eventDate')}
                         onBlur={() => setFocusedField(null)}
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full h-full !text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center"
+                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center"
                       />
                     </div>
                   </div>
@@ -872,7 +872,7 @@ export default function ContactForm({
                     onChange={e => handleInputChange('message', e.target.value)}
                     onFocus={() => setFocusedField('message')}
                     onBlur={() => setFocusedField(null)}
-                    className="!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
+                    className="!text-sm sm:!text-base md:!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
                   />
                 </div>
               </div>
