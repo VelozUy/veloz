@@ -12,11 +12,33 @@ interface AboutContentProps {
   content: LocalizedContent;
 }
 
+// Philosophy items data
+const philosophyItems = [
+  {
+    title: 'Calidad',
+    description:
+      'Porque cada persona que nos elige merece lo mejor, desde el primer clic hasta la entrega final.',
+    icon: Trophy,
+  },
+  {
+    title: 'Sensibilidad',
+    description:
+      'Porque en cada evento hay historias reales, personas que sienten, viven y confían en que sepamos capturar eso irrepetible.',
+    icon: Heart,
+  },
+  {
+    title: 'Velocidad',
+    description:
+      'Porque entendemos que el tiempo importa y las historias no esperan. Respondemos con agilidad y con la responsabilidad de estar cuando se nos necesita.',
+    icon: Zap,
+  },
+];
+
 export default function AboutContent({ content }: AboutContentProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section - Enhanced hierarchy */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
         {' '}
         {/* Enhanced spacing */}
         <div className="max-w-border-64 mx-auto">
@@ -35,7 +57,7 @@ export default function AboutContent({ content }: AboutContentProps) {
       </section>
 
       {/* Philosophy Section - Enhanced hierarchy */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16 bg-muted/30">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 bg-muted/30">
         {' '}
         {/* Enhanced spacing */}
         <div className="max-w-border-64 mx-auto space-y-12">
@@ -48,44 +70,29 @@ export default function AboutContent({ content }: AboutContentProps) {
             <div className="w-32 h-1 bg-primary rounded-full"></div>{' '}
             {/* Enhanced accent */}
           </div>
-          <div
-            className="prose prose-xl max-w-5xl text-foreground prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-em:text-foreground leading-relaxed" // Enhanced typography
-            dangerouslySetInnerHTML={{
-              __html: (
-                content.content.about.philosophy.description ||
-                'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.'
-              )
-                .replace(
-                  /^### (.*$)/gim,
-                  '<h3 class="text-xl font-semibold mb-4">$1</h3>'
-                )
-                .replace(
-                  /^## (.*$)/gim,
-                  '<h2 class="text-2xl font-semibold mb-6">$1</h2>'
-                )
-                .replace(
-                  /^# (.*$)/gim,
-                  '<h1 class="text-3xl font-bold mb-8">$1</h1>'
-                )
-                .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-                .replace(
-                  /`(.*?)`/gim,
-                  '<code class="bg-muted px-2 py-1 rounded text-sm">$1</code>'
-                )
-                .replace(
-                  /\[([^\]]+)\]\(([^)]+)\)/gim,
-                  '<a href="$2" class="text-primary hover:underline" target="_blank" rel="noopener noreferrer">$1</a>'
-                )
-                .replace(/\n\n/gim, '</p><p class="mb-6">')
-                .replace(/^(.+)$/gim, '<p class="mb-6">$1</p>'),
-            }}
-          />
+          {/* Philosophy Items in Blue Blocks */}
+          <div className="space-y-6">
+            {philosophyItems.map((item, index) => (
+              <div
+                key={index}
+                className="bg-primary rounded-lg p-8 md:p-10 shadow-lg"
+              >
+                <div className="text-center md:text-left">
+                  <h3 className="text-2xl md:text-3xl font-body font-bold text-primary-foreground uppercase tracking-wide mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-lg md:text-xl text-primary-foreground/90 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Methodology Section - Enhanced hierarchy */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
         {' '}
         {/* Enhanced spacing */}
         <div className="max-w-border-64 mx-auto space-y-12">
