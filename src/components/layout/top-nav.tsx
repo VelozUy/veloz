@@ -66,6 +66,10 @@ export default function TopNav({ translations, locale }: TopNavProps) {
       name: translations.navigation.about,
       href: getLocalizedPath('/about', locale),
     },
+    {
+      name: translations.navigation.contact,
+      href: getLocalizedPath('/contact', locale),
+    },
   ];
 
   const contactItem = {
@@ -104,12 +108,6 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
             {/* Right: Contact Link and Language Switcher */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link
-                href={contactItem.href}
-                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium"
-              >
-                {contactItem.name}
-              </Link>
               <LocaleSwitcher
                 currentLocale={locale}
                 textClassName="text-primary-foreground hover:text-primary"
@@ -199,15 +197,6 @@ export default function TopNav({ translations, locale }: TopNavProps) {
 
             {/* Right: Contact Link and Language Switcher */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link
-                href={contactItem.href}
-                className={cn(
-                  'text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium',
-                  isActive(contactItem.href) && 'text-primary-foreground'
-                )}
-              >
-                {contactItem.name}
-              </Link>
               <LocaleSwitcher
                 currentLocale={locale}
                 textClassName="text-primary-foreground hover:text-primary"
@@ -250,18 +239,6 @@ export default function TopNav({ translations, locale }: TopNavProps) {
                 </Link>
               );
             })}
-
-            {/* Contact Link for Mobile */}
-            <Link
-              href={contactItem.href}
-              className={cn(
-                'block px-4 py-3 text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium',
-                isActive(contactItem.href) && 'text-primary-foreground'
-              )}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {contactItem.name}
-            </Link>
 
             {/* Language Switcher for Mobile */}
             <div className="pt-4 border-t border-primary-foreground/10">

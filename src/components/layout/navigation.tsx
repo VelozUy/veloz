@@ -84,11 +84,6 @@ export default function Navigation({ translations, locale }: NavigationProps) {
       href: getLocalizedPath('/about', locale),
       icon: MessageCircle,
     },
-    {
-      name: translations.navigation.contact,
-      href: getLocalizedPath('/contact', locale),
-      icon: Phone,
-    },
   ];
 
   // Prevent hydration mismatch by ensuring consistent initial render
@@ -97,10 +92,23 @@ export default function Navigation({ translations, locale }: NavigationProps) {
       <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
         <div className="w-full px-4 sm:px-8 lg:px-16">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+            {/* Contact Link (Left) */}
+            <div className="flex items-center">
+              <Link
+                href={getLocalizedPath('/contact', locale)}
+                className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
+              >
+                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium hidden sm:inline">
+                  {translations.navigation.contact}
+                </span>
+              </Link>
+            </div>
+
+            {/* Logo (Center) */}
             <Link
               href={getLocalizedPath('/', locale)}
-              className="flex items-center space-x-2 group"
+              className="flex items-center space-x-2 group absolute left-1/2 transform -translate-x-1/2"
             >
               <Camera className="w-8 h-8 text-primary-foreground group-hover:text-primary transition-colors" />
               <span className="text-2xl font-logo font-normal text-primary-foreground">
@@ -108,8 +116,8 @@ export default function Navigation({ translations, locale }: NavigationProps) {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            {/* Desktop Navigation & CTA (Right) */}
+            <div className="hidden md:flex items-center space-x-4">
               <Link
                 href={getLocalizedPath('/our-work', locale)}
                 className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
@@ -124,17 +132,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">About & FAQ</span>
               </Link>
-              <Link
-                href={getLocalizedPath('/contact', locale)}
-                className="flex items-center space-x-2 text-primary-foreground hover:text-primary transition-colors duration-200 group"
-              >
-                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">Work With Us</span>
-              </Link>
-            </div>
-
-            {/* CTA Button (Desktop) */}
-            <div className="hidden md:block">
+              <LocaleSwitcher currentLocale={locale} />
               <Link href={getLocalizedPath('/contact', locale)}>
                 <Button
                   className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
@@ -168,10 +166,23 @@ export default function Navigation({ translations, locale }: NavigationProps) {
     >
       <div className="w-full px-4 sm:px-8 lg:px-16">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* Contact Link (Left) */}
+          <div className="flex items-center">
+            <Link
+              href={getLocalizedPath('/contact', locale)}
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group hover:animate-veloz-hover"
+            >
+              <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span className="font-medium hidden sm:inline">
+                {translations.navigation.contact}
+              </span>
+            </Link>
+          </div>
+
+          {/* Logo (Center) */}
           <Link
             href={getLocalizedPath('/', locale)}
-            className="flex items-center space-x-2 group"
+            className="flex items-center space-x-2 group absolute left-1/2 transform -translate-x-1/2"
           >
             <Camera className="w-8 h-8 text-primary-foreground group-hover:text-primary transition-colors" />
             <span className="text-2xl font-logo font-normal text-primary-foreground">
@@ -179,29 +190,25 @@ export default function Navigation({ translations, locale }: NavigationProps) {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation & CTA (Right) */}
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map(item => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+                  className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors duration-200 group hover:animate-veloz-hover"
                 >
                   <Icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span className="font-medium">{item.name}</span>
                 </Link>
               );
             })}
-          </div>
-
-          {/* Language Switcher & CTA Button (Desktop) */}
-          <div className="hidden md:flex items-center space-x-4">
             <LocaleSwitcher currentLocale={locale} />
             <Link href={getLocalizedPath('/contact', locale)}>
               <Button
-                className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300 hover:animate-veloz-hover`} // Animation System Enhancement: micro-interaction
+                className={`${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300 hover:animate-veloz-hover`}
               >
                 {translations.homepage.hero.cta.contact}
               </Button>
@@ -226,6 +233,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t border-border">
             <div className="px-4 py-6 space-y-4">
+              {/* Contact link is already visible in header, so we don't duplicate it in mobile menu */}
               {navItems.map(item => {
                 const Icon = item.icon;
                 return (

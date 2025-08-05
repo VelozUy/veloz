@@ -40,6 +40,9 @@ export default function TopNavV2({ translations, locale }: TopNavV2Props) {
   const navItems: NavItem[] = generateNavItems(translations, locale);
   const contactItem = generateContactItem(translations, locale);
 
+  // Add contact link to the left side of the logo
+  const navItemsWithContact: NavItem[] = [...navItems, contactItem];
+
   // Create the logo component
   const logo = (
     <Link
@@ -50,15 +53,8 @@ export default function TopNavV2({ translations, locale }: TopNavV2Props) {
     </Link>
   );
 
-  // Create right-side items (contact link + language switcher)
+  // Create right-side items (only language switcher now)
   const rightItems = [
-    <Link
-      key="contact"
-      href={contactItem.href}
-      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors font-medium"
-    >
-      {contactItem.name}
-    </Link>,
     <LocaleSwitcher
       key="locale"
       currentLocale={locale}
@@ -69,7 +65,7 @@ export default function TopNavV2({ translations, locale }: TopNavV2Props) {
   return (
     <NavigationBar
       logo={logo}
-      navItems={navItems}
+      navItems={navItemsWithContact}
       rightItems={rightItems}
       // Use the same styling as the original TopNav
       backgroundClass="bg-foreground"

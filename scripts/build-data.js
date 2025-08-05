@@ -63,7 +63,7 @@ const STATIC_TRANSLATIONS = {
       home: 'Inicio',
       about: 'Sobre Nosotros',
       gallery: 'Nuestro Trabajo',
-      contact: 'Contacto',
+      contact: 'Trabajémos juntos',
     },
     homepage: {
       hero: {
@@ -71,7 +71,7 @@ const STATIC_TRANSLATIONS = {
         cta: {
           about: 'Sobre Nosotros',
           work: 'Nuestro Trabajo',
-          contact: 'Trabaja con Nosotros',
+          contact: 'Trabajémos juntos',
         },
       },
     },
@@ -359,7 +359,7 @@ const STATIC_TRANSLATIONS = {
       home: 'Home',
       about: 'About Us',
       gallery: 'Our Work',
-      contact: 'Contact',
+      contact: "Let's work together",
     },
     homepage: {
       hero: {
@@ -367,7 +367,7 @@ const STATIC_TRANSLATIONS = {
         cta: {
           about: 'About Us',
           work: 'Our Work',
-          contact: 'Work with Us',
+          contact: "Let's work together",
         },
       },
     },
@@ -653,7 +653,7 @@ const STATIC_TRANSLATIONS = {
       home: 'Início',
       about: 'Sobre Nós',
       gallery: 'Nosso Trabalho',
-      contact: 'Contato',
+      contact: 'Vamos trabalhar juntos',
     },
     homepage: {
       hero: {
@@ -661,7 +661,7 @@ const STATIC_TRANSLATIONS = {
         cta: {
           about: 'Sobre Nós',
           work: 'Nosso Trabalho',
-          contact: 'Trabalhe Conosco',
+          contact: 'Vamos trabalhar juntos',
         },
       },
     },
