@@ -75,7 +75,7 @@ export default function FAQSection({
     <section className="py-8 px-4 sm:px-8 lg:px-16 bg-muted/30">
       <div className="max-w-border-64 mx-auto space-y-8">
         <div className="text-left">
-          <h2 className="text-section-title-md font-body font-bold mb-4 text-foreground uppercase">
+          <h2 className="text-section-title-md font-title font-bold mb-4 text-foreground uppercase">
             {title}
           </h2>
           <div className="w-24 h-1 bg-primary rounded-full"></div>
@@ -88,10 +88,10 @@ export default function FAQSection({
               value={faq.id}
               className="border bg-card text-card-foreground rounded-none px-4 border-border shadow-sm"
             >
-              <AccordionTrigger className="text-left font-body font-bold hover:text-primary transition-colors py-4 text-card-foreground">
+              <AccordionTrigger className="text-left font-subtitle font-bold hover:text-primary transition-colors py-4 text-card-foreground">
                 {getFAQText(faq, 'question', locale)}
               </AccordionTrigger>
-              <AccordionContent className="text-body-md pb-4 pt-2 text-card-foreground">
+              <AccordionContent className="text-body-lg pb-4 pt-2 text-card-foreground font-body">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: getFAQText(faq, 'answer', locale),

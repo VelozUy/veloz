@@ -402,7 +402,7 @@ export default function ContactForm({
           </div>
 
           <div className="space-y-4 text-foreground">
-            <h1 className="text-section-title-lg font-body font-semibold">
+            <h1 className="text-section-title-lg font-title font-semibold">
               {t.success.title}
             </h1>
             <p className="text-body-lg leading-relaxed">{t.success.message}</p>
@@ -432,7 +432,7 @@ export default function ContactForm({
           <div className="text-center space-y-8">
             {' '}
             {/* Enhanced spacing */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-body font-bold uppercase tracking-wide leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight">
               {translations.contact.title}
             </h1>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed">
@@ -450,7 +450,7 @@ export default function ContactForm({
           <div className="text-center mb-12">
             {' '}
             {/* Enhanced spacing */}
-            <h2 className="text-3xl md:text-4xl font-body font-bold mb-6 text-foreground uppercase tracking-wide">
+            <h2 className="text-3xl md:text-4xl font-subtitle font-bold mb-6 text-foreground uppercase tracking-wide">
               {translations.contact.form.title}
             </h2>
             <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>{' '}

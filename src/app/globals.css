@@ -726,11 +726,20 @@ html {
 
 /* Font utility classes */
 .font-logo {
-  font-family: var(--font-logo);
+  font-family:
+    'REDJOLA', 'Bebas Neue', 'Oswald', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-title {
+  font-family: 'Roboto-BlackItalic', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-subtitle {
+  font-family: 'Roboto-MediumItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-body {
-  font-family: var(--font-body);
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-display {
@@ -743,7 +752,7 @@ html {
 
 /* Content font for body text (not titles) */
 .font-content {
-  font-family: var(--font-primary);
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
   font-weight: 300;
 }
 
@@ -752,64 +761,72 @@ html {
   font-size: 3rem;
   line-height: 1.2;
   font-weight: 400;
+  font-family: 'Roboto-BlackItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-heading-md {
   font-size: 2rem;
   line-height: 1.3;
   font-weight: 400;
+  font-family: 'Roboto-BlackItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-heading-sm {
   font-size: 1.5rem;
   line-height: 1.4;
   font-weight: 400;
+  font-family: 'Roboto-BlackItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Section titles with Roboto font for better readability */
+/* Section titles with Roboto Medium Italic for subtitles */
 .text-section-title-lg {
   font-size: 3rem;
   line-height: 1.2;
   font-weight: 400;
-  font-family: var(--font-body);
+  font-family: 'Roboto-MediumItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-section-title-md {
   font-size: 2rem;
   line-height: 1.3;
   font-weight: 400;
-  font-family: var(--font-body);
+  font-family: 'Roboto-MediumItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-section-title-sm {
   font-size: 1.5rem;
   line-height: 1.4;
   font-weight: 400;
-  font-family: var(--font-body);
+  font-family: 'Roboto-MediumItalic', ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Body text with Roboto Medium (not italic) */
 .text-body-lg {
   font-size: 1.125rem;
   line-height: 1.6;
   font-weight: 400;
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-body-md {
   font-size: 1rem;
   line-height: 1.6;
   font-weight: 400;
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-body-sm {
   font-size: 0.875rem;
   line-height: 1.6;
   font-weight: 400;
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
 }
 
 .text-body-xs {
   font-size: 0.75rem;
   line-height: 1.6;
   font-weight: 400;
+  font-family: 'Roboto-Medium', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Aspect ratio container for responsive images */

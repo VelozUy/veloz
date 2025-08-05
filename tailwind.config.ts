@@ -93,9 +93,11 @@ const config: Config = {
 
       // Typography for Veloz brand - REDJOLA only for logo, Roboto for everything else
       fontFamily: {
-        sans: ['Roboto-MediumItalic', 'sans-serif'],
-        serif: ['Roboto-MediumItalic', 'serif'],
-        mono: ['Roboto-MediumItalic', 'monospace'],
+        // Default fonts
+        sans: ['Roboto-Medium', 'sans-serif'],
+        serif: ['Roboto-Medium', 'serif'],
+        mono: ['Roboto-Medium', 'monospace'],
+
         // REDJOLA only for VELOZ brand title in logo
         logo: [
           'REDJOLA',
@@ -105,13 +107,27 @@ const config: Config = {
           'system-ui',
           'sans-serif',
         ],
-        // Roboto for all other text
-        body: [
+
+        // Title fonts - Roboto Black Italic
+        title: [
+          'Roboto-BlackItalic',
+          'ui-sans-serif',
+          'system-ui',
+          'sans-serif',
+        ],
+
+        // Subtitle fonts - Roboto Medium Italic
+        subtitle: [
           'Roboto-MediumItalic',
           'ui-sans-serif',
           'system-ui',
           'sans-serif',
         ],
+
+        // Body content fonts - Roboto Medium (not italic)
+        body: ['Roboto-Medium', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+
+        // Legacy support
         display: 'var(--font-display)',
         text: 'var(--font-text)',
       },

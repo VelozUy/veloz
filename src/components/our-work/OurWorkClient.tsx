@@ -168,7 +168,7 @@ export default function OurWorkClient({
             <div className="flex items-center justify-center py-12 px-8 md:px-16">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground font-content">
+                <p className="text-muted-foreground font-body">
                   Cargando galería...
                 </p>
               </div>
@@ -178,7 +178,7 @@ export default function OurWorkClient({
           {/* Error State */}
           {loadError && (
             <div className="text-center py-12 px-8 md:px-16">
-              <p className="text-destructive mb-4 font-content">
+              <p className="text-destructive mb-4 font-body">
                 Error al cargar la galería: {loadError}
               </p>
               <button
@@ -229,10 +229,10 @@ export default function OurWorkClient({
                 />
               ) : (
                 <div className="text-center py-12 px-8 md:px-16">
-                  <p className="text-muted-foreground font-content">
+                  <p className="text-muted-foreground font-body">
                     No hay imágenes disponibles en este momento.
                   </p>
-                  <p className="text-sm text-muted-foreground mt-2 font-content">
+                  <p className="text-sm text-muted-foreground mt-2 font-body">
                     optimizedMedia.length: {optimizedMedia.length}
                   </p>
                 </div>

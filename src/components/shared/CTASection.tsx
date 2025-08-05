@@ -28,7 +28,7 @@ export default function CTASection({
     >
       <div className="max-w-border-64 mx-auto text-center">
         <h2 className="text-3xl font-bold mb-6">{title}</h2>
-        <p className="text-xl mb-8 opacity-90 font-content">{description}</p>
+        <p className="text-xl mb-8 opacity-90 font-body">{description}</p>
         <div className="flex justify-center">
           <Link href={primaryButtonHref}>
             <Button size="lg" variant="secondary">
