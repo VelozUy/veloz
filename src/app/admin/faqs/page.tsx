@@ -37,7 +37,7 @@ import {
   CheckCircle,
   AlertTriangle,
 } from 'lucide-react';
-import { db } from '@/lib/firebase';
+import { getFirestoreService } from '@/lib/firebase';
 import {
   collection,
   doc,
@@ -136,7 +136,11 @@ export default function FAQsAdminPage() {
   const loadFAQs = async () => {
     try {
       setLoading(true);
-      const faqsQuery = query(collection(db!, 'faqs'), orderBy('order', 'asc'));
+      const db = await getFirestoreService();
+      if (!db) {
+        throw new Error('Firebase Firestore not initialized');
+      }
+      const faqsQuery = query(collection(db, 'faqs'), orderBy('order', 'asc'));
       const snapshot = await getDocs(faqsQuery);
       const faqList: FAQ[] = [];
 
@@ -181,9 +185,13 @@ export default function FAQsAdminPage() {
     setError('');
 
     try {
+      const db = await getFirestoreService();
+      if (!db) {
+        throw new Error('Firebase Firestore not initialized');
+      }
       const maxOrder = Math.max(...faqs.map(faq => faq.order), 0);
 
-      await addDoc(collection(db!, 'faqs'), {
+      await addDoc(collection(db, 'faqs'), {
         question: createForm.question,
         answer: createForm.answer,
         category: createForm.category,
@@ -230,7 +238,11 @@ export default function FAQsAdminPage() {
     setError('');
 
     try {
-      await updateDoc(doc(db!, 'faqs', editFAQ.id), {
+      const db = await getFirestoreService();
+      if (!db) {
+        throw new Error('Firebase Firestore not initialized');
+      }
+      await updateDoc(doc(db, 'faqs', editFAQ.id), {
         question: editForm.question,
         answer: editForm.answer,
         category: editForm.category,
@@ -264,7 +276,11 @@ export default function FAQsAdminPage() {
     }
 
     try {
-      await deleteDoc(doc(db!, 'faqs', faq.id));
+      const db = await getFirestoreService();
+      if (!db) {
+        throw new Error('Firebase Firestore not initialized');
+      }
+      await deleteDoc(doc(db, 'faqs', faq.id));
       setSuccess('Pregunta frecuente eliminada exitosamente');
       setTimeout(() => setSuccess(''), 3000);
       loadFAQs();

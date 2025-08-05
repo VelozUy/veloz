@@ -161,7 +161,7 @@ const DateStep = memo(
         <Input
           type="date"
           value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-          onChange={(e) => {
+          onChange={e => {
             const date = e.target.value ? new Date(e.target.value) : undefined;
             onSelect(date);
           }}
@@ -251,12 +251,15 @@ const ContactStep = memo(
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <MessageCircle className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
+          <MessageCircle
+            className="w-4 h-4 mr-2 flex-shrink-0"
+            aria-hidden="true"
+          />
           <div className="text-left flex-1 min-w-0 overflow-hidden">
             <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
               {content.steps.contact.moreInfo.title}
             </div>
-            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere">
+            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere font-content">
               {content.steps.contact.moreInfo.subtitle}
             </div>
           </div>
@@ -274,7 +277,7 @@ const ContactStep = memo(
             <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
               {content.steps.contact.callMe.title}
             </div>
-            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere">
+            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere font-content">
               {content.steps.contact.callMe.subtitle}
             </div>
           </div>
@@ -333,7 +336,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  
+
   // Initialize contact message service
   const contactMessageService = new ContactMessageService();
 
@@ -465,7 +468,8 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
           source: 'widget' as const,
           isRead: false,
           status: 'new' as const,
-          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+          userAgent:
+            typeof navigator !== 'undefined' ? navigator.userAgent : '',
           metadata: {
             timestamp: new Date().toISOString(),
             locale: language,
@@ -474,7 +478,8 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
         };
 
         // Save to database using the base service create method
-        const saveResult = await contactMessageService.create(contactMessageData);
+        const saveResult =
+          await contactMessageService.create(contactMessageData);
         if (!saveResult.success) {
           throw new Error('Failed to save contact data');
         }
@@ -591,7 +596,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
           <PhoneStep
             content={widgetContent}
             phone={widgetData.phone}
-            onPhoneChange={(phone) => setWidgetData(prev => ({ ...prev, phone }))}
+            onPhoneChange={phone => setWidgetData(prev => ({ ...prev, phone }))}
           />
         );
       case 'complete':
@@ -610,7 +615,10 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
             <h3 className="text-lg font-semibold" id="success-title">
               ¡Gracias!
             </h3>
-            <p className="text-sm text-muted-foreground" id="success-message">
+            <p
+              className="text-sm text-muted-foreground font-content"
+              id="success-message"
+            >
               Nos pondremos en contacto contigo pronto.
             </p>
           </div>
@@ -711,7 +719,9 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
                 }}
                 disabled={isSubmitting || !widgetData.phone.trim()}
                 aria-label={
-                  isSubmitting ? 'Submitting phone number' : 'Submit phone number'
+                  isSubmitting
+                    ? 'Submitting phone number'
+                    : 'Submit phone number'
                 }
               >
                 {isSubmitting

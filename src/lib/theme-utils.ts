@@ -85,9 +85,9 @@ export const themeConfig: ThemeConfig = {
     sidebarRing: 'oklch(0.4891 0 0)',
   },
   fonts: {
-    sans: 'Roboto, sans-serif',
-    serif: 'Roboto, sans-serif',
-    mono: 'Roboto, sans-serif',
+    sans: 'Roboto-MediumItalic, sans-serif',
+    serif: 'Roboto-MediumItalic, serif',
+    mono: 'Roboto-MediumItalic, monospace',
   },
   radius: '0rem',
   shadows: {

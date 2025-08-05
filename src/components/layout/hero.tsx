@@ -159,27 +159,27 @@ export default function Hero({
         {/* Centered content container */}
         <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16">
           {/* Logo Section - Massive logo in center */}
-          <div className="w-11/12 sm:w-10/12 md:w-11/12 lg:w-10/12 xl:w-9/12 aspect-[2/1]">
+          <div className="w-11/12 sm:w-10/12 md:w-11/12 lg:w-10/12 xl:w-9/12 aspect-[2/1] mb-8 sm:mb-12 md:mb-16 lg:mb-20">
             <Image
               src="/veloz-logo-blue.svg"
               alt="Veloz Logo"
               width={1600}
               height={800}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain drop-shadow-2xl"
               priority
             />
           </div>
 
-          {/* Headline - Right under the logo */}
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl max-w-4xl mx-auto font-medium px-4">
+          {/* Headline - Enhanced typography hierarchy */}
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl max-w-5xl mx-auto font-medium px-4 mb-8 sm:mb-12 md:mb-16 leading-relaxed tracking-wide">
             {displayHeadline}
           </h2>
 
-          {/* CTA Buttons - Right under the headline */}
+          {/* CTA Buttons - Enhanced spacing and hierarchy */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center">
             <Button
               size="lg"
-              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              className="w-36 sm:w-44 md:w-52 px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 hover:animate-veloz-hover shadow-lg hover:shadow-xl transform hover:-translate-y-1" // Enhanced hierarchy and dynamism
               asChild
             >
               <Link href={getLocalizedPath('/about', locale)}>
@@ -189,7 +189,7 @@ export default function Hero({
 
             <Button
               size="lg"
-              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              className="w-36 sm:w-44 md:w-52 px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 hover:animate-veloz-hover shadow-lg hover:shadow-xl transform hover:-translate-y-1" // Enhanced hierarchy and dynamism
               asChild
             >
               <Link href={getLocalizedPath('/our-work', locale)}>
@@ -199,7 +199,7 @@ export default function Hero({
 
             <Button
               size="lg"
-              className="w-32 sm:w-40 md:w-48 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-6 text-xs sm:text-sm md:text-base font-medium transition-all duration-300 hover:animate-veloz-hover" // Animation System Enhancement: micro-interaction
+              className="w-36 sm:w-44 md:w-52 px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 hover:animate-veloz-hover shadow-lg hover:shadow-xl transform hover:-translate-y-1" // Enhanced hierarchy and dynamism
               asChild
             >
               <Link href={getLocalizedPath('/contact', locale)}>

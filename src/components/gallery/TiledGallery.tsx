@@ -449,7 +449,9 @@ export function TiledGallery({
   if (!images.length) {
     return (
       <div className={cn('text-center py-8 px-4 md:px-16', className)}>
-        <p className="text-muted-foreground">No images to display</p>
+        <p className="text-muted-foreground font-content">
+          No images to display
+        </p>
       </div>
     );
   }
@@ -488,15 +490,28 @@ export function TiledGallery({
       <div
         ref={containerRef}
         className={cn(
-          'tiled-gallery-container relative w-full px-4 md:px-16',
+          'tiled-gallery-container relative w-full px-4 md:px-16 py-8 md:py-16', // Enhanced spacing
           className
         )}
         role="region"
         aria-label={ariaLabel}
         style={{ contain: 'layout style' }}
       >
+        {/* Gallery Header - Enhanced hierarchy */}
+        <div className="mb-8 md:mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 tracking-wide">
+            Nuestro Trabajo
+          </h2>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Descubre la magia de los momentos que capturamos con pasión y
+            profesionalismo
+          </p>
+        </div>
+
         {/* Mobile Single Column Layout */}
-        <div className="space-y-4">
+        <div className="space-y-6 md:space-y-8">
+          {' '}
+          {/* Enhanced spacing */}
           {images.map((image, index) => {
             // On mobile, always render images for better UX (lazy loading disabled)
             const isVisible =
@@ -520,7 +535,7 @@ export function TiledGallery({
                 key={image.id}
                 data-item-id={image.id || `mobile-${index}`}
                 className={cn(
-                  'tiled-gallery-item group cursor-pointer relative overflow-hidden w-full',
+                  'tiled-gallery-item group cursor-pointer relative overflow-hidden w-full rounded-lg shadow-lg hover:shadow-xl', // Enhanced visual hierarchy
                   // PRESERVE CURRENT ANIMATIONS: hover and transition effects
                   'transition-all duration-300 ease-out hover:brightness-110',
                   'focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2'
@@ -660,7 +675,7 @@ export function TiledGallery({
                       {/* Error fallback - preserving current pattern */}
                       {hasError && (
                         <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                          <div className="text-muted-foreground text-sm">
+                          <div className="text-muted-foreground text-sm font-content">
                             Error loading image
                           </div>
                         </div>
@@ -873,7 +888,7 @@ export function TiledGallery({
                         {/* Error fallback - preserving current pattern */}
                         {hasError && (
                           <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                            <div className="text-muted-foreground text-sm">
+                            <div className="text-muted-foreground text-sm font-content">
                               Error loading image
                             </div>
                           </div>
