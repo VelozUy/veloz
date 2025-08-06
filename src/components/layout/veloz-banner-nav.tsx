@@ -107,10 +107,8 @@ export default function VelozBannerNav({
                 className="flex items-center justify-center group"
               >
                 <VelozLogo
-                  variant="full"
+                  variant="dark"
                   size="sm"
-                  logoSize="sm"
-                  logoVariant="dark"
                   className="text-foreground group-hover:text-primary transition-colors"
                 />
               </Link>
@@ -176,10 +174,8 @@ export default function VelozBannerNav({
                 className="flex items-center justify-center group"
               >
                 <VelozLogo
-                  variant="full"
+                  variant="dark"
                   size="sm"
-                  logoSize="sm"
-                  logoVariant="dark"
                   className="text-foreground group-hover:text-primary transition-colors"
                 />
               </Link>

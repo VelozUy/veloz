@@ -35,7 +35,7 @@ describe('VelozLogo', () => {
   });
 
   it('renders full variant with text', () => {
-    render(<VelozLogo variant="full" />);
+    render(<VelozLogo variant="dark" />);
     const text = screen.getByText('VELOZ');
     expect(text).toBeInTheDocument();
   });

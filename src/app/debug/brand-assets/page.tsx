@@ -42,10 +42,10 @@ export default function BrandAssetsDebug() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Light Logo</h3>
               <div className="space-y-2">
-                <VelozLogo variant="full" size="sm" logoVariant="light" />
-                <VelozLogo variant="full" size="md" logoVariant="light" />
-                <VelozLogo variant="full" size="lg" logoVariant="light" />
-                <VelozLogo variant="full" size="xl" logoVariant="light" />
+                <VelozLogo variant="text" size="sm" />
+                <VelozLogo variant="text" size="md" />
+                <VelozLogo variant="text" size="lg" />
+                <VelozLogo variant="text" size="xl" />
               </div>
             </div>
           </div>
@@ -83,37 +83,37 @@ export default function BrandAssetsDebug() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Dark Compact</h3>
               <div className="space-y-2">
-                <VelozLogo variant="compact" size="sm" logoVariant="dark" />
-                <VelozLogo variant="compact" size="md" logoVariant="dark" />
-                <VelozLogo variant="compact" size="lg" logoVariant="dark" />
-                <VelozLogo variant="compact" size="xl" logoVariant="dark" />
+                <VelozLogo variant="dark" size="sm" />
+                <VelozLogo variant="dark" size="md" />
+                <VelozLogo variant="dark" size="lg" />
+                <VelozLogo variant="dark" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Blue Compact</h3>
               <div className="space-y-2">
-                <VelozLogo variant="compact" size="sm" logoVariant="blue" />
-                <VelozLogo variant="compact" size="md" logoVariant="blue" />
-                <VelozLogo variant="compact" size="lg" logoVariant="blue" />
-                <VelozLogo variant="compact" size="xl" logoVariant="blue" />
+                <VelozLogo variant="blue" size="sm" />
+                <VelozLogo variant="blue" size="md" />
+                <VelozLogo variant="blue" size="lg" />
+                <VelozLogo variant="blue" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
               <h3 className="text-lg font-medium">White Compact</h3>
               <div className="space-y-2">
-                <VelozLogo variant="compact" size="sm" logoVariant="white" />
-                <VelozLogo variant="compact" size="md" logoVariant="white" />
-                <VelozLogo variant="compact" size="lg" logoVariant="white" />
-                <VelozLogo variant="compact" size="xl" logoVariant="white" />
+                <VelozLogo variant="white" size="sm" />
+                <VelozLogo variant="white" size="md" />
+                <VelozLogo variant="white" size="lg" />
+                <VelozLogo variant="white" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Light Compact</h3>
               <div className="space-y-2">
-                <VelozLogo variant="compact" size="sm" logoVariant="light" />
-                <VelozLogo variant="compact" size="md" logoVariant="light" />
-                <VelozLogo variant="compact" size="lg" logoVariant="light" />
-                <VelozLogo variant="compact" size="xl" logoVariant="light" />
+                <VelozLogo variant="text" size="sm" />
+                <VelozLogo variant="text" size="md" />
+                <VelozLogo variant="text" size="lg" />
+                <VelozLogo variant="text" size="xl" />
               </div>
             </div>
           </div>
@@ -129,9 +129,8 @@ export default function BrandAssetsDebug() {
               </h3>
               <div className="space-y-4">
                 <VelozLogo
-                  variant="full"
+                  variant="white"
                   size="md"
-                  logoVariant="white"
                   className="text-background"
                 />
                 <VelozIcon variant="light" size="md" />
@@ -140,7 +139,7 @@ export default function BrandAssetsDebug() {
             <div className="bg-muted p-8 rounded-lg">
               <h3 className="text-lg font-medium mb-4">Light Background</h3>
               <div className="space-y-4">
-                <VelozLogo variant="full" size="md" logoVariant="dark" />
+                <VelozLogo variant="dark" size="md" />
                 <VelozIcon variant="dark" size="md" />
               </div>
             </div>
@@ -150,9 +149,8 @@ export default function BrandAssetsDebug() {
               </h3>
               <div className="space-y-4">
                 <VelozLogo
-                  variant="full"
+                  variant="white"
                   size="md"
-                  logoVariant="white"
                   className="text-primary-foreground"
                 />
                 <VelozIcon variant="light" size="md" />
@@ -163,7 +161,7 @@ export default function BrandAssetsDebug() {
                 Accent Background
               </h3>
               <div className="space-y-4">
-                <VelozLogo variant="full" size="md" logoVariant="dark" />
+                <VelozLogo variant="dark" size="md" />
                 <VelozIcon variant="dark" size="md" />
               </div>
             </div>

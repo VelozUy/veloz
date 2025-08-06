@@ -72,9 +72,8 @@ export default function MinimalNavigation({
               className="flex items-center space-x-2 group"
             >
               <VelozLogo
-                variant="full"
+                variant="dark"
                 size="sm"
-                logoVariant="dark"
                 className="text-foreground group-hover:text-primary transition-colors"
               />
             </Link>
@@ -151,9 +150,8 @@ export default function MinimalNavigation({
             className="flex items-center space-x-2 group"
           >
             <VelozLogo
-              variant="full"
+              variant="dark"
               size="sm"
-              logoVariant="dark"
               className="text-foreground group-hover:text-primary transition-colors"
             />
           </Link>
