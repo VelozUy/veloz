@@ -253,6 +253,18 @@ This file contains all completed epics that have been archived from the active T
   - **Estimated Time**: 0.5 days
   - **Status**: ✅ Completed - Logo sizing optimized for mobile
 
+- [x] **VelozLogo Component Enhancement** - Fix dark logo variant and footer implementation ✅ **COMPLETED** (2025-01-27)
+  - **User Intent**: Ensure footer displays correct dark logo with visible icon
+  - **Acceptance Criteria**:
+    - Dark logo variant uses clean SVG paths from minified version ✅
+    - Footer displays proper dark logo with visible "hound" icon ✅
+    - Logo uses theme-consistent colors (fill-foreground) ✅
+    - Build passes successfully ✅
+    - Theme consistency check passes ✅
+  - **Files**: `src/components/shared/VelozLogo.tsx`, `src/components/shared/VelozFooter.tsx`, `public/veloz-logo-dark-minified.svg`
+  - **Estimated Time**: 0.5 days
+  - **Status**: ✅ Completed - Footer now displays correct dark logo with proper icon visibility
+
 #### 🟧 High Priority Tasks - COMPLETED
 
 - [x] **Comprehensive Testing** - Add tests for mobile navigation functionality ✅ **COMPLETED** (2025-01-27)
