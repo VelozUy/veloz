@@ -16,7 +16,6 @@ function getLocalizedPath(path: string, locale: string): string {
 }
 
 interface HeroProps {
-  headline?: string;
   backgroundVideo?: string;
   backgroundImages?: string[];
   logoUrl?: string;
@@ -26,7 +25,6 @@ interface HeroProps {
 }
 
 export default function Hero({
-  headline,
   backgroundVideo,
   backgroundImages = [],
   logoUrl,
@@ -40,10 +38,6 @@ export default function Hero({
 
   // Use the new background system for hero sections
   const { classes: heroClasses } = useHeroBackground();
-
-  // Display headline with fallback
-  const displayHeadline =
-    headline || 'Capturamos momentos únicos con pasión y profesionalismo';
 
   // Background image rotation
   useEffect(() => {
@@ -165,11 +159,6 @@ export default function Hero({
               <VelozLogo variant="blue" size="xl" className="drop-shadow-2xl" />
             </div>
           </div>
-
-          {/* Headline - Enhanced typography hierarchy */}
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl max-w-5xl mx-auto font-medium px-4 mb-8 sm:mb-12 md:mb-16 leading-relaxed tracking-wide">
-            {displayHeadline}
-          </h2>
 
           {/* CTA Buttons - Enhanced spacing and hierarchy */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center">

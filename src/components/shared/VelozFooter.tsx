@@ -16,7 +16,7 @@ export function VelozFooter({
       className={cn('relative bg-background overflow-hidden py-6', className)}
     >
       <div className="flex justify-center items-center">
-        <VelozLogo variant="text" size="md" />
+        <VelozLogo variant="dark" size="md" />
       </div>
     </footer>
   );

@@ -37,13 +37,9 @@ export default function Home() {
   // Get static content for current locale
   const staticContent = getStaticContent(locale);
   const homepageContent = getContent(staticContent, 'homepage') as {
-    headline: string;
     logo?: { enabled: boolean; url: string };
     backgroundVideo?: { enabled: boolean; url: string };
   };
-
-  // Get headline from static content
-  const headline = homepageContent?.headline || 'Capturamos lo irrepetible';
 
   // Get media URLs from content
   const logoUrl = homepageContent?.logo?.enabled
@@ -59,7 +55,6 @@ export default function Home() {
   return (
     <main>
       <Hero
-        headline={headline}
         backgroundVideo={backgroundVideo}
         logoUrl={logoUrl}
         backgroundImages={

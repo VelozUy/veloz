@@ -15,28 +15,28 @@ export default function BrandAssetsDebug() {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Dark Logo</h3>
               <div className="space-y-2">
-                <VelozLogo variant="full" size="sm" logoVariant="dark" />
-                <VelozLogo variant="full" size="md" logoVariant="dark" />
-                <VelozLogo variant="full" size="lg" logoVariant="dark" />
-                <VelozLogo variant="full" size="xl" logoVariant="dark" />
+                <VelozLogo variant="dark" size="sm" />
+                <VelozLogo variant="dark" size="md" />
+                <VelozLogo variant="dark" size="lg" />
+                <VelozLogo variant="dark" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Blue Logo</h3>
               <div className="space-y-2">
-                <VelozLogo variant="full" size="sm" logoVariant="blue" />
-                <VelozLogo variant="full" size="md" logoVariant="blue" />
-                <VelozLogo variant="full" size="lg" logoVariant="blue" />
-                <VelozLogo variant="full" size="xl" logoVariant="blue" />
+                <VelozLogo variant="blue" size="sm" />
+                <VelozLogo variant="blue" size="md" />
+                <VelozLogo variant="blue" size="lg" />
+                <VelozLogo variant="blue" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
               <h3 className="text-lg font-medium">White Logo</h3>
               <div className="space-y-2">
-                <VelozLogo variant="full" size="sm" logoVariant="white" />
-                <VelozLogo variant="full" size="md" logoVariant="white" />
-                <VelozLogo variant="full" size="lg" logoVariant="white" />
-                <VelozLogo variant="full" size="xl" logoVariant="white" />
+                <VelozLogo variant="white" size="sm" />
+                <VelozLogo variant="white" size="md" />
+                <VelozLogo variant="white" size="lg" />
+                <VelozLogo variant="white" size="xl" />
               </div>
             </div>
             <div className="space-y-4">
