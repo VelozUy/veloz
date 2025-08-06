@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import VelozLogo from '../VelozLogo';
+import { VelozLogo } from '../VelozLogo';
 
 describe('VelozLogo', () => {
   it('renders with default props', () => {

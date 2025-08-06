@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { LocaleSwitcher } from '@/components/ui/locale-switcher';
 import { Menu, X, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import VelozLogo from '@/components/shared/VelozLogo';
+import { VelozLogo } from '@/components/shared/VelozLogo';
 
 interface MinimalNavigationProps {
   translations: {

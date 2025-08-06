@@ -1,4 +1,4 @@
-export { default as VelozLogo } from './VelozLogo';
+export { VelozLogo } from './VelozLogo';
 export { default as VelozIcon } from './VelozIcon';
 export { VelozSignature } from './VelozSignature';
 export { PerimeterBox } from './PerimeterBox';
