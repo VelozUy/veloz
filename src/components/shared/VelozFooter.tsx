@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { VelozLogo } from './VelozLogo';
 
 interface VelozFooterProps {
   className?: string;
@@ -16,14 +16,7 @@ export function VelozFooter({
       className={cn('relative bg-background overflow-hidden py-6', className)}
     >
       <div className="flex justify-center items-center">
-        <Image
-          src="/veloz-logo-dark-fixed.svg"
-          alt="Veloz"
-          width={400}
-          height={124}
-          className="w-auto h-12 md:h-16 lg:h-20"
-          priority
-        />
+        <VelozLogo variant="text" size="md" />
       </div>
     </footer>
   );

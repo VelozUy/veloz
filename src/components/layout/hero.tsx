@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useHeroBackground } from '@/hooks/useBackground';
+import { VelozLogo } from '@/components/shared/VelozLogo';
 
 // Helper function for localized paths (same as navigation component)
 function getLocalizedPath(path: string, locale: string): string {
@@ -160,14 +161,9 @@ export default function Hero({
         <div className="flex flex-col items-center justify-center space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16">
           {/* Logo Section - Massive logo in center */}
           <div className="w-11/12 sm:w-10/12 md:w-11/12 lg:w-10/12 xl:w-9/12 aspect-[2/1] mb-8 sm:mb-12 md:mb-16 lg:mb-20">
-            <Image
-              src="/veloz-logo-blue.svg"
-              alt="Veloz Logo"
-              width={1600}
-              height={800}
-              className="w-full h-full object-contain drop-shadow-2xl"
-              priority
-            />
+            <div className="w-full h-full flex items-center justify-center">
+              <VelozLogo variant="blue" size="xl" className="drop-shadow-2xl" />
+            </div>
           </div>
 
           {/* Headline - Enhanced typography hierarchy */}
