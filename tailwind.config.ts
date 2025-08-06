@@ -34,7 +34,7 @@ const config: Config = {
     extend: {
       // Veloz brand color system
       colors: {
-        // Veloz brand colors
+        // Veloz brand colors (legacy support)
         'veloz-blue': '#0019AA',
         'veloz-blue-hover': '#000f75',
         'carbon-black': '#212223',
@@ -42,7 +42,7 @@ const config: Config = {
         'light-gray-2': '#afafaf',
         'light-gray-2-hover': '#999999',
 
-        // Semantic colors
+        // Semantic colors (primary system)
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         card: 'var(--card)',

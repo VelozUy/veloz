@@ -17,7 +17,7 @@ export function VelozFooter({
     >
       <div className="flex justify-center items-center">
         <Image
-          src="/veloz-logo-dark.svg"
+          src="/veloz-logo-dark-fixed.svg"
           alt="Veloz"
           width={400}
           height={124}
