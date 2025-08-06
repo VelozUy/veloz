@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import FAQSection from './FAQSection';
-import CTASection from '@/components/shared/CTASection';
 import { getStaticContent } from '@/lib/utils';
 import type { LocalizedContent } from '@/lib/static-content.generated';
 
@@ -144,9 +143,6 @@ export default function AboutContent({ content }: AboutContentProps) {
           locale={content.locale}
         />
       )}
-
-      {/* CTA Section */}
-      <CTASection />
     </div>
   );
 }
