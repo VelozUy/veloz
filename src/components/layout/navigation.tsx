@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { Button } from '@/components/ui/button';
@@ -49,6 +49,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const isMobileMenuOpenRef = useRef(false);
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
@@ -60,7 +61,13 @@ export default function Navigation({ translations, locale }: NavigationProps) {
     if (!mounted) return;
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const newScrolledState = window.scrollY > 20;
+      setIsScrolled(newScrolledState);
+      // Close mobile menu when scrolling or when navigation state changes
+      if (isMobileMenuOpenRef.current) {
+        setIsMobileMenuOpen(false);
+        isMobileMenuOpenRef.current = false;
+      }
     };
 
     // Set initial scroll state
@@ -69,6 +76,14 @@ export default function Navigation({ translations, locale }: NavigationProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
+
+  // Close mobile menu when scroll state changes (navigation appearance changes)
+  useEffect(() => {
+    if (isMobileMenuOpenRef.current) {
+      setIsMobileMenuOpen(false);
+      isMobileMenuOpenRef.current = false;
+    }
+  }, [isScrolled]);
 
   // Use the new background system for CTA sections
   const { classes: ctaClasses } = useCTABackground();
@@ -218,7 +233,11 @@ export default function Navigation({ translations, locale }: NavigationProps) {
           {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-none hover:bg-muted/20 transition-colors text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => {
+              const newState = !isMobileMenuOpen;
+              setIsMobileMenuOpen(newState);
+              isMobileMenuOpenRef.current = newState;
+            }}
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? (
@@ -231,7 +250,7 @@ export default function Navigation({ translations, locale }: NavigationProps) {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t border-border">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background shadow-xl border-t border-border z-50">
             <div className="px-4 py-6 space-y-4">
               {/* Contact link is already visible in header, so we don't duplicate it in mobile menu */}
               {navItems.map(item => {
@@ -241,7 +260,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                     key={item.name}
                     href={item.href}
                     className="flex items-center space-x-3 px-4 py-3 rounded-none hover:bg-muted/20 transition-colors group"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      isMobileMenuOpenRef.current = false;
+                    }}
                   >
                     <Icon className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
                     <span className="font-medium text-foreground">
@@ -259,7 +281,10 @@ export default function Navigation({ translations, locale }: NavigationProps) {
                 <Link href={getLocalizedPath('/contact', locale)}>
                   <Button
                     className={`w-full ${ctaClasses.background} ${ctaClasses.text} ${ctaClasses.border} ${ctaClasses.shadow} hover:bg-primary/90 transition-all duration-300`}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      isMobileMenuOpenRef.current = false;
+                    }}
                   >
                     {translations.homepage.hero.cta.contact}
                   </Button>

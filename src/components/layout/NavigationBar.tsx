@@ -93,11 +93,16 @@ export default function NavigationBar({
         currentScrollY < scrollThreshold || currentScrollY < lastScrollY
       );
       lastScrollY = currentScrollY;
+
+      // Close mobile menu when scrolling
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [showOnScroll, scrollThreshold]);
+  }, [showOnScroll, scrollThreshold, isMobileMenuOpen]);
 
   // Determine active page
   const isActive = (href: string) => {
