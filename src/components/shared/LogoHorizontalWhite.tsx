@@ -18,14 +18,6 @@ const LogoHorizontalWhite: React.FC<LogoHorizontalWhiteProps> = ({
     xl: 'h-16 md:h-24 w-auto',
   };
 
-  const iconSizeClasses = {
-    xs: 'h-3 md:h-4',
-    sm: 'h-6 md:h-8',
-    md: 'h-8 md:h-12',
-    lg: 'h-12 md:h-16',
-    xl: 'h-16 md:h-24',
-  };
-
   return (
     <div
       className={cn(
@@ -34,29 +26,14 @@ const LogoHorizontalWhite: React.FC<LogoHorizontalWhiteProps> = ({
         className
       )}
     >
-      {/* Logo Container with Hound Icon and Text Logo */}
-      <div
-        className={cn('flex items-center gap-1 md:gap-2', sizeClasses[size])}
-      >
-        {/* Hound Icon (Isotipo_Blanco.svg) */}
-        <div className={cn('flex-shrink-0', iconSizeClasses[size])}>
-          <img
-            src="/veloz-hound-white.svg"
-            alt="Veloz Hound Icon"
-            className="h-full w-auto"
-            style={{ display: 'block' }}
-          />
-        </div>
-
-        {/* Text Logo (Logotipo_Blanco.svg) positioned to the right */}
-        <div className={cn('flex-shrink-0', iconSizeClasses[size])}>
-          <img
-            src="/veloz-text-white.svg"
-            alt="Veloz Text Logo"
-            className="h-full w-auto"
-            style={{ display: 'block' }}
-          />
-        </div>
+      {/* Text Logo Only - Centered */}
+      <div className={cn('flex-shrink-0', sizeClasses[size])}>
+        <img
+          src="/veloz-text-white.svg"
+          alt="Veloz Text Logo"
+          className="h-full w-auto"
+          style={{ display: 'block' }}
+        />
       </div>
     </div>
   );
