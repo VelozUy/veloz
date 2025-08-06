@@ -70,18 +70,22 @@ export default function AboutContent({ content }: AboutContentProps) {
             <div className="w-32 h-1 bg-primary rounded-full"></div>{' '}
             {/* Enhanced accent */}
           </div>
-          {/* Philosophy Items in Blue Blocks */}
-          <div className="space-y-6">
+          {/* Philosophy Items - Horizontal Layout */}
+          <div className="space-y-12">
             {philosophyItems.map((item, index) => (
               <div
                 key={index}
-                className="bg-primary rounded-lg p-8 md:p-10 shadow-lg"
+                className="flex flex-col md:flex-row items-center gap-6 md:gap-8"
               >
-                <div className="text-center md:text-left">
-                  <h3 className="text-2xl md:text-3xl font-subtitle font-bold text-primary-foreground uppercase tracking-wide mb-3">
+                {/* Title Container */}
+                <div className="bg-primary px-8 py-6 md:px-10 md:py-8 rounded-lg shadow-lg flex-shrink-0 w-40 md:w-48 lg:w-56 flex items-center justify-center">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-subtitle font-bold text-primary-foreground uppercase tracking-wide text-center">
                     {item.title}
                   </h3>
-                  <p className="text-lg md:text-xl text-primary-foreground/90 leading-relaxed font-body">
+                </div>
+                {/* Content Text */}
+                <div className="flex-1 max-w-4xl">
+                  <p className="text-lg md:text-xl text-foreground leading-relaxed font-subtitle text-center md:text-left">
                     {item.description}
                   </p>
                 </div>
