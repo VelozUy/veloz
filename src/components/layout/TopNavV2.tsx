@@ -75,7 +75,6 @@ export default function TopNavV2({ translations, locale }: TopNavV2Props) {
       // Behavior settings
       fixed={true}
       showOnScroll={true}
-      scrollThreshold={5}
       // Mobile styling
       mobileMenuClass="bg-foreground shadow-xl border-t border-primary-foreground/10"
       mobileItemClass="text-primary-foreground/80 hover:text-primary-foreground"

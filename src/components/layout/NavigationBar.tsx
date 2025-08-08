@@ -29,7 +29,6 @@ export interface NavigationBarProps {
   // Behavior props
   fixed?: boolean;
   showOnScroll?: boolean;
-  scrollThreshold?: number;
 
   // Mobile props
   mobileMenuClass?: string;
@@ -66,7 +65,6 @@ export default function NavigationBar({
   activeClass = defaultClasses.active,
   fixed = true,
   showOnScroll = true,
-  scrollThreshold = 5,
   mobileMenuClass = defaultClasses.mobileMenu,
   mobileItemClass = defaultClasses.mobileItem,
   ariaLabel = 'Main navigation',
@@ -89,9 +87,19 @@ export default function NavigationBar({
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setIsVisible(
-        currentScrollY < scrollThreshold || currentScrollY < lastScrollY
-      );
+
+      // Determine scroll direction
+      const isScrollingUp = currentScrollY < lastScrollY;
+      const isScrollingDown = currentScrollY > lastScrollY;
+
+      if (isScrollingUp) {
+        // When scrolling up, show the navigation with animation
+        setIsVisible(true);
+      } else if (isScrollingDown && currentScrollY > 100) {
+        // When scrolling down and past the top, hide the navigation
+        setIsVisible(false);
+      }
+
       lastScrollY = currentScrollY;
 
       // Close mobile menu when scrolling
@@ -102,7 +110,7 @@ export default function NavigationBar({
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [showOnScroll, scrollThreshold, isMobileMenuOpen]);
+  }, [showOnScroll, isMobileMenuOpen]);
 
   // Determine active page
   const isActive = (href: string) => {
@@ -123,9 +131,8 @@ export default function NavigationBar({
     return (
       <nav
         className={cn(
-          fixed && 'fixed top-0 left-0 right-0 z-50',
+          'z-50 fixed top-0 left-0 right-0',
           backgroundClass,
-          'transform transition-transform duration-300 ease-in-out',
           className
         )}
         aria-label={ariaLabel}
@@ -177,10 +184,9 @@ export default function NavigationBar({
     <>
       <nav
         className={cn(
-          fixed && 'fixed top-0 left-0 right-0 z-50',
+          'z-50 fixed top-0 left-0 right-0 transition-transform duration-300 ease-in-out',
           backgroundClass,
-          'transform transition-transform duration-300 ease-in-out',
-          showOnScroll && (isVisible ? 'translate-y-0' : '-translate-y-full'),
+          isVisible ? 'translate-y-0' : '-translate-y-full',
           className
         )}
         aria-label={ariaLabel}

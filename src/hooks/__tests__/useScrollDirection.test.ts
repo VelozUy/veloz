@@ -21,9 +21,10 @@ describe('useScrollDirection', () => {
     expect(result.current.scrollDirection).toBe('up');
     expect(result.current.isVisible).toBe(true);
     expect(result.current.lastScrollY).toBe(0);
+    expect(result.current.shouldAnimate).toBe(false);
   });
 
-  it('should detect scroll down and hide navigation', () => {
+  it('should use relative positioning when scrolling down', () => {
     const { result } = renderHook(() => useScrollDirection({ threshold: 5 }));
 
     // Simulate scrolling down
@@ -33,10 +34,11 @@ describe('useScrollDirection', () => {
     });
 
     expect(result.current.scrollDirection).toBe('down');
-    expect(result.current.isVisible).toBe(false);
+    expect(result.current.isVisible).toBe(true); // Still visible, just using relative positioning
+    expect(result.current.shouldAnimate).toBe(false);
   });
 
-  it('should detect scroll up and show navigation', () => {
+  it('should show navigation with animation when scrolling up', () => {
     const { result } = renderHook(() => useScrollDirection({ threshold: 5 }));
 
     // First scroll down
@@ -53,6 +55,7 @@ describe('useScrollDirection', () => {
 
     expect(result.current.scrollDirection).toBe('up');
     expect(result.current.isVisible).toBe(true);
+    expect(result.current.shouldAnimate).toBe(true);
   });
 
   it('should ignore small scroll movements below threshold', () => {
@@ -67,6 +70,7 @@ describe('useScrollDirection', () => {
     // Should not change direction due to threshold
     expect(result.current.scrollDirection).toBe('up');
     expect(result.current.isVisible).toBe(true);
+    expect(result.current.shouldAnimate).toBe(false);
   });
 
   it('should use custom initial direction', () => {
@@ -76,5 +80,6 @@ describe('useScrollDirection', () => {
 
     expect(result.current.scrollDirection).toBe('down');
     expect(result.current.isVisible).toBe(true); // Still visible initially
+    expect(result.current.shouldAnimate).toBe(false);
   });
 });

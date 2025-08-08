@@ -48,14 +48,43 @@ export default function TopNav({ translations, locale }: TopNavProps) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Use scroll direction hook for navigation visibility
-  const { isVisible } = useScrollDirection({ threshold: 5 });
+  // Scroll behavior
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Determine scroll direction
+      const isScrollingUp = currentScrollY < lastScrollY;
+      const isScrollingDown = currentScrollY > lastScrollY;
+
+      if (isScrollingUp) {
+        // When scrolling up, show the navigation with animation
+        setIsVisible(true);
+      } else if (isScrollingDown && currentScrollY > 100) {
+        // When scrolling down and past the top, hide the navigation
+        setIsVisible(false);
+      }
+
+      lastScrollY = currentScrollY;
+
+      // Close mobile menu when scrolling
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobileMenuOpen]);
 
   const navItems = [
     {
@@ -80,7 +109,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
   // Prevent hydration mismatch by ensuring consistent initial render
   if (!mounted) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-foreground transform transition-transform duration-300 ease-in-out">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-foreground">
         <div className="w-full px-4 sm:px-8 lg:px-16">
           <div className="flex items-center justify-between h-20">
             {/* Left: Navigation Links */}
@@ -160,7 +189,7 @@ export default function TopNav({ translations, locale }: TopNavProps) {
     <>
       <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 bg-foreground transform transition-transform duration-300 ease-in-out',
+          'z-50 bg-foreground fixed top-0 left-0 right-0 transition-transform duration-300 ease-in-out',
           isVisible ? 'translate-y-0' : '-translate-y-full'
         )}
       >

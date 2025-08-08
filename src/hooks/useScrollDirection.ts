@@ -3,17 +3,20 @@ import { useState, useEffect } from 'react';
 interface UseScrollDirectionOptions {
   threshold?: number;
   initialDirection?: 'up' | 'down';
+  navHeight?: number; // Height of the navigation bar in pixels
 }
 
 export function useScrollDirection({
   threshold = 10,
   initialDirection = 'up',
+  navHeight = 80, // Default to 80px (h-20 in Tailwind)
 }: UseScrollDirectionOptions = {}) {
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>(
     initialDirection
   );
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,11 +29,14 @@ export function useScrollDirection({
 
       const newDirection = currentScrollY > lastScrollY ? 'down' : 'up';
 
-      // Update visibility based on scroll direction
+      // Update visibility and animation behavior
       if (newDirection === 'down') {
-        setIsVisible(false); // Hide when scrolling down
+        // When scrolling down, let it scroll naturally (no animation)
+        setShouldAnimate(false);
       } else {
-        setIsVisible(true); // Show when scrolling up
+        // When scrolling up, show with animation
+        setIsVisible(true);
+        setShouldAnimate(true);
       }
 
       setScrollDirection(newDirection);
@@ -48,5 +54,6 @@ export function useScrollDirection({
     scrollDirection,
     isVisible,
     lastScrollY,
+    shouldAnimate,
   };
 }

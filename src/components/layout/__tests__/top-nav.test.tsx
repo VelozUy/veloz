@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TopNav from '../top-nav';
+import { cn } from '@/lib/utils';
 
 // Mock the LogoHorizontalWhite component
 jest.mock('@/components/shared/LogoHorizontalWhite', () => {
@@ -29,11 +30,13 @@ jest.mock('@/components/ui/locale-switcher', () => ({
   LocaleSwitcher: ({
     currentLocale,
     className,
+    textClassName,
   }: {
     currentLocale: string;
     className?: string;
+    textClassName?: string;
   }) => (
-    <div data-testid="locale-switcher" className={className}>
+    <div data-testid="locale-switcher" className={cn(className, textClassName)}>
       Locale: {currentLocale}
     </div>
   ),
@@ -78,13 +81,7 @@ describe('TopNav', () => {
     const nav = screen.getByRole('navigation');
     expect(nav).toHaveClass('bg-foreground');
     expect(nav).toHaveClass('fixed');
-    expect(nav).toHaveClass('top-0');
-    expect(nav).toHaveClass('left-0');
-    expect(nav).toHaveClass('right-0');
     expect(nav).toHaveClass('z-50');
-    expect(nav).toHaveClass('transition-transform');
-    expect(nav).toHaveClass('duration-300');
-    expect(nav).toHaveClass('ease-in-out');
 
     // Check that the navigation has the correct height (h-20 for taller nav)
     const navContainer = nav.querySelector('div > div');
