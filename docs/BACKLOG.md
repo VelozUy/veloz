@@ -2654,7 +2654,7 @@ This file contains future epics that are not yet active. For detailed epic infor
     - Active state handling for projects page
     - Mobile navigation support
     - Consistent with existing navigation design
-  - **Files**: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/ConditionalNavigation.tsx`
+  - **Files**: `src/components/layout/MainNavigation.tsx`, `src/components/layout/ConditionalNavigation.tsx`
   - **Reference**: Existing banner navigation implementation
   - **Estimated Time**: 0.5 days
   - **Status**: Ready after Phase 3 completion
@@ -3008,7 +3008,7 @@ This file contains future epics that are not yet active. For detailed epic infor
     - Active state handling for crew page
     - Mobile navigation support
     - Consistent with existing navigation design
-  - **Files**: `src/components/layout/veloz-banner-nav.tsx`, `src/components/layout/ConditionalNavigation.tsx`
+  - **Files**: `src/components/layout/MainNavigation.tsx`, `src/components/layout/ConditionalNavigation.tsx`
   - **Reference**: Existing banner navigation implementation
   - **Estimated Time**: 0.5 days
   - **Status**: Deprioritized as of 2025-07-25 (move to super low priority per user request)

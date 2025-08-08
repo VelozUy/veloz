@@ -22,7 +22,7 @@ The top navigation bar now implements a scroll-based hide/show behavior that pro
 
 ### Components Modified
 
-1. **TopNav Component** (`src/components/layout/top-nav.tsx`)
+1. **MainNavigation Component** (`src/components/layout/MainNavigation.tsx`)
    - Uses `fixed` positioning with smart scroll behavior
    - Hides when scrolling down past 100px, shows when scrolling up
    - Smooth 300ms transitions for natural feel
@@ -32,7 +32,7 @@ The top navigation bar now implements a scroll-based hide/show behavior that pro
    - Hides when scrolling down past 100px, shows when scrolling up
    - Mobile menu closes automatically when scrolling
 
-3. **Navigation Height** (`src/components/layout/top-nav.tsx`)
+3. **Navigation Height** (`src/components/layout/MainNavigation.tsx`)
    - Navigation bar height increased to `h-20` (80px) for better readability
    - Logo size increased to `sm` (32px) to maximize visibility within the taller nav
    - Mobile navigation adjusted to account for new height
@@ -55,12 +55,12 @@ The top navigation bar now implements a scroll-based hide/show behavior that pro
 
 ### Unit Tests
 
-1. **TopNav Tests** (`src/components/layout/__tests__/top-nav.test.tsx`)
+1. **MainNavigation Tests** (`src/components/layout/__tests__/MainNavigation.test.tsx`)
    - Tests fixed positioning
    - Tests styling and accessibility
    - Tests responsive behavior
 
-2. **TopNav Scroll Behavior Tests** (`src/components/layout/__tests__/top-nav-scroll.test.tsx`)
+2. **MainNavigation Scroll Behavior Tests** (`src/components/layout/__tests__/MainNavigation.test.tsx`)
    - Tests scroll-based visibility behavior
    - Tests CSS class application
    - Tests transition animations

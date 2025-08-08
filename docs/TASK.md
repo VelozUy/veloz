@@ -241,14 +241,14 @@ _Last updated: 2025-01-27_
   - Notes: Shared utility functions for localization, active state detection, and navigation item generation
   - Status: Completed (2025-01-27)
 
-- [x] Create TopNavV2 component
-  - File: `src/components/layout/TopNavV2.tsx`
+- [x] Create MainNavigation component
+- File: `src/components/layout/MainNavigation.tsx`
   - Notes: Refactored version of TopNav using the shareable NavigationBar component
   - Status: Completed (2025-01-27)
 
 - [x] Update ConditionalNavigation
   - File: `src/components/layout/ConditionalNavigation.tsx`
-  - Notes: Updated to use TopNavV2 instead of old TopNav component
+  - Notes: Updated to use MainNavigation instead of old TopNav component
   - Status: Completed (2025-01-27)
 
 - [x] Create comprehensive documentation
@@ -256,9 +256,9 @@ _Last updated: 2025-01-27_
   - Notes: Complete documentation with usage examples, migration guide, and best practices
   - Status: Completed (2025-01-27)
 
-- [x] Create usage examples
-  - File: `src/components/layout/NavigationExamples.tsx`
-  - Notes: Five different example implementations showing various styling and use cases
+- [x] Create comprehensive documentation
+  - File: `src/components/layout/README.md`
+  - Notes: Complete documentation with usage examples, migration guide, and best practices
   - Status: Completed (2025-01-27)
 
 - [x] Update component exports

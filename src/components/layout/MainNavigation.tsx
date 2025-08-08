@@ -10,7 +10,7 @@ import {
   getLocalizedPath,
 } from '@/lib/navigation-utils';
 
-interface TopNavV2Props {
+interface MainNavigationProps {
   translations: {
     navigation: {
       home: string;
@@ -23,10 +23,10 @@ interface TopNavV2Props {
 }
 
 /**
- * TopNavV2 Component
+ * MainNavigation Component
  *
- * A refactored version of TopNav that uses the shareable NavigationBar component.
- * Maintains the same visual appearance and functionality as the original TopNav.
+ * The primary navigation component used throughout the application.
+ * Uses the shareable NavigationBar component with Veloz-specific styling.
  *
  * Features:
  * - Charcoal background (#212223) with white text
@@ -35,7 +35,10 @@ interface TopNavV2Props {
  * - Localized navigation links
  * - Language switcher integration
  */
-export default function TopNavV2({ translations, locale }: TopNavV2Props) {
+export default function MainNavigation({
+  translations,
+  locale,
+}: MainNavigationProps) {
   // Generate navigation items using shared utilities
   const navItems: NavItem[] = generateNavItems(translations, locale);
   const contactItem = generateContactItem(translations, locale);

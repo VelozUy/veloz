@@ -104,9 +104,9 @@ The web application's primary goal is to communicate Veloz's professionalism and
 
 **Technical Implementation**:
 
-- **Component**: `src/components/layout/veloz-banner-nav.tsx`
-- **Tests**: `src/components/layout/__tests__/veloz-banner-nav.test.tsx`
-- **Integration**: Updated `ConditionalNavigation.tsx` to use new banner design
+- **Component**: `src/components/layout/MainNavigation.tsx`
+- **Tests**: `src/components/layout/__tests__/MainNavigation.test.tsx`
+- **Integration**: Updated `ConditionalNavigation.tsx` to use new navigation design
 - **Font System**: Added `--font-logo` CSS variable for proper REDJOLA font support
 
 ### 2. **About Us / FAQ Page** ✅ COMPLETED

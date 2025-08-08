@@ -72,9 +72,9 @@ const rightItems = [<LanguageSwitcher />, <UserMenu />];
 />;
 ```
 
-### TopNavV2
+### MainNavigation
 
-A refactored version of the original TopNav that uses the shareable NavigationBar component.
+The primary navigation component used throughout the application. A refactored version that uses the shareable NavigationBar component.
 
 **Features:**
 
@@ -86,9 +86,9 @@ A refactored version of the original TopNav that uses the shareable NavigationBa
 **Usage:**
 
 ```tsx
-import TopNavV2 from '@/components/layout/TopNavV2';
+import MainNavigation from '@/components/layout/MainNavigation';
 
-<TopNavV2 translations={translations} locale={locale} />;
+<MainNavigation translations={translations} locale={locale} />;
 ```
 
 ## Utilities
@@ -125,7 +125,7 @@ const navItems = generateNavItems(translations, 'en');
 
 ## Migration Guide
 
-### From TopNav to TopNavV2
+### From TopNav to MainNavigation
 
 1. **Replace import:**
 
@@ -134,7 +134,7 @@ const navItems = generateNavItems(translations, 'en');
    import TopNav from '@/components/layout/top-nav';
 
    // New
-   import TopNavV2 from '@/components/layout/TopNavV2';
+   import MainNavigation from '@/components/layout/MainNavigation';
    ```
 
 2. **Update component usage:**
@@ -144,7 +144,7 @@ const navItems = generateNavItems(translations, 'en');
    <TopNav translations={translations} locale={locale} />
 
    // New
-   <TopNavV2 translations={translations} locale={locale} />
+   <MainNavigation translations={translations} locale={locale} />
    ```
 
 3. **Benefits:**
@@ -175,6 +175,7 @@ const navItems = generateNavItems(translations, 'en');
    ```
 
 2. **Create a wrapper component:**
+
    ```tsx
    export default function CustomNav({ user, locale }) {
      const navItems = generateCustomNavItems(user, locale);
