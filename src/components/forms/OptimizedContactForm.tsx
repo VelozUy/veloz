@@ -486,9 +486,7 @@ export default function OptimizedContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.name && (
-                    <p className="text-sm text-destructive">{errors.name}</p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
 
                 {/* Preferred Contact Method */}
@@ -553,11 +551,7 @@ export default function OptimizedContactForm({
                             'border-destructive focus:border-destructive'
                         )}
                       />
-                      {errors.email && (
-                        <p className="text-sm text-destructive">
-                          {errors.email}
-                        </p>
-                      )}
+                      {/* No error text; border indicates error */}
                     </div>
                   ) : (
                     <div className="space-y-2 mt-4">
@@ -583,11 +577,7 @@ export default function OptimizedContactForm({
                             'border-destructive focus:border-destructive'
                         )}
                       />
-                      {errors.phone && (
-                        <p className="text-sm text-destructive">
-                          {errors.phone}
-                        </p>
-                      )}
+                      {/* No error text; border indicates error */}
                     </div>
                   )}
                 </div>
@@ -639,11 +629,7 @@ export default function OptimizedContactForm({
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.eventType && (
-                    <p className="text-sm text-destructive">
-                      {errors.eventType}
-                    </p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
 
                 {/* Navigation */}
@@ -743,11 +729,7 @@ export default function OptimizedContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.location && (
-                    <p className="text-sm text-destructive">
-                      {errors.location}
-                    </p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
 
                 {/* Attendees Field */}
@@ -774,11 +756,7 @@ export default function OptimizedContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.attendees && (
-                    <p className="text-sm text-destructive">
-                      {errors.attendees}
-                    </p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
 
                 {/* Services Field */}
@@ -810,11 +788,7 @@ export default function OptimizedContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.services && (
-                    <p className="text-sm text-destructive">
-                      {errors.services}
-                    </p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
 
                 {/* Navigation */}
@@ -932,13 +906,7 @@ export default function OptimizedContactForm({
               </div>
             )}
 
-            {/* Error Message */}
-            {errors.message && (
-              <div className="flex items-center space-x-2 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
-                <p className="text-sm text-destructive">{errors.message}</p>
-              </div>
-            )}
+            {/* No global error text; rely on field borders only */}
           </form>
         </div>
       </section>

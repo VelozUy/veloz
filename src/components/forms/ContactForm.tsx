@@ -483,9 +483,7 @@ export default function ContactForm({
                     errors.name && 'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.name && (
-                  <p className="text-sm text-destructive">{errors.name}</p>
-                )}
+                {/* No error text; border indicates error */}
               </div>
 
               {/* Company Field */}
@@ -569,9 +567,7 @@ export default function ContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.email && (
-                    <p className="text-sm text-destructive">{errors.email}</p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -593,9 +589,7 @@ export default function ContactForm({
                         'border-destructive focus:border-destructive'
                     )}
                   />
-                  {errors.phone && (
-                    <p className="text-sm text-destructive">{errors.phone}</p>
-                  )}
+                  {/* No error text; border indicates error */}
                 </div>
               )}
             </div>
@@ -636,9 +630,7 @@ export default function ContactForm({
                     )}
                   </SelectContent>
                 </Select>
-                {errors.eventType && (
-                  <p className="text-sm text-destructive">{errors.eventType}</p>
-                )}
+                {/* No error text; border indicates error */}
               </div>
 
               {/* Services Field */}
@@ -665,9 +657,7 @@ export default function ContactForm({
                       'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.services && (
-                  <p className="text-sm text-destructive">{errors.services}</p>
-                )}
+                {/* No error text; border indicates error */}
               </div>
             </div>
 
@@ -693,9 +683,7 @@ export default function ContactForm({
                       'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.location && (
-                  <p className="text-sm text-destructive">{errors.location}</p>
-                )}
+                {/* No error text; border indicates error */}
               </div>
 
               {/* Attendees Field */}
@@ -718,9 +706,7 @@ export default function ContactForm({
                       'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.attendees && (
-                  <p className="text-sm text-destructive">{errors.attendees}</p>
-                )}
+                {/* No error text; border indicates error */}
               </div>
             </div>
 
@@ -810,12 +796,7 @@ export default function ContactForm({
                 )}
               </Button>
 
-              {submitError && (
-                <div className="text-destructive text-body-md bg-destructive/10 border border-destructive/20 rounded-none p-4 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                  {submitError}
-                </div>
-              )}
+              {/* No global error text; rely on field borders only */}
             </div>
           </form>
         </div>
