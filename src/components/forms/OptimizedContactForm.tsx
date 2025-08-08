@@ -665,7 +665,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="eventDate"
-                    className="text-body-lg font-medium"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.eventDate.label}
                   </Label>

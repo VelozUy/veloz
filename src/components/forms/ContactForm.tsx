@@ -708,7 +708,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="attendees"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.attendees.label}
                 </Label>
