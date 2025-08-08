@@ -16,7 +16,6 @@ import {
 import { MessageCircle, Phone, CheckCircle } from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 import { trackCustomEvent } from '@/services/analytics';
-import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { emailService } from '@/services/email';
 import { ContactMessageService } from '@/services/firebase';
 
@@ -736,9 +735,7 @@ export function ContactWidget({
       </DialogTrigger>
       <DialogContent className="sm:max-w-md" sectionType="form">
         <DialogHeader>
-          <DialogTitle asChild>
-            <VisuallyHidden>Contact Widget</VisuallyHidden>
-          </DialogTitle>
+          <DialogTitle className="sr-only">Contact Widget</DialogTitle>
         </DialogHeader>
         <div className="py-4" role="main">
           {renderStep}
