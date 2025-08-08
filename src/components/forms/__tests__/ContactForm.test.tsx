@@ -78,8 +78,8 @@ const mockTranslations = {
         },
       },
       location: {
-        label: 'Lugar del evento (ciudad)',
-        placeholder: 'Ciudad donde será el evento',
+        label: 'Lugar',
+        placeholder: 'Ciudad',
       },
       attendees: {
         label: 'Cantidad de asistentes esperados',
@@ -185,7 +185,7 @@ describe('ContactForm Component', () => {
         },
         location: {
           label: 'Event location (city)',
-          placeholder: 'City where the event will be held',
+          placeholder: 'City',
         },
         attendees: {
           label: 'Expected number of attendees',

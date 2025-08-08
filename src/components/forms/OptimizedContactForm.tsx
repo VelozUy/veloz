@@ -38,7 +38,7 @@ import { trackNavigationEvent } from '@/lib/navigation-utils';
 interface ContactFormData {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   eventType: string;
   eventDate?: string;
   location: string;
@@ -164,6 +164,10 @@ export default function OptimizedContactForm({
   locale = 'es',
 }: ContactFormProps) {
   const t = translations.contact;
+  const formatRequired = (text: string) => {
+    const trimmed = text?.trim() || '';
+    return trimmed.startsWith('*') ? trimmed : `* ${trimmed}`;
+  };
   const searchParams = useSearchParams();
   const [isMobile, setIsMobile] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,6 +175,7 @@ export default function OptimizedContactForm({
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
+  const [noDateSelected, setNoDateSelected] = useState(false);
 
   // Form data with optimized field order
   const [formData, setFormData] = useState<ContactFormData>({
@@ -182,7 +187,7 @@ export default function OptimizedContactForm({
     location: '',
     attendees: '',
     services: [],
-    contactMethod: 'whatsapp',
+    contactMethod: 'email',
     company: '',
     message: '',
   });
@@ -226,10 +231,19 @@ export default function OptimizedContactForm({
         if (!formData.name.trim()) {
           newErrors.name = 'Name is required';
         }
-        if (!formData.email.trim()) {
-          newErrors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email = 'Please enter a valid email';
+        if (formData.contactMethod === 'email') {
+          if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+          } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email';
+          }
+        } else if (
+          formData.contactMethod === 'whatsapp' ||
+          formData.contactMethod === 'call'
+        ) {
+          if (!formData.phone.trim()) {
+            newErrors.phone = t.form.phone.label;
+          }
         }
         if (!formData.eventType) {
           newErrors.eventType = 'Event type is required';
@@ -380,13 +394,13 @@ export default function OptimizedContactForm({
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
-          <div className="text-center space-y-8">
+          <div className="text-left space-y-8 text-foreground">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight">
               {translations.contact.title}
             </h1>
-            <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl max-w-4xl leading-relaxed font-body">
               {translations.contact.subtitle}
             </p>
           </div>
@@ -425,13 +439,13 @@ export default function OptimizedContactForm({
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16 bg-muted/30">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-subtitle font-bold mb-6 text-foreground uppercase tracking-wide">
+          <div className="text-left mb-12">
+            <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
               {translations.contact.form.title}
             </h2>
-            <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>
+            <div className="w-32 h-1 bg-primary rounded-full"></div>
           </div>
 
           <form
@@ -456,7 +470,7 @@ export default function OptimizedContactForm({
                 {/* Name Field */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-body-lg font-medium">
-                    {t.form.name.label} *
+                    {t.form.name.label}
                   </Label>
                   <Input
                     id="name"
@@ -477,45 +491,105 @@ export default function OptimizedContactForm({
                   )}
                 </div>
 
-                {/* Email Field */}
+                {/* Preferred Contact Method */}
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-body-lg font-medium">
-                    {t.form.email.label} *
+                  <Label
+                    htmlFor="contactMethod"
+                    className="text-body-lg font-medium"
+                  >
+                    {t.form.contactMethod.label}
                   </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={t.form.email.placeholder}
-                    value={formData.email}
-                    onChange={e => handleInputChange('email', e.target.value)}
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
-                    className={cn(
-                      'text-body-md',
-                      errors.email &&
-                        'border-destructive focus:border-destructive'
-                    )}
-                  />
-                  {errors.email && (
-                    <p className="text-sm text-destructive">{errors.email}</p>
-                  )}
-                </div>
+                  <Select
+                    value={formData.contactMethod}
+                    onValueChange={value =>
+                      handleInputChange('contactMethod', value)
+                    }
+                  >
+                    <SelectTrigger
+                      className={cn(
+                        'text-body-md',
+                        errors.contactMethod &&
+                          'border-destructive focus:border-destructive'
+                      )}
+                    >
+                      <SelectValue
+                        placeholder={t.form.contactMethod.placeholder}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="whatsapp">
+                        {t.form.contactMethod.options.whatsapp}
+                      </SelectItem>
+                      <SelectItem value="email">
+                        {t.form.contactMethod.options.email}
+                      </SelectItem>
+                      <SelectItem value="call">
+                        {t.form.contactMethod.options.call}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
 
-                {/* Phone Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-body-lg font-medium">
-                    {t.form.phone.label} {t.form.phone.optional}
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder={t.form.phone.placeholder}
-                    value={formData.phone}
-                    onChange={e => handleInputChange('phone', e.target.value)}
-                    onFocus={() => setFocusedField('phone')}
-                    onBlur={() => setFocusedField(null)}
-                    className="text-body-md"
-                  />
+                  {formData.contactMethod === 'email' ? (
+                    <div className="space-y-2 mt-4">
+                      <Label
+                        htmlFor="email"
+                        className="text-body-lg font-medium"
+                      >
+                        {t.form.email.label}
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder={formatRequired(t.form.email.placeholder)}
+                        value={formData.email}
+                        onChange={e =>
+                          handleInputChange('email', e.target.value)
+                        }
+                        onFocus={() => setFocusedField('email')}
+                        onBlur={() => setFocusedField(null)}
+                        className={cn(
+                          'text-body-md',
+                          errors.email &&
+                            'border-destructive focus:border-destructive'
+                        )}
+                      />
+                      {errors.email && (
+                        <p className="text-sm text-destructive">
+                          {errors.email}
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2 mt-4">
+                      <Label
+                        htmlFor="phone"
+                        className="text-body-lg font-medium"
+                      >
+                        {t.form.phone.label}
+                      </Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder={formatRequired(t.form.phone.placeholder)}
+                        value={formData.phone}
+                        onChange={e =>
+                          handleInputChange('phone', e.target.value)
+                        }
+                        onFocus={() => setFocusedField('phone')}
+                        onBlur={() => setFocusedField(null)}
+                        className={cn(
+                          'text-body-md',
+                          errors.phone &&
+                            'border-destructive focus:border-destructive'
+                        )}
+                      />
+                      {errors.phone && (
+                        <p className="text-sm text-destructive">
+                          {errors.phone}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Event Type Field */}
@@ -524,7 +598,7 @@ export default function OptimizedContactForm({
                     htmlFor="eventType"
                     className="text-body-lg font-medium"
                   >
-                    {t.form.eventType.label} *
+                    {t.form.eventType.label}
                   </Label>
                   <Select
                     value={formData.eventType}
@@ -604,22 +678,45 @@ export default function OptimizedContactForm({
                     htmlFor="eventDate"
                     className="text-body-lg font-medium"
                   >
-                    {t.form.eventDate.label} {t.form.eventDate.optional}
+                    {t.form.eventDate.label}
                   </Label>
-                  <Input
-                    id="eventDate"
-                    type="date"
-                    value={formData.eventDate}
-                    onChange={e =>
-                      handleInputChange('eventDate', e.target.value)
-                    }
-                    onFocus={() => setFocusedField('eventDate')}
-                    onBlur={() => setFocusedField(null)}
-                    className="text-body-md"
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    {t.form.eventDate.help}
-                  </p>
+                  <div className="flex items-end gap-3">
+                    <Input
+                      id="eventDate"
+                      type="date"
+                      value={formData.eventDate}
+                      onChange={e => {
+                        handleInputChange('eventDate', e.target.value);
+                        if (e.target.value) {
+                          setNoDateSelected(false);
+                        }
+                      }}
+                      onFocus={() => setFocusedField('eventDate')}
+                      onBlur={() => setFocusedField(null)}
+                      className="text-body-md"
+                    />
+                    <Button
+                      type="button"
+                      variant={noDateSelected ? 'default' : 'outline'}
+                      aria-pressed={noDateSelected}
+                      onClick={() => {
+                        setNoDateSelected(prev => {
+                          const next = !prev;
+                          if (next) {
+                            handleInputChange('eventDate', '');
+                          }
+                          return next;
+                        });
+                      }}
+                      className="whitespace-nowrap"
+                    >
+                      {locale === 'es'
+                        ? 'No tengo fecha'
+                        : locale === 'pt'
+                          ? 'Não tenho data'
+                          : "I don't have a date"}
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Location Field */}
@@ -628,12 +725,12 @@ export default function OptimizedContactForm({
                     htmlFor="location"
                     className="text-body-lg font-medium"
                   >
-                    {t.form.location.label} *
+                    {t.form.location.label}
                   </Label>
                   <Input
                     id="location"
                     type="text"
-                    placeholder={t.form.location.placeholder}
+                    placeholder={formatRequired(t.form.location.placeholder)}
                     value={formData.location}
                     onChange={e =>
                       handleInputChange('location', e.target.value)
@@ -659,12 +756,12 @@ export default function OptimizedContactForm({
                     htmlFor="attendees"
                     className="text-body-lg font-medium"
                   >
-                    {t.form.attendees.label} *
+                    {t.form.attendees.label}
                   </Label>
                   <Input
                     id="attendees"
                     type="text"
-                    placeholder={t.form.attendees.placeholder}
+                    placeholder={formatRequired(t.form.attendees.placeholder)}
                     value={formData.attendees}
                     onChange={e =>
                       handleInputChange('attendees', e.target.value)
@@ -687,7 +784,7 @@ export default function OptimizedContactForm({
                 {/* Services Field */}
                 <div className="space-y-2">
                   <Label className="text-body-lg font-medium">
-                    {t.form.services.label} *
+                    {t.form.services.label}
                   </Label>
                   <MultiSelect
                     options={[
@@ -757,43 +854,10 @@ export default function OptimizedContactForm({
                   </p>
                 </div>
 
-                {/* Contact Method Field */}
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="contactMethod"
-                    className="text-body-lg font-medium"
-                  >
-                    {t.form.contactMethod.label} *
-                  </Label>
-                  <Select
-                    value={formData.contactMethod}
-                    onValueChange={value =>
-                      handleInputChange('contactMethod', value)
-                    }
-                  >
-                    <SelectTrigger className="text-body-md">
-                      <SelectValue
-                        placeholder={t.form.contactMethod.placeholder}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="whatsapp">
-                        {t.form.contactMethod.options.whatsapp}
-                      </SelectItem>
-                      <SelectItem value="email">
-                        {t.form.contactMethod.options.email}
-                      </SelectItem>
-                      <SelectItem value="call">
-                        {t.form.contactMethod.options.call}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 {/* Company Field */}
                 <div className="space-y-2">
                   <Label htmlFor="company" className="text-body-lg font-medium">
-                    {t.form.company.label} {t.form.company.optional}
+                    {t.form.company.label}
                   </Label>
                   <Input
                     id="company"
@@ -810,7 +874,7 @@ export default function OptimizedContactForm({
                 {/* Message Field */}
                 <div className="space-y-2">
                   <Label htmlFor="message" className="text-body-lg font-medium">
-                    {t.form.message.label} {t.form.message.optional}
+                    {t.form.message.label}
                   </Label>
                   <Textarea
                     id="message"

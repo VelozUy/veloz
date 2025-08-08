@@ -90,7 +90,7 @@ const STATIC_TRANSLATIONS = {
           placeholder: '*Email',
         },
         company: {
-          label: 'Empresa (si corresponde)',
+          label: 'Empresa',
           placeholder: 'Empresa',
           optional: '(opcional)',
         },
@@ -386,7 +386,7 @@ const STATIC_TRANSLATIONS = {
           placeholder: '*Email',
         },
         company: {
-          label: 'Company (if applicable)',
+          label: 'Company',
           placeholder: 'Company',
           optional: '(optional)',
         },
@@ -680,7 +680,7 @@ const STATIC_TRANSLATIONS = {
           placeholder: '*Email',
         },
         company: {
-          label: 'Empresa (se aplicável)',
+          label: 'Empresa',
           placeholder: 'Empresa',
           optional: '(opcional)',
         },

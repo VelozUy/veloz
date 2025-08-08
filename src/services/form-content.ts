@@ -135,24 +135,19 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           company: {
             label: {
-              es: 'Empresa (si corresponde)',
-              en: 'Company (if applicable)',
-              pt: 'Empresa (se aplicável)',
+              es: 'Empresa',
+              en: 'Company',
+              pt: 'Empresa',
             },
             placeholder: {
               es: 'Nombre de tu empresa',
               en: 'Your company name',
               pt: 'Nome da sua empresa',
             },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
-            },
           },
           phone: {
             label: {
-              es: 'Número de celu',
+              es: 'Número de celular',
               en: 'Mobile number',
               pt: 'Número de celular',
             },
@@ -160,11 +155,6 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               es: 'Tu número de celular',
               en: 'Your mobile number',
               pt: 'Seu número de celular',
-            },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
             },
           },
           eventType: {
@@ -223,14 +213,14 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           location: {
             label: {
-              es: 'Lugar del evento (ciudad)',
-              en: 'Event location (city)',
-              pt: 'Local do evento (cidade)',
+              es: 'Lugar',
+              en: 'Location',
+              pt: 'Local',
             },
             placeholder: {
-              es: 'Ciudad donde será el evento',
-              en: 'City where the event will be held',
-              pt: 'Cidade onde o evento será realizado',
+              es: 'Ciudad',
+              en: 'City',
+              pt: 'Cidade',
             },
           },
           attendees: {
@@ -314,27 +304,12 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               en: 'Approximate date',
               pt: 'Data aproximada',
             },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
-            },
-            help: {
-              es: '¡No te preocupes si aún no estás seguro, podemos trabajar con fechas flexibles!',
-              en: "Don't worry if you're not sure yet – we can work with flexible dates!",
-              pt: 'Não se preocupe se ainda não tem certeza – podemos trabalhar com datas flexíveis!',
-            },
           },
           message: {
             label: {
               es: 'Cuéntanos todos los detalles que te parezcan',
               en: 'Tell us all the details you think are relevant',
               pt: 'Conte-nos todos os detalhes que achar relevantes',
-            },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
             },
             placeholder: {
               es: 'Comparte todos los detalles que consideres importantes para tu evento...',
@@ -347,11 +322,6 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
               es: 'Archivos adjuntos',
               en: 'Attachments',
               pt: 'Anexos',
-            },
-            optional: {
-              es: '(opcional)',
-              en: '(optional)',
-              pt: '(opcional)',
             },
             description: {
               es: 'Puedes adjuntar fotos o documentos',

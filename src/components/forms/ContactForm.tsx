@@ -155,6 +155,10 @@ export default function ContactForm({
   translations,
   locale = 'es',
 }: ContactFormProps) {
+  const formatRequired = (text: string) => {
+    const trimmed = text?.trim() || '';
+    return trimmed.startsWith('*') ? trimmed : `* ${trimmed}`;
+  };
   const dateInputRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -162,6 +166,7 @@ export default function ContactForm({
   const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [noDateSelected, setNoDateSelected] = useState(false);
   const searchParams = useSearchParams();
 
   // Check if mobile on mount and resize
@@ -191,7 +196,7 @@ export default function ContactForm({
     location: '',
     attendees: '',
     services: [] as string[],
-    contactMethod: 'whatsapp' as 'whatsapp' | 'email' | 'call',
+    contactMethod: 'email' as 'whatsapp' | 'email' | 'call',
     eventDate: '',
     message: '',
   });
@@ -244,11 +249,13 @@ export default function ContactForm({
       newErrors.name = translations.contact.form.name.label;
     }
 
-    // Validate email (always required for auto-reply functionality)
-    if (!formData.email.trim()) {
-      newErrors.email = translations.contact.form.email.label;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
+    // Validate email only when preferred contact method is email
+    if (formData.contactMethod === 'email') {
+      if (!formData.email.trim()) {
+        newErrors.email = translations.contact.form.email.label;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Email inválido';
+      }
     }
 
     // Validate phone only if contact method is whatsapp or call
@@ -425,13 +432,13 @@ export default function ContactForm({
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
-          <div className="text-center space-y-8">
+          <div className="text-left space-y-8 text-foreground">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight">
               {translations.contact.title}
             </h1>
-            <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl max-w-4xl leading-relaxed font-body">
               {translations.contact.subtitle}
             </p>
           </div>
@@ -439,13 +446,13 @@ export default function ContactForm({
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16 bg-muted/30">
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-subtitle font-bold mb-6 text-foreground uppercase tracking-wide">
+          <div className="text-left mb-12">
+            <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
               {translations.contact.form.title}
             </h2>
-            <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>
+            <div className="w-32 h-1 bg-primary rounded-full"></div>
           </div>
 
           <form
@@ -455,310 +462,318 @@ export default function ContactForm({
               getBackgroundClasses('form').background
             )}
           >
-            {/* Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-body-lg font-medium">
-                {t.form.name.label} *
-              </Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder={t.form.name.placeholder}
-                value={formData.name}
-                onChange={e => handleInputChange('name', e.target.value)}
-                onFocus={() => setFocusedField('name')}
-                onBlur={() => setFocusedField(null)}
-                data-field="name"
-                className={cn(
-                  'text-body-md',
-                  errors.name && 'border-destructive focus:border-destructive'
-                )}
-              />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name}</p>
-              )}
-            </div>
-
-            {/* Email Field */}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-body-lg font-medium">
-                {t.form.email.label} *
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={t.form.email.placeholder}
-                value={formData.email}
-                onChange={e => handleInputChange('email', e.target.value)}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                data-field="email"
-                className={cn(
-                  'text-body-md',
-                  errors.email && 'border-destructive focus:border-destructive'
-                )}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Company Field */}
-            <div className="space-y-2">
-              <Label htmlFor="company" className="text-body-lg font-medium">
-                {t.form.company.label}{' '}
-                <span className="text-muted-foreground">
-                  ({t.form.company.optional})
-                </span>
-              </Label>
-              <Input
-                id="company"
-                type="text"
-                placeholder={t.form.company.placeholder}
-                value={formData.company}
-                onChange={e => handleInputChange('company', e.target.value)}
-                onFocus={() => setFocusedField('company')}
-                onBlur={() => setFocusedField(null)}
-                className="text-body-md"
-              />
-            </div>
-
-            {/* Contact Method Field */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="contactMethod"
-                className="text-body-lg font-medium"
-              >
-                {t.form.contactMethod.label} *
-              </Label>
-              <Select
-                value={formData.contactMethod}
-                onValueChange={value =>
-                  handleInputChange('contactMethod', value)
-                }
-                onOpenChange={open =>
-                  setFocusedField(open ? 'contactMethod' : null)
-                }
-              >
-                <SelectTrigger
-                  className={cn(
-                    'text-body-md',
-                    errors.contactMethod &&
-                      'border-destructive focus:border-destructive'
-                  )}
-                >
-                  <SelectValue placeholder={t.form.contactMethod.placeholder} />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(t.form.contactMethod.options).map(
-                    ([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Phone/Email Field (conditional based on contact method) */}
-            {formData.contactMethod === 'email' ? (
+            {/* Name + Company (desktop side-by-side) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-body-lg font-medium">
-                  {t.form.email.label} *
+                <Label htmlFor="name" className="text-body-lg font-medium">
+                  {t.form.name.label}
                 </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder={t.form.email.placeholder}
-                  value={formData.email}
-                  onChange={e => handleInputChange('email', e.target.value)}
-                  onFocus={() => setFocusedField('email')}
+                  id="name"
+                  type="text"
+                  placeholder={t.form.name.placeholder}
+                  value={formData.name}
+                  onChange={e => handleInputChange('name', e.target.value)}
+                  onFocus={() => setFocusedField('name')}
                   onBlur={() => setFocusedField(null)}
-                  data-field="email"
+                  data-field="name"
                   className={cn(
                     'text-body-md',
-                    errors.email &&
+                    errors.name && 'border-destructive focus:border-destructive'
+                  )}
+                />
+                {errors.name && (
+                  <p className="text-sm text-destructive">{errors.name}</p>
+                )}
+              </div>
+
+              {/* Company Field */}
+              <div className="space-y-2">
+                <Label htmlFor="company" className="text-body-lg font-medium">
+                  {t.form.company.label}
+                </Label>
+                <Input
+                  id="company"
+                  type="text"
+                  placeholder={t.form.company.placeholder}
+                  value={formData.company}
+                  onChange={e => handleInputChange('company', e.target.value)}
+                  onFocus={() => setFocusedField('company')}
+                  onBlur={() => setFocusedField(null)}
+                  className="text-body-md"
+                />
+              </div>
+            </div>
+
+            {/* Contact Method + Email/Phone (desktop side-by-side) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Contact Method Field */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="contactMethod"
+                  className="text-body-lg font-medium"
+                >
+                  {t.form.contactMethod.label}
+                </Label>
+                <Select
+                  value={formData.contactMethod}
+                  onValueChange={value =>
+                    handleInputChange('contactMethod', value)
+                  }
+                  onOpenChange={open =>
+                    setFocusedField(open ? 'contactMethod' : null)
+                  }
+                >
+                  <SelectTrigger
+                    className={cn(
+                      'text-body-md',
+                      errors.contactMethod &&
+                        'border-destructive focus:border-destructive'
+                    )}
+                  >
+                    <SelectValue
+                      placeholder={t.form.contactMethod.placeholder}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(t.form.contactMethod.options).map(
+                      ([key, label]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Phone/Email Field (conditional based on contact method) */}
+              {formData.contactMethod === 'email' ? (
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-body-lg font-medium">
+                    {t.form.email.label}
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder={formatRequired(t.form.email.placeholder)}
+                    value={formData.email}
+                    onChange={e => handleInputChange('email', e.target.value)}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
+                    data-field="email"
+                    className={cn(
+                      'text-body-md',
+                      errors.email &&
+                        'border-destructive focus:border-destructive'
+                    )}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-destructive">{errors.email}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-body-lg font-medium">
+                    {t.form.phone.label}
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder={formatRequired(t.form.phone.placeholder)}
+                    value={formData.phone}
+                    onChange={e => handleInputChange('phone', e.target.value)}
+                    onFocus={() => setFocusedField('phone')}
+                    onBlur={() => setFocusedField(null)}
+                    data-field="phone"
+                    className={cn(
+                      'text-body-md',
+                      errors.phone &&
+                        'border-destructive focus:border-destructive'
+                    )}
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-destructive">{errors.phone}</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Event Type + Services (desktop side-by-side) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Event Type Field */}
+              <div className="space-y-2">
+                <Label htmlFor="eventType" className="text-body-lg font-medium">
+                  {t.form.eventType.label}
+                </Label>
+                <Select
+                  value={formData.eventType}
+                  onValueChange={value => handleInputChange('eventType', value)}
+                  onOpenChange={open =>
+                    setFocusedField(open ? 'eventType' : null)
+                  }
+                >
+                  <SelectTrigger
+                    data-field="eventType"
+                    className={cn(
+                      'text-body-md',
+                      errors.eventType &&
+                        'border-destructive focus:border-destructive'
+                    )}
+                  >
+                    <SelectValue
+                      placeholder={formatRequired(t.form.eventType.placeholder)}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(t.form.eventType.options).map(
+                      ([key, label]) => (
+                        <SelectItem key={key} value={key}>
+                          {label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
+                {errors.eventType && (
+                  <p className="text-sm text-destructive">{errors.eventType}</p>
+                )}
+              </div>
+
+              {/* Services Field */}
+              <div className="space-y-2">
+                <Label htmlFor="services" className="text-body-lg font-medium">
+                  {t.form.services.label}
+                </Label>
+                <MultiSelect
+                  options={Object.entries(t.form.services.options).map(
+                    ([key, label]) => ({
+                      value: key,
+                      label: label,
+                    })
+                  )}
+                  value={formData.services}
+                  onValueChange={services =>
+                    handleInputChange('services', services)
+                  }
+                  placeholder={formatRequired(t.form.services.placeholder)}
+                  data-field="services"
+                  className={cn(
+                    'text-body-md',
+                    errors.services &&
                       'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email}</p>
+                {errors.services && (
+                  <p className="text-sm text-destructive">{errors.services}</p>
                 )}
               </div>
-            ) : (
+            </div>
+
+            {/* Location + Attendees (desktop side-by-side) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Location Field */}
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-body-lg font-medium">
-                  {t.form.phone.label} *
+                <Label htmlFor="location" className="text-body-lg font-medium">
+                  {t.form.location.label}
                 </Label>
                 <Input
-                  id="phone"
-                  type="tel"
-                  placeholder={t.form.phone.placeholder}
-                  value={formData.phone}
-                  onChange={e => handleInputChange('phone', e.target.value)}
-                  onFocus={() => setFocusedField('phone')}
+                  id="location"
+                  type="text"
+                  placeholder={formatRequired(t.form.location.placeholder)}
+                  value={formData.location}
+                  onChange={e => handleInputChange('location', e.target.value)}
+                  onFocus={() => setFocusedField('location')}
                   onBlur={() => setFocusedField(null)}
-                  data-field="phone"
+                  data-field="location"
                   className={cn(
                     'text-body-md',
-                    errors.phone &&
+                    errors.location &&
                       'border-destructive focus:border-destructive'
                   )}
                 />
-                {errors.phone && (
-                  <p className="text-sm text-destructive">{errors.phone}</p>
+                {errors.location && (
+                  <p className="text-sm text-destructive">{errors.location}</p>
                 )}
               </div>
-            )}
 
-            {/* Event Type Field */}
-            <div className="space-y-2">
-              <Label htmlFor="eventType" className="text-body-lg font-medium">
-                {t.form.eventType.label} *
-              </Label>
-              <Select
-                value={formData.eventType}
-                onValueChange={value => handleInputChange('eventType', value)}
-                onOpenChange={open =>
-                  setFocusedField(open ? 'eventType' : null)
-                }
-              >
-                <SelectTrigger
-                  data-field="eventType"
+              {/* Attendees Field */}
+              <div className="space-y-2">
+                <Label htmlFor="attendees" className="text-body-lg font-medium">
+                  {t.form.attendees.label}
+                </Label>
+                <Input
+                  id="attendees"
+                  type="number"
+                  placeholder={formatRequired(t.form.attendees.placeholder)}
+                  value={formData.attendees}
+                  onChange={e => handleInputChange('attendees', e.target.value)}
+                  onFocus={() => setFocusedField('attendees')}
+                  onBlur={() => setFocusedField(null)}
+                  data-field="attendees"
                   className={cn(
                     'text-body-md',
-                    errors.eventType &&
+                    errors.attendees &&
                       'border-destructive focus:border-destructive'
                   )}
-                >
-                  <SelectValue placeholder={t.form.eventType.placeholder} />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(t.form.eventType.options).map(
-                    ([key, label]) => (
-                      <SelectItem key={key} value={key}>
-                        {label}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-              {errors.eventType && (
-                <p className="text-sm text-destructive">{errors.eventType}</p>
-              )}
-            </div>
-
-            {/* Location Field */}
-            <div className="space-y-2">
-              <Label htmlFor="location" className="text-body-lg font-medium">
-                {t.form.location.label} *
-              </Label>
-              <Input
-                id="location"
-                type="text"
-                placeholder={t.form.location.placeholder}
-                value={formData.location}
-                onChange={e => handleInputChange('location', e.target.value)}
-                onFocus={() => setFocusedField('location')}
-                onBlur={() => setFocusedField(null)}
-                data-field="location"
-                className={cn(
-                  'text-body-md',
-                  errors.location &&
-                    'border-destructive focus:border-destructive'
+                />
+                {errors.attendees && (
+                  <p className="text-sm text-destructive">{errors.attendees}</p>
                 )}
-              />
-              {errors.location && (
-                <p className="text-sm text-destructive">{errors.location}</p>
-              )}
-            </div>
-
-            {/* Attendees Field */}
-            <div className="space-y-2">
-              <Label htmlFor="attendees" className="text-body-lg font-medium">
-                {t.form.attendees.label} *
-              </Label>
-              <Input
-                id="attendees"
-                type="number"
-                placeholder={t.form.attendees.placeholder}
-                value={formData.attendees}
-                onChange={e => handleInputChange('attendees', e.target.value)}
-                onFocus={() => setFocusedField('attendees')}
-                onBlur={() => setFocusedField(null)}
-                data-field="attendees"
-                className={cn(
-                  'text-body-md',
-                  errors.attendees &&
-                    'border-destructive focus:border-destructive'
-                )}
-              />
-              {errors.attendees && (
-                <p className="text-sm text-destructive">{errors.attendees}</p>
-              )}
-            </div>
-
-            {/* Services Field */}
-            <div className="space-y-2">
-              <Label htmlFor="services" className="text-body-lg font-medium">
-                {t.form.services.label} *
-              </Label>
-              <MultiSelect
-                options={Object.entries(t.form.services.options).map(
-                  ([key, label]) => ({
-                    value: key,
-                    label: label,
-                  })
-                )}
-                value={formData.services}
-                onValueChange={services =>
-                  handleInputChange('services', services)
-                }
-                placeholder={t.form.services.placeholder}
-                data-field="services"
-                className={cn(
-                  'text-body-md',
-                  errors.services &&
-                    'border-destructive focus:border-destructive'
-                )}
-              />
-              {errors.services && (
-                <p className="text-sm text-destructive">{errors.services}</p>
-              )}
+              </div>
             </div>
 
             {/* Event Date Field */}
             <div className="space-y-2">
               <Label htmlFor="eventDate" className="text-body-lg font-medium">
-                {t.form.eventDate.label}{' '}
-                <span className="text-muted-foreground">
-                  ({t.form.eventDate.optional})
-                </span>
+                {t.form.eventDate.label}
               </Label>
-              <Input
-                ref={dateInputRef}
-                id="eventDate"
-                type="date"
-                value={formData.eventDate}
-                onChange={e => handleInputChange('eventDate', e.target.value)}
-                onFocus={() => setFocusedField('eventDate')}
-                onBlur={() => setFocusedField(null)}
-                min={new Date().toISOString().split('T')[0]}
-                className="text-body-md"
-              />
-              <p className="text-sm text-muted-foreground">
-                {t.form.eventDate.help}
-              </p>
+              <div className="flex items-end gap-3">
+                <Input
+                  ref={dateInputRef}
+                  id="eventDate"
+                  type="date"
+                  value={formData.eventDate}
+                  onChange={e => {
+                    handleInputChange('eventDate', e.target.value);
+                    if (e.target.value) {
+                      setNoDateSelected(false);
+                    }
+                  }}
+                  onFocus={() => setFocusedField('eventDate')}
+                  onBlur={() => setFocusedField(null)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="text-body-md"
+                />
+                <Button
+                  type="button"
+                  variant={noDateSelected ? 'default' : 'outline'}
+                  aria-pressed={noDateSelected}
+                  onClick={() => {
+                    setNoDateSelected(prev => {
+                      const next = !prev;
+                      if (next) {
+                        handleInputChange('eventDate', '');
+                      }
+                      return next;
+                    });
+                  }}
+                  className="whitespace-nowrap"
+                >
+                  {locale === 'es'
+                    ? 'No tengo fecha'
+                    : locale === 'pt'
+                      ? 'Não tenho data'
+                      : "I don't have a date"}
+                </Button>
+              </div>
             </div>
 
             {/* Message Field */}
             <div className="space-y-2">
               <Label htmlFor="message" className="text-body-lg font-medium">
-                {t.form.message.label}{' '}
-                <span className="text-muted-foreground">
-                  ({t.form.message.optional})
-                </span>
+                {t.form.message.label}
               </Label>
               <Textarea
                 id="message"

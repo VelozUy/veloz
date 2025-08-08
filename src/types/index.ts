@@ -152,12 +152,10 @@ export interface FormContent {
       company: {
         label: LocalizedContent;
         placeholder: LocalizedContent;
-        optional: LocalizedContent;
       };
       phone: {
         label: LocalizedContent;
         placeholder: LocalizedContent;
-        optional: LocalizedContent;
       };
       eventType: {
         label: LocalizedContent;
@@ -202,17 +200,13 @@ export interface FormContent {
       };
       eventDate: {
         label: LocalizedContent;
-        optional: LocalizedContent;
-        help: LocalizedContent;
       };
       message: {
         label: LocalizedContent;
-        optional: LocalizedContent;
         placeholder: LocalizedContent;
       };
       attachments: {
         label: LocalizedContent;
-        optional: LocalizedContent;
         description: LocalizedContent;
       };
       submit: {
