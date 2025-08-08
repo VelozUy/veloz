@@ -13,7 +13,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { MessageCircle, Phone, CheckCircle } from 'lucide-react';
+import {
+  MessageCircle,
+  Phone,
+  CheckCircle,
+  Calendar as CalendarIcon,
+  MapPin,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+} from 'lucide-react';
 import { getStaticContent } from '@/lib/utils';
 import { trackCustomEvent } from '@/services/analytics';
 import { emailService } from '@/services/email';
@@ -41,7 +50,7 @@ interface WidgetData {
   dateSkipped: boolean;
 }
 
-// Memoized step components for better performance
+// Enhanced Event Type Step with compact design
 const EventTypeStep = memo(
   ({
     content,
@@ -52,87 +61,49 @@ const EventTypeStep = memo(
     onSelect: (type: string) => void;
     selectedType: string;
   }) => (
-    <div className="space-y-4" role="region" aria-label="Event type selection">
-      <div className="text-center">
-        <h3 className="text-lg font-semibold" id="event-type-title">
+    <div className="space-y-3" role="region" aria-label="Event type selection">
+      <div className="text-center space-y-1">
+        <h3
+          className="text-xl font-semibold text-card-foreground"
+          id="event-type-title"
+        >
           {content.steps.eventType.subtitle}
         </h3>
+        <p className="text-sm text-muted-foreground font-content">
+          Selecciona el tipo de evento que quieres celebrar
+        </p>
       </div>
+
       <div
-        className="grid grid-cols-1 gap-3"
+        className="grid grid-cols-1 gap-1"
         role="radiogroup"
         aria-labelledby="event-type-title"
       >
-        <Button
-          variant={selectedType === 'corporate' ? 'default' : 'outline'}
-          onClick={() => onSelect('corporate')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'corporate'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.corporate}
-        </Button>
-        <Button
-          variant={selectedType === 'product' ? 'default' : 'outline'}
-          onClick={() => onSelect('product')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'product'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.product}
-        </Button>
-        <Button
-          variant={selectedType === 'birthday' ? 'default' : 'outline'}
-          onClick={() => onSelect('birthday')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'birthday'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.birthday}
-        </Button>
-        <Button
-          variant={selectedType === 'wedding' ? 'default' : 'outline'}
-          onClick={() => onSelect('wedding')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'wedding'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.wedding}
-        </Button>
-        <Button
-          variant={selectedType === 'concert' ? 'default' : 'outline'}
-          onClick={() => onSelect('concert')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'concert'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.concert}
-        </Button>
-        <Button
-          variant={selectedType === 'exhibition' ? 'default' : 'outline'}
-          onClick={() => onSelect('exhibition')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'exhibition'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.exhibition}
-        </Button>
-        <Button
-          variant={selectedType === 'other' ? 'default' : 'outline'}
-          onClick={() => onSelect('other')}
-          className="justify-start"
-          role="radio"
-          aria-checked={selectedType === 'other'}
-          aria-describedby="event-type-title"
-        >
-          {content.eventTypes.other}
-        </Button>
+        {[
+          { key: 'corporate', label: content.eventTypes.corporate },
+          { key: 'product', label: content.eventTypes.product },
+          { key: 'birthday', label: content.eventTypes.birthday },
+          { key: 'wedding', label: content.eventTypes.wedding },
+          { key: 'concert', label: content.eventTypes.concert },
+          { key: 'exhibition', label: content.eventTypes.exhibition },
+          { key: 'other', label: content.eventTypes.other },
+        ].map(({ key, label }) => (
+          <Button
+            key={key}
+            variant="ghost"
+            onClick={() => onSelect(key)}
+            className={`justify-start h-8 px-3 text-left transition-all duration-200 ${
+              selectedType === key
+                ? 'bg-primary text-primary-foreground'
+                : 'hover:bg-accent hover:text-accent-foreground'
+            }`}
+            role="radio"
+            aria-checked={selectedType === key}
+            aria-describedby="event-type-title"
+          >
+            <span className="font-medium text-sm">{label}</span>
+          </Button>
+        ))}
       </div>
     </div>
   )
@@ -140,36 +111,79 @@ const EventTypeStep = memo(
 
 EventTypeStep.displayName = 'EventTypeStep';
 
+// Enhanced Date Step with better UX
 const DateStep = memo(
   ({
     content,
+    widgetContent,
     onSelect,
     selectedDate,
     onSkip,
+    onSubmit,
   }: {
     content: any;
+    widgetContent: any;
     onSelect: (date: Date | undefined) => void;
     selectedDate: Date | undefined;
     onSkip: () => void;
+    onSubmit: () => void;
   }) => (
     <div className="space-y-4" role="region" aria-label="Date selection">
-      <div className="text-center">
-        <h3 className="text-lg font-semibold" id="date-title">
+      <div className="text-center space-y-1">
+        <h3
+          className="text-xl font-semibold text-card-foreground"
+          id="date-title"
+        >
           {content.steps.date.title}
         </h3>
+        <p className="text-sm text-muted-foreground font-content">
+          ¿Cuándo planeas realizar tu evento?
+        </p>
       </div>
-      <div className="flex justify-center">
-        <Input
-          type="date"
-          value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-          onChange={e => {
-            const date = e.target.value ? new Date(e.target.value) : undefined;
-            onSelect(date);
-          }}
-          className="w-48"
-          aria-labelledby="date-title"
-          aria-describedby="date-title"
-        />
+
+      <div className="space-y-4">
+        <div className="flex justify-center">
+          <div className="relative">
+            <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Input
+              type="date"
+              value={
+                selectedDate ? selectedDate.toISOString().split('T')[0] : ''
+              }
+              onChange={e => {
+                const date = e.target.value
+                  ? new Date(e.target.value)
+                  : undefined;
+                onSelect(date);
+              }}
+              className="w-64 pl-10 h-12 text-center font-medium"
+              aria-labelledby="date-title"
+              aria-describedby="date-title"
+              min={new Date().toISOString().split('T')[0]}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          {selectedDate && (
+            <Button
+              onClick={onSubmit}
+              className="flex-1 h-12"
+              aria-label="Continue with selected date"
+            >
+              <span>{widgetContent.navigation.next}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={onSkip}
+            className="flex-1 h-12"
+            aria-label="Skip date selection"
+          >
+            {content.steps.date.noDate}
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -177,43 +191,69 @@ const DateStep = memo(
 
 DateStep.displayName = 'DateStep';
 
+// Enhanced Location Step
 const LocationStep = memo(
   ({
     content,
+    widgetContent,
     onInput,
     onSkip,
     onSubmit,
     value,
   }: {
     content: any;
+    widgetContent: any;
     onInput: (location: string) => void;
     onSkip: () => void;
     onSubmit: () => void;
     value: string;
   }) => (
     <div className="space-y-4" role="region" aria-label="Location input">
-      <div className="text-center">
-        <h3 className="text-lg font-semibold" id="location-title">
+      <div className="text-center space-y-1">
+        <h3
+          className="text-xl font-semibold text-card-foreground"
+          id="location-title"
+        >
           {content.steps.location.title}
         </h3>
+        <p className="text-sm text-muted-foreground font-content">
+          ¿Dónde se realizará tu evento?
+        </p>
       </div>
-      <div className="space-y-3">
-        <Input
-          placeholder={content.steps.location.placeholder}
-          value={value}
-          onChange={e => onInput(e.target.value)}
-          aria-labelledby="location-title"
-          aria-describedby="location-title"
-          aria-label="Event location"
-        />
-        <Button
-          variant="outline"
-          onClick={onSkip}
-          className="w-full"
-          aria-label="Skip location input"
-        >
-          {content.steps.location.noLocation}
-        </Button>
+
+      <div className="space-y-4">
+        <div className="relative">
+          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder={content.steps.location.placeholder}
+            value={value}
+            onChange={e => onInput(e.target.value)}
+            className="pl-10 h-12"
+            aria-labelledby="location-title"
+            aria-describedby="location-title"
+            aria-label="Event location"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button
+            onClick={onSubmit}
+            className="flex-1 h-12"
+            disabled={!value.trim()}
+            aria-label="Continue with location"
+          >
+            <span>{widgetContent.navigation.next}</span>
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="outline"
+            onClick={onSkip}
+            className="flex-1 h-12"
+            aria-label="Skip location input"
+          >
+            {content.steps.location.noLocation}
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -221,6 +261,7 @@ const LocationStep = memo(
 
 LocationStep.displayName = 'LocationStep';
 
+// Enhanced Contact Step with better visual hierarchy
 const ContactStep = memo(
   ({
     content,
@@ -234,52 +275,68 @@ const ContactStep = memo(
       role="region"
       aria-label="Contact preference selection"
     >
-      <div className="text-center">
-        <h3 className="text-lg font-semibold" id="contact-title">
+      <div className="text-center space-y-1">
+        <h3
+          className="text-xl font-semibold text-card-foreground"
+          id="contact-title"
+        >
           {content.steps.contact.title}
         </h3>
+        <p className="text-sm text-muted-foreground font-content">
+          ¿Cómo prefieres que te contactemos?
+        </p>
       </div>
+
       <div
-        className="grid grid-cols-1 gap-3"
+        className="grid grid-cols-1 gap-4"
         role="radiogroup"
         aria-labelledby="contact-title"
       >
         <Button
           variant="outline"
           onClick={() => onChoice('moreInfo')}
-          className="justify-start h-20 p-3 whitespace-normal text-left"
+          className="justify-start h-20 p-4 text-left hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-[1.01]"
           role="radio"
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <MessageCircle
-            className="w-4 h-4 mr-2 flex-shrink-0"
-            aria-hidden="true"
-          />
-          <div className="text-left flex-1 min-w-0 overflow-hidden">
-            <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
-              {content.steps.contact.moreInfo.title}
+          <div className="flex items-start space-x-3 w-full">
+            <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <MessageCircle
+                className="w-4 h-4 text-primary"
+                aria-hidden="true"
+              />
             </div>
-            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere font-content">
-              {content.steps.contact.moreInfo.subtitle}
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-sm leading-tight">
+                {content.steps.contact.moreInfo.title}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1 leading-relaxed font-content">
+                {content.steps.contact.moreInfo.subtitle}
+              </div>
             </div>
           </div>
         </Button>
+
         <Button
           variant="outline"
           onClick={() => onChoice('callMe')}
-          className="justify-start h-20 p-3 whitespace-normal text-left"
+          className="justify-start h-20 p-4 text-left hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-[1.01]"
           role="radio"
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <Phone className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
-          <div className="text-left flex-1 min-w-0 overflow-hidden">
-            <div className="font-medium break-words leading-tight overflow-wrap-anywhere">
-              {content.steps.contact.callMe.title}
+          <div className="flex items-start space-x-3 w-full">
+            <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <Phone className="w-4 h-4 text-primary" aria-hidden="true" />
             </div>
-            <div className="text-xs text-muted-foreground break-words leading-tight mt-1 overflow-wrap-anywhere font-content">
-              {content.steps.contact.callMe.subtitle}
+            <div className="flex-1 min-w-0">
+              <div className="font-medium text-sm leading-tight">
+                {content.steps.contact.callMe.title}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1 leading-relaxed font-content">
+                {content.steps.contact.callMe.subtitle}
+              </div>
             </div>
           </div>
         </Button>
@@ -290,33 +347,67 @@ const ContactStep = memo(
 
 ContactStep.displayName = 'ContactStep';
 
+// Enhanced Phone Step
 const PhoneStep = memo(
   ({
     content,
+    widgetContent,
     phone,
     onPhoneChange,
+    onSubmit,
+    isSubmitting,
   }: {
     content: any;
+    widgetContent: any;
     phone: string;
     onPhoneChange: (phone: string) => void;
+    onSubmit: () => void;
+    isSubmitting: boolean;
   }) => {
     return (
-      <div className="space-y-4" role="region" aria-label="Phone number input">
-        <div className="text-center">
-          <h3 className="text-lg font-semibold" id="phone-title">
+      <div className="space-y-6" role="region" aria-label="Phone number input">
+        <div className="text-center space-y-2">
+          <h3
+            className="text-xl font-semibold text-card-foreground"
+            id="phone-title"
+          >
             {content.steps.phone.title}
           </h3>
+          <p className="text-sm text-muted-foreground font-content">
+            Te llamaremos pronto para coordinar los detalles
+          </p>
         </div>
-        <div className="space-y-3">
-          <Input
-            type="tel"
-            placeholder={content.steps.phone.placeholder}
-            value={phone}
-            onChange={e => onPhoneChange(e.target.value)}
-            aria-labelledby="phone-title"
-            aria-describedby="phone-title"
-            aria-label="Phone number"
-          />
+
+        <div className="space-y-4">
+          <div className="relative">
+            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Input
+              type="tel"
+              placeholder={content.steps.phone.placeholder}
+              value={phone}
+              onChange={e => onPhoneChange(e.target.value)}
+              className="pl-10 h-12 text-center font-medium"
+              aria-labelledby="phone-title"
+              aria-describedby="phone-title"
+              aria-label="Phone number"
+            />
+          </div>
+
+          <Button
+            onClick={onSubmit}
+            disabled={isSubmitting || !phone.trim()}
+            className="w-full h-12"
+            aria-label={
+              isSubmitting ? 'Submitting phone number' : 'Submit phone number'
+            }
+          >
+            <span>
+              {isSubmitting
+                ? content.steps.phone.loading
+                : widgetContent.navigation.next}
+            </span>
+            {!isSubmitting && <ArrowRight className="w-4 h-4" />}
+          </Button>
         </div>
       </div>
     );
@@ -324,6 +415,35 @@ const PhoneStep = memo(
 );
 
 PhoneStep.displayName = 'PhoneStep';
+
+// Progress indicator component
+const ProgressIndicator = memo(
+  ({
+    currentStep,
+    totalSteps,
+  }: {
+    currentStep: number;
+    totalSteps: number;
+  }) => (
+    <div className="flex items-center justify-center space-x-2 mb-6">
+      {Array.from({ length: totalSteps }, (_, i) => (
+        <div
+          key={i}
+          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+            i < currentStep
+              ? 'bg-primary'
+              : i === currentStep
+                ? 'bg-primary/60'
+                : 'bg-muted'
+          }`}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  )
+);
+
+ProgressIndicator.displayName = 'ProgressIndicator';
 
 export function ContactWidget({
   language = 'es',
@@ -351,34 +471,30 @@ export function ContactWidget({
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const isScrollingNow = Math.abs(currentScrollY - lastScrollY) > 5; // Threshold for scroll detection
+      const isScrollingNow = Math.abs(currentScrollY - lastScrollY) > 5;
 
       if (isScrollingNow) {
         setIsScrolling(true);
         setIsVisible(false);
 
-        // Clear existing timeout
         if (scrollTimeout) {
           clearTimeout(scrollTimeout);
         }
 
-        // Set new timeout to show widget after scrolling stops
         scrollTimeout = setTimeout(() => {
           setIsScrolling(false);
           setIsVisible(true);
-        }, 5000); // Show widget 5 seconds after scrolling stops
+        }, 5000);
       }
 
       lastScrollY = currentScrollY;
     };
 
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Show widget initially after a delay
     const initialTimeout = setTimeout(() => {
       setIsVisible(true);
-    }, 5000); // Show widget 5 seconds after page load
+    }, 5000);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -393,13 +509,11 @@ export function ContactWidget({
 
     let fullscreenTimeout: NodeJS.Timeout;
 
-    // Reset visibility when entering fullscreen mode
     setIsVisible(false);
 
-    // Show widget after 10 seconds in fullscreen mode
     fullscreenTimeout = setTimeout(() => {
       setIsVisible(true);
-    }, 10000); // Show widget 10 seconds after entering fullscreen
+    }, 10000);
 
     return () => {
       clearTimeout(fullscreenTimeout);
@@ -423,12 +537,24 @@ export function ContactWidget({
     }
   }, [isOpen]);
 
+  // Calculate current step index for progress indicator
+  const stepIndex = useMemo(() => {
+    const steps: Step[] = [
+      'eventType',
+      'date',
+      'location',
+      'contact',
+      'phone',
+      'complete',
+    ];
+    return steps.indexOf(currentStep);
+  }, [currentStep]);
+
   // Memoize event handlers to prevent unnecessary re-renders
   const handleEventTypeSelect = useCallback((eventType: string) => {
     setWidgetData(prev => ({ ...prev, eventType }));
     setCurrentStep('date');
 
-    // Track step completion
     trackCustomEvent('contact_widget_step_completed', {
       step: 'eventType',
       value: eventType,
@@ -443,7 +569,6 @@ export function ContactWidget({
     }));
     setCurrentStep('location');
 
-    // Track step completion
     trackCustomEvent('contact_widget_step_completed', {
       step: 'date',
       value: date ? date.toISOString().split('T')[0] : 'skipped',
@@ -454,7 +579,6 @@ export function ContactWidget({
     setWidgetData(prev => ({ ...prev, dateSkipped: true }));
     setCurrentStep('location');
 
-    // Track step completion
     trackCustomEvent('contact_widget_step_completed', {
       step: 'date',
       value: 'skipped',
@@ -469,7 +593,6 @@ export function ContactWidget({
     setWidgetData(prev => ({ ...prev, location: '' }));
     setCurrentStep('contact');
 
-    // Track step completion
     trackCustomEvent('contact_widget_step_completed', {
       step: 'location',
       value: 'skipped',
@@ -479,7 +602,6 @@ export function ContactWidget({
   const handleLocationSubmit = useCallback(() => {
     setCurrentStep('contact');
 
-    // Track step completion
     trackCustomEvent('contact_widget_step_completed', {
       step: 'location',
       value: widgetData.location || 'skipped',
@@ -489,7 +611,6 @@ export function ContactWidget({
   const handleContactChoice = useCallback(
     (choice: 'moreInfo' | 'callMe') => {
       if (choice === 'moreInfo') {
-        // Build URL with parameters
         const params = new URLSearchParams();
         if (widgetData.eventType) params.append('evento', widgetData.eventType);
         if (widgetData.eventDate && !widgetData.dateSkipped)
@@ -501,7 +622,6 @@ export function ContactWidget({
         router.push(url);
         setIsOpen(false);
 
-        // Track conversion to form
         trackCustomEvent('contact_widget_conversion', {
           eventType: widgetData.eventType,
           eventDate: widgetData.eventDate,
@@ -511,7 +631,6 @@ export function ContactWidget({
       } else {
         setCurrentStep('phone');
 
-        // Track step completion
         trackCustomEvent('contact_widget_step_completed', {
           step: 'contact',
           value: 'callMe',
@@ -525,7 +644,6 @@ export function ContactWidget({
     async (phone: string) => {
       setIsSubmitting(true);
       try {
-        // Create contact data for database
         const contactMessageData = {
           name: 'Cliente Widget',
           email: 'widget@veloz.com.uy',
@@ -546,14 +664,12 @@ export function ContactWidget({
           archived: false,
         };
 
-        // Save to database using the base service create method
         const saveResult =
           await contactMessageService.create(contactMessageData);
         if (!saveResult.success) {
           throw new Error('Failed to save contact data');
         }
 
-        // Send email notification with separate data structure
         await emailService.sendContactForm({
           name: 'Cliente Widget',
           email: 'widget@veloz.com.uy',
@@ -571,13 +687,11 @@ export function ContactWidget({
 
         setCurrentStep('complete');
 
-        // Track step completion
         trackCustomEvent('contact_widget_step_completed', {
           step: 'phone',
           value: 'completed',
         });
 
-        // Track widget completion
         trackCustomEvent('contact_widget_completed', {
           eventType: widgetData.eventType,
           eventDate: widgetData.eventDate,
@@ -587,7 +701,6 @@ export function ContactWidget({
       } catch (error) {
         console.error('Error submitting phone:', error);
 
-        // Track error
         trackCustomEvent('contact_widget_error', {
           step: 'phone',
           error: error instanceof Error ? error.message : 'Unknown error',
@@ -639,17 +752,24 @@ export function ContactWidget({
         return (
           <DateStep
             content={widgetContent}
+            widgetContent={widgetContent}
             onSelect={handleDateSelect}
             selectedDate={
               widgetData.eventDate ? new Date(widgetData.eventDate) : undefined
             }
             onSkip={handleDateSkip}
+            onSubmit={() => {
+              if (widgetData.eventDate) {
+                setCurrentStep('location');
+              }
+            }}
           />
         );
       case 'location':
         return (
           <LocationStep
             content={widgetContent}
+            widgetContent={widgetContent}
             onInput={handleLocationInput}
             onSkip={handleLocationSkip}
             onSubmit={handleLocationSubmit}
@@ -664,32 +784,44 @@ export function ContactWidget({
         return (
           <PhoneStep
             content={widgetContent}
+            widgetContent={widgetContent}
             phone={widgetData.phone}
             onPhoneChange={phone => setWidgetData(prev => ({ ...prev, phone }))}
+            onSubmit={() => {
+              if (widgetData.phone.trim()) {
+                handlePhoneSubmit(widgetData.phone.trim());
+              }
+            }}
+            isSubmitting={isSubmitting}
           />
         );
       case 'complete':
         return (
           <div
-            className="text-center space-y-4"
+            className="text-center space-y-6"
             role="status"
             aria-live="polite"
           >
             <div
-              className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto"
+              className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto"
               aria-hidden="true"
             >
-              <CheckCircle className="w-8 h-8 text-primary" />
+              <CheckCircle className="w-10 h-10 text-primary" />
             </div>
-            <h3 className="text-lg font-semibold" id="success-title">
-              ¡Gracias!
-            </h3>
-            <p
-              className="text-sm text-muted-foreground font-content"
-              id="success-message"
-            >
-              Nos pondremos en contacto contigo pronto.
-            </p>
+            <div className="space-y-2">
+              <h3
+                className="text-xl font-semibold text-card-foreground"
+                id="success-title"
+              >
+                ¡Gracias!
+              </h3>
+              <p
+                className="text-sm text-muted-foreground font-content"
+                id="success-message"
+              >
+                Nos pondremos en contacto contigo pronto.
+              </p>
+            </div>
           </div>
         );
       default:
@@ -704,6 +836,7 @@ export function ContactWidget({
     handleDateSkip,
     handleLocationInput,
     handleLocationSkip,
+    handleLocationSubmit,
     handleContactChoice,
     handlePhoneSubmit,
     isSubmitting,
@@ -714,12 +847,12 @@ export function ContactWidget({
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className={`fixed z-50 shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm ${
+          className={`fixed z-50 shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground px-4 py-3 text-sm font-medium rounded-lg ${
             isFullscreen
-              ? 'bottom-20 left-1/2 transform -translate-x-1/2'
+              ? 'bottom-6 left-1/2 transform -translate-x-1/2'
               : isGallery
-                ? 'bottom-20 left-1/2 transform -translate-x-1/2'
-                : 'bottom-20 right-4'
+                ? 'bottom-6 left-1/2 transform -translate-x-1/2'
+                : 'bottom-6 right-4'
           } ${
             isVisible
               ? 'opacity-100 translate-y-0'
@@ -733,16 +866,28 @@ export function ContactWidget({
           <span className="sm:hidden">{widgetContent.button.mobile}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md" sectionType="form">
-        <DialogHeader>
+      <DialogContent
+        className="sm:max-w-md max-h-[90vh] overflow-hidden flex flex-col"
+        sectionType="form"
+        showCloseButton={currentStep === 'complete'}
+      >
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">Contact Widget</DialogTitle>
         </DialogHeader>
-        <div className="py-4" role="main">
+
+        <div className="flex-1 overflow-y-auto py-4 px-3" role="main">
+          {/* Progress indicator */}
+          {currentStep !== 'complete' && (
+            <ProgressIndicator currentStep={stepIndex} totalSteps={5} />
+          )}
+
           {renderStep}
         </div>
+
+        {/* Navigation footer */}
         {currentStep !== 'complete' && (
           <div
-            className="flex justify-between pt-4 border-t"
+            className="flex justify-between pt-4 border-t border-border flex-shrink-0"
             role="navigation"
             aria-label="Dialog navigation"
           >
@@ -762,13 +907,16 @@ export function ContactWidget({
                     setCurrentStep(steps[currentIndex - 1]);
                   }
                 }}
+                className="flex items-center space-x-2"
                 aria-label="Go to previous step"
               >
-                Atrás
+                <ChevronLeft className="w-4 h-4" />
+                <span>Atrás</span>
               </Button>
             ) : (
               <div></div>
             )}
+
             {currentStep === 'date' && (
               <Button
                 variant="outline"
@@ -776,33 +924,6 @@ export function ContactWidget({
                 aria-label="Skip date selection"
               >
                 {widgetContent.steps.date.noDate}
-              </Button>
-            )}
-            {currentStep === 'location' && (
-              <Button
-                onClick={handleLocationSubmit}
-                aria-label="Continue with location"
-              >
-                {widgetContent.steps.location.continue || 'Continuar'}
-              </Button>
-            )}
-            {currentStep === 'phone' && (
-              <Button
-                onClick={() => {
-                  if (widgetData.phone.trim()) {
-                    handlePhoneSubmit(widgetData.phone.trim());
-                  }
-                }}
-                disabled={isSubmitting || !widgetData.phone.trim()}
-                aria-label={
-                  isSubmitting
-                    ? 'Submitting phone number'
-                    : 'Submit phone number'
-                }
-              >
-                {isSubmitting
-                  ? widgetContent.steps.phone.loading
-                  : widgetContent.steps.phone.button}
               </Button>
             )}
           </div>
