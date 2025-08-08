@@ -40,7 +40,8 @@ const SelectTrigger = React.forwardRef<
         ref={ref}
         className={cn(
           'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-          'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:border-primary',
+          'focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:border-primary',
+          'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:border-primary',
           'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
           'touch-manipulation cursor-pointer',
           backgroundClasses.background,
