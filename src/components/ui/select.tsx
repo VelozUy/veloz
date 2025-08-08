@@ -5,7 +5,11 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { getBackgroundClasses, type SectionType, type PriorityLevel } from '@/lib/background-utils';
+import {
+  getBackgroundClasses,
+  type SectionType,
+  type PriorityLevel,
+} from '@/lib/background-utils';
 
 const Select = SelectPrimitive.Root;
 
@@ -19,31 +23,42 @@ const SelectTrigger = React.forwardRef<
     priority?: PriorityLevel;
     sectionType?: SectionType;
   }
->(({ className, children, priority = 'medium', sectionType = 'form', ...props }, ref) => {
-  const backgroundClasses = getBackgroundClasses(sectionType, priority);
-  return (
-    <SelectPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-        'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
-        'touch-manipulation cursor-pointer',
-        backgroundClasses.background,
-        backgroundClasses.text,
-        backgroundClasses.border,
-        backgroundClasses.shadow,
-        className
-      )}
-      {...props}
-    >
-      {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDown className="size-4 opacity-50" />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-  );
-});
+>(
+  (
+    {
+      className,
+      children,
+      priority = 'medium',
+      sectionType = 'form',
+      ...props
+    },
+    ref
+  ) => {
+    const backgroundClasses = getBackgroundClasses(sectionType, priority);
+    return (
+      <SelectPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus:border-primary',
+          'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
+          'touch-manipulation cursor-pointer',
+          backgroundClasses.background,
+          backgroundClasses.text,
+          backgroundClasses.border,
+          backgroundClasses.shadow,
+          className
+        )}
+        {...props}
+      >
+        {children}
+        <SelectPrimitive.Icon asChild>
+          <ChevronDown className="size-4 opacity-50" />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+    );
+  }
+);
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectScrollUpButton = React.forwardRef<
@@ -87,40 +102,52 @@ const SelectContent = React.forwardRef<
     priority?: PriorityLevel;
     sectionType?: SectionType;
   }
->(({ className, children, position = 'popper', priority = 'medium', sectionType = 'content', ...props }, ref) => {
-  const backgroundClasses = getBackgroundClasses(sectionType, priority);
-  return (
-    <SelectPrimitive.Portal>
-      <SelectPrimitive.Content
-        ref={ref}
-        className={cn(
-          'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-none border shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-          backgroundClasses.background,
-          backgroundClasses.text,
-          backgroundClasses.border,
-          backgroundClasses.shadow,
-          position === 'popper' &&
-            'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-          className
-        )}
-        position={position}
-        {...props}
-      >
-        <SelectScrollUpButton />
-        <SelectPrimitive.Viewport
+>(
+  (
+    {
+      className,
+      children,
+      position = 'popper',
+      priority = 'medium',
+      sectionType = 'content',
+      ...props
+    },
+    ref
+  ) => {
+    const backgroundClasses = getBackgroundClasses(sectionType, priority);
+    return (
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Content
+          ref={ref}
           className={cn(
-            'p-1',
+            'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-none border shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+            backgroundClasses.background,
+            backgroundClasses.text,
+            backgroundClasses.border,
+            backgroundClasses.shadow,
             position === 'popper' &&
-              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
+              'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+            className
           )}
+          position={position}
+          {...props}
         >
-          {children}
-        </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
-      </SelectPrimitive.Content>
-    </SelectPrimitive.Portal>
-  );
-});
+          <SelectScrollUpButton />
+          <SelectPrimitive.Viewport
+            className={cn(
+              'p-1',
+              position === 'popper' &&
+                'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
+            )}
+          >
+            {children}
+          </SelectPrimitive.Viewport>
+          <SelectScrollDownButton />
+        </SelectPrimitive.Content>
+      </SelectPrimitive.Portal>
+    );
+  }
+);
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
 const SelectLabel = React.forwardRef<
