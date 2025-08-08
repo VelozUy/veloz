@@ -471,7 +471,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="name"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.name.label}
                   </Label>
@@ -496,7 +496,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="contactMethod"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.contactMethod.label}
                   </Label>
@@ -534,7 +534,7 @@ export default function OptimizedContactForm({
                     <div className="space-y-2 mt-4">
                       <Label
                         htmlFor="email"
-                        className="text-muted-foreground text-xs"
+                        className="text-muted-foreground text-sm"
                       >
                         {t.form.email.label}
                       </Label>
@@ -560,7 +560,7 @@ export default function OptimizedContactForm({
                     <div className="space-y-2 mt-4">
                       <Label
                         htmlFor="phone"
-                        className="text-muted-foreground text-xs"
+                        className="text-muted-foreground text-sm"
                       >
                         {t.form.phone.label}
                       </Label>
@@ -589,7 +589,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="eventType"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.eventType.label}
                   </Label>
@@ -712,7 +712,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="location"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.location.label}
                   </Label>
@@ -739,7 +739,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="attendees"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.attendees.label}
                   </Label>
@@ -764,7 +764,7 @@ export default function OptimizedContactForm({
 
                 {/* Services Field */}
                 <div className="space-y-2">
-                  <Label className="text-muted-foreground text-xs">
+                  <Label className="text-muted-foreground text-sm">
                     {t.form.services.label}
                   </Label>
                   <MultiSelect
@@ -835,7 +835,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="company"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.company.label}
                   </Label>
@@ -855,7 +855,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="message"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.message.label}
                   </Label>

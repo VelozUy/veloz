@@ -466,7 +466,7 @@ export default function ContactForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-muted-foreground text-xs">
+                <Label htmlFor="name" className="text-muted-foreground text-sm">
                   {t.form.name.label}
                 </Label>
                 <Input
@@ -490,7 +490,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="company"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.company.label}
                 </Label>
@@ -513,7 +513,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="contactMethod"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.contactMethod.label}
                 </Label>
@@ -554,7 +554,7 @@ export default function ContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.email.label}
                   </Label>
@@ -579,7 +579,7 @@ export default function ContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="phone"
-                    className="text-muted-foreground text-xs"
+                    className="text-muted-foreground text-sm"
                   >
                     {t.form.phone.label}
                   </Label>
@@ -609,7 +609,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="eventType"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.eventType.label}
                 </Label>
@@ -649,7 +649,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="services"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.services.label}
                 </Label>
@@ -682,7 +682,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="location"
-                  className="text-muted-foreground text-xs"
+                  className="text-muted-foreground text-sm"
                 >
                   {t.form.location.label}
                 </Label>
@@ -735,7 +735,7 @@ export default function ContactForm({
             <div className="space-y-2">
               <Label
                 htmlFor="eventDate"
-                className="text-muted-foreground text-xs"
+                className="text-muted-foreground text-sm"
               >
                 {t.form.eventDate.label}
               </Label>
@@ -784,7 +784,7 @@ export default function ContactForm({
             <div className="space-y-2">
               <Label
                 htmlFor="message"
-                className="text-muted-foreground text-xs"
+                className="text-muted-foreground text-sm"
               >
                 {t.form.message.label}
               </Label>
