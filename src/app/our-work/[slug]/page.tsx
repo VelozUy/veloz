@@ -83,7 +83,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         />
 
         {/* CTA Widget */}
-        <ContactWidget language={content.locale} />
+        <ContactWidget language={content.locale} isGallery={true} />
       </div>
     );
   }

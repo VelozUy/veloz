@@ -22,6 +22,7 @@ import { ContactMessageService } from '@/services/firebase';
 
 interface ContactWidgetProps {
   language?: 'es' | 'en' | 'pt';
+  isGallery?: boolean;
 }
 
 type Step =
@@ -324,7 +325,10 @@ const PhoneStep = memo(
 
 PhoneStep.displayName = 'PhoneStep';
 
-export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
+export function ContactWidget({
+  language = 'es',
+  isGallery = false,
+}: ContactWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>('eventType');
   const [widgetData, setWidgetData] = useState<WidgetData>({
@@ -335,7 +339,52 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
     dateSkipped: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const router = useRouter();
+
+  // Scroll detection logic
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingNow = Math.abs(currentScrollY - lastScrollY) > 5; // Threshold for scroll detection
+
+      if (isScrollingNow) {
+        setIsScrolling(true);
+        setIsVisible(false);
+
+        // Clear existing timeout
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
+
+        // Set new timeout to show widget after scrolling stops
+        scrollTimeout = setTimeout(() => {
+          setIsScrolling(false);
+          setIsVisible(true);
+        }, 5000); // Show widget 5 seconds after scrolling stops
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Show widget initially after a delay
+    const initialTimeout = setTimeout(() => {
+      setIsVisible(true);
+    }, 5000); // Show widget 5 seconds after page load
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+      clearTimeout(initialTimeout);
+    };
+  }, []);
 
   // Initialize contact message service
   const contactMessageService = new ContactMessageService();
@@ -645,10 +694,17 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="fixed bottom-20 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
+          className={`fixed z-50 shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm ${
+            isGallery
+              ? 'bottom-20 left-1/2 transform -translate-x-1/2'
+              : 'bottom-20 right-4'
+          } ${
+            isVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-4 pointer-events-none'
+          }`}
           aria-label="Open contact widget"
         >
-          <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
           <span className="hidden sm:inline">
             {widgetContent.button.desktop}
           </span>

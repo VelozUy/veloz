@@ -41,7 +41,7 @@ export default function OurWorkPage() {
       <OurWorkClient projects={projects} locale={content.locale} />
 
       {/* Contact Widget (client) */}
-      <ContactWidget language={content.locale} />
+      <ContactWidget language={content.locale} isGallery={true} />
     </div>
   );
 }
