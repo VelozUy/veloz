@@ -513,7 +513,7 @@ export default function ContactForm({
               <div className="space-y-2">
                 <Label
                   htmlFor="contactMethod"
-                  className="text-body-lg font-medium"
+                  className="text-muted-foreground text-xs"
                 >
                   {t.form.contactMethod.label}
                 </Label>
