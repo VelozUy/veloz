@@ -68,6 +68,7 @@ export function TiledGallery({
   ariaLabel = 'Tiled gallery',
   galleryGroup,
   projectTitle = '',
+  showHeader = true,
   isMobileOverride,
 }: TiledGalleryProps & { isMobileOverride?: boolean }) {
   // TiledGallery component initialized
@@ -490,7 +491,8 @@ export function TiledGallery({
       <div
         ref={containerRef}
         className={cn(
-          'tiled-gallery-container relative w-full px-4 md:px-16 py-8 md:py-16', // Enhanced spacing
+          'tiled-gallery-container relative w-full px-4 md:px-16', // Side margins only
+          showHeader ? 'py-8 md:py-16' : 'pb-8 md:pb-16', // Top padding only when header is shown
           className
         )}
         role="region"
@@ -498,15 +500,17 @@ export function TiledGallery({
         style={{ contain: 'layout style' }}
       >
         {/* Gallery Header - Enhanced hierarchy */}
-        <div className="mb-8 md:mb-12 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 tracking-wide">
-            Nuestro Trabajo
-          </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Descubre la magia de los momentos que capturamos con pasión y
-            profesionalismo
-          </p>
-        </div>
+        {showHeader && (
+          <div className="mb-8 md:mb-12 text-center">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-4 tracking-wide">
+              Nuestro Trabajo
+            </h2>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Descubre la magia de los momentos que capturamos con pasión y
+              profesionalismo
+            </p>
+          </div>
+        )}
 
         {/* Mobile Single Column Layout */}
         <div className="space-y-6 md:space-y-8">

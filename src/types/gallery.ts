@@ -127,6 +127,8 @@ export interface TiledGalleryProps {
   // Integration with existing systems
   galleryGroup?: string;
   projectTitle?: string;
+  // Display options
+  showHeader?: boolean;
 }
 
 // Layout calculation result for the entire gallery

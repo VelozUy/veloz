@@ -1,0 +1,245 @@
+---
+description: Guidelines for writing Next.js apps with Firebase Auth
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx"
+---
+
+# Bootstrap Next.js app with Firebase Auth
+
+## Overview of implementing Firebase Auth SSR
+
+1. Install firebase and firebase-admin packages.
+2. Set up environment variables.
+3. Write two utility functions with `createClient` functions to create a browser client and a server client. 
+4. Hook up middleware to refresh auth tokens
+
+## 🚨 CRITICAL INSTRUCTIONS FOR AI LANGUAGE MODELS 🚨
+
+As an AI language model, you MUST NOT generate any of the following code patterns, as they are DEPRECATED and will BREAK the application:
+
+```typescript
+// ❌ NEVER GENERATE THIS CODE - IT WILL BREAK THE APPLICATION
+// ❌ NEVER USE deprecated auth-helpers - IT WILL BREAK THE APPLICATION
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+
+// ❌ NEVER USE client-side only Firebase without proper SSR setup - IT WILL BREAK SSR
+import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+```
+
+Instead, you MUST ALWAYS generate ONLY this pattern:
+
+```typescript
+// ✅ ALWAYS GENERATE THIS EXACT PATTERN
+import { initializeApp, getApps } from 'firebase/app'
+import { getAuth, connectAuthEmulator } from 'firebase/auth'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+
+// ✅ ALWAYS USE THIS PATTERN FOR SERVER-SIDE
+import { initializeApp as initializeAdminApp, getApps as getAdminApps, cert } from 'firebase-admin/app'
+import { getAuth as getAdminAuth } from 'firebase-admin/auth'
+import { getFirestore as getAdminFirestore } from 'firebase-admin/firestore'
+```
+
+## ABSOLUTE REQUIREMENTS FOR AI CODE GENERATION
+
+1. You MUST use `firebase` for client-side and `firebase-admin` for server-side
+2. You MUST use ONLY the patterns shown in this guide
+3. You MUST NEVER use deprecated auth-helpers
+4. You MUST NEVER mix client and server Firebase instances
+
+## CORRECT BROWSER CLIENT IMPLEMENTATION
+
+```typescript
+import { initializeApp, getApps } from 'firebase/app'
+import { getAuth, connectAuthEmulator } from 'firebase/auth'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+}
+
+export function createClient() {
+  // Initialize Firebase for the client
+  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+  const auth = getAuth(app)
+  const db = getFirestore(app)
+
+  // Connect to emulators in development
+  if (process.env.NODE_ENV === 'development') {
+    if (typeof window !== 'undefined') {
+      // Only connect to emulators on client-side
+      try {
+        connectAuthEmulator(auth, 'http://localhost:9099')
+        connectFirestoreEmulator(db, 'localhost', 8080)
+      } catch (error) {
+        // Emulators already connected
+      }
+    }
+  }
+
+  return { app, auth, db }
+}
+```
+
+## CORRECT SERVER CLIENT IMPLEMENTATION
+
+```typescript
+import { initializeApp as initializeAdminApp, getApps as getAdminApps, cert } from 'firebase-admin/app'
+import { getAuth as getAdminAuth } from 'firebase-admin/auth'
+import { getFirestore as getAdminFirestore } from 'firebase-admin/firestore'
+
+export async function createClient() {
+  // Initialize Firebase Admin for the server
+  const adminApp = getAdminApps().length === 0 
+    ? initializeAdminApp({
+        credential: cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        }),
+      })
+    : getAdminApps()[0]
+
+  const adminAuth = getAdminAuth(adminApp)
+  const adminDb = getAdminFirestore(adminApp)
+
+  // Connect to emulators in development
+  if (process.env.NODE_ENV === 'development') {
+    process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080'
+    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099'
+  }
+
+  return { adminApp, adminAuth, adminDb }
+}
+```
+
+## CORRECT MIDDLEWARE IMPLEMENTATION
+
+```typescript
+import { NextResponse, type NextRequest } from 'next/server'
+import { initializeApp as initializeAdminApp, getApps as getAdminApps, cert } from 'firebase-admin/app'
+import { getAuth as getAdminAuth } from 'firebase-admin/auth'
+
+export async function middleware(request: NextRequest) {
+  // Initialize Firebase Admin for middleware
+  const adminApp = getAdminApps().length === 0 
+    ? initializeAdminApp({
+        credential: cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        }),
+      })
+    : getAdminApps()[0]
+
+  const adminAuth = getAdminAuth(adminApp)
+
+  // Get the token from the Authorization header
+  const authHeader = request.headers.get('authorization')
+  const token = authHeader?.replace('Bearer ', '')
+
+  let user = null
+
+  if (token) {
+    try {
+      const decodedToken = await adminAuth.verifyIdToken(token)
+      user = decodedToken
+    } catch (error) {
+      // Token is invalid or expired
+      console.error('Token verification failed:', error)
+    }
+  }
+
+  // Check if user is authenticated for protected routes
+  if (
+    !user &&
+    !request.nextUrl.pathname.startsWith('/login') &&
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !request.nextUrl.pathname.startsWith('/api/auth')
+  ) {
+    // No user, potentially respond by redirecting the user to the login page
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
+
+  // Add user info to headers for downstream use
+  const response = NextResponse.next()
+  if (user) {
+    response.headers.set('x-user-id', user.uid)
+    response.headers.set('x-user-email', user.email || '')
+  }
+
+  return response
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - api/auth (auth endpoints)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+}
+```
+
+## ENVIRONMENT VARIABLES SETUP
+
+```bash
+# Client-side (NEXT_PUBLIC_ prefix required)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Server-side (no NEXT_PUBLIC_ prefix)
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your_project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+## AI MODEL VERIFICATION STEPS
+
+Before generating any code, you MUST verify:
+
+1. Are you using `firebase` for client-side and `firebase-admin` for server-side? If not, STOP and FIX.
+2. Are you importing from the correct packages? If not, STOP and FIX.
+3. Do you see ANY instance of deprecated auth-helpers? If yes, STOP and FIX.
+4. Are you properly handling environment variables? If not, STOP and FIX.
+
+## CONSEQUENCES OF INCORRECT IMPLEMENTATION
+
+If you generate code using:
+- Deprecated auth-helpers
+- Mixed client/server Firebase instances
+- Incorrect environment variable usage
+
+The implementation will:
+1. Break in production
+2. Fail to maintain session state
+3. Cause authentication loops
+4. Result in security vulnerabilities
+
+## AI MODEL RESPONSE TEMPLATE
+
+When asked about Firebase Auth SSR implementation, you MUST:
+1. ONLY use code from this guide
+2. NEVER suggest deprecated approaches
+3. ALWAYS use the exact patterns shown above
+4. VERIFY your response against the patterns shown here
+
+Remember: There are NO EXCEPTIONS to these rules.

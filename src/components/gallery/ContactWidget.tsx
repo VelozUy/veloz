@@ -645,7 +645,7 @@ export function ContactWidget({ language = 'es' }: ContactWidgetProps) {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="fixed bottom-4 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
+          className="fixed bottom-20 right-4 z-50 shadow-lg hover:shadow-xl transition-shadow bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground"
           aria-label="Open contact widget"
         >
           <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />

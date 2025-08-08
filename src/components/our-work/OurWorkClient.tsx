@@ -226,6 +226,7 @@ export default function OurWorkClient({
                   lazyLoad={true}
                   preloadCount={16}
                   gap={8}
+                  showHeader={false}
                 />
               ) : (
                 <div className="text-center py-12 px-8 md:px-16">
