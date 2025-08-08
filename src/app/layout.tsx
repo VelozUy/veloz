@@ -38,6 +38,7 @@ import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
 import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 import { Suspense } from 'react';
+import BackToTop from '@/components/ui/BackToTop';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -259,6 +260,7 @@ export default function RootLayout({
         <AnalyticsWrapper>
           <ConditionalNavigation />
           <PageLayout>{children}</PageLayout>
+          <BackToTop />
         </AnalyticsWrapper>
       </body>
     </html>

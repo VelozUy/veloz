@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm run clean:generated && npm run build:data && next build",
+    "build": "node scripts/build-production.js",
+    "build:dev": "node scripts/build-development.js",
     "build:data": "node scripts/build-data.js",
     "mark:featured": "node scripts/mark-featured-media.js",
     "clean:generated": "rm -rf src/data/content-*.json src/lib/static-content.generated.ts src/lib/build-time-data.generated.ts",

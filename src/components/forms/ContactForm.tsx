@@ -424,14 +424,10 @@ export default function ContactForm({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section - Enhanced hierarchy */}
+      {/* Hero Section */}
       <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16">
-        {' '}
-        {/* Enhanced spacing */}
         <div className="max-w-border-64 mx-auto">
           <div className="text-center space-y-8">
-            {' '}
-            {/* Enhanced spacing */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight">
               {translations.contact.title}
             </h1>
@@ -442,471 +438,342 @@ export default function ContactForm({
         </div>
       </section>
 
-      {/* Contact Form Section - Enhanced hierarchy */}
+      {/* Contact Form Section */}
       <section className="py-16 md:py-24 px-4 sm:px-8 lg:px-16 bg-muted/30">
-        {' '}
-        {/* Enhanced spacing */}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            {' '}
-            {/* Enhanced spacing */}
             <h2 className="text-3xl md:text-4xl font-subtitle font-bold mb-6 text-foreground uppercase tracking-wide">
               {translations.contact.form.title}
             </h2>
-            <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>{' '}
-            {/* Enhanced accent */}
+            <div className="w-32 h-1 bg-primary rounded-full mx-auto"></div>
           </div>
 
           <form
             onSubmit={onSubmit}
             className={cn(
-              'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12', // Enhanced visual hierarchy
+              'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12',
               getBackgroundClasses('form').background
             )}
           >
-            {/* Multi-line format */}
-            <div className="text-lg sm:text-xl md:text-[2.25rem] leading-relaxed space-y-8">
-              {/* Line 1: Name and Company */}
-              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">Me llamo</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-64 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                      focusedField === 'name'
-                        ? 'border-b-2 !border-primary'
-                        : '!border-primary/30',
-                      errors.name && 'border-b-2 !border-destructive'
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                        focusedField === 'name' ? 'scale-x-100' : 'scale-x-0'
-                      )}
-                      style={{ width: '100%' }}
-                    />
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder={t.form.name.placeholder}
-                      value={formData.name}
-                      onChange={e => handleInputChange('name', e.target.value)}
-                      onFocus={() => setFocusedField('name')}
-                      onBlur={() => setFocusedField(null)}
-                      data-field="name"
-                      className="!text-sm sm:!text-base md:!text-[1rem] !border-none !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none !ring-0 !ring-offset-0"
-                      style={{
-                        border: 'none !important',
-                        outline: 'none !important',
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">y trabajo para</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-64 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                      focusedField === 'company'
-                        ? 'border-b-2 !border-primary'
-                        : '!border-primary/30'
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                        focusedField === 'company' ? 'scale-x-100' : 'scale-x-0'
-                      )}
-                      style={{ width: '100%' }}
-                    />
-                    <Input
-                      id="company"
-                      type="text"
-                      placeholder={t.form.company.placeholder}
-                      value={formData.company}
-                      onChange={e =>
-                        handleInputChange('company', e.target.value)
-                      }
-                      onFocus={() => setFocusedField('company')}
-                      onBlur={() => setFocusedField(null)}
-                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 !border-transparent bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* Line 2: Contact Method */}
-              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">
-                    Contáctenme a través de
-                  </span>
-                  <div className="w-full md:w-auto md:inline-block">
-                    <div
-                      className={cn(
-                        'w-full md:w-64 h-[52px] bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                        focusedField === 'contactMethod'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'contactMethod'
-                            ? 'scale-x-100'
-                            : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <select
-                        value={formData.contactMethod}
-                        onChange={e =>
-                          handleInputChange('contactMethod', e.target.value)
-                        }
-                        onFocus={() => setFocusedField('contactMethod')}
-                        onBlur={() => setFocusedField(null)}
-                        required
-                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
-                      >
-                        <option
-                          value=""
-                          disabled
-                          className="text-muted-foreground"
-                        >
-                          {t.form.contactMethod.placeholder}
-                        </option>
-                        {Object.entries(t.form.contactMethod.options).map(
-                          ([key, label]) => (
-                            <option
-                              key={key}
-                              value={key}
-                              className="text-foreground"
-                            >
-                              {label}
-                            </option>
-                          )
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="md:flex md:items-center md:gap-2">
-                  {formData.contactMethod === 'email' ? (
-                    <div
-                      className={cn(
-                        'w-full md:w-64 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                        focusedField === 'email'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30',
-                        errors.email && 'border-b-2 !border-destructive'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'email' ? 'scale-x-100' : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder={t.form.email.placeholder}
-                        value={formData.email}
-                        onChange={e =>
-                          handleInputChange('email', e.target.value)
-                        }
-                        onFocus={() => setFocusedField('email')}
-                        onBlur={() => setFocusedField(null)}
-                        data-field="email"
-                        className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className={cn(
-                        'w-full md:w-64 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                        focusedField === 'phone'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30',
-                        errors.phone && 'border-b-2 !border-destructive'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'phone' ? 'scale-x-100' : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder={t.form.phone.placeholder}
-                        value={formData.phone}
-                        onChange={e =>
-                          handleInputChange('phone', e.target.value)
-                        }
-                        onFocus={() => setFocusedField('phone')}
-                        onBlur={() => setFocusedField(null)}
-                        data-field="phone"
-                        className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
+            {/* Name Field */}
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-body-lg font-medium">
+                {t.form.name.label} *
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder={t.form.name.placeholder}
+                value={formData.name}
+                onChange={e => handleInputChange('name', e.target.value)}
+                onFocus={() => setFocusedField('name')}
+                onBlur={() => setFocusedField(null)}
+                data-field="name"
+                className={cn(
+                  'text-body-md',
+                  errors.name && 'border-destructive focus:border-destructive'
+                )}
+              />
+              {errors.name && (
+                <p className="text-sm text-destructive">{errors.name}</p>
+              )}
+            </div>
 
-              {/* Line 3: Event Details */}
-              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">El evento es</span>
-                  <div className="w-full md:w-auto md:inline-block">
-                    <div
-                      className={cn(
-                        'w-full md:w-64 h-[52px] bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                        focusedField === 'eventType'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30',
-                        errors.eventType && 'border-b-2 !border-destructive'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'eventType'
-                            ? 'scale-x-100'
-                            : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <select
-                        value={formData.eventType}
-                        onChange={e =>
-                          handleInputChange('eventType', e.target.value)
-                        }
-                        onFocus={() => setFocusedField('eventType')}
-                        onBlur={() => setFocusedField(null)}
-                        data-field="eventType"
-                        required
-                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground placeholder:text-muted-foreground text-left flex items-center"
-                      >
-                        <option
-                          value=""
-                          disabled
-                          className="text-muted-foreground"
-                        >
-                          {t.form.eventType.placeholder}
-                        </option>
-                        {Object.entries(t.form.eventType.options).map(
-                          ([key, label]) => (
-                            <option
-                              key={key}
-                              value={key}
-                              className="text-foreground"
-                            >
-                              {label}
-                            </option>
-                          )
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">en</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-64 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                      focusedField === 'location'
-                        ? 'border-b-2 !border-primary'
-                        : '!border-primary/30',
-                      errors.location && 'border-b-2 !border-destructive'
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                        focusedField === 'location'
-                          ? 'scale-x-100'
-                          : 'scale-x-0'
-                      )}
-                      style={{ width: '100%' }}
-                    />
-                    <Input
-                      id="location"
-                      type="text"
-                      placeholder={t.form.location.placeholder}
-                      value={formData.location}
-                      onChange={e =>
-                        handleInputChange('location', e.target.value)
-                      }
-                      onFocus={() => setFocusedField('location')}
-                      onBlur={() => setFocusedField(null)}
-                      data-field="location"
-                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">para</span>
-                  <div
-                    className={cn(
-                      'w-full md:w-36 md:inline-block h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                      focusedField === 'attendees'
-                        ? 'border-b-2 !border-primary'
-                        : '!border-primary/30',
-                      errors.attendees && 'border-b-2 !border-destructive'
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                        focusedField === 'attendees'
-                          ? 'scale-x-100'
-                          : 'scale-x-0'
-                      )}
-                      style={{ width: '100%' }}
-                    />
-                    <Input
-                      id="attendees"
-                      type="number"
-                      placeholder={t.form.attendees.placeholder}
-                      value={formData.attendees}
-                      onChange={e =>
-                        handleInputChange('attendees', e.target.value)
-                      }
-                      onFocus={() => setFocusedField('attendees')}
-                      onBlur={() => setFocusedField(null)}
-                      data-field="attendees"
-                      className="!text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                    />
-                  </div>
-                  <span className="block md:inline">personas</span>
-                </div>
-              </div>
+            {/* Email Field */}
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-body-lg font-medium">
+                {t.form.email.label} *
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder={t.form.email.placeholder}
+                value={formData.email}
+                onChange={e => handleInputChange('email', e.target.value)}
+                onFocus={() => setFocusedField('email')}
+                onBlur={() => setFocusedField(null)}
+                data-field="email"
+                className={cn(
+                  'text-body-md',
+                  errors.email && 'border-destructive focus:border-destructive'
+                )}
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
+            </div>
 
-              {/* Line 4: Services */}
-              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">
-                    Me interesan los servicios de
-                  </span>
-                  <div className="w-full md:w-auto md:inline-block">
-                    <div
-                      className={cn(
-                        'w-full md:w-64 h-auto bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                        focusedField === 'services'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30',
-                        errors.services && 'border-b-2 !border-destructive'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'services'
-                            ? 'scale-x-100'
-                            : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <MultiSelect
-                        options={Object.entries(t.form.services.options).map(
-                          ([key, label]) => ({
-                            value: key,
-                            label: label,
-                          })
-                        )}
-                        value={formData.services}
-                        onValueChange={services =>
-                          handleInputChange('services', services)
-                        }
-                        placeholder="seleccionar servicios"
-                        data-field="services"
-                        className="w-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Company Field */}
+            <div className="space-y-2">
+              <Label htmlFor="company" className="text-body-lg font-medium">
+                {t.form.company.label}{' '}
+                <span className="text-muted-foreground">
+                  ({t.form.company.optional})
+                </span>
+              </Label>
+              <Input
+                id="company"
+                type="text"
+                placeholder={t.form.company.placeholder}
+                value={formData.company}
+                onChange={e => handleInputChange('company', e.target.value)}
+                onFocus={() => setFocusedField('company')}
+                onBlur={() => setFocusedField(null)}
+                className="text-body-md"
+              />
+            </div>
 
-              {/* Line 5: Date */}
-              <div className="md:flex md:flex-wrap md:items-center md:gap-2">
-                <div className="mb-4 md:mb-0 md:flex md:items-center md:gap-2">
-                  <span className="block md:inline">La fecha es</span>
-                  <div className="w-full md:w-auto md:inline-block">
-                    <div
-                      className={cn(
-                        'w-full md:w-64 h-[52px] bg-muted/30 px-2 py-2 relative transition-all duration-300 ease-out border-b overflow-hidden',
-                        focusedField === 'eventDate'
-                          ? 'border-b-2 !border-primary'
-                          : '!border-primary/30'
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                          focusedField === 'eventDate'
-                            ? 'scale-x-100'
-                            : 'scale-x-0'
-                        )}
-                        style={{ width: '100%' }}
-                      />
-                      <input
-                        ref={dateInputRef}
-                        type="date"
-                        value={formData.eventDate}
-                        onChange={e =>
-                          handleInputChange('eventDate', e.target.value)
-                        }
-                        onFocus={() => setFocusedField('eventDate')}
-                        onBlur={() => setFocusedField(null)}
-                        min={new Date().toISOString().split('T')[0]}
-                        className="w-full h-full !text-sm sm:!text-base md:!text-[1rem] !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none !outline-none text-foreground text-left cursor-pointer flex items-center"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Line 6: Details */}
-              <div className="space-y-2">
-                <div className="mb-4">
-                  <span className="block">{t.form.message.label}</span>
-                </div>
-                <div
+            {/* Contact Method Field */}
+            <div className="space-y-2">
+              <Label
+                htmlFor="contactMethod"
+                className="text-body-lg font-medium"
+              >
+                {t.form.contactMethod.label} *
+              </Label>
+              <Select
+                value={formData.contactMethod}
+                onValueChange={value =>
+                  handleInputChange('contactMethod', value)
+                }
+                onOpenChange={open =>
+                  setFocusedField(open ? 'contactMethod' : null)
+                }
+              >
+                <SelectTrigger
                   className={cn(
-                    'w-full bg-muted/30 px-2 py-2 transition-all duration-300 ease-out border-b relative overflow-hidden',
-                    focusedField === 'message'
-                      ? 'border-b-2 !border-primary'
-                      : '!border-primary/30'
+                    'text-body-md',
+                    errors.contactMethod &&
+                      'border-destructive focus:border-destructive'
                   )}
                 >
-                  <div
-                    className={cn(
-                      'absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ease-out origin-left',
-                      focusedField === 'message' ? 'scale-x-100' : 'scale-x-0'
-                    )}
-                    style={{ width: '100%' }}
-                  />
-                  <Textarea
-                    id="message"
-                    placeholder={t.form.message.placeholder}
-                    rows={3}
-                    value={formData.message}
-                    onChange={e => handleInputChange('message', e.target.value)}
-                    onFocus={() => setFocusedField('message')}
-                    onBlur={() => setFocusedField(null)}
-                    className="!text-sm sm:!text-base md:!text-[1rem] w-full !border-0 bg-transparent focus:ring-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none resize-none !outline-none"
-                  />
-                </div>
+                  <SelectValue placeholder={t.form.contactMethod.placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(t.form.contactMethod.options).map(
+                    ([key, label]) => (
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
+                    )
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Phone/Email Field (conditional based on contact method) */}
+            {formData.contactMethod === 'email' ? (
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-body-lg font-medium">
+                  {t.form.email.label} *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={t.form.email.placeholder}
+                  value={formData.email}
+                  onChange={e => handleInputChange('email', e.target.value)}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  data-field="email"
+                  className={cn(
+                    'text-body-md',
+                    errors.email &&
+                      'border-destructive focus:border-destructive'
+                  )}
+                />
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email}</p>
+                )}
               </div>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-body-lg font-medium">
+                  {t.form.phone.label} *
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder={t.form.phone.placeholder}
+                  value={formData.phone}
+                  onChange={e => handleInputChange('phone', e.target.value)}
+                  onFocus={() => setFocusedField('phone')}
+                  onBlur={() => setFocusedField(null)}
+                  data-field="phone"
+                  className={cn(
+                    'text-body-md',
+                    errors.phone &&
+                      'border-destructive focus:border-destructive'
+                  )}
+                />
+                {errors.phone && (
+                  <p className="text-sm text-destructive">{errors.phone}</p>
+                )}
+              </div>
+            )}
+
+            {/* Event Type Field */}
+            <div className="space-y-2">
+              <Label htmlFor="eventType" className="text-body-lg font-medium">
+                {t.form.eventType.label} *
+              </Label>
+              <Select
+                value={formData.eventType}
+                onValueChange={value => handleInputChange('eventType', value)}
+                onOpenChange={open =>
+                  setFocusedField(open ? 'eventType' : null)
+                }
+              >
+                <SelectTrigger
+                  data-field="eventType"
+                  className={cn(
+                    'text-body-md',
+                    errors.eventType &&
+                      'border-destructive focus:border-destructive'
+                  )}
+                >
+                  <SelectValue placeholder={t.form.eventType.placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(t.form.eventType.options).map(
+                    ([key, label]) => (
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
+                    )
+                  )}
+                </SelectContent>
+              </Select>
+              {errors.eventType && (
+                <p className="text-sm text-destructive">{errors.eventType}</p>
+              )}
+            </div>
+
+            {/* Location Field */}
+            <div className="space-y-2">
+              <Label htmlFor="location" className="text-body-lg font-medium">
+                {t.form.location.label} *
+              </Label>
+              <Input
+                id="location"
+                type="text"
+                placeholder={t.form.location.placeholder}
+                value={formData.location}
+                onChange={e => handleInputChange('location', e.target.value)}
+                onFocus={() => setFocusedField('location')}
+                onBlur={() => setFocusedField(null)}
+                data-field="location"
+                className={cn(
+                  'text-body-md',
+                  errors.location &&
+                    'border-destructive focus:border-destructive'
+                )}
+              />
+              {errors.location && (
+                <p className="text-sm text-destructive">{errors.location}</p>
+              )}
+            </div>
+
+            {/* Attendees Field */}
+            <div className="space-y-2">
+              <Label htmlFor="attendees" className="text-body-lg font-medium">
+                {t.form.attendees.label} *
+              </Label>
+              <Input
+                id="attendees"
+                type="number"
+                placeholder={t.form.attendees.placeholder}
+                value={formData.attendees}
+                onChange={e => handleInputChange('attendees', e.target.value)}
+                onFocus={() => setFocusedField('attendees')}
+                onBlur={() => setFocusedField(null)}
+                data-field="attendees"
+                className={cn(
+                  'text-body-md',
+                  errors.attendees &&
+                    'border-destructive focus:border-destructive'
+                )}
+              />
+              {errors.attendees && (
+                <p className="text-sm text-destructive">{errors.attendees}</p>
+              )}
+            </div>
+
+            {/* Services Field */}
+            <div className="space-y-2">
+              <Label htmlFor="services" className="text-body-lg font-medium">
+                {t.form.services.label} *
+              </Label>
+              <MultiSelect
+                options={Object.entries(t.form.services.options).map(
+                  ([key, label]) => ({
+                    value: key,
+                    label: label,
+                  })
+                )}
+                value={formData.services}
+                onValueChange={services =>
+                  handleInputChange('services', services)
+                }
+                placeholder={t.form.services.placeholder}
+                data-field="services"
+                className={cn(
+                  'text-body-md',
+                  errors.services &&
+                    'border-destructive focus:border-destructive'
+                )}
+              />
+              {errors.services && (
+                <p className="text-sm text-destructive">{errors.services}</p>
+              )}
+            </div>
+
+            {/* Event Date Field */}
+            <div className="space-y-2">
+              <Label htmlFor="eventDate" className="text-body-lg font-medium">
+                {t.form.eventDate.label}{' '}
+                <span className="text-muted-foreground">
+                  ({t.form.eventDate.optional})
+                </span>
+              </Label>
+              <Input
+                ref={dateInputRef}
+                id="eventDate"
+                type="date"
+                value={formData.eventDate}
+                onChange={e => handleInputChange('eventDate', e.target.value)}
+                onFocus={() => setFocusedField('eventDate')}
+                onBlur={() => setFocusedField(null)}
+                min={new Date().toISOString().split('T')[0]}
+                className="text-body-md"
+              />
+              <p className="text-sm text-muted-foreground">
+                {t.form.eventDate.help}
+              </p>
+            </div>
+
+            {/* Message Field */}
+            <div className="space-y-2">
+              <Label htmlFor="message" className="text-body-lg font-medium">
+                {t.form.message.label}{' '}
+                <span className="text-muted-foreground">
+                  ({t.form.message.optional})
+                </span>
+              </Label>
+              <Textarea
+                id="message"
+                placeholder={t.form.message.placeholder}
+                rows={4}
+                value={formData.message}
+                onChange={e => handleInputChange('message', e.target.value)}
+                onFocus={() => setFocusedField('message')}
+                onBlur={() => setFocusedField(null)}
+                className="text-body-md resize-none"
+              />
             </div>
 
             {/* Submit Button */}
-            <div className="space-y-4 lg:space-y-6">
+            <div className="space-y-4 lg:space-y-6 pt-4">
               <Button
                 type="submit"
                 disabled={isSubmitting}
