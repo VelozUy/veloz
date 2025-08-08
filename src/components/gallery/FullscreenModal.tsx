@@ -8,6 +8,7 @@ import React, {
   useMemo,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { ContactWidget } from './ContactWidget';
 
 interface FullscreenMedia {
   id: string;
@@ -643,6 +644,13 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           {currentIndex + 1} de {media.length}
         </div>
       )}
+
+      {/* Contact Widget for fullscreen mode */}
+      <ContactWidget
+        language="es"
+        isFullscreen={true}
+        key={`fullscreen-widget-${currentIndex}`} // Force re-render when image changes
+      />
     </div>,
     document.body
   );

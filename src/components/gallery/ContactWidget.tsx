@@ -23,6 +23,7 @@ import { ContactMessageService } from '@/services/firebase';
 interface ContactWidgetProps {
   language?: 'es' | 'en' | 'pt';
   isGallery?: boolean;
+  isFullscreen?: boolean;
 }
 
 type Step =
@@ -328,6 +329,7 @@ PhoneStep.displayName = 'PhoneStep';
 export function ContactWidget({
   language = 'es',
   isGallery = false,
+  isFullscreen = false,
 }: ContactWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>('eventType');
@@ -385,6 +387,25 @@ export function ContactWidget({
       clearTimeout(initialTimeout);
     };
   }, []);
+
+  // Fullscreen mode detection logic
+  useEffect(() => {
+    if (!isFullscreen) return;
+
+    let fullscreenTimeout: NodeJS.Timeout;
+
+    // Reset visibility when entering fullscreen mode
+    setIsVisible(false);
+
+    // Show widget after 10 seconds in fullscreen mode
+    fullscreenTimeout = setTimeout(() => {
+      setIsVisible(true);
+    }, 10000); // Show widget 10 seconds after entering fullscreen
+
+    return () => {
+      clearTimeout(fullscreenTimeout);
+    };
+  }, [isFullscreen]);
 
   // Initialize contact message service
   const contactMessageService = new ContactMessageService();
@@ -695,9 +716,11 @@ export function ContactWidget({
         <Button
           variant="default"
           className={`fixed z-50 shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out bg-card text-card-foreground border border-border hover:bg-primary hover:text-primary-foreground px-4 py-2 text-sm ${
-            isGallery
+            isFullscreen
               ? 'bottom-20 left-1/2 transform -translate-x-1/2'
-              : 'bottom-20 right-4'
+              : isGallery
+                ? 'bottom-20 left-1/2 transform -translate-x-1/2'
+                : 'bottom-20 right-4'
           } ${
             isVisible
               ? 'opacity-100 translate-y-0'
