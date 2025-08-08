@@ -469,7 +469,10 @@ export default function OptimizedContactForm({
 
                 {/* Name Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-body-lg font-medium">
+                  <Label
+                    htmlFor="name"
+                    className="text-muted-foreground text-xs"
+                  >
                     {t.form.name.label}
                   </Label>
                   <Input
@@ -531,7 +534,7 @@ export default function OptimizedContactForm({
                     <div className="space-y-2 mt-4">
                       <Label
                         htmlFor="email"
-                        className="text-body-lg font-medium"
+                        className="text-muted-foreground text-xs"
                       >
                         {t.form.email.label}
                       </Label>
@@ -557,7 +560,7 @@ export default function OptimizedContactForm({
                     <div className="space-y-2 mt-4">
                       <Label
                         htmlFor="phone"
-                        className="text-body-lg font-medium"
+                        className="text-muted-foreground text-xs"
                       >
                         {t.form.phone.label}
                       </Label>
@@ -586,7 +589,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="eventType"
-                    className="text-body-lg font-medium"
+                    className="text-muted-foreground text-xs"
                   >
                     {t.form.eventType.label}
                   </Label>
@@ -709,7 +712,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="location"
-                    className="text-body-lg font-medium"
+                    className="text-muted-foreground text-xs"
                   >
                     {t.form.location.label}
                   </Label>
@@ -736,7 +739,7 @@ export default function OptimizedContactForm({
                 <div className="space-y-2">
                   <Label
                     htmlFor="attendees"
-                    className="text-body-lg font-medium"
+                    className="text-muted-foreground text-xs"
                   >
                     {t.form.attendees.label}
                   </Label>
@@ -761,7 +764,7 @@ export default function OptimizedContactForm({
 
                 {/* Services Field */}
                 <div className="space-y-2">
-                  <Label className="text-body-lg font-medium">
+                  <Label className="text-muted-foreground text-xs">
                     {t.form.services.label}
                   </Label>
                   <MultiSelect
@@ -830,7 +833,10 @@ export default function OptimizedContactForm({
 
                 {/* Company Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="company" className="text-body-lg font-medium">
+                  <Label
+                    htmlFor="company"
+                    className="text-muted-foreground text-xs"
+                  >
                     {t.form.company.label}
                   </Label>
                   <Input
@@ -847,7 +853,10 @@ export default function OptimizedContactForm({
 
                 {/* Message Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="message" className="text-body-lg font-medium">
+                  <Label
+                    htmlFor="message"
+                    className="text-muted-foreground text-xs"
+                  >
                     {t.form.message.label}
                   </Label>
                   <Textarea

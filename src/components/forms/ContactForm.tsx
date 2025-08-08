@@ -466,7 +466,7 @@ export default function ContactForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-body-lg font-medium">
+                <Label htmlFor="name" className="text-muted-foreground text-xs">
                   {t.form.name.label}
                 </Label>
                 <Input
@@ -488,7 +488,10 @@ export default function ContactForm({
 
               {/* Company Field */}
               <div className="space-y-2">
-                <Label htmlFor="company" className="text-body-lg font-medium">
+                <Label
+                  htmlFor="company"
+                  className="text-muted-foreground text-xs"
+                >
                   {t.form.company.label}
                 </Label>
                 <Input
@@ -549,7 +552,10 @@ export default function ContactForm({
               {/* Phone/Email Field (conditional based on contact method) */}
               {formData.contactMethod === 'email' ? (
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-body-lg font-medium">
+                  <Label
+                    htmlFor="email"
+                    className="text-muted-foreground text-xs"
+                  >
                     {t.form.email.label}
                   </Label>
                   <Input
@@ -571,7 +577,10 @@ export default function ContactForm({
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-body-lg font-medium">
+                  <Label
+                    htmlFor="phone"
+                    className="text-muted-foreground text-xs"
+                  >
                     {t.form.phone.label}
                   </Label>
                   <Input
@@ -598,7 +607,10 @@ export default function ContactForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Event Type Field */}
               <div className="space-y-2">
-                <Label htmlFor="eventType" className="text-body-lg font-medium">
+                <Label
+                  htmlFor="eventType"
+                  className="text-muted-foreground text-xs"
+                >
                   {t.form.eventType.label}
                 </Label>
                 <Select
@@ -635,7 +647,10 @@ export default function ContactForm({
 
               {/* Services Field */}
               <div className="space-y-2">
-                <Label htmlFor="services" className="text-body-lg font-medium">
+                <Label
+                  htmlFor="services"
+                  className="text-muted-foreground text-xs"
+                >
                   {t.form.services.label}
                 </Label>
                 <MultiSelect
@@ -665,7 +680,10 @@ export default function ContactForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Location Field */}
               <div className="space-y-2">
-                <Label htmlFor="location" className="text-body-lg font-medium">
+                <Label
+                  htmlFor="location"
+                  className="text-muted-foreground text-xs"
+                >
                   {t.form.location.label}
                 </Label>
                 <Input
@@ -688,7 +706,10 @@ export default function ContactForm({
 
               {/* Attendees Field */}
               <div className="space-y-2">
-                <Label htmlFor="attendees" className="text-body-lg font-medium">
+                <Label
+                  htmlFor="attendees"
+                  className="text-muted-foreground text-xs"
+                >
                   {t.form.attendees.label}
                 </Label>
                 <Input
@@ -712,7 +733,10 @@ export default function ContactForm({
 
             {/* Event Date Field */}
             <div className="space-y-2">
-              <Label htmlFor="eventDate" className="text-body-lg font-medium">
+              <Label
+                htmlFor="eventDate"
+                className="text-muted-foreground text-xs"
+              >
                 {t.form.eventDate.label}
               </Label>
               <div className="flex items-end gap-3">
@@ -758,7 +782,10 @@ export default function ContactForm({
 
             {/* Message Field */}
             <div className="space-y-2">
-              <Label htmlFor="message" className="text-body-lg font-medium">
+              <Label
+                htmlFor="message"
+                className="text-muted-foreground text-xs"
+              >
                 {t.form.message.label}
               </Label>
               <Textarea
