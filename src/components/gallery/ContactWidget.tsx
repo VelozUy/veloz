@@ -71,9 +71,6 @@ const EventTypeStep = memo(
         >
           {content.steps.eventType.subtitle}
         </h3>
-        <p className="text-sm text-muted-foreground font-content">
-          Selecciona el tipo de evento que quieres celebrar
-        </p>
       </div>
 
       <div
@@ -139,9 +136,6 @@ const DateStep = memo(
           >
             {content.steps.date.title}
           </h3>
-          <p className="text-sm text-muted-foreground font-content">
-            ¿Cuándo planeas realizar tu evento?
-          </p>
         </div>
 
         <div className="space-y-4">
@@ -227,9 +221,6 @@ const LocationStep = memo(
           >
             {content.steps.location.title}
           </h3>
-          <p className="text-sm text-muted-foreground font-content">
-            ¿Dónde se realizará tu evento?
-          </p>
         </div>
 
         <div className="space-y-4">
@@ -296,9 +287,6 @@ const ContactStep = memo(
         >
           {content.steps.contact.title}
         </h3>
-        <p className="text-sm text-muted-foreground font-content">
-          ¿Cómo prefieres que te contactemos?
-        </p>
       </div>
 
       <div
@@ -325,9 +313,6 @@ const ContactStep = memo(
               <div className="font-medium text-sm leading-tight">
                 {content.steps.contact.moreInfo.title}
               </div>
-              <div className="text-xs text-muted-foreground mt-1 leading-relaxed font-content">
-                {content.steps.contact.moreInfo.subtitle}
-              </div>
             </div>
           </div>
         </Button>
@@ -347,9 +332,6 @@ const ContactStep = memo(
             <div className="flex-1 min-w-0">
               <div className="font-medium text-sm leading-tight">
                 {content.steps.contact.callMe.title}
-              </div>
-              <div className="text-xs text-muted-foreground mt-1 leading-relaxed font-content">
-                {content.steps.contact.callMe.subtitle}
               </div>
             </div>
           </div>
@@ -387,9 +369,6 @@ const PhoneStep = memo(
           >
             {content.steps.phone.title}
           </h3>
-          <p className="text-sm text-muted-foreground font-content">
-            Te llamaremos pronto para coordinar los detalles
-          </p>
         </div>
 
         <div className="space-y-4">
