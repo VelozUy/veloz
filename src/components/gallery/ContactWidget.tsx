@@ -646,7 +646,7 @@ export function ContactWidget({
 
         await emailService.sendContactForm({
           name: 'Cliente Widget',
-          email: 'widget@veloz.com.uy',
+          email: 'No especificado',
           phone: phone,
           eventType: widgetData.eventType,
           eventDate: widgetData.eventDate,

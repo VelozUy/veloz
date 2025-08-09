@@ -107,20 +107,36 @@ const CONTACT_METHOD_TRANSLATIONS = {
 
 // Helper function to translate event types
 function translateEventType(eventType: string, locale: string = 'es'): string {
-  const translations = EVENT_TYPE_TRANSLATIONS[locale as keyof typeof EVENT_TYPE_TRANSLATIONS] || EVENT_TYPE_TRANSLATIONS.es;
+  const translations =
+    EVENT_TYPE_TRANSLATIONS[locale as keyof typeof EVENT_TYPE_TRANSLATIONS] ||
+    EVENT_TYPE_TRANSLATIONS.es;
   return translations[eventType as keyof typeof translations] || eventType;
 }
 
 // Helper function to translate services
 function translateServices(services: string[], locale: string = 'es'): string {
-  const translations = SERVICE_TRANSLATIONS[locale as keyof typeof SERVICE_TRANSLATIONS] || SERVICE_TRANSLATIONS.es;
-  return services.map(service => translations[service as keyof typeof translations] || service).join(', ');
+  const translations =
+    SERVICE_TRANSLATIONS[locale as keyof typeof SERVICE_TRANSLATIONS] ||
+    SERVICE_TRANSLATIONS.es;
+  return services
+    .map(
+      service => translations[service as keyof typeof translations] || service
+    )
+    .join(', ');
 }
 
 // Helper function to translate contact method
-function translateContactMethod(contactMethod: string, locale: string = 'es'): string {
-  const translations = CONTACT_METHOD_TRANSLATIONS[locale as keyof typeof CONTACT_METHOD_TRANSLATIONS] || CONTACT_METHOD_TRANSLATIONS.es;
-  return translations[contactMethod as keyof typeof translations] || contactMethod;
+function translateContactMethod(
+  contactMethod: string,
+  locale: string = 'es'
+): string {
+  const translations =
+    CONTACT_METHOD_TRANSLATIONS[
+      locale as keyof typeof CONTACT_METHOD_TRANSLATIONS
+    ] || CONTACT_METHOD_TRANSLATIONS.es;
+  return (
+    translations[contactMethod as keyof typeof translations] || contactMethod
+  );
 }
 
 // Email templates for different languages
@@ -337,7 +353,10 @@ export const emailService = {
           .replace('{{email}}', data.email)
           .replace('{{company}}', data.company || 'No especificada')
           .replace('{{phone}}', data.phone || 'No proporcionado')
-          .replace('{{contactMethod}}', translateContactMethod(data.contactMethod, locale))
+          .replace(
+            '{{contactMethod}}',
+            translateContactMethod(data.contactMethod, locale)
+          )
           .replace('{{eventType}}', translateEventType(data.eventType, locale))
           .replace('{{eventDate}}', data.eventDate || 'No especificada')
           .replace('{{location}}', data.location || 'No especificada')
@@ -365,18 +384,25 @@ export const emailService = {
 
       // Send auto-reply to user if they provided an email
       console.log('Auto-reply conditions check:', {
-        hasEmail: !!data.email,
+        hasEmail: !!data.email && data.email !== 'No especificado',
         emailValue: data.email,
-        isNotWidget: data.email !== 'widget@veloz.com.uy',
         hasAutoReplyTemplate: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
         autoReplyTemplateId: EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-        emailNotEmpty: data.email.trim() !== '',
-        allConditionsMet: !!(data.email && data.email !== 'widget@veloz.com.uy' && EMAILJS_AUTO_REPLY_TEMPLATE_ID && data.email.trim() !== '')
+        emailNotEmpty:
+          typeof data.email === 'string' &&
+          data.email !== 'No especificado' &&
+          data.email.trim() !== '',
+        allConditionsMet: !!(
+          data.email &&
+          data.email !== 'No especificado' &&
+          EMAILJS_AUTO_REPLY_TEMPLATE_ID &&
+          data.email.trim() !== ''
+        ),
       });
 
       if (
         data.email &&
-        data.email !== 'widget@veloz.com.uy' &&
+        data.email !== 'No especificado' &&
         EMAILJS_AUTO_REPLY_TEMPLATE_ID &&
         data.email.trim() !== ''
       ) {
@@ -386,14 +412,14 @@ export const emailService = {
           message: templates.user.body
             .replace('{{name}}', data.name)
             .replace('{{email}}', data.email)
-            .replace('{{eventType}}', translateEventType(data.eventType, locale))
+            .replace(
+              '{{eventType}}',
+              translateEventType(data.eventType, locale)
+            )
             .replace('{{eventDate}}', data.eventDate || 'No especificada')
             .replace('{{location}}', data.location || 'No especificada')
             .replace('{{attendees}}', data.attendees || 'No especificados')
-            .replace(
-              '{{services}}',
-              translateServices(data.services, locale)
-            ),
+            .replace('{{services}}', translateServices(data.services, locale)),
 
           // Required EmailJS fields - try different field names that EmailJS might expect
           to_email: data.email,
@@ -454,13 +480,22 @@ export const emailService = {
           .replace('{{email}}', 'test@example.com')
           .replace('{{company}}', 'Test Company')
           .replace('{{phone}}', '123456789')
-          .replace('{{contactMethod}}', translateContactMethod('whatsapp', 'es'))
+          .replace(
+            '{{contactMethod}}',
+            translateContactMethod('whatsapp', 'es')
+          )
           .replace('{{eventType}}', translateEventType('wedding', 'es'))
           .replace('{{eventDate}}', '2024-01-01')
           .replace('{{location}}', 'Test Location')
           .replace('{{attendees}}', '50-100')
-          .replace('{{services}}', translateServices(['photography', 'video'], 'es'))
-          .replace('{{message}}', 'This is a test message from the Veloz contact system.')
+          .replace(
+            '{{services}}',
+            translateServices(['photography', 'video'], 'es')
+          )
+          .replace(
+            '{{message}}',
+            'This is a test message from the Veloz contact system.'
+          )
           .replace('{{source}}', 'test')
           .replace('{{contactDate}}', new Date().toLocaleDateString('es-ES')),
 
@@ -499,7 +534,7 @@ export const emailService = {
         console.log('Auto-reply configuration missing:', {
           serviceId: !!EMAILJS_SERVICE_ID,
           autoReplyTemplateId: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-          publicKey: !!EMAILJS_PUBLIC_KEY
+          publicKey: !!EMAILJS_PUBLIC_KEY,
         });
         return false;
       }
@@ -516,7 +551,10 @@ export const emailService = {
           .replace('{{eventDate}}', '2024-01-01')
           .replace('{{location}}', 'Test Location')
           .replace('{{attendees}}', '50-100')
-          .replace('{{services}}', translateServices(['photography', 'video'], 'es')),
+          .replace(
+            '{{services}}',
+            translateServices(['photography', 'video'], 'es')
+          ),
 
         // Required EmailJS fields - try different field names that EmailJS might expect
         to_email: 'test@example.com',
