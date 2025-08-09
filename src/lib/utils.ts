@@ -358,17 +358,15 @@ export function getButtonClasses(
  */
 export function getInputClasses(sectionType: SectionType): string {
   const inputClasses = {
-    hero: 'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
-    content:
-      'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
-    form: 'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
+    hero: 'bg-card text-card-foreground border-border focus:border-primary',
+    content: 'bg-card text-card-foreground border-border focus:border-primary',
+    form: 'bg-card text-card-foreground border-border focus:border-primary',
     testimonial:
-      'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
-    cta: 'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
-    gallery:
-      'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
+      'bg-card text-card-foreground border-border focus:border-primary',
+    cta: 'bg-card text-card-foreground border-border focus:border-primary',
+    gallery: 'bg-card text-card-foreground border-border focus:border-primary',
     navigation:
-      'bg-card text-card-foreground border-border focus:ring-primary focus:border-primary',
+      'bg-card text-card-foreground border-border focus:border-primary',
   };
 
   return inputClasses[sectionType];

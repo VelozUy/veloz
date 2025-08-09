@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -168,6 +169,7 @@ export default function ContactForm({
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [noDateSelected, setNoDateSelected] = useState(false);
   const searchParams = useSearchParams();
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   // Check if mobile on mount and resize
   useEffect(() => {
@@ -201,6 +203,11 @@ export default function ContactForm({
     message: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Debug: Log when errors change
+  useEffect(() => {
+    console.log('Errors state changed:', errors);
+  }, [errors]);
 
   // Pre-fill form from URL parameters
   useEffect(() => {
@@ -268,6 +275,10 @@ export default function ContactForm({
       }
     }
 
+    if (!formData.contactMethod.trim()) {
+      newErrors.contactMethod = translations.contact.form.contactMethod.label;
+    }
+
     if (!formData.eventType.trim()) {
       newErrors.eventType = translations.contact.form.eventType.label;
     }
@@ -286,44 +297,47 @@ export default function ContactForm({
 
     setErrors(newErrors);
 
-    // Scroll to first error field
-    if (Object.keys(newErrors).length > 0) {
-      setTimeout(() => {
-        const firstErrorField = Object.keys(newErrors)[0];
-
-        // Find element by data-field attribute
-        const errorElement = document.querySelector(
-          `[data-field="${firstErrorField}"]`
-        ) as HTMLElement;
-
-        if (errorElement) {
-          errorElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          });
-          errorElement.focus();
-        } else {
-          // Fallback: try to find any input or select in the form
-          const formElement = document.querySelector('form');
-          if (formElement) {
-            const firstInput = formElement.querySelector(
-              'input, select, textarea'
-            ) as HTMLElement;
-            if (firstInput) {
-              firstInput.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-              });
-              firstInput.focus();
-            }
-          }
-        }
-      }, 200);
-    }
+    // Debug: Log errors to console
+    console.log('Form validation errors:', newErrors);
+    console.log('Name field has error:', !!newErrors.name);
+    console.log('Email field has error:', !!newErrors.email);
 
     const isValid = Object.keys(newErrors).length === 0;
     return isValid;
   };
+
+  // After errors update on submit, scroll to the first invalid field
+  useEffect(() => {
+    if (!submitAttempted) return;
+    const errorKeys = Object.keys(errors);
+    if (errorKeys.length === 0) return;
+
+    const firstErrorField = errorKeys[0];
+    const scrollToError = () => {
+      const errorElement = document.querySelector(
+        `[data-field="${firstErrorField}"]`
+      ) as HTMLElement | null;
+
+      if (errorElement) {
+        // Use requestAnimationFrame to ensure layout is ready
+        requestAnimationFrame(() => {
+          errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Focus without re-scrolling
+          if (typeof (errorElement as any).focus === 'function') {
+            try {
+              (errorElement as HTMLElement).focus({
+                preventScroll: true,
+              } as any);
+            } catch {
+              (errorElement as HTMLElement).focus();
+            }
+          }
+        });
+      }
+    };
+
+    scrollToError();
+  }, [errors, submitAttempted]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -331,8 +345,12 @@ export default function ContactForm({
     const isValid = validateForm();
 
     if (!isValid) {
+      setSubmitAttempted(true);
       return;
     }
+
+    // Reset flag on successful validation
+    setSubmitAttempted(false);
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -478,10 +496,8 @@ export default function ContactForm({
                   onFocus={() => setFocusedField('name')}
                   onBlur={() => setFocusedField(null)}
                   data-field="name"
-                  className={cn(
-                    'text-body-md',
-                    errors.name && 'border-destructive focus:border-destructive'
-                  )}
+                  aria-invalid={!!errors.name}
+                  className={cn('text-body-md')}
                 />
                 {/* No error text; border indicates error */}
               </div>
@@ -527,11 +543,9 @@ export default function ContactForm({
                   }
                 >
                   <SelectTrigger
-                    className={cn(
-                      'text-body-md',
-                      errors.contactMethod &&
-                        'border-destructive focus:border-destructive'
-                    )}
+                    data-field="contactMethod"
+                    aria-invalid={!!errors.contactMethod}
+                    className={cn('text-body-md')}
                   >
                     <SelectValue
                       placeholder={t.form.contactMethod.placeholder}
@@ -567,11 +581,8 @@ export default function ContactForm({
                     onFocus={() => setFocusedField('email')}
                     onBlur={() => setFocusedField(null)}
                     data-field="email"
-                    className={cn(
-                      'text-body-md',
-                      errors.email &&
-                        'border-destructive focus:border-destructive'
-                    )}
+                    aria-invalid={!!errors.email}
+                    className={cn('text-body-md')}
                   />
                   {/* No error text; border indicates error */}
                 </div>
@@ -592,10 +603,11 @@ export default function ContactForm({
                     onFocus={() => setFocusedField('phone')}
                     onBlur={() => setFocusedField(null)}
                     data-field="phone"
+                    aria-invalid={!!errors.phone}
                     className={cn(
                       'text-body-md',
                       errors.phone &&
-                        'border-destructive focus:border-destructive'
+                        'border-destructive focus:border-destructive border-2'
                     )}
                   />
                   {/* No error text; border indicates error */}
@@ -622,10 +634,13 @@ export default function ContactForm({
                 >
                   <SelectTrigger
                     data-field="eventType"
+                    aria-invalid={!!errors.eventType}
                     className={cn(
                       'text-body-md',
+                      // Show placeholder color when no value selected
+                      !formData.eventType && 'text-muted-foreground',
                       errors.eventType &&
-                        'border-destructive focus:border-destructive'
+                        'border-destructive focus:border-destructive border-2'
                     )}
                   >
                     <SelectValue
@@ -666,10 +681,11 @@ export default function ContactForm({
                   }
                   placeholder={formatRequired(t.form.services.placeholder)}
                   data-field="services"
+                  aria-invalid={!!errors.services}
                   className={cn(
                     'text-body-md',
                     errors.services &&
-                      'border-destructive focus:border-destructive'
+                      'border-destructive focus:border-destructive border-2'
                   )}
                 />
                 {/* No error text; border indicates error */}
@@ -695,10 +711,11 @@ export default function ContactForm({
                   onFocus={() => setFocusedField('location')}
                   onBlur={() => setFocusedField(null)}
                   data-field="location"
+                  aria-invalid={!!errors.location}
                   className={cn(
                     'text-body-md',
                     errors.location &&
-                      'border-destructive focus:border-destructive'
+                      'border-destructive focus:border-destructive border-2'
                   )}
                 />
                 {/* No error text; border indicates error */}
@@ -721,10 +738,11 @@ export default function ContactForm({
                   onFocus={() => setFocusedField('attendees')}
                   onBlur={() => setFocusedField(null)}
                   data-field="attendees"
+                  aria-invalid={!!errors.attendees}
                   className={cn(
                     'text-body-md',
                     errors.attendees &&
-                      'border-destructive focus:border-destructive'
+                      'border-destructive focus:border-destructive border-2'
                   )}
                 />
                 {/* No error text; border indicates error */}
@@ -732,51 +750,64 @@ export default function ContactForm({
             </div>
 
             {/* Event Date Field */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="eventDate"
-                className="text-muted-foreground text-sm"
-              >
-                {t.form.eventDate.label}
-              </Label>
-              <div className="flex items-end gap-3">
-                <Input
-                  ref={dateInputRef}
-                  id="eventDate"
-                  type="date"
-                  value={formData.eventDate}
-                  onChange={e => {
-                    handleInputChange('eventDate', e.target.value);
-                    if (e.target.value) {
-                      setNoDateSelected(false);
-                    }
-                  }}
-                  onFocus={() => setFocusedField('eventDate')}
-                  onBlur={() => setFocusedField(null)}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="text-body-md"
-                />
-                <Button
-                  type="button"
-                  variant={noDateSelected ? 'default' : 'outline'}
-                  aria-pressed={noDateSelected}
-                  onClick={() => {
-                    setNoDateSelected(prev => {
-                      const next = !prev;
-                      if (next) {
-                        handleInputChange('eventDate', '');
-                      }
-                      return next;
-                    });
-                  }}
-                  className="whitespace-nowrap"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label
+                  htmlFor="eventDate"
+                  className="text-muted-foreground text-sm"
                 >
-                  {locale === 'es'
-                    ? 'No tengo fecha'
-                    : locale === 'pt'
-                      ? 'Não tenho data'
-                      : "I don't have a date"}
-                </Button>
+                  {t.form.eventDate.label}
+                </Label>
+                <div className="flex items-center gap-3">
+                  <Input
+                    ref={dateInputRef}
+                    id="eventDate"
+                    type="date"
+                    value={formData.eventDate}
+                    onChange={e => {
+                      handleInputChange('eventDate', e.target.value);
+                      if (e.target.value) {
+                        setNoDateSelected(false);
+                      }
+                    }}
+                    onFocus={() => setFocusedField('eventDate')}
+                    onBlur={() => setFocusedField(null)}
+                    min={new Date().toISOString().split('T')[0]}
+                    className={cn(
+                      'text-body-md',
+                      // Show placeholder color when no date selected
+                      !formData.eventDate && 'text-muted-foreground'
+                    )}
+                  />
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={noDateSelected}
+                      onChange={e => {
+                        const checked = e.target.checked;
+                        setNoDateSelected(checked);
+                        if (checked) {
+                          handleInputChange('eventDate', '');
+                        }
+                      }}
+                    />
+                    <Label
+                      className="text-sm text-muted-foreground whitespace-nowrap cursor-pointer"
+                      onClick={() => {
+                        const newValue = !noDateSelected;
+                        setNoDateSelected(newValue);
+                        if (newValue) {
+                          handleInputChange('eventDate', '');
+                        }
+                      }}
+                    >
+                      {locale === 'es'
+                        ? 'No tengo fecha'
+                        : locale === 'pt'
+                          ? 'Não tenho data'
+                          : "I don't have a date"}
+                    </Label>
+                  </div>
+                </div>
               </div>
             </div>
 

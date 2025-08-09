@@ -724,6 +724,12 @@ html {
   outline-offset: 2px;
 }
 
+/* When components explicitly opt-out with `outline-none`, do not add a second outline */
+.outline-none:focus-visible {
+  outline: none;
+  outline-offset: 0;
+}
+
 /* Font utility classes */
 .font-logo {
   font-family:

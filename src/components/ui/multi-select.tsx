@@ -3,11 +3,6 @@
 import * as React from 'react';
 import { Check, ChevronDown, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  getBackgroundClasses,
-  type SectionType,
-  type PriorityLevel,
-} from '@/lib/background-utils';
 import { Badge } from '@/components/ui/badge';
 import {
   Popover,
@@ -26,10 +21,9 @@ interface MultiSelectProps {
   onValueChange: (value: string[]) => void;
   placeholder?: string;
   className?: string;
-  priority?: PriorityLevel;
-  sectionType?: SectionType;
   disabled?: boolean;
   'data-field'?: string;
+  'aria-invalid'?: boolean;
 }
 
 export function MultiSelect({
@@ -38,14 +32,12 @@ export function MultiSelect({
   onValueChange,
   placeholder = 'Seleccionar opciones',
   className,
-  priority = 'medium',
-  sectionType = 'form',
   disabled = false,
   'data-field': dataField,
+  'aria-invalid': ariaInvalid,
   ...props
 }: MultiSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const backgroundClasses = getBackgroundClasses(sectionType, priority);
 
   const handleOptionToggle = (optionValue: string) => {
     const newValue = value.includes(optionValue)
@@ -70,19 +62,21 @@ export function MultiSelect({
       <PopoverTrigger asChild>
         <div
           className={cn(
-            'flex h-auto min-h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-            'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-            'aria-invalid:ring-destructive/20 aria-invalid:border-destructive',
+            'flex h-9 w-full items-center justify-between rounded-none border px-3 py-1 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+            // Thicker blue border on focus without outer ring to match other inputs
+            'focus:border-2 focus-visible:border-2',
+            'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+            'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+            'aria-invalid:!border-destructive aria-invalid:!border-2',
             'touch-manipulation cursor-pointer',
-            backgroundClasses.background,
-            backgroundClasses.text,
-            backgroundClasses.border,
-            backgroundClasses.shadow,
+            // Use card background to match form card
+            'bg-card text-card-foreground border-border',
             className
           )}
           role="button"
           tabIndex={0}
           data-field={dataField}
+          aria-invalid={ariaInvalid}
           onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
@@ -91,13 +85,13 @@ export function MultiSelect({
           }}
           {...props}
         >
-          <div className="flex flex-wrap gap-1 flex-1 min-w-0">
+          <div className="flex gap-1 flex-1 min-w-0 overflow-hidden">
             {selectedOptions.length > 0 ? (
               selectedOptions.map(option => (
                 <Badge
                   key={option.value}
                   variant="secondary"
-                  className="text-xs px-2 py-1"
+                  className="text-xs px-2 py-0.5 whitespace-nowrap"
                 >
                   {option.label}
                   <button
@@ -127,9 +121,7 @@ export function MultiSelect({
       <PopoverContent
         className={cn(
           'w-full p-0',
-          backgroundClasses.background,
-          backgroundClasses.border,
-          backgroundClasses.shadow
+          'bg-card text-card-foreground border-border'
         )}
         align="start"
       >
