@@ -120,18 +120,16 @@ const DateStep = memo(
     widgetContent,
     onSelect,
     selectedDate,
-    onSkip,
-    onSubmit,
+    noDate,
+    onToggleNoDate,
   }: {
     content: any;
     widgetContent: any;
     onSelect: (date: Date | undefined) => void;
     selectedDate: Date | undefined;
-    onSkip: () => void;
-    onSubmit: () => void;
+    noDate: boolean;
+    onToggleNoDate: (value: boolean) => void;
   }) => {
-    const [noDate, setNoDate] = useState(false);
-    const canContinue = !!selectedDate || noDate;
     return (
       <div className="space-y-4" role="region" aria-label="Date selection">
         <div className="text-center space-y-1">
@@ -173,26 +171,12 @@ const DateStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={noDate}
-              onChange={e => setNoDate(e.target.checked)}
+              onChange={e => onToggleNoDate(e.target.checked)}
               aria-label={content.steps.date.noDate}
             />
             <span className="text-sm text-muted-foreground select-none">
               {content.steps.date.noDate}
             </span>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-row justify-between gap-3">
-            <div />
-            <Button
-              onClick={() => (noDate ? onSkip() : onSubmit())}
-              className="h-12"
-              aria-label="Continue from date step"
-              disabled={!canContinue}
-            >
-              <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </div>
@@ -208,19 +192,17 @@ const LocationStep = memo(
     content,
     widgetContent,
     onInput,
-    onSkip,
-    onSubmit,
     value,
+    skipLocation,
+    onToggleSkipLocation,
   }: {
     content: any;
     widgetContent: any;
     onInput: (location: string) => void;
-    onSkip: () => void;
-    onSubmit: () => void;
     value: string;
+    skipLocation: boolean;
+    onToggleSkipLocation: (value: boolean) => void;
   }) => {
-    const [skipLocation, setSkipLocation] = useState(false);
-    const canContinue = skipLocation || value.trim().length > 0;
     return (
       <div className="space-y-4" role="region" aria-label="Location input">
         <div className="text-center space-y-1">
@@ -253,26 +235,12 @@ const LocationStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={skipLocation}
-              onChange={e => setSkipLocation(e.target.checked)}
+              onChange={e => onToggleSkipLocation(e.target.checked)}
               aria-label={content.steps.location.noLocation}
             />
             <span className="text-sm text-muted-foreground select-none">
               {content.steps.location.noLocation}
             </span>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-row justify-between gap-3">
-            <div />
-            <Button
-              onClick={() => (skipLocation ? onSkip() : onSubmit())}
-              className="h-12"
-              disabled={!canContinue}
-              aria-label="Continue from location step"
-            >
-              <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </div>
@@ -484,6 +452,8 @@ export function ContactWidget({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [noDate, setNoDate] = useState(false);
+  const [skipLocation, setSkipLocation] = useState(false);
   const router = useRouter();
 
   // Scroll detection logic
@@ -780,12 +750,8 @@ export function ContactWidget({
             selectedDate={
               widgetData.eventDate ? new Date(widgetData.eventDate) : undefined
             }
-            onSkip={handleDateSkip}
-            onSubmit={() => {
-              if (widgetData.eventDate) {
-                setCurrentStep('location');
-              }
-            }}
+            noDate={noDate}
+            onToggleNoDate={setNoDate}
           />
         );
       case 'location':
@@ -794,9 +760,9 @@ export function ContactWidget({
             content={widgetContent}
             widgetContent={widgetContent}
             onInput={handleLocationInput}
-            onSkip={handleLocationSkip}
-            onSubmit={handleLocationSubmit}
             value={widgetData.location}
+            skipLocation={skipLocation}
+            onToggleSkipLocation={setSkipLocation}
           />
         );
       case 'contact':
@@ -910,7 +876,7 @@ export function ContactWidget({
         {/* Navigation footer */}
         {currentStep !== 'complete' && (
           <div
-            className="flex justify-between pt-4 border-t border-border flex-shrink-0"
+            className="flex justify-between items-center pt-4 border-t border-border flex-shrink-0"
             role="navigation"
             aria-label="Dialog navigation"
           >
@@ -940,13 +906,58 @@ export function ContactWidget({
               <div></div>
             )}
 
+            {/* Right-side Next button across steps */}
             {currentStep === 'date' && (
               <Button
-                variant="outline"
-                onClick={handleDateSkip}
-                aria-label="Skip date selection"
+                onClick={() => {
+                  if (noDate) {
+                    handleDateSkip();
+                  } else if (widgetData.eventDate) {
+                    setCurrentStep('location');
+                  }
+                }}
+                aria-label="Next from date step"
+                disabled={!noDate && !widgetData.eventDate}
+                className="flex items-center space-x-2"
               >
-                {widgetContent.steps.date.noDate}
+                <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            )}
+
+            {currentStep === 'location' && (
+              <Button
+                onClick={() => {
+                  if (skipLocation) {
+                    handleLocationSkip();
+                  } else if (widgetData.location.trim()) {
+                    handleLocationSubmit();
+                  }
+                }}
+                aria-label="Next from location step"
+                disabled={!skipLocation && !widgetData.location.trim()}
+                className="flex items-center space-x-2"
+              >
+                <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            )}
+
+            {currentStep === 'contact' && <div className="invisible" />}
+
+            {currentStep === 'phone' && (
+              <Button
+                onClick={() => {
+                  if (widgetData.phone.trim()) {
+                    handlePhoneSubmit(widgetData.phone.trim());
+                  }
+                }}
+                aria-label="Next from phone step"
+                disabled={!widgetData.phone.trim() || isSubmitting}
+                className="flex items-center space-x-2"
+              >
+                <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
+                <ChevronRight className="w-4 h-4" />
               </Button>
             )}
           </div>
