@@ -287,13 +287,7 @@ export default function ContactForm({
       newErrors.eventType = translations.contact.form.eventType.label;
     }
 
-    if (!formData.location.trim()) {
-      newErrors.location = translations.contact.form.location.label;
-    }
-
-    if (!formData.attendees.trim()) {
-      newErrors.attendees = translations.contact.form.attendees.label;
-    }
+    // Location and attendees are optional
 
     if (formData.services.length === 0) {
       newErrors.services = translations.contact.form.services.label;
@@ -709,7 +703,7 @@ export default function ContactForm({
                 <Input
                   id="location"
                   type="text"
-                  placeholder={formatRequired(t.form.location.placeholder)}
+                  placeholder={t.form.location.placeholder}
                   value={formData.location}
                   onChange={e => handleInputChange('location', e.target.value)}
                   onFocus={() => setFocusedField('location')}
@@ -736,7 +730,7 @@ export default function ContactForm({
                 <Input
                   id="attendees"
                   type="number"
-                  placeholder={formatRequired(t.form.attendees.placeholder)}
+                  placeholder={t.form.attendees.placeholder}
                   value={formData.attendees}
                   onChange={e => handleInputChange('attendees', e.target.value)}
                   onFocus={() => setFocusedField('attendees')}
