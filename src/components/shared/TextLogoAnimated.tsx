@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface TextLogoAnimatedProps {
@@ -22,28 +22,41 @@ export default function TextLogoAnimated({
   size = 'md',
   className,
 }: TextLogoAnimatedProps) {
-  const letters = ['V', 'E', 'L', 'O', 'Z'];
+  const [hovered, setHovered] = useState(false);
+
+  // Modern sweep: default is white (primary-foreground); on hover sweep to primary
+  const style = useMemo<React.CSSProperties>(
+    () => ({
+      backgroundImage: `linear-gradient(90deg,
+      var(--primary-foreground) 0%,
+      var(--primary-foreground) 47%,
+      color-mix(in oklch, var(--primary), white 35%) 49%,
+      var(--primary) 52%,
+      var(--primary) 100%
+    )`,
+      backgroundSize: '220% 100%',
+      // Start at left (white). On hover, move to right (primary)
+      backgroundPosition: hovered ? '100% 0%' : '0% 0%',
+      transition: 'background-position 140ms cubic-bezier(0.2, 0.6, 0, 1)',
+      willChange: 'background-position',
+    }),
+    [hovered]
+  );
 
   return (
     <span
       className={cn(
-        'font-logo uppercase tracking-normal text-primary-foreground flex select-none',
+        'font-logo uppercase tracking-normal text-primary-foreground inline-block select-none',
         SIZE_CLASSES[size],
         className
       )}
       aria-label="VELOZ"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {letters.map((ch, idx) => (
-        <span
-          key={`${ch}-${idx}`}
-          className={
-            'transition-colors duration-200 ease-out group-hover:text-[--primary]'
-          }
-          style={{ transitionDelay: `${idx * 60}ms` }}
-        >
-          {ch}
-        </span>
-      ))}
+      <span className="bg-clip-text text-transparent" style={style}>
+        VELOZ
+      </span>
     </span>
   );
 }

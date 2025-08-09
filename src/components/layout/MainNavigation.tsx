@@ -50,10 +50,15 @@ export default function MainNavigation({
   const logo = (
     <Link
       href={getLocalizedPath('/', locale)}
-      className="flex items-center justify-center group"
+      className="relative flex items-center justify-center group"
       aria-label="Veloz Home"
     >
       <TextLogoAnimated size="lg" className="transform scale-[2]" />
+      {/* Hover sweep: skewed accent line crossing left→right */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-[-40%] h-[3px] md:h-[4px] w-[180%] bg-[--primary] -translate-y-1/2 -rotate-12 transform translate-x-[-120%] opacity-0 z-10 transition-transform duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-[120%]"
+      />
     </Link>
   );
 
