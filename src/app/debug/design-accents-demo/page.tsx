@@ -217,7 +217,7 @@ export default function DesignAccentsDemoPage() {
       </section>
 
       {/* 09 Page Corner Targets (contained page demo) */}
-      <section className="rounded-xl border bg-card p-0 overflow-hidden">
+      <section className="rounded-xl border bg-card p-0 overflow-visible">
         <div className="relative p-8">
           <h2 className="text-xl font-medium mb-2">09 — Page Corner Targets</h2>
           <p className="text-muted-foreground mb-6">
@@ -239,7 +239,7 @@ export default function DesignAccentsDemoPage() {
                   dangerouslySetInnerHTML={{ __html: targetCircle.svgContent }}
                 />
               </div>
-              <div className="pointer-events-none absolute -bottom-8 -right-8 opacity-30 rotate-[10deg]">
+              <div className="pointer-events-none absolute -bottom-8 -right-8 opacity-30">
                 <div
                   className="w-28 h-28 [&>svg]:w-full [&>svg]:h-full"
                   dangerouslySetInnerHTML={{ __html: targetCircle.svgContent }}
@@ -272,7 +272,7 @@ export default function DesignAccentsDemoPage() {
                 dangerouslySetInnerHTML={{ __html: targetCircle.svgContent }}
               />
             </div>
-            <div className="pointer-events-none absolute -bottom-6 -right-6 opacity-40 rotate-12">
+            <div className="pointer-events-none absolute -bottom-6 -right-6 opacity-40">
               <div
                 className="w-20 h-20 [&>svg]:w-full [&>svg]:h-full"
                 dangerouslySetInnerHTML={{ __html: targetCircle.svgContent }}
