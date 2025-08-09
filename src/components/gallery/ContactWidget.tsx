@@ -232,7 +232,7 @@ const LocationStep = memo(
         </div>
 
         <div className="space-y-4">
-          <div className="relative">
+          <div className="relative" data-field="location">
             <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder={content.steps.location.placeholder}
@@ -253,8 +253,8 @@ const LocationStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={skipLocation}
-              onChange={() => {
-                const next = !skipLocation;
+              onChange={e => {
+                const next = e.currentTarget.checked;
                 onToggleSkipLocation(next);
                 if (next) {
                   onInput('');
@@ -853,6 +853,8 @@ export function ContactWidget({
     handleContactChoice,
     handlePhoneSubmit,
     isSubmitting,
+    noDate,
+    skipLocation,
   ]);
 
   return (
