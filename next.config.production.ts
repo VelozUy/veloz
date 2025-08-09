@@ -34,17 +34,16 @@ const productionConfig: NextConfig = {
     NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
   },
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-    // Enable build cache for faster rebuilds
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
   },
   eslint: {
     // Only run ESLint on these directories during build
