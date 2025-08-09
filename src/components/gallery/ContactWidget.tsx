@@ -579,27 +579,17 @@ export function ContactWidget({
   }, []);
 
   const handleDateSelect = useCallback((date: Date | undefined) => {
+    // Only update local data; do not advance steps automatically.
     setWidgetData(prev => ({
       ...prev,
       eventDate: date ? date.toISOString().split('T')[0] : '',
       dateSkipped: !date,
     }));
-    setCurrentStep('location');
-
-    trackCustomEvent('contact_widget_step_completed', {
-      step: 'date',
-      value: date ? date.toISOString().split('T')[0] : 'skipped',
-    });
   }, []);
 
   const handleDateSkip = useCallback(() => {
+    // Mark as skipped but do not auto-advance; Next button manages navigation.
     setWidgetData(prev => ({ ...prev, dateSkipped: true }));
-    setCurrentStep('location');
-
-    trackCustomEvent('contact_widget_step_completed', {
-      step: 'date',
-      value: 'skipped',
-    });
   }, []);
 
   const handleLocationInput = useCallback((location: string) => {
@@ -937,9 +927,11 @@ export function ContactWidget({
             {currentStep === 'date' && (
               <Button
                 onClick={() => {
-                  if (noDate) {
-                    handleDateSkip();
-                  } else if (widgetData.eventDate) {
+                  if (noDate || widgetData.eventDate) {
+                    trackCustomEvent('contact_widget_step_completed', {
+                      step: 'date',
+                      value: noDate ? 'skipped' : widgetData.eventDate,
+                    });
                     setCurrentStep('location');
                   }
                 }}
