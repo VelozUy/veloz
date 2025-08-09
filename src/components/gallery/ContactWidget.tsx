@@ -49,6 +49,7 @@ interface WidgetData {
   location: string;
   phone: string;
   dateSkipped: boolean;
+  locationSkipped: boolean;
 }
 
 // Enhanced Event Type Step with compact design
@@ -181,10 +182,11 @@ const DateStep = memo(
           </div>
 
           {/* Navigation */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-row justify-between gap-3">
+            <div />
             <Button
               onClick={() => (noDate ? onSkip() : onSubmit())}
-              className="flex-1 h-12"
+              className="h-12"
               aria-label="Continue from date step"
               disabled={!canContinue}
             >
@@ -260,10 +262,11 @@ const LocationStep = memo(
           </div>
 
           {/* Navigation */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-row justify-between gap-3">
+            <div />
             <Button
               onClick={() => (skipLocation ? onSkip() : onSubmit())}
-              className="flex-1 h-12"
+              className="h-12"
               disabled={!canContinue}
               aria-label="Continue from location step"
             >
@@ -476,6 +479,7 @@ export function ContactWidget({
     location: '',
     phone: '',
     dateSkipped: false,
+    locationSkipped: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -738,6 +742,7 @@ export function ContactWidget({
       location: '',
       phone: '',
       dateSkipped: false,
+      locationSkipped: false,
     });
     setIsSubmitting(false);
   }, []);
