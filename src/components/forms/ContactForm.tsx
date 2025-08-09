@@ -240,6 +240,11 @@ export default function ContactForm({
       }));
       setErrors({});
 
+      // If URL indicates no date, toggle the switch on to reflect it in the UI
+      if (noFecha) {
+        setNoDateSelected(true);
+      }
+
       // Track if form was pre-filled from widget
       trackCustomEvent('contact_form_prefilled', {
         eventType: eventType || null,
