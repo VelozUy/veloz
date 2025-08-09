@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { LocaleSwitcher } from '@/components/ui/locale-switcher';
-import { VelozLogo } from '@/components/shared/VelozLogo';
+import TextLogoAnimated from '@/components/shared/TextLogoAnimated';
 import NavigationBar, { NavItem } from './NavigationBar';
 import {
   generateNavItems,
@@ -46,14 +46,14 @@ export default function MainNavigation({
   // Add contact link to the left side of the logo
   const navItemsWithContact: NavItem[] = [...navItems, contactItem];
 
-  // Create the logo component
+  // Create the logo component (simple white logo, no hover overlay)
   const logo = (
     <Link
       href={getLocalizedPath('/', locale)}
       className="flex items-center justify-center group"
       aria-label="Veloz Home"
     >
-      <VelozLogo variant="white" size="sm" />
+      <TextLogoAnimated size="lg" className="transform scale-[2]" />
     </Link>
   );
 
