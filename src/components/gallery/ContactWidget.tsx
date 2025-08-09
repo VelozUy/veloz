@@ -151,7 +151,11 @@ const DateStep = memo(
               <Input
                 type="date"
                 value={
-                  selectedDate ? selectedDate.toISOString().split('T')[0] : ''
+                  noDate
+                    ? ''
+                    : selectedDate
+                      ? selectedDate.toISOString().split('T')[0]
+                      : ''
                 }
                 onChange={e => {
                   const date = e.target.value
@@ -159,7 +163,11 @@ const DateStep = memo(
                     : undefined;
                   onSelect(date);
                 }}
-                className="w-64 pl-10 h-12 text-center font-medium"
+                disabled={noDate}
+                aria-disabled={noDate}
+                className={`w-64 pl-10 h-12 text-center font-medium ${
+                  noDate || !selectedDate ? 'text-muted-foreground' : ''
+                }`}
                 aria-labelledby="date-title"
                 aria-describedby="date-title"
                 min={new Date().toISOString().split('T')[0]}
@@ -171,7 +179,13 @@ const DateStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={noDate}
-              onChange={e => onToggleNoDate(e.target.checked)}
+              onChange={e => {
+                const checked = e.target.checked;
+                onToggleNoDate(checked);
+                if (checked) {
+                  onSelect(undefined);
+                }
+              }}
               aria-label={content.steps.date.noDate}
             />
             <span className="text-sm text-muted-foreground select-none">
