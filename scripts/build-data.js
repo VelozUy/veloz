@@ -113,8 +113,8 @@ const STATIC_TRANSLATIONS = {
           },
         },
         location: {
-          label: 'Lugar del evento (ciudad)',
-          placeholder: '*Ciudad',
+          label: 'Lugar',
+          placeholder: 'Lugar',
         },
         attendees: {
           label: 'Cantidad de asistentes esperados',

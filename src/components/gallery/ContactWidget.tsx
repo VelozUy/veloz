@@ -69,7 +69,7 @@ const EventTypeStep = memo(
           className="text-xl font-semibold text-card-foreground"
           id="event-type-title"
         >
-          {content.steps.eventType.subtitle}
+          {content.steps.eventType.title}
         </h3>
       </div>
 
@@ -302,7 +302,7 @@ const ContactStep = memo(
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <div className="flex items-start space-x-3 w-full">
+          <div className="flex items-center space-x-3 w-full">
             <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
               <MessageCircle
                 className="w-4 h-4 text-primary"
@@ -325,7 +325,7 @@ const ContactStep = memo(
           aria-checked={false}
           aria-describedby="contact-title"
         >
-          <div className="flex items-start space-x-3 w-full">
+          <div className="flex items-center space-x-3 w-full">
             <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
               <Phone className="w-4 h-4 text-primary" aria-hidden="true" />
             </div>
