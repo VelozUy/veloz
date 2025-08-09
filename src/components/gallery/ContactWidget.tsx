@@ -253,10 +253,10 @@ const LocationStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={skipLocation}
-              onChange={e => {
-                const checked = e.target.checked;
-                onToggleSkipLocation(checked);
-                if (checked) {
+              onChange={() => {
+                const next = !skipLocation;
+                onToggleSkipLocation(next);
+                if (next) {
                   onInput('');
                 }
               }}
