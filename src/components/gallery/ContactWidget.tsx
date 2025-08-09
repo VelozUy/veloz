@@ -386,21 +386,7 @@ const PhoneStep = memo(
             />
           </div>
 
-          <Button
-            onClick={onSubmit}
-            disabled={isSubmitting || !phone.trim()}
-            className="w-full h-12"
-            aria-label={
-              isSubmitting ? 'Submitting phone number' : 'Submit phone number'
-            }
-          >
-            <span>
-              {isSubmitting
-                ? content.steps.phone.loading
-                : (widgetContent?.navigation?.next ?? 'Siguiente')}
-            </span>
-            {!isSubmitting && <ArrowRight className="w-4 h-4" />}
-          </Button>
+          {/* Next button moved to bottom navigation; keep content minimal here */}
         </div>
       </div>
     );
