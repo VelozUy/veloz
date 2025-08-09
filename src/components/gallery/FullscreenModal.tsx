@@ -86,24 +86,15 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
   // Handle currentIndex changes (for navigation)
   useEffect(() => {
-    if (isOpen && currentIndex !== startIndex) {
-      console.log('currentIndex changed to:', currentIndex);
-    }
+    // currentIndex changed
   }, [currentIndex, isOpen, startIndex]);
 
   // Get current media
   const currentMedia = media[currentIndex];
 
-  // Debug logging
+  // Debug logging disabled in production (use warn for failures only)
   useEffect(() => {
-    if (isOpen) {
-      console.log('FullscreenModal opened with:', {
-        mediaLength: media.length,
-        currentIndex,
-        startIndex,
-        currentMedia: currentMedia?.id,
-      });
-    }
+    // no-op
   }, [isOpen, media.length, currentIndex, startIndex, currentMedia]);
 
   // Preload image function
@@ -138,7 +129,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       preloadTimeouts.current.set(mediaItem.id, timeout);
 
       img.onload = () => {
-        console.log('Preloaded image:', mediaItem.id);
+        // Preloaded image
         setPreloadedImages(prev => new Set(prev).add(mediaItem.id));
         setPreloadingInProgress(prev => {
           const newSet = new Set(prev);
@@ -152,7 +143,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
       };
 
       img.onerror = () => {
-        console.warn('Failed to preload image:', mediaItem.id);
+        console.warn('Failed to preload image', mediaItem.id);
         preloadRefs.current.delete(mediaItem.id);
         preloadTimeouts.current.delete(mediaItem.id);
         setPreloadingInProgress(prev => {
@@ -252,14 +243,12 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
   // Handle media loading - NO ARTIFICIAL DELAY
   const handleMediaLoad = useCallback((mediaId: string) => {
-    console.log('Image loaded:', mediaId);
     // Remove artificial delay - show image immediately when ready
     setLoadingStates(prev => ({
       ...prev,
       [mediaId]: false,
     }));
     setFullResolutionLoaded(prev => {
-      console.log('Marking image as loaded in cache:', mediaId);
       return {
         ...prev,
         [mediaId]: true,
@@ -324,14 +313,8 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
   // Handle navigation with instant transitions
   const navigateTo = useCallback(
     (index: number) => {
-      console.log(
-        'navigateTo called with index:',
-        index,
-        'media.length:',
-        media.length
-      );
       if (index < 0 || index >= media.length) {
-        console.log('Index out of bounds, returning');
+        console.warn('Fullscreen navigateTo index out of bounds', index);
         return;
       }
 
@@ -346,22 +329,10 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
 
   // Handle next/previous navigation
   const handleNext = useCallback(() => {
-    console.log(
-      'Next button clicked, currentIndex:',
-      currentIndex,
-      'media.length:',
-      media.length
-    );
     navigateTo((currentIndex + 1) % media.length);
   }, [currentIndex, media.length, navigateTo]);
 
   const handlePrevious = useCallback(() => {
-    console.log(
-      'Prev button clicked, currentIndex:',
-      currentIndex,
-      'media.length:',
-      media.length
-    );
     navigateTo(currentIndex === 0 ? media.length - 1 : currentIndex - 1);
   }, [currentIndex, media.length, navigateTo]);
 
@@ -622,7 +593,6 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                 data-testid={`full-resolution-${currentMedia.id}`}
                 key={`full-resolution-${currentIndex}-${currentMedia.id}`} // Force re-render when image changes
                 onLoad={() => {
-                  console.log('Full resolution image loaded:', currentMedia.id);
                   setFullResolutionLoaded(prev => ({
                     ...prev,
                     [currentMedia.id]: true,

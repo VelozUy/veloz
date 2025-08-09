@@ -204,9 +204,11 @@ export default function ContactForm({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Debug: Log when errors change
+  // Debug: Log when errors change (warn-level)
   useEffect(() => {
-    console.log('Errors state changed:', errors);
+    if (Object.keys(errors).length > 0) {
+      console.warn('ContactForm errors changed', errors);
+    }
   }, [errors]);
 
   // Pre-fill form from URL parameters
@@ -307,10 +309,10 @@ export default function ContactForm({
 
     setErrors(newErrors);
 
-    // Debug: Log errors to console
-    console.log('Form validation errors:', newErrors);
-    console.log('Name field has error:', !!newErrors.name);
-    console.log('Email field has error:', !!newErrors.email);
+    // Debug: Log errors (warn-level)
+    if (Object.keys(newErrors).length > 0) {
+      console.warn('Form validation errors', newErrors);
+    }
 
     const isValid = Object.keys(newErrors).length === 0;
     return isValid;
@@ -366,7 +368,7 @@ export default function ContactForm({
     setSubmitError(null);
 
     try {
-      console.log('Contact form data being sent:', formData);
+      // Sending contact form
       await emailService.sendContactForm(formData);
       setIsSubmitted(true);
 

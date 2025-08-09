@@ -383,22 +383,6 @@ export const emailService = {
         });
 
       // Send auto-reply to user if they provided an email
-      console.log('Auto-reply conditions check:', {
-        hasEmail: !!data.email && data.email !== 'No especificado',
-        emailValue: data.email,
-        hasAutoReplyTemplate: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-        autoReplyTemplateId: EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-        emailNotEmpty:
-          typeof data.email === 'string' &&
-          data.email !== 'No especificado' &&
-          data.email.trim() !== '',
-        allConditionsMet: !!(
-          data.email &&
-          data.email !== 'No especificado' &&
-          EMAILJS_AUTO_REPLY_TEMPLATE_ID &&
-          data.email.trim() !== ''
-        ),
-      });
 
       if (
         data.email &&
@@ -430,23 +414,20 @@ export const emailService = {
           email: data.email, // Keep original for compatibility
         };
 
-        console.log('Auto-reply parameters:', autoReplyParams);
-
         try {
-          console.log('Sending auto-reply email to:', data.email);
           const autoReplyResponse = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_AUTO_REPLY_TEMPLATE_ID,
             autoReplyParams
           );
-          console.log('Auto-reply email sent successfully:', autoReplyResponse);
+          // Auto-reply email sent
         } catch (autoReplyError) {
           // Don't throw error for auto-reply failure, just log it
           // The main admin notification was successful
           console.error('Auto-reply email failed:', autoReplyError);
         }
       } else {
-        console.log('Auto-reply email skipped - conditions not met');
+        // Auto-reply email skipped - conditions not met
       }
 
       if (adminResponse.status !== 200) {
@@ -531,7 +512,7 @@ export const emailService = {
         !EMAILJS_AUTO_REPLY_TEMPLATE_ID ||
         !EMAILJS_PUBLIC_KEY
       ) {
-        console.log('Auto-reply configuration missing:', {
+        console.warn('Auto-reply configuration missing', {
           serviceId: !!EMAILJS_SERVICE_ID,
           autoReplyTemplateId: !!EMAILJS_AUTO_REPLY_TEMPLATE_ID,
           publicKey: !!EMAILJS_PUBLIC_KEY,
@@ -571,7 +552,7 @@ export const emailService = {
         testParams
       );
 
-      console.log('Auto-reply test successful:', response);
+      // Auto-reply test successful
       return true;
     } catch (error) {
       console.error('Auto-reply test failed:', error);

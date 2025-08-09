@@ -52,6 +52,13 @@ const productionConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Remove non-critical console statements in production builds
+  compiler: {
+    removeConsole: {
+      exclude: ['error', 'warn'],
+    },
+  },
+
   // Disable x-powered-by header for security
   poweredByHeader: false,
   // Add security headers

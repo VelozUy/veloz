@@ -261,9 +261,7 @@ export default function HomepageAdminPage() {
         } else {
           // No content found (possibly due to "Target ID already exists" error)
           // Create default content locally (don't save to DB yet)
-          console.log(
-            '📝 Creating default content locally due to no existing content'
-          );
+          // Creating default content locally due to no existing content
           const defaultWithId = {
             ...DEFAULT_CONTENT,
             id: 'content',
@@ -282,8 +280,8 @@ export default function HomepageAdminPage() {
           error.message.includes('client is offline')
         ) {
           if (connectionRetries < 3) {
-            console.log(
-              `Retrying connection (attempt ${connectionRetries + 1}/3)...`
+            console.warn(
+              `Retrying Firebase connection (attempt ${connectionRetries + 1}/3)`
             );
             setConnectionRetries(prev => prev + 1);
             // Retry after a short delay
@@ -508,7 +506,7 @@ export default function HomepageAdminPage() {
 
     try {
       // Run diagnostics first
-      console.log('🔧 Running Firebase diagnostics...');
+      console.warn('Running Firebase diagnostics');
       const diagnostics = await quickDiagnostics();
 
       // Attempt auto-fix

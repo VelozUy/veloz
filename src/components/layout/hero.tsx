@@ -54,10 +54,6 @@ export default function Hero({
 
   useEffect(() => {
     if (backgroundVideo !== previousVideoUrl) {
-      console.log('🎥 Video URL changed, resetting state:', {
-        from: previousVideoUrl,
-        to: backgroundVideo,
-      });
       setVideoCanPlay(false);
       setPreviousVideoUrl(backgroundVideo || '');
     }
@@ -65,25 +61,20 @@ export default function Hero({
 
   // Video event handlers - ensure video stays visible once ready
   const handleVideoCanPlay = () => {
-    console.log('🎥 Video can play - setting visible');
     setVideoCanPlay(true);
   };
 
   const handleVideoLoadedData = () => {
-    console.log('🎥 Video loaded data - setting visible');
     setVideoCanPlay(true);
   };
 
   const handleVideoError = () => {
-    console.warn('❌ Video failed to load');
+    console.warn('Video failed to load');
   };
 
-  // Debug logging for video state changes
+  // Debug logging removed in production
   useEffect(() => {
-    console.log('🎥 Video state:', {
-      videoCanPlay,
-      backgroundVideo: !!backgroundVideo,
-    });
+    // no-op
   }, [videoCanPlay, backgroundVideo]);
 
   return (

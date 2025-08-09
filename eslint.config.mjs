@@ -45,6 +45,11 @@ export default [
     rules: {
       // Theme consistency rules
       ...themeRules,
+      // Discourage console usage except warn/error
+      'no-console': [
+        'warn',
+        { allow: ['warn', 'error'] }
+      ],
     },
   },
 ];
