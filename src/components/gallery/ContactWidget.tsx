@@ -622,6 +622,7 @@ export function ContactWidget({
         if (widgetData.eventType) params.append('evento', widgetData.eventType);
         if (widgetData.eventDate && !widgetData.dateSkipped)
           params.append('fecha', widgetData.eventDate);
+        else if (widgetData.dateSkipped) params.append('noFecha', '1');
         if (widgetData.location)
           params.append('mensaje', `Ubicación: ${widgetData.location}`);
 

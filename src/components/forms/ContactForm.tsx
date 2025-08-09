@@ -215,6 +215,7 @@ export default function ContactForm({
     const eventDate = searchParams.get('fecha');
     const message = searchParams.get('mensaje');
     const ubicacion = searchParams.get('ubicacion');
+    const noFecha = searchParams.get('noFecha');
 
     // Build message from parameters
     let fullMessage = message || '';
@@ -225,16 +226,16 @@ export default function ContactForm({
 
     const updatedFormData = {
       eventType: eventType || '',
-      eventDate: eventDate || '',
+      eventDate: noFecha ? '' : eventDate || '',
       message: fullMessage,
     };
 
     // Only update if we have URL parameters to avoid infinite loops
-    if (eventType || eventDate || message || ubicacion) {
+    if (eventType || eventDate || message || ubicacion || noFecha) {
       setFormData(prevData => ({
         ...prevData,
         eventType: eventType || '',
-        eventDate: eventDate || '',
+        eventDate: noFecha ? '' : eventDate || '',
         message: fullMessage,
       }));
       setErrors({});
@@ -783,7 +784,7 @@ export default function ContactForm({
                     <Switch
                       checked={noDateSelected}
                       onChange={e => {
-                        const checked = e.target.checked;
+                        const checked = e.currentTarget.checked;
                         setNoDateSelected(checked);
                         if (checked) {
                           handleInputChange('eventDate', '');
