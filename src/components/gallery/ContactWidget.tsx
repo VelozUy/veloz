@@ -171,6 +171,7 @@ const DateStep = memo(
                 aria-labelledby="date-title"
                 aria-describedby="date-title"
                 min={new Date().toISOString().split('T')[0]}
+                data-field="eventDate"
               />
             </div>
           </div>
@@ -180,7 +181,7 @@ const DateStep = memo(
             <Switch
               checked={noDate}
               onChange={e => {
-                const checked = e.target.checked;
+                const checked = e.currentTarget.checked;
                 onToggleNoDate(checked);
                 if (checked) {
                   onSelect(undefined);
