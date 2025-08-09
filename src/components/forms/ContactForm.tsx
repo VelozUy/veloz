@@ -216,6 +216,7 @@ export default function ContactForm({
     const message = searchParams.get('mensaje');
     const ubicacion = searchParams.get('ubicacion');
     const noFecha = searchParams.get('noFecha');
+    const from = searchParams.get('from');
 
     // Build message from parameters (exclude ubicacion; handled as location field)
     let fullMessage = message || '';
@@ -250,6 +251,17 @@ export default function ContactForm({
         hasLocation: !!ubicacion,
         hasMessage: !!message,
       });
+    }
+
+    // If arriving from widget, auto-focus name field and scroll
+    if (from === 'widget') {
+      setTimeout(() => {
+        const nameEl = document.getElementById('name');
+        if (nameEl) {
+          nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          (nameEl as HTMLElement).focus({ preventScroll: true } as any);
+        }
+      }, 300);
     }
   }, [searchParams]);
 

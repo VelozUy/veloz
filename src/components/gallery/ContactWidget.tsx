@@ -605,6 +605,7 @@ export function ContactWidget({
         if (widgetData.location)
           params.append('ubicacion', widgetData.location);
 
+        params.append('from', 'widget');
         const url = `/contact?${params.toString()}`;
         router.push(url);
         setIsOpen(false);
