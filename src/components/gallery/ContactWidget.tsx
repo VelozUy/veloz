@@ -171,7 +171,7 @@ const DateStep = memo(
               className="flex-1 h-12"
               aria-label="Continue with selected date"
             >
-              <span>{widgetContent.navigation.next}</span>
+              <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
           )}
@@ -242,7 +242,7 @@ const LocationStep = memo(
             disabled={!value.trim()}
             aria-label="Continue with location"
           >
-            <span>{widgetContent.navigation.next}</span>
+            <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
             <ArrowRight className="w-4 h-4" />
           </Button>
           <Button
@@ -404,7 +404,7 @@ const PhoneStep = memo(
             <span>
               {isSubmitting
                 ? content.steps.phone.loading
-                : widgetContent.navigation.next}
+                : (widgetContent?.navigation?.next ?? 'Siguiente')}
             </span>
             {!isSubmitting && <ArrowRight className="w-4 h-4" />}
           </Button>
