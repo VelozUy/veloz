@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, memo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
@@ -127,66 +128,74 @@ const DateStep = memo(
     selectedDate: Date | undefined;
     onSkip: () => void;
     onSubmit: () => void;
-  }) => (
-    <div className="space-y-4" role="region" aria-label="Date selection">
-      <div className="text-center space-y-1">
-        <h3
-          className="text-xl font-semibold text-card-foreground"
-          id="date-title"
-        >
-          {content.steps.date.title}
-        </h3>
-        <p className="text-sm text-muted-foreground font-content">
-          ¿Cuándo planeas realizar tu evento?
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex justify-center">
-          <div className="relative">
-            <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              type="date"
-              value={
-                selectedDate ? selectedDate.toISOString().split('T')[0] : ''
-              }
-              onChange={e => {
-                const date = e.target.value
-                  ? new Date(e.target.value)
-                  : undefined;
-                onSelect(date);
-              }}
-              className="w-64 pl-10 h-12 text-center font-medium"
-              aria-labelledby="date-title"
-              aria-describedby="date-title"
-              min={new Date().toISOString().split('T')[0]}
-            />
-          </div>
+  }) => {
+    const [noDate, setNoDate] = useState(false);
+    const canContinue = !!selectedDate || noDate;
+    return (
+      <div className="space-y-4" role="region" aria-label="Date selection">
+        <div className="text-center space-y-1">
+          <h3
+            className="text-xl font-semibold text-card-foreground"
+            id="date-title"
+          >
+            {content.steps.date.title}
+          </h3>
+          <p className="text-sm text-muted-foreground font-content">
+            ¿Cuándo planeas realizar tu evento?
+          </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          {selectedDate && (
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <div className="relative">
+              <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
+                type="date"
+                value={
+                  selectedDate ? selectedDate.toISOString().split('T')[0] : ''
+                }
+                onChange={e => {
+                  const date = e.target.value
+                    ? new Date(e.target.value)
+                    : undefined;
+                  onSelect(date);
+                }}
+                className="w-64 pl-10 h-12 text-center font-medium"
+                aria-labelledby="date-title"
+                aria-describedby="date-title"
+                min={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+          </div>
+
+          {/* No date toggle */}
+          <div className="flex items-center justify-center gap-2">
+            <Switch
+              checked={noDate}
+              onChange={e => setNoDate(e.target.checked)}
+              aria-label={content.steps.date.noDate}
+            />
+            <span className="text-sm text-muted-foreground select-none">
+              {content.steps.date.noDate}
+            </span>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              onClick={onSubmit}
+              onClick={() => (noDate ? onSkip() : onSubmit())}
               className="flex-1 h-12"
-              aria-label="Continue with selected date"
+              aria-label="Continue from date step"
+              disabled={!canContinue}
             >
               <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
-          )}
-          <Button
-            variant="outline"
-            onClick={onSkip}
-            className="flex-1 h-12"
-            aria-label="Skip date selection"
-          >
-            {content.steps.date.noDate}
-          </Button>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 );
 
 DateStep.displayName = 'DateStep';
@@ -207,56 +216,65 @@ const LocationStep = memo(
     onSkip: () => void;
     onSubmit: () => void;
     value: string;
-  }) => (
-    <div className="space-y-4" role="region" aria-label="Location input">
-      <div className="text-center space-y-1">
-        <h3
-          className="text-xl font-semibold text-card-foreground"
-          id="location-title"
-        >
-          {content.steps.location.title}
-        </h3>
-        <p className="text-sm text-muted-foreground font-content">
-          ¿Dónde se realizará tu evento?
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-          <Input
-            placeholder={content.steps.location.placeholder}
-            value={value}
-            onChange={e => onInput(e.target.value)}
-            className="pl-10 h-12"
-            aria-labelledby="location-title"
-            aria-describedby="location-title"
-            aria-label="Event location"
-          />
+  }) => {
+    const [skipLocation, setSkipLocation] = useState(false);
+    const canContinue = skipLocation || value.trim().length > 0;
+    return (
+      <div className="space-y-4" role="region" aria-label="Location input">
+        <div className="text-center space-y-1">
+          <h3
+            className="text-xl font-semibold text-card-foreground"
+            id="location-title"
+          >
+            {content.steps.location.title}
+          </h3>
+          <p className="text-sm text-muted-foreground font-content">
+            ¿Dónde se realizará tu evento?
+          </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            onClick={onSubmit}
-            className="flex-1 h-12"
-            disabled={!value.trim()}
-            aria-label="Continue with location"
-          >
-            <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={onSkip}
-            className="flex-1 h-12"
-            aria-label="Skip location input"
-          >
-            {content.steps.location.noLocation}
-          </Button>
+        <div className="space-y-4">
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Input
+              placeholder={content.steps.location.placeholder}
+              value={value}
+              onChange={e => onInput(e.target.value)}
+              className="pl-10 h-12"
+              aria-labelledby="location-title"
+              aria-describedby="location-title"
+              aria-label="Event location"
+            />
+          </div>
+
+          {/* No location toggle */}
+          <div className="flex items-center justify-center gap-2">
+            <Switch
+              checked={skipLocation}
+              onChange={e => setSkipLocation(e.target.checked)}
+              aria-label={content.steps.location.noLocation}
+            />
+            <span className="text-sm text-muted-foreground select-none">
+              {content.steps.location.noLocation}
+            </span>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              onClick={() => (skipLocation ? onSkip() : onSubmit())}
+              className="flex-1 h-12"
+              disabled={!canContinue}
+              aria-label="Continue from location step"
+            >
+              <span>{widgetContent?.navigation?.next ?? 'Siguiente'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 );
 
 LocationStep.displayName = 'LocationStep';
