@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
-import AboutContent from '@/components/about/AboutContent';
+import AboutContentAnimated from '@/components/about/AboutContentAnimated';
 import { aboutContentService } from '@/services/about-content';
 
 // FAQ interface matching the static content structure
@@ -76,7 +76,7 @@ export default async function AboutPage() {
         />
       )}
 
-      <AboutContent content={content} />
+      <AboutContentAnimated content={content} />
     </>
   );
 }
