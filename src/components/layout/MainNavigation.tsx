@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { LocaleSwitcher } from '@/components/ui/locale-switcher';
-import LogoHorizontalWhite from '@/components/shared/LogoHorizontalWhite';
+import { VelozLogo } from '@/components/shared/VelozLogo';
 import NavigationBar, { NavItem } from './NavigationBar';
 import {
   generateNavItems,
@@ -51,8 +51,9 @@ export default function MainNavigation({
     <Link
       href={getLocalizedPath('/', locale)}
       className="flex items-center justify-center group"
+      aria-label="Veloz Home"
     >
-      <LogoHorizontalWhite size="sm" />
+      <VelozLogo variant="white" size="sm" />
     </Link>
   );
 
