@@ -238,7 +238,11 @@ const LocationStep = memo(
               placeholder={content.steps.location.placeholder}
               value={value}
               onChange={e => onInput(e.target.value)}
-              className="pl-10 h-12"
+              disabled={skipLocation}
+              aria-disabled={skipLocation}
+              className={`pl-10 h-12 ${
+                skipLocation || !value ? 'text-muted-foreground' : ''
+              }`}
               aria-labelledby="location-title"
               aria-describedby="location-title"
               aria-label="Event location"
@@ -249,7 +253,13 @@ const LocationStep = memo(
           <div className="flex items-center justify-center gap-2">
             <Switch
               checked={skipLocation}
-              onChange={e => onToggleSkipLocation(e.target.checked)}
+              onChange={e => {
+                const checked = e.target.checked;
+                onToggleSkipLocation(checked);
+                if (checked) {
+                  onInput('');
+                }
+              }}
               aria-label={content.steps.location.noLocation}
             />
             <span className="text-sm text-muted-foreground select-none">
