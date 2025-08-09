@@ -624,7 +624,7 @@ export function ContactWidget({
           params.append('fecha', widgetData.eventDate);
         else if (widgetData.dateSkipped) params.append('noFecha', '1');
         if (widgetData.location)
-          params.append('mensaje', `Ubicación: ${widgetData.location}`);
+          params.append('ubicacion', widgetData.location);
 
         const url = `/contact?${params.toString()}`;
         router.push(url);

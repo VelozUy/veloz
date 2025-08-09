@@ -217,18 +217,15 @@ export default function ContactForm({
     const ubicacion = searchParams.get('ubicacion');
     const noFecha = searchParams.get('noFecha');
 
-    // Build message from parameters
+    // Build message from parameters (exclude ubicacion; handled as location field)
     let fullMessage = message || '';
-    if (ubicacion && !fullMessage.includes('Ubicación:')) {
-      fullMessage += fullMessage ? '\n' : '';
-      fullMessage += `Ubicación: ${ubicacion}`;
-    }
 
     const updatedFormData = {
       eventType: eventType || '',
       eventDate: noFecha ? '' : eventDate || '',
       message: fullMessage,
-    };
+      location: ubicacion || '',
+    } as any;
 
     // Only update if we have URL parameters to avoid infinite loops
     if (eventType || eventDate || message || ubicacion || noFecha) {
@@ -237,6 +234,7 @@ export default function ContactForm({
         eventType: eventType || '',
         eventDate: noFecha ? '' : eventDate || '',
         message: fullMessage,
+        location: ubicacion || '',
       }));
       setErrors({});
 
