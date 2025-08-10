@@ -271,7 +271,7 @@ export default function OurWorkClient({
     <>
       {/* Single Tiled Grid with All Media */}
       <section className="min-h-screen pb-12 md:pb-16 bg-background">
-        <div className="w-full pt-8 md:pt-12">
+        <div className="w-full py-8 md:py-12">
           {/* Tiled Gallery - All Media */}
           {!isLoading && !loadError && (
             <div className="mb-8 md:mb-10">

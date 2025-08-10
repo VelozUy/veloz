@@ -461,7 +461,7 @@ export default function ContactFormAnimatedSimple({
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
+      <section className="pt-8 md:pt-8 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
           <motion.div
             variants={prefersReduced ? undefined : staggerContainer}
