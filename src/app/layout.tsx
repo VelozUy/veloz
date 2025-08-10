@@ -25,6 +25,7 @@ import {
 import './globals.css';
 import '@/lib/emergency-console-fix';
 import { ConditionalNavigation, PageLayout } from '@/components/layout';
+import { NavigationProvider } from '@/components/layout/NavigationProvider';
 import { AnalyticsWrapper } from '@/components/analytics';
 import {
   StructuredData,
@@ -260,9 +261,11 @@ export default function RootLayout({
         <Toaster />
         <ErrorBoundary>
           <AnalyticsWrapper>
-            <ConditionalNavigation />
-            <PageLayout>{children}</PageLayout>
-            <BackToTop />
+            <NavigationProvider>
+              <ConditionalNavigation />
+              <PageLayout>{children}</PageLayout>
+              <BackToTop />
+            </NavigationProvider>
           </AnalyticsWrapper>
         </ErrorBoundary>
       </body>

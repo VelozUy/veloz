@@ -50,7 +50,8 @@ export default function MainNavigation({
   const logo = (
     <Link
       href={getLocalizedPath('/', locale)}
-      className="relative flex items-center justify-center group"
+      prefetch={true}
+      className="relative flex items-center justify-center group transition-transform duration-150 hover:scale-105 active:scale-95"
       aria-label="Veloz Home"
     >
       <TextLogoAnimated size="lg" className="transform scale-[2]" />

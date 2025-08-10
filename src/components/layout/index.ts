@@ -9,4 +9,5 @@ export { WidgetWrapper } from './WidgetWrapper';
 // Shareable Navigation Components
 export { default as NavigationBar } from './NavigationBar';
 export { default as MainNavigation } from './MainNavigation';
+export { NavigationProvider, useNavigation } from './NavigationProvider';
 export type { NavItem } from './NavigationBar';

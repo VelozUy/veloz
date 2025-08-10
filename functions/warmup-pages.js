@@ -2,9 +2,20 @@ const fetch = require('node-fetch');
 
 // List of pages to warm up after deployment
 const PAGES_TO_WARM_UP = [
+  // Spanish (default) - no locale prefix
   '/', // Homepage
   '/about',
   '/contact',
+
+  // English pages
+  '/en/',
+  '/en/about',
+  '/en/contact',
+
+  // Portuguese pages
+  '/pt/',
+  '/pt/about',
+  '/pt/contact',
 ];
 
 // Optional: Add pages with query parameters or dynamic routes

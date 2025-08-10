@@ -2,13 +2,13 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { getPriorityClasses } from '@/lib/utils';
+import { useState } from 'react';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
   className?: string;
   textClassName?: string;
-  priority?: 'top' | 'mid' | 'low';
+  priority?: 'top' | 'bottom';
 }
 
 const LOCALES = [
@@ -25,9 +25,27 @@ export function LocaleSwitcher({
 }: LocaleSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const [clickedLocale, setClickedLocale] = useState<string | null>(null);
+
+  const getPriorityClasses = (priority: string) => {
+    switch (priority) {
+      case 'bottom':
+        return {
+          text: 'text-muted-foreground hover:text-foreground',
+        };
+      default:
+        return {
+          text: 'text-foreground/80 hover:text-foreground',
+        };
+    }
+  };
+
   const priorityClasses = getPriorityClasses(priority);
 
   const switchLocale = (newLocale: string) => {
+    // Immediate visual feedback
+    setClickedLocale(newLocale);
+
     // Store the locale preference in localStorage
     localStorage.setItem('preferred-locale', newLocale);
 
@@ -46,6 +64,9 @@ export function LocaleSwitcher({
 
     // Navigate to the new localized route
     router.push(newPath);
+
+    // Clear feedback after navigation
+    setTimeout(() => setClickedLocale(null), 200);
   };
 
   return (
@@ -55,7 +76,8 @@ export function LocaleSwitcher({
           key={locale.code}
           onClick={() => switchLocale(locale.code)}
           className={cn(
-            'text-sm font-medium transition-colors',
+            'text-sm font-medium transition-all duration-150 relative',
+            'hover:scale-110 active:scale-95',
             currentLocale === locale.code ? 'font-semibold' : '',
             // Use textClassName if provided, otherwise use priority classes
             textClassName || priorityClasses.text
@@ -63,6 +85,13 @@ export function LocaleSwitcher({
           aria-label={`Switch to ${locale.name}`}
         >
           {locale.name}
+          {/* Click feedback indicator */}
+          <span
+            className={cn(
+              'absolute inset-0 bg-primary-foreground/10 rounded opacity-0 transition-opacity duration-150',
+              clickedLocale === locale.code && 'opacity-100'
+            )}
+          />
         </button>
       ))}
     </div>

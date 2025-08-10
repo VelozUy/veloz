@@ -69,9 +69,20 @@ Edit the pages array in your chosen method:
 
 ```javascript
 const PAGES_TO_WARM_UP = [
+  // Spanish (default) - no locale prefix
   '/', // Homepage (highest priority)
   '/about', // About page
   '/contact', // Contact page
+
+  // English pages
+  '/en/', // English homepage
+  '/en/about', // English about page
+  '/en/contact', // English contact page
+
+  // Portuguese pages
+  '/pt/', // Portuguese homepage
+  '/pt/about', // Portuguese about page
+  '/pt/contact', // Portuguese contact page
 ];
 ```
 
@@ -128,7 +139,7 @@ The system tracks:
 ### Example Output
 
 ```
-🚀 Starting page warmup for 3 pages
+🚀 Starting page warmup for 9 pages
 📍 Base URL: https://your-site.netlify.app
 ⚡ Concurrency: 3
 ⏱️  Timeout: 30000ms
@@ -144,8 +155,8 @@ The system tracks:
 
 📊 WARMUP SUMMARY
 ────────────────────────────────────────────
-✅ Successful: 3/3
-❌ Failed: 0/3
+✅ Successful: 9/9
+❌ Failed: 0/9
 ⏱️  Total time: 2847ms
 📈 Average per page: 406ms
 ```

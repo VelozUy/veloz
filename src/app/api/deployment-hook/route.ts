@@ -59,13 +59,24 @@ export async function POST(request: NextRequest) {
 async function warmupPagesAsync(siteUrl: string) {
   try {
     // Import the warmup function
-    const { warmupPages } = await import('../../../scripts/warmup-pages.js');
+    const { warmupPages } = await import('../../../../scripts/warmup-pages.js');
 
     // Define pages to warm up
     const pages = [
+      // Spanish (default) - no locale prefix
       '/', // Homepage
       '/about',
       '/contact',
+
+      // English pages
+      '/en/',
+      '/en/about',
+      '/en/contact',
+
+      // Portuguese pages
+      '/pt/',
+      '/pt/about',
+      '/pt/contact',
     ];
 
     console.log(`🔥 Starting async warmup for ${siteUrl}`);

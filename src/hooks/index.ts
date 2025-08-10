@@ -39,3 +39,6 @@ export {
   useSlowConnection,
   useDataSaving,
 } from './useNetworkStatus';
+
+// Navigation optimization hooks
+export { useNavigationOptimization } from './useNavigationOptimization';

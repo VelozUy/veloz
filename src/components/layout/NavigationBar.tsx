@@ -73,6 +73,7 @@ export default function NavigationBar({
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [clickedLink, setClickedLink] = useState<string | null>(null);
 
   // Handle mounting to avoid hydration mismatch
   useEffect(() => {
@@ -126,6 +127,13 @@ export default function NavigationBar({
     return false;
   };
 
+  // Handle link click for immediate feedback
+  const handleLinkClick = (href: string) => {
+    setClickedLink(href);
+    // Clear the clicked state after a short delay
+    setTimeout(() => setClickedLink(null), 200);
+  };
+
   // Prevent hydration mismatch by ensuring consistent initial render
   if (!mounted) {
     return (
@@ -145,13 +153,23 @@ export default function NavigationBar({
                 <Link
                   key={item.name}
                   href={item.href}
+                  prefetch={true}
                   className={cn(
                     textClass,
                     hoverClass,
-                    'transition-colors font-medium'
+                    'transition-all duration-150 font-medium relative',
+                    'hover:scale-105 active:scale-95'
                   )}
+                  onClick={() => handleLinkClick(item.href)}
                 >
                   {item.name}
+                  {/* Click feedback indicator */}
+                  <span
+                    className={cn(
+                      'absolute inset-0 bg-primary-foreground/10 rounded opacity-0 transition-opacity duration-150',
+                      clickedLink === item.href && 'opacity-100'
+                    )}
+                  />
                 </Link>
               ))}
             </div>
@@ -201,14 +219,24 @@ export default function NavigationBar({
                   <Link
                     key={item.name}
                     href={item.href}
+                    prefetch={true}
                     className={cn(
                       textClass,
                       hoverClass,
-                      'transition-colors font-medium',
+                      'transition-all duration-150 font-medium relative',
+                      'hover:scale-105 active:scale-95',
                       active && activeClass
                     )}
+                    onClick={() => handleLinkClick(item.href)}
                   >
                     {item.name}
+                    {/* Click feedback indicator */}
+                    <span
+                      className={cn(
+                        'absolute inset-0 bg-primary-foreground/10 rounded opacity-0 transition-opacity duration-150',
+                        clickedLink === item.href && 'opacity-100'
+                      )}
+                    />
                   </Link>
                 );
               })}
@@ -256,14 +284,26 @@ export default function NavigationBar({
                 <Link
                   key={item.name}
                   href={item.href}
+                  prefetch={true}
                   className={cn(
-                    'block px-4 py-3 transition-colors font-medium',
+                    'block px-4 py-3 transition-all duration-150 font-medium relative',
+                    'hover:scale-105 active:scale-95',
                     mobileItemClass,
                     active && activeClass
                   )}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLinkClick(item.href);
+                  }}
                 >
                   {item.name}
+                  {/* Click feedback indicator */}
+                  <span
+                    className={cn(
+                      'absolute inset-0 bg-primary-foreground/10 rounded opacity-0 transition-opacity duration-150',
+                      clickedLink === item.href && 'opacity-100'
+                    )}
+                  />
                 </Link>
               );
             })}

@@ -13,9 +13,20 @@ const path = require('path');
 const CONFIG = {
   // Pages to warm up (in order of priority)
   pages: [
+    // Spanish (default) - no locale prefix
     '/', // Homepage (highest priority)
     '/about',
     '/contact',
+
+    // English pages
+    '/en/',
+    '/en/about',
+    '/en/contact',
+
+    // Portuguese pages
+    '/pt/',
+    '/pt/about',
+    '/pt/contact',
   ],
 
   // Dynamic pages (optional - can be populated from data)
