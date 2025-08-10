@@ -2,7 +2,6 @@
   "name": "functions",
   "description": "Netlify Functions for Veloz",
   "scripts": {
-    "lint": "eslint .",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "engines": {
@@ -14,9 +13,6 @@
     "resend": "^4.6.0",
     "node-fetch": "^2.7.0"
   },
-  "devDependencies": {
-    "eslint": "^8.15.0",
-    "eslint-config-google": "^0.14.0"
-  },
+  "devDependencies": {},
   "private": true
 }
