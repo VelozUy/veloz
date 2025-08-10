@@ -619,7 +619,7 @@ export default function ContactForm({
                     className={cn(
                       'text-body-md',
                       errors.phone &&
-                        'border-destructive focus:border-destructive border-2'
+                        'border-destructive focus:border-destructive'
                     )}
                   />
                   {/* No error text; border indicates error */}
@@ -652,7 +652,7 @@ export default function ContactForm({
                       // Show placeholder color when no value selected
                       !formData.eventType && 'text-muted-foreground',
                       errors.eventType &&
-                        'border-destructive focus:border-destructive border-2'
+                        'border-destructive focus:border-destructive'
                     )}
                   >
                     <SelectValue
@@ -697,7 +697,7 @@ export default function ContactForm({
                   className={cn(
                     'text-body-md',
                     errors.services &&
-                      'border-destructive focus:border-destructive border-2'
+                      'border-destructive focus:border-destructive'
                   )}
                 />
                 {/* No error text; border indicates error */}
@@ -727,7 +727,7 @@ export default function ContactForm({
                   className={cn(
                     'text-body-md',
                     errors.location &&
-                      'border-destructive focus:border-destructive border-2'
+                      'border-destructive focus:border-destructive'
                   )}
                 />
                 {/* No error text; border indicates error */}
@@ -754,7 +754,7 @@ export default function ContactForm({
                   className={cn(
                     'text-body-md',
                     errors.attendees &&
-                      'border-destructive focus:border-destructive border-2'
+                      'border-destructive focus:border-destructive'
                   )}
                 />
                 {/* No error text; border indicates error */}

@@ -21,11 +21,10 @@ const SelectTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-        // Thicker blue border on focus without outer ring
-        'focus:border-2 focus-visible:border-2',
+        // Border color change only on focus (keep width constant)
         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
         'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
-        'aria-invalid:!border-destructive aria-invalid:!border-2',
+        'aria-invalid:!border-destructive',
         'touch-manipulation cursor-pointer',
         // Use card background to match form card
         'bg-card text-card-foreground border-border',

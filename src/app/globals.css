@@ -713,10 +713,7 @@ html {
   overflow-x: hidden;
 }
 
-/* Smooth scrolling for better UX */
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth scrolling removed globally to avoid focus/open-induced scroll jumps */
 
 /* Focus styles for accessibility */
 :focus-visible {

@@ -23,11 +23,10 @@ function Input({
         // default gray border
         'border-border',
         'placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground',
-        // Thicker blue border on focus without outer ring
-        'focus:border-2 focus-visible:border-2',
+        // Border color change only on focus (keep width constant)
         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
         'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
-        'aria-invalid:!border-destructive aria-invalid:!border-2',
+        'aria-invalid:!border-destructive',
         inputClasses,
         className
       )}

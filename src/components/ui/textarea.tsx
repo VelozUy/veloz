@@ -24,11 +24,10 @@ function Textarea({
         'flex min-h-[60px] w-full min-w-0 border bg-card px-3 py-2 text-base text-card-foreground shadow-none transition-[border-color,box-shadow] outline-none placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
         'border-border',
         'selection:bg-primary selection:text-primary-foreground',
-        // Thicker blue border on focus without outer ring
-        'focus:border-2 focus-visible:border-2',
+        // Border color change only on focus (keep width constant)
         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
         'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
-        'aria-invalid:!border-destructive aria-invalid:!border-2',
+        'aria-invalid:!border-destructive',
         className
       )}
       {...props}
