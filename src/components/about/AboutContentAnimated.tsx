@@ -130,7 +130,7 @@ export default function AboutContentAnimated({
                   </div>
                 </div>
                 <div className="flex-1 max-w-4xl">
-                  <p className="text-lg md:text-xl text-foreground leading-relaxed font-subtitle text-center md:text-left">
+                  <p className="text-lg md:text-xl lg:text-2xl text-foreground leading-relaxed font-subtitle text-center md:text-left">
                     {item.description}
                   </p>
                 </div>
