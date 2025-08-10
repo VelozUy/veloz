@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { getStaticContent } from '@/lib/utils';
-import ContactForm from '@/components/forms/ContactForm';
+import ContactFormClientWrapper from '@/components/forms/ContactFormClientWrapper';
+import ContactFormSkeleton from '@/components/forms/ContactFormSkeleton';
 import type { Metadata } from 'next';
 
 // Force static generation at build time
@@ -13,11 +14,20 @@ export const revalidate = false;
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `Veloz - Contacto`,
-    description: 'Cuéntanos sobre tu evento y hagamos que sea perfecto',
+    description:
+      'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
+    keywords:
+      'contacto veloz, cotización fotografía, video eventos, Uruguay, formulario contacto',
     openGraph: {
       title: `Veloz - Contacto`,
-      description: 'Cuéntanos sobre tu evento y hagamos que sea perfecto',
+      description:
+        'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
       type: 'website',
+      url: 'https://veloz.com.uy/contact',
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -26,82 +36,112 @@ function ContactPageContent() {
   // Get static content for Spanish (default for now)
   const content = getStaticContent('es');
 
-  // Cast translations to expected type for ContactForm
-  const translations = content.translations as {
+  // Provide fallback translations if they don't exist in static content
+  const fallbackTranslations = {
     contact: {
-      title: string;
-      subtitle: string;
+      title: 'Contacto',
+      subtitle: 'Cuéntanos sobre tu evento y hagamos que sea perfecto',
       form: {
-        title: string;
-        name: { label: string; placeholder: string };
-        email: { label: string; placeholder: string };
-        company: { label: string; placeholder: string; optional: string };
-        phone: { label: string; placeholder: string; optional: string };
+        title: 'Formulario de Contacto',
+        name: { label: 'Nombre', placeholder: 'Tu nombre completo' },
+        email: { label: 'Email', placeholder: 'tu@email.com' },
+        company: {
+          label: 'Empresa',
+          placeholder: 'Nombre de tu empresa',
+          optional: '(opcional)',
+        },
+        phone: {
+          label: 'Teléfono',
+          placeholder: '+598 99 123 456',
+          optional: '(opcional)',
+        },
         eventType: {
-          label: string;
-          placeholder: string;
+          label: 'Tipo de Evento',
+          placeholder: 'Selecciona el tipo de evento',
           options: {
-            corporate: string;
-            product: string;
-            birthday: string;
-            wedding: string;
-            concert: string;
-            exhibition: string;
-            other: string;
-          };
-        };
-        location: { label: string; placeholder: string };
-        attendees: { label: string; placeholder: string };
+            corporate: 'Corporativo',
+            product: 'Producto',
+            birthday: 'Cumpleaños',
+            wedding: 'Boda',
+            concert: 'Concierto',
+            exhibition: 'Exposición',
+            other: 'Otro',
+          },
+        },
+        location: { label: 'Ubicación', placeholder: 'Ciudad, País' },
+        attendees: { label: 'Asistentes', placeholder: 'Número aproximado' },
         services: {
-          label: string;
-          placeholder: string;
+          label: 'Servicios',
+          placeholder: 'Selecciona los servicios que necesitas',
           options: {
-            photography: string;
-            video: string;
-            drone: string;
-            studio: string;
-            other: string;
-          };
-        };
+            photography: 'Fotografía',
+            video: 'Video',
+            drone: 'Drone',
+            studio: 'Estudio',
+            other: 'Otro',
+          },
+        },
         contactMethod: {
-          label: string;
-          placeholder: string;
+          label: 'Método de Contacto',
+          placeholder: 'Cómo prefieres que te contactemos',
           options: {
-            whatsapp: string;
-            email: string;
-            call: string;
-          };
-        };
-        eventDate: { label: string; optional: string; help: string };
-        message: { label: string; optional: string; placeholder: string };
-        submit: { button: string; loading: string };
-        privacy: { line1: string; line2: string };
-      };
-      success: { title: string; message: string; action: string };
+            whatsapp: 'WhatsApp',
+            email: 'Email',
+            call: 'Llamada',
+          },
+        },
+        eventDate: {
+          label: 'Fecha del Evento',
+          optional: '(opcional)',
+          help: 'Si ya tienes una fecha en mente',
+        },
+        message: {
+          label: 'Mensaje',
+          optional: '(opcional)',
+          placeholder: 'Cuéntanos más sobre tu evento...',
+        },
+        submit: { button: 'Enviar Mensaje', loading: 'Enviando...' },
+        privacy: {
+          line1:
+            'Al enviar este formulario, aceptas que procesemos tu información de contacto para responder a tu consulta.',
+          line2:
+            'No compartiremos tu información con terceros sin tu consentimiento explícito.',
+        },
+      },
+      success: {
+        title: '¡Mensaje Enviado!',
+        message:
+          'Gracias por contactarnos. Te responderemos en las próximas 24 horas.',
+        action: 'Enviar Otro Mensaje',
+      },
       trust: {
-        response: { title: string; description: string };
-        commitment: { title: string; description: string };
-        privacy: { title: string; description: string };
-      };
-    };
+        response: {
+          title: 'Respuesta Rápida',
+          description: 'Te respondemos en menos de 24 horas',
+        },
+        commitment: {
+          title: 'Compromiso Total',
+          description: 'Nos dedicamos a hacer tu evento perfecto',
+        },
+        privacy: {
+          title: 'Privacidad Garantizada',
+          description: 'Tu información está segura con nosotros',
+        },
+      },
+    },
   };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <ContactForm translations={translations} locale="es" />
-    </div>
-  );
+  // Use static content translations if available, otherwise use fallback
+  const translations = content.translations?.contact
+    ? { contact: content.translations.contact }
+    : fallbackTranslations;
+
+  return <ContactFormClientWrapper translations={translations} locale="es" />;
 }
 
 export default function ContactPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={<ContactFormSkeleton />}>
       <ContactPageContent />
     </Suspense>
   );
