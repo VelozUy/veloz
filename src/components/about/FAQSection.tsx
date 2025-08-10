@@ -33,7 +33,7 @@ export default function FAQSection({
 
   return (
     <section className="py-8 px-4 sm:px-8 lg:px-16 bg-muted/30">
-      <div className="max-w-border-64 mx-auto space-y-8">
+      <div className="max-w-border-64 mx-auto space-y-8 pb-4">
         <div className="text-left">
           <h2 className="text-section-title-md font-title font-bold mb-4 text-foreground uppercase">
             {title}
@@ -48,33 +48,40 @@ export default function FAQSection({
               <FAQItem key={faq.id} faq={faq} locale={locale} />
             ))}
           </Accordion>
+          <div className="h-4"></div>
         </div>
 
         {/* Desktop: two independent accordions, coordinated to allow only one open globally */}
         <div className="hidden md:grid md:grid-cols-2 md:gap-6">
-          <Accordion
-            type="single"
-            collapsible
-            value={leftIds.has(openId as any) ? openId : undefined}
-            onValueChange={val => setOpenId((val as string) || undefined)}
-            className="w-full space-y-4"
-          >
-            {left.map(faq => (
-              <FAQItem key={faq.id} faq={faq} locale={locale} />
-            ))}
-          </Accordion>
+          <div>
+            <Accordion
+              type="single"
+              collapsible
+              value={leftIds.has(openId as any) ? openId : undefined}
+              onValueChange={val => setOpenId((val as string) || undefined)}
+              className="w-full space-y-4"
+            >
+              {left.map(faq => (
+                <FAQItem key={faq.id} faq={faq} locale={locale} />
+              ))}
+            </Accordion>
+            <div className="h-4"></div>
+          </div>
 
-          <Accordion
-            type="single"
-            collapsible
-            value={rightIds.has(openId as any) ? openId : undefined}
-            onValueChange={val => setOpenId((val as string) || undefined)}
-            className="w-full space-y-4"
-          >
-            {right.map(faq => (
-              <FAQItem key={faq.id} faq={faq} locale={locale} />
-            ))}
-          </Accordion>
+          <div>
+            <Accordion
+              type="single"
+              collapsible
+              value={rightIds.has(openId as any) ? openId : undefined}
+              onValueChange={val => setOpenId((val as string) || undefined)}
+              className="w-full space-y-4"
+            >
+              {right.map(faq => (
+                <FAQItem key={faq.id} faq={faq} locale={locale} />
+              ))}
+            </Accordion>
+            <div className="h-4"></div>
+          </div>
         </div>
       </div>
     </section>

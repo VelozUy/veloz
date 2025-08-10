@@ -64,7 +64,7 @@ export default function FAQItem({ faq, locale = 'es' }: FAQItemProps) {
   return (
     <AccordionItem
       value={faq.id}
-      className="border bg-card text-card-foreground rounded-none px-4 border-border shadow-sm"
+      className="border bg-card text-card-foreground rounded-none px-4 border-border shadow-sm last:border-b"
     >
       <AccordionTrigger className="text-left font-subtitle font-bold hover:text-primary transition-colors py-4 text-card-foreground text-lg">
         {getFAQText(faq, 'question', locale)}
