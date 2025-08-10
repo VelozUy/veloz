@@ -8,6 +8,7 @@ import {
 import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { getAuth, Auth } from 'firebase/auth';
 import { firebaseConfig, validateFirebaseConfig } from './firebase-config';
+import { shouldSkipFirebase } from './static-page-detection';
 
 // Initialize Firebase
 let app: FirebaseApp | null = null;
@@ -25,6 +26,12 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
   }
 
   if (isInitializing) {
+    return null;
+  }
+
+  // Check if we should skip Firebase initialization for static pages
+  if (shouldSkipFirebase()) {
+    // Skipping Firebase initialization on static page
     return null;
   }
 
@@ -123,8 +130,8 @@ const initializeFirebase = async (): Promise<FirebaseApp | null> => {
   return initializationPromise;
 };
 
-// Initialize Firebase only on client side to prevent SSR issues
-if (typeof window !== 'undefined' && !app) {
+// Initialize Firebase only on client side and only on dynamic pages
+if (typeof window !== 'undefined' && !app && !shouldSkipFirebase()) {
   // Initialize Firebase asynchronously to prevent blocking
   initializeFirebase().catch(error => {
     console.error('Firebase initialization failed:', error);
@@ -134,8 +141,8 @@ if (typeof window !== 'undefined' && !app) {
     auth = null;
     storage = null;
   });
-} else if (typeof window === 'undefined') {
-  // Server-side: Initialize with dummy values to prevent errors
+} else if (typeof window === 'undefined' || shouldSkipFirebase()) {
+  // Server-side or static page: Initialize with dummy values to prevent errors
   app = null;
   db = null;
   auth = null;
@@ -153,7 +160,7 @@ export const getFirestoreSync = (): Firestore | null => db;
 
 // Function to get Firestore service only when needed
 export const getFirestoreService = async (retries = 5, delay = 300) => {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || shouldSkipFirebase()) {
     return null;
   }
   for (let i = 0; i < retries; i++) {
@@ -174,7 +181,7 @@ export const getFirestoreService = async (retries = 5, delay = 300) => {
 
 // Function to get Storage service only when needed
 export const getStorageService = async (): Promise<FirebaseStorage | null> => {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || shouldSkipFirebase()) {
     return null;
   }
 
@@ -197,14 +204,8 @@ export const getStorageService = async (): Promise<FirebaseStorage | null> => {
     try {
       const { getStorage } = await import('firebase/storage');
       storage = getStorage(app);
-
-      // Verify storage bucket is configured
-      if (!firebaseConfig.storageBucket) {
-        throw new Error(
-          '❌ Firebase Storage Bucket not configured. Please set NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'
-        );
-      }
     } catch (error) {
+      console.error('Storage initialization failed:', error);
       return null;
     }
   }
@@ -214,7 +215,7 @@ export const getStorageService = async (): Promise<FirebaseStorage | null> => {
 
 // Function to get Auth service only when needed
 export const getAuthService = async (): Promise<Auth | null> => {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || shouldSkipFirebase()) {
     return null;
   }
 
@@ -227,25 +228,19 @@ export const getAuthService = async (): Promise<Auth | null> => {
     }
   }
 
-  // If auth is still null after initialization, wait a bit more
-  if (!auth) {
-    // Wait for initialization to complete
-    if (initializationPromise) {
-      try {
-        await initializationPromise;
-      } catch (error) {
-        return null;
-      }
-    }
+  // If auth is already initialized, return it
+  if (auth) {
+    return auth;
+  }
 
-    // If still null after waiting, try to get auth directly
-    if (!auth && app) {
-      try {
-        const { getAuth } = await import('firebase/auth');
-        auth = getAuth(app);
-      } catch (error) {
-        return null;
-      }
+  // Initialize auth if not already done
+  if (!auth && app) {
+    try {
+      const { getAuth } = await import('firebase/auth');
+      auth = getAuth(app);
+    } catch (error) {
+      console.error('Auth initialization failed:', error);
+      return null;
     }
   }
 

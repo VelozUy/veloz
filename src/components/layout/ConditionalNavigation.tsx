@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 // import { useRouter } from 'next/router'; // Removed for static localized routes
 import { getStaticContent } from '@/lib/utils';
 import MainNavigation from './MainNavigation';
+import { NavigationSkeleton } from '@/components/ui/loading-skeleton';
 
 export default function ConditionalNavigation() {
   const pathname = usePathname();
@@ -23,9 +24,9 @@ export default function ConditionalNavigation() {
     return null;
   }
 
-  // Prevent hydration mismatch by not rendering until mounted
+  // Show loading skeleton instead of null to prevent empty container states
   if (!mounted) {
-    return null;
+    return <NavigationSkeleton />;
   }
 
   // Detect current locale from URL path
@@ -49,6 +50,5 @@ export default function ConditionalNavigation() {
     };
   };
 
-  // Use the main navigation component
   return <MainNavigation translations={translations} locale={currentLocale} />;
 }

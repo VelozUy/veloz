@@ -1,6 +1,6 @@
 'use client';
 
-import {
+import React, {
   createContext,
   useContext,
   useState,
@@ -12,6 +12,7 @@ import {
   onAuthStateChanged,
   signOut as firebaseSignOut,
 } from 'firebase/auth';
+import { shouldSkipFirebase } from '@/lib/static-page-detection';
 
 interface AuthContextType {
   user: User | null;
@@ -26,6 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Skip Firebase auth on static pages
+    if (shouldSkipFirebase()) {
+      // Skipping Firebase auth on static page
+      setLoading(false);
+      return;
+    }
+
     // Dynamic import of Firebase auth to prevent SSR issues
     const initAuth = async () => {
       try {
@@ -69,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
-      if (typeof window === 'undefined') return;
+      if (typeof window === 'undefined' || shouldSkipFirebase()) return;
 
       // Use the async auth service
       const { getAuthService } = await import('@/lib/firebase');

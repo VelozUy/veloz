@@ -39,6 +39,7 @@ import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-tes
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 import { Suspense } from 'react';
 import BackToTop from '@/components/ui/BackToTop';
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -257,11 +258,13 @@ export default function RootLayout({
           <QRCodeTracker />
         </Suspense>
         <Toaster />
-        <AnalyticsWrapper>
-          <ConditionalNavigation />
-          <PageLayout>{children}</PageLayout>
-          <BackToTop />
-        </AnalyticsWrapper>
+        <ErrorBoundary>
+          <AnalyticsWrapper>
+            <ConditionalNavigation />
+            <PageLayout>{children}</PageLayout>
+            <BackToTop />
+          </AnalyticsWrapper>
+        </ErrorBoundary>
       </body>
     </html>
   );

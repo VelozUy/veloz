@@ -92,36 +92,33 @@ export default function OurWorkClient({
     }));
   }, [allMedia]);
 
-  // Performance monitoring
+  // Performance monitoring - moved to top to fix React Hooks rules
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
+      // Development logging removed
     }
 
     // Set loading state - only show loading if we have no media
-    setIsLoading(optimizedMedia.length === 0);
+    if (optimizedMedia.length === 0) {
+      setIsLoading(true);
+      // Set a timeout to show error if no data loads
+      const timeoutId = setTimeout(() => {
+        if (optimizedMedia.length === 0) {
+          setLoadError(
+            'No se pudieron cargar los proyectos. Por favor, recarga la página.'
+          );
+          setIsLoading(false);
+        }
+      }, 5000); // 5 second timeout
 
-    // Add preload hints for critical images
-    if (typeof window !== 'undefined' && optimizedMedia.length > 0) {
-      // Preload first 4 critical images
-      optimizedMedia.slice(0, 4).forEach((image, index) => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = image.url;
-        link.setAttribute('data-preload-index', index.toString());
-        document.head.appendChild(link);
-
-        // Clean up after 10 seconds
-        setTimeout(() => {
-          if (document.head.contains(link)) {
-            document.head.removeChild(link);
-          }
-        }, 10000);
-      });
+      return () => clearTimeout(timeoutId);
+    } else {
+      setIsLoading(false);
+      setLoadError(null);
     }
-  }, [optimizedMedia]);
+  }, [optimizedMedia.length, projects]);
 
-  // Preload critical images for better UX
+  // Preload critical images for better UX - moved to top
   useEffect(() => {
     if (optimizedMedia.length > 0 && typeof window !== 'undefined') {
       // Preload first 6 images for immediate fullscreen modal experience
@@ -146,6 +143,82 @@ export default function OurWorkClient({
     }
   }, [optimizedMedia]);
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="w-full px-4 md:px-16 py-8">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+          <p className="text-muted-foreground">Cargando proyectos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (loadError) {
+    return (
+      <div className="w-full px-4 md:px-16 py-8">
+        <div className="text-center">
+          <div className="text-destructive mb-4">
+            <svg
+              className="w-12 h-12 mx-auto mb-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+            <p className="text-lg font-semibold">Error al cargar</p>
+          </div>
+          <p className="text-muted-foreground mb-4">{loadError}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Recargar página
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show empty state if no media
+  if (optimizedMedia.length === 0) {
+    return (
+      <div className="w-full px-4 md:px-16 py-8">
+        <div className="text-center">
+          <div className="text-muted-foreground mb-4">
+            <svg
+              className="w-12 h-12 mx-auto mb-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <p className="text-lg font-semibold">
+              No hay proyectos disponibles
+            </p>
+          </div>
+          <p className="text-muted-foreground">
+            No se encontraron proyectos para mostrar en este momento.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Get localized title based on locale
   const getLocalizedTitle = (locale: string) => {
     switch (locale) {
@@ -158,38 +231,47 @@ export default function OurWorkClient({
     }
   };
 
+  // Get localized subtitle based on locale
+  const getLocalizedSubtitle = (locale: string) => {
+    switch (locale) {
+      case 'en':
+        return 'Discover our portfolio of creative projects.';
+      case 'pt':
+        return 'Descubra nosso portfólio de projetos criativos.';
+      default:
+        return 'Descubra nuestro portafolio de proyectos creativos.';
+    }
+  };
+
+  // Get localized CTA based on locale
+  const getLocalizedCTA = (locale: string) => {
+    switch (locale) {
+      case 'en':
+        return 'Contact Us';
+      case 'pt':
+        return 'Entre em Contato';
+      default:
+        return 'Contáctanos';
+    }
+  };
+
+  // Get localized secondary CTA based on locale
+  const getLocalizedSecondaryCTA = (locale: string) => {
+    switch (locale) {
+      case 'en':
+        return 'Learn More';
+      case 'pt':
+        return 'Saiba Mais';
+      default:
+        return 'Saber Más';
+    }
+  };
+
   return (
     <>
       {/* Single Tiled Grid with All Media */}
       <section className="min-h-screen pb-12 md:pb-16 bg-background">
         <div className="w-full pt-8 md:pt-12">
-          {/* Loading State */}
-          {isLoading && (
-            <div className="flex items-center justify-center py-12 px-8 md:px-16">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground font-body">
-                  Cargando galería...
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Error State */}
-          {loadError && (
-            <div className="text-center py-12 px-8 md:px-16">
-              <p className="text-destructive mb-4 font-body">
-                Error al cargar la galería: {loadError}
-              </p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-              >
-                Reintentar
-              </button>
-            </div>
-          )}
-
           {/* Tiled Gallery - All Media */}
           {!isLoading && !loadError && (
             <div className="mb-8 md:mb-10">
@@ -262,7 +344,12 @@ export default function OurWorkClient({
       />
 
       {/* CTA Section */}
-      <CTASection />
+      <CTASection
+        title={getLocalizedTitle(locale)}
+        description={getLocalizedSubtitle(locale)}
+        primaryButtonText={getLocalizedCTA(locale)}
+        primaryButtonHref="/contact"
+      />
     </>
   );
 }

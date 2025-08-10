@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TiledGallery } from './TiledGallery';
 import { TiledGalleryProps } from '@/types/gallery';
+import { GallerySkeleton } from '@/components/ui/loading-skeleton';
 
 interface ClientOnlyTiledGalleryProps extends TiledGalleryProps {
   fallback?: React.ReactNode;
@@ -22,11 +23,7 @@ export function ClientOnlyTiledGallery({
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (process.env.NODE_ENV === 'development') {
-        console.log('Mobile detection:', {
-          screenWidth: window.innerWidth,
-          isMobile: mobile,
-          isClient: true,
-        });
+        // Mobile detection logging removed
       }
     };
 
@@ -44,26 +41,9 @@ export function ClientOnlyTiledGallery({
     };
   }, []); // Remove isClient dependency to prevent infinite loop
 
-  // Show fallback or loading state until client-side hydration is complete
+  // Show fallback or improved loading state until client-side hydration is complete
   if (!isClient) {
-    return (
-      fallback || (
-        <div className="w-full px-4 md:px-16">
-          <div className="space-y-4">
-            {props.images.slice(0, 6).map((image, index) => (
-              <div
-                key={image.id}
-                className="w-full relative overflow-hidden bg-muted animate-pulse"
-                style={{
-                  aspectRatio: `${image.width || 1} / ${image.height || 1}`,
-                  height: '300px',
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )
-    );
+    return fallback || <GallerySkeleton count={8} />;
   }
 
   // Pass mobile state to TiledGallery
