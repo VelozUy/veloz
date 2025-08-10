@@ -1,7 +1,5 @@
-import { Suspense } from 'react';
 import { getStaticContent } from '@/lib/utils';
-import ContactFormClientWrapper from '@/components/forms/ContactFormClientWrapper';
-import ContactFormSkeleton from '@/components/forms/ContactFormSkeleton';
+import ContactFormAnimatedSimple from '@/components/forms/ContactFormAnimatedSimple';
 import type { Metadata } from 'next';
 
 // Force static generation at build time
@@ -136,13 +134,11 @@ function ContactPageContent() {
     ? { contact: content.translations.contact }
     : fallbackTranslations;
 
-  return <ContactFormClientWrapper translations={translations} locale="es" />;
+  return (
+    <ContactFormAnimatedSimple translations={translations as any} locale="es" />
+  );
 }
 
 export default function ContactPage() {
-  return (
-    <Suspense fallback={<ContactFormSkeleton />}>
-      <ContactPageContent />
-    </Suspense>
-  );
+  return <ContactPageContent />;
 }
