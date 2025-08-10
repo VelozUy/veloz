@@ -3,6 +3,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { ClientOnlyTiledGallery } from '@/components/gallery/ClientOnlyTiledGallery';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
+import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { CTASection } from '@/components/shared';
 
@@ -46,6 +47,7 @@ export default function OurWorkClient({
   // Loading and error states
   const [isLoading, setIsLoading] = React.useState(false);
   const [loadError, setLoadError] = React.useState<string | null>(null);
+  const galleryContainerRef = React.useRef<HTMLElement>(null);
 
   // Fullscreen modal state
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -270,7 +272,10 @@ export default function OurWorkClient({
   return (
     <>
       {/* Single Tiled Grid with All Media */}
-      <section className="min-h-screen pb-12 md:pb-16 bg-background">
+      <section
+        ref={galleryContainerRef}
+        className="min-h-screen pb-12 md:pb-16 bg-background relative"
+      >
         <div className="w-full py-8 md:py-12">
           {/* Tiled Gallery - All Media */}
           {!isLoading && !loadError && (
@@ -323,6 +328,13 @@ export default function OurWorkClient({
             </div>
           )}
         </div>
+
+        {/* Contact Widget - Positioned within gallery container */}
+        <ContactWidget
+          language={locale as 'es' | 'en' | 'pt'}
+          isGallery={true}
+          galleryContainerRef={galleryContainerRef}
+        />
       </section>
 
       {/* Fullscreen Modal */}

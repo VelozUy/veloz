@@ -33,6 +33,7 @@ interface ContactWidgetProps {
   language?: 'es' | 'en' | 'pt';
   isGallery?: boolean;
   isFullscreen?: boolean;
+  galleryContainerRef?: React.RefObject<HTMLElement | null>;
 }
 
 type Step =
@@ -428,6 +429,7 @@ export function ContactWidget({
   language = 'es',
   isGallery = false,
   isFullscreen = false,
+  galleryContainerRef,
 }: ContactWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState<Step>('eventType');
@@ -444,7 +446,41 @@ export function ContactWidget({
   const [isScrolling, setIsScrolling] = useState(false);
   const [noDate, setNoDate] = useState(false);
   const [skipLocation, setSkipLocation] = useState(false);
+  const [galleryBounds, setGalleryBounds] = useState<{
+    left: number;
+    right: number;
+    bottom: number;
+  } | null>(null);
   const router = useRouter();
+
+  // Prevent scroll jump when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Store current scroll position
+      const scrollY = window.scrollY;
+
+      // Prevent the automatic scroll to top by preventing focus management
+      const preventScroll = (e: Event) => {
+        e.preventDefault();
+        window.scrollTo(0, scrollY);
+      };
+
+      // Add event listeners to prevent scroll
+      document.addEventListener('scroll', preventScroll, { passive: false });
+      window.addEventListener('scroll', preventScroll, { passive: false });
+
+      return () => {
+        // Remove event listeners
+        document.removeEventListener('scroll', preventScroll);
+        window.removeEventListener('scroll', preventScroll);
+
+        // Restore scroll position after modal closes
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+        }, 100);
+      };
+    }
+  }, [isOpen]);
 
   // Scroll detection logic
   useEffect(() => {
@@ -454,6 +490,11 @@ export function ContactWidget({
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const isScrollingNow = Math.abs(currentScrollY - lastScrollY) > 5;
+
+      // Check if we're beyond the gallery bounds
+      const isBeyondGallery =
+        galleryBounds &&
+        currentScrollY + window.innerHeight > galleryBounds.bottom;
 
       if (isScrollingNow) {
         setIsScrolling(true);
@@ -465,8 +506,12 @@ export function ContactWidget({
 
         scrollTimeout = setTimeout(() => {
           setIsScrolling(false);
-          setIsVisible(true);
+          // Only show if we're not beyond the gallery
+          setIsVisible(!isBeyondGallery);
         }, 5000);
+      } else if (isBeyondGallery) {
+        // Hide immediately if beyond gallery
+        setIsVisible(false);
       }
 
       lastScrollY = currentScrollY;
@@ -475,7 +520,11 @@ export function ContactWidget({
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     const initialTimeout = setTimeout(() => {
-      setIsVisible(true);
+      // Only show initially if we're not beyond the gallery
+      const isBeyondGallery =
+        galleryBounds &&
+        window.scrollY + window.innerHeight > galleryBounds.bottom;
+      setIsVisible(!isBeyondGallery);
     }, 5000);
 
     return () => {
@@ -483,7 +532,7 @@ export function ContactWidget({
       clearTimeout(scrollTimeout);
       clearTimeout(initialTimeout);
     };
-  }, []);
+  }, [galleryBounds]);
 
   // Fullscreen mode detection logic
   useEffect(() => {
@@ -504,6 +553,32 @@ export function ContactWidget({
 
   // Initialize contact message service
   const contactMessageService = new ContactMessageService();
+
+  // Calculate gallery container bounds for horizontal constraint
+  useEffect(() => {
+    if (!isGallery || !galleryContainerRef?.current) return;
+
+    const updateBounds = () => {
+      const container = galleryContainerRef.current;
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        setGalleryBounds({
+          left: rect.left,
+          right: rect.right,
+          bottom: rect.bottom,
+        });
+      }
+    };
+
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+    window.addEventListener('scroll', updateBounds);
+
+    return () => {
+      window.removeEventListener('resize', updateBounds);
+      window.removeEventListener('scroll', updateBounds);
+    };
+  }, [isGallery, galleryContainerRef]);
 
   // Memoize static content to prevent unnecessary re-computations
   const content = useMemo(() => getStaticContent(language), [language]);
@@ -824,8 +899,8 @@ export function ContactWidget({
             isFullscreen
               ? 'bottom-6 left-1/2 transform -translate-x-1/2'
               : isGallery
-                ? 'bottom-6 left-1/2 transform -translate-x-1/2'
-                : 'bottom-6 right-4'
+                ? 'bottom-20 left-1/2 transform -translate-x-1/2'
+                : 'bottom-20 right-4'
           } ${
             isVisible
               ? 'opacity-100 translate-y-0'
