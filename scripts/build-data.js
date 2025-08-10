@@ -63,7 +63,7 @@ const STATIC_TRANSLATIONS = {
       home: 'Inicio',
       about: 'Sobre Nosotros',
       gallery: 'Nuestro Trabajo',
-      contact: 'Trabajémos juntos',
+      contact: 'Trabajemos juntos',
     },
     homepage: {
       hero: {
@@ -71,7 +71,7 @@ const STATIC_TRANSLATIONS = {
         cta: {
           about: 'Sobre Nosotros',
           work: 'Nuestro Trabajo',
-          contact: 'Trabajémos juntos',
+          contact: 'Trabajemos juntos',
         },
       },
     },

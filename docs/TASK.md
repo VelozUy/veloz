@@ -4,6 +4,22 @@ _Last updated: 2025-01-27_
 
 ## ✅ **RECENTLY COMPLETED**
 
+### Our Work Image Sorting System
+
+- **Status**: ✅ Completed (2025-01-27)
+- **Objective**: Implement admin interface for manually sorting images on `/our-work` page
+- **Impact**: Full control over portfolio presentation with drag-and-drop interface
+- **Files**: `src/app/admin/our-work/page.tsx`, `src/components/admin/OurWorkSorter.tsx`, `src/components/admin/AdminLayout.tsx`
+- **Features**:
+  - Drag-and-drop interface using @dnd-kit library
+  - Desktop preview canvas (1200x800px) mimicking actual page layout
+  - Statistics dashboard with image counts and change tracking
+  - Multi-language content handling (Spanish/English/Portuguese)
+  - Firebase integration for order persistence
+  - Responsive design with accessibility features
+  - Admin navigation integration
+  - Error handling and rollback functionality
+
 ### Contact Form Select Elements Enhancement
 
 - **Status**: ✅ Completed (2025-01-27)

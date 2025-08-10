@@ -18,6 +18,7 @@ import {
   Users,
   QrCode,
   BarChart3,
+  Image as ImageIcon,
 } from 'lucide-react';
 import BuildTrigger from './BuildTrigger';
 import { useAdminBackground } from '@/hooks/useBackground';
@@ -32,6 +33,7 @@ const navigation = [
   { name: 'Panel Principal', href: '/admin', icon: LayoutDashboard },
   { name: 'Usuarios', href: '/admin/users', icon: User },
   { name: 'Proyectos', href: '/admin/projects', icon: FolderOpen },
+  { name: 'Ordenar Our Work', href: '/admin/our-work', icon: ImageIcon },
   { name: 'Plantillas de Tareas', href: '/admin/templates', icon: FileText },
   { name: 'Crew', href: '/admin/crew', icon: Users },
   { name: 'Comunicaciones', href: '/admin/communications', icon: Mail },
