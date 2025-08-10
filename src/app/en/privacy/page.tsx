@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { LegalPage } from '@/components/legal/LegalPage';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidad | Veloz',
-  description: 'Política de privacidad y protección de datos de Veloz.',
+  title: 'Privacy Policy | Veloz',
+  description: 'Privacy policy and data protection information for Veloz.',
   robots: {
     index: false,
     follow: false,
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return <LegalPage locale="es" pageType="privacy" />;
+  return <LegalPage locale="en" pageType="privacy" />;
 }

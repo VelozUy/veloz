@@ -348,6 +348,204 @@ const STATIC_TRANSLATIONS = {
         title: 'Preguntas Frecuentes',
       },
     },
+    footer: {
+      copyright: '© 2025 Veloz. Todos los derechos reservados.',
+      privacy: 'Política de Privacidad',
+      terms: 'Términos de Servicio',
+      cookies: 'Configuración de Cookies',
+    },
+    legal: {
+      privacy: {
+        title: 'Política de Privacidad',
+        description: 'Política de privacidad y protección de datos de Veloz.',
+        sections: {
+          collect: {
+            title: 'Información que Recopilamos',
+            intro:
+              'Recopilamos información que nos proporcionas directamente, como cuando:',
+            items: {
+              form: 'Completas nuestro formulario de contacto',
+              email: 'Nos envías un correo electrónico',
+              phone: 'Nos contactas por teléfono o WhatsApp',
+              services: 'Utilizas nuestros servicios',
+            },
+          },
+          use: {
+            title: 'Cómo Utilizamos tu Información',
+            intro: 'Utilizamos la información que recopilamos para:',
+            items: {
+              respond: 'Responder a tus consultas y solicitudes',
+              provide: 'Proporcionar nuestros servicios de fotografía y video',
+              communicate: 'Comunicarnos contigo sobre nuestros servicios',
+              improve: 'Mejorar nuestros servicios y experiencia del cliente',
+            },
+          },
+          protection: {
+            title: 'Protección de Datos',
+            content:
+              'Implementamos medidas de seguridad técnicas y organizativas apropiadas para proteger tu información personal contra el acceso no autorizado, la alteración, divulgación o destrucción.',
+          },
+          rights: {
+            title: 'Tus Derechos',
+            intro: 'Tienes derecho a:',
+            items: {
+              access: 'Acceder a la información personal que tenemos sobre ti',
+              correct: 'Corregir información inexacta o incompleta',
+              delete: 'Solicitar la eliminación de tu información personal',
+              object: 'Oponerte al procesamiento de tu información personal',
+            },
+          },
+          changes: {
+            title: 'Cambios a esta Política',
+            content:
+              'Podemos actualizar esta política de privacidad ocasionalmente. Te notificaremos sobre cualquier cambio significativo publicando la nueva política en nuestro sitio web.',
+          },
+        },
+      },
+      terms: {
+        title: 'Términos de Servicio',
+        description: 'Términos y condiciones de servicio de Veloz.',
+        sections: {
+          acceptance: {
+            title: 'Aceptación de los Términos',
+            content:
+              'Al utilizar nuestros servicios de fotografía y video, aceptas estar sujeto a estos términos y condiciones. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestros servicios.',
+          },
+          services: {
+            title: 'Descripción de Servicios',
+            intro:
+              'Veloz proporciona servicios profesionales de fotografía y videografía para eventos, incluyendo pero no limitado a:',
+            items: {
+              corporate: 'Fotografía de eventos corporativos',
+              videography: 'Videografía profesional',
+              weddings: 'Fotografía de bodas y eventos sociales',
+              editing: 'Edición y post-producción',
+              delivery: 'Entrega de material digital y físico',
+            },
+          },
+          payments: {
+            title: 'Reservas y Pagos',
+            content:
+              'Las reservas se confirman con un depósito del 50% del valor total del servicio. El pago restante debe realizarse antes de la entrega del material final. Los precios están sujetos a cambios sin previo aviso.',
+          },
+          cancellations: {
+            title: 'Cancelaciones y Reembolsos',
+            content:
+              'Las cancelaciones con más de 7 días de anticipación recibirán un reembolso completo del depósito. Las cancelaciones con menos de 7 días de anticipación no son reembolsables. En caso de cancelación por parte de Veloz, se realizará un reembolso completo.',
+          },
+          copyright: {
+            title: 'Derechos de Autor',
+            content:
+              'Veloz retiene los derechos de autor de todas las imágenes y videos producidos. Los clientes reciben una licencia de uso personal y comercial de las imágenes entregadas. No se permite la modificación o reventa de las imágenes sin autorización escrita.',
+          },
+          delivery: {
+            title: 'Tiempos de Entrega',
+            intro: 'Los tiempos de entrega típicos son:',
+            items: {
+              photos: 'Fotografías: 5-10 días hábiles',
+              videos: 'Videos: 10-15 días hábiles',
+              special: 'Ediciones especiales: según complejidad',
+            },
+            note: 'Los tiempos pueden variar según la complejidad del proyecto y la carga de trabajo.',
+          },
+          responsibilities: {
+            title: 'Responsabilidades del Cliente',
+            intro: 'El cliente se compromete a:',
+            items: {
+              info: 'Proporcionar información precisa sobre el evento',
+              access: 'Facilitar el acceso al lugar del evento',
+              schedule: 'Respetar los horarios acordados',
+              safety: 'Proporcionar un entorno seguro para el equipo',
+            },
+          },
+          liability: {
+            title: 'Limitación de Responsabilidad',
+            content:
+              'Veloz no será responsable por daños indirectos, incidentales o consecuentes que puedan resultar del uso de nuestros servicios. Nuestra responsabilidad total está limitada al monto pagado por los servicios.',
+          },
+        },
+      },
+      cookies: {
+        title: 'Configuración de Cookies',
+        description: 'Configuración y gestión de cookies en Veloz.',
+        sections: {
+          what: {
+            title: '¿Qué son las Cookies?',
+            content:
+              'Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas nuestro sitio web. Nos ayudan a mejorar tu experiencia de navegación y a entender cómo utilizas nuestro sitio.',
+          },
+          types: {
+            title: 'Tipos de Cookies que Utilizamos',
+            intro:
+              'Nuestro sitio web utiliza principalmente servicios de terceros que pueden establecer cookies automáticamente. No utilizamos cookies propias para funcionalidades esenciales.',
+            none: {
+              title: 'Sin Cookies Propias',
+              content:
+                'No establecemos cookies propias en tu dispositivo. Todas nuestras funcionalidades utilizan localStorage y sessionStorage del navegador, que no son cookies.',
+            },
+          },
+          thirdparty: {
+            title: 'Cookies de Terceros',
+            intro:
+              'Utilizamos servicios de terceros que pueden establecer cookies automáticamente:',
+            items: {
+              analytics:
+                'Firebase Analytics - Para analizar el tráfico del sitio web y entender cómo los visitantes utilizan nuestro sitio',
+              fonts:
+                'Google Fonts - Para cargar fuentes tipográficas que mejoran la apariencia del sitio',
+            },
+            note: 'Estos servicios establecen cookies automáticamente y no podemos controlar directamente qué cookies establecen.',
+          },
+          storage: {
+            title: 'Almacenamiento Local',
+            intro:
+              'En lugar de cookies, utilizamos el almacenamiento local del navegador:',
+            items: {
+              localStorage:
+                'localStorage - Para guardar preferencias del usuario (idioma, consentimiento GDPR)',
+              sessionStorage:
+                'sessionStorage - Para datos temporales de la sesión actual',
+            },
+            note: 'Estos datos se almacenan en tu navegador y no se envían automáticamente a nuestros servidores.',
+          },
+          management: {
+            title: 'Gestión de Cookies',
+            intro:
+              'Puedes controlar las cookies de terceros de varias maneras:',
+            browser: {
+              title: 'Configuración del Navegador',
+              content:
+                'La mayoría de los navegadores te permiten ver qué cookies tienes y eliminarlas individualmente o bloquearlas de sitios específicos o de todos los sitios.',
+            },
+            preferences: {
+              title: 'Configuración de Preferencias',
+              content:
+                'Puedes configurar tu navegador para rechazar todas las cookies o para indicar cuándo se está enviando una cookie.',
+            },
+            storage: {
+              title: 'Limpiar Almacenamiento Local',
+              content:
+                'Para eliminar nuestros datos almacenados localmente, puedes limpiar el almacenamiento del navegador en la configuración de privacidad.',
+            },
+          },
+          impact: {
+            title: 'Impacto de Deshabilitar Cookies',
+            content:
+              'Si deshabilitas las cookies de terceros, algunas funcionalidades como las fuentes tipográficas pueden no cargar correctamente. El sitio seguirá funcionando, pero la experiencia visual puede verse afectada.',
+          },
+          updates: {
+            title: 'Actualizaciones de esta Política',
+            content:
+              'Podemos actualizar esta política de cookies ocasionalmente. Te recomendamos revisar esta página periódicamente para mantenerte informado sobre cómo utilizamos las cookies.',
+          },
+        },
+      },
+      contact: {
+        title: 'Contacto',
+        intro: 'Si tienes preguntas sobre esta política, contáctanos en:',
+      },
+      lastUpdated: 'Última actualización: Enero 2025',
+    },
     validation: {
       required: 'Este campo es requerido',
       email: 'Por favor ingresa un email válido para que podamos responderte',
@@ -641,6 +839,202 @@ const STATIC_TRANSLATIONS = {
       faq: {
         title: 'Frequently Asked Questions',
       },
+    },
+    footer: {
+      copyright: '© 2025 Veloz. All rights reserved.',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+      cookies: 'Cookies Settings',
+    },
+    legal: {
+      privacy: {
+        title: 'Privacy Policy',
+        description:
+          'Privacy policy and data protection information for Veloz.',
+        sections: {
+          collect: {
+            title: 'Information We Collect',
+            intro:
+              'We collect information that you provide directly to us, such as when:',
+            items: {
+              form: 'You complete our contact form',
+              email: 'You send us an email',
+              phone: 'You contact us by phone or WhatsApp',
+              services: 'You use our services',
+            },
+          },
+          use: {
+            title: 'How We Use Your Information',
+            intro: 'We use the information we collect to:',
+            items: {
+              respond: 'Respond to your inquiries and requests',
+              provide: 'Provide our photography and video services',
+              communicate: 'Communicate with you about our services',
+              improve: 'Improve our services and customer experience',
+            },
+          },
+          protection: {
+            title: 'Data Protection',
+            content:
+              'We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.',
+          },
+          rights: {
+            title: 'Your Rights',
+            intro: 'You have the right to:',
+            items: {
+              access: 'Access the personal information we have about you',
+              correct: 'Correct inaccurate or incomplete information',
+              delete: 'Request deletion of your personal information',
+              object: 'Object to the processing of your personal information',
+            },
+          },
+          changes: {
+            title: 'Changes to This Policy',
+            content:
+              'We may update this privacy policy occasionally. We will notify you of any significant changes by posting the new policy on our website.',
+          },
+        },
+      },
+      terms: {
+        title: 'Terms of Service',
+        description: 'Terms and conditions of service for Veloz.',
+        sections: {
+          acceptance: {
+            title: 'Acceptance of Terms',
+            content:
+              'By using our photography and video services, you agree to be bound by these terms and conditions. If you do not agree to any part of these terms, you should not use our services.',
+          },
+          services: {
+            title: 'Service Description',
+            intro:
+              'Veloz provides professional photography and videography services for events, including but not limited to:',
+            items: {
+              corporate: 'Corporate event photography',
+              videography: 'Professional videography',
+              weddings: 'Wedding and social event photography',
+              editing: 'Editing and post-production',
+              delivery: 'Delivery of digital and physical materials',
+            },
+          },
+          payments: {
+            title: 'Bookings and Payments',
+            content:
+              'Bookings are confirmed with a 50% deposit of the total service value. The remaining payment must be made before delivery of the final material. Prices are subject to change without notice.',
+          },
+          cancellations: {
+            title: 'Cancellations and Refunds',
+            content:
+              'Cancellations with more than 7 days notice will receive a full refund of the deposit. Cancellations with less than 7 days notice are non-refundable. In case of cancellation by Veloz, a full refund will be provided.',
+          },
+          copyright: {
+            title: 'Copyright',
+            content:
+              'Veloz retains copyright of all images and videos produced. Clients receive a personal and commercial use license for delivered images. Modification or resale of images is not permitted without written authorization.',
+          },
+          delivery: {
+            title: 'Delivery Times',
+            intro: 'Typical delivery times are:',
+            items: {
+              photos: 'Photographs: 5-10 business days',
+              videos: 'Videos: 10-15 business days',
+              special: 'Special edits: according to complexity',
+            },
+            note: 'Times may vary depending on project complexity and workload.',
+          },
+          responsibilities: {
+            title: 'Client Responsibilities',
+            intro: 'The client commits to:',
+            items: {
+              info: 'Provide accurate information about the event',
+              access: 'Facilitate access to the event location',
+              schedule: 'Respect agreed schedules',
+              safety: 'Provide a safe environment for the team',
+            },
+          },
+          liability: {
+            title: 'Limitation of Liability',
+            content:
+              'Veloz will not be responsible for indirect, incidental, or consequential damages that may result from the use of our services. Our total liability is limited to the amount paid for the services.',
+          },
+        },
+      },
+      cookies: {
+        title: 'Cookies Settings',
+        description: 'Cookie settings and management for Veloz.',
+        sections: {
+          what: {
+            title: 'What are Cookies?',
+            content:
+              'Cookies are small text files that are stored on your device when you visit our website. They help us improve your browsing experience and understand how you use our site.',
+          },
+          types: {
+            title: 'Types of Cookies We Use',
+            intro:
+              'Our website primarily uses third-party services that may set cookies automatically. We do not use our own cookies for essential functionalities.',
+            none: {
+              title: 'No Own Cookies',
+              content:
+                'We do not set our own cookies on your device. All our functionalities use browser localStorage and sessionStorage, which are not cookies.',
+            },
+          },
+          thirdparty: {
+            title: 'Third-Party Cookies',
+            intro:
+              'We use third-party services that may set cookies automatically:',
+            items: {
+              analytics:
+                'Firebase Analytics - To analyze website traffic and understand how visitors use our site',
+              fonts:
+                'Google Fonts - To load typography fonts that improve the site appearance',
+            },
+            note: 'These services set cookies automatically and we cannot directly control which cookies they set.',
+          },
+          storage: {
+            title: 'Local Storage',
+            intro: 'Instead of cookies, we use browser local storage:',
+            items: {
+              localStorage:
+                'localStorage - To save user preferences (language, GDPR consent)',
+              sessionStorage: 'sessionStorage - For temporary session data',
+            },
+            note: 'This data is stored in your browser and is not automatically sent to our servers.',
+          },
+          management: {
+            title: 'Cookie Management',
+            intro: 'You can control third-party cookies in several ways:',
+            browser: {
+              title: 'Browser Settings',
+              content:
+                'Most browsers allow you to see what cookies you have and delete them individually or block them from specific sites or all sites.',
+            },
+            preferences: {
+              title: 'Preference Settings',
+              content:
+                'You can set your browser to reject all cookies or to indicate when a cookie is being sent.',
+            },
+            storage: {
+              title: 'Clear Local Storage',
+              content:
+                'To remove our locally stored data, you can clear browser storage in privacy settings.',
+            },
+          },
+          impact: {
+            title: 'Impact of Disabling Cookies',
+            content:
+              'If you disable third-party cookies, some functionalities like typography fonts may not load properly. The site will continue to work, but the visual experience may be affected.',
+          },
+          updates: {
+            title: 'Updates to This Policy',
+            content:
+              'We may update this cookie policy occasionally. We recommend reviewing this page periodically to stay informed about how we use cookies.',
+          },
+        },
+      },
+      contact: {
+        title: 'Contact',
+        intro: 'If you have questions about this policy, contact us at:',
+      },
+      lastUpdated: 'Last updated: January 2025',
     },
     validation: {
       required: 'This field is required',
@@ -937,6 +1331,205 @@ const STATIC_TRANSLATIONS = {
       faq: {
         title: 'Perguntas Frequentes',
       },
+    },
+    footer: {
+      copyright: '© 2025 Veloz. Todos os direitos reservados.',
+      privacy: 'Política de Privacidade',
+      terms: 'Termos de Serviço',
+      cookies: 'Configurações de Cookies',
+    },
+    legal: {
+      privacy: {
+        title: 'Política de Privacidade',
+        description: 'Política de privacidade e proteção de dados da Veloz.',
+        sections: {
+          collect: {
+            title: 'Informações que Coletamos',
+            intro:
+              'Coletamos informações que você nos fornece diretamente, como quando:',
+            items: {
+              form: 'Você preenche nosso formulário de contato',
+              email: 'Você nos envia um email',
+              phone: 'Você nos contata por telefone ou WhatsApp',
+              services: 'Você utiliza nossos serviços',
+            },
+          },
+          use: {
+            title: 'Como Utilizamos suas Informações',
+            intro: 'Utilizamos as informações que coletamos para:',
+            items: {
+              respond: 'Responder suas consultas e solicitações',
+              provide: 'Fornecer nossos serviços de fotografia e vídeo',
+              communicate: 'Comunicar com você sobre nossos serviços',
+              improve: 'Melhorar nossos serviços e experiência do cliente',
+            },
+          },
+          protection: {
+            title: 'Proteção de Dados',
+            content:
+              'Implementamos medidas de segurança técnicas e organizacionais apropriadas para proteger suas informações pessoais contra acesso não autorizado, alteração, divulgação ou destruição.',
+          },
+          rights: {
+            title: 'Seus Direitos',
+            intro: 'Você tem o direito de:',
+            items: {
+              access: 'Acessar as informações pessoais que temos sobre você',
+              correct: 'Corrigir informações imprecisas ou incompletas',
+              delete: 'Solicitar a exclusão de suas informações pessoais',
+              object: 'Opor-se ao processamento de suas informações pessoais',
+            },
+          },
+          changes: {
+            title: 'Alterações nesta Política',
+            content:
+              'Podemos atualizar esta política de privacidade ocasionalmente. Notificaremos você sobre quaisquer alterações significativas publicando a nova política em nosso site.',
+          },
+        },
+      },
+      terms: {
+        title: 'Termos de Serviço',
+        description: 'Termos e condições de serviço da Veloz.',
+        sections: {
+          acceptance: {
+            title: 'Aceitação dos Termos',
+            content:
+              'Ao utilizar nossos serviços de fotografia e vídeo, você concorda em estar sujeito a estes termos e condições. Se você não concordar com qualquer parte destes termos, não deve utilizar nossos serviços.',
+          },
+          services: {
+            title: 'Descrição dos Serviços',
+            intro:
+              'A Veloz fornece serviços profissionais de fotografia e videografia para eventos, incluindo mas não se limitando a:',
+            items: {
+              corporate: 'Fotografia de eventos corporativos',
+              videography: 'Videografia profissional',
+              weddings: 'Fotografia de casamentos e eventos sociais',
+              editing: 'Edição e pós-produção',
+              delivery: 'Entrega de material digital e físico',
+            },
+          },
+          payments: {
+            title: 'Reservas e Pagamentos',
+            content:
+              'As reservas são confirmadas com um depósito de 50% do valor total do serviço. O pagamento restante deve ser realizado antes da entrega do material final. Os preços estão sujeitos a alterações sem aviso prévio.',
+          },
+          cancellations: {
+            title: 'Cancelamentos e Reembolsos',
+            content:
+              'Cancelamentos com mais de 7 dias de antecedência receberão reembolso integral do depósito. Cancelamentos com menos de 7 dias de antecedência não são reembolsáveis. Em caso de cancelamento por parte da Veloz, será fornecido reembolso integral.',
+          },
+          copyright: {
+            title: 'Direitos Autorais',
+            content:
+              'A Veloz retém os direitos autorais de todas as imagens e vídeos produzidos. Os clientes recebem uma licença de uso pessoal e comercial das imagens entregues. Não é permitida a modificação ou revenda das imagens sem autorização escrita.',
+          },
+          delivery: {
+            title: 'Prazos de Entrega',
+            intro: 'Os prazos de entrega típicos são:',
+            items: {
+              photos: 'Fotografias: 5-10 dias úteis',
+              videos: 'Vídeos: 10-15 dias úteis',
+              special: 'Edições especiais: conforme complexidade',
+            },
+            note: 'Os prazos podem variar dependendo da complexidade do projeto e da carga de trabalho.',
+          },
+          responsibilities: {
+            title: 'Responsabilidades do Cliente',
+            intro: 'O cliente se compromete a:',
+            items: {
+              info: 'Fornecer informações precisas sobre o evento',
+              access: 'Facilitar o acesso ao local do evento',
+              schedule: 'Respeitar os horários acordados',
+              safety: 'Fornecer um ambiente seguro para a equipe',
+            },
+          },
+          liability: {
+            title: 'Limitação de Responsabilidade',
+            content:
+              'A Veloz não será responsável por danos indiretos, incidentais ou consequenciais que possam resultar do uso de nossos serviços. Nossa responsabilidade total está limitada ao valor pago pelos serviços.',
+          },
+        },
+      },
+      cookies: {
+        title: 'Configuração de Cookies',
+        description: 'Configuração e gerenciamento de cookies da Veloz.',
+        sections: {
+          what: {
+            title: 'O que são Cookies?',
+            content:
+              'Cookies são pequenos arquivos de texto que são armazenados no seu dispositivo quando você visita nosso site. Eles nos ajudam a melhorar sua experiência de navegação e a entender como você utiliza nosso site.',
+          },
+          types: {
+            title: 'Tipos de Cookies que Utilizamos',
+            intro:
+              'Nosso site utiliza principalmente serviços de terceiros que podem estabelecer cookies automaticamente. Não utilizamos cookies próprios para funcionalidades essenciais.',
+            none: {
+              title: 'Sem Cookies Próprios',
+              content:
+                'Não estabelecemos cookies próprios no seu dispositivo. Todas nossas funcionalidades utilizam localStorage e sessionStorage do navegador, que não são cookies.',
+            },
+          },
+          thirdparty: {
+            title: 'Cookies de Terceiros',
+            intro:
+              'Utilizamos serviços de terceiros que podem estabelecer cookies automaticamente:',
+            items: {
+              analytics:
+                'Firebase Analytics - Para analisar o tráfego do site e entender como os visitantes utilizam nosso site',
+              fonts:
+                'Google Fonts - Para carregar fontes tipográficas que melhoram a aparência do site',
+            },
+            note: 'Estes serviços estabelecem cookies automaticamente e não podemos controlar diretamente quais cookies estabelecem.',
+          },
+          storage: {
+            title: 'Armazenamento Local',
+            intro:
+              'Em vez de cookies, utilizamos o armazenamento local do navegador:',
+            items: {
+              localStorage:
+                'localStorage - Para salvar preferências do usuário (idioma, consentimento GDPR)',
+              sessionStorage:
+                'sessionStorage - Para dados temporários da sessão atual',
+            },
+            note: 'Estes dados são armazenados no seu navegador e não são enviados automaticamente aos nossos servidores.',
+          },
+          management: {
+            title: 'Gerenciamento de Cookies',
+            intro:
+              'Você pode controlar as cookies de terceiros de várias maneiras:',
+            browser: {
+              title: 'Configurações do Navegador',
+              content:
+                'A maioria dos navegadores permite que você veja quais cookies você tem e os exclua individualmente ou os bloqueie de sites específicos ou de todos os sites.',
+            },
+            preferences: {
+              title: 'Configurações de Preferências',
+              content:
+                'Você pode configurar seu navegador para rejeitar todas as cookies ou para indicar quando um cookie está sendo enviado.',
+            },
+            storage: {
+              title: 'Limpar Armazenamento Local',
+              content:
+                'Para remover nossos dados armazenados localmente, você pode limpar o armazenamento do navegador nas configurações de privacidade.',
+            },
+          },
+          impact: {
+            title: 'Impacto de Desabilitar Cookies',
+            content:
+              'Se você desabilitar as cookies de terceiros, algumas funcionalidades como as fontes tipográficas podem não carregar corretamente. O site continuará funcionando, mas a experiência visual pode ser afetada.',
+          },
+          updates: {
+            title: 'Atualizações desta Política',
+            content:
+              'Podemos atualizar esta política de cookies ocasionalmente. Recomendamos revisar esta página periodicamente para se manter informado sobre como utilizamos cookies.',
+          },
+        },
+      },
+      contact: {
+        title: 'Contato',
+        intro:
+          'Se você tem perguntas sobre esta política, entre em contato conosco em:',
+      },
+      lastUpdated: 'Última atualização: Janeiro 2025',
     },
     validation: {
       required: 'Este campo é obrigatório',
