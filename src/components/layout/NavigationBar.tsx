@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { FastForwardUnderline } from '@/components/ui/animated-underline';
 
 // Types for the navigation component
 export interface NavItem {
@@ -223,13 +224,17 @@ export default function NavigationBar({
                     className={cn(
                       textClass,
                       hoverClass,
-                      'transition-all duration-150 font-medium relative',
-                      'hover:scale-105 active:scale-95',
+                      'transition-colors duration-150 font-medium relative group',
                       active && activeClass
                     )}
                     onClick={() => handleLinkClick(item.href)}
                   >
                     {item.name}
+                    {/* Dynamic left-to-right underline animation */}
+                    <FastForwardUnderline
+                      isActive={active}
+                      className="absolute bottom-0 left-0 h-0.5 bg-primary-foreground transform origin-left transition-all duration-300 ease-out"
+                    />
                     {/* Click feedback indicator */}
                     <span
                       className={cn(
@@ -286,8 +291,7 @@ export default function NavigationBar({
                   href={item.href}
                   prefetch={true}
                   className={cn(
-                    'block px-4 py-3 transition-all duration-150 font-medium relative',
-                    'hover:scale-105 active:scale-95',
+                    'block px-4 py-3 transition-colors duration-150 font-medium relative group',
                     mobileItemClass,
                     active && activeClass
                   )}
@@ -297,6 +301,11 @@ export default function NavigationBar({
                   }}
                 >
                   {item.name}
+                  {/* Dynamic left-to-right underline animation */}
+                  <FastForwardUnderline
+                    isActive={active}
+                    className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary-foreground transform origin-left transition-all duration-300 ease-out"
+                  />
                   {/* Click feedback indicator */}
                   <span
                     className={cn(

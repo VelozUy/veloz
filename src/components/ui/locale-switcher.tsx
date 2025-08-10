@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { FastForwardUnderline } from './animated-underline';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
@@ -76,8 +77,7 @@ export function LocaleSwitcher({
           key={locale.code}
           onClick={() => switchLocale(locale.code)}
           className={cn(
-            'text-sm font-medium transition-all duration-150 relative',
-            'hover:scale-110 active:scale-95',
+            'text-sm font-medium transition-colors duration-150 relative group',
             currentLocale === locale.code ? 'font-semibold' : '',
             // Use textClassName if provided, otherwise use priority classes
             textClassName || priorityClasses.text
@@ -85,6 +85,11 @@ export function LocaleSwitcher({
           aria-label={`Switch to ${locale.name}`}
         >
           {locale.name}
+          {/* Dynamic left-to-right underline animation */}
+          <FastForwardUnderline
+            isActive={currentLocale === locale.code}
+            className="absolute bottom-0 left-0 h-0.5 bg-current transform origin-left transition-all duration-300 ease-out"
+          />
           {/* Click feedback indicator */}
           <span
             className={cn(

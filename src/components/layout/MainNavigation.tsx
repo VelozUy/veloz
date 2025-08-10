@@ -51,7 +51,7 @@ export default function MainNavigation({
     <Link
       href={getLocalizedPath('/', locale)}
       prefetch={true}
-      className="relative flex items-center justify-center group transition-transform duration-150 hover:scale-105 active:scale-95"
+      className="relative flex items-center justify-center group transition-colors duration-150"
       aria-label="Veloz Home"
     >
       <TextLogoAnimated size="lg" className="transform scale-[2]" />
