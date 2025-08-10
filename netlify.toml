@@ -45,4 +45,20 @@
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable" 
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Functions configuration
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
+
+# Deployment hooks for page warming
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+# Post-deployment warmup
+[context.production.environment]
+  ENABLE_PAGE_WARMUP = "true"
+
+[context.deploy-preview.environment]
+  ENABLE_PAGE_WARMUP = "false" 

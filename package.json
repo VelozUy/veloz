@@ -36,7 +36,9 @@
     "theme:validate:strict": "node scripts/theme-validation.js --strict",
     "theme:validate:report": "node scripts/theme-validation.js --report",
     "theme:preview": "echo 'Visit http://localhost:3000/debug/theme-preview to see theme preview'",
-    "setup:env": "node scripts/setup-env.js"
+    "setup:env": "node scripts/setup-env.js",
+    "warmup": "node scripts/warmup-pages.js",
+    "warmup:prod": "SITE_URL=https://your-site.netlify.app node scripts/warmup-pages.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
