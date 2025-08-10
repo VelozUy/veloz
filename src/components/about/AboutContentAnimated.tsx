@@ -188,13 +188,18 @@ export default function AboutContentAnimated({
                   className="group h-full flex bg-card border-border shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   aria-label={`${item.title}`}
                 >
-                  <CardContent className="p-8 text-center space-y-6 flex flex-col h-full">
+                  <CardContent className="p-8 text-left space-y-6 flex flex-col h-full">
                     <div className="text-4xl font-subtitle text-primary group-hover:text-primary/80 transition-colors">
                       {item.step}
                     </div>
-                    <h3 className="text-xl font-subtitle font-bold text-foreground uppercase tracking-wide relative">
-                      {item.title}
-                      <FastForwardUnderline isActive={false} color="primary" />
+                    <h3 className="text-2xl md:text-3xl font-subtitle font-bold text-foreground uppercase tracking-wide relative group">
+                      <span className="relative">
+                        {item.title}
+                        <FastForwardUnderline
+                          isActive={false}
+                          color="current"
+                        />
+                      </span>
                     </h3>
                     <p className="text-body-md text-foreground font-body">
                       {item.description}

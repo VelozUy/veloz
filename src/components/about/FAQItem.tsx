@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { FastForwardUnderline } from '@/components/ui/animated-underline';
 
 // Support both static content FAQ structure and service FAQ structure
 interface StaticFAQ {
@@ -66,8 +67,11 @@ export default function FAQItem({ faq, locale = 'es' }: FAQItemProps) {
       value={faq.id}
       className="border bg-card text-card-foreground rounded-none px-4 border-border shadow-sm last:border-b"
     >
-      <AccordionTrigger className="text-left font-subtitle font-bold hover:text-primary transition-colors py-4 text-card-foreground text-lg">
-        {getFAQText(faq, 'question', locale)}
+      <AccordionTrigger className="text-left font-subtitle font-bold hover:text-primary transition-colors py-4 text-card-foreground text-lg group relative no-underline hover:no-underline [&:not([data-state=open])]:text-decoration-none [&:not([data-state=open])]:hover:text-decoration-none">
+        <span className="relative">
+          {getFAQText(faq, 'question', locale)}
+          <FastForwardUnderline isActive={false} color="current" />
+        </span>
       </AccordionTrigger>
       <AccordionContent className="text-lg pb-4 pt-2 text-card-foreground font-body">
         <div

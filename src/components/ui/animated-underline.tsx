@@ -91,11 +91,20 @@ export function AnimatedUnderline({
 export function FastForwardUnderline({
   isActive = false,
   className,
+  color = 'primary',
+  customColor,
 }: Omit<AnimatedUnderlineProps, 'direction' | 'duration'>) {
+  const colorClasses = {
+    primary: 'bg-primary-foreground',
+    current: 'bg-current',
+    custom: customColor || 'bg-primary-foreground',
+  };
+
   return (
     <span
       className={cn(
-        'absolute bottom-0 left-0 h-0.5 bg-primary-foreground transition-all duration-200 ease-out',
+        'absolute bottom-0 left-0 h-0.5 transition-all duration-200 ease-out',
+        colorClasses[color],
         'group-hover:w-full group-hover:opacity-100',
         'w-0 opacity-0',
         isActive && 'w-full opacity-100',
