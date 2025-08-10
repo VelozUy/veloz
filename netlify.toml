@@ -14,6 +14,10 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Install function dependencies
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
+
 [dev]
   framework = "nextjs"
   command = "npm run dev"

@@ -195,6 +195,8 @@ const IGNORE_FILES = [
   'tailwind.config.ts',
   'src/lib/static-content.generated.ts',
   'functions/index.js',
+  'functions/send-contact-email.js',
+  'functions/test-email.js',
   'src/app/api/theme/route.ts',
   'src/lib/theme-utils.ts',
   'src/components/gallery/SideNavigation.css',
