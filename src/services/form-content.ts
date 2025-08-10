@@ -147,14 +147,14 @@ export class FormContentService extends BaseFirebaseService<FormContent> {
           },
           phone: {
             label: {
-              es: 'Número de celular',
-              en: 'Mobile number',
-              pt: 'Número de celular',
+              es: 'Número',
+              en: 'Number',
+              pt: 'Número',
             },
             placeholder: {
-              es: 'Tu número de celular',
-              en: 'Your mobile number',
-              pt: 'Seu número de celular',
+              es: 'Tu número',
+              en: 'Your number',
+              pt: 'Seu número',
             },
           },
           eventType: {

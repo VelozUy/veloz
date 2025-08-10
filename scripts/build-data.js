@@ -95,7 +95,7 @@ const STATIC_TRANSLATIONS = {
           optional: '(opcional)',
         },
         phone: {
-          label: 'Número de celu',
+          label: 'Número',
           placeholder: 'Teléfono',
           optional: '(opcional)',
         },
@@ -685,7 +685,7 @@ const STATIC_TRANSLATIONS = {
           optional: '(opcional)',
         },
         phone: {
-          label: 'Número de celular',
+          label: 'Número',
           placeholder: 'Celular',
           optional: '(opcional)',
         },

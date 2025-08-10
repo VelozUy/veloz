@@ -901,15 +901,15 @@ export default function ContactForm({
             </div>
 
             {/* Event Date Field */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label
-                  htmlFor="eventDate"
-                  className="text-muted-foreground text-sm"
-                >
-                  {t.form.eventDate.label}
-                </Label>
-                <div className="flex items-center gap-3">
+            <div className="space-y-2">
+              <Label
+                htmlFor="eventDate"
+                className="text-muted-foreground text-sm"
+              >
+                {t.form.eventDate.label}
+              </Label>
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1">
                   <Input
                     ref={dateInputRef}
                     id="eventDate"
@@ -925,40 +925,59 @@ export default function ContactForm({
                     onBlur={() => setFocusedField(null)}
                     min={new Date().toISOString().split('T')[0]}
                     className={cn(
-                      'text-body-md',
+                      'text-body-md pr-10',
                       'focus:border-2 focus:border-primary focus:ring-0',
                       // Show placeholder color when no date selected
                       !formData.eventDate && 'text-muted-foreground'
                     )}
                   />
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      checked={noDateSelected}
-                      onChange={e => {
-                        const checked = e.currentTarget.checked;
-                        setNoDateSelected(checked);
-                        if (checked) {
-                          handleInputChange('eventDate', '');
-                        }
-                      }}
-                    />
-                    <Label
-                      className="text-sm text-muted-foreground whitespace-nowrap cursor-pointer"
-                      onClick={() => {
-                        const newValue = !noDateSelected;
-                        setNoDateSelected(newValue);
-                        if (newValue) {
-                          handleInputChange('eventDate', '');
-                        }
-                      }}
-                    >
-                      {locale === 'es'
-                        ? 'No tengo fecha'
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      handleInputChange('eventDate', '');
+                      setNoDateSelected(false);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 px-2 bg-background border border-input hover:bg-accent hover:text-accent-foreground"
+                    title={
+                      locale === 'es'
+                        ? 'Limpiar fecha'
                         : locale === 'pt'
-                          ? 'Não tenho data'
-                          : "I don't have a date"}
-                    </Label>
-                  </div>
+                          ? 'Limpar data'
+                          : 'Clear date'
+                    }
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={noDateSelected}
+                    onChange={e => {
+                      const checked = e.currentTarget.checked;
+                      setNoDateSelected(checked);
+                      if (checked) {
+                        handleInputChange('eventDate', '');
+                      }
+                    }}
+                  />
+                  <Label
+                    className="text-sm text-muted-foreground whitespace-nowrap cursor-pointer"
+                    onClick={() => {
+                      const newValue = !noDateSelected;
+                      setNoDateSelected(newValue);
+                      if (newValue) {
+                        handleInputChange('eventDate', '');
+                      }
+                    }}
+                  >
+                    {locale === 'es'
+                      ? 'No tengo fecha'
+                      : locale === 'pt'
+                        ? 'Não tenho data'
+                        : "I don't have a date"}
+                  </Label>
                 </div>
               </div>
             </div>

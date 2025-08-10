@@ -60,8 +60,8 @@ const mockTranslations = {
         optional: '(opcional)',
       },
       phone: {
-        label: 'Número de celu',
-        placeholder: 'Tu número de celular',
+        label: 'Número',
+        placeholder: 'Tu número',
         optional: '(opcional)',
       },
       eventType: {

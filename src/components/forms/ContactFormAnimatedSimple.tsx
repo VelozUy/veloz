@@ -22,6 +22,7 @@ import {
   Check,
   ChevronDown,
   AlertCircle,
+  X,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
@@ -648,47 +649,73 @@ export default function ContactFormAnimatedSimple({
               <div className="space-y-2">
                 <Label
                   htmlFor={
-                    formData.contactMethod === 'whatsapp' ? 'phone' : 'email'
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
                   }
                   className="text-muted-foreground text-sm"
                 >
-                  {formatRequired(
-                    formData.contactMethod === 'whatsapp'
-                      ? t.form.phone.label
-                      : t.form.email.label
-                  )}
+                  {formData.contactMethod === 'whatsapp' ||
+                  formData.contactMethod === 'call'
+                    ? t.form.phone.label
+                    : t.form.email.label}
                 </Label>
                 <Input
-                  id={formData.contactMethod === 'whatsapp' ? 'phone' : 'email'}
-                  type={formData.contactMethod === 'whatsapp' ? 'tel' : 'email'}
+                  id={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
+                  }
+                  type={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'tel'
+                      : 'email'
+                  }
                   placeholder={
-                    formData.contactMethod === 'whatsapp'
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
                       ? t.form.phone.placeholder
                       : t.form.email.placeholder
                   }
                   value={
-                    formData.contactMethod === 'whatsapp'
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
                       ? formData.phone
                       : formData.email
                   }
                   onChange={e =>
                     handleInputChange(
-                      formData.contactMethod === 'whatsapp' ? 'phone' : 'email',
+                      formData.contactMethod === 'whatsapp' ||
+                        formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email',
                       e.target.value
                     )
                   }
                   onFocus={() =>
                     setFocusedField(
-                      formData.contactMethod === 'whatsapp' ? 'phone' : 'email'
+                      formData.contactMethod === 'whatsapp' ||
+                        formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email'
                     )
                   }
                   onBlur={() => setFocusedField(null)}
                   data-field={
-                    formData.contactMethod === 'whatsapp' ? 'phone' : 'email'
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
                   }
                   aria-invalid={
                     !!errors[
-                      formData.contactMethod === 'whatsapp' ? 'phone' : 'email'
+                      formData.contactMethod === 'whatsapp' ||
+                      formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email'
                     ]
                   }
                   className={cn(
@@ -710,7 +737,7 @@ export default function ContactFormAnimatedSimple({
                   htmlFor="eventType"
                   className="text-muted-foreground text-sm"
                 >
-                  {formatRequired(t.form.eventType.label)}
+                  {t.form.eventType.label}
                 </Label>
                 <Popover
                   open={focusedField === 'eventType'}
@@ -779,7 +806,7 @@ export default function ContactFormAnimatedSimple({
                   htmlFor="location"
                   className="text-muted-foreground text-sm"
                 >
-                  {formatRequired(t.form.location.label)}
+                  {t.form.location.label}
                 </Label>
                 <Input
                   id="location"
@@ -810,7 +837,7 @@ export default function ContactFormAnimatedSimple({
                   htmlFor="attendees"
                   className="text-muted-foreground text-sm"
                 >
-                  {formatRequired(t.form.attendees.label)}
+                  {t.form.attendees.label}
                 </Label>
                 <Input
                   id="attendees"
@@ -836,25 +863,41 @@ export default function ContactFormAnimatedSimple({
                   className="text-muted-foreground text-sm"
                 >
                   {t.form.eventDate.label}
-                  <span className="text-muted-foreground ml-1">
-                    {t.form.eventDate.optional}
-                  </span>
                 </Label>
-                <Input
-                  id="eventDate"
-                  type="date"
-                  value={formData.eventDate}
-                  onChange={e => handleInputChange('eventDate', e.target.value)}
-                  onFocus={() => setFocusedField('eventDate')}
-                  onBlur={() => setFocusedField(null)}
-                  className={cn(
-                    'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0'
+                <div className="relative">
+                  <Input
+                    id="eventDate"
+                    type="date"
+                    value={formData.eventDate}
+                    onChange={e =>
+                      handleInputChange('eventDate', e.target.value)
+                    }
+                    onFocus={() => setFocusedField('eventDate')}
+                    onBlur={() => setFocusedField(null)}
+                    className={cn(
+                      'text-body-md pr-10',
+                      'focus:border-2 focus:border-primary focus:ring-0'
+                    )}
+                  />
+                  {formData.eventDate && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleInputChange('eventDate', '')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-foreground"
+                      title={
+                        locale === 'es'
+                          ? 'Limpiar fecha'
+                          : locale === 'pt'
+                            ? 'Limpar data'
+                            : 'Clear date'
+                      }
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                   )}
-                />
-                <p className="text-xs text-muted-foreground">
-                  {t.form.eventDate.help}
-                </p>
+                </div>
               </div>
             </motion.div>
 
@@ -867,7 +910,7 @@ export default function ContactFormAnimatedSimple({
                 htmlFor="services"
                 className="text-muted-foreground text-sm"
               >
-                {formatRequired(t.form.services.label)}
+                {t.form.services.label}
               </Label>
               <MultiSelect
                 options={Object.entries(t.form.services.options).map(
@@ -900,7 +943,7 @@ export default function ContactFormAnimatedSimple({
                 htmlFor="message"
                 className="text-muted-foreground text-sm"
               >
-                {formatRequired(t.form.message.label)}
+                {t.form.message.label}
               </Label>
               <Textarea
                 id="message"
