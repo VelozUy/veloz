@@ -14,6 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Send,
@@ -25,6 +30,7 @@ import {
   AlertCircle,
   Check,
   X,
+  ChevronDown,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
@@ -182,6 +188,35 @@ export default function ContactForm({
 
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Prevent scroll when select dropdowns open
+  useEffect(() => {
+    const isSelectOpen =
+      focusedField === 'contactMethod' || focusedField === 'eventType';
+
+    if (isSelectOpen) {
+      // Store current scroll position
+      const scrollY = window.scrollY;
+
+      // Prevent scroll by temporarily disabling scroll events
+      const preventScroll = (e: Event) => {
+        e.preventDefault();
+        window.scrollTo(0, scrollY);
+      };
+
+      // Add event listeners to prevent scroll
+      document.addEventListener('scroll', preventScroll, { passive: false });
+      document.addEventListener('wheel', preventScroll, { passive: false });
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+
+      return () => {
+        // Remove event listeners
+        document.removeEventListener('scroll', preventScroll);
+        document.removeEventListener('wheel', preventScroll);
+        document.removeEventListener('touchmove', preventScroll);
+      };
+    }
+  }, [focusedField]);
 
   // Track form view
   useEffect(() => {
@@ -509,7 +544,10 @@ export default function ContactForm({
                   onBlur={() => setFocusedField(null)}
                   data-field="name"
                   aria-invalid={!!errors.name}
-                  className={cn('text-body-md')}
+                  className={cn(
+                    'text-body-md',
+                    'focus:border-2 focus:border-primary focus:ring-0'
+                  )}
                 />
                 {/* No error text; border indicates error */}
               </div>
@@ -530,7 +568,10 @@ export default function ContactForm({
                   onChange={e => handleInputChange('company', e.target.value)}
                   onFocus={() => setFocusedField('company')}
                   onBlur={() => setFocusedField(null)}
-                  className="text-body-md"
+                  className={cn(
+                    'text-body-md',
+                    'focus:border-2 focus:border-primary focus:ring-0'
+                  )}
                 />
               </div>
             </div>
@@ -545,34 +586,82 @@ export default function ContactForm({
                 >
                   {t.form.contactMethod.label}
                 </Label>
-                <Select
-                  value={formData.contactMethod}
-                  onValueChange={value =>
-                    handleInputChange('contactMethod', value)
-                  }
+                <Popover
+                  open={focusedField === 'contactMethod'}
                   onOpenChange={open =>
                     setFocusedField(open ? 'contactMethod' : null)
                   }
                 >
-                  <SelectTrigger
-                    data-field="contactMethod"
-                    aria-invalid={!!errors.contactMethod}
-                    className={cn('text-body-md')}
+                  <PopoverTrigger asChild>
+                    <div
+                      className={cn(
+                        'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                        'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                        'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                        'aria-invalid:!border-destructive',
+                        'touch-manipulation cursor-pointer',
+                        'bg-card text-card-foreground border-border',
+                        'text-body-md',
+                        !formData.contactMethod && 'text-muted-foreground',
+                        focusedField === 'contactMethod' &&
+                          '!border-primary !border-2'
+                      )}
+                      role="button"
+                      tabIndex={0}
+                      data-field="contactMethod"
+                      aria-invalid={!!errors.contactMethod}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setFocusedField(
+                            focusedField === 'contactMethod'
+                              ? null
+                              : 'contactMethod'
+                          );
+                        }
+                      }}
+                    >
+                      <span>
+                        {formData.contactMethod
+                          ? t.form.contactMethod.options[
+                              formData.contactMethod as keyof typeof t.form.contactMethod.options
+                            ]
+                          : t.form.contactMethod.placeholder}
+                      </span>
+                      <ChevronDown className="size-4 opacity-50" />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                    align="start"
+                    sideOffset={0}
                   >
-                    <SelectValue
-                      placeholder={t.form.contactMethod.placeholder}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(t.form.contactMethod.options).map(
-                      ([key, label]) => (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
+                    <div className="max-h-80 overflow-y-auto py-2">
+                      {Object.entries(t.form.contactMethod.options).map(
+                        ([key, label], index, array) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => {
+                              handleInputChange('contactMethod', key);
+                              setFocusedField(null);
+                            }}
+                            className={cn(
+                              'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                              index === 0 && 'pt-1.5',
+                              index === array.length - 1 && 'pb-1.5'
+                            )}
+                          >
+                            <span>{label}</span>
+                            {formData.contactMethod === key && (
+                              <Check className="w-4 h-4" />
+                            )}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               {/* Phone/Email Field (conditional based on contact method) */}
@@ -594,7 +683,10 @@ export default function ContactForm({
                     onBlur={() => setFocusedField(null)}
                     data-field="email"
                     aria-invalid={!!errors.email}
-                    className={cn('text-body-md')}
+                    className={cn(
+                      'text-body-md',
+                      'focus:border-2 focus:border-primary focus:ring-0'
+                    )}
                   />
                   {/* No error text; border indicates error */}
                 </div>
@@ -618,6 +710,7 @@ export default function ContactForm({
                     aria-invalid={!!errors.phone}
                     className={cn(
                       'text-body-md',
+                      'focus:border-2 focus:border-primary focus:ring-0',
                       errors.phone &&
                         'border-destructive focus:border-destructive'
                     )}
@@ -637,38 +730,82 @@ export default function ContactForm({
                 >
                   {t.form.eventType.label}
                 </Label>
-                <Select
-                  value={formData.eventType}
-                  onValueChange={value => handleInputChange('eventType', value)}
+                <Popover
+                  open={focusedField === 'eventType'}
                   onOpenChange={open =>
                     setFocusedField(open ? 'eventType' : null)
                   }
                 >
-                  <SelectTrigger
-                    data-field="eventType"
-                    aria-invalid={!!errors.eventType}
-                    className={cn(
-                      'text-body-md',
-                      // Show placeholder color when no value selected
-                      !formData.eventType && 'text-muted-foreground',
-                      errors.eventType &&
-                        'border-destructive focus:border-destructive'
-                    )}
+                  <PopoverTrigger asChild>
+                    <div
+                      className={cn(
+                        'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                        'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                        'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                        'aria-invalid:!border-destructive',
+                        'touch-manipulation cursor-pointer',
+                        'bg-card text-card-foreground border-border',
+                        'text-body-md',
+                        !formData.eventType && 'text-muted-foreground',
+                        errors.eventType &&
+                          'border-destructive focus:border-destructive',
+                        focusedField === 'eventType' &&
+                          '!border-primary !border-2'
+                      )}
+                      role="button"
+                      tabIndex={0}
+                      data-field="eventType"
+                      aria-invalid={!!errors.eventType}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setFocusedField(
+                            focusedField === 'eventType' ? null : 'eventType'
+                          );
+                        }
+                      }}
+                    >
+                      <span>
+                        {formData.eventType
+                          ? t.form.eventType.options[
+                              formData.eventType as keyof typeof t.form.eventType.options
+                            ]
+                          : formatRequired(t.form.eventType.placeholder)}
+                      </span>
+                      <ChevronDown className="size-4 opacity-50" />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                    align="start"
+                    sideOffset={0}
                   >
-                    <SelectValue
-                      placeholder={formatRequired(t.form.eventType.placeholder)}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(t.form.eventType.options).map(
-                      ([key, label]) => (
-                        <SelectItem key={key} value={key}>
-                          {label}
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
+                    <div className="max-h-80 overflow-y-auto py-2">
+                      {Object.entries(t.form.eventType.options).map(
+                        ([key, label], index, array) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => {
+                              handleInputChange('eventType', key);
+                              setFocusedField(null);
+                            }}
+                            className={cn(
+                              'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                              index === 0 && 'pt-1.5',
+                              index === array.length - 1 && 'pb-1.5'
+                            )}
+                          >
+                            <span>{label}</span>
+                            {formData.eventType === key && (
+                              <Check className="w-4 h-4" />
+                            )}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 {/* No error text; border indicates error */}
               </div>
 
@@ -726,6 +863,7 @@ export default function ContactForm({
                   aria-invalid={!!errors.location}
                   className={cn(
                     'text-body-md',
+                    'focus:border-2 focus:border-primary focus:ring-0',
                     errors.location &&
                       'border-destructive focus:border-destructive'
                   )}
@@ -753,6 +891,7 @@ export default function ContactForm({
                   aria-invalid={!!errors.attendees}
                   className={cn(
                     'text-body-md',
+                    'focus:border-2 focus:border-primary focus:ring-0',
                     errors.attendees &&
                       'border-destructive focus:border-destructive'
                   )}
@@ -787,6 +926,7 @@ export default function ContactForm({
                     min={new Date().toISOString().split('T')[0]}
                     className={cn(
                       'text-body-md',
+                      'focus:border-2 focus:border-primary focus:ring-0',
                       // Show placeholder color when no date selected
                       !formData.eventDate && 'text-muted-foreground'
                     )}
@@ -839,7 +979,10 @@ export default function ContactForm({
                 onChange={e => handleInputChange('message', e.target.value)}
                 onFocus={() => setFocusedField('message')}
                 onBlur={() => setFocusedField(null)}
-                className="text-body-md resize-none"
+                className={cn(
+                  'text-body-md resize-none',
+                  'focus:border-2 focus:border-primary focus:ring-0'
+                )}
               />
             </div>
 

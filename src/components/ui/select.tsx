@@ -28,6 +28,7 @@ const SelectTrigger = React.forwardRef<
         'touch-manipulation cursor-pointer',
         // Use card background to match form card
         'bg-card text-card-foreground border-border',
+        'scroll-margin-0 scroll-padding-0',
         className
       )}
       {...props}
@@ -89,9 +90,14 @@ const SelectContent = React.forwardRef<
           'bg-card text-card-foreground border-border',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+          'scroll-margin-0 scroll-padding-0',
           className
         )}
         position={position}
+        side="bottom"
+        align="start"
+        sideOffset={4}
+        avoidCollisions={true}
         {...props}
       >
         <SelectScrollUpButton />

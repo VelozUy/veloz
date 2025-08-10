@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import FAQSection from './FAQSection';
 import type { LocalizedContent } from '@/lib/static-content.generated';
-import { BlurFade } from '@/components/ui/blur-fade';
+
 import { motion } from 'motion/react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
@@ -39,8 +39,8 @@ const staggerContainer = {
 };
 
 const fadeInUp = {
-  hidden: { y: 12, opacity: 0, filter: 'blur(6px)' },
-  visible: { y: 0, opacity: 1, filter: 'blur(0px)' },
+  hidden: { y: 12, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
 };
 
 export default function AboutContentAnimated({
@@ -88,21 +88,25 @@ export default function AboutContentAnimated({
         className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 bg-muted/30 scroll-mt-24"
       >
         <div className="max-w-border-64 mx-auto space-y-10">
-          <BlurFade>
-            <div className="text-left">
-              <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
-                {content.content.about.philosophy.title || 'Nuestra Filosofía'}
-              </h2>
-              <motion.div
-                className="h-1 bg-primary rounded-full"
-                style={{ width: prefersReduced ? '8rem' : undefined }}
-                initial={prefersReduced ? undefined : { width: 0 }}
-                whileInView={prefersReduced ? undefined : { width: '8rem' }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              />
-            </div>
-          </BlurFade>
+          <motion.div
+            initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
+            whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="text-left"
+          >
+            <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
+              {content.content.about.philosophy.title || 'Nuestra Filosofía'}
+            </h2>
+            <motion.div
+              className="h-1 bg-primary rounded-full"
+              style={{ width: prefersReduced ? '8rem' : undefined }}
+              initial={prefersReduced ? undefined : { width: 0 }}
+              whileInView={prefersReduced ? undefined : { width: '8rem' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            />
+          </motion.div>
 
           <motion.div
             variants={prefersReduced ? undefined : staggerContainer}
@@ -142,22 +146,25 @@ export default function AboutContentAnimated({
         className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 scroll-mt-24"
       >
         <div className="max-w-border-64 mx-auto space-y-10">
-          <BlurFade>
-            <div className="text-left">
-              <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
-                {content.content.about.methodology.title ||
-                  'Nuestra Metodología'}
-              </h2>
-              <motion.div
-                className="h-1 bg-primary rounded-full"
-                style={{ width: prefersReduced ? '8rem' : undefined }}
-                initial={prefersReduced ? undefined : { width: 0 }}
-                whileInView={prefersReduced ? undefined : { width: '8rem' }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              />
-            </div>
-          </BlurFade>
+          <motion.div
+            initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
+            whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="text-left"
+          >
+            <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
+              {content.content.about.methodology.title || 'Nuestra Metodología'}
+            </h2>
+            <motion.div
+              className="h-1 bg-primary rounded-full"
+              style={{ width: prefersReduced ? '8rem' : undefined }}
+              initial={prefersReduced ? undefined : { width: 0 }}
+              whileInView={prefersReduced ? undefined : { width: '8rem' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            />
+          </motion.div>
 
           <motion.div
             variants={prefersReduced ? undefined : staggerContainer}
@@ -199,13 +206,11 @@ export default function AboutContentAnimated({
       {/* FAQ */}
       {content.content.faqs.length > 0 && (
         <section id="faq" className="scroll-mt-24">
-          <BlurFade>
-            <FAQSection
-              faqs={content.content.faqs}
-              title={content.content.about.faq.title || 'Preguntas Frecuentes'}
-              locale={content.locale}
-            />
-          </BlurFade>
+          <FAQSection
+            faqs={content.content.faqs}
+            title={content.content.about.faq.title || 'Preguntas Frecuentes'}
+            locale={content.locale}
+          />
         </section>
       )}
     </div>

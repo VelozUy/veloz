@@ -969,3 +969,85 @@ html {
     line-height: 1.4;
   }
 }
+
+/* Prevent automatic scrolling for select dropdowns */
+[data-radix-select-content] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+[data-radix-select-trigger] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Prevent scroll into view for Radix UI components */
+[data-radix-popper-content-wrapper] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Prevent focus scrolling */
+*:focus-visible {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Prevent scroll for all Radix UI components */
+[data-radix-select-root] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Disable smooth scrolling globally */
+html {
+  scroll-behavior: auto !important;
+}
+
+body {
+  scroll-behavior: auto !important;
+}
+
+/* Aggressive scroll prevention for select dropdowns */
+[data-radix-select-root] * {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Prevent any scroll behavior on select components */
+[data-radix-select-root],
+[data-radix-select-trigger],
+[data-radix-select-content],
+[data-radix-popper-content-wrapper] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+  scroll-behavior: auto !important;
+}
+
+/* Prevent scroll into view for focused elements */
+*:focus {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Prevent scroll into view for all interactive elements */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[role='button']:focus,
+[role='combobox']:focus {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+/* Specific prevention for Radix UI Select components */
+[data-radix-select-trigger][data-state='open'] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}
+
+[data-radix-select-trigger][data-state='closed'] {
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
+}

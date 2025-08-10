@@ -71,6 +71,7 @@ export function MultiSelect({
             'touch-manipulation cursor-pointer',
             // Use card background to match form card
             'bg-card text-card-foreground border-border',
+            isOpen && '!border-primary !border-2',
             className
           )}
           role="button"
@@ -120,25 +121,28 @@ export function MultiSelect({
       </PopoverTrigger>
       <PopoverContent
         className={cn(
-          'w-full p-0',
+          'w-[var(--radix-popover-trigger-width)] p-0',
           'bg-card text-card-foreground border-border'
         )}
         align="start"
+        sideOffset={0}
       >
-        <div className="max-h-60 overflow-y-auto">
+        <div className="max-h-80 overflow-y-auto py-2">
           {unselectedOptions.length === 0 ? (
             <div className="p-4 text-center text-muted-foreground text-sm">
               Todas las opciones seleccionadas
             </div>
           ) : (
-            unselectedOptions.map(option => (
+            unselectedOptions.map((option, index, array) => (
               <button
                 key={option.value}
                 type="button"
                 onClick={() => handleOptionToggle(option.value)}
                 className={cn(
                   'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors',
-                  'focus:outline-none focus:bg-accent focus:text-accent-foreground'
+                  'focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                  index === 0 && 'pt-1.5',
+                  index === array.length - 1 && 'pb-1.5'
                 )}
               >
                 <span>{option.label}</span>
