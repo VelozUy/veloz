@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { getBackgroundClasses } from '@/lib/background-utils';
 import { cn } from '@/lib/utils';
 import { getStaticContent, t } from '@/lib/utils';
+import { BUSINESS_CONFIG } from '@/lib/business-config';
 
 interface LegalPageProps {
   locale: string;
@@ -749,8 +750,8 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
               </p>
               <div className="bg-muted p-4 rounded-lg">
                 <p className="font-medium">Veloz</p>
-                <p>Email: contacto@veloz.com.uy</p>
-                <p>WhatsApp: +598 99 977 390</p>
+                <p>Email: {BUSINESS_CONFIG.email}</p>
+                <p>WhatsApp: {BUSINESS_CONFIG.phone}</p>
               </div>
             </section>
 

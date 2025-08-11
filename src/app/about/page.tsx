@@ -1,116 +1,32 @@
 import { Metadata } from 'next';
 import { getStaticContent, t } from '@/lib/utils';
 import AboutContent from '@/components/about/AboutContent';
-import { aboutContentService } from '@/services/about-content';
+import {
+  StructuredData,
+  localBusinessData,
+} from '@/components/seo/StructuredData';
+import { BUSINESS_CONFIG, businessHelpers } from '@/lib/business-config';
 
-// FAQ interface matching the static content structure
-interface FAQ {
-  id: string;
-  question: string;
-  answer: string;
-  order: number;
-}
-
-// Helper function to get FAQ text (static content FAQs are already in the correct language)
-function getFAQText(faq: FAQ, field: 'question' | 'answer'): string {
-  return faq[field] || '';
-}
-
-// Generate structured data for FAQs
-function generateFAQStructuredData(faqs: FAQ[]) {
-  if (faqs.length === 0) {
-    return null;
-  }
-
-  const faqStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
-      '@type': 'Question',
-      name: getFAQText(faq, 'question'),
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: getFAQText(faq, 'answer'),
-      },
-    })),
-  };
-
-  return faqStructuredData;
-}
-
-// Generate breadcrumb structured data (server-side)
-function generateBreadcrumbStructuredData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Inicio',
-        item: 'https://veloz.com.uy',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Sobre Nosotros',
-        item: 'https://veloz.com.uy/about',
-      },
-    ],
-  };
-}
-
-// Generate organization structured data
-function generateOrganizationStructuredData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Veloz',
-    description: 'Fotografía y video profesional para eventos en Uruguay',
-    url: 'https://veloz.com.uy',
-    logo: 'https://veloz.com.uy/logo.png',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'UY',
-      addressLocality: 'Montevideo',
-    },
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'customer service',
-      availableLanguage: ['Spanish', 'English', 'Portuguese'],
-    },
-    sameAs: ['https://instagram.com/veloz_uy', 'https://facebook.com/veloz.uy'],
-  };
-}
-
-// Generate local business structured data
-function generateLocalBusinessStructuredData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: 'Veloz',
-    description: 'Servicios profesionales de fotografía y video para eventos',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'UY',
-      addressLocality: 'Montevideo',
-    },
-    areaServed: 'Uruguay',
-    serviceType: [
-      'Fotografía de eventos',
-      'Video profesional',
-      'Cobertura de bodas',
-    ],
-    priceRange: '$$',
-  };
-}
+// Force static generation at build time
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: 'Sobre Nosotros | Veloz - Fotografía y Video Profesional en Uruguay',
   description:
     'Conoce nuestra filosofía, metodología y valores. Especialistas en fotografía y video para eventos en Uruguay. Preguntas frecuentes sobre nuestros servicios profesionales.',
-  keywords:
-    'fotografía eventos Uruguay, video bodas Montevideo, equipo profesional fotografía, servicios eventos Uruguay, preguntas frecuentes fotografía, fotógrafo profesional Uruguay, video profesional eventos, cobertura eventos Montevideo',
+  keywords: [
+    'fotografía eventos Uruguay',
+    'video bodas Montevideo',
+    'equipo profesional fotografía',
+    'servicios eventos Uruguay',
+    'preguntas frecuentes fotografía',
+    'fotógrafo profesional Uruguay',
+    'video profesional eventos',
+    'cobertura eventos Montevideo',
+    'sobre nosotros veloz',
+    'fotografía profesional Uruguay',
+  ],
   authors: [{ name: 'Veloz Team' }],
   creator: 'Veloz',
   publisher: 'Veloz',
@@ -163,59 +79,69 @@ export const metadata: Metadata = {
   },
 };
 
-// Enable static generation at build time with revalidation
-export const dynamic = 'force-static';
-export const revalidate = 3600; // Revalidate every hour in production
-
 export default async function AboutPage() {
   // Get static content for Spanish (default locale)
   const content = getStaticContent('es');
 
   // Get FAQs from static content for structured data
-  const faqs: FAQ[] = content.content.faqs || [];
-  const faqStructuredData = generateFAQStructuredData(faqs);
-  const breadcrumbStructuredData = generateBreadcrumbStructuredData();
-  const organizationStructuredData = generateOrganizationStructuredData();
-  const localBusinessStructuredData = generateLocalBusinessStructuredData();
+  const faqs = content.content.faqs || [];
+
+  // Generate FAQ structured data
+  const faqStructuredData =
+    faqs.length > 0
+      ? {
+          '@context': 'https://schema.org' as const,
+          '@type': 'FAQPage' as const,
+          mainEntity: faqs.map(faq => ({
+            '@type': 'Question' as const,
+            name: faq.question || '',
+            acceptedAnswer: {
+              '@type': 'Answer' as const,
+              text: faq.answer || '',
+            },
+          })),
+        }
+      : null;
+
+  // About page structured data
+  const aboutPageStructuredData = {
+    '@context': 'https://schema.org' as const,
+    '@type': 'AboutPage' as const,
+    name: 'Sobre Nosotros - Veloz Fotografía y Videografía',
+    description:
+      'Conoce nuestra filosofía, metodología y valores. Especialistas en fotografía y video para eventos en Uruguay.',
+    url: `${BUSINESS_CONFIG.website}/about`,
+    mainEntity: businessHelpers.getOrganizationData({
+      description:
+        'Servicios profesionales de fotografía y videografía en Montevideo, Uruguay',
+    }),
+    breadcrumb: {
+      '@type': 'BreadcrumbList' as const,
+      itemListElement: [
+        {
+          '@type': 'ListItem' as const,
+          position: 1,
+          name: 'Inicio',
+          item: BUSINESS_CONFIG.website,
+        },
+        {
+          '@type': 'ListItem' as const,
+          position: 2,
+          name: 'Sobre Nosotros',
+          item: `${BUSINESS_CONFIG.website}/about`,
+        },
+      ],
+    },
+  };
 
   return (
     <>
-      {/* JSON-LD Structured Data for SEO */}
+      {/* Structured Data */}
       {faqStructuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqStructuredData),
-          }}
-        />
+        <StructuredData type="faq" data={faqStructuredData} />
       )}
-
-      {breadcrumbStructuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbStructuredData),
-          }}
-        />
-      )}
-
-      {organizationStructuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationStructuredData),
-          }}
-        />
-      )}
-
-      {localBusinessStructuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessStructuredData),
-          }}
-        />
-      )}
+      <StructuredData type="aboutPage" data={aboutPageStructuredData} />
+      <StructuredData type="localBusiness" data={localBusinessData} />
 
       <AboutContent content={content} />
     </>

@@ -22,6 +22,8 @@ interface Project {
     featured?: boolean;
     aspectRatio?: '1:1' | '16:9' | '9:16' | '4:5';
     projectId?: string;
+    description?: { [key: string]: string };
+    tags?: string[];
   }>;
 }
 
@@ -66,6 +68,33 @@ export default function OurWorkClient({
         const width = m.width || 1200;
         const height = m.height || 800;
 
+        // Enhanced alt text generation for better SEO
+        const generateAltText = () => {
+          // Use description if available (prioritize current locale)
+          if (
+            m.description &&
+            m.description[locale as keyof typeof m.description]
+          ) {
+            const desc = m.description[locale as keyof typeof m.description];
+            // Clean up description and make it more SEO-friendly
+            const cleanDesc = desc
+              .replace(/Contrata|Hire|Contrate/gi, '')
+              .trim();
+            return `${cleanDesc} - ${project.title} - Veloz Fotografía`;
+          }
+
+          // Use tags if available - create more descriptive alt text
+          if (m.tags && m.tags.length > 0) {
+            const tagString = m.tags.slice(0, 4).join(', ');
+            const eventType = project.eventType || 'evento';
+            return `${project.title} - ${tagString} - ${eventType} - Fotografía profesional en Montevideo`;
+          }
+
+          // Fallback with event type and location
+          const eventType = project.eventType || 'evento';
+          return `${project.title} - ${eventType} - Fotografía profesional por Veloz en Montevideo, Uruguay`;
+        };
+
         return {
           id: m.id,
           projectId: project.id,
@@ -75,14 +104,16 @@ export default function OurWorkClient({
           width,
           height,
           aspectRatio: m.aspectRatio,
-          alt: `${project.title} - ${m.type}`,
+          alt: generateAltText(),
           featured: m.featured || false,
+          description: m.description,
+          tags: m.tags,
         };
       })
     );
 
     return media;
-  }, [projects]);
+  }, [projects, locale]);
 
   // Optimize media for better loading performance
   const optimizedMedia = useMemo(() => {

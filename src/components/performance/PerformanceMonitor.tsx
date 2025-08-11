@@ -78,7 +78,9 @@ export function PerformanceMonitor() {
     const fidObserver = new PerformanceObserver(list => {
       const entries = list.getEntries();
       entries.forEach(entry => {
-        metrics.fid = entry.processingStart - entry.startTime;
+        // Cast to PerformanceEventTiming for FID calculation
+        const eventEntry = entry as PerformanceEventTiming;
+        metrics.fid = eventEntry.processingStart - eventEntry.startTime;
 
         // Log FID metric
         console.log('FID:', metrics.fid, 'ms');

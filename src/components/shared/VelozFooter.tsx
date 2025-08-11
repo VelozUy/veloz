@@ -7,6 +7,7 @@ import { Instagram, Facebook, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { getStaticContent, t } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import { BUSINESS_CONFIG } from '@/lib/business-config';
 
 interface VelozFooterProps {
   className?: string;
@@ -57,7 +58,9 @@ export function VelozFooter({
                 </div>
                 <div className="flex items-center space-x-2 text-primary">
                   <MessageCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">+598 99 977 390</span>
+                  <span className="text-sm font-medium">
+                    {BUSINESS_CONFIG.phone}
+                  </span>
                 </div>
               </div>
             </div>
@@ -98,34 +101,40 @@ export function VelozFooter({
             {/* Social Media Links */}
             <div className="flex flex-col items-start space-y-3">
               <a
-                href="https://www.instagram.com/veloz_uy"
+                href={BUSINESS_CONFIG.socialMedia.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors duration-200"
                 aria-label="Síguenos en Instagram"
               >
                 <Instagram className="w-5 h-5" />
-                <span className="text-sm font-medium">@veloz_uy</span>
+                <span className="text-sm font-medium">
+                  @{BUSINESS_CONFIG.socialMedia.instagramHandle}
+                </span>
               </a>
               <a
-                href="https://www.facebook.com/veloz_uy"
+                href={BUSINESS_CONFIG.socialMedia.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors duration-200"
                 aria-label="Síguenos en Facebook"
               >
                 <Facebook className="w-5 h-5" />
-                <span className="text-sm font-medium">veloz_uy</span>
+                <span className="text-sm font-medium">
+                  {BUSINESS_CONFIG.socialMedia.facebookHandle}
+                </span>
               </a>
               <a
-                href="https://wa.me/+59895320541"
+                href={`https://wa.me/${BUSINESS_CONFIG.phone}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors duration-200"
                 aria-label="Contáctanos por WhatsApp"
               >
                 <MessageCircle className="w-5 h-5" />
-                <span className="text-sm font-medium">+598 99 977 390</span>
+                <span className="text-sm font-medium">
+                  {BUSINESS_CONFIG.phone}
+                </span>
               </a>
             </div>
           </div>

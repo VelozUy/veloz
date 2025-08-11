@@ -29,7 +29,7 @@ import { NavigationProvider } from '@/components/layout/NavigationProvider';
 import { AnalyticsWrapper } from '@/components/analytics';
 import {
   StructuredData,
-  organizationSchema,
+  organizationData,
 } from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { ServiceWorkerRegistration } from '@/components/performance/ServiceWorkerRegistration';
@@ -40,7 +40,6 @@ import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
 import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 import { Suspense } from 'react';
-import BackToTop from '@/components/ui/BackToTop';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 
 const geistSans = Geist({
@@ -308,7 +307,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable} ${cinzel.variable} ${libreBaskerville.variable} ${montserrat.variable} ${raleway.variable} ${quicksand.variable} ${nunito.variable} ${oswald.variable} ${anton.variable} ${bebasNeue.variable} ${lato.variable} ${sourceSansPro.variable} ${ubuntu.variable} ${workSans.variable} antialiased`}
       >
-        <StructuredData type="organization" data={organizationSchema} />
+        <StructuredData type="organization" data={organizationData} />
         <PerformanceMonitor />
         <ServiceWorkerRegistration />
         <Suspense fallback={null}>
@@ -320,7 +319,6 @@ export default function RootLayout({
             <NavigationProvider>
               <ConditionalNavigation />
               <PageLayout>{children}</PageLayout>
-              <BackToTop />
             </NavigationProvider>
           </AnalyticsWrapper>
         </ErrorBoundary>

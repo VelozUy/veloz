@@ -949,6 +949,8 @@ interface AnalyticsEvent {
 - ✅ **Server-Side Rendering**: All content rendered on server for search engine crawlability
 - ✅ **Meta Tags**: Proper title, description, and OpenGraph tags for all pages
 - ✅ **Multi-language SEO**: Spanish-first approach with fallbacks
+- ✅ **Centralized Business Configuration**: Single source of truth for all business information
+- ✅ **Comprehensive Structured Data**: Organization, LocalBusiness, ContactPage, and Person schemas
 
 ### Build Process Integration
 
@@ -978,6 +980,85 @@ npm run build:data   # Fetches all content from Firestore and generates static f
 - **Security**: Firebase ID token verification for all requests
 - **Monitoring**: Build ID tracking and deployment URL access
 - **Error Handling**: Comprehensive error recovery and user feedback
+
+### Centralized Business Configuration System
+
+**Single Source of Truth**: All business information is centralized in `src/lib/business-config.ts` to eliminate duplication and ensure consistency across the application.
+
+#### Business Configuration Structure
+
+```typescript
+export const BUSINESS_CONFIG = {
+  // Basic Information
+  name: 'Veloz Fotografía y Videografía',
+  shortName: 'Veloz',
+  description: 'Servicios profesionales de fotografía y videografía...',
+  descriptionEn: 'Professional event photography and videography services...',
+
+  // Contact Information
+  phone: '+59895320541',
+  email: 'contacto@veloz.com.uy',
+  website: 'https://veloz.com.uy',
+
+  // Address & Coordinates
+  address: {
+    locality: 'Montevideo',
+    country: 'UY',
+    countryName: 'Uruguay',
+  },
+  coordinates: {
+    latitude: -34.908163,
+    longitude: -56.207987,
+  },
+
+  // Business Details
+  openingHours: ['Mo-Fr 09:00-18:00', 'Sa 09:00-14:00'],
+  priceRange: '$$',
+
+  // Assets
+  logo: 'https://veloz.com.uy/veloz-logo-blue.png',
+  logoAlt: 'https://veloz.com.uy/veloz-logo-carbon.png',
+
+  // Social Media
+  socialMedia: {
+    instagram: 'https://instagram.com/veloz_uy',
+    facebook: 'https://facebook.com/veloz_uy',
+    instagramHandle: 'veloz_uy',
+    facebookHandle: 'veloz_uy',
+  },
+
+  // Languages & Contact Types
+  languages: ['Spanish', 'English'],
+  contactTypes: { customerService: 'customer service' },
+} as const;
+```
+
+#### Helper Functions for Structured Data
+
+```typescript
+export const businessHelpers = {
+  getOrganizationData(overrides = {}) {
+    /* ... */
+  },
+  getLocalBusinessData(overrides = {}) {
+    /* ... */
+  },
+  getContactPointData(overrides = {}) {
+    /* ... */
+  },
+  getPostalAddressData(overrides = {}) {
+    /* ... */
+  },
+};
+```
+
+#### Benefits
+
+- **Single Source of Truth**: Update business info in one place
+- **Type Safety**: Full TypeScript support with proper validation
+- **Consistency**: All components use the same business data
+- **Maintainability**: No more hunting for duplicate information
+- **SEO Optimization**: Consistent structured data across all pages
 
 ### Static Content Structure
 

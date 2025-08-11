@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { getStaticContent } from '@/lib/utils';
-import BackToTop from '@/components/ui/BackToTop';
-import Breadcrumb from '@/components/layout/Breadcrumb';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import GallerySearch from '@/components/search/GallerySearch';
 import OptimizedContactForm from '@/components/forms/OptimizedContactForm';
 import { getBackgroundClasses } from '@/lib/background-utils';
@@ -198,12 +197,11 @@ export default function UXEnhancementsDemo() {
             <div className="max-w-border-64 mx-auto">
               <div className="text-center mb-12">
                 <h3 className="text-2xl md:text-3xl font-subtitle font-bold mb-4 text-foreground uppercase tracking-wide">
-                  Section {i + 1} - Scroll to Test Back to Top
+                  Section {i + 1} - Scroll Testing
                 </h3>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  This section contains sample content to demonstrate the
-                  back-to-top functionality. Scroll down to see the back-to-top
-                  button appear.
+                  This section contains sample content to demonstrate scroll
+                  behavior and navigation functionality.
                 </p>
               </div>
 
@@ -231,15 +229,6 @@ export default function UXEnhancementsDemo() {
             </div>
           </section>
         ))}
-      </div>
-
-      {/* Custom Back to Top with Text */}
-      <div className="fixed bottom-6 left-6 z-50">
-        <BackToTop
-          showText={true}
-          threshold={200}
-          ariaLabel="Go to top of page"
-        />
       </div>
     </div>
   );

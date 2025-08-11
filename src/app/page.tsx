@@ -1,6 +1,10 @@
 import { getStaticContent, getContent } from '@/lib/utils';
 import Hero from '@/components/layout/hero';
 import type { Metadata } from 'next';
+import {
+  StructuredData,
+  localBusinessData,
+} from '@/components/seo/StructuredData';
 
 // Force static generation at build time
 export const dynamic = 'force-static';
@@ -54,6 +58,7 @@ export default function Home() {
 
   return (
     <main>
+      <StructuredData type="localBusiness" data={localBusinessData} />
       <Hero
         backgroundVideo={backgroundVideo}
         logoUrl={logoUrl}

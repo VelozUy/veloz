@@ -449,8 +449,8 @@ _Last updated: 2025-01-27_
 #### 🟥 Critical (This Week)
 
 - [x] Navigation & Information Architecture Improvements
-  - Files: `src/components/ui/BackToTop.tsx`, `src/components/layout/Breadcrumb.tsx`, `src/components/search/GallerySearch.tsx`, `src/lib/navigation-utils.ts`
-  - Notes: See epic file for full context - back-to-top button, navigation analytics, mobile optimization
+  - Files: `src/components/layout/Breadcrumb.tsx`, `src/components/search/GallerySearch.tsx`, `src/lib/navigation-utils.ts`
+  - Notes: See epic file for full context - navigation analytics, mobile optimization
   - Estimated Time: 3-4 days
   - Status: Completed (2025-01-27)
 
@@ -488,6 +488,11 @@ _Last updated: 2025-01-27_
 **User Value**: HIGH
 
 #### 🟥 Critical (This Week)
+
+- [x] Centralized business configuration system ✅ **COMPLETED**
+  - File: `src/lib/business-config.ts`, `src/components/seo/StructuredData.tsx`
+  - Notes: Single source of truth for all business information, eliminated duplication
+  - Status: Completed (2025-01-27)
 
 - [ ] Technical SEO implementation
   - File: `src/lib/seo-utils.ts`, `src/components/seo/SEOManager.tsx`

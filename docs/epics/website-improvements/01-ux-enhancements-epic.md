@@ -39,7 +39,7 @@ This epic focuses on enhancing the overall user experience by improving navigati
 
 #### **Technical Requirements**
 
-- Create smooth scroll utility for back-to-top functionality
+- Create smooth scroll utility for navigation functionality
 - Add analytics tracking for navigation interactions
 - Optimize mobile menu for better touch targets
 
@@ -47,7 +47,6 @@ This epic focuses on enhancing the overall user experience by improving navigati
 
 - `src/components/layout/Breadcrumb.tsx` (new)
 - `src/components/search/GallerySearch.tsx` (new)
-- `src/components/ui/BackToTop.tsx` (new)
 - `src/components/layout/NavigationBar.tsx`
 - `src/lib/navigation-utils.ts`
 - `src/services/analytics.ts`

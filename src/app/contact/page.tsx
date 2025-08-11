@@ -1,7 +1,11 @@
 import { getStaticContent } from '@/lib/utils';
 import ContactForm from '@/components/forms/ContactForm';
 import type { Metadata } from 'next';
-import { StructuredData } from '@/components/seo/StructuredData';
+import {
+  StructuredData,
+  localBusinessData,
+  contactPageData,
+} from '@/components/seo/StructuredData';
 import { Breadcrumb, breadcrumbConfigs } from '@/components/layout/Breadcrumb';
 
 // Force static generation at build time
@@ -10,104 +14,70 @@ export const dynamic = 'force-static';
 // Disable automatic revalidation - content updates require manual build trigger
 export const revalidate = false;
 
-// Generate metadata for SEO
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: `Veloz - Contacto`,
-    description:
-      'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
-    keywords:
-      'contacto veloz, cotización fotografía, video eventos, Uruguay, formulario contacto',
-    authors: [{ name: 'Veloz Team' }],
-    creator: 'Veloz',
-    publisher: 'Veloz',
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    alternates: {
-      canonical: 'https://veloz.com.uy/contact',
-      languages: {
-        en: '/en/contact',
-        es: '/contact',
-        pt: '/pt/contact',
-      },
-    },
-    openGraph: {
-      title: `Veloz - Contacto`,
-      description:
-        'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
-      type: 'website',
-      url: 'https://veloz.com.uy/contact',
-      siteName: 'Veloz',
-      locale: 'es_UY',
-      images: [
-        {
-          url: '/og-image.jpg',
-          width: 1200,
-          height: 630,
-          alt: 'Veloz - Contacto',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Veloz - Contacto',
-      description:
-        'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
-      images: ['/twitter-image.jpg'],
-      creator: '@veloz_uy',
-      site: '@veloz_uy',
-    },
-  };
-}
-
-// ContactPage Schema for structured data
-const contactPageSchema = {
-  '@context': 'https://schema.org' as const,
-  '@type': 'ContactPage' as const,
-  name: 'Veloz - Contacto',
+export const metadata: Metadata = {
+  title: 'Veloz - Contacto',
   description:
     'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
-  url: 'https://veloz.com.uy/contact',
-  mainEntity: {
-    '@type': 'Organization' as const,
-    name: 'Veloz',
-    url: 'https://veloz.com.uy',
-    contactPoint: {
-      '@type': 'ContactPoint' as const,
-      telephone: '+598 99 977 390',
-      contactType: 'customer service',
-      availableLanguage: ['Spanish', 'English'],
-      areaServed: {
-        '@type': 'Country' as const,
-        name: 'Uruguay',
-      },
+  keywords: [
+    'contacto veloz',
+    'cotización fotografía',
+    'video eventos',
+    'Uruguay',
+    'formulario contacto',
+    'fotógrafo profesional',
+    'servicios fotografía',
+    'eventos Montevideo',
+  ],
+  authors: [{ name: 'Veloz Team' }],
+  creator: 'Veloz',
+  publisher: 'Veloz',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
-  breadcrumb: {
-    '@type': 'BreadcrumbList' as const,
-    itemListElement: [
+  alternates: {
+    canonical: 'https://veloz.com.uy/contact',
+    languages: {
+      en: 'https://veloz.com.uy/en/contact',
+      es: 'https://veloz.com.uy/contact',
+      pt: 'https://veloz.com.uy/pt/contact',
+    },
+  },
+  openGraph: {
+    title: 'Veloz - Contacto',
+    description:
+      'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
+    type: 'website',
+    url: 'https://veloz.com.uy/contact',
+    siteName: 'Veloz',
+    locale: 'es_UY',
+    images: [
       {
-        '@type': 'ListItem' as const,
-        position: 1,
-        name: 'Inicio',
-        item: 'https://veloz.com.uy',
-      },
-      {
-        '@type': 'ListItem' as const,
-        position: 2,
-        name: 'Contacto',
-        item: 'https://veloz.com.uy/contact',
+        url: 'https://veloz.com.uy/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Veloz - Contacto',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Veloz - Contacto',
+    description:
+      'Cuéntanos sobre tu evento y hagamos que sea perfecto. Obtén una cotización gratuita y sin compromiso para fotografía y video profesional.',
+    images: ['https://veloz.com.uy/twitter-image.jpg'],
+    creator: '@veloz_uy',
+    site: '@veloz_uy',
+  },
+  other: {
+    'format-detection': 'telephone=no, address=no, email=no',
   },
 };
 
@@ -226,7 +196,8 @@ function ContactPageContent() {
 
   return (
     <>
-      <StructuredData type="contactPage" data={contactPageSchema} />
+      <StructuredData type="contactPage" data={contactPageData} />
+      <StructuredData type="localBusiness" data={localBusinessData} />
 
       <ContactForm translations={translations as any} locale="es" />
     </>

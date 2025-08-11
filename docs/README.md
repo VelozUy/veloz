@@ -2,6 +2,17 @@
 
 ## 🆕 **Recent Features**
 
+### **Centralized Business Configuration System** ✅ **COMPLETED** (2025-01-27)
+
+- **Single Source of Truth**: All business information centralized in `src/lib/business-config.ts`
+- **Eliminated Duplication**: No more scattered business data across multiple files
+- **SEO Optimization**: Consistent structured data with proper Schema.org markup
+- **Type Safety**: Full TypeScript support with helper functions
+- **Easy Updates**: Change business info in one place, updates everywhere
+
+**Files**: `src/lib/business-config.ts`, `src/components/seo/StructuredData.tsx`  
+**Documentation**: [`BUSINESS_CONFIGURATION.md`](./BUSINESS_CONFIGURATION.md)
+
 ### **FAQ Admin Translation System** ✅ **COMPLETED** (2025-01-27)
 
 - **Auto-translation**: Translate FAQ content from Spanish to English and Portuguese
@@ -150,8 +161,25 @@ Use `docs/epic-templates/epic-template.md` for creating new epics with:
 
 ## 🔗 Quick Navigation
 
+### Project Management
+
 - **Active Epics**: `docs/TASK.md`
 - **Future Epics**: `docs/BACKLOG.md`
 - **Completed Epics**: `docs/COMPLETED.md`
 - **Epic Templates**: `docs/epic-templates/epic-template.md`
 - **Epic Files**: `docs/epics/`
+
+### System Documentation
+
+- **Business Configuration**: `docs/BUSINESS_CONFIGURATION.md`
+- **Project Requirements**: `docs/PRD.md`
+- **Theme Guide**: `docs/THEME_GUIDE.md`
+- **Email System**: `docs/EMAIL_SYSTEM.md`
+- **Contact Setup**: `docs/CONTACT_EMAIL_SETUP.md`
+
+### Technical Guides
+
+- **Production Checklist**: `docs/PRODUCTION_READINESS_CHECKLIST.md`
+- **Admin Testing**: `docs/ADMIN_TESTING_CHECKLIST.md`
+- **Build Trigger Setup**: `docs/BUILD_TRIGGER_SETUP.md`
+- **Deployment**: `docs/DEPLOYMENT.md`

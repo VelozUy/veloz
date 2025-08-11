@@ -1,56 +1,18 @@
 import { MetadataRoute } from 'next';
 import { getStaticContent } from '@/lib/utils';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://veloz.com.uy';
+  const content = getStaticContent('es');
+  const projects = content.content.projects || [];
 
-  // Supported languages
-  const languages = ['es', 'en', 'pt'];
-
-  // Collect all project pages for all languages
-  const projectPages: Array<MetadataRoute.Sitemap[number]> = [];
-  const seenUrls = new Set<string>();
-
-  for (const lang of languages) {
-    const content = getStaticContent(lang);
-    const projects = content.content.projects || [];
-    for (const project of projects) {
-      const url =
-        `${baseUrl}/${lang === 'es' ? '' : lang + '/'}projects/${project.slug || project.id}`.replace(
-          /\/our-work\//,
-          '/our-work/'
-        );
-      if (!seenUrls.has(url)) {
-        projectPages.push({
-          url,
-          lastModified: new Date(),
-          changeFrequency: 'monthly' as const,
-          priority: 0.8,
-        });
-        seenUrls.add(url);
-      }
-    }
-  }
-
-  // Base pages
-  const basePages = [
+  // Static pages
+  const staticPages = [
     {
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
     },
     {
       url: `${baseUrl}/our-work`,
@@ -59,48 +21,66 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/crew`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
   ];
 
-  // Language-specific base pages
-  const languagePages = languages
-    .filter(lang => lang !== 'es')
-    .flatMap(lang => [
-      {
-        url: `${baseUrl}/${lang}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-      },
-      {
-        url: `${baseUrl}/${lang}/about`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.8,
-      },
-      {
-        url: `${baseUrl}/${lang}/gallery`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-      },
-      {
-        url: `${baseUrl}/${lang}/our-work`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-      },
-      {
-        url: `${baseUrl}/${lang}/contact`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      },
-    ]);
+  // Project pages
+  const projectPages = projects
+    .filter(project => project.status === 'published')
+    .map(project => ({
+      url: `${baseUrl}/our-work/${project.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }));
 
-  return [...basePages, ...projectPages, ...languagePages];
+  // Crew member pages (if available)
+  const crewPages = [
+    {
+      url: `${baseUrl}/crew/veloz-team`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+  ];
+
+  // Legal pages
+  const legalPages = [
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookies`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+  ];
+
+  return [...staticPages, ...projectPages, ...crewPages, ...legalPages];
 }

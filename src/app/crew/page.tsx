@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import CrewListing from '@/components/crew/CrewListing';
 import { StructuredData } from '@/components/seo/StructuredData';
+import { BUSINESS_CONFIG, businessHelpers } from '@/lib/business-config';
 import { getStaticContent } from '@/lib/utils';
 
 // Force static generation at build time
@@ -86,28 +87,10 @@ export default async function CrewPage() {
     }
 
     // Generate structured data for the team page
-    const teamSchema = {
-      '@context': 'https://schema.org' as const,
-      '@type': 'Organization' as const,
-      name: 'Veloz Fotografía y Videografía',
-      url: 'https://veloz.com.uy',
+    const teamSchema = businessHelpers.getOrganizationData({
       description:
         'Equipo de fotógrafos y videógrafos profesionales en Uruguay',
-      employee: crewMembers.map((member: any) => ({
-        '@type': 'Person' as const,
-        name: member.name?.es || '',
-        jobTitle: member.role?.es || '',
-        description: member.bio?.es || '',
-        image: member.portrait || '',
-        url: `https://veloz.com.uy/crew/${member.name?.es?.toLowerCase().replace(/\s+/g, '-') || ''}`,
-        knowsAbout: member.skills || [],
-      })),
-      address: {
-        '@type': 'PostalAddress' as const,
-        addressLocality: 'Montevideo',
-        addressCountry: 'UY',
-      },
-    };
+    });
 
     // Generate breadcrumb structured data
     const breadcrumbSchema = {
@@ -118,13 +101,13 @@ export default async function CrewPage() {
           '@type': 'ListItem' as const,
           position: 1,
           name: 'Inicio',
-          item: 'https://veloz.com.uy',
+          item: BUSINESS_CONFIG.website,
         },
         {
           '@type': 'ListItem' as const,
           position: 2,
           name: 'Nuestro Equipo',
-          item: 'https://veloz.com.uy/crew',
+          item: `${BUSINESS_CONFIG.website}/crew`,
         },
       ],
     };
