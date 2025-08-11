@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getStaticContent } from '@/lib/utils';
-import AboutContentAnimated from '@/components/about/AboutContentAnimated';
+import AboutContent from '@/components/about/AboutContent';
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;
@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 
 export default async function AboutAnimatedPage() {
   const content = getStaticContent('es');
-  return <AboutContentAnimated content={content} />;
+  return <AboutContent content={content} />;
 }
