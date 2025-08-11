@@ -3749,7 +3749,7 @@ This file contains future epics that are not yet active. For detailed epic infor
 **Business Impact**: **HIGH** - Essential for maintaining up-to-date contact information
 **User Value**: **HIGH** - Admins can update contact info without developer intervention
 
-**Background**: Currently, the footer contact information (email: info@veloz.com.uy, phone: +598 99 123 456, WhatsApp: +598 99 123 456) is hardcoded in `src/components/shared/VelozFooter.tsx`. Admins cannot update this information through the admin panel.
+**Background**: Currently, the footer contact information (email: contacto@veloz.com.uy, phone: +598 99 123 456, WhatsApp: +598 99 123 456) is hardcoded in `src/components/shared/VelozFooter.tsx`. Admins cannot update this information through the admin panel.
 
 #### 🟥 Critical Priority Tasks - START IMMEDIATELY
 

@@ -54,7 +54,8 @@ exports.handler = async (event, context) => {
 
   try {
     // Get test email from query parameter or use default
-    const testEmail = event.queryStringParameters?.email || 'info@veloz.com.uy';
+    const testEmail =
+      event.queryStringParameters?.email || 'contacto@veloz.com.uy';
 
     // Test email content
     const testContactData = {
@@ -136,7 +137,7 @@ Timestamp: ${new Date().toISOString()}
           subject,
           html: emailTemplate.html,
           text: emailTemplate.text,
-          replyTo: 'info@veloz.com.uy',
+          replyTo: 'contacto@veloz.com.uy',
         });
 
         emailResult = { success: true, service: 'resend', result };
@@ -160,7 +161,7 @@ Timestamp: ${new Date().toISOString()}
             subject,
             html: emailTemplate.html,
             text: emailTemplate.text,
-            replyTo: 'info@veloz.com.uy',
+            replyTo: 'contacto@veloz.com.uy',
           });
 
           emailResult = { success: true, service: 'nodemailer', result };

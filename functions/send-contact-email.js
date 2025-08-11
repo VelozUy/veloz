@@ -42,7 +42,7 @@ const getAdminEmailRecipients = async () => {
       ? process.env.ADMIN_NOTIFICATION_EMAILS.split(',').map(email =>
           email.trim()
         )
-      : ['info@veloz.com.uy'];
+      : ['contacto@veloz.com.uy'];
 
     return adminEmails.map(email => ({
       email,
@@ -59,7 +59,7 @@ const getAdminEmailRecipients = async () => {
       ? process.env.ADMIN_NOTIFICATION_EMAILS.split(',').map(email =>
           email.trim()
         )
-      : ['info@veloz.com.uy'];
+      : ['contacto@veloz.com.uy'];
 
     return fallbackEmails.map(email => ({
       email,
@@ -266,7 +266,7 @@ const sendEmailWithResend = async (to, subject, { html, text }) => {
       subject,
       html,
       text,
-      replyTo: 'info@veloz.com.uy',
+      replyTo: 'contacto@veloz.com.uy',
     });
 
     console.log('Email sent successfully with Resend', {
@@ -300,7 +300,7 @@ const sendEmailWithNodemailer = async (to, subject, { html, text }) => {
       subject,
       html,
       text,
-      replyTo: 'info@veloz.com.uy',
+      replyTo: 'contacto@veloz.com.uy',
     };
 
     const result = await transporter.sendMail(mailOptions);

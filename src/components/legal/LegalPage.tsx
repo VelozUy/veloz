@@ -749,7 +749,7 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
               </p>
               <div className="bg-muted p-4 rounded-lg">
                 <p className="font-medium">Veloz</p>
-                <p>Email: info@veloz.com.uy</p>
+                <p>Email: contacto@veloz.com.uy</p>
                 <p>WhatsApp: +598 99 977 390</p>
               </div>
             </section>

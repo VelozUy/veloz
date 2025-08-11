@@ -30,7 +30,7 @@ firebase functions:config:set \
   smtp.pass="your-app-password"
 
 # Set Default Admin Notification Emails
-firebase functions:config:set admin.notification_emails="info@veloz.com.uy,admin@veloz.com.uy"
+firebase functions:config:set admin.notification_emails="contacto@veloz.com.uy,admin@veloz.com.uy"
 
 # Deploy the updated configuration
 firebase deploy --only functions
