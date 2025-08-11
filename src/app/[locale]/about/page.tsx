@@ -50,7 +50,17 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   try {
-    const { locale } = await params;
+    let locale: string;
+    try {
+      const resolvedParams = await params;
+      locale = resolvedParams.locale;
+    } catch (error) {
+      console.error('Error resolving params in about metadata:', error);
+      return {
+        title: 'About Us | Veloz - Professional Photography & Videography',
+        description: 'Learn about our philosophy, methodology and values.',
+      };
+    }
 
     const metadata: Record<string, Metadata> = {
       en: {
@@ -92,8 +102,8 @@ export async function generateMetadata({
 }
 
 // Enable static generation at build time with revalidation
-export const dynamic = 'force-static';
-export const revalidate = 3600; // Revalidate every hour in production
+// Disable static generation temporarily to fix build issues
+export const dynamic = 'force-dynamic';
 
 export default async function AboutPage({
   params,
@@ -118,7 +128,25 @@ export default async function AboutPage({
       );
     }
 
-    const { locale } = await params;
+    let locale: string;
+    try {
+      const resolvedParams = await params;
+      locale = resolvedParams.locale;
+    } catch (error) {
+      console.error('Error resolving params in about page:', error);
+      return (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              Page not available
+            </h1>
+            <p className="text-muted-foreground">
+              The requested page is not available.
+            </p>
+          </div>
+        </div>
+      );
+    }
 
     // Get static content for the specific locale
     const content = getStaticContent(locale);

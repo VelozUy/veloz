@@ -15,7 +15,17 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   try {
-    const { locale } = await params;
+    let locale: string;
+    try {
+      const resolvedParams = await params;
+      locale = resolvedParams.locale;
+    } catch (error) {
+      console.error('Error resolving params in contact metadata:', error);
+      return {
+        title: 'Veloz - Contact',
+        description: 'Tell us about your event and let us make it perfect',
+      };
+    }
 
     const metadata: Record<string, Metadata> = {
       en: {
@@ -48,11 +58,8 @@ export async function generateMetadata({
   }
 }
 
-// Force static generation at build time
-export const dynamic = 'force-static';
-
-// Disable automatic revalidation - content updates require manual build trigger
-export const revalidate = false;
+// Disable static generation temporarily to fix build issues
+export const dynamic = 'force-dynamic';
 
 function ContactPageContent({ locale }: { locale: string }) {
   // Get static content for the specific locale
@@ -165,7 +172,25 @@ export default async function ContactPage({
       );
     }
 
-    const { locale } = await params;
+    let locale: string;
+    try {
+      const resolvedParams = await params;
+      locale = resolvedParams.locale;
+    } catch (error) {
+      console.error('Error resolving params in contact page:', error);
+      return (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              Page not available
+            </h1>
+            <p className="text-muted-foreground">
+              The requested page is not available.
+            </p>
+          </div>
+        </div>
+      );
+    }
 
     // Handle case where locale is undefined
     if (!locale) {

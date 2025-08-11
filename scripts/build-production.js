@@ -79,14 +79,12 @@ async function buildProduction() {
 
     console.log('\n🎉 Production build completed successfully!');
     console.log('📦 Debug pages have been excluded from the production build');
-
-    // Only restore debug pages if build succeeds
-    restoreDebugPages();
   } catch (error) {
     console.error('❌ Build failed:', error.message);
-    // Restore debug pages even on failure
-    restoreDebugPages();
     process.exit(1);
+  } finally {
+    // Always restore debug pages at the very end
+    restoreDebugPages();
   }
 }
 
