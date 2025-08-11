@@ -91,7 +91,7 @@ export function generateContactItem(
 
 // Navigation analytics tracking
 export interface NavigationEvent {
-  type: 'click' | 'scroll' | 'search' | 'breadcrumb' | 'back-to-top';
+  type: 'click' | 'scroll' | 'search' | 'breadcrumb';
   element: string;
   path?: string;
   query?: string;
@@ -202,8 +202,8 @@ export const smoothScrollTo = (
 export const scrollToTop = (smooth = true) => {
   smoothScrollTo(0, { behavior: smooth ? 'smooth' : 'auto' });
   trackNavigationEvent({
-    type: 'back-to-top',
-    element: 'back-to-top-button',
+    type: 'scroll',
+    element: 'scroll-to-top',
   });
 };
 
