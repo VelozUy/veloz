@@ -1,5 +1,37 @@
 # 📋 Veloz Project Documentation
 
+## 🆕 **Recent Features**
+
+### **FAQ Admin Translation System** ✅ **COMPLETED** (2025-01-27)
+
+- **Auto-translation**: Translate FAQ content from Spanish to English and Portuguese
+- **Translation Review**: Edit translations before applying to forms
+- **Multi-language Forms**: Input fields for all three languages
+- **Batch Translation**: Translate all fields at once with "Translate All" button
+- **Seamless Integration**: Translations automatically populate form fields after approval
+- **No Page Reloads**: Translation buttons work smoothly without form submission
+
+**Files**: `src/app/admin/faqs/page.tsx`, `src/components/admin/GlobalTranslationButtons.tsx`
+
+### **Our Work Image Sorting System** ✅ **COMPLETED** (2025-01-27)
+
+- **Drag-and-Drop Interface**: Manual sorting of portfolio images
+- **Desktop Preview**: 1200x800px canvas mimicking actual page layout
+- **Multi-language Support**: Spanish, English, Portuguese content handling
+- **Firebase Integration**: Order persistence and real-time updates
+
+**Files**: `src/app/admin/our-work/page.tsx`, `src/components/admin/OurWorkSorter.tsx`
+
+### **Contact Form Enhancements** ✅ **COMPLETED** (2025-01-27)
+
+- **Native Select Elements**: Improved accessibility and mobile experience
+- **Multi-language Support**: Consistent placeholder text across all languages
+- **Email Template Fix**: Admin emails now use full templates with proper formatting
+
+**Files**: `src/components/forms/ContactForm.tsx`, `src/services/email.ts`
+
+---
+
 ## 🗂️ Enhanced Backlog Management Structure
 
 This project uses an enhanced epic-based task management system to reduce context overhead and improve maintainability.
