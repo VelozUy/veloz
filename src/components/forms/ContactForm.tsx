@@ -3,17 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Popover,
   PopoverContent,
@@ -27,16 +19,18 @@ import {
   Shield,
   Clock,
   Heart,
-  AlertCircle,
   Check,
-  X,
   ChevronDown,
+  AlertCircle,
+  X,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
 import { getBackgroundClasses } from '@/lib/background-utils';
 import { useFormBackground } from '@/hooks/useBackground';
 import { trackCustomEvent } from '@/services/analytics';
+import { motion } from 'motion/react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 // Contact form data type
 interface ContactFormData {
@@ -50,7 +44,7 @@ interface ContactFormData {
   services: string[];
   contactMethod: 'whatsapp' | 'email' | 'call';
   eventDate?: string;
-  message: string;
+  message?: string;
 }
 
 interface ContactFormProps {
@@ -60,130 +54,210 @@ interface ContactFormProps {
       subtitle: string;
       form: {
         title: string;
-        name: {
-          label: string;
-          placeholder: string;
-        };
-        email: {
-          label: string;
-          placeholder: string;
-        };
-        company: {
-          label: string;
-          placeholder: string;
-          optional: string;
-        };
-        phone: {
-          label: string;
-          placeholder: string;
-          optional: string;
-        };
+        name: { label: string; placeholder: string };
+        email: { label: string; placeholder: string };
+        company: { label: string; placeholder: string; optional: string };
+        phone: { label: string; placeholder: string; optional: string };
         eventType: {
           label: string;
           placeholder: string;
-          options: {
-            corporate: string;
-            product: string;
-            birthday: string;
-            wedding: string;
-            concert: string;
-            exhibition: string;
-            other: string;
-          };
+          options: Record<string, string>;
         };
-        location: {
-          label: string;
-          placeholder: string;
-        };
+        location: { label: string; placeholder: string };
         attendees: {
           label: string;
           placeholder: string;
-          options: {
-            '0-20': string;
-            '21-50': string;
-            '51-100': string;
-            '100+': string;
-          };
+          options: Record<string, string>;
         };
         services: {
           label: string;
           placeholder: string;
-          options: {
-            photography: string;
-            video: string;
-            drone: string;
-            studio: string;
-            other: string;
-          };
+          options: Record<string, string>;
         };
         contactMethod: {
           label: string;
           placeholder: string;
-          options: {
-            whatsapp: string;
-            email: string;
-            call: string;
-          };
+          options: Record<string, string>;
         };
-        eventDate: {
-          label: string;
-          optional: string;
-          help: string;
-        };
-        message: {
-          label: string;
-          optional: string;
-          placeholder: string;
-        };
-        submit: {
-          button: string;
-          loading: string;
-        };
-        privacy: {
-          line1: string;
-          line2: string;
-        };
+        eventDate: { label: string; optional: string; help: string };
+        message: { label: string; optional: string; placeholder: string };
+        submit: { button: string; loading: string };
+        privacy: { line1: string; line2: string };
       };
-      success: {
-        title: string;
-        message: string;
-        action: string;
-      };
+      success: { title: string; message: string; action: string };
       trust: {
-        response: {
-          title: string;
-          description: string;
-        };
-        commitment: {
-          title: string;
-          description: string;
-        };
+        response: { title: string; description: string };
+        commitment: { title: string; description: string };
+        privacy: { title: string; description: string };
       };
     };
   };
   locale?: string;
 }
 
+const staggerContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.04 },
+  },
+};
+
+const fadeInUp = {
+  hidden: { y: 12, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+// Default translations
+const defaultTranslations = {
+  title: 'Contacto',
+  subtitle: 'Cuéntanos sobre tu evento y hagamos que sea perfecto',
+  form: {
+    title: 'Formulario de Contacto',
+    name: { label: 'Nombre', placeholder: 'Tu nombre completo' },
+    email: { label: 'Email', placeholder: 'tu@email.com' },
+    company: {
+      label: 'Empresa',
+      placeholder: 'Nombre de tu empresa',
+      optional: '(opcional)',
+    },
+    phone: {
+      label: 'Teléfono',
+      placeholder: '+598 99 123 456',
+      optional: '(opcional)',
+    },
+    eventType: {
+      label: 'Tipo de Evento',
+      placeholder: 'Selecciona el tipo de evento',
+      options: {
+        corporate: 'Corporativo',
+        product: 'Producto',
+        birthday: 'Cumpleaños',
+        wedding: 'Boda',
+        concert: 'Concierto',
+        exhibition: 'Exposición',
+        other: 'Otro',
+      },
+    },
+    location: { label: 'Ubicación', placeholder: 'Ciudad, País' },
+    attendees: {
+      label: 'Asistentes',
+      placeholder: 'Selecciona el rango de asistentes',
+      options: {
+        '0-20': '0-20 personas',
+        '21-50': '21-50 personas',
+        '51-100': '51-100 personas',
+        '100+': 'Más de 100 personas',
+      },
+    },
+    services: {
+      label: 'Servicios',
+      placeholder: 'Selecciona los servicios que necesitas',
+      options: {
+        photography: 'Fotografía',
+        video: 'Video',
+        drone: 'Drone',
+        studio: 'Estudio',
+        other: 'Otro',
+      },
+    },
+    contactMethod: {
+      label: 'Método de Contacto',
+      placeholder: 'Cómo prefieres que te contactemos',
+      options: {
+        whatsapp: 'WhatsApp',
+        email: 'Email',
+        call: 'Llamada',
+      },
+    },
+    eventDate: {
+      label: 'Fecha del Evento',
+      optional: '(opcional)',
+      help: 'Si ya tienes una fecha en mente',
+    },
+    message: {
+      label: 'Mensaje',
+      optional: '(opcional)',
+      placeholder: 'Cuéntanos más sobre tu evento...',
+    },
+    submit: { button: 'Enviar Mensaje', loading: 'Enviando...' },
+    privacy: {
+      line1:
+        'Al enviar este formulario, aceptas que procesemos tu información de contacto para responder a tu consulta.',
+      line2:
+        'No compartiremos tu información con terceros sin tu consentimiento explícito.',
+    },
+  },
+  success: {
+    title: '¡Mensaje Enviado!',
+    message:
+      'Gracias por contactarnos. Te responderemos en las próximas 24 horas.',
+    action: 'Enviar Otro Mensaje',
+  },
+  trust: {
+    response: {
+      title: 'Respuesta Rápida',
+      description: 'Te respondemos en menos de 24 horas',
+    },
+    commitment: {
+      title: 'Compromiso Total',
+      description: 'Nos dedicamos a hacer tu evento perfecto',
+    },
+    privacy: {
+      title: 'Privacidad Garantizada',
+      description: 'Tu información está segura con nosotros',
+    },
+  },
+};
+
 export default function ContactForm({
   translations,
   locale = 'es',
 }: ContactFormProps) {
-  const formatRequired = (text: string) => {
-    const trimmed = text?.trim() || '';
-    return trimmed.startsWith('*') ? trimmed : `* ${trimmed}`;
-  };
-  const dateInputRef = useRef<HTMLInputElement>(null);
+  // Get translations - they should always be available
+  const t = translations.contact;
+
+  const prefersReduced = usePrefersReducedMotion();
+  const [formData, setFormData] = useState<ContactFormData>({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    eventType: '',
+    location: '',
+    attendees: '',
+    services: [],
+    contactMethod: 'whatsapp',
+    eventDate: '',
+    message: '',
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [noDateSelected, setNoDateSelected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
-  const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // Check if mobile on mount and resize
+  // Background hook
+  const { classes } = useFormBackground();
+
+  // Format required field labels
+  const formatRequired = (text: string) => {
+    return `${text} *`;
+  };
+
+  const formatRequiredPlaceholder = (text: string) => {
+    return `${text} *`;
+  };
+
+  // Mobile detection and scroll prevention
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -192,255 +266,135 @@ export default function ContactForm({
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Prevent scroll when select dropdowns open
-  useEffect(() => {
-    const isSelectOpen =
-      focusedField === 'contactMethod' || focusedField === 'eventType';
-
-    if (isSelectOpen) {
-      // Store current scroll position
-      const scrollY = window.scrollY;
-
-      // Prevent scroll by temporarily disabling scroll events
-      const preventScroll = (e: Event) => {
+    // Prevent scroll on mobile when popover is open
+    const preventScroll = (e: Event) => {
+      if (focusedField === 'contactMethod' || focusedField === 'eventType') {
         e.preventDefault();
-        window.scrollTo(0, scrollY);
-      };
+      }
+    };
 
-      // Add event listeners to prevent scroll
-      document.addEventListener('scroll', preventScroll, { passive: false });
-      document.addEventListener('wheel', preventScroll, { passive: false });
+    if (isMobile) {
       document.addEventListener('touchmove', preventScroll, { passive: false });
+    }
 
-      return () => {
-        // Remove event listeners
-        document.removeEventListener('scroll', preventScroll);
-        document.removeEventListener('wheel', preventScroll);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (isMobile) {
         document.removeEventListener('touchmove', preventScroll);
-      };
-    }
-  }, [focusedField]);
-
-  // Track form view
-  useEffect(() => {
-    trackCustomEvent('contact_form_viewed');
-  }, []);
-
-  // Form state
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    eventType: '',
-    location: '',
-    attendees: '',
-    services: [] as string[],
-    contactMethod: 'email' as 'whatsapp' | 'email' | 'call',
-    eventDate: '',
-    message: '',
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // Debug: Log when errors change (warn-level)
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.warn('ContactForm errors changed', errors);
-    }
-  }, [errors]);
+      }
+    };
+  }, [focusedField, isMobile]);
 
   // Pre-fill form from URL parameters
   useEffect(() => {
-    const eventType = searchParams.get('evento');
-    const eventDate = searchParams.get('fecha');
-    const message = searchParams.get('mensaje');
-    const ubicacion = searchParams.get('ubicacion');
-    const noFecha = searchParams.get('noFecha');
-    const from = searchParams.get('from');
+    const eventType = searchParams.get('eventType');
+    const services = searchParams.get('services');
+    const location = searchParams.get('location');
 
-    // Build message from parameters (exclude ubicacion; handled as location field)
-    let fullMessage = message || '';
-
-    const updatedFormData = {
-      eventType: eventType || '',
-      eventDate: noFecha ? '' : eventDate || '',
-      message: fullMessage,
-      location: ubicacion || '',
-    } as any;
-
-    // Only update if we have URL parameters to avoid infinite loops
-    if (eventType || eventDate || message || ubicacion || noFecha) {
-      setFormData(prevData => ({
-        ...prevData,
-        eventType: eventType || '',
-        eventDate: noFecha ? '' : eventDate || '',
-        message: fullMessage,
-        location: ubicacion || '',
-      }));
-      setErrors({});
-
-      // If URL indicates no date, toggle the switch on to reflect it in the UI
-      if (noFecha) {
-        setNoDateSelected(true);
-      }
-
-      // Track if form was pre-filled from widget
-      trackCustomEvent('contact_form_prefilled', {
-        eventType: eventType || null,
-        eventDate: eventDate || null,
-        hasLocation: !!ubicacion,
-        hasMessage: !!message,
-      });
+    if (eventType) {
+      setFormData(prev => ({ ...prev, eventType }));
     }
-
-    // If arriving from widget, auto-focus name field and scroll
-    if (from === 'widget') {
-      setTimeout(() => {
-        const nameEl = document.getElementById('name');
-        if (nameEl) {
-          nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          (nameEl as HTMLElement).focus({ preventScroll: true } as any);
-        }
-      }, 300);
+    if (services) {
+      setFormData(prev => ({ ...prev, services: services.split(',') }));
+    }
+    if (location) {
+      setFormData(prev => ({ ...prev, location }));
     }
   }, [searchParams]);
 
+  // Form validation
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = translations.contact.form.name.label;
+      newErrors.name = 'Name is required';
     }
 
-    // Validate email only when preferred contact method is email
-    if (formData.contactMethod === 'email') {
-      if (!formData.email.trim()) {
-        newErrors.email = translations.contact.form.email.label;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Email inválido';
-      }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
 
-    // Validate phone only if contact method is whatsapp or call
+    // Phone validation when contact method is whatsapp or call
     if (
       formData.contactMethod === 'whatsapp' ||
       formData.contactMethod === 'call'
     ) {
-      if (!formData.phone.trim()) {
-        newErrors.phone = translations.contact.form.phone.label;
+      if (!formData.phone?.trim()) {
+        newErrors.phone = 'Phone number is required for this contact method';
       }
     }
 
-    if (!formData.contactMethod.trim()) {
-      newErrors.contactMethod = translations.contact.form.contactMethod.label;
+    if (!formData.eventType) {
+      newErrors.eventType = 'Event type is required';
     }
 
-    if (!formData.eventType.trim()) {
-      newErrors.eventType = translations.contact.form.eventType.label;
+    if (!formData.location.trim()) {
+      newErrors.location = 'Location is required';
     }
 
-    // Location and attendees are optional
+    if (!formData.attendees.trim()) {
+      newErrors.attendees = 'Number of attendees is required';
+    }
 
     if (formData.services.length === 0) {
-      newErrors.services = translations.contact.form.services.label;
+      newErrors.services = 'At least one service is required';
     }
 
     setErrors(newErrors);
-
-    // Debug: Log errors (warn-level)
-    if (Object.keys(newErrors).length > 0) {
-      console.warn('Form validation errors', newErrors);
-    }
-
-    const isValid = Object.keys(newErrors).length === 0;
-    return isValid;
+    return Object.keys(newErrors).length === 0;
   };
 
-  // After errors update on submit, scroll to the first invalid field
-  useEffect(() => {
-    if (!submitAttempted) return;
-    const errorKeys = Object.keys(errors);
-    if (errorKeys.length === 0) return;
-
-    const firstErrorField = errorKeys[0];
-    const scrollToError = () => {
+  // Scroll to first error
+  const scrollToError = () => {
+    const firstErrorField = Object.keys(errors)[0];
+    if (firstErrorField) {
       const errorElement = document.querySelector(
         `[data-field="${firstErrorField}"]`
-      ) as HTMLElement | null;
-
+      );
       if (errorElement) {
-        // Use requestAnimationFrame to ensure layout is ready
-        requestAnimationFrame(() => {
-          errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          // Focus without re-scrolling
-          if (typeof (errorElement as any).focus === 'function') {
-            try {
-              (errorElement as HTMLElement).focus({
-                preventScroll: true,
-              } as any);
-            } catch {
-              (errorElement as HTMLElement).focus();
-            }
-          }
-        });
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (errorElement as HTMLElement).focus();
       }
-    };
+    }
+  };
 
-    scrollToError();
-  }, [errors, submitAttempted]);
-
+  // Form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isValid = validateForm();
-
-    if (!isValid) {
-      setSubmitAttempted(true);
+    if (!validateForm()) {
+      scrollToError();
       return;
     }
 
-    // Reset flag on successful validation
-    setSubmitAttempted(false);
-
     setIsSubmitting(true);
-    setSubmitError(null);
 
     try {
-      // Sending contact form
-      await emailService.sendContactForm(formData);
+      await emailService.sendContactForm({
+        ...formData,
+        locale,
+      });
+
+      // Track successful submission
+      trackCustomEvent('contact_form_submitted', {
+        event_type: formData.eventType,
+        services: formData.services,
+        location: formData.location,
+      });
+
       setIsSubmitted(true);
-
-      // Track successful form submission
-      trackCustomEvent('contact_form_submitted', {
-        result: 'success',
-        eventType: formData.eventType,
-        contactMethod: formData.contactMethod,
-      });
     } catch (error) {
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : 'Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.'
-      );
-
-      // Track form submission error
-      trackCustomEvent('contact_form_submitted', {
-        result: 'error',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        eventType: formData.eventType,
-        contactMethod: formData.contactMethod,
-      });
+      console.error('Error submitting form:', error);
+      setErrors({ message: 'Error sending message. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Reset form for new message
   const handleSendAnotherMessage = () => {
-    setIsSubmitted(false);
-    setSubmitError(null);
     setFormData({
       name: '',
       email: '',
@@ -450,52 +404,80 @@ export default function ContactForm({
       location: '',
       attendees: '',
       services: [],
-      contactMethod: 'whatsapp' as 'whatsapp' | 'email' | 'call',
+      contactMethod: 'whatsapp',
       eventDate: '',
       message: '',
     });
     setErrors({});
+    setIsSubmitted(false);
   };
 
+  // Handle input changes
   const handleInputChange = (
     field: string,
     value: string | boolean | string[]
   ) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  const t = translations.contact;
-
   // Success screen
   if (isSubmitted) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-background">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <div className="flex justify-center">
-            <CheckCircle className="w-24 h-24 text-primary" />
-          </div>
-
-          <div className="space-y-4 text-foreground">
-            <h1 className="text-section-title-lg font-title font-semibold">
-              {t.success.title}
-            </h1>
-            <p className="text-body-lg leading-relaxed">{t.success.message}</p>
-          </div>
-
-          <Button
-            onClick={handleSendAnotherMessage}
-            size="lg"
-            sectionType="form"
-            priority="high"
-            className="font-semibold px-8 py-6"
+        <motion.div
+          initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="max-w-2xl mx-auto text-center space-y-8"
+        >
+          <motion.div
+            initial={prefersReduced ? undefined : { scale: 0 }}
+            animate={prefersReduced ? undefined : { scale: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+            className="flex justify-center"
           >
-            {t.success.action}
-          </Button>
-        </div>
+            <CheckCircle className="w-24 h-24 text-primary" />
+          </motion.div>
+
+          <motion.div
+            variants={prefersReduced ? undefined : staggerContainer}
+            initial={prefersReduced ? undefined : 'hidden'}
+            animate={prefersReduced ? undefined : 'visible'}
+            className="space-y-4 text-foreground"
+          >
+            <motion.h1
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-section-title-lg font-title font-semibold"
+            >
+              {t.success.title}
+            </motion.h1>
+            <motion.p
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-body-lg leading-relaxed"
+            >
+              {t.success.message}
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
+            animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
+          >
+            <Button
+              onClick={handleSendAnotherMessage}
+              size="lg"
+              sectionType="form"
+              priority="high"
+              className="font-semibold px-8 py-6"
+            >
+              {t.success.action}
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
     );
   }
@@ -503,38 +485,71 @@ export default function ContactForm({
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
+      <section className="pt-8 md:pt-8 pb-8 md:pb-8 px-4 sm:px-8 lg:px-16">
         <div className="max-w-border-64 mx-auto">
-          <div className="text-left space-y-8 text-foreground">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight">
-              {translations.contact.title}
-            </h1>
-            <p className="text-xl md:text-2xl max-w-4xl leading-relaxed font-body">
-              {translations.contact.subtitle}
-            </p>
-          </div>
+          <motion.div
+            variants={prefersReduced ? undefined : staggerContainer}
+            initial={prefersReduced ? undefined : 'hidden'}
+            whileInView={prefersReduced ? undefined : 'visible'}
+            viewport={{ once: true, amount: 0.4 }}
+            className="text-left space-y-8 text-foreground"
+          >
+            <motion.h1
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-4xl md:text-5xl lg:text-6xl font-title font-bold uppercase tracking-wide leading-tight"
+            >
+              {t.title}
+            </motion.h1>
+            <motion.p
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-xl md:text-2xl max-w-4xl leading-relaxed font-body"
+            >
+              {t.subtitle}
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
       {/* Contact Form Section */}
       <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16 bg-muted/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-left mb-12">
+          <motion.div
+            initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
+            whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="text-left mb-12"
+          >
             <h2 className="text-3xl md:text-4xl font-title font-bold mb-6 text-foreground uppercase tracking-wide">
-              {translations.contact.form.title}
+              {t.form.title}
             </h2>
-            <div className="w-32 h-1 bg-primary rounded-full"></div>
-          </div>
+            <motion.div
+              className="h-1 bg-primary rounded-full"
+              style={{ width: prefersReduced ? '8rem' : undefined }}
+              initial={prefersReduced ? undefined : { width: 0 }}
+              whileInView={prefersReduced ? undefined : { width: '8rem' }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            />
+          </motion.div>
 
-          <form
+          <motion.form
+            ref={formRef}
             onSubmit={onSubmit}
+            variants={prefersReduced ? undefined : staggerContainer}
+            initial={prefersReduced ? undefined : 'hidden'}
+            whileInView={prefersReduced ? undefined : 'visible'}
+            viewport={{ once: true, amount: 0.2 }}
             className={cn(
               'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12',
               getBackgroundClasses('form').background
             )}
           >
             {/* Name + Company (desktop side-by-side) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {/* Name Field */}
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-muted-foreground text-sm">
@@ -543,7 +558,9 @@ export default function ContactForm({
                 <Input
                   id="name"
                   type="text"
-                  placeholder={t.form.name.placeholder}
+                  placeholder={formatRequiredPlaceholder(
+                    t.form.name.placeholder
+                  )}
                   value={formData.name}
                   onChange={e => handleInputChange('name', e.target.value)}
                   onFocus={() => setFocusedField('name')}
@@ -555,7 +572,6 @@ export default function ContactForm({
                     'focus:border-2 focus:border-primary focus:ring-0'
                   )}
                 />
-                {/* No error text; border indicates error */}
               </div>
 
               {/* Company Field */}
@@ -580,10 +596,13 @@ export default function ContactForm({
                   )}
                 />
               </div>
-            </div>
+            </motion.div>
 
             {/* Contact Method + Email/Phone (desktop side-by-side) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {/* Contact Method Field */}
               <div className="space-y-2">
                 <Label
@@ -609,6 +628,8 @@ export default function ContactForm({
                         'bg-card text-card-foreground border-border',
                         'text-body-md',
                         !formData.contactMethod && 'text-muted-foreground',
+                        errors.contactMethod &&
+                          'border-destructive focus:border-destructive',
                         focusedField === 'contactMethod' &&
                           '!border-primary !border-2'
                       )}
@@ -629,9 +650,7 @@ export default function ContactForm({
                     >
                       <span>
                         {formData.contactMethod
-                          ? t.form.contactMethod.options[
-                              formData.contactMethod as keyof typeof t.form.contactMethod.options
-                            ]
+                          ? t.form.contactMethod.options[formData.contactMethod]
                           : t.form.contactMethod.placeholder}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
@@ -649,7 +668,7 @@ export default function ContactForm({
                             key={key}
                             type="button"
                             onClick={() => {
-                              handleInputChange('contactMethod', key);
+                              handleInputChange('contactMethod', key as any);
                               setFocusedField(null);
                             }}
                             className={cn(
@@ -670,64 +689,92 @@ export default function ContactForm({
                 </Popover>
               </div>
 
-              {/* Phone/Email Field (conditional based on contact method) */}
-              {formData.contactMethod === 'email' ? (
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="email"
-                    className="text-muted-foreground text-sm"
-                  >
-                    {t.form.email.label}
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={formatRequired(t.form.email.placeholder)}
-                    value={formData.email}
-                    onChange={e => handleInputChange('email', e.target.value)}
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
-                    data-field="email"
-                    aria-invalid={!!errors.email}
-                    className={cn(
-                      'text-body-md',
-                      'focus:border-2 focus:border-primary focus:ring-0'
-                    )}
-                  />
-                  {/* No error text; border indicates error */}
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="phone"
-                    className="text-muted-foreground text-sm"
-                  >
-                    {t.form.phone.label}
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder={formatRequired(t.form.phone.placeholder)}
-                    value={formData.phone}
-                    onChange={e => handleInputChange('phone', e.target.value)}
-                    onFocus={() => setFocusedField('phone')}
-                    onBlur={() => setFocusedField(null)}
-                    data-field="phone"
-                    aria-invalid={!!errors.phone}
-                    className={cn(
-                      'text-body-md',
-                      'focus:border-2 focus:border-primary focus:ring-0',
-                      errors.phone &&
-                        'border-destructive focus:border-destructive'
-                    )}
-                  />
-                  {/* No error text; border indicates error */}
-                </div>
-              )}
-            </div>
+              {/* Email/Phone Field */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
+                  }
+                  className="text-muted-foreground text-sm"
+                >
+                  {formData.contactMethod === 'whatsapp' ||
+                  formData.contactMethod === 'call'
+                    ? t.form.phone.label
+                    : t.form.email.label}
+                </Label>
+                <Input
+                  id={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
+                  }
+                  type={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'tel'
+                      : 'email'
+                  }
+                  placeholder={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? formatRequiredPlaceholder(t.form.phone.placeholder)
+                      : t.form.email.placeholder
+                  }
+                  value={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? formData.phone
+                      : formData.email
+                  }
+                  onChange={e =>
+                    handleInputChange(
+                      formData.contactMethod === 'whatsapp' ||
+                        formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email',
+                      e.target.value
+                    )
+                  }
+                  onFocus={() =>
+                    setFocusedField(
+                      formData.contactMethod === 'whatsapp' ||
+                        formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email'
+                    )
+                  }
+                  onBlur={() => setFocusedField(null)}
+                  data-field={
+                    formData.contactMethod === 'whatsapp' ||
+                    formData.contactMethod === 'call'
+                      ? 'phone'
+                      : 'email'
+                  }
+                  aria-invalid={
+                    !!errors[
+                      formData.contactMethod === 'whatsapp' ||
+                      formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email'
+                    ]
+                  }
+                  className={cn(
+                    'text-body-md',
+                    'focus:border-2 focus:border-primary focus:ring-0'
+                  )}
+                />
+              </div>
+            </motion.div>
 
-            {/* Event Type + Services (desktop side-by-side) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Event Type + Location (desktop side-by-side) */}
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {/* Event Type Field */}
               <div className="space-y-2">
                 <Label
@@ -776,7 +823,9 @@ export default function ContactForm({
                           ? t.form.eventType.options[
                               formData.eventType as keyof typeof t.form.eventType.options
                             ]
-                          : formatRequired(t.form.eventType.placeholder)}
+                          : formatRequiredPlaceholder(
+                              t.form.eventType.placeholder
+                            )}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
                     </div>
@@ -812,43 +861,8 @@ export default function ContactForm({
                     </div>
                   </PopoverContent>
                 </Popover>
-                {/* No error text; border indicates error */}
               </div>
 
-              {/* Services Field */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="services"
-                  className="text-muted-foreground text-sm"
-                >
-                  {t.form.services.label}
-                </Label>
-                <MultiSelect
-                  options={Object.entries(t.form.services.options).map(
-                    ([key, label]) => ({
-                      value: key,
-                      label: label,
-                    })
-                  )}
-                  value={formData.services}
-                  onValueChange={services =>
-                    handleInputChange('services', services)
-                  }
-                  placeholder={formatRequired(t.form.services.placeholder)}
-                  data-field="services"
-                  aria-invalid={!!errors.services}
-                  className={cn(
-                    'text-body-md',
-                    errors.services &&
-                      'border-destructive focus:border-destructive'
-                  )}
-                />
-                {/* No error text; border indicates error */}
-              </div>
-            </div>
-
-            {/* Location + Attendees (desktop side-by-side) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Location Field */}
               <div className="space-y-2">
                 <Label
@@ -860,7 +874,9 @@ export default function ContactForm({
                 <Input
                   id="location"
                   type="text"
-                  placeholder={t.form.location.placeholder}
+                  placeholder={formatRequiredPlaceholder(
+                    t.form.location.placeholder
+                  )}
                   value={formData.location}
                   onChange={e => handleInputChange('location', e.target.value)}
                   onFocus={() => setFocusedField('location')}
@@ -869,14 +885,17 @@ export default function ContactForm({
                   aria-invalid={!!errors.location}
                   className={cn(
                     'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0',
-                    errors.location &&
-                      'border-destructive focus:border-destructive'
+                    'focus:border-2 focus:border-primary focus:ring-0'
                   )}
                 />
-                {/* No error text; border indicates error */}
               </div>
+            </motion.div>
 
+            {/* Attendees + Event Date (desktop side-by-side) */}
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               {/* Attendees Field */}
               <div className="space-y-2">
                 <Label
@@ -925,7 +944,9 @@ export default function ContactForm({
                           ? t.form.attendees.options[
                               formData.attendees as keyof typeof t.form.attendees.options
                             ]
-                          : formatRequired(t.form.attendees.placeholder)}
+                          : formatRequiredPlaceholder(
+                              t.form.attendees.placeholder
+                            )}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
                     </div>
@@ -961,94 +982,93 @@ export default function ContactForm({
                     </div>
                   </PopoverContent>
                 </Popover>
-                {/* No error text; border indicates error */}
               </div>
-            </div>
 
-            {/* Event Date Field */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="eventDate"
-                className="text-muted-foreground text-sm"
-              >
-                {t.form.eventDate.label}
-              </Label>
-              <div className="flex items-center gap-3">
-                <div className="relative flex-1">
+              {/* Event Date Field */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="eventDate"
+                  className="text-muted-foreground text-sm"
+                >
+                  {t.form.eventDate.label}
+                </Label>
+                <div className="relative">
                   <Input
-                    ref={dateInputRef}
                     id="eventDate"
                     type="date"
                     value={formData.eventDate}
-                    onChange={e => {
-                      handleInputChange('eventDate', e.target.value);
-                      if (e.target.value) {
-                        setNoDateSelected(false);
-                      }
-                    }}
+                    onChange={e =>
+                      handleInputChange('eventDate', e.target.value)
+                    }
                     onFocus={() => setFocusedField('eventDate')}
                     onBlur={() => setFocusedField(null)}
-                    min={new Date().toISOString().split('T')[0]}
                     className={cn(
                       'text-body-md pr-10',
-                      'focus:border-2 focus:border-primary focus:ring-0',
-                      // Show placeholder color when no date selected
-                      !formData.eventDate && 'text-muted-foreground'
+                      'focus:border-2 focus:border-primary focus:ring-0'
                     )}
                   />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      handleInputChange('eventDate', '');
-                      setNoDateSelected(false);
-                    }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 px-2 bg-background border border-input hover:bg-accent hover:text-accent-foreground"
-                    title={
-                      locale === 'es'
-                        ? 'Limpiar fecha'
-                        : locale === 'pt'
-                          ? 'Limpar data'
-                          : 'Clear date'
-                    }
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={noDateSelected}
-                    onChange={e => {
-                      const checked = e.currentTarget.checked;
-                      setNoDateSelected(checked);
-                      if (checked) {
-                        handleInputChange('eventDate', '');
+                  {formData.eventDate && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleInputChange('eventDate', '')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-foreground"
+                      title={
+                        locale === 'es'
+                          ? 'Limpiar fecha'
+                          : locale === 'pt'
+                            ? 'Limpar data'
+                            : 'Clear date'
                       }
-                    }}
-                  />
-                  <Label
-                    className="text-sm text-muted-foreground whitespace-nowrap cursor-pointer"
-                    onClick={() => {
-                      const newValue = !noDateSelected;
-                      setNoDateSelected(newValue);
-                      if (newValue) {
-                        handleInputChange('eventDate', '');
-                      }
-                    }}
-                  >
-                    {locale === 'es'
-                      ? 'No tengo fecha'
-                      : locale === 'pt'
-                        ? 'Não tenho data'
-                        : "I don't have a date"}
-                  </Label>
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Services Field */}
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="space-y-2"
+            >
+              <Label
+                htmlFor="services"
+                className="text-muted-foreground text-sm"
+              >
+                {t.form.services.label}
+              </Label>
+              <MultiSelect
+                options={Object.entries(t.form.services.options).map(
+                  ([key, label]) => ({
+                    value: key,
+                    label: label,
+                  })
+                )}
+                value={formData.services}
+                onValueChange={services =>
+                  handleInputChange('services', services)
+                }
+                placeholder={formatRequiredPlaceholder(
+                  t.form.services.placeholder
+                )}
+                data-field="services"
+                aria-invalid={!!errors.services}
+                className={cn(
+                  'text-body-md',
+                  errors.services &&
+                    'border-destructive focus:border-destructive'
+                )}
+              />
+            </motion.div>
 
             {/* Message Field */}
-            <div className="space-y-2">
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="space-y-2"
+            >
               <Label
                 htmlFor="message"
                 className="text-muted-foreground text-sm"
@@ -1058,44 +1078,106 @@ export default function ContactForm({
               <Textarea
                 id="message"
                 placeholder={t.form.message.placeholder}
-                rows={4}
                 value={formData.message}
                 onChange={e => handleInputChange('message', e.target.value)}
                 onFocus={() => setFocusedField('message')}
                 onBlur={() => setFocusedField(null)}
+                data-field="message"
+                aria-invalid={!!errors.message}
+                rows={6}
                 className={cn(
                   'text-body-md resize-none',
                   'focus:border-2 focus:border-primary focus:ring-0'
                 )}
               />
-            </div>
+            </motion.div>
 
             {/* Submit Button */}
-            <div className="space-y-4 lg:space-y-6 pt-4">
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="flex justify-center"
+            >
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 size="lg"
                 sectionType="form"
                 priority="high"
-                className="font-semibold px-8 lg:px-12 py-4 lg:py-6 w-full lg:w-auto"
+                className="font-semibold px-8 py-6 min-w-48"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     {t.form.submit.loading}
                   </>
                 ) : (
                   <>
-                    <Send className="w-6 h-6 mr-2" />
+                    <Send className="mr-2 h-5 w-5" />
                     {t.form.submit.button}
                   </>
                 )}
               </Button>
+            </motion.div>
+          </motion.form>
+        </div>
+      </section>
 
-              {/* No global error text; rely on field borders only */}
-            </div>
-          </form>
+      {/* Trust Indicators */}
+      <section className="py-8 md:py-12 px-4 sm:px-8 lg:px-16">
+        <div className="max-w-border-64 mx-auto">
+          <motion.div
+            variants={prefersReduced ? undefined : staggerContainer}
+            initial={prefersReduced ? undefined : 'hidden'}
+            whileInView={prefersReduced ? undefined : 'visible'}
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-center space-y-4"
+            >
+              <div className="flex justify-center">
+                <Clock className="w-12 h-12 text-primary" />
+              </div>
+              <h3 className="text-xl font-subtitle font-bold text-foreground">
+                {t.trust.response.title}
+              </h3>
+              <p className="text-body-md text-muted-foreground">
+                {t.trust.response.description}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-center space-y-4"
+            >
+              <div className="flex justify-center">
+                <Heart className="w-12 h-12 text-primary" />
+              </div>
+              <h3 className="text-xl font-subtitle font-bold text-foreground">
+                {t.trust.commitment.title}
+              </h3>
+              <p className="text-body-md text-muted-foreground">
+                {t.trust.commitment.description}
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="text-center space-y-4"
+            >
+              <div className="flex justify-center">
+                <Shield className="w-12 h-12 text-primary" />
+              </div>
+              <h3 className="text-xl font-subtitle font-bold text-foreground">
+                {t.trust?.privacy?.title || 'Privacidad Garantizada'}
+              </h3>
+              <p className="text-body-md text-muted-foreground">
+                {t.trust?.privacy?.description ||
+                  'Tu información está segura con nosotros'}
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </div>

@@ -83,11 +83,11 @@ const STATIC_TRANSLATIONS = {
         title: 'Formulario',
         name: {
           label: 'Tu nombre',
-          placeholder: '*Nombre',
+          placeholder: 'Nombre',
         },
         email: {
           label: 'Correo',
-          placeholder: '*Email',
+          placeholder: 'Email',
         },
         company: {
           label: 'Empresa',
@@ -101,7 +101,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: '¿Qué tipo de evento tienes?',
-          placeholder: '*Seleccionar',
+          placeholder: 'Seleccionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Presentación de producto',
@@ -128,7 +128,7 @@ const STATIC_TRANSLATIONS = {
         },
         services: {
           label: '¿Qué servicios te interesan?',
-          placeholder: '*Servicios',
+          placeholder: 'Servicios',
           options: {
             photography: 'Fotografía',
             video: 'Video',
@@ -139,7 +139,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: '¿Cómo preferís que te contactemos?',
-          placeholder: '*Seleccionar',
+          placeholder: 'Seleccionar',
           options: {
             whatsapp: 'Whatsapp',
             email: 'Mail',
@@ -583,11 +583,11 @@ const STATIC_TRANSLATIONS = {
         title: 'Form',
         name: {
           label: 'Name',
-          placeholder: '*Name',
+          placeholder: 'Name',
         },
         email: {
           label: 'Email',
-          placeholder: '*Email',
+          placeholder: 'Email',
         },
         company: {
           label: 'Company',
@@ -601,7 +601,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'What type of event do you have?',
-          placeholder: '*Select',
+          placeholder: 'Select',
           options: {
             corporate: 'Corporate event',
             product: 'Product presentation',
@@ -614,7 +614,7 @@ const STATIC_TRANSLATIONS = {
         },
         location: {
           label: 'Event location (city)',
-          placeholder: '*City',
+          placeholder: 'City',
         },
         attendees: {
           label: 'Expected number of attendees',
@@ -628,7 +628,7 @@ const STATIC_TRANSLATIONS = {
         },
         services: {
           label: 'What services are you interested in?',
-          placeholder: '*Services',
+          placeholder: 'Services',
           options: {
             photography: 'Photography',
             video: 'Video',
@@ -639,7 +639,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'How would you prefer us to contact you?',
-          placeholder: '*Select',
+          placeholder: 'Select',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',
@@ -1079,11 +1079,11 @@ const STATIC_TRANSLATIONS = {
         title: 'Formulário',
         name: {
           label: 'Nome',
-          placeholder: '*Nome',
+          placeholder: 'Nome',
         },
         email: {
           label: 'Email',
-          placeholder: '*Email',
+          placeholder: 'Email',
         },
         company: {
           label: 'Empresa',
@@ -1097,7 +1097,7 @@ const STATIC_TRANSLATIONS = {
         },
         eventType: {
           label: 'Que tipo de evento você tem?',
-          placeholder: '*Selecionar',
+          placeholder: 'Selecionar',
           options: {
             corporate: 'Evento corporativo',
             product: 'Apresentação de produto',
@@ -1110,7 +1110,7 @@ const STATIC_TRANSLATIONS = {
         },
         location: {
           label: 'Local do evento (cidade)',
-          placeholder: '*Cidade',
+          placeholder: 'Cidade',
         },
         attendees: {
           label: 'Número esperado de participantes',
@@ -1124,7 +1124,7 @@ const STATIC_TRANSLATIONS = {
         },
         services: {
           label: 'Que serviços você está interessado?',
-          placeholder: '*Serviços',
+          placeholder: 'Serviços',
           options: {
             photography: 'Fotografia',
             video: 'Vídeo',
@@ -1135,7 +1135,7 @@ const STATIC_TRANSLATIONS = {
         },
         contactMethod: {
           label: 'Como você prefere que entremos em contato?',
-          placeholder: '*Selecionar',
+          placeholder: 'Selecionar',
           options: {
             whatsapp: 'WhatsApp',
             email: 'Email',

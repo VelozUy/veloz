@@ -147,6 +147,10 @@ const mockTranslations = {
         description:
           'Obtener una cotización es completamente gratis y sin compromiso',
       },
+      privacy: {
+        title: 'Privacidad garantizada',
+        description: 'Tu información está segura con nosotros',
+      },
     },
   },
 };
@@ -257,6 +261,10 @@ describe('ContactForm Component', () => {
           title: 'No Commitment',
           description:
             'Getting a quote is completely free and without commitment',
+        },
+        privacy: {
+          title: 'Privacy Guaranteed',
+          description: 'Your information is safe with us',
         },
       },
     },

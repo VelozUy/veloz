@@ -1,5 +1,5 @@
 import { getStaticContent } from '@/lib/utils';
-import ContactFormAnimatedSimple from '@/components/forms/ContactFormAnimatedSimple';
+import ContactForm from '@/components/forms/ContactForm';
 import type { Metadata } from 'next';
 
 // Force static generation at build time
@@ -143,9 +143,7 @@ function ContactPageContent() {
     ? { contact: content.translations.contact }
     : fallbackTranslations;
 
-  return (
-    <ContactFormAnimatedSimple translations={translations as any} locale="es" />
-  );
+  return <ContactForm translations={translations as any} locale="es" />;
 }
 
 export default function ContactPage() {

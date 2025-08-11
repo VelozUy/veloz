@@ -25,7 +25,7 @@ export interface ContactFormData {
   services: string[];
   contactMethod: 'whatsapp' | 'email' | 'call';
   eventDate?: string;
-  message: string;
+  message?: string;
   source?: 'contact_form' | 'widget';
   locale?: string; // Add locale support
 }
