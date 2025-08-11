@@ -48,7 +48,16 @@ export default function UXEnhancementsDemo() {
         };
         eventDate: { label: string; optional: string; help: string };
         location: { label: string; placeholder: string };
-        attendees: { label: string; placeholder: string };
+        attendees: {
+          label: string;
+          placeholder: string;
+          options: {
+            '0-20': string;
+            '21-50': string;
+            '51-100': string;
+            '100+': string;
+          };
+        };
         services: {
           label: string;
           placeholder: string;

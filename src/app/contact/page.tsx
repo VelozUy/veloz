@@ -67,7 +67,16 @@ function ContactPageContent() {
           },
         },
         location: { label: 'Ubicación', placeholder: 'Ciudad, País' },
-        attendees: { label: 'Asistentes', placeholder: 'Número aproximado' },
+        attendees: {
+          label: 'Asistentes',
+          placeholder: 'Selecciona el rango de asistentes',
+          options: {
+            '0-20': '0-20 personas',
+            '21-50': '21-50 personas',
+            '51-100': '51-100 personas',
+            '100+': 'Más de 100 personas',
+          },
+        },
         services: {
           label: 'Servicios',
           placeholder: 'Selecciona los servicios que necesitas',

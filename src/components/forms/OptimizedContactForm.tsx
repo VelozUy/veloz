@@ -6,13 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Send,
@@ -26,6 +25,7 @@ import {
   X,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
 } from 'lucide-react';
 import { emailService } from '@/services/email';
 import { cn } from '@/lib/utils';
@@ -94,6 +94,12 @@ interface ContactFormProps {
         attendees: {
           label: string;
           placeholder: string;
+          options: {
+            '0-20': string;
+            '21-50': string;
+            '51-100': string;
+            '100+': string;
+          };
         };
         services: {
           label: string;
@@ -500,35 +506,84 @@ export default function OptimizedContactForm({
                   >
                     {t.form.contactMethod.label}
                   </Label>
-                  <Select
-                    value={formData.contactMethod}
-                    onValueChange={value =>
-                      handleInputChange('contactMethod', value)
+                  <Popover
+                    open={focusedField === 'contactMethod'}
+                    onOpenChange={open =>
+                      setFocusedField(open ? 'contactMethod' : null)
                     }
                   >
-                    <SelectTrigger
-                      className={cn(
-                        'text-body-md',
-                        errors.contactMethod &&
-                          'border-destructive focus:border-destructive'
-                      )}
+                    <PopoverTrigger asChild>
+                      <div
+                        className={cn(
+                          'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                          'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                          'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                          'aria-invalid:!border-destructive',
+                          'touch-manipulation cursor-pointer',
+                          'bg-card text-card-foreground border-border',
+                          'text-body-md',
+                          !formData.contactMethod && 'text-muted-foreground',
+                          errors.contactMethod &&
+                            'border-destructive focus:border-destructive',
+                          focusedField === 'contactMethod' &&
+                            '!border-primary !border-2'
+                        )}
+                        role="button"
+                        tabIndex={0}
+                        data-field="contactMethod"
+                        aria-invalid={!!errors.contactMethod}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setFocusedField(
+                              focusedField === 'contactMethod'
+                                ? null
+                                : 'contactMethod'
+                            );
+                          }
+                        }}
+                      >
+                        <span>
+                          {formData.contactMethod
+                            ? t.form.contactMethod.options[
+                                formData.contactMethod as keyof typeof t.form.contactMethod.options
+                              ]
+                            : t.form.contactMethod.placeholder}
+                        </span>
+                        <ChevronDown className="size-4 opacity-50" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                      align="start"
+                      sideOffset={0}
                     >
-                      <SelectValue
-                        placeholder={t.form.contactMethod.placeholder}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="whatsapp">
-                        {t.form.contactMethod.options.whatsapp}
-                      </SelectItem>
-                      <SelectItem value="email">
-                        {t.form.contactMethod.options.email}
-                      </SelectItem>
-                      <SelectItem value="call">
-                        {t.form.contactMethod.options.call}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <div className="max-h-80 overflow-y-auto py-2">
+                        {Object.entries(t.form.contactMethod.options).map(
+                          ([key, label], index, array) => (
+                            <button
+                              key={key}
+                              type="button"
+                              onClick={() => {
+                                handleInputChange('contactMethod', key);
+                                setFocusedField(null);
+                              }}
+                              className={cn(
+                                'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                                index === 0 && 'pt-1.5',
+                                index === array.length - 1 && 'pb-1.5'
+                              )}
+                            >
+                              <span>{label}</span>
+                              {formData.contactMethod === key && (
+                                <Check className="w-4 h-4" />
+                              )}
+                            </button>
+                          )
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
 
                   {formData.contactMethod === 'email' ? (
                     <div className="space-y-2 mt-4">
@@ -593,45 +648,82 @@ export default function OptimizedContactForm({
                   >
                     {t.form.eventType.label}
                   </Label>
-                  <Select
-                    value={formData.eventType}
-                    onValueChange={value =>
-                      handleInputChange('eventType', value)
+                  <Popover
+                    open={focusedField === 'eventType'}
+                    onOpenChange={open =>
+                      setFocusedField(open ? 'eventType' : null)
                     }
                   >
-                    <SelectTrigger
-                      className={cn(
-                        'text-body-md',
-                        errors.eventType &&
-                          'border-destructive focus:border-destructive'
-                      )}
+                    <PopoverTrigger asChild>
+                      <div
+                        className={cn(
+                          'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                          'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                          'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                          'aria-invalid:!border-destructive',
+                          'touch-manipulation cursor-pointer',
+                          'bg-card text-card-foreground border-border',
+                          'text-body-md',
+                          !formData.eventType && 'text-muted-foreground',
+                          errors.eventType &&
+                            'border-destructive focus:border-destructive',
+                          focusedField === 'eventType' &&
+                            '!border-primary !border-2'
+                        )}
+                        role="button"
+                        tabIndex={0}
+                        data-field="eventType"
+                        aria-invalid={!!errors.eventType}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setFocusedField(
+                              focusedField === 'eventType' ? null : 'eventType'
+                            );
+                          }
+                        }}
+                      >
+                        <span>
+                          {formData.eventType
+                            ? t.form.eventType.options[
+                                formData.eventType as keyof typeof t.form.eventType.options
+                              ]
+                            : formatRequired(t.form.eventType.placeholder)}
+                        </span>
+                        <ChevronDown className="size-4 opacity-50" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                      align="start"
+                      sideOffset={0}
                     >
-                      <SelectValue placeholder={t.form.eventType.placeholder} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="corporate">
-                        {t.form.eventType.options.corporate}
-                      </SelectItem>
-                      <SelectItem value="product">
-                        {t.form.eventType.options.product}
-                      </SelectItem>
-                      <SelectItem value="birthday">
-                        {t.form.eventType.options.birthday}
-                      </SelectItem>
-                      <SelectItem value="wedding">
-                        {t.form.eventType.options.wedding}
-                      </SelectItem>
-                      <SelectItem value="concert">
-                        {t.form.eventType.options.concert}
-                      </SelectItem>
-                      <SelectItem value="exhibition">
-                        {t.form.eventType.options.exhibition}
-                      </SelectItem>
-                      <SelectItem value="other">
-                        {t.form.eventType.options.other}
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                      <div className="max-h-80 overflow-y-auto py-2">
+                        {Object.entries(t.form.eventType.options).map(
+                          ([key, label], index, array) => (
+                            <button
+                              key={key}
+                              type="button"
+                              onClick={() => {
+                                handleInputChange('eventType', key);
+                                setFocusedField(null);
+                              }}
+                              className={cn(
+                                'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                                index === 0 && 'pt-1.5',
+                                index === array.length - 1 && 'pb-1.5'
+                              )}
+                            >
+                              <span>{label}</span>
+                              {formData.eventType === key && (
+                                <Check className="w-4 h-4" />
+                              )}
+                            </button>
+                          )
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   {/* No error text; border indicates error */}
                 </div>
 
@@ -743,22 +835,82 @@ export default function OptimizedContactForm({
                   >
                     {t.form.attendees.label}
                   </Label>
-                  <Input
-                    id="attendees"
-                    type="text"
-                    placeholder={formatRequired(t.form.attendees.placeholder)}
-                    value={formData.attendees}
-                    onChange={e =>
-                      handleInputChange('attendees', e.target.value)
+                  <Popover
+                    open={focusedField === 'attendees'}
+                    onOpenChange={open =>
+                      setFocusedField(open ? 'attendees' : null)
                     }
-                    onFocus={() => setFocusedField('attendees')}
-                    onBlur={() => setFocusedField(null)}
-                    className={cn(
-                      'text-body-md',
-                      errors.attendees &&
-                        'border-destructive focus:border-destructive'
-                    )}
-                  />
+                  >
+                    <PopoverTrigger asChild>
+                      <div
+                        className={cn(
+                          'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                          'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                          'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                          'aria-invalid:!border-destructive',
+                          'touch-manipulation cursor-pointer',
+                          'bg-card text-card-foreground border-border',
+                          'text-body-md',
+                          !formData.attendees && 'text-muted-foreground',
+                          errors.attendees &&
+                            'border-destructive focus:border-destructive',
+                          focusedField === 'attendees' &&
+                            '!border-primary !border-2'
+                        )}
+                        role="button"
+                        tabIndex={0}
+                        data-field="attendees"
+                        aria-invalid={!!errors.attendees}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setFocusedField(
+                              focusedField === 'attendees' ? null : 'attendees'
+                            );
+                          }
+                        }}
+                      >
+                        <span>
+                          {formData.attendees
+                            ? t.form.attendees.options[
+                                formData.attendees as keyof typeof t.form.attendees.options
+                              ]
+                            : formatRequired(t.form.attendees.placeholder)}
+                        </span>
+                        <ChevronDown className="size-4 opacity-50" />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                      align="start"
+                      sideOffset={0}
+                    >
+                      <div className="max-h-80 overflow-y-auto py-2">
+                        {Object.entries(t.form.attendees.options).map(
+                          ([key, label], index, array) => (
+                            <button
+                              key={key}
+                              type="button"
+                              onClick={() => {
+                                handleInputChange('attendees', key);
+                                setFocusedField(null);
+                              }}
+                              className={cn(
+                                'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                                index === 0 && 'pt-1.5',
+                                index === array.length - 1 && 'pb-1.5'
+                              )}
+                            >
+                              <span>{label}</span>
+                              {formData.attendees === key && (
+                                <Check className="w-4 h-4" />
+                              )}
+                            </button>
+                          )
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   {/* No error text; border indicates error */}
                 </div>
 

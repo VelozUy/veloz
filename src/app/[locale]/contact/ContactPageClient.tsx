@@ -88,7 +88,13 @@ export default function ContactPageClient() {
         },
         attendees: (content.translations as any)?.contact?.form?.attendees || {
           label: 'Number of Attendees',
-          placeholder: '*Expected number of attendees',
+          placeholder: 'Select attendee range',
+          options: {
+            '0-20': '0-20 people',
+            '21-50': '21-50 people',
+            '51-100': '51-100 people',
+            '100+': '100+ people',
+          },
         },
         services: (content.translations as any)?.contact?.form?.services || {
           label: 'Services Needed',

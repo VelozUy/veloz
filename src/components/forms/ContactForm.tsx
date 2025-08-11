@@ -98,6 +98,12 @@ interface ContactFormProps {
         attendees: {
           label: string;
           placeholder: string;
+          options: {
+            '0-20': string;
+            '21-50': string;
+            '51-100': string;
+            '100+': string;
+          };
         };
         services: {
           label: string;
@@ -879,23 +885,82 @@ export default function ContactForm({
                 >
                   {t.form.attendees.label}
                 </Label>
-                <Input
-                  id="attendees"
-                  type="number"
-                  placeholder={t.form.attendees.placeholder}
-                  value={formData.attendees}
-                  onChange={e => handleInputChange('attendees', e.target.value)}
-                  onFocus={() => setFocusedField('attendees')}
-                  onBlur={() => setFocusedField(null)}
-                  data-field="attendees"
-                  aria-invalid={!!errors.attendees}
-                  className={cn(
-                    'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0',
-                    errors.attendees &&
-                      'border-destructive focus:border-destructive'
-                  )}
-                />
+                <Popover
+                  open={focusedField === 'attendees'}
+                  onOpenChange={open =>
+                    setFocusedField(open ? 'attendees' : null)
+                  }
+                >
+                  <PopoverTrigger asChild>
+                    <div
+                      className={cn(
+                        'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                        'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
+                        'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
+                        'aria-invalid:!border-destructive',
+                        'touch-manipulation cursor-pointer',
+                        'bg-card text-card-foreground border-border',
+                        'text-body-md',
+                        !formData.attendees && 'text-muted-foreground',
+                        errors.attendees &&
+                          'border-destructive focus:border-destructive',
+                        focusedField === 'attendees' &&
+                          '!border-primary !border-2'
+                      )}
+                      role="button"
+                      tabIndex={0}
+                      data-field="attendees"
+                      aria-invalid={!!errors.attendees}
+                      onKeyDown={e => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setFocusedField(
+                            focusedField === 'attendees' ? null : 'attendees'
+                          );
+                        }
+                      }}
+                    >
+                      <span>
+                        {formData.attendees
+                          ? t.form.attendees.options[
+                              formData.attendees as keyof typeof t.form.attendees.options
+                            ]
+                          : formatRequired(t.form.attendees.placeholder)}
+                      </span>
+                      <ChevronDown className="size-4 opacity-50" />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
+                    align="start"
+                    sideOffset={0}
+                  >
+                    <div className="max-h-80 overflow-y-auto py-2">
+                      {Object.entries(t.form.attendees.options).map(
+                        ([key, label], index, array) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => {
+                              handleInputChange('attendees', key);
+                              setFocusedField(null);
+                            }}
+                            className={cn(
+                              'w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground',
+                              index === 0 && 'pt-1.5',
+                              index === array.length - 1 && 'pb-1.5'
+                            )}
+                          >
+                            <span>{label}</span>
+                            {formData.attendees === key && (
+                              <Check className="w-4 h-4" />
+                            )}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 {/* No error text; border indicates error */}
               </div>
             </div>

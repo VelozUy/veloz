@@ -66,7 +66,7 @@ const mockTranslations = {
       },
       eventType: {
         label: '¿Qué tipo de evento tienes?',
-        placeholder: 'Selecciona el tipo de evento',
+        placeholder: 'Select event type',
         options: {
           corporate: 'Evento corporativo',
           product: 'Presentación de producto',
@@ -83,7 +83,13 @@ const mockTranslations = {
       },
       attendees: {
         label: 'Cantidad de asistentes esperados',
-        placeholder: 'Número aproximado de invitados',
+        placeholder: 'Selecciona el rango de asistentes',
+        options: {
+          '0-20': '0-20 personas',
+          '21-50': '21-50 personas',
+          '51-100': '51-100 personas',
+          '100+': 'Más de 100 personas',
+        },
       },
       services: {
         label: '¿Qué servicios te interesan?',
@@ -98,7 +104,7 @@ const mockTranslations = {
       },
       contactMethod: {
         label: '¿Cómo preferís que te contactemos?',
-        placeholder: 'Selecciona método de contacto',
+        placeholder: 'Select contact method',
         options: {
           whatsapp: 'Whatsapp',
           email: 'Mail',
@@ -189,7 +195,13 @@ describe('ContactForm Component', () => {
         },
         attendees: {
           label: 'Expected number of attendees',
-          placeholder: 'Approximate number of guests',
+          placeholder: 'Select attendee range',
+          options: {
+            '0-20': '0-20 people',
+            '21-50': '21-50 people',
+            '51-100': '51-100 people',
+            '100+': '100+ people',
+          },
         },
         services: {
           label: 'What services are you interested in?',
@@ -265,14 +277,12 @@ describe('ContactForm Component', () => {
       ).toBeInTheDocument();
       expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
       expect(
-        screen.getByLabelText('What type of event do you have?')
+        screen.getByText('What type of event do you have?')
       ).toBeInTheDocument();
       expect(
         screen.getByLabelText('Event location (city)')
       ).toBeInTheDocument();
-      expect(
-        screen.getByLabelText('Expected number of attendees')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Select attendee range')).toBeInTheDocument();
       expect(screen.getByLabelText(/Event Date/)).toBeInTheDocument();
       expect(
         screen.getByLabelText(/Tell us all the details/)
@@ -371,16 +381,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -402,16 +413,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -425,7 +437,7 @@ describe('ContactForm Component', () => {
             email: 'john@example.com',
             eventType: 'corporate',
             location: 'New York',
-            attendees: '100',
+            attendees: '100+',
           })
         );
       });
@@ -445,16 +457,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -480,16 +493,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -516,16 +530,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -557,13 +572,13 @@ describe('ContactForm Component', () => {
       ).toBeInTheDocument();
       expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
       expect(
-        screen.getByLabelText('What type of event do you have?')
+        screen.getByText('What type of event do you have?')
       ).toBeInTheDocument();
       expect(
         screen.getByLabelText('Event location (city)')
       ).toBeInTheDocument();
       expect(
-        screen.getByLabelText('Expected number of attendees')
+        screen.getByText('Expected number of attendees')
       ).toBeInTheDocument();
     });
 
@@ -674,16 +689,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const form = screen.getByRole('form');
       fireEvent.submit(form);
@@ -708,12 +724,9 @@ describe('ContactForm Component', () => {
     it('supports arrow key navigation in select dropdown', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      const eventTypeSelect = screen.getByLabelText(
-        'What type of event do you have?'
-      );
-      eventTypeSelect.focus();
+      const eventTypeSelect = screen.getByText('Select event type');
+      fireEvent.click(eventTypeSelect);
 
-      fireEvent.keyDown(eventTypeSelect, { key: 'ArrowDown' });
       expect(screen.getByText('Corporate event')).toBeInTheDocument();
     });
 
@@ -767,16 +780,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -808,16 +822,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,
@@ -859,10 +874,9 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
@@ -901,16 +915,17 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Email'), {
         target: { value: 'john@example.com' },
       });
-      fireEvent.change(
-        screen.getByLabelText('What type of event do you have?'),
-        { target: { value: 'corporate' } }
-      );
+      fireEvent.change(screen.getByText('What type of event do you have?'), {
+        target: { value: 'corporate' },
+      });
       fireEvent.change(screen.getByLabelText('Event location (city)'), {
         target: { value: 'New York' },
       });
-      fireEvent.change(screen.getByLabelText('Expected number of attendees'), {
-        target: { value: '100' },
-      });
+      // Click on attendees selector and select an option
+      const attendeesSelector = screen.getByText('Select attendee range');
+      fireEvent.click(attendeesSelector);
+      const option = screen.getByText('100+ people');
+      fireEvent.click(option);
 
       const submitButton = screen.getByRole('button', {
         name: /send message/i,

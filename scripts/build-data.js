@@ -118,7 +118,13 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Cantidad de asistentes esperados',
-          placeholder: '*Cantidad',
+          placeholder: 'Selecciona el rango de asistentes',
+          options: {
+            '0-20': '0-20 personas',
+            '21-50': '21-50 personas',
+            '51-100': '51-100 personas',
+            '100+': 'Más de 100 personas',
+          },
         },
         services: {
           label: '¿Qué servicios te interesan?',
@@ -612,7 +618,13 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Expected number of attendees',
-          placeholder: '*Quantity',
+          placeholder: 'Select attendee range',
+          options: {
+            '0-20': '0-20 people',
+            '21-50': '21-50 people',
+            '51-100': '51-100 people',
+            '100+': '100+ people',
+          },
         },
         services: {
           label: 'What services are you interested in?',
@@ -1102,7 +1114,13 @@ const STATIC_TRANSLATIONS = {
         },
         attendees: {
           label: 'Número esperado de participantes',
-          placeholder: '*Quantidade',
+          placeholder: 'Selecione o intervalo de participantes',
+          options: {
+            '0-20': '0-20 pessoas',
+            '21-50': '21-50 pessoas',
+            '51-100': '51-100 pessoas',
+            '100+': 'Mais de 100 pessoas',
+          },
         },
         services: {
           label: 'Que serviços você está interessado?',
