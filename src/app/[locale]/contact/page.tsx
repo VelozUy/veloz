@@ -14,30 +14,38 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  try {
+    const { locale } = await params;
 
-  const metadata: Record<string, Metadata> = {
-    en: {
-      title: 'Veloz - Contact',
-      description: 'Tell us about your event and let us make it perfect',
-      openGraph: {
+    const metadata: Record<string, Metadata> = {
+      en: {
         title: 'Veloz - Contact',
         description: 'Tell us about your event and let us make it perfect',
-        type: 'website',
+        openGraph: {
+          title: 'Veloz - Contact',
+          description: 'Tell us about your event and let us make it perfect',
+          type: 'website',
+        },
       },
-    },
-    pt: {
-      title: 'Veloz - Contato',
-      description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
-      openGraph: {
+      pt: {
         title: 'Veloz - Contato',
         description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
-        type: 'website',
+        openGraph: {
+          title: 'Veloz - Contato',
+          description: 'Conte-nos sobre o seu evento e vamos torná-lo perfeito',
+          type: 'website',
+        },
       },
-    },
-  };
+    };
 
-  return metadata[locale] || metadata.en;
+    return metadata[locale] || metadata.en;
+  } catch (error) {
+    console.error('Error generating metadata for contact page:', error);
+    return {
+      title: 'Veloz - Contact',
+      description: 'Tell us about your event and let us make it perfect',
+    };
+  }
 }
 
 // Force static generation at build time
@@ -49,6 +57,23 @@ export const revalidate = false;
 function ContactPageContent({ locale }: { locale: string }) {
   // Get static content for the specific locale
   const content = getStaticContent(locale);
+
+  // Handle case where content is undefined
+  if (!content) {
+    console.error(`No content found for locale: ${locale}`);
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
+            Content not available
+          </h1>
+          <p className="text-muted-foreground">
+            The content for this locale is not available.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Cast translations to expected type for ContactForm
   const translations = content.translations as {
@@ -122,17 +147,67 @@ export default async function ContactPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
-
-  return (
-    <Suspense
-      fallback={
+  try {
+    // Handle case where params is undefined
+    if (!params) {
+      console.error('Params is undefined in contact page');
+      return (
         <div className="min-h-screen bg-background flex items-center justify-center">
-          Loading...
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              Page not available
+            </h1>
+            <p className="text-muted-foreground">
+              The requested page is not available.
+            </p>
+          </div>
         </div>
-      }
-    >
-      <ContactPageContent locale={locale} />
-    </Suspense>
-  );
+      );
+    }
+
+    const { locale } = await params;
+
+    // Handle case where locale is undefined
+    if (!locale) {
+      console.error('Locale is undefined in contact page');
+      return (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
+              Page not available
+            </h1>
+            <p className="text-muted-foreground">
+              The requested page is not available.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-background flex items-center justify-center">
+            Loading...
+          </div>
+        }
+      >
+        <ContactPageContent locale={locale} />
+      </Suspense>
+    );
+  } catch (error) {
+    console.error('Error in contact page:', error);
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
+            Error loading page
+          </h1>
+          <p className="text-muted-foreground">
+            An error occurred while loading the page.
+          </p>
+        </div>
+      </div>
+    );
+  }
 }

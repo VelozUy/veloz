@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Accordion } from '@/components/ui/accordion';
 import FAQItem from './FAQItem';

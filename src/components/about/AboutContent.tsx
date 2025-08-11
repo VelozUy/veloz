@@ -14,14 +14,6 @@ interface AboutContentProps {
 
 // Philosophy items based on the content structure
 const getPhilosophyItems = (content: LocalizedContent) => {
-  // Check if we have philosophy items from the database
-  if (
-    content.content.about.philosophy?.items &&
-    Array.isArray(content.content.about.philosophy.items)
-  ) {
-    return content.content.about.philosophy.items;
-  }
-
   // Fallback to static philosophy items based on the content locale
   const locale = content.locale;
 
@@ -97,6 +89,21 @@ const fadeInUp = {
 
 export default function AboutContent({ content }: AboutContentProps) {
   const prefersReduced = usePrefersReducedMotion();
+
+  // Handle case where content is undefined
+  if (!content) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
+            Content not available
+          </h1>
+          <p className="text-muted-foreground">The content is not available.</p>
+        </div>
+      </div>
+    );
+  }
+
   const methodologySteps = content.content.about.methodology.steps ?? [];
   const philosophyItems = getPhilosophyItems(content);
 

@@ -12,12 +12,20 @@ import { getFirestoreService } from '@/lib/firebase';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { ProjectMedia } from '@/services/firebase';
 
-interface OurWorkMedia extends ProjectMedia {
-  projectTitle: string; // Always a string, extracted from multi-language object
-  projectId: string;
+interface OurWorkMedia {
   id: string;
+  projectId: string;
+  projectTitle: string; // Always a string, extracted from multi-language object
   type: 'photo' | 'video';
+  fileName: string;
+  filePath: string;
+  fileSize: number;
+  mimeType: string;
   url: string;
+  thumbnail?: string;
+  aspectRatio: '1:1' | '16:9' | '9:16' | string | number;
+  width?: number;
+  height?: number;
   description?:
     | string
     | {
@@ -25,9 +33,7 @@ interface OurWorkMedia extends ProjectMedia {
         es: string;
         pt: string;
       };
-  aspectRatio: '1:1' | '16:9' | '9:16' | string | number;
-  width?: number;
-  height?: number;
+  tags: string[];
   order: number;
   featured: boolean;
   createdAt: Date;
