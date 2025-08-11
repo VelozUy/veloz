@@ -1,140 +1,69 @@
-import { Metadata } from 'next';
-import { getStaticContent } from '@/lib/utils';
-import OurWorkClient from '@/components/our-work/OurWorkClient';
-import { ContactWidget } from '@/components/gallery/ContactWidget';
-
-// Generate static params for English and Portuguese only (Spanish is default)
-export async function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'pt' }];
-}
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import OurWorkPageClient from './OurWorkPageClient';
 
 // Generate metadata for each locale
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  // Handle Next.js 15 static generation issue where params can be undefined
-  let locale = 'es'; // Default to Spanish
-
-  try {
-    // Check if params exists and is a Promise
-    if (params && typeof params.then === 'function') {
-      const resolvedParams = await params;
-      if (resolvedParams && resolvedParams.locale) {
-        locale = resolvedParams.locale;
-      }
-    }
-  } catch (error) {
-    // If params resolution fails, keep default locale
-    console.warn(
-      'Failed to resolve params in metadata, using default locale:',
-      error
-    );
-  }
-
-  const metadata: Record<string, Metadata> = {
+export async function generateMetadata(): Promise<Metadata> {
+  // Define locale-specific metadata
+  const metadata = {
     en: {
-      title: 'Our Work | Veloz Photography & Videography',
+      title: 'Our Work | Veloz - Professional Photography & Videography',
       description:
-        'Explore our portfolio of weddings, corporate events, birthdays and more. Discover why clients choose Veloz for their special moments.',
-      keywords: [
-        'photography portfolio',
-        'work gallery',
-        'Veloz weddings',
-        'corporate events',
-        'professional photography',
-        'videography',
-        'special moments',
-      ],
+        'Explore our portfolio of weddings, corporate events, birthdays and more. Professional photography and videography services in Uruguay.',
       openGraph: {
-        title: 'Our Work | Veloz Photography & Videography',
+        title: 'Our Work | Veloz - Professional Photography & Videography',
         description:
-          'Explore our portfolio of weddings, corporate events, birthdays and more.',
+          'Explore our portfolio of weddings, corporate events, birthdays and more. Professional photography and videography services in Uruguay.',
         type: 'website',
         locale: 'en_US',
       },
     },
     pt: {
-      title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
+      title: 'Nosso Trabalho | Veloz - Fotografia e Videografia Profissional',
       description:
-        'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais. Descubra por que os clientes escolhem Veloz para seus momentos especiais.',
-      keywords: [
-        'portfólio fotografia',
-        'galeria de trabalhos',
-        'casamentos Veloz',
-        'eventos corporativos',
-        'fotografia profissional',
-        'videografia',
-        'momentos especiais',
-      ],
+        'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais. Serviços profissionais de fotografia e videografia no Uruguai.',
       openGraph: {
-        title: 'Nosso Trabalho | Veloz Fotografia e Videografia',
+        title: 'Nosso Trabalho | Veloz - Fotografia e Videografia Profissional',
         description:
-          'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais.',
+          'Explore nosso portfólio de casamentos, eventos corporativos, aniversários e mais. Serviços profissionais de fotografia e videografia no Uruguai.',
         type: 'website',
         locale: 'pt_BR',
       },
     },
+    es: {
+      title: 'Nuestro Trabajo | Veloz - Fotografía y Videografía Profesional',
+      description:
+        'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Servicios profesionales de fotografía y videografía en Uruguay.',
+      openGraph: {
+        title: 'Nuestro Trabajo | Veloz - Fotografía y Videografía Profesional',
+        description:
+          'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Servicios profesionales de fotografía y videografía en Uruguay.',
+        type: 'website',
+        locale: 'es_UY',
+      },
+    },
   };
 
-  return metadata[locale] || metadata.en;
+  // For now, return Spanish metadata as default
+  return metadata.es;
 }
 
-// Temporarily use dynamic rendering to avoid Next.js 15 static generation issues
-export const dynamic = 'force-dynamic';
+// Force static generation at build time
+export const dynamic = 'force-static';
 
-export default async function OurWorkPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  // Handle Next.js 15 static generation issue where params can be undefined
-  let locale = 'es'; // Default to Spanish
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
 
-  try {
-    // Check if params exists and is a Promise
-    if (params && typeof params.then === 'function') {
-      const resolvedParams = await params;
-      if (resolvedParams && resolvedParams.locale) {
-        locale = resolvedParams.locale;
-      }
-    }
-  } catch (error) {
-    // If params resolution fails, keep default locale
-    console.warn('Failed to resolve params, using default locale:', error);
-  }
-
-  // Get static content for the specific locale
-  const content = getStaticContent(locale);
-
-  // Handle case where content is undefined
-  if (!content) {
-    console.error(`No content found for locale: ${locale}`);
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">
-            Content not available
-          </h1>
-          <p className="text-muted-foreground">
-            The content for this locale is not available.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const projects = content.content.projects || [];
-  const categories = content.content.categories || [];
-
+export default async function OurWorkPage() {
   return (
-    <div className="relative min-h-screen w-full bg-background">
-      {/* Single Tiled Grid with All Featured Media */}
-      <OurWorkClient projects={projects} locale={content.locale} />
-
-      {/* Contact Widget (client) */}
-      <ContactWidget language={content.locale} isGallery={true} />
-    </div>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <OurWorkPageClient />
+    </Suspense>
   );
 }

@@ -1,165 +1,69 @@
-import { Metadata } from 'next';
-import { getStaticContent, t } from '@/lib/utils';
-import AboutContent from '@/components/about/AboutContent';
-import { aboutContentService } from '@/services/about-content';
-
-// FAQ interface matching the static content structure
-interface FAQ {
-  id: string;
-  question: string;
-  answer: string;
-  order: number;
-}
-
-// Helper function to get FAQ text (static content FAQs are already in the correct language)
-function getFAQText(faq: FAQ, field: 'question' | 'answer'): string {
-  return faq[field] || '';
-}
-
-// Generate structured data for FAQs
-function generateFAQStructuredData(faqs: FAQ[]) {
-  if (faqs.length === 0) {
-    return null;
-  }
-
-  const faqStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
-      '@type': 'Question',
-      name: getFAQText(faq, 'question'),
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: getFAQText(faq, 'answer'),
-      },
-    })),
-  };
-
-  return faqStructuredData;
-}
-
-// Removed generateStaticParams - using dynamic rendering to avoid Next.js 15 issues
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import AboutPageClient from './AboutPageClient';
 
 // Generate metadata for each locale
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  // Handle Next.js 15 static generation issue where params can be undefined
-  let locale = 'es'; // Default to Spanish
-
-  try {
-    // Check if params exists and is a Promise
-    if (params && typeof params.then === 'function') {
-      const resolvedParams = await params;
-      if (resolvedParams && resolvedParams.locale) {
-        locale = resolvedParams.locale;
-      }
-    }
-  } catch (error) {
-    // If params catch (error) {
-    // If params resolution fails, keep default locale
-    console.warn(
-      'Failed to resolve params in metadata, using default locale:',
-      error
-    );
-  }
-
-  const metadata: Record<string, Metadata> = {
+export async function generateMetadata(): Promise<Metadata> {
+  // Define locale-specific metadata
+  const metadata = {
     en: {
       title: 'About Us | Veloz - Professional Photography & Videography',
       description:
-        'Learn about our philosophy, methodology and values. Frequently asked questions about our photography and video services for events.',
-      keywords:
-        'event photography, wedding video, professional team, Uruguay, frequently asked questions',
+        'Learn about our philosophy, methodology and values. Professional photography and videography services in Uruguay.',
       openGraph: {
-        title: 'About Us | Veloz',
+        title: 'About Us | Veloz - Professional Photography & Videography',
         description:
-          'Learn about our philosophy, methodology and values in professional photography and videography.',
+          'Learn about our philosophy, methodology and values. Professional photography and videography services in Uruguay.',
         type: 'website',
+        locale: 'en_US',
       },
     },
     pt: {
-      title: 'Sobre Nós | Veloz - Fotografia e Vídeo Profissional',
+      title: 'Sobre Nós | Veloz - Fotografia e Videografia Profissional',
       description:
-        'Conheça nossa filosofia, metodologia e valores. Perguntas frequentes sobre nossos serviços de fotografia e vídeo para eventos.',
-      keywords:
-        'fotografia eventos, vídeo casamentos, equipe profissional, Uruguai, perguntas frequentes',
+        'Conheça nossa filosofia, metodologia e valores. Serviços profissionais de fotografia e videografia no Uruguai.',
       openGraph: {
-        title: 'Sobre Nós | Veloz',
+        title: 'Sobre Nós | Veloz - Fotografia e Videografia Profissional',
         description:
-          'Conheça nossa filosofia, metodologia e valores em fotografia e vídeo profissional.',
+          'Conheça nossa filosofia, metodologia e valores. Serviços profissionais de fotografia e videografia no Uruguai.',
         type: 'website',
+        locale: 'pt_BR',
+      },
+    },
+    es: {
+      title: 'Sobre Nosotros | Veloz - Fotografía y Videografía Profesional',
+      description:
+        'Conoce nuestra filosofía, metodología y valores. Servicios profesionales de fotografía y videografía en Uruguay.',
+      openGraph: {
+        title: 'Sobre Nosotros | Veloz - Fotografía y Videografía Profesional',
+        description:
+          'Conoce nuestra filosofía, metodología y valores. Servicios profesionales de fotografía y videografía en Uruguay.',
+        type: 'website',
+        locale: 'es_UY',
       },
     },
   };
 
-  return metadata[locale] || metadata.en;
+  // For now, return Spanish metadata as default
+  return metadata.es;
 }
 
-// Enable static generation at build time with revalidation
-// Temporarily use dynamic rendering to avoid Next.js 15 static generation issues
-export const dynamic = 'force-dynamic';
+// Force static generation at build time
+export const dynamic = 'force-static';
 
-export default async function AboutPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  // Handle Next.js 15 static generation issue where params can be undefined
-  let locale = 'es'; // Default to Spanish
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
 
-  try {
-    // Check if params exists and is a Promise
-    if (params && typeof params.then === 'function') {
-      const resolvedParams = await params;
-      if (resolvedParams && resolvedParams.locale) {
-        locale = resolvedParams.locale;
-      }
-    }
-  } catch (error) {
-    // If params resolution fails, keep default locale
-    console.warn('Failed to resolve params, using default locale:', error);
-  }
-
-  // Get static content for the specific locale
-  const content = getStaticContent(locale);
-
-  // Handle case where content is undefined
-  if (!content) {
-    console.error(`No content found for locale: ${locale}`);
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">
-            Content not available
-          </h1>
-          <p className="text-muted-foreground">
-            The content for this locale is not available.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Get FAQs from static content for structured data
-  const faqs: FAQ[] = content.content.faqs || [];
-  const faqStructuredData = generateFAQStructuredData(faqs);
-
+export default async function AboutPage() {
   return (
-    <>
-      {/* JSON-LD Structured Data for SEO */}
-      {faqStructuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqStructuredData),
-          }}
-        />
-      )}
-
-      <AboutContent content={content} />
-    </>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <AboutPageClient />
+    </Suspense>
   );
 }
