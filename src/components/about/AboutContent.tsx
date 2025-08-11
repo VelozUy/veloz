@@ -12,24 +12,75 @@ interface AboutContentProps {
   content: LocalizedContent;
 }
 
-// Match the non-animated About page philosophy items
-const philosophyItems = [
-  {
-    title: 'Calidad',
-    description:
-      'Porque cada persona que nos elige merece lo mejor, desde el primer clic hasta la entrega final.',
-  },
-  {
-    title: 'Sensibilidad',
-    description:
-      'Porque en cada evento hay historias reales, personas que sienten, viven y confían en que sepamos capturar eso irrepetible.',
-  },
-  {
-    title: 'Velocidad',
-    description:
-      'Porque entendemos que el tiempo importa y las historias no esperan. Respondemos con agilidad y con la responsabilidad de estar cuando se nos necesita.',
-  },
-];
+// Philosophy items based on the content structure
+const getPhilosophyItems = (content: LocalizedContent) => {
+  // Check if we have philosophy items from the database
+  if (
+    content.content.about.philosophy?.items &&
+    Array.isArray(content.content.about.philosophy.items)
+  ) {
+    return content.content.about.philosophy.items;
+  }
+
+  // Fallback to static philosophy items based on the content locale
+  const locale = content.locale;
+
+  const staticItems = {
+    es: [
+      {
+        title: 'Calidad',
+        description:
+          'Porque cada persona que nos elige merece lo mejor, desde el primer clic hasta la entrega final.',
+      },
+      {
+        title: 'Sensibilidad',
+        description:
+          'Porque en cada evento hay historias reales, personas que sienten, viven y confían en que sepamos capturar eso irrepetible.',
+      },
+      {
+        title: 'Velocidad',
+        description:
+          'Porque entendemos que el tiempo importa y las historias no esperan. Respondemos con agilidad y con la responsabilidad de estar cuando se nos necesita.',
+      },
+    ],
+    en: [
+      {
+        title: 'Quality',
+        description:
+          'Because every person who chooses us deserves the best, from the first click to the final delivery.',
+      },
+      {
+        title: 'Sensitivity',
+        description:
+          'Because in every event there are real stories, people who feel, live and trust that we know how to capture that irreplaceable moment.',
+      },
+      {
+        title: 'Speed',
+        description:
+          "Because we understand that time matters and stories don't wait. We respond with agility and with the responsibility of being there when we are needed.",
+      },
+    ],
+    pt: [
+      {
+        title: 'Qualidade',
+        description:
+          'Porque cada pessoa que nos escolhe merece o melhor, desde o primeiro clique até a entrega final.',
+      },
+      {
+        title: 'Sensibilidade',
+        description:
+          'Porque em cada evento há histórias reais, pessoas que sentem, vivem e confiam que sabemos capturar esse momento irrepetível.',
+      },
+      {
+        title: 'Velocidade',
+        description:
+          'Porque entendemos que o tempo importa e as histórias não esperam. Respondemos com agilidade e com a responsabilidade de estar lá quando somos necessários.',
+      },
+    ],
+  };
+
+  return staticItems[locale as keyof typeof staticItems] || staticItems.es;
+};
 
 const staggerContainer = {
   hidden: { opacity: 1 },
@@ -47,6 +98,7 @@ const fadeInUp = {
 export default function AboutContent({ content }: AboutContentProps) {
   const prefersReduced = usePrefersReducedMotion();
   const methodologySteps = content.content.about.methodology.steps ?? [];
+  const philosophyItems = getPhilosophyItems(content);
 
   // No mini-TOC; anchor ids remain for potential deep links
 
