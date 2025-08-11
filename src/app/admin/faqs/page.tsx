@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import AuthGuard from '@/components/admin/AuthGuard';
+import GlobalTranslationButtons from '@/components/admin/GlobalTranslationButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,6 +37,7 @@ import {
   Save,
   CheckCircle,
   AlertTriangle,
+  Sparkles,
 } from 'lucide-react';
 import { getFirestoreService } from '@/lib/firebase';
 import {
@@ -320,6 +322,56 @@ export default function FAQsAdminPage() {
     };
   };
 
+  // Translation handlers
+  const handleCreateTranslation = (
+    language: 'en' | 'pt',
+    updates: Record<string, { es?: string; en?: string; pt?: string }>
+  ) => {
+    setCreateForm(prev => ({
+      ...prev,
+      question: {
+        ...prev.question,
+        ...(updates.question && { [language]: updates.question[language] }),
+      },
+      answer: {
+        ...prev.answer,
+        ...(updates.answer && { [language]: updates.answer[language] }),
+      },
+    }));
+  };
+
+  const handleEditTranslation = (
+    language: 'en' | 'pt',
+    updates: Record<string, { es?: string; en?: string; pt?: string }>
+  ) => {
+    setEditForm(prev => ({
+      ...prev,
+      question: {
+        ...prev.question,
+        ...(updates.question && { [language]: updates.question[language] }),
+      },
+      answer: {
+        ...prev.answer,
+        ...(updates.answer && { [language]: updates.answer[language] }),
+      },
+    }));
+  };
+
+  const buildCreateTranslationData = () => ({
+    question: createForm.question,
+    answer: createForm.answer,
+  });
+
+  const buildEditTranslationData = () => ({
+    question: editForm.question,
+    answer: editForm.answer,
+  });
+
+  const getFieldLabels = () => ({
+    question: 'Pregunta',
+    answer: 'Respuesta',
+  });
+
   if (loading) {
     return (
       <AdminLayout title="Preguntas Frecuentes">
@@ -421,6 +473,84 @@ export default function FAQsAdminPage() {
                     />
                   </div>
 
+                  {/* English Question */}
+                  <div className="space-y-2">
+                    <Label htmlFor="question-en">Question (English)</Label>
+                    <Input
+                      id="question-en"
+                      value={createForm.question.en || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            en: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="What type of events do you cover?"
+                    />
+                  </div>
+
+                  {/* English Answer */}
+                  <div className="space-y-2">
+                    <Label htmlFor="answer-en">Answer (English)</Label>
+                    <Textarea
+                      id="answer-en"
+                      value={createForm.answer.en || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            en: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="We cover all types of events: weddings, birthdays, corporate events..."
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Portuguese Question */}
+                  <div className="space-y-2">
+                    <Label htmlFor="question-pt">Pergunta (Português)</Label>
+                    <Input
+                      id="question-pt"
+                      value={createForm.question.pt || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            pt: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Que tipo de eventos vocês cobrem?"
+                    />
+                  </div>
+
+                  {/* Portuguese Answer */}
+                  <div className="space-y-2">
+                    <Label htmlFor="answer-pt">Resposta (Português)</Label>
+                    <Textarea
+                      id="answer-pt"
+                      value={createForm.answer.pt || ''}
+                      onChange={e =>
+                        setCreateForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            pt: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Cobrimos todos os tipos de eventos: casamentos, aniversários, eventos corporativos..."
+                      rows={4}
+                    />
+                  </div>
+
                   {/* Category and Published */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -464,6 +594,25 @@ export default function FAQsAdminPage() {
                         </Label>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Translation Controls */}
+                  <div className="border-t pt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles className="h-4 w-4" />
+                      <Label className="text-sm font-medium">
+                        Traducción Automática
+                      </Label>
+                    </div>
+                    <GlobalTranslationButtons
+                      contentData={buildCreateTranslationData()}
+                      onTranslated={handleCreateTranslation}
+                      contentType="faq"
+                      fieldLabels={getFieldLabels()}
+                      showTranslateAll={true}
+                      enableReview={true}
+                      compact={true}
+                    />
                   </div>
 
                   <div className="flex gap-2">
@@ -732,6 +881,86 @@ export default function FAQsAdminPage() {
                     />
                   </div>
 
+                  {/* English Question */}
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-question-en">Question (English)</Label>
+                    <Input
+                      id="edit-question-en"
+                      value={editForm.question.en || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            en: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="What type of events do you cover?"
+                    />
+                  </div>
+
+                  {/* English Answer */}
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-answer-en">Answer (English)</Label>
+                    <Textarea
+                      id="edit-answer-en"
+                      value={editForm.answer.en || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            en: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="We cover all types of events: weddings, birthdays, corporate events..."
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Portuguese Question */}
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-question-pt">
+                      Pergunta (Português)
+                    </Label>
+                    <Input
+                      id="edit-question-pt"
+                      value={editForm.question.pt || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          question: {
+                            ...prev.question,
+                            pt: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Que tipo de eventos vocês cobrem?"
+                    />
+                  </div>
+
+                  {/* Portuguese Answer */}
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-answer-pt">Resposta (Português)</Label>
+                    <Textarea
+                      id="edit-answer-pt"
+                      value={editForm.answer.pt || ''}
+                      onChange={e =>
+                        setEditForm(prev => ({
+                          ...prev,
+                          answer: {
+                            ...prev.answer,
+                            pt: e.target.value,
+                          },
+                        }))
+                      }
+                      placeholder="Cobrimos todos os tipos de eventos: casamentos, aniversários, eventos corporativos..."
+                      rows={4}
+                    />
+                  </div>
+
                   {/* Category and Published */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -775,6 +1004,25 @@ export default function FAQsAdminPage() {
                         </Label>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Translation Controls */}
+                  <div className="border-t pt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles className="h-4 w-4" />
+                      <Label className="text-sm font-medium">
+                        Traducción Automática
+                      </Label>
+                    </div>
+                    <GlobalTranslationButtons
+                      contentData={buildEditTranslationData()}
+                      onTranslated={handleEditTranslation}
+                      contentType="faq"
+                      fieldLabels={getFieldLabels()}
+                      showTranslateAll={true}
+                      enableReview={true}
+                      compact={true}
+                    />
                   </div>
 
                   <div className="flex gap-2">

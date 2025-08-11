@@ -91,6 +91,7 @@ export function TranslationDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          type="button"
           variant="outline"
           size="sm"
           disabled={isDisabled}

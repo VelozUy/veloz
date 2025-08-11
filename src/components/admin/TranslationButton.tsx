@@ -158,6 +158,7 @@ export default function TranslationButton({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              type="button"
               variant={translationStatus === 'error' ? 'destructive' : variant}
               size={size}
               onClick={handleTranslate}
@@ -352,6 +353,7 @@ export function BatchTranslationButton({
 
   return (
     <Button
+      type="button"
       variant="default"
       onClick={handleBatchTranslate}
       disabled={disabled || isBatchTranslating}

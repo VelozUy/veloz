@@ -432,6 +432,7 @@ export default function GlobalTranslationButtons({
         {/* Translate All Button */}
         {showTranslateAll && (
           <Button
+            type="button"
             variant={allStatus === 'error' ? 'destructive' : 'default'}
             onClick={translateAll}
             disabled={
@@ -453,6 +454,7 @@ export default function GlobalTranslationButtons({
         {/* Individual Translation Buttons */}
         <div className="grid grid-cols-2 gap-2">
           <Button
+            type="button"
             variant={enStatus === 'error' ? 'destructive' : 'outline'}
             size="sm"
             onClick={() => translateToLanguage('en')}
@@ -472,6 +474,7 @@ export default function GlobalTranslationButtons({
           </Button>
 
           <Button
+            type="button"
             variant={ptStatus === 'error' ? 'destructive' : 'outline'}
             size="sm"
             onClick={() => translateToLanguage('pt')}
@@ -563,6 +566,7 @@ export default function GlobalTranslationButtons({
       <div className={`flex items-center gap-2 ${className}`}>
         {/* Individual Translation Buttons */}
         <Button
+          type="button"
           variant={enStatus === 'error' ? 'destructive' : 'outline'}
           size="sm"
           onClick={() => translateToLanguage('en')}
@@ -582,6 +586,7 @@ export default function GlobalTranslationButtons({
         </Button>
 
         <Button
+          type="button"
           variant={ptStatus === 'error' ? 'destructive' : 'outline'}
           size="sm"
           onClick={() => translateToLanguage('pt')}
@@ -603,6 +608,7 @@ export default function GlobalTranslationButtons({
         {/* Translate All Button */}
         {showTranslateAll && (
           <Button
+            type="button"
             variant={allStatus === 'error' ? 'destructive' : 'default'}
             size="sm"
             onClick={translateAll}
@@ -711,6 +717,7 @@ export default function GlobalTranslationButtons({
       {/* Translation Buttons */}
       <div className="flex gap-3">
         <Button
+          type="button"
           variant={enStatus === 'error' ? 'destructive' : 'default'}
           onClick={() => translateToLanguage('en')}
           disabled={
@@ -729,6 +736,7 @@ export default function GlobalTranslationButtons({
         </Button>
 
         <Button
+          type="button"
           variant={ptStatus === 'error' ? 'destructive' : 'default'}
           onClick={() => translateToLanguage('pt')}
           disabled={
@@ -750,6 +758,7 @@ export default function GlobalTranslationButtons({
       {/* Translate All Button */}
       {showTranslateAll && (
         <Button
+          type="button"
           variant={allStatus === 'error' ? 'destructive' : 'outline'}
           onClick={translateAll}
           disabled={
