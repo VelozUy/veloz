@@ -32,6 +32,7 @@ import {
   organizationSchema,
 } from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
+import { ServiceWorkerRegistration } from '@/components/performance/ServiceWorkerRegistration';
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
 import { QRCodeTracker } from '@/components/QRCodeTracker';
 import { Toaster } from 'sonner';
@@ -249,12 +250,67 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        {/* DNS Prefetch for external domains */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+
+        {/* Preconnect to external domains */}
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://www.google-analytics.com"
+          crossOrigin="anonymous"
+        />
+
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          href="/redjola/Redjola.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/Roboto/static/Roboto-Regular.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+
+        {/* Preload critical CSS */}
+        <link
+          rel="preload"
+          href="/_next/static/css/app/layout.css"
+          as="style"
+        />
+
+        {/* Web App Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="hsl(var(--background))" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Veloz" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${roboto.variable} ${openSans.variable} ${poppins.variable} ${playfairDisplay.variable} ${cormorantGaramond.variable} ${cinzel.variable} ${libreBaskerville.variable} ${montserrat.variable} ${raleway.variable} ${quicksand.variable} ${nunito.variable} ${oswald.variable} ${anton.variable} ${bebasNeue.variable} ${lato.variable} ${sourceSansPro.variable} ${ubuntu.variable} ${workSans.variable} antialiased`}
       >
         <StructuredData type="organization" data={organizationSchema} />
         <PerformanceMonitor />
+        <ServiceWorkerRegistration />
         <Suspense fallback={null}>
           <QRCodeTracker />
         </Suspense>

@@ -56,6 +56,38 @@ interface LocalBusinessSchema {
   };
 }
 
+interface ContactPageSchema {
+  '@context': 'https://schema.org';
+  '@type': 'ContactPage';
+  name: string;
+  description: string;
+  url: string;
+  mainEntity: {
+    '@type': 'Organization';
+    name: string;
+    url: string;
+    contactPoint: {
+      '@type': 'ContactPoint';
+      telephone: string;
+      contactType: string;
+      availableLanguage: string[];
+      areaServed: {
+        '@type': 'Country';
+        name: string;
+      };
+    };
+  };
+  breadcrumb: {
+    '@type': 'BreadcrumbList';
+    itemListElement: Array<{
+      '@type': 'ListItem';
+      position: number;
+      name: string;
+      item: string;
+    }>;
+  };
+}
+
 interface PersonSchema {
   '@context': 'https://schema.org';
   '@type': 'Person';
@@ -90,8 +122,18 @@ interface BreadcrumbSchema {
 }
 
 interface StructuredDataProps {
-  type: 'organization' | 'localBusiness' | 'breadcrumb' | 'person';
-  data: OrganizationSchema | LocalBusinessSchema | BreadcrumbSchema | PersonSchema;
+  type:
+    | 'organization'
+    | 'localBusiness'
+    | 'breadcrumb'
+    | 'person'
+    | 'contactPage';
+  data:
+    | OrganizationSchema
+    | LocalBusinessSchema
+    | BreadcrumbSchema
+    | PersonSchema
+    | ContactPageSchema;
 }
 
 export function StructuredData({ type, data }: StructuredDataProps) {
@@ -118,7 +160,8 @@ export const organizationSchema: OrganizationSchema = {
   name: 'Veloz',
   url: 'https://veloz.com.uy',
   logo: 'https://veloz.com.uy/logo.png',
-  description: 'Professional event photography and videography services in Uruguay',
+  description:
+    'Professional event photography and videography services in Uruguay',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Montevideo',
@@ -129,10 +172,7 @@ export const organizationSchema: OrganizationSchema = {
     telephone: '+598-XXX-XXX-XXX',
     contactType: 'customer service',
   },
-  sameAs: [
-    'https://instagram.com/veloz_uy',
-    'https://facebook.com/veloz.uy',
-  ],
+  sameAs: ['https://instagram.com/veloz_uy', 'https://facebook.com/veloz.uy'],
 };
 
 export const localBusinessSchema: LocalBusinessSchema = {
@@ -152,10 +192,7 @@ export const localBusinessSchema: LocalBusinessSchema = {
     latitude: -34.9011,
     longitude: -56.1645,
   },
-  openingHours: [
-    'Mo-Fr 09:00-18:00',
-    'Sa 09:00-14:00',
-  ],
+  openingHours: ['Mo-Fr 09:00-18:00', 'Sa 09:00-14:00'],
   priceRange: '$$',
   areaServed: {
     '@type': 'Country',
@@ -163,7 +200,9 @@ export const localBusinessSchema: LocalBusinessSchema = {
   },
 };
 
-export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>): BreadcrumbSchema {
+export function createBreadcrumbSchema(
+  items: Array<{ name: string; url: string }>
+): BreadcrumbSchema {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -174,4 +213,4 @@ export function createBreadcrumbSchema(items: Array<{ name: string; url: string 
       item: item.url,
     })),
   };
-} 
+}

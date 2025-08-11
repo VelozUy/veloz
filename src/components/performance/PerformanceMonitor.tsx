@@ -1,189 +1,162 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface PerformanceMetrics {
-  firstContentfulPaint: number | null;
-  largestContentfulPaint: number | null;
-  firstInputDelay: number | null;
-  cumulativeLayoutShift: number | null;
-  totalBlockingTime: number | null;
+  fcp: number | null;
+  lcp: number | null;
+  fid: number | null;
+  cls: number | null;
+  ttfb: number | null;
+  fmp: number | null;
 }
 
-interface PerformanceMonitorProps {
-  onMetricsUpdate?: (metrics: PerformanceMetrics) => void;
-  className?: string;
-}
-
-interface PerformanceEntryWithValue extends PerformanceEntry {
-  value?: number;
-}
-
-interface PerformanceEntryWithProcessing extends PerformanceEntry {
-  processingStart?: number;
-}
-
-/**
- * PerformanceMonitor Component
- *
- * Monitors key performance metrics for the editorial design:
- * - First Contentful Paint (FCP)
- * - Largest Contentful Paint (LCP)
- * - First Input Delay (FID)
- * - Cumulative Layout Shift (CLS)
- * - Total Blocking Time (TBT)
- *
- * Provides real-time performance monitoring for editorial design optimization.
- */
-export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
-  onMetricsUpdate,
-  className = '',
-}) => {
-  const [metrics, setMetrics] = useState<PerformanceMetrics>({
-    firstContentfulPaint: null,
-    largestContentfulPaint: null,
-    firstInputDelay: null,
-    cumulativeLayoutShift: null,
-    totalBlockingTime: null,
-  });
-
+export function PerformanceMonitor() {
   useEffect(() => {
     // Only run in browser environment
     if (typeof window === 'undefined') return;
 
-    const observer = new PerformanceObserver(list => {
+    const metrics: PerformanceMetrics = {
+      fcp: null,
+      lcp: null,
+      fid: null,
+      cls: null,
+      ttfb: null,
+      fmp: null,
+    };
+
+    // Measure TTFB (Time to First Byte)
+    const navigationEntry = performance.getEntriesByType(
+      'navigation'
+    )[0] as PerformanceNavigationTiming;
+    if (navigationEntry) {
+      metrics.ttfb =
+        navigationEntry.responseStart - navigationEntry.requestStart;
+    }
+
+    // First Contentful Paint (FCP)
+    const fcpObserver = new PerformanceObserver(list => {
       const entries = list.getEntries();
+      const fcpEntry = entries[entries.length - 1];
+      metrics.fcp = fcpEntry.startTime;
 
-      entries.forEach(entry => {
-        switch (entry.entryType) {
-          case 'paint':
-            if (entry.name === 'first-contentful-paint') {
-              setMetrics(prev => ({
-                ...prev,
-                firstContentfulPaint: entry.startTime,
-              }));
-            }
-            break;
+      // Log FCP metric
+      console.log('FCP:', metrics.fcp, 'ms');
 
-          case 'largest-contentful-paint':
-            setMetrics(prev => ({
-              ...prev,
-              largestContentfulPaint: entry.startTime,
-            }));
-            break;
-
-          case 'first-input':
-            setMetrics(prev => ({
-              ...prev,
-              firstInputDelay:
-                ((entry as PerformanceEntryWithProcessing).processingStart ||
-                  0) - entry.startTime,
-            }));
-            break;
-
-          case 'layout-shift':
-            setMetrics(prev => ({
-              ...prev,
-              cumulativeLayoutShift:
-                (prev.cumulativeLayoutShift || 0) +
-                ((entry as PerformanceEntryWithValue).value || 0),
-            }));
-            break;
-        }
-      });
-
-      // Notify parent component of metrics update
-      if (onMetricsUpdate) {
-        onMetricsUpdate(metrics);
+      // Send to analytics if available
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'web_vitals', {
+          event_category: 'Web Vitals',
+          event_label: 'FCP',
+          value: Math.round(metrics.fcp),
+        });
       }
     });
+    fcpObserver.observe({ entryTypes: ['paint'] });
 
-    // Observe performance metrics
-    try {
-      observer.observe({
-        entryTypes: [
-          'paint',
-          'largest-contentful-paint',
-          'first-input',
-          'layout-shift',
-        ],
+    // Largest Contentful Paint (LCP)
+    const lcpObserver = new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      const lcpEntry = entries[entries.length - 1];
+      metrics.lcp = lcpEntry.startTime;
+
+      // Log LCP metric
+      console.log('LCP:', metrics.lcp, 'ms');
+
+      // Send to analytics if available
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'web_vitals', {
+          event_category: 'Web Vitals',
+          event_label: 'LCP',
+          value: Math.round(metrics.lcp),
+        });
+      }
+    });
+    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+    // First Input Delay (FID)
+    const fidObserver = new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        metrics.fid = entry.processingStart - entry.startTime;
+
+        // Log FID metric
+        console.log('FID:', metrics.fid, 'ms');
+
+        // Send to analytics if available
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'web_vitals', {
+            event_category: 'Web Vitals',
+            event_label: 'FID',
+            value: Math.round(metrics.fid),
+          });
+        }
       });
-    } catch (error) {}
+    });
+    fidObserver.observe({ entryTypes: ['first-input'] });
 
-    // Calculate Total Blocking Time
-    const calculateTBT = () => {
-      const longTasks = performance.getEntriesByType('longtask');
-      const totalBlockingTime = longTasks.reduce((total, task) => {
-        return total + Math.max(0, task.duration - 50);
-      }, 0);
+    // Cumulative Layout Shift (CLS)
+    let clsValue = 0;
+    const clsObserver = new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      entries.forEach((entry: any) => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+        }
+      });
+      metrics.cls = clsValue;
 
-      setMetrics(prev => ({
-        ...prev,
-        totalBlockingTime,
-      }));
-    };
+      // Log CLS metric
+      console.log('CLS:', metrics.cls);
 
-    // Calculate TBT after a delay to allow for initial load
-    const tbtTimeout = setTimeout(calculateTBT, 5000);
+      // Send to analytics if available
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'web_vitals', {
+          event_category: 'Web Vitals',
+          event_label: 'CLS',
+          value: Math.round(metrics.cls * 1000) / 1000,
+        });
+      }
+    });
+    clsObserver.observe({ entryTypes: ['layout-shift'] });
 
+    // First Meaningful Paint (FMP) - approximated using LCP
+    const fmpObserver = new PerformanceObserver(list => {
+      const entries = list.getEntries();
+      const fmpEntry = entries[entries.length - 1];
+      metrics.fmp = fmpEntry.startTime;
+
+      // Log FMP metric
+      console.log('FMP:', metrics.fmp, 'ms');
+    });
+    fmpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+    // Log all metrics when page is fully loaded
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        console.log('Performance Metrics:', {
+          TTFB: metrics.ttfb ? `${Math.round(metrics.ttfb)}ms` : 'N/A',
+          FCP: metrics.fcp ? `${Math.round(metrics.fcp)}ms` : 'N/A',
+          LCP: metrics.lcp ? `${Math.round(metrics.lcp)}ms` : 'N/A',
+          FID: metrics.fid ? `${Math.round(metrics.fid)}ms` : 'N/A',
+          CLS: metrics.cls ? metrics.cls.toFixed(3) : 'N/A',
+          FMP: metrics.fmp ? `${Math.round(metrics.fmp)}ms` : 'N/A',
+        });
+
+        // Store metrics in sessionStorage for debugging
+        sessionStorage.setItem('performance_metrics', JSON.stringify(metrics));
+      }, 1000);
+    });
+
+    // Cleanup observers
     return () => {
-      observer.disconnect();
-      clearTimeout(tbtTimeout);
+      fcpObserver.disconnect();
+      lcpObserver.disconnect();
+      fidObserver.disconnect();
+      clsObserver.disconnect();
+      fmpObserver.disconnect();
     };
-  }, [onMetricsUpdate, metrics]);
+  }, []);
 
-  // Performance thresholds for editorial design
-  const getPerformanceGrade = (metrics: PerformanceMetrics): string => {
-    let score = 0;
-    let totalChecks = 0;
-
-    // FCP threshold: < 1.8s is good
-    if (metrics.firstContentfulPaint !== null) {
-      totalChecks++;
-      if (metrics.firstContentfulPaint < 1800) score++;
-    }
-
-    // LCP threshold: < 2.5s is good
-    if (metrics.largestContentfulPaint !== null) {
-      totalChecks++;
-      if (metrics.largestContentfulPaint < 2500) score++;
-    }
-
-    // FID threshold: < 100ms is good
-    if (metrics.firstInputDelay !== null) {
-      totalChecks++;
-      if (metrics.firstInputDelay < 100) score++;
-    }
-
-    // CLS threshold: < 0.1 is good
-    if (metrics.cumulativeLayoutShift !== null) {
-      totalChecks++;
-      if (metrics.cumulativeLayoutShift < 0.1) score++;
-    }
-
-    // TBT threshold: < 200ms is good
-    if (metrics.totalBlockingTime !== null) {
-      totalChecks++;
-      if (metrics.totalBlockingTime < 200) score++;
-    }
-
-    if (totalChecks === 0) return 'N/A';
-
-    const percentage = (score / totalChecks) * 100;
-
-    if (percentage >= 80) return 'A';
-    if (percentage >= 60) return 'B';
-    if (percentage >= 40) return 'C';
-    return 'D';
-  };
-
-  const grade = getPerformanceGrade(metrics);
-
-  return (
-    <div className={`performance-monitor ${className}`}>
-      {/* Performance monitoring runs silently in background */}
-    </div>
-  );
-};
-
-export default PerformanceMonitor;
+  return null; // This component doesn't render anything
+}
