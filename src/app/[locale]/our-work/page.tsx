@@ -14,7 +14,24 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  // Handle Next.js 15 static generation issue where params can be undefined
+  let locale = 'es'; // Default to Spanish
+
+  try {
+    // Check if params exists and is a Promise
+    if (params && typeof params.then === 'function') {
+      const resolvedParams = await params;
+      if (resolvedParams && resolvedParams.locale) {
+        locale = resolvedParams.locale;
+      }
+    }
+  } catch (error) {
+    // If params resolution fails, keep default locale
+    console.warn(
+      'Failed to resolve params in metadata, using default locale:',
+      error
+    );
+  }
 
   const metadata: Record<string, Metadata> = {
     en: {
@@ -64,16 +81,29 @@ export async function generateMetadata({
   return metadata[locale] || metadata.en;
 }
 
-// Force static generation at build time
-export const dynamic = 'force-static';
-export const revalidate = false;
+// Temporarily use dynamic rendering to avoid Next.js 15 static generation issues
+export const dynamic = 'force-dynamic';
 
 export default async function OurWorkPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  // Handle Next.js 15 static generation issue where params can be undefined
+  let locale = 'es'; // Default to Spanish
+
+  try {
+    // Check if params exists and is a Promise
+    if (params && typeof params.then === 'function') {
+      const resolvedParams = await params;
+      if (resolvedParams && resolvedParams.locale) {
+        locale = resolvedParams.locale;
+      }
+    }
+  } catch (error) {
+    // If params resolution fails, keep default locale
+    console.warn('Failed to resolve params, using default locale:', error);
+  }
 
   // Get static content for the specific locale
   const content = getStaticContent(locale);

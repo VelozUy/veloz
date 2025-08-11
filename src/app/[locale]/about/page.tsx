@@ -38,10 +38,7 @@ function generateFAQStructuredData(faqs: FAQ[]) {
   return faqStructuredData;
 }
 
-// Generate static params for English and Portuguese only (Spanish is default)
-export async function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'pt' }];
-}
+// Removed generateStaticParams - using dynamic rendering to avoid Next.js 15 issues
 
 // Generate metadata for each locale
 export async function generateMetadata({
@@ -49,7 +46,25 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  // Handle Next.js 15 static generation issue where params can be undefined
+  let locale = 'es'; // Default to Spanish
+
+  try {
+    // Check if params exists and is a Promise
+    if (params && typeof params.then === 'function') {
+      const resolvedParams = await params;
+      if (resolvedParams && resolvedParams.locale) {
+        locale = resolvedParams.locale;
+      }
+    }
+  } catch (error) {
+    // If params catch (error) {
+    // If params resolution fails, keep default locale
+    console.warn(
+      'Failed to resolve params in metadata, using default locale:',
+      error
+    );
+  }
 
   const metadata: Record<string, Metadata> = {
     en: {
@@ -84,16 +99,29 @@ export async function generateMetadata({
 }
 
 // Enable static generation at build time with revalidation
-// Force static generation at build time with revalidation
-export const dynamic = 'force-static';
-export const revalidate = 3600; // Revalidate every hour in production
+// Temporarily use dynamic rendering to avoid Next.js 15 static generation issues
+export const dynamic = 'force-dynamic';
 
 export default async function AboutPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  // Handle Next.js 15 static generation issue where params can be undefined
+  let locale = 'es'; // Default to Spanish
+
+  try {
+    // Check if params exists and is a Promise
+    if (params && typeof params.then === 'function') {
+      const resolvedParams = await params;
+      if (resolvedParams && resolvedParams.locale) {
+        locale = resolvedParams.locale;
+      }
+    }
+  } catch (error) {
+    // If params resolution fails, keep default locale
+    console.warn('Failed to resolve params, using default locale:', error);
+  }
 
   // Get static content for the specific locale
   const content = getStaticContent(locale);
