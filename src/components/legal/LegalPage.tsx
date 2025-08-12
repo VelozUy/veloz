@@ -230,6 +230,36 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
         );
 
       case 'terms':
+        // Get FAQ data from content
+        const faqs = content.content.faqs || [];
+
+        // Find specific FAQs for terms content
+        const paymentFAQ = faqs.find(
+          faq =>
+            faq.question.includes('sistema de pagos') ||
+            faq.question.includes('payment')
+        );
+        const deliveryFAQ = faqs.find(
+          faq =>
+            faq.question.includes('tarda la entrega') ||
+            faq.question.includes('delivery')
+        );
+        const cancellationFAQ = faqs.find(
+          faq =>
+            faq.question.includes('cancela o se pospone') ||
+            faq.question.includes('cancel')
+        );
+        const privacyFAQ = faqs.find(
+          faq =>
+            faq.question.includes('privacidad') ||
+            faq.question.includes('privacy')
+        );
+        const advanceNoticeFAQ = faqs.find(
+          faq =>
+            faq.question.includes('anticipación') ||
+            faq.question.includes('advance')
+        );
+
         return (
           <>
             <section>
@@ -312,11 +342,13 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
                 )}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t(
-                  content,
-                  'legal.terms.sections.payments.content',
-                  'Bookings are confirmed with a 50% deposit of the total service value. The remaining payment must be made before delivery of the final material. Prices are subject to change without notice.'
-                )}
+                {paymentFAQ
+                  ? paymentFAQ.answer
+                  : t(
+                      content,
+                      'legal.terms.sections.payments.content',
+                      'Bookings are confirmed with a 30% deposit of the total service value. The remaining payment must be made after delivery of the final material. Prices are subject to change without notice.'
+                    )}
               </p>
             </section>
 
@@ -329,11 +361,13 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
                 )}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t(
-                  content,
-                  'legal.terms.sections.cancellations.content',
-                  'Cancellations with more than 7 days notice will receive a full refund of the deposit. Cancellations with less than 7 days notice are non-refundable. In case of cancellation by Veloz, a full refund will be provided.'
-                )}
+                {cancellationFAQ
+                  ? cancellationFAQ.answer
+                  : t(
+                      content,
+                      'legal.terms.sections.cancellations.content',
+                      'If the event is cancelled, we provide a refund of the 30% deposit paid. In case the event is postponed, we adapt to the new date regardless of when it is.'
+                    )}
               </p>
             </section>
 
@@ -342,15 +376,17 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
                 {t(
                   content,
                   'legal.terms.sections.copyright.title',
-                  'Copyright'
+                  'Copyright and Privacy'
                 )}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t(
-                  content,
-                  'legal.terms.sections.copyright.content',
-                  'Veloz retains copyright of all images and videos produced. Clients receive a personal and commercial use license for delivered images. Modification or resale of images is not permitted without written authorization.'
-                )}
+                {privacyFAQ
+                  ? privacyFAQ.answer
+                  : t(
+                      content,
+                      'legal.terms.sections.copyright.content',
+                      'Images and videos are the property of the client and we do not retain any rights over them. Exceptionally, we may request your authorization to use the material for promotional purposes, but this depends on your approval.'
+                    )}
               </p>
             </section>
 
@@ -363,41 +399,13 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
                 )}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t(
-                  content,
-                  'legal.terms.sections.delivery.intro',
-                  'Typical delivery times are:'
-                )}
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.delivery.items.photos',
-                    'Photographs: 5-10 business days'
-                  )}
-                </li>
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.delivery.items.videos',
-                    'Videos: 10-15 business days'
-                  )}
-                </li>
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.delivery.items.special',
-                    'Special edits: according to complexity'
-                  )}
-                </li>
-              </ul>
-              <p className="text-muted-foreground leading-relaxed mt-4">
-                {t(
-                  content,
-                  'legal.terms.sections.delivery.note',
-                  'Times may vary depending on project complexity and workload.'
-                )}
+                {deliveryFAQ
+                  ? deliveryFAQ.answer
+                  : t(
+                      content,
+                      'legal.terms.sections.delivery.intro',
+                      'Speed characterizes us. We can deliver the material within a period of one to two weeks.'
+                    )}
               </p>
             </section>
 
@@ -410,42 +418,91 @@ export function LegalPage({ locale, pageType }: LegalPageProps) {
                 )}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t(
-                  content,
-                  'legal.terms.sections.responsibilities.intro',
-                  'The client commits to:'
+                {advanceNoticeFAQ ? (
+                  <>
+                    <p className="text-muted-foreground leading-relaxed mb-4">
+                      {advanceNoticeFAQ.answer}
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t(
+                        content,
+                        'legal.terms.sections.responsibilities.intro',
+                        'The client commits to:'
+                      )}
+                    </p>
+                    <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.info',
+                          'Provide accurate information about the event'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.access',
+                          'Facilitate access to the event location'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.schedule',
+                          'Respect agreed schedules'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.safety',
+                          'Provide a safe environment for the team'
+                        )}
+                      </li>
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t(
+                        content,
+                        'legal.terms.sections.responsibilities.intro',
+                        'The client commits to:'
+                      )}
+                    </p>
+                    <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.info',
+                          'Provide accurate information about the event'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.access',
+                          'Facilitate access to the event location'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.schedule',
+                          'Respect agreed schedules'
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          content,
+                          'legal.terms.sections.responsibilities.items.safety',
+                          'Provide a safe environment for the team'
+                        )}
+                      </li>
+                    </ul>
+                  </>
                 )}
               </p>
-              <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.responsibilities.items.info',
-                    'Provide accurate information about the event'
-                  )}
-                </li>
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.responsibilities.items.access',
-                    'Facilitate access to the event location'
-                  )}
-                </li>
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.responsibilities.items.schedule',
-                    'Respect agreed schedules'
-                  )}
-                </li>
-                <li>
-                  {t(
-                    content,
-                    'legal.terms.sections.responsibilities.items.safety',
-                    'Provide a safe environment for the team'
-                  )}
-                </li>
-              </ul>
             </section>
 
             <section>
