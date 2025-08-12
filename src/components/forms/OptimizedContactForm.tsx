@@ -47,6 +47,8 @@ interface ContactFormData {
   contactMethod: 'whatsapp' | 'email' | 'call';
   company?: string;
   message: string;
+  // Hidden captcha field to prevent spam
+  website?: string;
 }
 
 interface ContactFormProps {
@@ -196,6 +198,7 @@ export default function OptimizedContactForm({
     contactMethod: 'email',
     company: '',
     message: '',
+    website: '', // Initialize hidden captcha field
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -300,6 +303,12 @@ export default function OptimizedContactForm({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate hidden captcha field
+    if (formData.website) {
+      setErrors({ website: 'Please leave this field empty.' });
+      return;
+    }
+
     if (!validateStep(currentStep)) {
       return;
     }
@@ -357,6 +366,7 @@ export default function OptimizedContactForm({
       contactMethod: 'whatsapp',
       company: '',
       message: '',
+      website: '', // Reset hidden captcha field
     });
     setErrors({});
     setCurrentStep(1);
@@ -1030,6 +1040,18 @@ export default function OptimizedContactForm({
                     <p>{t.form.privacy.line1}</p>
                     <p className="mt-1">{t.form.privacy.line2}</p>
                   </div>
+                </div>
+
+                {/* Hidden Captcha Field */}
+                <div className="hidden">
+                  <Input
+                    type="text"
+                    name="website"
+                    value={formData.website}
+                    onChange={e => handleInputChange('website', e.target.value)}
+                    data-field="website"
+                    aria-invalid={!!errors.website}
+                  />
                 </div>
 
                 {/* Navigation */}

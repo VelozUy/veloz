@@ -45,6 +45,8 @@ interface ContactFormData {
   contactMethod: 'whatsapp' | 'email' | 'call';
   eventDate?: string;
   message?: string;
+  // Hidden captcha field to prevent spam
+  website?: string;
 }
 
 interface ContactFormProps {
@@ -235,6 +237,7 @@ export default function ContactForm({
     contactMethod: 'whatsapp',
     eventDate: '',
     message: '',
+    website: '', // Initialize hidden captcha field
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -342,6 +345,11 @@ export default function ContactForm({
       newErrors.services = 'At least one service is required';
     }
 
+    // Validate hidden captcha field
+    if (formData.website) {
+      newErrors.website = 'Please leave this field empty.';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -407,6 +415,7 @@ export default function ContactForm({
       contactMethod: 'whatsapp',
       eventDate: '',
       message: '',
+      website: '', // Reset hidden captcha field
     });
     setErrors({});
     setIsSubmitted(false);
@@ -1089,6 +1098,21 @@ export default function ContactForm({
                   'text-body-md resize-none',
                   'focus:border-2 focus:border-primary focus:ring-0'
                 )}
+              />
+            </motion.div>
+
+            {/* Hidden Captcha Field */}
+            <motion.div
+              variants={prefersReduced ? undefined : fadeInUp}
+              className="hidden"
+            >
+              <Input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={e => handleInputChange('website', e.target.value)}
+                data-field="website"
+                aria-invalid={!!errors.website}
               />
             </motion.div>
 

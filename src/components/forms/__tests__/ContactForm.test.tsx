@@ -1001,5 +1001,103 @@ describe('ContactForm Component', () => {
         hasMessage: true,
       });
     });
+
+    describe('Hidden Captcha', () => {
+      it('should have a hidden captcha field', () => {
+        render(<ContactForm translations={mockTranslations} />);
+
+        const captchaField = screen.getByDisplayValue('');
+        expect(captchaField).toBeInTheDocument();
+        expect(captchaField).toHaveAttribute('name', 'website');
+        expect(captchaField.closest('div')).toHaveClass('hidden');
+      });
+
+      it('should prevent submission when captcha field is filled', async () => {
+        render(<ContactForm translations={mockTranslations} />);
+
+        // Fill in required fields
+        fireEvent.change(screen.getByLabelText('Name'), {
+          target: { value: 'John Doe' },
+        });
+        fireEvent.change(screen.getByLabelText('Email'), {
+          target: { value: 'john@example.com' },
+        });
+
+        // Fill in the hidden captcha field (simulating a bot)
+        const captchaField = screen.getByDisplayValue('');
+        fireEvent.change(captchaField, { target: { value: 'spam-bot' } });
+
+        // Try to submit the form
+        const submitButton = screen.getByRole('button', {
+          name: /send message/i,
+        });
+        fireEvent.click(submitButton);
+
+        // The form should not be submitted
+        await waitFor(() => {
+          expect(emailService.sendContactForm).not.toHaveBeenCalled();
+        });
+      });
+
+      it('should allow submission when captcha field is empty', async () => {
+        (emailService.sendContactForm as jest.Mock).mockResolvedValue(
+          undefined
+        );
+
+        render(<ContactForm translations={mockTranslations} />);
+
+        // Fill in required fields
+        fireEvent.change(screen.getByLabelText('Name'), {
+          target: { value: 'John Doe' },
+        });
+        fireEvent.change(screen.getByLabelText('Email'), {
+          target: { value: 'john@example.com' },
+        });
+
+        // Select event type
+        const eventTypeButton = screen.getByText('Select event type');
+        fireEvent.click(eventTypeButton);
+        const corporateOption = screen.getByText('Corporate event');
+        fireEvent.click(corporateOption);
+
+        // Fill location
+        fireEvent.change(screen.getByLabelText('Event location (city)'), {
+          target: { value: 'Montevideo, Uruguay' },
+        });
+
+        // Select attendees
+        const attendeesSelector = screen.getByText('Select attendee range');
+        fireEvent.click(attendeesSelector);
+        const attendeesOption = screen.getByText('0-20 people');
+        fireEvent.click(attendeesOption);
+
+        // Select services
+        const servicesSelector = screen.getByText('Select services');
+        fireEvent.click(servicesSelector);
+        const photographyOption = screen.getByText('Photography');
+        fireEvent.click(photographyOption);
+
+        // Submit the form
+        const submitButton = screen.getByRole('button', {
+          name: /send message/i,
+        });
+        fireEvent.click(submitButton);
+
+        // The form should be submitted successfully
+        await waitFor(() => {
+          expect(emailService.sendContactForm).toHaveBeenCalledWith(
+            expect.objectContaining({
+              name: 'John Doe',
+              email: 'john@example.com',
+              eventType: 'corporate',
+              location: 'Montevideo, Uruguay',
+              attendees: '0-20',
+              services: ['photography'],
+              website: '', // Captcha field should be empty
+            })
+          );
+        });
+      });
+    });
   });
 });
