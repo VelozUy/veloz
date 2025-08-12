@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getStaticContent } from '@/lib/utils';
+import { getOptimizedStaticContent } from '@/lib/utils';
 import OurWorkClient from '@/components/our-work/OurWorkClient';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import {
@@ -8,9 +8,9 @@ import {
 } from '@/components/seo/StructuredData';
 import { BUSINESS_CONFIG, businessHelpers } from '@/lib/business-config';
 
-// Force static generation at build time
+// Force static generation at build time with caching
 export const dynamic = 'force-static';
-export const revalidate = false;
+export const revalidate = 3600; // Cache for 1 hour instead of false
 
 export const metadata: Metadata = {
   title: 'Nuestro Trabajo | Portafolio de Fotografía Profesional | Veloz',
@@ -91,8 +91,8 @@ export const metadata: Metadata = {
 };
 
 export default function OurWorkPage() {
-  // Get static content for Spanish (default)
-  const content = getStaticContent('es');
+  // Get static content for Spanish (default) using optimized function
+  const content = getOptimizedStaticContent('es');
   const projects = content.content.projects || [];
   const categories = content.content.categories || [];
   const locale = content.locale;

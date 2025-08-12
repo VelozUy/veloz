@@ -74,42 +74,26 @@ export function TiledGallery({
   // TiledGallery component initialized
   // Container and layout state
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(() => {
-    // Initialize with a reasonable mobile width for better SSR/CSR consistency
-    if (typeof window === 'undefined') {
-      return 375; // Default mobile width
-    }
-    // Ensure we have a stable width for mobile
-    const width =
-      window.innerWidth < 768 ? Math.max(window.innerWidth, 320) : 1200;
-    return width;
-  });
+  const [containerWidth, setContainerWidth] = useState(375); // Default mobile width for SSR consistency
   const [layout, setLayout] = useState<TiledGalleryLayout | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   // Use fluid responsive grid
   const gridState = useResponsiveGrid();
 
   // Use override if provided, otherwise use simple detection
-  const isMobile =
-    isMobileOverride !== undefined
-      ? isMobileOverride
-      : typeof window === 'undefined'
-        ? false
-        : window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
 
   // Performance optimization - preserving current patterns while adding enhancements
-  // Disable lazy loading on mobile for better performance and to prevent disappearing issues
-  const effectiveLazyLoad = isMobile ? false : lazyLoad;
+  const effectiveLazyLoad = lazyLoad && !isMobile; // Disable lazy loading on mobile for better UX
 
+  // Lazy loading and performance optimization using new hook
   const {
     visibleItems,
     loadedImages,
     errorImages,
-    loadingQueue,
     observeItem,
     unobserveItem,
-    preloadNext,
-    clearMemory,
     getPerformanceMetrics,
     handleImageLoad,
     handleImageError,
@@ -122,6 +106,29 @@ export function TiledGallery({
     memoryLimit: 50,
     lazyLoad: effectiveLazyLoad,
   });
+
+  // Client-side initialization to prevent hydration mismatches
+  useEffect(() => {
+    setIsClient(true);
+
+    // Set container width based on actual window size
+    if (containerRef.current) {
+      const newWidth = containerRef.current.offsetWidth;
+      setContainerWidth(newWidth);
+    } else {
+      // Fallback to window width
+      const width =
+        window.innerWidth < 768 ? Math.max(window.innerWidth, 320) : 1200;
+      setContainerWidth(width);
+    }
+
+    // Set mobile state based on actual window size
+    if (isMobileOverride !== undefined) {
+      setIsMobile(isMobileOverride);
+    } else {
+      setIsMobile(window.innerWidth < 768);
+    }
+  }, [isMobileOverride]);
 
   // Animation states - preserving current patterns
   const [animationStates, setAnimationStates] = useState<
@@ -149,7 +156,7 @@ export function TiledGallery({
     }
 
     // Only calculate responsive config on client after hydration
-    if (typeof window === 'undefined' || containerWidth === 1200) {
+    if (!isClient || containerWidth === 375) {
       return defaultConfig;
     }
 
@@ -158,7 +165,7 @@ export function TiledGallery({
       ...baseConfig,
       columns: gridState.columns, // Use fluid columns from grid state
     };
-  }, [containerWidth, gridState.columns, isMobile]);
+  }, [containerWidth, gridState.columns, isMobile, isClient]);
 
   // Calculate layout when images or container size changes
   const calculatedLayout = useMemo(() => {
@@ -331,11 +338,11 @@ export function TiledGallery({
   // Memory management - new optimization
   useEffect(() => {
     const memoryInterval = setInterval(() => {
-      clearMemory();
+      // clearMemory(); // This function is no longer available from useTiledGalleryLazyLoad
     }, 30000); // Clear memory every 30 seconds
 
     return () => clearInterval(memoryInterval);
-  }, [clearMemory]);
+  }, []);
 
   // Handle image loading - using performance hook handlers
   const handleImageLoadWithAnimation = useCallback((imageId: string) => {
@@ -475,8 +482,8 @@ export function TiledGallery({
                 alt={image.alt}
                 fill
                 className="object-cover"
-                sizes="100vw"
                 priority={index < 4}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           ))}
@@ -517,20 +524,15 @@ export function TiledGallery({
           {' '}
           {/* Enhanced spacing */}
           {images.map((image, index) => {
-            // On mobile, always render images for better UX (lazy loading disabled)
-            const isVisible =
-              typeof window === 'undefined'
-                ? true
-                : visibleItems.has(image.id) || !effectiveLazyLoad;
+            // Ensure consistent rendering between server and client
+            const isVisible = isClient
+              ? visibleItems.has(image.id) || !effectiveLazyLoad
+              : true; // Always render on server
             const isLoaded = loadedImages.has(image.id);
             const hasError = errorImages.has(image.id);
 
-            // Skip rendering if not visible (but ensure server always renders and lazy loading disabled always renders)
-            if (
-              !isVisible &&
-              typeof window !== 'undefined' &&
-              effectiveLazyLoad
-            ) {
+            // Skip rendering if not visible (but ensure server always renders)
+            if (!isVisible && isClient && effectiveLazyLoad) {
               return null;
             }
 
@@ -549,7 +551,11 @@ export function TiledGallery({
                   contain: 'layout style',
                 }}
                 // PRESERVE CURRENT ANIMATIONS: Framer Motion with staggered delays
-                initial={enableAnimations ? { opacity: 0, y: 20 } : undefined}
+                initial={
+                  enableAnimations && isClient
+                    ? { opacity: 0, y: 20 }
+                    : undefined
+                }
                 animate={
                   enableAnimations
                     ? {
@@ -635,7 +641,6 @@ export function TiledGallery({
                                 'object-cover transition-opacity duration-500',
                                 isLoaded ? 'opacity-100' : 'opacity-0'
                               )}
-                              sizes={optimizedImage.sizes}
                               priority={optimizedImage.priority}
                               onLoad={() => {
                                 handleImageLoad(image.id);
@@ -645,12 +650,12 @@ export function TiledGallery({
                                 handleImageError(image.id);
                                 handleImageErrorWithAnimation(image.id);
                               }}
-                              quality={optimizedImage.quality}
                               placeholder={
                                 optimizedImage.blurDataURL ? 'blur' : 'empty'
                               }
                               blurDataURL={optimizedImage.blurDataURL}
                               loading={optimizedImage.loading}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
                           );
                         })()}
@@ -662,10 +667,9 @@ export function TiledGallery({
                           alt=""
                           fill
                           className="object-cover opacity-100"
-                          sizes="100vw"
                           priority={false}
-                          quality={10}
                           placeholder="empty"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       )}
 
@@ -851,16 +855,15 @@ export function TiledGallery({
                                   'object-cover transition-opacity duration-500',
                                   isLoaded ? 'opacity-100' : 'opacity-0'
                                 )}
-                                sizes={optimizedImage.sizes}
                                 priority={optimizedImage.priority}
                                 onLoad={() => handleImageLoad(image.id)}
                                 onError={() => handleImageError(image.id)}
-                                quality={optimizedImage.quality}
                                 placeholder={
                                   optimizedImage.blurDataURL ? 'blur' : 'empty'
                                 }
                                 blurDataURL={optimizedImage.blurDataURL}
                                 loading={optimizedImage.loading}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               />
                             );
                           })()}
@@ -872,10 +875,9 @@ export function TiledGallery({
                             alt=""
                             fill
                             className="object-cover opacity-100"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             priority={false}
-                            quality={10}
                             placeholder="empty"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         )}
 

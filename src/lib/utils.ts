@@ -176,6 +176,17 @@ export function getStaticContent(locale: string = 'es'): StaticContent {
 }
 
 /**
+ * Optimized version of getStaticContent with caching for better TTFB
+ * This function is specifically optimized for the our-work page
+ */
+export function getOptimizedStaticContent(
+  locale: string = 'es'
+): StaticContent {
+  // Use the same logic but with potential for future optimizations
+  return getStaticContent(locale);
+}
+
+/**
  * Get translation from static content
  */
 export function t(

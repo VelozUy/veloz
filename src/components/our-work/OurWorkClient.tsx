@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useEffect } from 'react';
-import { ClientOnlyTiledGallery } from '@/components/gallery/ClientOnlyTiledGallery';
+import { TiledGallery } from '@/components/gallery/TiledGallery';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
@@ -312,7 +312,7 @@ export default function OurWorkClient({
           {!isLoading && !loadError && (
             <div className="mb-8 md:mb-10">
               {optimizedMedia.length > 0 ? (
-                <ClientOnlyTiledGallery
+                <TiledGallery
                   images={convertProjectMediaBatch(
                     optimizedMedia.map((item, index) => ({
                       id: item.id,
