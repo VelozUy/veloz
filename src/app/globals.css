@@ -326,8 +326,8 @@ main.homepage {
 html,
 body {
   height: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
@@ -337,6 +337,20 @@ body:has(main.homepage) {
   padding: 0 !important; /* All paddings */
   margin: 0 !important; /* All margins */
   height: 100% !important; /* Ensure body height is 100% */
+}
+
+/* Additional rules to remove any white lines on homepage */
+html:has(.homepage),
+html:has(main.homepage) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.homepage {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
 }
 
 html {

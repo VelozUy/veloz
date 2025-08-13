@@ -202,20 +202,22 @@ export default function SimpleCarousel({
       className={`${height} ${className} relative overflow-hidden bg-background`}
     >
       <div
-        className="absolute inset-0 flex items-center py-4"
+        className="absolute inset-0 flex items-stretch"
         style={{
           transform: `translateX(${currentPosition}px)`,
           transition: 'transform 0.1s ease-linear',
           gap: '-5px',
+          margin: 0,
+          padding: 0,
         }}
       >
         {allMedia.map((item, index) => (
           <div
             key={`${item.id}-${index}`}
-            className="flex-shrink-0 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 p-6"
-            style={{ marginRight: '-1px' }}
+            className="flex-shrink-0 w-48 sm:w-64 md:w-80"
+            style={{ marginRight: '-1px', height: '100%' }}
           >
-            <div className="w-full h-full relative overflow-hidden rounded-lg">
+            <div className="w-full h-full relative overflow-hidden">
               <Image
                 src={item.url}
                 alt={item.alt}

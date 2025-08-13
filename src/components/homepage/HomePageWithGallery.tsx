@@ -18,10 +18,10 @@ export default function HomePageWithGallery({
   }, []);
 
   return (
-    <main className="homepage h-screen flex flex-col p-2 bg-background">
+    <main className="homepage h-screen flex flex-col bg-background">
       {/* Top Gallery - 30% of screen */}
-      <section className="relative h-3/10 pt-2 pb-2 bg-background">
-        <div className="h-full p-2">
+      <section className="relative h-3/10 bg-background">
+        <div className="h-full">
           {isClient && (
             <SimpleCarousel
               height="h-full"
@@ -41,8 +41,8 @@ export default function HomePageWithGallery({
       </section>
 
       {/* Bottom Gallery - 30% of screen */}
-      <section className="relative h-3/10 pt-2 pb-2 bg-background">
-        <div className="h-full p-2">
+      <section className="relative h-3/10 bg-background">
+        <div className="h-full">
           {isClient && (
             <SimpleCarousel
               height="h-full"
