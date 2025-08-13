@@ -628,7 +628,7 @@ export function TiledGallery({
                         (() => {
                           const optimizedImage = optimizeImageData(image, {
                             quality: 85,
-                            priority: index < 4,
+                            priority: index < 8, // Increase priority range for better LCP
                             sizes: '100vw',
                           });
 
@@ -656,6 +656,9 @@ export function TiledGallery({
                               blurDataURL={optimizedImage.blurDataURL}
                               loading={optimizedImage.loading}
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              {...(optimizedImage.fetchPriority && {
+                                fetchPriority: optimizedImage.fetchPriority,
+                              })}
                             />
                           );
                         })()}

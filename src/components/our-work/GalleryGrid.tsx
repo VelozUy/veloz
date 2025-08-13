@@ -302,13 +302,13 @@ export default function GalleryGrid({
                         isLoaded ? 'opacity-100' : 'opacity-0'
                       }`}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={index < 4} // Priority for first 4 items
+                      priority={index < 8} // Priority for first 8 items (improved LCP)
                       onLoad={() => handleImageLoad(item.id, loadStartTime)}
                       onError={() => handleImageError(item.id)}
                       quality={85}
                       placeholder={item.blurDataURL ? 'blur' : 'empty'}
                       blurDataURL={item.blurDataURL}
-                      loading={index < 4 ? 'eager' : 'lazy'}
+                      loading={index < 8 ? 'eager' : 'lazy'}
                     />
 
                     {/* Blur placeholder for progressive loading */}

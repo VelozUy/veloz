@@ -39,10 +39,12 @@ export default function AutomaticGalleryBackground({
   direction = 'left',
   seed = 'default',
 }: AutomaticGalleryBackgroundProps) {
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [imagesStartedLoading, setImagesStartedLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<HTMLDivElement[]>([]);
 
   // Get static content for the specified locale
   const content = getStaticContent(locale);
@@ -100,6 +102,13 @@ export default function AutomaticGalleryBackground({
     return shuffledMedia;
   }, [content, locale, seed]);
 
+  // Start loading images immediately when component mounts
+  useEffect(() => {
+    if (allMedia.length > 0) {
+      setImagesStartedLoading(true);
+    }
+  }, [allMedia.length]);
+
   // Intersection Observer to pause when not visible
   useEffect(() => {
     if (!containerRef.current) return;
@@ -120,48 +129,70 @@ export default function AutomaticGalleryBackground({
     };
   }, []);
 
-  // Auto-scroll animation
+  // GSAP-like infinite scroll animation using individual item positioning
   useEffect(() => {
-    if (!isPlaying || !isVisible) return;
+    if (!isPlaying || !isVisible || allMedia.length === 0) return;
 
     let animationId: number;
     let lastTime = 0;
+    const pixelsPerSecond = speed * 60; // Convert to pixels per second
+    const itemWidth = 400; // 400px per item including gap
+    const totalWidth = allMedia.length * itemWidth;
 
     const animate = (currentTime: number) => {
       if (!lastTime) lastTime = currentTime;
       const deltaTime = currentTime - lastTime;
 
       if (deltaTime >= 16) {
-        // Cap at ~60fps
-        setScrollPosition(prev => {
-          // Calculate total width of all items
-          const totalWidth = allMedia.length * 400; // 400px per item including gap
-          const maxScroll = Math.max(
-            0,
-            totalWidth - (containerRef.current?.offsetWidth || 0)
-          );
+        // Update each item's position individually
+        itemsRef.current.forEach((item, index) => {
+          if (!item) return;
 
+          const currentX = parseFloat(
+            item.style.transform
+              .replace('translateX(', '')
+              .replace('px)', '') || '0'
+          );
+          const itemPosition = index * itemWidth;
+
+          let newX;
           if (direction === 'left') {
-            // Move left to right (default)
-            if (prev >= maxScroll) {
-              return 0;
+            // Move right (left-to-right)
+            newX = currentX - (pixelsPerSecond * deltaTime) / 1000;
+            if (newX <= -itemWidth) {
+              newX = totalWidth - itemWidth;
             }
-            return prev + speed;
           } else {
-            // Move right to left
-            if (prev <= 0) {
-              return maxScroll;
+            // Move left (right-to-left)
+            newX = currentX + (pixelsPerSecond * deltaTime) / 1000;
+            if (newX >= totalWidth) {
+              newX = 0;
             }
-            return prev - speed;
           }
+
+          item.style.transform = `translateX(${newX}px)`;
         });
+
         lastTime = currentTime;
       }
 
       animationId = requestAnimationFrame(animate);
     };
 
-    animationId = requestAnimationFrame(animate);
+    // Initialize item positions - always start with items visible on screen
+    itemsRef.current.forEach((item, index) => {
+      if (!item) return;
+
+      // Always position items to be visible immediately, regardless of direction
+      // Start with first few items visible on the left side of the screen
+      const startPosition = index * itemWidth;
+      item.style.transform = `translateX(${startPosition}px) translateY(-50%)`;
+    });
+
+    // Small delay to ensure positioning is complete before animation starts
+    setTimeout(() => {
+      animationId = requestAnimationFrame(animate);
+    }, 50);
 
     return () => {
       if (animationId) {
@@ -169,6 +200,22 @@ export default function AutomaticGalleryBackground({
       }
     };
   }, [isPlaying, isVisible, allMedia.length, speed, direction]);
+
+  // Image loading handlers
+  const handleImageLoad = (imageId: string) => {
+    setLoadedImages(prev => new Set(prev).add(imageId));
+    if (!imagesStartedLoading) {
+      setImagesStartedLoading(true);
+    }
+  };
+
+  const handleImageError = (imageId: string) => {
+    // Still mark as loaded to prevent infinite loading state
+    setLoadedImages(prev => new Set(prev).add(imageId));
+    if (!imagesStartedLoading) {
+      setImagesStartedLoading(true);
+    }
+  };
 
   // Pause on hover
   const handleMouseEnter = () => {
@@ -194,25 +241,41 @@ export default function AutomaticGalleryBackground({
     );
   }
 
+  // Show loading state until at least some images have loaded
+  const showLoadingState = loadedImages.size === 0 && allMedia.length > 0;
+
   return (
     <div
       ref={containerRef}
-      className={`relative w-full ${height} overflow-hidden bg-background ${className}`}
+      className={`relative w-full ${height} overflow-visible bg-background ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Scrolling Gallery */}
+      {/* Loading State - Clean background until images load */}
+      {showLoadingState && <div className="absolute inset-0 bg-background" />}
+
+      {/* Infinite Scrolling Gallery - Only show after images start loading */}
       <div
-        className="flex gap-4 h-full items-center transition-transform duration-100 ease-linear"
+        className={`absolute inset-0 transition-opacity duration-500 overflow-visible ${
+          showLoadingState ? 'opacity-0' : 'opacity-100'
+        }`}
         style={{
-          transform: `translateX(-${scrollPosition}px)`,
-          width: `${allMedia.length * 400}px`, // 400px per item including gap
+          width: `${allMedia.length * 400 + 800}px`, // Extra width to ensure images are visible when off-screen
+          left: '-400px', // Start positioned to show images before they enter viewport
         }}
       >
+        {/* Items positioned individually */}
         {allMedia.map((item, index) => (
           <div
             key={`${item.id}-${index}`}
-            className="flex-shrink-0 w-96 h-80 relative group"
+            ref={el => {
+              if (el) itemsRef.current[index] = el;
+            }}
+            className="absolute top-1/2 transform -translate-y-1/2 w-96 h-80"
+            style={{
+              transform: `translateX(${index * 400}px) translateY(-50%)`,
+              transition: 'transform 0.1s ease-linear',
+            }}
           >
             <div className="w-full h-full bg-background rounded-lg overflow-hidden shadow-lg">
               {item.type === 'photo' ? (
@@ -221,19 +284,34 @@ export default function AutomaticGalleryBackground({
                   alt={item.alt}
                   width={384}
                   height={320}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-opacity duration-500 ${
+                    loadedImages.has(item.id) ? 'opacity-100' : 'opacity-0'
+                  }`}
                   sizes="384px"
                   priority={index < 6} // Prioritize first 6 images
+                  onLoad={() => handleImageLoad(item.id)}
+                  onError={() => handleImageError(item.id)}
                 />
               ) : (
                 <video
                   src={item.url}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-opacity duration-500 ${
+                    loadedImages.has(item.id) ? 'opacity-100' : 'opacity-0'
+                  }`}
                   muted
                   loop
                   playsInline
                   autoPlay
+                  onLoadedData={() => handleImageLoad(item.id)}
+                  onError={() => handleImageError(item.id)}
                 />
+              )}
+
+              {/* Loading placeholder for individual images */}
+              {!loadedImages.has(item.id) && (
+                <div className="absolute inset-0 bg-muted flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                </div>
               )}
 
               {/* Project title overlay (optional) */}

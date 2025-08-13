@@ -66,11 +66,12 @@
 @font-face {
   font-family: 'REDJOLA';
   src:
-    url('/redjola/Redjola.otf') format('opentype'),
-    url('/redjola/Redjola.ttf') format('truetype');
+    url('/redjola/Redjola.ttf') format('truetype'),
+    url('/redjola/Redjola.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  font-preload: true;
 }
 
 /* Roboto Font Face Declarations - Only the variants actually used */

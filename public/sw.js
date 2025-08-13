@@ -9,7 +9,7 @@ const STATIC_ASSETS = [
   '/about',
   '/our-work',
   '/_next/static/css/app/layout.css',
-  '/redjola/Redjola.woff2',
+  '/redjola/Redjola.ttf',
   '/Roboto/static/Roboto-Regular.ttf',
   '/favicon.svg',
   '/og-image.jpg',

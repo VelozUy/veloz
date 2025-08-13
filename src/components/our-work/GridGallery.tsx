@@ -121,8 +121,8 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
-                  // LCP optimization: load poster eagerly for first 4 videos
-                  preload={index < 4 ? 'auto' : 'metadata'}
+                  // LCP optimization: load poster eagerly for first 8 videos
+                  preload={index < 8 ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
@@ -132,8 +132,8 @@ export default function GridGallery({
                   fill
                   className="object-cover"
                   sizes="100vw"
-                  priority={index < 4}
-                  loading={index < 4 ? 'eager' : 'lazy'}
+                  priority={index < 8}
+                  loading={index < 8 ? 'eager' : 'lazy'}
                 />
               )}
             </div>
@@ -163,7 +163,7 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
-                  preload={index < 4 ? 'auto' : 'metadata'}
+                  preload={index < 8 ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
@@ -173,8 +173,8 @@ export default function GridGallery({
                   fill
                   className="object-cover"
                   sizes="100vw"
-                  priority={index < 4}
-                  loading={index < 4 ? 'eager' : 'lazy'}
+                  priority={index < 8}
+                  loading={index < 8 ? 'eager' : 'lazy'}
                 />
               )}
             </div>

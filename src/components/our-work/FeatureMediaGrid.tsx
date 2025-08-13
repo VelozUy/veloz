@@ -256,8 +256,8 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                       fill
                       className={`${mediaItem.aspectRatio < 0.6 ? 'object-contain' : 'object-cover'} group-hover:brightness-110 transition-all duration-700 ease-out`}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={index < 4}
-                      loading={index < 4 ? 'eager' : 'lazy'}
+                      priority={index < 8}
+                      loading={index < 8 ? 'eager' : 'lazy'}
                       onLoad={() => handleImageLoad(mediaItem.id)}
                       onError={() => handleImageError(mediaItem.id)}
                       quality={85}

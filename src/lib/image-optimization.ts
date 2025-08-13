@@ -31,6 +31,7 @@ export interface OptimizedImageData {
   sizes: string;
   priority: boolean;
   loading: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export interface PerformanceMetrics {
@@ -91,6 +92,7 @@ export function optimizeImageData(
     sizes,
     priority: fullConfig.priority || false,
     loading: fullConfig.priority ? 'eager' : 'lazy',
+    fetchPriority: fullConfig.priority ? 'high' : 'auto',
   };
 
   // Cache the result

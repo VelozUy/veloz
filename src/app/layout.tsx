@@ -171,9 +171,9 @@ export default function RootLayout({
         {/* Preload critical fonts */}
         <link
           rel="preload"
-          href="/redjola/Redjola.woff2"
+          href="/redjola/Redjola.ttf"
           as="font"
-          type="font/woff2"
+          type="font/ttf"
           crossOrigin="anonymous"
         />
         <link

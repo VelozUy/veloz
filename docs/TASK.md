@@ -154,6 +154,44 @@ _Last updated: 2025-01-27_
 
 ## 🎯 **ACTIVE EPICS**
 
+### EPIC: Performance Optimization - Lighthouse Report Fixes
+
+Reference: `docs/epics/quality/performance-optimization-lighthouse.md`
+Status: Active (Week 1 of 3) | Business Impact: HIGH | User Value: HIGH
+
+#### Critical (This Week)
+
+- [x] Fix missing Redjola font file (404 error, 1 day)
+- [~] Optimize LCP image loading strategy (12.9s → <2.5s, 2 days)
+- [ ] Reduce Total Blocking Time (9,340ms → <200ms, 2 days)
+
+#### High Priority (Next Week)
+
+- [ ] Optimize image loading and compression (1.7MB → <500KB, 2 days)
+- [ ] Reduce JavaScript bundle size (488KB → <200KB, 2 days)
+- [ ] Fix Next.js RSC route errors (404s, 1 day)
+
+#### Medium Priority (Week 3)
+
+- [ ] Implement resource preloading strategy (1 day)
+- [ ] Optimize font loading and display (1 day)
+- [ ] Add performance monitoring and alerts (1 day)
+
+### Completed
+
+- [x] Analyzed Lighthouse report and identified critical issues (2025-01-27)
+- [x] Fixed missing Redjola font file - updated preload references to use existing TTF format (2025-01-27)
+- [x] Optimized LCP image loading - increased priority range from 4 to 8 images, added fetchPriority support (2025-01-27)
+- [x] Implemented homepage gallery loading strategy - images only appear after fully loaded with smooth fade-in transitions (2025-01-27)
+- [x] Removed loading message and spinner from homepage gallery for cleaner loading experience (2025-01-27)
+- [x] Implemented homepage animation sequence - logo appears first, then buttons one by one with staggered timing (2025-01-27)
+- [x] Fixed bottom gallery initial position - gallery now starts from the right position when scrolling right-to-left (2025-01-27)
+- [x] Implemented infinite gallery scroll - simplified approach with duplicated items for seamless scrolling (2025-01-27)
+- [x] Added directional control - top gallery moves left-to-right, bottom gallery moves right-to-left (2025-01-27)
+- [x] Fixed bottom gallery infinite scroll - now starts from position 0 and moves left immediately (2025-01-27)
+- [x] Fixed CSS transform for negative scroll positions - bottom gallery now moves correctly (2025-01-27)
+- [x] Fixed bottom gallery infinite scroll positioning - now starts from correct position to show images when scrolling left (2025-01-27)
+
 ### 🧱 EPIC: Unified Communication Center
 
 **Reference**: `docs/epics/admin/unified-communication-center.md`
