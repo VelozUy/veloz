@@ -281,14 +281,27 @@ body {
   padding-top: 5rem; /* 80px to match navigation height */
 }
 
+/* Homepage specific - remove padding immediately */
+body.homepage,
+body:has(main.homepage),
+body:has(.homepage) {
+  padding-top: 0 !important;
+}
+
 /* Remove top padding on homepage since it doesn't have navigation */
 body:has(main > section:first-child) {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 
 /* Alternative approach for better browser support */
 body.homepage {
-  padding-top: 0;
+  padding-top: 0 !important;
+}
+
+/* Ensure homepage main element also has no top margin/padding */
+main.homepage {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 html {

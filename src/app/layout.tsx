@@ -198,6 +198,19 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Veloz" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
+
+        {/* Immediate homepage class application */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Apply homepage class immediately if on homepage
+              if (window.location.pathname === '/') {
+                document.documentElement.classList.add('homepage');
+                document.body.classList.add('homepage');
+              }
+            `,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${oswald.variable} antialiased`}
