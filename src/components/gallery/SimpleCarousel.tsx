@@ -37,6 +37,10 @@ export default function SimpleCarousel({
   ); // 1 for right, -1 for left
   const [isInitialized, setIsInitialized] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [visibleImages, setVisibleImages] = useState<number>(0);
+  const [imageStates, setImageStates] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>();
 
@@ -96,20 +100,40 @@ export default function SimpleCarousel({
     return media.sort(() => random() - 0.5);
   }, [content, seed]);
 
+  // Progressive image fade-in - start after main content loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Fade in all images progressively
+      allMedia.forEach((item, index) => {
+        setTimeout(() => {
+          setImageStates(prevStates => ({
+            ...prevStates,
+            [`${item.id}-${index}`]: true,
+          }));
+        }, index * 200);
+      });
+    }, 2000); // Wait 2 seconds after component mounts
+
+    return () => clearTimeout(timer);
+  }, [allMedia.length]);
+
   // Intersection Observer to pause animation when not visible
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
+    // Temporarily disable intersection observer to prevent issues
+    setIsVisible(true);
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    // const observer = new IntersectionObserver(
+    //   ([entry]) => {
+    //     setIsVisible(entry.isIntersecting);
+    //   },
+    //   { threshold: 0.1 }
+    // );
 
-    return () => observer.disconnect();
+    // if (containerRef.current) {
+    //   observer.observe(containerRef.current);
+    // }
+
+    // return () => observer.disconnect();
   }, []);
 
   // Initialize position for right direction
@@ -196,9 +220,22 @@ export default function SimpleCarousel({
                 src={item.url}
                 alt={item.alt}
                 fill
-                className="object-cover"
+                className={`object-cover transition-all duration-1500 ease-out ${
+                  imageStates[`${item.id}-${index}`]
+                    ? 'opacity-100 blur-0'
+                    : 'opacity-0 blur-lg'
+                }`}
                 sizes="(max-width: 768px) 192px, (max-width: 1024px) 256px, 320px"
                 priority={index < 3}
+                onLoad={() => {
+                  // Ensure image is marked as loaded when it actually loads
+                  if (!imageStates[`${item.id}-${index}`]) {
+                    setImageStates(prev => ({
+                      ...prev,
+                      [`${item.id}-${index}`]: true,
+                    }));
+                  }
+                }}
               />
             </div>
           </div>
