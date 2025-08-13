@@ -12,7 +12,8 @@ export default function HomePageWithGallery({
   locale,
 }: HomePageWithGalleryProps) {
   const [isClient, setIsClient] = useState(false);
-  const [showCarousels, setShowCarousels] = useState(false);
+  const [showTopCarousel, setShowTopCarousel] = useState(false);
+  const [showBottomCarousel, setShowBottomCarousel] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -20,12 +21,21 @@ export default function HomePageWithGallery({
 
   useEffect(() => {
     if (isClient) {
-      // Wait for logo and buttons animation to complete (1.6s) plus a small buffer
-      const timer = setTimeout(() => {
-        setShowCarousels(true);
-      }, 2000); // 2 seconds total delay
+      // Staggered loading for better performance
+      // Load top carousel first (priority)
+      const topTimer = setTimeout(() => {
+        setShowTopCarousel(true);
+      }, 1600); // 1.6s delay for top carousel
 
-      return () => clearTimeout(timer);
+      // Load bottom carousel after a delay
+      const bottomTimer = setTimeout(() => {
+        setShowBottomCarousel(true);
+      }, 2400); // 2.4s delay for bottom carousel
+
+      return () => {
+        clearTimeout(topTimer);
+        clearTimeout(bottomTimer);
+      };
     }
   }, [isClient]);
 
@@ -35,16 +45,17 @@ export default function HomePageWithGallery({
       <section className="relative h-3/10 bg-background">
         <div
           className={`h-full transition-opacity duration-1000 ease-in-out ${
-            showCarousels ? 'opacity-100' : 'opacity-0'
+            showTopCarousel ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          {isClient && showCarousels && (
+          {isClient && showTopCarousel && (
             <SimpleCarousel
               height="h-full"
               speed={1.5}
               locale={locale}
               seed="top-gallery"
               direction="right"
+              priority={true} // Priority loading for top carousel
             />
           )}
         </div>
@@ -61,16 +72,17 @@ export default function HomePageWithGallery({
       <section className="relative h-3/10 bg-background">
         <div
           className={`h-full transition-opacity duration-1000 ease-in-out ${
-            showCarousels ? 'opacity-100' : 'opacity-0'
+            showBottomCarousel ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          {isClient && showCarousels && (
+          {isClient && showBottomCarousel && (
             <SimpleCarousel
               height="h-full"
               speed={1.5}
               locale={locale}
               seed="bottom-gallery"
               direction="left"
+              priority={false} // Lower priority for bottom carousel
             />
           )}
         </div>

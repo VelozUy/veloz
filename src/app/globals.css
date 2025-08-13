@@ -267,11 +267,34 @@
   --shadow-2xl: var(--shadow-2xl);
 }
 
-/* Universal reset - remove all margins and padding */
+/* Universal reset - preserve essential spacing while removing unwanted defaults */
 * {
+  box-sizing: border-box;
+}
+
+/* Reset only specific elements that commonly have unwanted margins/padding */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+blockquote,
+figure,
+hr {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+/* Preserve list styling but remove default margins */
+ul,
+ol {
+  list-style: none;
 }
 
 /* Base styles */
@@ -322,12 +345,10 @@ main.homepage {
   min-height: 100vh !important;
 }
 
-/* Global reset for html and body to ensure full height and no default margins/padding */
+/* Global reset for html and body - preserve normal spacing */
 html,
 body {
   height: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 

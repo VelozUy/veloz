@@ -4,11 +4,18 @@ import { getStaticContent } from '@/lib/utils';
 function generateOptimizedImageUrl(
   originalUrl: string,
   width: number,
-  height: number
+  height: number,
+  quality: number = 60
 ): string {
   // If it's an external URL (like Unsplash), add optimization parameters
   if (originalUrl.includes('unsplash.com')) {
-    return `${originalUrl}?w=${width}&h=${height}&fit=crop&q=60`;
+    return `${originalUrl}?w=${width}&h=${height}&fit=crop&q=${quality}`;
+  }
+
+  // If it's a Firebase Storage URL, add optimization parameters
+  if (originalUrl.includes('firebasestorage.googleapis.com')) {
+    // Firebase Storage doesn't support URL parameters, but we can use Next.js Image optimization
+    return originalUrl;
   }
 
   // If it's a local image or other URL, return as is for now
@@ -24,6 +31,7 @@ export interface GalleryImage {
   height?: number;
   projectId?: string;
   projectTitle?: string;
+  blurDataURL?: string; // Add blur data URL for progressive loading
 }
 
 export interface Project {
@@ -55,6 +63,11 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffled;
 }
+
+// Simple blur data URL for progressive loading
+const generateBlurDataURL = (): string => {
+  return 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==';
+};
 
 // Load project images using the same system as our-work page
 export function loadProjectImages(
@@ -110,8 +123,13 @@ export function loadProjectImages(
               return `${project.title} - ${eventType} - Fotografía profesional por Veloz en Montevideo, Uruguay`;
             };
 
-            // Generate optimized URL for carousel (small square images)
-            const optimizedUrl = generateOptimizedImageUrl(media.url, 300, 300);
+            // Generate optimized URL for carousel (small square images with lower quality)
+            const optimizedUrl = generateOptimizedImageUrl(
+              media.url,
+              300,
+              300,
+              60
+            );
 
             allMedia.push({
               id: media.id,
@@ -121,6 +139,7 @@ export function loadProjectImages(
               height: 300,
               projectId: project.id,
               projectTitle: project.title,
+              blurDataURL: generateBlurDataURL(), // Add blur data URL for progressive loading
             });
           }
         });
@@ -161,11 +180,11 @@ export function loadProjectImages(
   }
 }
 
-// Get a subset of images for carousel
+// Get a subset of images for carousel with optimized count
 export function getCarouselImages(
   locale: string,
   seed: string,
-  count: number = 20
+  count: number = 8 // Reduced default count for better performance
 ): GalleryImage[] {
   const allImages = loadProjectImages(locale, seed);
   return allImages.slice(0, count);
