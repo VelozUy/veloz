@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import AnimatedHomeContent from '@/components/homepage/AnimatedHomeContent';
-import AutomaticGalleryBackground from '@/components/gallery/AutomaticGalleryBackground';
+import SimpleCarousel from '@/components/gallery/SimpleCarousel';
 
 interface HomePageWithGalleryProps {
   locale: string;
@@ -23,15 +23,10 @@ export default function HomePageWithGallery({
       <section className="relative h-3/10 pt-2 pb-2 bg-background">
         <div className="h-full p-2">
           {isClient && (
-            <AutomaticGalleryBackground
+            <SimpleCarousel
               height="h-full"
               speed={0.8}
-              showOverlay={false}
-              overlayOpacity={0}
-              pauseOnHover={false}
-              showProjectTitles={false}
               locale={locale}
-              direction="left"
               seed="top-gallery"
             />
           )}
@@ -49,16 +44,12 @@ export default function HomePageWithGallery({
       <section className="relative h-3/10 pt-2 pb-2 bg-background">
         <div className="h-full p-2">
           {isClient && (
-            <AutomaticGalleryBackground
+            <SimpleCarousel
               height="h-full"
               speed={0.8}
-              showOverlay={false}
-              overlayOpacity={0}
-              pauseOnHover={false}
-              showProjectTitles={false}
               locale={locale}
-              direction="right"
               seed="bottom-gallery"
+              direction="right"
             />
           )}
         </div>
