@@ -353,6 +353,38 @@ html:has(main.homepage) {
   outline: none !important;
 }
 
+/* Homepage specific styles - only apply when body has homepage class */
+body.homepage {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+}
+
+/* Additional rules to remove any white lines on homepage */
+html:has(body.homepage) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Only apply homepage styles to elements with homepage class */
+main.homepage,
+.homepage {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Custom height classes for homepage sections */
+.h-3\/10 {
+  height: 30vh;
+}
+
+.h-2\/5 {
+  height: 40vh;
+}
+
 html {
   overflow-x: hidden;
 }

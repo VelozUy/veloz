@@ -18,10 +18,10 @@ export default function AnimatedHomeContent({
 
   useEffect(() => {
     // Start animation sequence
-    const timer1 = setTimeout(() => setShowLogo(true), 500);
-    const timer2 = setTimeout(() => setShowButtons([true, false, false]), 1200);
-    const timer3 = setTimeout(() => setShowButtons([true, true, false]), 1400);
-    const timer4 = setTimeout(() => setShowButtons([true, true, true]), 1600);
+    const timer1 = setTimeout(() => setShowLogo(true), 500); // Logo appears after 500ms
+    const timer2 = setTimeout(() => setShowButtons([true, false, false]), 1200); // First button after 1.2s
+    const timer3 = setTimeout(() => setShowButtons([true, true, false]), 1400); // Second button after 1.4s
+    const timer4 = setTimeout(() => setShowButtons([true, true, true]), 1600); // Third button after 1.6s
 
     return () => {
       clearTimeout(timer1);
@@ -38,18 +38,26 @@ export default function AnimatedHomeContent({
   ];
 
   return (
-    <div className={cn('flex flex-col items-center justify-center', className)}>
+    <div
+      className={cn(
+        'flex flex-col items-center justify-center w-full mt-8 sm:mt-12 md:mt-16',
+        className
+      )}
+    >
       {/* Logo */}
-      <div style={{ marginBottom: '50px' }}>
+      <div
+        className="flex justify-center w-full"
+        style={{ marginBottom: '50px' }}
+      >
         <div
           className={cn(
-            'transition-all duration-1000 ease-out transform',
+            'transition-all duration-1000 ease-out transform flex justify-center items-center',
             showLogo
               ? 'opacity-100 scale-100 translate-y-0'
               : 'opacity-0 scale-95 translate-y-4'
           )}
         >
-          <div className="scale-200 sm:scale-105">
+          <div className="scale-200 sm:scale-105 flex justify-center items-center">
             <VelozLogo
               variant="blue"
               size="xl"
@@ -60,10 +68,7 @@ export default function AnimatedHomeContent({
       </div>
 
       {/* Buttons */}
-      <div
-        className="flex flex-row items-center justify-center"
-        style={{ gap: '18px' }}
-      >
+      <div className="flex flex-row items-center justify-center w-full gap-4 sm:gap-6 md:gap-8">
         {buttons.map((button, index) => (
           <div
             key={button.href}

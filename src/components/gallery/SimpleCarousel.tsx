@@ -1,189 +1,177 @@
 'use client';
 
-import { useMemo, useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
-import { getStaticContent } from '@/lib/utils';
-
-interface MediaItem {
-  id: string;
-  url: string;
-  type: 'photo' | 'video';
-  alt: string;
-  width: number;
-  height: number;
-  projectTitle: string;
-}
+import { useState, useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
+import { getCarouselImages, type GalleryImage } from '@/lib/gallery-utils';
 
 interface SimpleCarouselProps {
-  className?: string;
-  height?: string;
-  speed?: number; // pixels per frame
-  locale?: string;
-  seed?: string;
-  direction?: 'left' | 'right'; // Initial direction
+  height: string;
+  speed: number;
+  locale: string;
+  seed: string;
+  direction?: 'left' | 'right';
 }
 
 export default function SimpleCarousel({
-  className = '',
-  height = 'h-full',
-  speed = 0.5,
-  locale = 'es',
-  seed = 'default',
-  direction = 'left', // 'left' or 'right' for initial direction
+  height,
+  speed,
+  locale,
+  seed,
+  direction = 'left',
 }: SimpleCarouselProps) {
-  const [currentPosition, setCurrentPosition] = useState(0);
-  const [currentDirection, setCurrentDirection] = useState(
-    direction === 'left' ? -1 : 1
-  ); // 1 for right, -1 for left
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [visibleImages, setVisibleImages] = useState<number>(0);
-  const [imageStates, setImageStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentDirection, setCurrentDirection] = useState(direction);
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
+  const bounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Get static content for the specified locale
-  const content = getStaticContent(locale);
+  // Load images based on seed and locale
+  useEffect(() => {
+    const loadImages = async () => {
+      try {
+        // Load project images from JSON files (reduced count for better performance)
+        const projectImages = getCarouselImages(locale, seed, 12);
 
-  // Collect all media from published projects
-  const allMedia = useMemo(() => {
-    if (!content || !content.content || !content.content.projects) {
-      return [];
-    }
+        console.log(
+          `Loading carousel images for seed: ${seed}, locale: ${locale}`
+        );
+        console.log(`Found ${projectImages.length} project images`);
 
-    const projects = content.content.projects || [];
-    const publishedProjects = projects.filter(
-      project => project.status === 'published'
-    );
+        if (projectImages.length > 0) {
+          setImages(projectImages);
+        } else {
+          // Fallback to placeholder images if no project images found
+          const placeholderImages: GalleryImage[] = [
+            {
+              id: '1',
+              url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60',
+              alt: 'Event photography',
+            },
+            {
+              id: '2',
+              url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=60',
+              alt: 'Wedding photography',
+            },
+            {
+              id: '3',
+              url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=60',
+              alt: 'Corporate event',
+            },
+            {
+              id: '4',
+              url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60',
+              alt: 'Event photography',
+            },
+            {
+              id: '5',
+              url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=60',
+              alt: 'Wedding photography',
+            },
+          ];
+          setImages(placeholderImages);
+        }
 
-    const media: MediaItem[] = [];
-
-    publishedProjects.forEach(project => {
-      if (!project || !project.title) {
-        return;
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading gallery images:', error);
+        setIsLoading(false);
       }
-
-      if (project.media && Array.isArray(project.media)) {
-        project.media.forEach(item => {
-          if (item && item.id && item.url && item.type && project.title) {
-            media.push({
-              id: item.id,
-              url: item.url,
-              type: item.type as 'photo' | 'video',
-              alt: `${project.title} - ${item.type}`,
-              width: item.width || 800,
-              height: item.height || 600,
-              projectTitle: project.title,
-            });
-          }
-        });
-      }
-    });
-
-    // Shuffle with seed
-    const seededRandom = (seed: string) => {
-      let hash = 0;
-      for (let i = 0; i < seed.length; i++) {
-        const char = seed.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash = hash & hash;
-      }
-      return () => {
-        hash = (hash * 9301 + 49297) % 233280;
-        return hash / 233280;
-      };
     };
 
-    const random = seededRandom(seed);
-    return media.sort(() => random() - 0.5);
-  }, [content, seed]);
+    loadImages();
+  }, [seed, locale]);
 
-  // Progressive image fade-in - start after main content loads
+  // Handle individual image loading
+  const handleImageLoad = (imageId: string) => {
+    setLoadedImages(prev => new Set([...prev, imageId]));
+  };
+
+  // Bouncing effect - change direction when reaching the end
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Fade in all images progressively
-      allMedia.forEach((item, index) => {
-        setTimeout(() => {
-          setImageStates(prevStates => ({
-            ...prevStates,
-            [`${item.id}-${index}`]: true,
-          }));
-        }, index * 200);
-      });
-    }, 2000); // Wait 2 seconds after component mounts
+    if (!images.length) return; // Only check for images, not loading state
 
-    return () => clearTimeout(timer);
-  }, [allMedia.length]);
+    // Calculate when the last image of the first set enters the screen
+    const singleImageSetWidth = images.length * 300; // 12 images * 300px each
+    const viewportWidth = 300; // Each image is 300px wide
 
-  // Intersection Observer to pause animation when not visible
-  useEffect(() => {
-    // Temporarily disable intersection observer to prevent issues
-    setIsVisible(true);
+    const checkForBounce = () => {
+      if (containerRef.current) {
+        const container = containerRef.current;
+        const currentScrollLeft = container.scrollLeft;
 
-    // const observer = new IntersectionObserver(
-    //   ([entry]) => {
-    //     setIsVisible(entry.isIntersecting);
-    //   },
-    //   { threshold: 0.1 }
-    // );
+        // Bounce when the last image of the first set enters the screen
+        // This happens when we've scrolled enough to show the last image
+        const bouncePoint = singleImageSetWidth - viewportWidth;
 
-    // if (containerRef.current) {
-    //   observer.observe(containerRef.current);
-    // }
+        if (currentDirection === 'right' && currentScrollLeft >= bouncePoint) {
+          setCurrentDirection('left');
+          console.log(
+            `Carousel ${seed} bouncing when last image enters: right → left`
+          );
+        } else if (
+          currentDirection === 'left' &&
+          currentScrollLeft <= 0 &&
+          currentScrollLeft > -10
+        ) {
+          // Only bounce if we've actually scrolled left (not just at the start)
+          setCurrentDirection('right');
+          console.log(`Carousel ${seed} bouncing at start: left → right`);
+        }
+      }
+    };
 
-    // return () => observer.disconnect();
-  }, []);
+    // Check for bounce every 100ms
+    const bounceCheckInterval = setInterval(checkForBounce, 100);
 
-  // Initialize position for right direction
-  useEffect(() => {
-    if (direction === 'right' && !isInitialized && containerRef.current) {
-      const containerWidth = containerRef.current.clientWidth || 0;
-      const imageWidth = 200; // Approximate width of each image
-      const maxScroll = -(
-        allMedia.length * imageWidth -
-        containerWidth +
-        imageWidth
-      );
-      setCurrentPosition(maxScroll);
-      setIsInitialized(true);
-    }
-  }, [direction, isInitialized, allMedia.length]);
+    return () => {
+      clearInterval(bounceCheckInterval);
+    };
+  }, [images.length, currentDirection, seed]);
 
   // Animation loop
   useEffect(() => {
-    if (!isVisible) return;
+    if (!images.length) return; // Only check for images, not loading state
+
+    console.log(`Starting animation for carousel ${seed}:`, {
+      imagesLength: images.length,
+      currentDirection,
+      speed,
+      isLoading,
+    });
 
     const animate = () => {
-      setCurrentPosition(prev => {
-        const newPosition = prev + currentDirection * speed;
+      if (containerRef.current) {
+        const container = containerRef.current;
+        const scrollAmount = currentDirection === 'left' ? -1 : 1;
 
-        // Bounce back when reaching edges - ensure at least one image is always visible
-        if (newPosition > 0) {
-          setCurrentDirection(-1);
-          return 0;
+        container.scrollLeft += scrollAmount * speed;
+
+        // Debug scroll position (reduced frequency to improve performance)
+        if (Math.random() < 0.001) {
+          // Log 0.1% of the time to reduce performance impact
+          console.log(
+            `Carousel ${seed} scrolling: scrollLeft=${container.scrollLeft}, scrollWidth=${container.scrollWidth}, direction=${currentDirection}`
+          );
         }
 
-        // Calculate max scroll to ensure at least one image is always visible
-        const containerWidth = containerRef.current?.clientWidth || 0;
-        const imageWidth = 200; // Approximate width of each image
-        const maxScroll = -(
-          allMedia.length * imageWidth -
-          containerWidth +
-          imageWidth
-        );
-
-        if (newPosition < maxScroll) {
-          setCurrentDirection(1);
-          return maxScroll;
-        }
-
-        return newPosition;
-      });
-
+        // No need for manual reset - bouncing is handled by the bounce effect
+      }
       animationRef.current = requestAnimationFrame(animate);
     };
+
+    // Set initial scroll position based on direction
+    if (containerRef.current) {
+      const container = containerRef.current;
+      if (currentDirection === 'left') {
+        // Start from the end for left-moving carousel
+        container.scrollLeft = container.scrollWidth / 3;
+      } else {
+        // Start from the beginning for right-moving carousel
+        container.scrollLeft = 0;
+      }
+    }
 
     animationRef.current = requestAnimationFrame(animate);
 
@@ -192,64 +180,67 @@ export default function SimpleCarousel({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isVisible, currentDirection, speed, allMedia.length]);
+  }, [currentDirection, speed, images.length, isLoading, seed]);
 
-  if (allMedia.length === 0) {
+  if (isLoading) {
+    return (
+      <div className={`${height} overflow-hidden bg-background`}>
+        {/* Empty loading state - no spinner */}
+      </div>
+    );
+  }
+
+  if (!images.length) {
     return (
       <div
-        className={`${height} ${className} bg-background flex items-center justify-center`}
+        className={`${height} overflow-hidden bg-background flex items-center justify-center`}
       >
-        <div className="text-muted-foreground">No media available</div>
+        <div className="text-muted-foreground">No images available</div>
       </div>
     );
   }
 
   return (
-    <div
-      ref={containerRef}
-      className={`${height} ${className} relative overflow-hidden bg-background`}
-    >
+    <div className={`${height} overflow-hidden bg-background`}>
       <div
-        className="absolute inset-0 flex items-stretch"
-        style={{
-          transform: `translateX(${currentPosition}px)`,
-          transition: 'transform 0.1s ease-linear',
-          gap: '-5px',
-          margin: 0,
-          padding: 0,
-        }}
+        ref={containerRef}
+        className="flex h-full transition-all duration-1000 ease-in-out"
+        style={{ overflowX: 'hidden' }}
       >
-        {allMedia.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            className="flex-shrink-0 w-48 sm:w-64 md:w-80"
-            style={{ marginRight: '-1px', height: '100%' }}
-          >
-            <div className="w-full h-full relative overflow-hidden">
-              <Image
-                src={item.url}
-                alt={item.alt}
-                fill
-                className={`object-cover transition-all duration-1500 ease-out ${
-                  imageStates[`${item.id}-${index}`]
-                    ? 'opacity-100 blur-0'
-                    : 'opacity-0 blur-lg'
-                }`}
-                sizes="(max-width: 768px) 192px, (max-width: 1024px) 256px, 320px"
-                priority={index < 3}
-                onLoad={() => {
-                  // Ensure image is marked as loaded when it actually loads
-                  if (!imageStates[`${item.id}-${index}`]) {
-                    setImageStates(prev => ({
-                      ...prev,
-                      [`${item.id}-${index}`]: true,
-                    }));
-                  }
-                }}
-              />
+        {/* Duplicate images for seamless loop */}
+        {[...images, ...images, ...images].map((image, index) => {
+          const imageKey = `${image.id}-${index}`;
+          const isLoaded = loadedImages.has(imageKey);
+
+          return (
+            <div
+              key={imageKey}
+              className="flex-shrink-0 h-full flex items-center justify-center"
+              style={{ width: '300px' }} // Fixed width for each image
+            >
+              <div
+                className="relative w-full h-full flex items-center justify-center"
+                style={{ aspectRatio: '1/1' }}
+              >
+                <div
+                  className={`w-full h-full bg-muted transition-all duration-1000 ease-in-out ${
+                    isLoaded ? 'opacity-0' : 'opacity-100'
+                  }`}
+                />
+                <img
+                  src={image.url}
+                  alt={image.alt || 'Gallery image'}
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+                    isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
+                  }`}
+                  loading="lazy"
+                  decoding="async"
+                  onLoad={() => handleImageLoad(imageKey)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
