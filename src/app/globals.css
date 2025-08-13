@@ -286,6 +286,11 @@ body:has(main > section:first-child) {
   padding-top: 0;
 }
 
+/* Alternative approach for better browser support */
+body.homepage {
+  padding-top: 0;
+}
+
 html {
   overflow-x: hidden;
 }

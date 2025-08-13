@@ -16,9 +16,11 @@ export default function ConditionalNavigation() {
     setMounted(true);
   }, []);
 
-  // Don't show navigation on homepage or admin pages (admin has its own layout)
+  // Don't show navigation on homepage, admin pages, or gallery background demo
   const shouldShowNavigation =
-    pathname !== '/' && !pathname.startsWith('/admin');
+    pathname !== '/' &&
+    !pathname.startsWith('/admin') &&
+    pathname !== '/debug/automatic-gallery-background';
 
   if (!shouldShowNavigation) {
     return null;

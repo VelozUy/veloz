@@ -57,7 +57,7 @@ export default function Home() {
   const fallbackImages: string[] = [];
 
   return (
-    <main>
+    <main className="homepage">
       <StructuredData type="localBusiness" data={localBusinessData} />
       <Hero
         backgroundVideo={backgroundVideo}
