@@ -40,7 +40,7 @@ export default function AnimatedHomeContent({
   return (
     <div className={cn('flex flex-col items-center justify-center', className)}>
       {/* Logo */}
-      <div style={{ marginBottom: '60px' }}>
+      <div style={{ marginBottom: '50px' }}>
         <div
           className={cn(
             'transition-all duration-1000 ease-out transform',
@@ -49,11 +49,13 @@ export default function AnimatedHomeContent({
               : 'opacity-0 scale-95 translate-y-4'
           )}
         >
-          <VelozLogo
-            variant="blue"
-            size="xl"
-            className="drop-shadow-2xl scale-125 sm:scale-150 md:scale-150"
-          />
+          <div className="scale-200 sm:scale-105">
+            <VelozLogo
+              variant="blue"
+              size="xl"
+              className="drop-shadow-2xl sm:scale-150 md:scale-150"
+            />
+          </div>
         </div>
       </div>
 
@@ -79,7 +81,7 @@ export default function AnimatedHomeContent({
               <Button
                 variant="default"
                 size="default"
-                className="w-24 sm:w-28 md:w-32 text-xs hover:animate-veloz-hover transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
+                className="w-28 sm:w-32 md:w-36 text-sm hover:animate-veloz-hover transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
               >
                 {button.text}
               </Button>
