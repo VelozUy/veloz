@@ -5,6 +5,7 @@ import {
   StructuredData,
   localBusinessData,
 } from '@/components/seo/StructuredData';
+import HomePageWithGallery from '@/components/homepage/HomePageWithGallery';
 
 // Force static generation at build time
 export const dynamic = 'force-static';
@@ -38,17 +39,10 @@ export default function Home() {
   // Get current locale (will be replaced with proper Next.js locale detection)
   const locale = getCurrentLocale();
 
-  // Get static content for current locale
-  const staticContent = getStaticContent(locale);
-
   return (
-    <main className="homepage min-h-screen flex flex-col">
+    <>
       <StructuredData type="localBusiness" data={localBusinessData} />
-
-      {/* Main Content Section - full height */}
-      <section className="relative flex-1 bg-background flex items-center justify-center">
-        <AnimatedHomeContent />
-      </section>
-    </main>
+      <HomePageWithGallery locale={locale} />
+    </>
   );
 }

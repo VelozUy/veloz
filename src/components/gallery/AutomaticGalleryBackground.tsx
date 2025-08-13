@@ -53,6 +53,11 @@ export default function AutomaticGalleryBackground({
 
   // Collect all media from published projects and randomize them
   const allMedia = useMemo(() => {
+    // Safety check for content structure
+    if (!content || !content.content || !content.content.projects) {
+      return [];
+    }
+
     const projects = content.content.projects || [];
     const publishedProjects = projects.filter(
       project => project.status === 'published'
@@ -61,19 +66,26 @@ export default function AutomaticGalleryBackground({
     const media: MediaItem[] = [];
 
     publishedProjects.forEach(project => {
+      // Safety check for project structure
+      if (!project || !project.title) {
+        return;
+      }
+
       if (project.media && Array.isArray(project.media)) {
         project.media.forEach(item => {
-          media.push({
-            id: item.id,
-            url: item.url,
-            type: item.type as 'photo' | 'video',
-            alt: `${project.title} - ${item.type}`,
-            width: item.width || 800,
-            height: item.height || 600,
-            projectTitle: project.title,
-          });
+          // Ensure all required properties exist before adding to media array
+          if (item && item.id && item.url && item.type && project.title) {
+            media.push({
+              id: item.id,
+              url: item.url,
+              type: item.type as 'photo' | 'video',
+              alt: `${project.title} - ${item.type}`,
+              width: item.width || 800,
+              height: item.height || 600,
+              projectTitle: project.title,
+            });
+          }
         });
-      } else {
       }
     });
 
@@ -112,7 +124,9 @@ export default function AutomaticGalleryBackground({
 
       // Fallback: Mark images as loaded after a timeout to prevent infinite loading
       const timeoutId = setTimeout(() => {
-        const allImageIds = allMedia.map(item => item.id);
+        const allImageIds = allMedia
+          .filter(item => item && item.id) // Filter out undefined items
+          .map(item => item.id);
         setLoadedImages(new Set(allImageIds));
       }, 3000); // 3 second timeout
 
@@ -125,11 +139,11 @@ export default function AutomaticGalleryBackground({
     const updateItemWidth = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setItemWidth(280); // Mobile
+        setItemWidth(240); // Mobile - w-48 (192px) + p-2 (16px) + spacing
       } else if (width < 768) {
-        setItemWidth(340); // Small tablet
+        setItemWidth(300); // Small tablet - w-64 (256px) + p-2 (16px) + spacing
       } else {
-        setItemWidth(400); // Desktop
+        setItemWidth(340); // Desktop - w-80 (320px) + p-2 (16px) + spacing
       }
     };
 
@@ -256,7 +270,9 @@ export default function AutomaticGalleryBackground({
   useEffect(() => {
     if (allMedia.length > 0 && loadedImages.size === 0) {
       const timeoutId = setTimeout(() => {
-        const allImageIds = allMedia.map(item => item.id);
+        const allImageIds = allMedia
+          .filter(item => item && item.id) // Filter out undefined items
+          .map(item => item.id);
         setLoadedImages(new Set(allImageIds));
         setImagesStartedLoading(true);
       }, 1000); // 1 second timeout
@@ -308,7 +324,7 @@ export default function AutomaticGalleryBackground({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full ${height} overflow-visible bg-background ${className}`}
+      className={`relative w-full ${height} overflow-hidden bg-background ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -317,7 +333,7 @@ export default function AutomaticGalleryBackground({
 
       {/* Infinite Scrolling Gallery - Only show after images start loading */}
       <div
-        className={`absolute inset-0 transition-opacity duration-500 overflow-visible ${
+        className={`absolute inset-0 transition-opacity duration-500 overflow-hidden ${
           showLoadingState ? 'opacity-0' : 'opacity-100'
         }`}
         style={{
@@ -327,6 +343,11 @@ export default function AutomaticGalleryBackground({
       >
         {/* Items positioned individually */}
         {allMedia.map((item, index) => {
+          // Additional safety check for each item
+          if (!item || !item.id || !item.url || !item.type) {
+            return null;
+          }
+
           const xPosition = index * itemWidth;
           return (
             <div
@@ -334,10 +355,11 @@ export default function AutomaticGalleryBackground({
               ref={el => {
                 if (el) itemsRef.current[index] = el;
               }}
-              className="absolute top-1/2 transform -translate-y-1/2 w-64 h-48 sm:w-80 sm:h-64 md:w-96 md:h-80"
+              className="absolute w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 p-2"
               style={{
                 transform: `translateX(${xPosition}px) translateY(-50%)`,
                 transition: 'transform 0.1s ease-linear',
+                top: '50%',
               }}
             >
               <div className="w-full h-full bg-background rounded-lg overflow-hidden shadow-lg">
