@@ -42,7 +42,7 @@ export default function SimpleCarousel({
     {}
   );
   const containerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   // Get static content for the specified locale
   const content = getStaticContent(locale);
