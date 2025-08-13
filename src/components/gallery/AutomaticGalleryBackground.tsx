@@ -339,6 +339,8 @@ export default function AutomaticGalleryBackground({
         style={{
           width: `${allMedia.length * itemWidth + 400}px`, // Extra width for smooth scrolling
           left: '0px', // Start positioned at the beginning of the viewport
+          top: '8px',
+          bottom: '8px',
         }}
       >
         {/* Items positioned individually */}
