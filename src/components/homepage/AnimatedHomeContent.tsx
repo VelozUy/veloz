@@ -18,10 +18,10 @@ export default function AnimatedHomeContent({
 
   useEffect(() => {
     // Start animation sequence
-    const timer1 = setTimeout(() => setShowLogo(true), 500); // Logo appears after 500ms
-    const timer2 = setTimeout(() => setShowButtons([true, false, false]), 1200); // First button after 1.2s
-    const timer3 = setTimeout(() => setShowButtons([true, true, false]), 1400); // Second button after 1.4s
-    const timer4 = setTimeout(() => setShowButtons([true, true, true]), 1600); // Third button after 1.6s
+    const timer1 = setTimeout(() => setShowLogo(true), 500);
+    const timer2 = setTimeout(() => setShowButtons([true, false, false]), 1200);
+    const timer3 = setTimeout(() => setShowButtons([true, true, false]), 1400);
+    const timer4 = setTimeout(() => setShowButtons([true, true, true]), 1600);
 
     return () => {
       clearTimeout(timer1);
@@ -38,14 +38,9 @@ export default function AnimatedHomeContent({
   ];
 
   return (
-    <div
-      className={cn(
-        'flex flex-col items-center justify-center space-y-6 sm:space-y-8 md:space-y-10 pointer-events-none z-30 transform translate-y-2',
-        className
-      )}
-    >
-      {/* Logo Section - Animated */}
-      <div className="flex flex-col items-center justify-center">
+    <div className={cn('flex flex-col items-center justify-center', className)}>
+      {/* Logo */}
+      <div style={{ marginBottom: '60px' }}>
         <div
           className={cn(
             'transition-all duration-1000 ease-out transform',
@@ -62,8 +57,11 @@ export default function AnimatedHomeContent({
         </div>
       </div>
 
-      {/* CTA Buttons Section - Staggered Animation */}
-      <div className="flex flex-row items-center justify-center space-x-3 sm:space-x-4 md:space-x-6 pointer-events-auto">
+      {/* Buttons */}
+      <div
+        className="flex flex-row items-center justify-center"
+        style={{ gap: '18px' }}
+      >
         {buttons.map((button, index) => (
           <div
             key={button.href}

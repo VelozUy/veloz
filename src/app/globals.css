@@ -293,7 +293,6 @@ body {
 body:has(.homepage),
 body:has(main.homepage),
 body.homepage {
-  padding: 0 !important;
   margin: 0 !important;
   height: 100vh !important;
   min-height: 100vh !important;
@@ -319,7 +318,6 @@ body.homepage {
 /* Ensure homepage main element also has no top margin/padding */
 main.homepage {
   margin: 0 !important;
-  padding: 0 !important;
   height: 100vh !important;
   min-height: 100vh !important;
 }
