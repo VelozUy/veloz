@@ -43,6 +43,8 @@ export default function AutomaticGalleryBackground({
   const [isVisible, setIsVisible] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [imagesStartedLoading, setImagesStartedLoading] = useState(false);
+  const [itemWidth, setItemWidth] = useState(400);
+  const [itemPositions, setItemPositions] = useState<number[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef<HTMLDivElement[]>([]);
 
@@ -71,6 +73,7 @@ export default function AutomaticGalleryBackground({
             projectTitle: project.title,
           });
         });
+      } else {
       }
     });
 
@@ -106,8 +109,34 @@ export default function AutomaticGalleryBackground({
   useEffect(() => {
     if (allMedia.length > 0) {
       setImagesStartedLoading(true);
+
+      // Fallback: Mark images as loaded after a timeout to prevent infinite loading
+      const timeoutId = setTimeout(() => {
+        const allImageIds = allMedia.map(item => item.id);
+        setLoadedImages(new Set(allImageIds));
+      }, 3000); // 3 second timeout
+
+      return () => clearTimeout(timeoutId);
     }
   }, [allMedia.length]);
+
+  // Update item width based on screen size
+  useEffect(() => {
+    const updateItemWidth = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setItemWidth(280); // Mobile
+      } else if (width < 768) {
+        setItemWidth(340); // Small tablet
+      } else {
+        setItemWidth(400); // Desktop
+      }
+    };
+
+    updateItemWidth();
+    window.addEventListener('resize', updateItemWidth);
+    return () => window.removeEventListener('resize', updateItemWidth);
+  }, []);
 
   // Intersection Observer to pause when not visible
   useEffect(() => {
@@ -136,7 +165,7 @@ export default function AutomaticGalleryBackground({
     let animationId: number;
     let lastTime = 0;
     const pixelsPerSecond = speed * 60; // Convert to pixels per second
-    const itemWidth = 400; // 400px per item including gap
+    // Use state value for item width
     const totalWidth = allMedia.length * itemWidth;
 
     const animate = (currentTime: number) => {
@@ -145,32 +174,33 @@ export default function AutomaticGalleryBackground({
 
       if (deltaTime >= 16) {
         // Update each item's position individually
-        itemsRef.current.forEach((item, index) => {
-          if (!item) return;
-
-          const currentX = parseFloat(
-            item.style.transform
-              .replace('translateX(', '')
-              .replace('px)', '') || '0'
-          );
-          const itemPosition = index * itemWidth;
-
-          let newX;
-          if (direction === 'left') {
-            // Move right (left-to-right)
-            newX = currentX - (pixelsPerSecond * deltaTime) / 1000;
-            if (newX <= -itemWidth) {
-              newX = totalWidth - itemWidth;
+        setItemPositions(prevPositions => {
+          const newPositions = prevPositions.map((currentX, index) => {
+            let newX;
+            if (direction === 'left') {
+              // Move right (left-to-right)
+              newX = currentX - (pixelsPerSecond * deltaTime) / 1000;
+              if (newX <= -itemWidth) {
+                newX = totalWidth - itemWidth;
+              }
+            } else {
+              // Move left (right-to-left)
+              newX = currentX + (pixelsPerSecond * deltaTime) / 1000;
+              if (newX >= totalWidth) {
+                newX = 0;
+              }
             }
-          } else {
-            // Move left (right-to-left)
-            newX = currentX + (pixelsPerSecond * deltaTime) / 1000;
-            if (newX >= totalWidth) {
-              newX = 0;
-            }
-          }
+            return newX;
+          });
 
-          item.style.transform = `translateX(${newX}px)`;
+          // Update DOM elements
+          itemsRef.current.forEach((item, index) => {
+            if (item && newPositions[index] !== undefined) {
+              item.style.transform = `translateX(${newPositions[index]}px) translateY(-50%)`;
+            }
+          });
+
+          return newPositions;
         });
 
         lastTime = currentTime;
@@ -180,12 +210,17 @@ export default function AutomaticGalleryBackground({
     };
 
     // Initialize item positions - always start with items visible on screen
+    const initialPositions = allMedia.map(
+      (_, index) => 100 + index * itemWidth
+    );
+    setItemPositions(initialPositions);
+
     itemsRef.current.forEach((item, index) => {
       if (!item) return;
 
       // Always position items to be visible immediately, regardless of direction
       // Start with first few items visible on the left side of the screen
-      const startPosition = index * itemWidth;
+      const startPosition = 100 + index * itemWidth;
       item.style.transform = `translateX(${startPosition}px) translateY(-50%)`;
     });
 
@@ -199,7 +234,7 @@ export default function AutomaticGalleryBackground({
         cancelAnimationFrame(animationId);
       }
     };
-  }, [isPlaying, isVisible, allMedia.length, speed, direction]);
+  }, [isPlaying, isVisible, allMedia.length, speed, direction, itemWidth]);
 
   // Image loading handlers
   const handleImageLoad = (imageId: string) => {
@@ -217,6 +252,19 @@ export default function AutomaticGalleryBackground({
     }
   };
 
+  // Force mark images as loaded after a short delay to prevent infinite loading
+  useEffect(() => {
+    if (allMedia.length > 0 && loadedImages.size === 0) {
+      const timeoutId = setTimeout(() => {
+        const allImageIds = allMedia.map(item => item.id);
+        setLoadedImages(new Set(allImageIds));
+        setImagesStartedLoading(true);
+      }, 1000); // 1 second timeout
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [allMedia.length, loadedImages.size]);
+
   // Pause on hover
   const handleMouseEnter = () => {
     if (pauseOnHover) {
@@ -229,6 +277,19 @@ export default function AutomaticGalleryBackground({
       setIsPlaying(true);
     }
   };
+
+  // If no images have loaded after 2 seconds, force show them
+  const [forceShow, setForceShow] = useState(false);
+
+  useEffect(() => {
+    if (allMedia.length > 0 && loadedImages.size === 0) {
+      const timeoutId = setTimeout(() => {
+        setForceShow(true);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [allMedia.length, loadedImages.size]);
 
   // If no media available, show fallback
   if (allMedia.length === 0) {
@@ -260,73 +321,67 @@ export default function AutomaticGalleryBackground({
           showLoadingState ? 'opacity-0' : 'opacity-100'
         }`}
         style={{
-          width: `${allMedia.length * 400 + 800}px`, // Extra width to ensure images are visible when off-screen
-          left: '-400px', // Start positioned to show images before they enter viewport
+          width: `${allMedia.length * itemWidth + 400}px`, // Extra width for smooth scrolling
+          left: '0px', // Start positioned at the beginning of the viewport
         }}
       >
         {/* Items positioned individually */}
-        {allMedia.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            ref={el => {
-              if (el) itemsRef.current[index] = el;
-            }}
-            className="absolute top-1/2 transform -translate-y-1/2 w-96 h-80"
-            style={{
-              transform: `translateX(${index * 400}px) translateY(-50%)`,
-              transition: 'transform 0.1s ease-linear',
-            }}
-          >
-            <div className="w-full h-full bg-background rounded-lg overflow-hidden shadow-lg">
-              {item.type === 'photo' ? (
-                <Image
-                  src={item.url}
-                  alt={item.alt}
-                  width={384}
-                  height={320}
-                  className={`w-full h-full object-cover transition-opacity duration-500 ${
-                    loadedImages.has(item.id) ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  sizes="384px"
-                  priority={index < 6} // Prioritize first 6 images
-                  onLoad={() => handleImageLoad(item.id)}
-                  onError={() => handleImageError(item.id)}
-                />
-              ) : (
-                <video
-                  src={item.url}
-                  className={`w-full h-full object-cover transition-opacity duration-500 ${
-                    loadedImages.has(item.id) ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  onLoadedData={() => handleImageLoad(item.id)}
-                  onError={() => handleImageError(item.id)}
-                />
-              )}
+        {allMedia.map((item, index) => {
+          const xPosition = index * itemWidth;
+          return (
+            <div
+              key={`${item.id}-${index}`}
+              ref={el => {
+                if (el) itemsRef.current[index] = el;
+              }}
+              className="absolute top-1/2 transform -translate-y-1/2 w-64 h-48 sm:w-80 sm:h-64 md:w-96 md:h-80"
+              style={{
+                transform: `translateX(${xPosition}px) translateY(-50%)`,
+                transition: 'transform 0.1s ease-linear',
+              }}
+            >
+              <div className="w-full h-full bg-background rounded-lg overflow-hidden shadow-lg">
+                {item.type === 'photo' ? (
+                  <Image
+                    src={item.url}
+                    alt={item.alt}
+                    width={384}
+                    height={320}
+                    className="w-full h-full object-cover transition-opacity duration-500 opacity-100"
+                    sizes="384px"
+                    priority={index < 6} // Prioritize first 6 images
+                    onLoad={() => handleImageLoad(item.id)}
+                    onError={() => handleImageError(item.id)}
+                  />
+                ) : (
+                  <video
+                    src={item.url}
+                    className="w-full h-full object-cover transition-opacity duration-500 opacity-100"
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    onLoadedData={() => handleImageLoad(item.id)}
+                    onError={() => handleImageError(item.id)}
+                  />
+                )}
 
-              {/* Loading placeholder for individual images */}
-              {!loadedImages.has(item.id) && (
-                <div className="absolute inset-0 bg-muted flex items-center justify-center">
-                  <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-                </div>
-              )}
+                {/* Loading placeholder for individual images - removed since images are visible by default */}
 
-              {/* Project title overlay (optional) */}
-              {showProjectTitles && (
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-background text-sm font-medium truncate">
-                      {item.projectTitle}
-                    </p>
+                {/* Project title overlay (optional) */}
+                {showProjectTitles && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <p className="text-background text-sm font-medium truncate">
+                        {item.projectTitle}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Gradient overlays for smooth edges */}
