@@ -139,9 +139,12 @@ export default function SimpleCarousel({
   // Initialize position for right direction
   useEffect(() => {
     if (direction === 'right' && !isInitialized && containerRef.current) {
+      const containerWidth = containerRef.current.clientWidth || 0;
+      const imageWidth = 200; // Approximate width of each image
       const maxScroll = -(
-        allMedia.length * 200 -
-        (containerRef.current.clientWidth || 0)
+        allMedia.length * imageWidth -
+        containerWidth +
+        imageWidth
       );
       setCurrentPosition(maxScroll);
       setIsInitialized(true);
@@ -156,16 +159,21 @@ export default function SimpleCarousel({
       setCurrentPosition(prev => {
         const newPosition = prev + currentDirection * speed;
 
-        // Bounce back when reaching edges
+        // Bounce back when reaching edges - ensure at least one image is always visible
         if (newPosition > 0) {
           setCurrentDirection(-1);
           return 0;
         }
 
+        // Calculate max scroll to ensure at least one image is always visible
+        const containerWidth = containerRef.current?.clientWidth || 0;
+        const imageWidth = 200; // Approximate width of each image
         const maxScroll = -(
-          allMedia.length * 200 -
-          (containerRef.current?.clientWidth || 0)
+          allMedia.length * imageWidth -
+          containerWidth +
+          imageWidth
         );
+
         if (newPosition < maxScroll) {
           setCurrentDirection(1);
           return maxScroll;
