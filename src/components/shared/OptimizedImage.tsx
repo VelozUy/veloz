@@ -18,6 +18,7 @@ export interface OptimizedImageProps {
   fill?: boolean;
   loading?: 'lazy' | 'eager';
   style?: React.CSSProperties;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export function OptimizedImage({
@@ -36,6 +37,7 @@ export function OptimizedImage({
   fill = false,
   loading,
   style,
+  fetchPriority = 'auto',
 }: OptimizedImageProps) {
   const [optimizedSrc, setOptimizedSrc] = useState<string>(src);
   const [srcSet, setSrcSet] = useState<string>('');
@@ -97,6 +99,7 @@ export function OptimizedImage({
       fill={fill}
       loading={loading || (priority ? 'eager' : 'lazy')}
       style={style}
+      fetchPriority={fetchPriority}
     />
   );
 }

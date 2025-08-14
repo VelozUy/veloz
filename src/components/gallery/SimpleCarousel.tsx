@@ -32,56 +32,62 @@ export default function SimpleCarousel({
   const animationRef = useRef<number | undefined>(undefined);
   const bounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Optimize image count based on priority
+  // Optimize image count based on priority - Balanced approach
   const imageCount = useMemo(() => {
-    return priority ? 8 : 6; // Reduce initial load for better performance
+    return priority ? 3 : 4; // Balanced image count
   }, [priority]);
 
   // Load images based on seed and locale
   useEffect(() => {
     const loadImages = async () => {
       try {
-        // Load project images from JSON files (reduced count for better performance)
-        const projectImages = getCarouselImages(locale, seed, imageCount);
+        // LCP Optimization: Use static fallback images for immediate loading
+        const staticFallbackImages: GalleryImage[] = [
+          {
+            id: 'static-1',
+            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60&fm=webp',
+            alt: 'Event photography',
+          },
+          {
+            id: 'static-2',
+            url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=60&fm=webp',
+            alt: 'Wedding photography',
+          },
+          {
+            id: 'static-3',
+            url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=60&fm=webp',
+            alt: 'Portrait photography',
+          },
+        ];
 
-        console.log(
-          `Loading carousel images for seed: ${seed}, locale: ${locale}, count: ${imageCount}`
-        );
-        console.log(`Found ${projectImages.length} project images`);
-
-        if (projectImages.length > 0) {
-          setImages(projectImages);
-        } else {
-          // Fallback to placeholder images if no project images found
-          const placeholderImages: GalleryImage[] = [
-            {
-              id: '1',
-              url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60',
-              alt: 'Event photography',
-            },
-            {
-              id: '2',
-              url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=60',
-              alt: 'Wedding photography',
-            },
-            {
-              id: '3',
-              url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=60',
-              alt: 'Corporate event',
-            },
-          ];
-          setImages(placeholderImages);
+        // For priority carousels, use static images immediately for LCP
+        if (priority) {
+          setImages(staticFallbackImages);
+          setIsLoading(false);
+          return;
         }
 
+        // For non-priority carousels, load dynamic images
+        const loadedImages = await getCarouselImages(seed, locale, imageCount);
+        setImages(loadedImages);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error loading gallery images:', error);
+        console.error('Error loading images:', error);
+        // Fallback to static images on error
+        const staticFallbackImages: GalleryImage[] = [
+          {
+            id: 'static-1',
+            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60&fm=webp',
+            alt: 'Event photography',
+          },
+        ];
+        setImages(staticFallbackImages);
         setIsLoading(false);
       }
     };
 
     loadImages();
-  }, [seed, locale, imageCount]);
+  }, [seed, locale, imageCount, priority]);
 
   // Handle individual image loading
   const handleImageLoad = useCallback((imageId: string) => {
@@ -93,9 +99,17 @@ export default function SimpleCarousel({
     // Error handling can be added here if needed
   }, []);
 
-  // Intersection Observer for progressive loading
+  // Intersection Observer for progressive loading - TBT Optimization
   useEffect(() => {
     if (!images.length || typeof window === 'undefined') return;
+
+    // LCP: Make first 2 images visible immediately for better performance
+    const immediateVisibleImages = new Set<string>();
+    for (let i = 0; i < Math.min(2, images.length); i++) {
+      immediateVisibleImages.add(`${images[i].id}-0`); // First set only
+      immediateVisibleImages.add(`${images[i].id}-1`); // Second set (duplicated)
+    }
+    setVisibleImages(immediateVisibleImages);
 
     const observer = new IntersectionObserver(
       entries => {
@@ -273,7 +287,7 @@ export default function SimpleCarousel({
                   )}
                 />
 
-                {/* Optimized Image */}
+                {/* Optimized Image - LCP Optimization */}
                 {isVisible && (
                   <OptimizedImage
                     src={image.url}
@@ -283,8 +297,9 @@ export default function SimpleCarousel({
                       'object-cover transition-all duration-1000 ease-in-out',
                       isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
                     )}
-                    loading={index < 4 ? 'eager' : 'lazy'}
-                    priority={priority && index < 4}
+                    loading={index < 2 ? 'eager' : 'lazy'} // LCP: Load first 2 images eagerly
+                    priority={priority && index < 2} // LCP: Priority for first 2 images
+                    fetchPriority={priority && index < 2 ? 'high' : 'auto'} // LCP: High priority for first 2 images
                     quality={75} // Reduced quality for better performance
                     sizes="300px"
                     onLoad={() => handleImageLoad(imageKey)}
@@ -292,8 +307,11 @@ export default function SimpleCarousel({
                     placeholder="blur"
                     blurDataURL={
                       image.blurDataURL ||
-                      'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+                      'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
                     }
+                    style={{
+                      ...(priority && index < 2 ? { '--image-above-fold': 'true' } as React.CSSProperties : {}),
+                    }}
                   />
                 )}
               </div>

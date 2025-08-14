@@ -19,6 +19,8 @@ import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
 import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 import { initializeTBTOptimizations } from '@/lib/tbt-optimization';
+import { initializeSpeedIndexOptimizations } from '@/lib/speed-index-optimization';
+import { initializePerformanceMonitoring } from '@/lib/performance-monitoring';
 import { Suspense } from 'react';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import HomepageBodyClass from '@/components/layout/HomepageBodyClass';
@@ -170,28 +172,54 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
+        {/* Preload critical LCP images - Optimized for sub-2.5s LCP */}
+        <link
+          rel="preload"
+          href="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp"
+          as="image"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          href="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp"
+          as="image"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          href="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=50&fm=webp"
+          as="image"
+          fetchPriority="high"
+        />
+        
         {/* Preload critical fonts */}
         <link
           rel="preload"
-          href="/redjola/Redjola.ttf"
+          href="/redjola/Redjola.otf"
           as="font"
-          type="font/ttf"
+          type="font/otf"
           crossOrigin="anonymous"
         />
         <link
           rel="preload"
-          href="/Roboto/static/Roboto-Regular.ttf"
+          href="/Roboto/Roboto-Regular.ttf"
           as="font"
           type="font/ttf"
           crossOrigin="anonymous"
         />
-
+        
         {/* Preload critical CSS */}
         <link
           rel="preload"
-          href="/_next/static/css/app/layout.css"
+          href="/globals.css"
           as="style"
         />
+        
+        {/* DNS prefetch and preconnect for external resources */}
+        <link rel="dns-prefetch" href="//images.unsplash.com" />
+        <link rel="dns-prefetch" href="//storage.googleapis.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://storage.googleapis.com" crossOrigin="anonymous" />
 
         {/* Web App Manifest */}
         <link rel="manifest" href="/manifest.json" />
@@ -218,15 +246,55 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Initialize TBT optimizations
+              // Make optimization functions available globally
               if (typeof window !== 'undefined') {
-                // This will be called when the script loads
-                window.addEventListener('load', function() {
-                  // Initialize TBT optimizations after page load
-                  if (typeof window.initializeTBTOptimizations === 'function') {
-                    window.initializeTBTOptimizations();
-                  }
-                });
+                window.initializeTBTOptimizations = function() {
+                  // TBT optimizations will be loaded from the module
+                };
+                window.initializeSpeedIndexOptimizations = function() {
+                  // Speed Index optimizations will be loaded from the module
+                };
+                window.initializePerformanceMonitoring = function() {
+                  // Performance monitoring will be loaded from the module
+                };
+              }
+              
+              // Initialize performance optimizations with immediate loading for critical optimizations
+              if (typeof window !== 'undefined') {
+                // Initialize Speed Index optimizations immediately for better LCP
+                if (typeof window.initializeSpeedIndexOptimizations === 'function') {
+                  window.initializeSpeedIndexOptimizations();
+                }
+                
+                // Defer non-critical optimizations
+                if ('requestIdleCallback' in window) {
+                  window.requestIdleCallback(function() {
+                    // Initialize TBT optimizations
+                    if (typeof window.initializeTBTOptimizations === 'function') {
+                      window.initializeTBTOptimizations();
+                    }
+                    
+                    // Initialize performance monitoring
+                    if (typeof window.initializePerformanceMonitoring === 'function') {
+                      window.initializePerformanceMonitoring();
+                    }
+                  }, { timeout: 200 });
+                } else {
+                  // Fallback for browsers without requestIdleCallback
+                  window.addEventListener('load', function() {
+                    setTimeout(function() {
+                      // Initialize TBT optimizations
+                      if (typeof window.initializeTBTOptimizations === 'function') {
+                        window.initializeTBTOptimizations();
+                      }
+                      
+                      // Initialize performance monitoring
+                      if (typeof window.initializePerformanceMonitoring === 'function') {
+                        window.initializePerformanceMonitoring();
+                      }
+                    }, 100);
+                  });
+                }
               }
             `,
           }}

@@ -17,23 +17,18 @@ export default function HomePageWithGallery({
 
   useEffect(() => {
     setIsClient(true);
+    // LCP Optimization: Load top carousel immediately without delay
+    setShowTopCarousel(true);
   }, []);
 
   useEffect(() => {
     if (isClient) {
-      // Staggered loading for better performance
-      // Load top carousel first (priority)
-      const topTimer = setTimeout(() => {
-        setShowTopCarousel(true);
-      }, 1600); // 1.6s delay for top carousel
-
-      // Load bottom carousel after a delay
+      // Load bottom carousel after a shorter delay
       const bottomTimer = setTimeout(() => {
         setShowBottomCarousel(true);
-      }, 2400); // 2.4s delay for bottom carousel
+      }, 200); // Further reduced delay for better performance
 
       return () => {
-        clearTimeout(topTimer);
         clearTimeout(bottomTimer);
       };
     }
@@ -42,11 +37,12 @@ export default function HomePageWithGallery({
   return (
     <main className="homepage h-screen flex flex-col bg-background">
       {/* Top Gallery - 30% of screen */}
-      <section className="relative h-3/10 bg-background">
+      <section className="relative h-3/10 bg-background" data-above-fold="true">
         <div
           className={`h-full transition-opacity duration-1000 ease-in-out ${
             showTopCarousel ? 'opacity-100' : 'opacity-0'
           }`}
+          data-css-contain="true"
         >
           {isClient && showTopCarousel && (
             <SimpleCarousel
@@ -62,18 +58,19 @@ export default function HomePageWithGallery({
       </section>
 
       {/* Middle Content Section - 40% of screen */}
-      <section className="relative h-2/5 bg-background/90 backdrop-blur-sm flex items-center justify-center z-40 py-2">
-        <div className="relative z-50 w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-16">
+      <section className="relative h-2/5 bg-background/90 backdrop-blur-sm flex items-center justify-center z-40 py-2" data-above-fold="true">
+        <div className="relative z-50 w-full h-full flex items-center justify-center px-4 md:px-8 lg:px-16" data-above-fold-text="true">
           <AnimatedHomeContent />
         </div>
       </section>
 
       {/* Bottom Gallery - 30% of screen */}
-      <section className="relative h-3/10 bg-background">
+      <section className="relative h-3/10 bg-background" data-below-fold="true">
         <div
           className={`h-full transition-opacity duration-1000 ease-in-out ${
             showBottomCarousel ? 'opacity-100' : 'opacity-0'
           }`}
+          data-css-contain="true"
         >
           {isClient && showBottomCarousel && (
             <SimpleCarousel
