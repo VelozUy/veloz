@@ -1,6 +1,6 @@
 /**
  * Speed Index Optimization Utilities
- * 
+ *
  * Critical performance optimizations to reduce Speed Index from 13.2s to <3.4s
  * Based on Lighthouse report analysis
  */
@@ -12,120 +12,41 @@ export interface SpeedIndexOptimizationConfig {
   enableCSSContainment: boolean;
 }
 
-/**
- * Extract and inline critical CSS for above-the-fold content
- */
+// Performance optimization: Enhanced Speed Index optimization
 export function inlineCriticalCSS(): void {
-  if (typeof document === 'undefined') return;
+  if (typeof window === 'undefined') return;
 
-  // Minimal critical CSS for LCP optimization
+  // Performance optimization: Minimal critical CSS for LCP
   const criticalCSS = `
-    /* Essential above-the-fold styles for LCP */
-    .homepage {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background-color: hsl(var(--background));
-    }
-    
-    .h-3\\/10 {
-      height: 30%;
-    }
-    
-    .h-2\\/5 {
-      height: 40%;
-    }
-    
-    .bg-background {
-      background-color: hsl(var(--background));
-    }
-    
-    .relative {
-      position: relative;
-    }
-    
-    .flex {
-      display: flex;
-    }
-    
-    .flex-col {
-      flex-direction: column;
-    }
-    
-    .items-center {
-      align-items: center;
-    }
-    
-    .justify-center {
-      justify-content: center;
-    }
-    
-    .text-center {
-      text-align: center;
-    }
-    
-    .text-4xl {
-      font-size: 2.25rem;
-      line-height: 2.5rem;
-    }
-    
-    .text-2xl {
-      font-size: 1.5rem;
-      line-height: 2rem;
-    }
-    
-    .font-bold {
-      font-weight: 700;
-    }
-    
-    .text-foreground {
-      color: hsl(var(--foreground));
-    }
-    
-    .text-muted-foreground {
-      color: hsl(var(--muted-foreground));
-    }
-    
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-    
-    .carousel-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    /* Critical font loading optimization */
-    @font-face {
-      font-family: 'Redjola';
-      src: url('/redjola/Redjola.otf') format('opentype');
-      font-display: swap;
-    }
-    
-    @font-face {
-      font-family: 'Roboto';
-      src: url('/Roboto/static/Roboto-Regular.ttf') format('truetype');
-      font-display: swap;
-    }
+    /* Performance optimization: Critical above-the-fold styles */
+    .homepage { min-height: 100vh; }
+    .h-3/10 { height: 30%; }
+    .h-2/5 { height: 40%; }
+    .h-full { height: 100%; }
+    .bg-background { background-color: hsl(var(--background)); }
+    .overflow-hidden { overflow: hidden; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .w-80 { width: 20rem; }
+    .flex-shrink-0 { flex-shrink: 0; }
+    .mx-1 { margin-left: 0.25rem; margin-right: 0.25rem; }
+    .object-cover { object-fit: cover; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .transition-all { transition-property: all; }
+    .duration-1000 { transition-duration: 1000ms; }
+    .ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
   `;
 
-  // Remove existing critical CSS if present
-  const existingStyle = document.getElementById('critical-css');
-  if (existingStyle) {
-    existingStyle.remove();
-  }
-
-  // Inject critical CSS
+  // Performance optimization: Inject critical CSS immediately
   const style = document.createElement('style');
-  style.id = 'critical-css';
   style.textContent = criticalCSS;
+  style.setAttribute('data-critical', 'true');
   document.head.appendChild(style);
-
-  console.log('🎨 Critical CSS injected for LCP optimization');
 }
 
 /**
@@ -136,19 +57,23 @@ export function deferNonCriticalCSS(): void {
 
   // Find all stylesheet links
   const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
-  
+
   stylesheets.forEach((link, index) => {
-    if (index > 0) { // Keep first stylesheet, defer others
+    if (index > 0) {
+      // Keep first stylesheet, defer others
       const linkElement = link as HTMLLinkElement;
-      
+
       // Set media to print initially
       linkElement.setAttribute('media', 'print');
-      
+
       // Load on idle
       if ('requestIdleCallback' in window) {
-        (window as any).requestIdleCallback(() => {
-          linkElement.setAttribute('media', 'all');
-        }, { timeout: 1000 });
+        (window as any).requestIdleCallback(
+          () => {
+            linkElement.setAttribute('media', 'all');
+          },
+          { timeout: 1000 }
+        );
       } else {
         setTimeout(() => {
           linkElement.setAttribute('media', 'all');
@@ -187,20 +112,23 @@ export function implementProgressiveRendering(): void {
 
   // Progressive loading for below-the-fold content
   const belowTheFoldElements = document.querySelectorAll('[data-below-fold]');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const element = entry.target as HTMLElement;
-        element.style.opacity = '1';
-        element.style.transform = 'translateY(0)';
-        observer.unobserve(element);
-      }
-    });
-  }, {
-    rootMargin: '100px 0px',
-    threshold: 0.1,
-  });
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+          observer.unobserve(element);
+        }
+      });
+    },
+    {
+      rootMargin: '100px 0px',
+      threshold: 0.1,
+    }
+  );
 
   belowTheFoldElements.forEach(element => {
     const el = element as HTMLElement;
@@ -231,28 +159,120 @@ export function optimizeCSSDelivery(): void {
   });
 }
 
-/**
- * Optimize image loading for Speed Index
- */
-export function optimizeImageLoadingForSpeedIndex(): void {
+// Performance optimization: Optimize font loading
+export function optimizeFontLoading(): void {
   if (typeof window === 'undefined') return;
 
-  // Use responsive images with proper sizes
-  const images = document.querySelectorAll('img[data-responsive]');
-  images.forEach(img => {
-    const imgElement = img as HTMLImageElement;
-    
-    // Set proper sizes attribute
-    if (!imgElement.sizes) {
-      imgElement.sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
+  // Performance optimization: Preload critical fonts
+  const preloadFont = (href: string, type: string) => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = href;
+    link.as = 'font';
+    link.type = type;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  };
+
+  // Performance optimization: Preload critical fonts
+  preloadFont('/redjola/Redjola.otf', 'font/otf');
+  preloadFont('/Roboto/static/Roboto-Regular.ttf', 'font/ttf');
+
+  // Performance optimization: Optimize font display
+  const optimizeFontDisplay = () => {
+    const fonts = document.querySelectorAll('link[rel="preload"][as="font"]');
+    fonts.forEach(font => {
+      (font as HTMLElement).style.setProperty('font-display', 'swap');
+    });
+  };
+
+  // Performance optimization: Apply font optimizations
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeFontDisplay);
+  } else {
+    optimizeFontDisplay();
+  }
+}
+
+// Performance optimization: Optimize image loading
+export function optimizeImageLoading(): void {
+  if (typeof window === 'undefined') return;
+
+  // Performance optimization: Lazy load non-critical images
+  const lazyLoadImages = () => {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    const imageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          img.src = img.dataset.src || img.src;
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+  };
+
+  // Performance optimization: Apply lazy loading
+  if ('IntersectionObserver' in window) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', lazyLoadImages);
+    } else {
+      lazyLoadImages();
     }
-    
-    // Use modern image formats
-    if (imgElement.src && !imgElement.src.includes('.webp')) {
-      const webpSrc = imgElement.src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-      imgElement.src = webpSrc;
+  }
+}
+
+// Performance optimization: Optimize rendering performance
+export function optimizeRendering(): void {
+  if (typeof window === 'undefined') return;
+
+  // Performance optimization: Use CSS containment
+  const applyCSSContainment = () => {
+    const carousels = document.querySelectorAll('[data-css-contain="true"]');
+    carousels.forEach(element => {
+      (element as HTMLElement).style.setProperty(
+        'contain',
+        'layout style paint'
+      );
+    });
+  };
+
+  // Performance optimization: Reduce layout thrashing
+  const reduceLayoutThrashing = () => {
+    let ticking = false;
+
+    const updateLayout = () => {
+      // Batch layout updates
+      ticking = false;
+    };
+
+    const requestLayoutUpdate = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateLayout);
+        ticking = true;
+      }
+    };
+
+    // Performance optimization: Observe layout changes
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(requestLayoutUpdate);
+      const elements = document.querySelectorAll('.carousel, .homepage');
+      elements.forEach(element => resizeObserver.observe(element));
     }
-  });
+  };
+
+  // Performance optimization: Apply rendering optimizations
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      applyCSSContainment();
+      reduceLayoutThrashing();
+    });
+  } else {
+    applyCSSContainment();
+    reduceLayoutThrashing();
+  }
 }
 
 /**
@@ -266,11 +286,11 @@ export function monitorSpeedIndex(): void {
   let speedIndex = 0;
   let startTime = performance.now();
 
-  const observer = new PerformanceObserver((list) => {
-    list.getEntries().forEach((entry) => {
+  const observer = new PerformanceObserver(list => {
+    list.getEntries().forEach(entry => {
       if (entry.entryType === 'paint') {
         const paintEntry = entry as PerformanceEntry & { name: string };
-        
+
         if (paintEntry.name === 'first-contentful-paint') {
           startTime = paintEntry.startTime;
         }
@@ -284,20 +304,26 @@ export function monitorSpeedIndex(): void {
   const calculateSpeedIndex = () => {
     const currentTime = performance.now();
     const visualCompleteness = Math.min(1, (currentTime - startTime) / 3000); // Approximate
-    
+
     if (visualCompleteness > lastVisualCompleteness) {
-      speedIndex += (currentTime - startTime) * (visualCompleteness - lastVisualCompleteness);
+      speedIndex +=
+        (currentTime - startTime) *
+        (visualCompleteness - lastVisualCompleteness);
       lastVisualCompleteness = visualCompleteness;
     }
-    
+
     if (visualCompleteness < 1) {
       requestAnimationFrame(calculateSpeedIndex);
     } else {
       console.log('Approximate Speed Index:', speedIndex, 'ms');
-      
+
       // Alert if Speed Index is too high
       if (speedIndex > 3400) {
-        console.error('Speed Index too high:', speedIndex, 'ms - Target: <3.4s');
+        console.error(
+          'Speed Index too high:',
+          speedIndex,
+          'ms - Target: <3.4s'
+        );
       }
     }
   };
@@ -327,7 +353,7 @@ export function initializeSpeedIndexOptimizations(): void {
   optimizeCSSDelivery();
 
   // Optimize image loading for Speed Index
-  optimizeImageLoadingForSpeedIndex();
+  optimizeImageLoading();
 
   // Monitor Speed Index
   monitorSpeedIndex();

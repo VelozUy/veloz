@@ -13,21 +13,18 @@ interface AnimatedHomeContentProps {
 export default function AnimatedHomeContent({
   className,
 }: AnimatedHomeContentProps) {
-  const [showLogo, setShowLogo] = useState(false);
   const [showButtons, setShowButtons] = useState([false, false, false]);
 
   useEffect(() => {
-    // Start animation sequence
-    const timer1 = setTimeout(() => setShowLogo(true), 500); // Logo appears after 500ms
-    const timer2 = setTimeout(() => setShowButtons([true, false, false]), 1200); // First button after 1.2s
-    const timer3 = setTimeout(() => setShowButtons([true, true, false]), 1400); // Second button after 1.4s
-    const timer4 = setTimeout(() => setShowButtons([true, true, true]), 1600); // Third button after 1.6s
+    // Fast button animation sequence - logo is always visible
+    const timer1 = setTimeout(() => setShowButtons([true, false, false]), 100); // First button after 100ms
+    const timer2 = setTimeout(() => setShowButtons([true, true, false]), 200); // Second button after 200ms
+    const timer3 = setTimeout(() => setShowButtons([true, true, true]), 300); // Third button after 300ms
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
-      clearTimeout(timer4);
     };
   }, []);
 
@@ -44,19 +41,12 @@ export default function AnimatedHomeContent({
         className
       )}
     >
-      {/* Logo */}
+      {/* Logo - Always visible, no animation */}
       <div
         className="flex justify-center w-full"
         style={{ marginBottom: '50px' }}
       >
-        <div
-          className={cn(
-            'transition-all duration-1000 ease-out transform flex justify-center items-center',
-            showLogo
-              ? 'opacity-100 scale-100 translate-y-0'
-              : 'opacity-0 scale-95 translate-y-4'
-          )}
-        >
+        <div className="flex justify-center items-center">
           <div className="scale-200 sm:scale-105 flex justify-center items-center">
             <VelozLogo
               variant="blue"
@@ -67,19 +57,19 @@ export default function AnimatedHomeContent({
         </div>
       </div>
 
-      {/* Buttons */}
+      {/* Buttons - Fast animation */}
       <div className="flex flex-row items-center justify-center w-full gap-4 sm:gap-6 md:gap-8">
         {buttons.map((button, index) => (
           <div
             key={button.href}
             className={cn(
-              'transition-all duration-700 ease-out transform',
+              'transition-all duration-300 ease-out transform', // Faster animation
               showButtons[index]
                 ? 'opacity-100 scale-100 translate-y-0'
                 : 'opacity-0 scale-95 translate-y-4'
             )}
             style={{
-              transitionDelay: `${index * 200}ms`,
+              transitionDelay: `${index * 100}ms`, // Faster delays
             }}
           >
             <Link href={button.href}>

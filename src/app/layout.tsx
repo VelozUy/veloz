@@ -192,7 +192,7 @@ export default function RootLayout({
           as="image"
           fetchPriority="high"
         />
-        
+
         {/* Preload critical fonts - Fixed paths */}
         <link
           rel="preload"
@@ -208,19 +208,27 @@ export default function RootLayout({
           type="font/ttf"
           crossOrigin="anonymous"
         />
-        
+
         {/* Preload critical CSS - Fixed path */}
         <link
           rel="preload"
           href="/_next/static/css/app/layout.css"
           as="style"
         />
-        
+
         {/* DNS prefetch and preconnect for external resources */}
         <link rel="dns-prefetch" href="//images.unsplash.com" />
         <link rel="dns-prefetch" href="//storage.googleapis.com" />
-        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://storage.googleapis.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://images.unsplash.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://storage.googleapis.com"
+          crossOrigin="anonymous"
+        />
 
         {/* Web App Manifest */}
         <link rel="manifest" href="/manifest.json" />
@@ -274,6 +282,44 @@ export default function RootLayout({
                 
                 // Temporarily enable error logging to debug carousel issues
                 console.log('Debug: Layout script loaded successfully');
+              }
+            `,
+          }}
+        />
+
+        {/* Performance optimization: Simplified critical resource preloading */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Performance optimization: Critical LCP optimization
+              if (typeof window !== 'undefined') {
+                // Preload critical images immediately for LCP
+                const criticalImages = [
+                  'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
+                  'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp'
+                ];
+                
+                // Performance optimization: Use requestIdleCallback for non-critical operations
+                const preloadImages = () => {
+                  criticalImages.forEach(url => {
+                    const link = document.createElement('link');
+                    link.rel = 'preload';
+                    link.as = 'image';
+                    link.href = url;
+                    link.setAttribute('fetchPriority', 'high');
+                    document.head.appendChild(link);
+                  });
+                };
+                
+                // Performance optimization: Immediate preloading for LCP
+                preloadImages();
+                
+                // Performance optimization: Defer non-critical operations
+                if ('requestIdleCallback' in window) {
+                  requestIdleCallback(() => {
+                    console.log('Performance: Non-critical operations loaded');
+                  }, { timeout: 5000 });
+                }
               }
             `,
           }}

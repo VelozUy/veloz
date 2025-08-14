@@ -12,7 +12,7 @@ interface SimpleCarouselProps {
   locale: string;
   seed: string;
   direction?: 'left' | 'right';
-  priority?: boolean; // New prop for priority loading
+  priority?: boolean;
 }
 
 export default function SimpleCarousel({
@@ -23,140 +23,107 @@ export default function SimpleCarousel({
   direction = 'left',
   priority = false,
 }: SimpleCarouselProps) {
-  
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [visibleImages, setVisibleImages] = useState<Set<string>>(new Set());
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentDirection, setCurrentDirection] = useState(direction);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [priorityImagesLoaded, setPriorityImagesLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
-  const bounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Optimize image count based on priority - Balanced approach
-  const imageCount = useMemo(() => {
-    return priority ? 3 : 4; // Balanced image count
-  }, [priority]);
+  // Performance optimization: Load 3 priority images first, then rest
+  const priorityImageCount = 3;
+  const totalImageCount = 10;
 
-  // Load images based on seed and locale
-  useEffect(() => {
-    
-    // Use static images for immediate loading
-    const staticImages: GalleryImage[] = [
-      {
-        id: 'static-1',
-        url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
-        alt: 'Event photography',
-      },
-      {
-        id: 'static-2',
-        url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp',
-        alt: 'Wedding photography',
-      },
-      {
-        id: 'static-3',
-        url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=50&fm=webp',
-        alt: 'Corporate event photography',
-      },
-    ];
-
-    setImages(staticImages);
-    setLoading(false);
-  }, [seed, locale, imageCount, priority]);
-
-  // Handle individual image loading
-  const handleImageLoad = useCallback((imageId: string) => {
-    setLoadedImages(prev => new Set([...prev, imageId]));
-  }, []);
-
-  // Handle image load error
-  const handleImageError = useCallback((imageId: string) => {
-    // Error handling can be added here if needed
-  }, []);
-
-  // Intersection Observer for progressive loading - TBT Optimization
-  useEffect(() => {
-    if (!images.length || typeof window === 'undefined') return;
-
-    // LCP: Make first 2 images visible immediately for better performance
-    const immediateVisibleImages = new Set<string>();
-    for (let i = 0; i < Math.min(2, images.length); i++) {
-      immediateVisibleImages.add(`${images[i].id}-0`); // First set only
-      immediateVisibleImages.add(`${images[i].id}-1`); // Second set (duplicated)
+  // Performance optimization: Load priority images first
+  const loadPriorityImages = useCallback(async () => {
+    try {
+      // Load only 3 priority images first
+      const priorityImages = getCarouselImages(
+        locale,
+        seed,
+        priorityImageCount
+      );
+      console.log(
+        'Debug: Loaded',
+        priorityImages.length,
+        'priority images for carousel:',
+        seed
+      );
+      setImages(priorityImages);
+      setPriorityImagesLoaded(true);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error loading priority images, using fallback:', error);
+      // Performance optimization: 3 priority fallback images
+      const priorityFallbackImages: GalleryImage[] = [
+        {
+          id: 'static-1',
+          url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
+          alt: 'Event photography',
+        },
+        {
+          id: 'static-2',
+          url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp',
+          alt: 'Wedding photography',
+        },
+        {
+          id: 'static-3',
+          url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=50&fm=webp',
+          alt: 'Corporate event photography',
+        },
+      ];
+      setImages(priorityFallbackImages);
+      setPriorityImagesLoaded(true);
+      setLoading(false);
     }
-    setVisibleImages(immediateVisibleImages);
+  }, [locale, seed]);
 
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const imageId = entry.target.getAttribute('data-image-id');
-            if (imageId) {
-              setVisibleImages(prev => new Set([...prev, imageId]));
-            }
-          }
-        });
-      },
-      {
-        rootMargin: '50px 0px',
-        threshold: 0.1,
-      }
-    );
+  // Load remaining images after priority images are loaded
+  const loadRemainingImages = useCallback(async () => {
+    if (!priorityImagesLoaded) return;
 
-    // Observe all image containers
-    const imageContainers =
-      containerRef.current?.querySelectorAll('[data-image-id]');
-    imageContainers?.forEach(container => {
-      observer.observe(container);
-    });
+    try {
+      // Load full set of images (at least 10)
+      const allImages = getCarouselImages(locale, seed, totalImageCount);
+      console.log(
+        'Debug: Loaded',
+        allImages.length,
+        'total images for carousel:',
+        seed
+      );
+      setImages(allImages);
+    } catch (error) {
+      console.error('Error loading remaining images:', error);
+      // Keep priority images if loading fails
+    }
+  }, [locale, seed, priorityImagesLoaded]);
 
-    return () => observer.disconnect();
-  }, [images.length]);
-
-  // Bouncing effect - change direction when reaching the end
+  // Load priority images immediately
   useEffect(() => {
-    if (!images.length) return;
+    loadPriorityImages();
+  }, [loadPriorityImages]);
 
-    // Calculate when the last image of the first set enters the screen
-    const singleImageSetWidth = images.length * 300; // 6-8 images * 300px each
-    const viewportWidth = 300; // Each image is 300px wide
-
-    const checkForBounce = () => {
-      if (containerRef.current) {
-        const container = containerRef.current;
-        const currentScrollLeft = container.scrollLeft;
-
-        // Bounce when the last image of the first set enters the screen
-        const bouncePoint = singleImageSetWidth - viewportWidth;
-
-        if (currentDirection === 'right' && currentScrollLeft >= bouncePoint) {
-          setCurrentDirection('left');
-        } else if (
-          currentDirection === 'left' &&
-          currentScrollLeft <= 0 &&
-          currentScrollLeft > -10
-        ) {
-          setCurrentDirection('right');
-        }
+  // Load remaining images after priority images are loaded
+  useEffect(() => {
+    if (priorityImagesLoaded) {
+      // Performance optimization: Use requestIdleCallback for non-critical loading
+      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+        requestIdleCallback(() => loadRemainingImages(), { timeout: 2000 });
+      } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(loadRemainingImages, 100);
       }
-    };
+    }
+  }, [loadRemainingImages, priorityImagesLoaded]);
 
-    // Check for bounce every 200ms (reduced frequency for better performance)
-    const bounceCheckInterval = setInterval(checkForBounce, 200);
-
-    return () => {
-      clearInterval(bounceCheckInterval);
-    };
-  }, [images.length, currentDirection, seed]);
-
-  // Animation loop with performance optimization
+  // Performance optimization: Optimized animation with reduced FPS
   useEffect(() => {
     if (!images.length) return;
 
     let lastTime = 0;
-    const targetFPS = 30; // Reduce FPS for better performance
+    const targetFPS = 30; // Reduced FPS for better performance
     const frameInterval = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
@@ -173,40 +140,50 @@ export default function SimpleCarousel({
 
         container.scrollLeft += scrollAmount * speed;
 
-        // Debug scroll position (reduced frequency to improve performance)
-        if (Math.random() < 0.0005) {
-          // Reduced from 0.001 to 0.0005
-          console.log(
-            `Carousel ${seed} scrolling: scrollLeft=${container.scrollLeft}, scrollWidth=${container.scrollWidth}, direction=${currentDirection}`
-          );
+        // Performance optimization: Simplified bounce detection without duplicates
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        if (currentDirection === 'left' && container.scrollLeft <= 0) {
+          setCurrentDirection('right');
+        } else if (
+          currentDirection === 'right' &&
+          container.scrollLeft >= maxScroll
+        ) {
+          setCurrentDirection('left');
         }
       }
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    // Set initial scroll position based on direction
-    if (containerRef.current) {
-      const container = containerRef.current;
-      if (currentDirection === 'left') {
-        container.scrollLeft = container.scrollWidth / 3;
-      } else {
+    // Performance optimization: Start animation after priority images are loaded
+    const startAnimation = () => {
+      if (containerRef.current) {
+        const container = containerRef.current;
+        // Start from beginning since we don't have duplicates
         container.scrollLeft = 0;
       }
-    }
+      animationRef.current = requestAnimationFrame(animate);
+    };
 
-    animationRef.current = requestAnimationFrame(animate);
+    // Performance optimization: Start animation after a short delay
+    const timeoutId = setTimeout(startAnimation, 200);
 
     return () => {
+      clearTimeout(timeoutId);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [currentDirection, speed, images.length, loading, seed]);
+  }, [currentDirection, speed, images.length, seed]);
 
+  // Performance optimization: Early return for loading state
   if (loading) {
     return (
-      <div className={`${height} overflow-hidden bg-background`}>
-        {/* Empty loading state - no spinner */}
+      <div
+        className={`${height} overflow-hidden`}
+        style={{ backgroundColor: 'hsl(var(--background))' }}
+      >
+        {/* Loading state with matching background color */}
       </div>
     );
   }
@@ -214,7 +191,8 @@ export default function SimpleCarousel({
   if (!images.length) {
     return (
       <div
-        className={`${height} overflow-hidden bg-background flex items-center justify-center`}
+        className={`${height} overflow-hidden flex items-center justify-center`}
+        style={{ backgroundColor: 'hsl(var(--background))' }}
       >
         <div className="text-muted-foreground">No images available</div>
       </div>
@@ -225,41 +203,37 @@ export default function SimpleCarousel({
     <div className={`${height} overflow-hidden bg-background relative`}>
       <div
         ref={containerRef}
-        className="flex h-full transition-all duration-1000 ease-in-out relative"
-        style={{ overflowX: 'hidden' }}
+        className="flex h-full transition-all duration-1000 ease-in-out"
+        style={{
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
       >
-        {/* Duplicate images for seamless loop - reduced to 2 sets for better performance */}
-        {images.map((image, index) => {
-          return (
-            <div
-              key={`${image.id}-${index}`}
-              className={cn(
-                'absolute inset-0 transition-opacity duration-1000',
-                visibleImages.has(`${image.id}-${index}`)
-                  ? 'opacity-100'
-                  : 'opacity-0'
-              )}
-            >
-              <OptimizedImage
-                src={image.url}
-                alt={image.alt || 'Gallery image'}
-                fill
-                className={cn(
-                  'object-cover transition-all duration-1000',
-                  isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
-                )}
-                loading={index < 1 ? 'eager' : 'lazy'} // LCP: Load first 1 image eagerly
-                priority={priority && index < 1} // LCP: Priority for first 1 image
-                fetchPriority={priority && index < 1 ? 'high' : 'auto'} // LCP: High priority for first 1 image
-                quality={60} // Reduced quality for better performance
-                sizes="300px"
-                onLoad={() => setIsLoaded(true)}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-              />
-            </div>
-          );
-        })}
+        {/* Performance optimization: No duplicates - only unique images with animation */}
+        {images.map((image, index) => (
+          <div
+            key={`${image.id}-${index}`}
+            className="flex-shrink-0 w-80 h-full relative mx-1 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-out"
+            data-image-id={`${image.id}-${index}`}
+            style={{
+              animationDelay: `${index * 100}ms`,
+            }}
+          >
+            <OptimizedImage
+              src={image.url}
+              alt={image.alt || 'Gallery image'}
+              fill
+              className="object-cover rounded-lg transition-all duration-300"
+              loading={index < 3 ? 'eager' : 'lazy'} // Performance: First 3 images eager
+              priority={priority && index < 2} // Performance: First 2 images priority
+              quality={70} // Performance: Good quality for variety
+              sizes="320px"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

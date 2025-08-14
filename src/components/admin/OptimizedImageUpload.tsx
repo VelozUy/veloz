@@ -15,7 +15,7 @@ interface OptimizedImageUploadProps {
 
 /**
  * Optimized Image Upload Component
- * 
+ *
  * Demonstrates production-ready image optimization:
  * - Automatic WebP conversion
  * - Responsive image generation
@@ -29,9 +29,17 @@ export default function OptimizedImageUpload({
   className = '',
 }: OptimizedImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { state, optimizeImage, optimizeImageClient, reset, getOptimizationStats } = useImageOptimization();
+  const {
+    state,
+    optimizeImage,
+    optimizeImageClient,
+    reset,
+    getOptimizationStats,
+  } = useImageOptimization();
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -41,13 +49,15 @@ export default function OptimizedImageUpload({
     // For production use, use optimizeImage (uploads to Firebase)
     // For client-side only, use optimizeImageClient
     const result = await optimizeImage(file, path);
-    
+
     if (result && onImageOptimized) {
       onImageOptimized(result);
     }
   };
 
-  const handleClientOptimization = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClientOptimization = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -80,7 +90,7 @@ export default function OptimizedImageUpload({
             )}
             {state.isOptimizing ? 'Optimizing...' : 'Upload & Optimize'}
           </Button>
-          
+
           <Button
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
@@ -121,31 +131,33 @@ export default function OptimizedImageUpload({
         {/* Success Display */}
         {state.result && !state.isOptimizing && (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="text-green-700 text-sm">Image optimized successfully!</span>
+            <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
+              <CheckCircle className="w-4 h-4 text-primary" />
+              <span className="text-primary text-sm">
+                Image optimized successfully!
+              </span>
             </div>
 
             {/* Optimization Statistics */}
             {stats && (
               <div className="grid grid-cols-3 gap-2">
-                <div className="text-center p-2 bg-blue-500/10 rounded">
-                  <div className="text-lg font-semibold text-blue-600">
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-lg font-semibold text-primary">
                     {stats.sizeReductionPercent.toFixed(1)}%
                   </div>
-                  <div className="text-xs text-blue-500">Size Reduction</div>
+                  <div className="text-xs text-primary/70">Size Reduction</div>
                 </div>
-                <div className="text-center p-2 bg-green-500/10 rounded">
-                  <div className="text-lg font-semibold text-green-600">
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-lg font-semibold text-primary">
                     {(stats.bandwidthSaved / 1024).toFixed(1)}KB
                   </div>
-                  <div className="text-xs text-green-500">Bandwidth Saved</div>
+                  <div className="text-xs text-primary/70">Bandwidth Saved</div>
                 </div>
-                <div className="text-center p-2 bg-purple-500/10 rounded">
-                  <div className="text-lg font-semibold text-purple-600">
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-lg font-semibold text-primary">
                     {stats.sizeReduction.toFixed(0)}B
                   </div>
-                  <div className="text-xs text-purple-500">Bytes Saved</div>
+                  <div className="text-xs text-primary/70">Bytes Saved</div>
                 </div>
               </div>
             )}
@@ -162,44 +174,47 @@ export default function OptimizedImageUpload({
                   priority
                 />
               </div>
-              
+
               {/* Image Details */}
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div>
-                  <span className="font-medium">Format:</span> {state.result.metadata.format}
+                  <span className="font-medium">Format:</span>{' '}
+                  {state.result.metadata.format}
                 </div>
                 <div>
-                  <span className="font-medium">Dimensions:</span> {state.result.metadata.width} × {state.result.metadata.height}
+                  <span className="font-medium">Dimensions:</span>{' '}
+                  {state.result.metadata.width} × {state.result.metadata.height}
                 </div>
                 <div>
-                  <span className="font-medium">Original Size:</span> {(state.result.metadata.originalSize / 1024).toFixed(1)}KB
+                  <span className="font-medium">Original Size:</span>{' '}
+                  {(state.result.metadata.originalSize / 1024).toFixed(1)}KB
                 </div>
                 <div>
-                  <span className="font-medium">Optimized Size:</span> {(state.result.metadata.optimizedSize / 1024).toFixed(1)}KB
+                  <span className="font-medium">Optimized Size:</span>{' '}
+                  {(state.result.metadata.optimizedSize / 1024).toFixed(1)}KB
                 </div>
               </div>
 
               {/* Responsive URLs */}
-              {state.result.responsiveUrls && Object.keys(state.result.responsiveUrls).length > 0 && (
-                <div className="space-y-2">
-                  <h4 className="font-medium">Responsive Versions:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(state.result.responsiveUrls).map(([size, url]) => (
-                      <Badge key={size} variant="secondary">
-                        {size}px
-                      </Badge>
-                    ))}
+              {state.result.responsiveUrls &&
+                Object.keys(state.result.responsiveUrls).length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Responsive Versions:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(state.result.responsiveUrls).map(
+                        ([size, url]) => (
+                          <Badge key={size} variant="secondary">
+                            {size}px
+                          </Badge>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             {/* Reset Button */}
-            <Button
-              variant="outline"
-              onClick={reset}
-              className="w-full"
-            >
+            <Button variant="outline" onClick={reset} className="w-full">
               Upload Another Image
             </Button>
           </div>
