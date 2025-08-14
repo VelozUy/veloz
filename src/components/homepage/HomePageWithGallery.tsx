@@ -11,6 +11,16 @@ interface HomePageWithGalleryProps {
 export default function HomePageWithGallery({
   locale,
 }: HomePageWithGalleryProps) {
+  console.log('Debug: HomePageWithGallery rendering with locale:', locale);
+  
+  useEffect(() => {
+    console.log('Debug: About to render top SimpleCarousel');
+  }, []);
+  
+  useEffect(() => {
+    console.log('Debug: About to render bottom SimpleCarousel');
+  }, []);
+  
   return (
     <main className="homepage h-screen flex flex-col bg-background">
       {/* Top Gallery - 30% of screen */}
