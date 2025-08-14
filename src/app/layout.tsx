@@ -235,9 +235,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               // Apply homepage class immediately if on homepage
-              if (window.location.pathname === '/') {
-                document.documentElement.classList.add('homepage');
-                document.body.classList.add('homepage');
+              if (typeof window !== 'undefined' && window.location.pathname === '/') {
+                if (document.documentElement) {
+                  document.documentElement.classList.add('homepage');
+                }
+                if (document.body) {
+                  document.body.classList.add('homepage');
+                }
               }
             `,
           }}

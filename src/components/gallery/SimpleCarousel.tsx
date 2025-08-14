@@ -23,7 +23,6 @@ export default function SimpleCarousel({
   direction = 'left',
   priority = false,
 }: SimpleCarouselProps) {
-  console.log('Debug: SimpleCarousel rendering with props:', { height, speed, locale, seed, direction, priority });
   
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +42,6 @@ export default function SimpleCarousel({
 
   // Load images based on seed and locale
   useEffect(() => {
-    console.log('Debug: SimpleCarousel useEffect triggered for image loading');
     
     // Use static images for immediate loading
     const staticImages: GalleryImage[] = [
@@ -64,7 +62,6 @@ export default function SimpleCarousel({
       },
     ];
 
-    console.log('Debug: Using static images for carousel:', seed);
     setImages(staticImages);
     setLoading(false);
   }, [seed, locale, imageCount, priority]);
@@ -136,16 +133,12 @@ export default function SimpleCarousel({
 
         if (currentDirection === 'right' && currentScrollLeft >= bouncePoint) {
           setCurrentDirection('left');
-          console.log(
-            `Carousel ${seed} bouncing when last image enters: right → left`
-          );
         } else if (
           currentDirection === 'left' &&
           currentScrollLeft <= 0 &&
           currentScrollLeft > -10
         ) {
           setCurrentDirection('right');
-          console.log(`Carousel ${seed} bouncing at start: left → right`);
         }
       }
     };
@@ -161,13 +154,6 @@ export default function SimpleCarousel({
   // Animation loop with performance optimization
   useEffect(() => {
     if (!images.length) return;
-
-    console.log(`Starting animation for carousel ${seed}:`, {
-      imagesLength: images.length,
-      currentDirection,
-      speed,
-      isLoading: loading,
-    });
 
     let lastTime = 0;
     const targetFPS = 30; // Reduce FPS for better performance
@@ -219,25 +205,24 @@ export default function SimpleCarousel({
 
   if (loading) {
     return (
-      <div className={`${height} overflow-hidden bg-background flex items-center justify-center`}>
-        <div className="text-white bg-blue-500 p-4 rounded">Loading carousel: {seed}</div>
+      <div className={`${height} overflow-hidden bg-background`}>
+        {/* Empty loading state - no spinner */}
       </div>
     );
   }
 
   if (!images.length) {
     return (
-      <div className={`${height} overflow-hidden bg-background flex items-center justify-center`}>
-        <div className="text-white bg-red-500 p-4 rounded">No images available for: {seed}</div>
+      <div
+        className={`${height} overflow-hidden bg-background flex items-center justify-center`}
+      >
+        <div className="text-muted-foreground">No images available</div>
       </div>
     );
   }
 
   return (
     <div className={`${height} overflow-hidden bg-background relative`}>
-      <div className="text-white bg-green-500 p-4 absolute top-0 left-0 z-10">
-        Carousel loaded: {seed} - {images.length} images
-      </div>
       <div
         ref={containerRef}
         className="flex h-full transition-all duration-1000 ease-in-out relative"
