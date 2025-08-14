@@ -21,6 +21,7 @@ import { initAccessibilityTesting } from '@/lib/accessibility-testing';
 import { initializeTBTOptimizations } from '@/lib/tbt-optimization';
 import { initializeSpeedIndexOptimizations } from '@/lib/speed-index-optimization';
 import { initializePerformanceMonitoring } from '@/lib/performance-monitoring';
+import { initializeLCPImageOptimization } from '@/lib/lcp-image-optimization';
 import { Suspense } from 'react';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import HomepageBodyClass from '@/components/layout/HomepageBodyClass';
@@ -242,24 +243,23 @@ export default function RootLayout({
           }}
         />
 
-        {/* Performance optimizations */}
+        {/* Global performance optimization functions */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Make optimization functions available globally
-              if (typeof window !== 'undefined') {
-                window.initializeTBTOptimizations = function() {
-                  // TBT optimizations will be loaded from the module
-                };
-                window.initializeSpeedIndexOptimizations = function() {
-                  // Speed Index optimizations will be loaded from the module
-                };
-                window.initializePerformanceMonitoring = function() {
-                  // Performance monitoring will be loaded from the module
-                };
-              }
-              
-              // Initialize performance optimizations with immediate loading for critical optimizations
+              // Make optimization functions globally available
+              window.initializeTBTOptimizations = ${initializeTBTOptimizations.toString()};
+              window.initializeSpeedIndexOptimizations = ${initializeSpeedIndexOptimizations.toString()};
+              window.initializePerformanceMonitoring = ${initializePerformanceMonitoring.toString()};
+            `,
+          }}
+        />
+        
+        {/* Initialize critical optimizations immediately */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Initialize critical optimizations immediately
               if (typeof window !== 'undefined') {
                 // Initialize Speed Index optimizations immediately for better LCP
                 if (typeof window.initializeSpeedIndexOptimizations === 'function') {
@@ -278,22 +278,19 @@ export default function RootLayout({
                     if (typeof window.initializePerformanceMonitoring === 'function') {
                       window.initializePerformanceMonitoring();
                     }
-                  }, { timeout: 200 });
+                  }, { timeout: 1000 });
                 } else {
-                  // Fallback for browsers without requestIdleCallback
-                  window.addEventListener('load', function() {
-                    setTimeout(function() {
-                      // Initialize TBT optimizations
-                      if (typeof window.initializeTBTOptimizations === 'function') {
-                        window.initializeTBTOptimizations();
-                      }
-                      
-                      // Initialize performance monitoring
-                      if (typeof window.initializePerformanceMonitoring === 'function') {
-                        window.initializePerformanceMonitoring();
-                      }
-                    }, 100);
-                  });
+                  setTimeout(function() {
+                    // Initialize TBT optimizations
+                    if (typeof window.initializeTBTOptimizations === 'function') {
+                      window.initializeTBTOptimizations();
+                    }
+                    
+                    // Initialize performance monitoring
+                    if (typeof window.initializePerformanceMonitoring === 'function') {
+                      window.initializePerformanceMonitoring();
+                    }
+                  }, 1000);
                 }
               }
             `,

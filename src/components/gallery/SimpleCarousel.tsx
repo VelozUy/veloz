@@ -24,10 +24,12 @@ export default function SimpleCarousel({
   priority = false,
 }: SimpleCarouselProps) {
   const [images, setImages] = useState<GalleryImage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentDirection, setCurrentDirection] = useState(direction);
-  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
   const [visibleImages, setVisibleImages] = useState<Set<string>>(new Set());
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentDirection, setCurrentDirection] = useState(direction);
+  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
   const bounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -63,14 +65,14 @@ export default function SimpleCarousel({
         // For priority carousels, use static images immediately for LCP
         if (priority) {
           setImages(staticFallbackImages);
-          setIsLoading(false);
+          setLoading(false);
           return;
         }
 
         // For non-priority carousels, load dynamic images
         const loadedImages = await getCarouselImages(seed, locale, imageCount);
         setImages(loadedImages);
-        setIsLoading(false);
+        setLoading(false);
       } catch (error) {
         console.error('Error loading images:', error);
         // Fallback to static images on error
@@ -82,7 +84,7 @@ export default function SimpleCarousel({
           },
         ];
         setImages(staticFallbackImages);
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -186,7 +188,7 @@ export default function SimpleCarousel({
       imagesLength: images.length,
       currentDirection,
       speed,
-      isLoading,
+      isLoading: loading,
     });
 
     let lastTime = 0;
@@ -235,9 +237,9 @@ export default function SimpleCarousel({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [currentDirection, speed, images.length, isLoading, seed]);
+  }, [currentDirection, speed, images.length, loading, seed]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className={`${height} overflow-hidden bg-background`}>
         {/* Empty loading state - no spinner */}
@@ -263,58 +265,34 @@ export default function SimpleCarousel({
         style={{ overflowX: 'hidden' }}
       >
         {/* Duplicate images for seamless loop - reduced to 2 sets for better performance */}
-        {[...images, ...images].map((image, index) => {
-          const imageKey = `${image.id}-${index}`;
-          const isLoaded = loadedImages.has(imageKey);
-          const isVisible = visibleImages.has(imageKey);
-
+        {images.map((image, index) => {
           return (
             <div
-              key={imageKey}
-              data-image-id={imageKey}
-              className="flex-shrink-0 h-full flex items-center justify-center"
-              style={{ width: '300px' }}
+              key={`${image.id}-${index}`}
+              className={cn(
+                'absolute inset-0 transition-opacity duration-1000',
+                visibleImages.has(`${image.id}-${index}`)
+                  ? 'opacity-100'
+                  : 'opacity-0'
+              )}
             >
-              <div
-                className="relative w-full h-full flex items-center justify-center"
-                style={{ aspectRatio: '1/1' }}
-              >
-                {/* Loading placeholder */}
-                <div
-                  className={cn(
-                    'w-full h-full bg-muted transition-all duration-1000 ease-in-out',
-                    isLoaded ? 'opacity-0' : 'opacity-100'
-                  )}
-                />
-
-                {/* Optimized Image - LCP Optimization */}
-                {isVisible && (
-                  <OptimizedImage
-                    src={image.url}
-                    alt={image.alt || 'Gallery image'}
-                    fill
-                    className={cn(
-                      'object-cover transition-all duration-1000 ease-in-out',
-                      isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
-                    )}
-                    loading={index < 2 ? 'eager' : 'lazy'} // LCP: Load first 2 images eagerly
-                    priority={priority && index < 2} // LCP: Priority for first 2 images
-                    fetchPriority={priority && index < 2 ? 'high' : 'auto'} // LCP: High priority for first 2 images
-                    quality={75} // Reduced quality for better performance
-                    sizes="300px"
-                    onLoad={() => handleImageLoad(imageKey)}
-                    onError={() => handleImageError(imageKey)}
-                    placeholder="blur"
-                    blurDataURL={
-                      image.blurDataURL ||
-                      'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
-                    }
-                    style={{
-                      ...(priority && index < 2 ? { '--image-above-fold': 'true' } as React.CSSProperties : {}),
-                    }}
-                  />
+              <OptimizedImage
+                src={image.url}
+                alt={image.alt || 'Gallery image'}
+                fill
+                className={cn(
+                  'object-cover transition-all duration-1000',
+                  isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
                 )}
-              </div>
+                loading={index < 2 ? 'eager' : 'lazy'} // LCP: Load first 2 images eagerly
+                priority={priority && index < 2} // LCP: Priority for first 2 images
+                fetchPriority={priority && index < 2 ? 'high' : 'auto'} // LCP: High priority for first 2 images
+                quality={75} // Reduced quality for better performance
+                sizes="300px"
+                onLoad={() => setIsLoaded(true)}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+              />
             </div>
           );
         })}
