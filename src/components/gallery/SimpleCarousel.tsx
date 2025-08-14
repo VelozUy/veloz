@@ -47,18 +47,13 @@ export default function SimpleCarousel({
         const staticFallbackImages: GalleryImage[] = [
           {
             id: 'static-1',
-            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60&fm=webp',
+            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
             alt: 'Event photography',
           },
           {
             id: 'static-2',
-            url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=60&fm=webp',
+            url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp',
             alt: 'Wedding photography',
-          },
-          {
-            id: 'static-3',
-            url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=60&fm=webp',
-            alt: 'Portrait photography',
           },
         ];
 
@@ -79,7 +74,7 @@ export default function SimpleCarousel({
         const staticFallbackImages: GalleryImage[] = [
           {
             id: 'static-1',
-            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=60&fm=webp',
+            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
             alt: 'Event photography',
           },
         ];
@@ -284,10 +279,10 @@ export default function SimpleCarousel({
                   'object-cover transition-all duration-1000',
                   isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
                 )}
-                loading={index < 2 ? 'eager' : 'lazy'} // LCP: Load first 2 images eagerly
-                priority={priority && index < 2} // LCP: Priority for first 2 images
-                fetchPriority={priority && index < 2 ? 'high' : 'auto'} // LCP: High priority for first 2 images
-                quality={75} // Reduced quality for better performance
+                loading={index < 1 ? 'eager' : 'lazy'} // LCP: Load first 1 image eagerly
+                priority={priority && index < 1} // LCP: Priority for first 1 image
+                fetchPriority={priority && index < 1 ? 'high' : 'auto'} // LCP: High priority for first 1 image
+                quality={60} // Reduced quality for better performance
                 sizes="300px"
                 onLoad={() => setIsLoaded(true)}
                 placeholder="blur"

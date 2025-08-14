@@ -18,25 +18,22 @@ export interface SpeedIndexOptimizationConfig {
 export function inlineCriticalCSS(): void {
   if (typeof document === 'undefined') return;
 
-  // Critical CSS for above-the-fold content - Enhanced for LCP
+  // Minimal critical CSS for LCP optimization
   const criticalCSS = `
-    /* Critical above-the-fold styles for LCP optimization */
+    /* Essential above-the-fold styles for LCP */
     .homepage {
       height: 100vh;
       display: flex;
       flex-direction: column;
       background-color: hsl(var(--background));
-      overflow: hidden;
     }
     
     .h-3\\/10 {
       height: 30%;
-      min-height: 30vh;
     }
     
     .h-2\\/5 {
       height: 40%;
-      min-height: 40vh;
     }
     
     .bg-background {
@@ -100,29 +97,6 @@ export function inlineCriticalCSS(): void {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: opacity 0.3s ease;
-    }
-    
-    .carousel-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        hsl(var(--muted) / 0.3) 50%,
-        hsl(var(--muted) / 0.7) 100%
-      );
-    }
-    
-    .carousel-content {
-      position: absolute;
-      bottom: 2rem;
-      left: 2rem;
-      right: 2rem;
-      z-index: 10;
     }
     
     /* Critical font loading optimization */
@@ -134,24 +108,8 @@ export function inlineCriticalCSS(): void {
     
     @font-face {
       font-family: 'Roboto';
-      src: url('/Roboto/Roboto-Regular.ttf') format('truetype');
+      src: url('/Roboto/static/Roboto-Regular.ttf') format('truetype');
       font-display: swap;
-    }
-    
-    /* Critical layout containment */
-    .lcp-optimized {
-      contain: layout style paint;
-      will-change: transform;
-    }
-    
-    /* Critical image optimization */
-    .lcp-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
     }
   `;
 

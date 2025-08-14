@@ -17,16 +17,16 @@ export default function HomePageWithGallery({
 
   useEffect(() => {
     setIsClient(true);
-    // LCP Optimization: Load top carousel immediately without delay
+    // LCP Optimization: Load top carousel immediately without any delay
     setShowTopCarousel(true);
   }, []);
 
   useEffect(() => {
     if (isClient) {
-      // Load bottom carousel after a shorter delay
+      // Load bottom carousel after a minimal delay
       const bottomTimer = setTimeout(() => {
         setShowBottomCarousel(true);
-      }, 200); // Further reduced delay for better performance
+      }, 100); // Minimal delay for better performance
 
       return () => {
         clearTimeout(bottomTimer);
