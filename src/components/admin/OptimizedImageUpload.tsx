@@ -112,36 +112,36 @@ export default function OptimizedImageUpload({
 
         {/* Error Display */}
         {state.error && (
-          <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-md">
-            <AlertCircle className="w-4 h-4 text-red-500" />
-            <span className="text-red-700 text-sm">{state.error}</span>
+          <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+            <AlertCircle className="w-4 h-4 text-destructive" />
+            <span className="text-destructive/80 text-sm">{state.error}</span>
           </div>
         )}
 
         {/* Success Display */}
         {state.result && !state.isOptimizing && (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-md">
-              <CheckCircle className="w-4 h-4 text-green-500" />
+            <div className="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
+              <CheckCircle className="w-4 h-4 text-green-600" />
               <span className="text-green-700 text-sm">Image optimized successfully!</span>
             </div>
 
             {/* Optimization Statistics */}
             {stats && (
               <div className="grid grid-cols-3 gap-2">
-                <div className="text-center p-2 bg-blue-50 rounded">
+                <div className="text-center p-2 bg-blue-500/10 rounded">
                   <div className="text-lg font-semibold text-blue-600">
                     {stats.sizeReductionPercent.toFixed(1)}%
                   </div>
                   <div className="text-xs text-blue-500">Size Reduction</div>
                 </div>
-                <div className="text-center p-2 bg-green-50 rounded">
+                <div className="text-center p-2 bg-green-500/10 rounded">
                   <div className="text-lg font-semibold text-green-600">
                     {(stats.bandwidthSaved / 1024).toFixed(1)}KB
                   </div>
                   <div className="text-xs text-green-500">Bandwidth Saved</div>
                 </div>
-                <div className="text-center p-2 bg-purple-50 rounded">
+                <div className="text-center p-2 bg-purple-500/10 rounded">
                   <div className="text-lg font-semibold text-purple-600">
                     {stats.sizeReduction.toFixed(0)}B
                   </div>
@@ -153,7 +153,7 @@ export default function OptimizedImageUpload({
             {/* Image Preview */}
             <div className="space-y-2">
               <h4 className="font-medium">Optimized Image Preview:</h4>
-              <div className="relative aspect-video bg-gray-100 rounded-md overflow-hidden">
+              <div className="relative aspect-video bg-muted rounded-md overflow-hidden">
                 <OptimizedImage
                   src={state.result.optimizedUrl}
                   alt="Optimized image preview"
