@@ -268,18 +268,8 @@ export default function RootLayout({
                   document.head.appendChild(link);
                 });
                 
-                // Prevent any error messages from being displayed during initial load
-                const originalConsoleError = console.error;
-                console.error = function(...args) {
-                  // Only log errors, don't display them during initial load
-                  originalConsoleError.apply(console, args);
-                };
-                
-                // Prevent unhandled promise rejections from showing errors
-                window.addEventListener('unhandledrejection', function(event) {
-                  event.preventDefault();
-                  console.warn('Suppressed unhandled rejection during initial load:', event.reason);
-                });
+                // Temporarily enable error logging to debug carousel issues
+                console.log('Debug: Layout script loaded successfully');
               }
             `,
           }}

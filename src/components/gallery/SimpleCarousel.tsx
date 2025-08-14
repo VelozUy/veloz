@@ -23,6 +23,8 @@ export default function SimpleCarousel({
   direction = 'left',
   priority = false,
 }: SimpleCarouselProps) {
+  console.log('Debug: SimpleCarousel rendering with props:', { height, speed, locale, seed, direction, priority });
+  
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleImages, setVisibleImages] = useState<Set<string>>(new Set());
@@ -41,49 +43,30 @@ export default function SimpleCarousel({
 
   // Load images based on seed and locale
   useEffect(() => {
-    const loadImages = async () => {
-      try {
-        // LCP Optimization: Use static fallback images for immediate loading
-        const staticFallbackImages: GalleryImage[] = [
-          {
-            id: 'static-1',
-            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
-            alt: 'Event photography',
-          },
-          {
-            id: 'static-2',
-            url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp',
-            alt: 'Wedding photography',
-          },
-        ];
+    console.log('Debug: SimpleCarousel useEffect triggered for image loading');
+    
+    // Use static images for immediate loading
+    const staticImages: GalleryImage[] = [
+      {
+        id: 'static-1',
+        url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
+        alt: 'Event photography',
+      },
+      {
+        id: 'static-2',
+        url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&h=300&fit=crop&q=50&fm=webp',
+        alt: 'Wedding photography',
+      },
+      {
+        id: 'static-3',
+        url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&h=300&fit=crop&q=50&fm=webp',
+        alt: 'Corporate event photography',
+      },
+    ];
 
-        // For priority carousels, use static images immediately for LCP
-        if (priority) {
-          setImages(staticFallbackImages);
-          setLoading(false);
-          return;
-        }
-
-        // For non-priority carousels, load dynamic images
-        const loadedImages = await getCarouselImages(locale, seed, imageCount);
-        setImages(loadedImages);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading images:', error);
-        // Fallback to static images on error
-        const staticFallbackImages: GalleryImage[] = [
-          {
-            id: 'static-1',
-            url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=300&h=300&fit=crop&q=50&fm=webp',
-            alt: 'Event photography',
-          },
-        ];
-        setImages(staticFallbackImages);
-        setLoading(false);
-      }
-    };
-
-    loadImages();
+    console.log('Debug: Using static images for carousel:', seed);
+    setImages(staticImages);
+    setLoading(false);
   }, [seed, locale, imageCount, priority]);
 
   // Handle individual image loading
@@ -236,24 +219,25 @@ export default function SimpleCarousel({
 
   if (loading) {
     return (
-      <div className={`${height} overflow-hidden bg-background`}>
-        {/* Empty loading state - no spinner */}
+      <div className={`${height} overflow-hidden bg-background flex items-center justify-center`}>
+        <div className="text-white bg-blue-500 p-4 rounded">Loading carousel: {seed}</div>
       </div>
     );
   }
 
   if (!images.length) {
     return (
-      <div
-        className={`${height} overflow-hidden bg-background flex items-center justify-center`}
-      >
-        <div className="text-muted-foreground">No images available</div>
+      <div className={`${height} overflow-hidden bg-background flex items-center justify-center`}>
+        <div className="text-white bg-red-500 p-4 rounded">No images available for: {seed}</div>
       </div>
     );
   }
 
   return (
     <div className={`${height} overflow-hidden bg-background relative`}>
+      <div className="text-white bg-green-500 p-4 absolute top-0 left-0 z-10">
+        Carousel loaded: {seed} - {images.length} images
+      </div>
       <div
         ref={containerRef}
         className="flex h-full transition-all duration-1000 ease-in-out relative"

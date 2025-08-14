@@ -181,11 +181,11 @@ export function loadProjectImages(
 }
 
 // Get a subset of images for carousel with optimized count
-export function getCarouselImages(
+export async function getCarouselImages(
   locale: string,
   seed: string,
   count: number = 8 // Reduced default count for better performance
-): GalleryImage[] {
-  const allImages = loadProjectImages(locale, seed);
+): Promise<GalleryImage[]> {
+  const allImages = await loadProjectImages(locale, seed);
   return allImages.slice(0, count);
 }
