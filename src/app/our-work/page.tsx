@@ -93,8 +93,8 @@ export const metadata: Metadata = {
 export default function OurWorkPage() {
   // Get page-specific content for Spanish (default) using split content
   const content = getOurWorkContent('es');
-  const projects = content.content?.projects || [];
-  const categories = content.content?.categories || [];
+  const projects = (content as any).content?.projects || [];
+  const categories = (content as any).content?.categories || [];
   const locale = content.locale;
 
   // Enhanced structured data for gallery page
@@ -108,7 +108,7 @@ export default function OurWorkPage() {
     mainEntity: {
       '@type': 'ItemList' as const,
       numberOfItems: projects.length,
-      itemListElement: projects.map((project, index) => {
+      itemListElement: projects.map((project: any, index: number) => {
         // Get the first media item with description for better SEO
         const firstMedia = project.media?.[0];
         const mediaDescription =
@@ -164,10 +164,16 @@ export default function OurWorkPage() {
       <StructuredData type="localBusiness" data={localBusinessData} />
 
       {/* Single Tiled Grid with All Featured Media */}
-      <OurWorkClient projects={projects} locale={content.locale} />
+      <OurWorkClient
+        projects={projects}
+        locale={content.locale as 'es' | 'en' | 'pt'}
+      />
 
       {/* Contact Widget */}
-      <ContactWidget language={content.locale} isGallery={true} />
+      <ContactWidget
+        language={content.locale as 'es' | 'en' | 'pt'}
+        isGallery={true}
+      />
     </div>
   );
 }

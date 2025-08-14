@@ -191,7 +191,15 @@ export function ${functionName}(locale: Locale = 'es'): ${typeName} {
   return `// Auto-generated page content loading utilities
 // Generated on: ${new Date().toISOString()}
 
-import type { Locale, PageContent } from './page-content-types.generated';
+import type { 
+  Locale, 
+  PageContent, 
+  HomepageContent, 
+  OurWorkContent, 
+  AboutContent, 
+  ContactContent, 
+  SharedContent 
+} from './page-content-types.generated';
 
 ${loadFunctions}
 
