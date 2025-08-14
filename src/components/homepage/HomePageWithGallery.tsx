@@ -11,12 +11,6 @@ interface HomePageWithGalleryProps {
 export default function HomePageWithGallery({
   locale,
 }: HomePageWithGalleryProps) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <main className="homepage h-screen flex flex-col bg-background">
       {/* Top Gallery - 30% of screen */}
@@ -25,16 +19,14 @@ export default function HomePageWithGallery({
           className="h-full transition-opacity duration-1000 ease-in-out opacity-100"
           data-css-contain="true"
         >
-          {isClient && (
-            <SimpleCarousel
-              height="h-full"
-              speed={1.5}
-              locale={locale}
-              seed="top-gallery"
-              direction="right"
-              priority={true} // Priority loading for top carousel
-            />
-          )}
+          <SimpleCarousel
+            height="h-full"
+            speed={1.5}
+            locale={locale}
+            seed="top-gallery"
+            direction="right"
+            priority={true} // Priority loading for top carousel
+          />
         </div>
       </section>
 
@@ -51,16 +43,14 @@ export default function HomePageWithGallery({
           className="h-full transition-opacity duration-1000 ease-in-out opacity-100"
           data-css-contain="true"
         >
-          {isClient && (
-            <SimpleCarousel
-              height="h-full"
-              speed={1.5}
-              locale={locale}
-              seed="bottom-gallery"
-              direction="left"
-              priority={false} // Lower priority for bottom carousel
-            />
-          )}
+          <SimpleCarousel
+            height="h-full"
+            speed={1.5}
+            locale={locale}
+            seed="bottom-gallery"
+            direction="left"
+            priority={false} // Lower priority for bottom carousel
+          />
         </div>
       </section>
     </main>

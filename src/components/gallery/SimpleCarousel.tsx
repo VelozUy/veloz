@@ -65,7 +65,7 @@ export default function SimpleCarousel({
         }
 
         // For non-priority carousels, load dynamic images
-        const loadedImages = await getCarouselImages(seed, locale, imageCount);
+        const loadedImages = await getCarouselImages(locale, seed, imageCount);
         setImages(loadedImages);
         setLoading(false);
       } catch (error) {
@@ -253,10 +253,10 @@ export default function SimpleCarousel({
   }
 
   return (
-    <div className={`${height} overflow-hidden bg-background`}>
+    <div className={`${height} overflow-hidden bg-background relative`}>
       <div
         ref={containerRef}
-        className="flex h-full transition-all duration-1000 ease-in-out"
+        className="flex h-full transition-all duration-1000 ease-in-out relative"
         style={{ overflowX: 'hidden' }}
       >
         {/* Duplicate images for seamless loop - reduced to 2 sets for better performance */}
