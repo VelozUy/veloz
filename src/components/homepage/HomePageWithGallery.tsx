@@ -12,39 +12,20 @@ export default function HomePageWithGallery({
   locale,
 }: HomePageWithGalleryProps) {
   const [isClient, setIsClient] = useState(false);
-  const [showTopCarousel, setShowTopCarousel] = useState(false);
-  const [showBottomCarousel, setShowBottomCarousel] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-    // LCP Optimization: Load top carousel immediately without any delay
-    setShowTopCarousel(true);
   }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      // Load bottom carousel after a minimal delay
-      const bottomTimer = setTimeout(() => {
-        setShowBottomCarousel(true);
-      }, 100); // Minimal delay for better performance
-
-      return () => {
-        clearTimeout(bottomTimer);
-      };
-    }
-  }, [isClient]);
 
   return (
     <main className="homepage h-screen flex flex-col bg-background">
       {/* Top Gallery - 30% of screen */}
       <section className="relative h-3/10 bg-background" data-above-fold="true">
         <div
-          className={`h-full transition-opacity duration-1000 ease-in-out ${
-            showTopCarousel ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="h-full transition-opacity duration-1000 ease-in-out opacity-100"
           data-css-contain="true"
         >
-          {isClient && showTopCarousel && (
+          {isClient && (
             <SimpleCarousel
               height="h-full"
               speed={1.5}
@@ -67,12 +48,10 @@ export default function HomePageWithGallery({
       {/* Bottom Gallery - 30% of screen */}
       <section className="relative h-3/10 bg-background" data-below-fold="true">
         <div
-          className={`h-full transition-opacity duration-1000 ease-in-out ${
-            showBottomCarousel ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="h-full transition-opacity duration-1000 ease-in-out opacity-100"
           data-css-contain="true"
         >
-          {isClient && showBottomCarousel && (
+          {isClient && (
             <SimpleCarousel
               height="h-full"
               speed={1.5}

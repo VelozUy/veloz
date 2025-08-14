@@ -268,31 +268,6 @@ export default function RootLayout({
                   document.head.appendChild(link);
                 });
                 
-                // Completely defer Firebase initialization to prevent LCP blocking
-                if ('requestIdleCallback' in window) {
-                  window.requestIdleCallback(function() {
-                    // Initialize Firebase only when idle to prevent LCP blocking
-                    import('/src/lib/firebase.ts').catch(() => {});
-                  }, { timeout: 10000 }); // 10 second timeout
-                } else {
-                  setTimeout(function() {
-                    // Initialize Firebase with long delay to prevent LCP blocking
-                    import('/src/lib/firebase.ts').catch(() => {});
-                  }, 10000); // 10 second delay
-                }
-                
-                // Defer all non-critical optimizations
-                if ('requestIdleCallback' in window) {
-                  window.requestIdleCallback(function() {
-                    // Load optimization modules only when idle
-                    import('/src/lib/speed-index-optimization.ts').then(module => {
-                      if (typeof module.initializeSpeedIndexOptimizations === 'function') {
-                        module.initializeSpeedIndexOptimizations();
-                      }
-                    }).catch(() => {});
-                  }, { timeout: 5000 });
-                }
-                
                 // Prevent any error messages from being displayed during initial load
                 const originalConsoleError = console.error;
                 console.error = function(...args) {
