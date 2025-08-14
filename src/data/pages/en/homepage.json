@@ -1,0 +1,23 @@
+{
+  "locale": "en",
+  "page": "homepage",
+  "generatedAt": "2025-08-14T18:41:11.140Z",
+  "translations": {
+    "navigation": {
+      "home": "Home",
+      "about": "About Us",
+      "gallery": "Our Work",
+      "contact": "Let's work together"
+    },
+    "homepage": {
+      "hero": {
+        "headline": "Capturing the Unrepeatable",
+        "cta": {
+          "about": "About Us",
+          "work": "Our Work",
+          "contact": "Let's work together"
+        }
+      }
+    }
+  }
+}

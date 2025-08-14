@@ -1,0 +1,191 @@
+{
+  "locale": "pt",
+  "page": "about",
+  "generatedAt": "2025-08-14T18:41:11.142Z",
+  "translations": {
+    "navigation": {
+      "home": "Início",
+      "about": "Sobre Nós",
+      "gallery": "Nosso Trabalho",
+      "contact": "Vamos trabalhar juntos"
+    },
+    "about": {
+      "title": "Sobre Nós",
+      "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
+      "philosophy": {
+        "title": "Nossa Filosofia",
+        "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+      },
+      "methodology": {
+        "title": "Nossa Metodologia",
+        "planning": {
+          "title": "Planejamento",
+          "description": "Estudamos cada detalhe do evento para antecipar os momentos-chave."
+        },
+        "coverage": {
+          "title": "Cobertura Integral",
+          "description": "Nossa equipe se distribui estrategicamente para não perder nenhum momento."
+        },
+        "capture": {
+          "title": "Captura Profissional",
+          "description": "Utilizamos técnicas avançadas e equipamentos de última geração."
+        },
+        "postproduction": {
+          "title": "Pós-Produção",
+          "description": "Editamos cuidadosamente cada imagem e vídeo para alcançar resultados excepcionais."
+        }
+      },
+      "values": {
+        "title": "Nossos Valores",
+        "passion": {
+          "title": "Paixão",
+          "description": "Amamos o que fazemos e isso se reflete em cada imagem que capturamos."
+        },
+        "teamwork": {
+          "title": "Trabalho em Equipe",
+          "description": "Nosso modelo colaborativo nos permite cobrir cada momento importante."
+        },
+        "quality": {
+          "title": "Qualidade Técnica",
+          "description": "Utilizamos equipamentos profissionais e técnicas avançadas para resultados excepcionais."
+        },
+        "agility": {
+          "title": "Agilidade",
+          "description": "Nos adaptamos rapidamente a qualquer situação para não perder nenhum momento."
+        },
+        "excellence": {
+          "title": "Excelência",
+          "description": "Buscamos a perfeição em cada projeto, superando expectativas."
+        },
+        "trust": {
+          "title": "Confiança",
+          "description": "Construímos relacionamentos duradouros baseados na transparência e profissionalismo."
+        }
+      },
+      "faq": {
+        "title": "Perguntas Frequentes"
+      }
+    }
+  },
+  "content": {
+    "faqs": [
+      {
+        "id": "r6TCNoH3rfDe5Z9ETTV5",
+        "question": "Que tipo de eventos cobrimos?",
+        "answer": "Aniversários, casamentos, corporativos, lançamentos, eventos culturais, concertos. Se o seu evento estiver fora dessas categorias, você pode nos contar a respeito: adoramos novos desafios.",
+        "category": "General",
+        "order": 1
+      },
+      {
+        "id": "pN4fNIoa0DuuW1Zutkgv",
+        "question": "Com quanto tempo de antecedência devo contatá-los?",
+        "answer": "O tempo mínimo é de uma semana. Dessa forma, garantimos entender bem as características do seu evento e poder te oferecer o melhor resultado. Se você estiver em uma emergência e não tiver uma semana, nos avise e estaremos à disposição para ajudar.",
+        "category": "General",
+        "order": 2
+      },
+      {
+        "id": "O58pCRDY89zCQMGWxjv1",
+        "question": "Como é feita a entrega do material?",
+        "answer": "Formatos digitais, álbuns, USB, galeria online... nos adaptamos às suas preferências.",
+        "category": "General",
+        "order": 3
+      },
+      {
+        "id": "VbTmu1PtnQ67CcPZw2Ek",
+        "question": "Quanto tempo leva para a entrega do material final?",
+        "answer": "A velocidade nos caracteriza. Em um prazo de uma a duas semanas, podemos te entregar o material.",
+        "category": "General",
+        "order": 4
+      },
+      {
+        "id": "3rA4vga0x8CgGI185nUX",
+        "question": "Quantos fotógrafos ou cinegrafistas são designados por evento?",
+        "answer": "Os que forem necessários; não é a mesma coisa um casamento multitudinário do que uma leitura de poesia íntima. Por isso, enfatizamos a importância de entender as características específicas do seu evento.",
+        "category": "General",
+        "order": 5
+      },
+      {
+        "id": "OoguSYTkzeyvuWtAEKPe",
+        "question": "Posso solicitar fotos ou vídeos específicos durante um evento?",
+        "answer": "Sim, sem dúvidas. O cliente tem a possibilidade, tanto na preparação do evento quanto durante o mesmo, de solicitar priorizar determinados elementos ou pessoas em relação a outros.",
+        "category": "General",
+        "order": 6
+      },
+      {
+        "id": "Xmb4W69SO94hyLdggF1u",
+        "question": "Como é gerenciada a privacidade e o uso das imagens?",
+        "answer": "As imagens e os vídeos são propriedade do cliente e não guardamos nenhum direito sobre eles. Excepcionalmente, podemos solicitar sua autorização para utilizar o material para fins de divulgação, mas dependemos da sua aprovação.",
+        "category": "General",
+        "order": 7
+      },
+      {
+        "id": "bxVVZ8T5rRDKXqiRDFYL",
+        "question": "Como funciona o sistema de pagamentos?",
+        "answer": "Uma vez que o orçamento é confirmado, solicitamos um pagamento de 30% do total como garantia. Os 70% restantes são realizados após a entrega do material.",
+        "category": "General",
+        "order": 8
+      },
+      {
+        "id": "yV9BMf3BqNGBWTSXBrN4",
+        "question": "O que acontece se o evento for cancelado ou adiado?",
+        "answer": "Se o evento for cancelado, fazemos um reembolso de 30% do valor pago. Caso o evento seja adiado, nos adaptamos à nova data, independentemente de qual seja.",
+        "category": "General",
+        "order": 9
+      },
+      {
+        "id": "4lJYNrFMS0KdsE78mf4s",
+        "question": "Quais meios de pagamento aceitamos?",
+        "answer": "Aceitamos pagamentos por transferência bancária, débito ou crédito.",
+        "category": "General",
+        "order": 10
+      },
+      {
+        "id": "vNRTM6oBYmdomSGhY5Gn",
+        "question": "O que pode ser oferecido além das coberturas?",
+        "answer": "Além da cobertura do seu evento, também realizamos sessões em estúdio antes ou depois do evento, retratos em locação e entrevistas.",
+        "category": "General",
+        "order": 11
+      },
+      {
+        "id": "arB0nFxXV0MBtWpzVyr8",
+        "question": "Posso escolher o estilo ou tom do registro?",
+        "answer": "Sem dúvida! Parte do trabalho que fazemos durante a preparação é entender suas pretensões estéticas para nos adaptarmos a elas e designar a equipe que melhor possa materializá-las.",
+        "category": "General",
+        "order": 12
+      },
+      {
+        "id": "fI8dJEC6ZB6xW5RmgtW4",
+        "question": "Vocês oferecem serviço de cobertura para eventos surpresa?",
+        "answer": "Sim, adoramos. Nesse caso, trabalhamos em estreita colaboração com o organizador para entender a modalidade da surpresa, analisamos o espaço para colocar câmeras escondidas e nos tornamos parte dos convidados, capturando assim o que há de genuíno e espontâneo no que acontecer.",
+        "category": "General",
+        "order": 13
+      }
+    ],
+    "crewMembers": [
+      {
+        "id": "Ev7BpE26DgBFiZCoFrQj",
+        "name": "Batman",
+        "role": "",
+        "portrait": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/crew-members%2F1751399928057-Screen%20Shot%202016-06-28%20at%2011.57.23.png%2FScreen_Shot_2016-06-28_at_11.57.23_1751399928057.png?alt=media&token=42a9c9f5-2616-4e08-801c-4fe848bf0e2a",
+        "bio": "Bruce Wayne, conhecido como Batman, é um super-herói da DC Comics que luta contra o crime em Gotham City. Órfão após o assassinato de seus pais, ele dedica sua vida a combater a criminalidade usando suas habilidades físicas, mentais e uma grande fortuna. Batman não possui superpoderes, mas se destaca por sua inteligência, habilidades de detetive, artes marciais e uma ampla gama de tecnologia de combate.",
+        "socialLinks": {
+          "instagram": ""
+        },
+        "skills": [],
+        "order": 0
+      },
+      {
+        "id": "tKStsbx2QgsYAcKvMNcf",
+        "name": "Felipe",
+        "role": "Jefe",
+        "portrait": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/crew-members%2F1752095070078-Screen%20Shot%202019-03-20%20at%2012.02.15%20PM.png%2FScreen_Shot_2019-03-20_at_12.02.15_PM_1752095070178.png?alt=media&token=2ca42196-f5e8-4c02-b620-b768ca29dd99",
+        "bio": "",
+        "socialLinks": {
+          "instagram": ""
+        },
+        "skills": [],
+        "order": 0
+      }
+    ]
+  }
+}

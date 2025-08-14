@@ -1,0 +1,13 @@
+{
+  "locale": "en",
+  "page": "shared",
+  "generatedAt": "2025-08-14T18:41:11.141Z",
+  "translations": {
+    "navigation": {
+      "home": "Home",
+      "about": "About Us",
+      "gallery": "Our Work",
+      "contact": "Let's work together"
+    }
+  }
+}

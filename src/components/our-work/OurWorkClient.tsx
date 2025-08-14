@@ -1,11 +1,16 @@
 'use client';
 
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { TiledGallery } from '@/components/gallery/TiledGallery';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import { convertProjectMediaBatch } from '@/lib/gallery-layout';
 import { CTASection } from '@/components/shared';
+import {
+  optimizeGalleryImages,
+  preloadCriticalImages,
+  monitorGalleryPerformance,
+} from '@/lib/our-work-performance';
 
 interface Project {
   id: string;
@@ -115,13 +120,31 @@ export default function OurWorkClient({
     return media;
   }, [projects, locale]);
 
+  // Performance monitoring
+  const performanceMonitor = useMemo(() => monitorGalleryPerformance(), []);
+
   // Optimize media for better loading performance
   const optimizedMedia = useMemo(() => {
-    return allMedia.map((item, index) => ({
+    const optimized = optimizeGalleryImages(
+      allMedia.map((item, index) => ({
+        id: item.id,
+        url: item.url,
+        alt: item.alt,
+        width: item.width,
+        height: item.height,
+      })),
+      6 // Priority first 6 images
+    );
+
+    return optimized.map((item, index) => ({
       ...item,
       order: index,
-      priority: index < 6, // Priority loading for first 6 images
-      loading: index < 6 ? ('eager' as const) : ('lazy' as const),
+      projectId: allMedia[index]?.projectId,
+      projectTitle: allMedia[index]?.projectTitle,
+      type: allMedia[index]?.type,
+      featured: allMedia[index]?.featured,
+      description: allMedia[index]?.description,
+      tags: allMedia[index]?.tags,
     }));
   }, [allMedia]);
 
@@ -148,33 +171,27 @@ export default function OurWorkClient({
     } else {
       setIsLoading(false);
       setLoadError(null);
+
+      // Mark performance monitoring complete after a short delay
+      setTimeout(() => {
+        performanceMonitor?.markLoadComplete();
+      }, 100);
     }
-  }, [optimizedMedia.length, projects]);
+  }, [optimizedMedia.length, projects, performanceMonitor]);
 
   // Preload critical images for better UX - moved to top
   useEffect(() => {
     if (optimizedMedia.length > 0 && typeof window !== 'undefined') {
-      // Preload first 6 images for immediate fullscreen modal experience
-      const criticalImages = optimizedMedia.slice(0, 6);
+      // Mark performance monitoring start
+      performanceMonitor?.markLoadStart();
 
-      criticalImages.forEach((mediaItem, index) => {
-        if (mediaItem.type === 'photo') {
-          const img = new Image();
-          img.src = mediaItem.url;
-
-          img.onload = () => {
-            if (process.env.NODE_ENV === 'development') {
-            }
-          };
-
-          img.onerror = () => {
-            if (process.env.NODE_ENV === 'development') {
-            }
-          };
-        }
-      });
+      // Preload critical images using optimized function
+      const criticalImageUrls = optimizedMedia
+        .slice(0, 4)
+        .map(item => item.optimizedUrl);
+      preloadCriticalImages(criticalImageUrls);
     }
-  }, [optimizedMedia]);
+  }, [optimizedMedia, performanceMonitor]);
 
   // Show loading state
   if (isLoading) {
@@ -316,17 +333,21 @@ export default function OurWorkClient({
                   images={convertProjectMediaBatch(
                     optimizedMedia.map((item, index) => ({
                       id: item.id,
-                      url: item.url,
-                      src: item.url, // For compatibility
+                      url: item.optimizedUrl, // Use optimized URL
+                      src: item.optimizedUrl, // For compatibility
                       alt: item.alt,
                       width: item.width,
                       height: item.height,
                       type: item.type,
-                      aspectRatio: item.aspectRatio,
+                      aspectRatio:
+                        item.width && item.height
+                          ? item.width / item.height
+                          : 1,
                       featured: item.featured,
                       order: index, // Use index for proper ordering
                       priority: item.priority, // Priority loading for first 6 images
                       loading: item.loading, // Eager loading for first 6 images
+                      quality: item.quality, // Use optimized quality
                     })),
                     getLocalizedTitle(locale),
                     'our-work'
@@ -342,7 +363,7 @@ export default function OurWorkClient({
                   className="editorial-tiled-gallery"
                   enableAnimations={true}
                   lazyLoad={true}
-                  preloadCount={16}
+                  preloadCount={8} // Reduced for better performance
                   gap={8}
                   showHeader={false}
                 />
@@ -350,9 +371,6 @@ export default function OurWorkClient({
                 <div className="text-center py-12 px-8 md:px-16">
                   <p className="text-muted-foreground font-body">
                     No hay imágenes disponibles en este momento.
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2 font-body">
-                    optimizedMedia.length: {optimizedMedia.length}
                   </p>
                 </div>
               )}

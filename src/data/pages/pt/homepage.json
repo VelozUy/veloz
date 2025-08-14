@@ -1,0 +1,23 @@
+{
+  "locale": "pt",
+  "page": "homepage",
+  "generatedAt": "2025-08-14T18:41:11.141Z",
+  "translations": {
+    "navigation": {
+      "home": "Início",
+      "about": "Sobre Nós",
+      "gallery": "Nosso Trabalho",
+      "contact": "Vamos trabalhar juntos"
+    },
+    "homepage": {
+      "hero": {
+        "headline": "Capturamos o que não se repete",
+        "cta": {
+          "about": "Sobre Nós",
+          "work": "Nosso Trabalho",
+          "contact": "Vamos trabalhar juntos"
+        }
+      }
+    }
+  }
+}

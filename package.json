@@ -11,6 +11,8 @@
     "build": "node scripts/build-production.js",
     "build:dev": "node scripts/build-development.js",
     "build:data": "node scripts/build-data.js",
+    "build:split-content": "node scripts/build-split-content.js",
+    "test:split-content": "node scripts/test-split-content.js",
     "mark:featured": "node scripts/mark-featured-media.js",
     "clean:generated": "rm -rf src/data/content-*.json src/lib/static-content.generated.ts src/lib/build-time-data.generated.ts",
     "build:content": "node scripts/build-data.js",

@@ -1,0 +1,123 @@
+{
+  "locale": "en",
+  "page": "contact",
+  "generatedAt": "2025-08-14T18:41:11.141Z",
+  "translations": {
+    "navigation": {
+      "home": "Home",
+      "about": "About Us",
+      "gallery": "Our Work",
+      "contact": "Let's work together"
+    },
+    "contact": {
+      "title": "Shall we get in touch?",
+      "subtitle": "Getting a quote is completely free and without commitment. We typically respond within 2 hours of your inquiry.",
+      "form": {
+        "title": "Form",
+        "name": {
+          "label": "Name",
+          "placeholder": "Name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "company": {
+          "label": "Company",
+          "placeholder": "Company",
+          "optional": "(optional)"
+        },
+        "phone": {
+          "label": "Mobile number",
+          "placeholder": "Mobile",
+          "optional": "(optional)"
+        },
+        "eventType": {
+          "label": "What type of event do you have?",
+          "placeholder": "Select",
+          "options": {
+            "corporate": "Corporate event",
+            "product": "Product presentation",
+            "birthday": "Birthday",
+            "wedding": "Wedding",
+            "concert": "Concert",
+            "exhibition": "Exhibitions",
+            "other": "Others"
+          }
+        },
+        "location": {
+          "label": "Event location (city)",
+          "placeholder": "City"
+        },
+        "attendees": {
+          "label": "Expected number of attendees",
+          "placeholder": "Select attendee range",
+          "options": {
+            "0-20": "0-20 people",
+            "21-50": "21-50 people",
+            "51-100": "51-100 people",
+            "100+": "100+ people"
+          }
+        },
+        "services": {
+          "label": "What services are you interested in?",
+          "placeholder": "Services",
+          "options": {
+            "photography": "Photography",
+            "video": "Video",
+            "drone": "Drone",
+            "studio": "Studio photo session",
+            "other": "Others"
+          }
+        },
+        "contactMethod": {
+          "label": "How would you prefer us to contact you?",
+          "placeholder": "Select",
+          "options": {
+            "whatsapp": "WhatsApp",
+            "email": "Email",
+            "call": "Call"
+          }
+        },
+        "eventDate": {
+          "label": "Event Date",
+          "optional": "(optional)",
+          "help": "Approximate date is fine"
+        },
+        "message": {
+          "label": "Tell us all the details you think are relevant",
+          "optional": "(optional)",
+          "placeholder": "Details"
+        },
+        "attachments": {
+          "label": "Attachments",
+          "optional": "(optional)",
+          "description": "You can attach photos or documents"
+        },
+        "submit": {
+          "button": "Send Message",
+          "loading": "Sending..."
+        },
+        "privacy": {
+          "line1": "We respect your privacy.",
+          "line2": "We will only contact you about your event."
+        }
+      },
+      "success": {
+        "title": "Message sent!",
+        "message": "Thank you for contacting us! We'll get back to you within 24 hours with all the details to make your event amazing.",
+        "action": "Send another message"
+      },
+      "trust": {
+        "response": {
+          "title": "Quick Response",
+          "description": "We typically respond within 2 hours after your inquiry"
+        },
+        "commitment": {
+          "title": "No Commitment",
+          "description": "Getting a quote is completely free and without commitment"
+        }
+      }
+    }
+  }
+}

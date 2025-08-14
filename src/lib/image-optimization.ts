@@ -1,6 +1,6 @@
 /**
  * Image Optimization Utilities
- * 
+ *
  * Automatically serves optimized WebP images when available,
  * with fallback to original images for better performance.
  */
@@ -30,7 +30,7 @@ export interface OptimizedImageResult {
  */
 export function supportsWebP(): boolean {
   if (typeof window === 'undefined') return true; // Server-side, assume support
-  
+
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
@@ -42,28 +42,33 @@ export function supportsWebP(): boolean {
  */
 export function getOptimizedImageUrl(originalUrl: string): string {
   if (!originalUrl || typeof originalUrl !== 'string') return originalUrl;
-  
+
   // Check if it's already a WebP URL
   if (originalUrl.includes('.webp')) return originalUrl;
-  
+
   // Check if it's a Firebase Storage URL
   if (!originalUrl.includes('storage.googleapis.com')) return originalUrl;
-  
+
   // Convert to optimized WebP URL
   // The optimization script creates .webp versions with the same path structure
   const urlParts = originalUrl.split('?')[0]; // Remove query parameters
   const extension = urlParts.split('.').pop()?.toLowerCase();
-  
+
   // Only convert image formats that can be optimized
   if (!['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension || '')) {
     return originalUrl;
   }
-  
+
   // Replace extension with .webp
-  const optimizedUrl = urlParts.replace(new RegExp(`\\.${extension}$`, 'i'), '.webp');
-  
+  const optimizedUrl = urlParts.replace(
+    new RegExp(`\\.${extension}$`, 'i'),
+    '.webp'
+  );
+
   // Add back query parameters if they exist
-  const queryParams = originalUrl.includes('?') ? originalUrl.split('?')[1] : '';
+  const queryParams = originalUrl.includes('?')
+    ? originalUrl.split('?')[1]
+    : '';
   return queryParams ? `${optimizedUrl}?${queryParams}` : optimizedUrl;
 }
 
@@ -74,28 +79,33 @@ export function getResponsiveImageUrls(originalUrl: string): {
   [size: number]: string;
 } {
   if (!originalUrl || typeof originalUrl !== 'string') return {};
-  
+
   // Check if it's a Firebase Storage URL
   if (!originalUrl.includes('storage.googleapis.com')) return {};
-  
+
   const urlParts = originalUrl.split('?')[0];
   const extension = urlParts.split('.').pop()?.toLowerCase();
-  
+
   // Only generate responsive URLs for optimizable images
-  if (!['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension || '')) return {};
-  
+  if (!['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension || ''))
+    return {};
+
   const baseName = urlParts.replace(new RegExp(`\\.${extension}$`, 'i'), '');
-  const queryParams = originalUrl.includes('?') ? originalUrl.split('?')[1] : '';
-  
+  const queryParams = originalUrl.includes('?')
+    ? originalUrl.split('?')[1]
+    : '';
+
   // Generate responsive URLs for common breakpoints
   const sizes = [200, 400, 800, 1200];
   const responsiveUrls: { [size: number]: string } = {};
-  
+
   sizes.forEach(size => {
     const responsiveUrl = `${baseName}-${size}.webp`;
-    responsiveUrls[size] = queryParams ? `${responsiveUrl}?${queryParams}` : responsiveUrl;
+    responsiveUrls[size] = queryParams
+      ? `${responsiveUrl}?${queryParams}`
+      : responsiveUrl;
   });
-  
+
   return responsiveUrls;
 }
 
@@ -104,11 +114,11 @@ export function getResponsiveImageUrls(originalUrl: string): {
  */
 export function generateSrcSet(originalUrl: string): string {
   const responsiveUrls = getResponsiveImageUrls(originalUrl);
-  const sizes = Object.keys(responsiveUrls).map(Number).sort((a, b) => a - b);
-  
-  return sizes
-    .map(size => `${responsiveUrls[size]} ${size}w`)
-    .join(', ');
+  const sizes = Object.keys(responsiveUrls)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  return sizes.map(size => `${responsiveUrls[size]} ${size}w`).join(', ');
 }
 
 /**
@@ -132,13 +142,13 @@ export function optimizeImageData(
     placeholder = 'empty',
     blurDataURL,
   } = config;
-  
+
   // Get optimized URL
   const optimizedSrc = getOptimizedImageUrl(image.src);
-  
+
   // Generate srcSet for responsive images
   const srcSet = generateSrcSet(image.src);
-  
+
   return {
     src: optimizedSrc,
     srcSet: srcSet || undefined,
@@ -174,10 +184,10 @@ export function useOptimizedImage(
  */
 export function preloadOptimizedImage(url: string): void {
   if (typeof window === 'undefined') return; // Server-side
-  
+
   const optimizedUrl = getOptimizedImageUrl(url);
   if (optimizedUrl === url) return; // No optimization available
-  
+
   const link = document.createElement('link');
   link.rel = 'preload';
   link.as = 'image';
@@ -190,4 +200,61 @@ export function preloadOptimizedImage(url: string): void {
  */
 export function preloadOptimizedImages(urls: string[]): void {
   urls.forEach(url => preloadOptimizedImage(url));
+}
+
+/**
+ * Generate optimized image URL for gallery with better compression
+ * This function creates URLs that are optimized for web display
+ */
+export function getGalleryOptimizedUrl(
+  originalUrl: string,
+  width: number = 800,
+  height: number = 600,
+  quality: number = 75
+): string {
+  if (!originalUrl || typeof originalUrl !== 'string') return originalUrl;
+
+  // Check if it's a Firebase Storage URL
+  if (originalUrl.includes('firebasestorage.googleapis.com')) {
+    // For Firebase Storage, we'll use Next.js Image optimization
+    // The actual optimization will happen at the component level
+    return originalUrl;
+  }
+
+  // Check if it's an external URL (like Unsplash)
+  if (originalUrl.includes('unsplash.com')) {
+    return `${originalUrl}?w=${width}&h=${height}&fit=crop&q=${quality}&fm=webp`;
+  }
+
+  // For other URLs, return as is (will be optimized by Next.js Image)
+  return originalUrl;
+}
+
+/**
+ * Generate responsive image URLs for gallery with multiple sizes
+ */
+export function getGalleryResponsiveUrls(originalUrl: string): {
+  [size: string]: string;
+} {
+  if (!originalUrl || typeof originalUrl !== 'string') return {};
+
+  const sizes = {
+    thumbnail: { width: 300, height: 300, quality: 60 },
+    small: { width: 600, height: 400, quality: 70 },
+    medium: { width: 800, height: 600, quality: 75 },
+    large: { width: 1200, height: 800, quality: 80 },
+  };
+
+  const responsiveUrls: { [size: string]: string } = {};
+
+  Object.entries(sizes).forEach(([size, config]) => {
+    responsiveUrls[size] = getGalleryOptimizedUrl(
+      originalUrl,
+      config.width,
+      config.height,
+      config.quality
+    );
+  });
+
+  return responsiveUrls;
 }

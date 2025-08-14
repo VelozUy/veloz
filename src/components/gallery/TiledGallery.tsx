@@ -83,14 +83,15 @@ export function TiledGallery({
   // Use override if provided, otherwise use simple detection
   const [isMobile, setIsMobile] = useState(false);
 
-  // Performance optimization - preserving current patterns while adding enhancements
-  const effectiveLazyLoad = lazyLoad && !isMobile; // Disable lazy loading on mobile for better UX
+  // Performance optimization - improved lazy loading strategy
+  const effectiveLazyLoad = isMobile ? false : lazyLoad; // Disable lazy loading on mobile for better UX
+  const effectivePreloadCount = Math.min(preloadCount, 8); // Reduce preload count for better performance
 
   // Initialize LCP optimizations
   useEffect(() => {
     if (typeof window !== 'undefined') {
       initializeLCPOptimizations();
-      
+
       // Preload critical images for LCP improvement
       const criticalImageUrls = images.slice(0, 4).map(img => img.url);
       preloadLCPImages(criticalImageUrls);
@@ -109,11 +110,11 @@ export function TiledGallery({
     handleImageError,
   } = useTiledGalleryLazyLoad({
     threshold: 0.1,
-    rootMargin: '100px 0px', // Increased for better preloading
-    preloadCount,
+    rootMargin: '50px 0px', // Reduced for better performance
+    preloadCount: effectivePreloadCount,
     virtualScrolling,
-    maxConcurrentLoads: 4,
-    memoryLimit: 50,
+    maxConcurrentLoads: 2, // Reduced for better performance
+    memoryLimit: 30, // Reduced memory usage
     lazyLoad: effectiveLazyLoad,
   });
 
@@ -136,7 +137,13 @@ export function TiledGallery({
     if (isMobileOverride !== undefined) {
       setIsMobile(isMobileOverride);
     } else {
-      setIsMobile(window.innerWidth < 768);
+      // More reliable mobile detection
+      const isMobileDevice =
+        window.innerWidth < 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(isMobileDevice);
     }
   }, [isMobileOverride]);
 
@@ -528,18 +535,19 @@ export function TiledGallery({
 
         {/* Mobile Single Column Layout */}
         <div className="space-y-6 md:space-y-8">
-          {' '}
           {/* Enhanced spacing */}
           {images.map((image, index) => {
             // Ensure consistent rendering between server and client
-            const isVisible = isClient
-              ? visibleItems.has(image.id) || !effectiveLazyLoad
-              : true; // Always render on server
+            const isVisible =
+              isMobile || isClient
+                ? visibleItems.has(image.id) || !effectiveLazyLoad
+                : true; // Always render on server
             const isLoaded = loadedImages.has(image.id);
             const hasError = errorImages.has(image.id);
 
             // Skip rendering if not visible (but ensure server always renders)
-            if (!isVisible && isClient && effectiveLazyLoad) {
+            // On mobile, always render images for better UX
+            if (!isVisible && isClient && effectiveLazyLoad && !isMobile) {
               return null;
             }
 
@@ -637,9 +645,7 @@ export function TiledGallery({
                         fill
                         className={cn(
                           'object-cover transition-opacity duration-500',
-                          isLoaded ? 'opacity-100' : 'opacity-0',
-                          // Hide image if not visible on client (but keep it rendered for hydration consistency)
-                          !isVisible && typeof window !== 'undefined' ? 'hidden' : ''
+                          isLoaded ? 'opacity-100' : 'opacity-0'
                         )}
                         priority={index < 8}
                         sizes="100vw"
@@ -735,7 +741,8 @@ export function TiledGallery({
               // Ensure consistent rendering between server and client
               // On server, always render images to prevent hydration mismatch
               // On client, use lazy loading state
-              const isVisible = typeof window === 'undefined' || visibleItems.has(image.id);
+              const isVisible =
+                typeof window === 'undefined' || visibleItems.has(image.id);
               const isLoaded = loadedImages.has(image.id);
               const hasError = errorImages.has(image.id);
               const animationState = animationStates[image.id];
@@ -837,9 +844,7 @@ export function TiledGallery({
                           fill
                           className={cn(
                             'object-cover transition-opacity duration-500',
-                            isLoaded ? 'opacity-100' : 'opacity-0',
-                            // Hide image if not visible on client (but keep it rendered for hydration consistency)
-                            !isVisible && typeof window !== 'undefined' ? 'hidden' : ''
+                            isLoaded ? 'opacity-100' : 'opacity-0'
                           )}
                           priority={image.priority || tileIndex < 4}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

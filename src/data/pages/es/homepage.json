@@ -1,0 +1,23 @@
+{
+  "locale": "es",
+  "page": "homepage",
+  "generatedAt": "2025-08-14T18:41:11.138Z",
+  "translations": {
+    "navigation": {
+      "home": "Inicio",
+      "about": "Sobre Nosotros",
+      "gallery": "Nuestro Trabajo",
+      "contact": "Trabajemos juntos"
+    },
+    "homepage": {
+      "hero": {
+        "headline": "Capturamos lo irrepetible",
+        "cta": {
+          "about": "Sobre Nosotros",
+          "work": "Nuestro Trabajo",
+          "contact": "Trabajemos juntos"
+        }
+      }
+    }
+  }
+}

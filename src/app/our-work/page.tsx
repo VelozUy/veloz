@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getOptimizedStaticContent } from '@/lib/utils';
+import { getOurWorkContent } from '@/lib/page-content-utils.generated';
 import OurWorkClient from '@/components/our-work/OurWorkClient';
 import { ContactWidget } from '@/components/gallery/ContactWidget';
 import {
@@ -91,10 +91,10 @@ export const metadata: Metadata = {
 };
 
 export default function OurWorkPage() {
-  // Get static content for Spanish (default) using optimized function
-  const content = getOptimizedStaticContent('es');
-  const projects = content.content.projects || [];
-  const categories = content.content.categories || [];
+  // Get page-specific content for Spanish (default) using split content
+  const content = getOurWorkContent('es');
+  const projects = content.content?.projects || [];
+  const categories = content.content?.categories || [];
   const locale = content.locale;
 
   // Enhanced structured data for gallery page

@@ -1,6 +1,10 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { getOptimizedImageUrl, generateSrcSet, supportsWebP } from '@/lib/image-optimization';
+import {
+  getOptimizedImageUrl,
+  generateSrcSet,
+  supportsWebP,
+} from '@/lib/image-optimization';
 
 export interface OptimizedImageProps {
   src: string;
@@ -29,7 +33,7 @@ export function OptimizedImage({
   className = '',
   priority = false,
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  quality = 85,
+  quality = 75, // Reduced quality for better performance
   placeholder = 'empty',
   blurDataURL,
   onLoad,

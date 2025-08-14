@@ -1,0 +1,123 @@
+{
+  "locale": "pt",
+  "page": "contact",
+  "generatedAt": "2025-08-14T18:41:11.142Z",
+  "translations": {
+    "navigation": {
+      "home": "Início",
+      "about": "Sobre Nós",
+      "gallery": "Nosso Trabalho",
+      "contact": "Vamos trabalhar juntos"
+    },
+    "contact": {
+      "title": "Vamos entrar em contato?",
+      "subtitle": "Obter uma cotação é completamente gratuito e sem compromisso. Normalmente respondemos dentro de 2 horas após sua consulta.",
+      "form": {
+        "title": "Formulário",
+        "name": {
+          "label": "Nome",
+          "placeholder": "Nome"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "company": {
+          "label": "Empresa",
+          "placeholder": "Empresa",
+          "optional": "(opcional)"
+        },
+        "phone": {
+          "label": "Número",
+          "placeholder": "Celular",
+          "optional": "(opcional)"
+        },
+        "eventType": {
+          "label": "Que tipo de evento você tem?",
+          "placeholder": "Selecionar",
+          "options": {
+            "corporate": "Evento corporativo",
+            "product": "Apresentação de produto",
+            "birthday": "Aniversário",
+            "wedding": "Casamento",
+            "concert": "Show",
+            "exhibition": "Exposições",
+            "other": "Outros"
+          }
+        },
+        "location": {
+          "label": "Local do evento (cidade)",
+          "placeholder": "Cidade"
+        },
+        "attendees": {
+          "label": "Número esperado de participantes",
+          "placeholder": "Selecione o intervalo de participantes",
+          "options": {
+            "0-20": "0-20 pessoas",
+            "21-50": "21-50 pessoas",
+            "51-100": "51-100 pessoas",
+            "100+": "Mais de 100 pessoas"
+          }
+        },
+        "services": {
+          "label": "Que serviços você está interessado?",
+          "placeholder": "Serviços",
+          "options": {
+            "photography": "Fotografia",
+            "video": "Vídeo",
+            "drone": "Drone",
+            "studio": "Sessão de fotos estúdio",
+            "other": "Outros"
+          }
+        },
+        "contactMethod": {
+          "label": "Como você prefere que entremos em contato?",
+          "placeholder": "Selecionar",
+          "options": {
+            "whatsapp": "WhatsApp",
+            "email": "Email",
+            "call": "Ligação"
+          }
+        },
+        "eventDate": {
+          "label": "Data do evento",
+          "optional": "(opcional)",
+          "help": "Se você não tem data definida, não se preocupe"
+        },
+        "message": {
+          "label": "Conte-nos todos os detalhes que achar relevantes",
+          "optional": "(opcional)",
+          "placeholder": "Detalhes"
+        },
+        "attachments": {
+          "label": "Anexos",
+          "optional": "(opcional)",
+          "description": "Você pode anexar fotos ou documentos"
+        },
+        "submit": {
+          "button": "Enviar mensagem",
+          "loading": "Enviando..."
+        },
+        "privacy": {
+          "line1": "Respeitamos sua privacidade.",
+          "line2": "Só entraremos em contato sobre seu evento."
+        }
+      },
+      "success": {
+        "title": "Mensagem enviada!",
+        "message": "Obrigado por entrar em contato! responderemos dentro de 24 horas com todos os detalhes para tornar seu evento incrível.",
+        "action": "Enviar outra mensagem"
+      },
+      "trust": {
+        "response": {
+          "title": "Resposta Rápida",
+          "description": "Normalmente respondemos dentro de 2 horas após sua consulta"
+        },
+        "commitment": {
+          "title": "Sem Compromisso",
+          "description": "Obter um orçamento é completamente gratuito e sem compromisso"
+        }
+      }
+    }
+  }
+}

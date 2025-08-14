@@ -71,10 +71,13 @@ async function buildProduction() {
     // Step 2: Build data
     runCommand('npm run build:data', 'Building data');
 
-    // Step 3: Exclude debug pages
+    // Step 3: Build split content
+    runCommand('npm run build:split-content', 'Building split content');
+
+    // Step 4: Exclude debug pages
     excludeDebugPages();
 
-    // Step 4: Build Next.js app
+    // Step 5: Build Next.js app
     runCommand('next build', 'Building Next.js application');
 
     console.log('\n🎉 Production build completed successfully!');

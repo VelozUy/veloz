@@ -1,0 +1,123 @@
+{
+  "locale": "es",
+  "page": "contact",
+  "generatedAt": "2025-08-14T18:41:11.140Z",
+  "translations": {
+    "navigation": {
+      "home": "Inicio",
+      "about": "Sobre Nosotros",
+      "gallery": "Nuestro Trabajo",
+      "contact": "Trabajemos juntos"
+    },
+    "contact": {
+      "title": "¿Nos ponemos en contacto?",
+      "subtitle": "Obtener una cotización es completamente gratis y sin compromiso. Típicamente respondemos dentro de las 2 horas posteriores a tu consulta.",
+      "form": {
+        "title": "Formulario",
+        "name": {
+          "label": "Tu nombre",
+          "placeholder": "Nombre"
+        },
+        "email": {
+          "label": "Correo",
+          "placeholder": "Email"
+        },
+        "company": {
+          "label": "Empresa",
+          "placeholder": "Empresa",
+          "optional": "(opcional)"
+        },
+        "phone": {
+          "label": "Número",
+          "placeholder": "Teléfono",
+          "optional": "(opcional)"
+        },
+        "eventType": {
+          "label": "¿Qué tipo de evento tienes?",
+          "placeholder": "Seleccionar",
+          "options": {
+            "corporate": "Evento corporativo",
+            "product": "Presentación de producto",
+            "birthday": "Cumpleaños",
+            "wedding": "Casamiento",
+            "concert": "Concierto",
+            "exhibition": "Exposiciones",
+            "other": "Otros"
+          }
+        },
+        "location": {
+          "label": "Lugar",
+          "placeholder": "Lugar"
+        },
+        "attendees": {
+          "label": "Cantidad de asistentes esperados",
+          "placeholder": "Selecciona el rango de asistentes",
+          "options": {
+            "0-20": "0-20 personas",
+            "21-50": "21-50 personas",
+            "51-100": "51-100 personas",
+            "100+": "Más de 100 personas"
+          }
+        },
+        "services": {
+          "label": "¿Qué servicios te interesan?",
+          "placeholder": "Servicios",
+          "options": {
+            "photography": "Fotografía",
+            "video": "Video",
+            "drone": "Drone",
+            "studio": "Sesión de fotos estudio",
+            "other": "Otros"
+          }
+        },
+        "contactMethod": {
+          "label": "¿Cómo preferís que te contactemos?",
+          "placeholder": "Seleccionar",
+          "options": {
+            "whatsapp": "Whatsapp",
+            "email": "Mail",
+            "call": "Llamada"
+          }
+        },
+        "eventDate": {
+          "label": "Fecha del evento",
+          "optional": "(opcional)",
+          "help": "Si no tienes fecha definida, no te preocupes"
+        },
+        "message": {
+          "label": "Cuéntanos todos los detalles que te parezcan",
+          "optional": "(opcional)",
+          "placeholder": "Detalles"
+        },
+        "attachments": {
+          "label": "Archivos adjuntos",
+          "optional": "(opcional)",
+          "description": "Puedes adjuntar fotos o documentos"
+        },
+        "submit": {
+          "button": "Enviar mensaje",
+          "loading": "Enviando..."
+        },
+        "privacy": {
+          "line1": "Al enviar este formulario, aceptas nuestra",
+          "line2": "política de privacidad"
+        }
+      },
+      "success": {
+        "title": "¡Mensaje enviado!",
+        "message": "¡Gracias por contactarnos! te responderemos dentro de 24 horas con todos los detalles para hacer que tu evento sea increíble.",
+        "action": "Enviar otro mensaje"
+      },
+      "trust": {
+        "response": {
+          "title": "Respuesta rápida",
+          "description": "Típicamente respondemos dentro de las 2 horas posteriores a tu consulta"
+        },
+        "commitment": {
+          "title": "Sin compromiso",
+          "description": "Obtener una cotización es completamente gratis y sin compromiso"
+        }
+      }
+    }
+  }
+}
