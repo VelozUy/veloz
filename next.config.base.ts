@@ -9,6 +9,11 @@ const baseConfig: NextConfig = {
         hostname: 'firebasestorage.googleapis.com',
         pathname: '/v0/b/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
     // Enhanced image optimization settings
     formats: ['image/webp', 'image/avif'],

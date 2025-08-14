@@ -1,20 +1,20 @@
 
 # 🚀 Lighthouse Performance Report
 
-**Generated**: 2025-08-14T17:33:14.013Z
+**Generated**: 2025-08-14T17:37:00.771Z
 **URL**: http://localhost:3000
 
-## 📊 Performance Score: 43/100
+## 📊 Performance Score: 37/100
 
 ## 🎯 Core Web Vitals
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| **LCP** | 30483ms | <2500ms | 🔴 |
-| **FCP** | 2197ms | <1500ms | 🟡 |
-| **TBT** | 3363ms | <200ms | 🔴 |
+| **LCP** | 31232ms | <2500ms | 🔴 |
+| **FCP** | 1983ms | <1500ms | 🟡 |
+| **TBT** | 3496ms | <200ms | 🔴 |
 | **CLS** | 0.000 | <0.1 | ✅ |
-| **Speed Index** | 2197ms | <3400ms | ✅ |
+| **Speed Index** | 6715ms | <3400ms | 🔴 |
 
 ## 🔧 Optimization Opportunities
 
@@ -24,9 +24,9 @@
 
 Based on current metrics, focus on:
 
-1. **LCP Optimization**: Reduce from 30483ms to <2500ms
-2. **TBT Reduction**: Reduce from 3363ms to <200ms
-3. **Speed Index**: Reduce from 2197ms to <3400ms
+1. **LCP Optimization**: Reduce from 31232ms to <2500ms
+2. **TBT Reduction**: Reduce from 3496ms to <200ms
+3. **Speed Index**: Reduce from 6715ms to <3400ms
 
 ## 🎯 Next Steps
 
