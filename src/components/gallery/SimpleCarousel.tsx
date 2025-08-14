@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import OptimizedImage from '@/components/shared/OptimizedImage';
+import Image from 'next/image';
 
 interface GalleryImage {
   id: string;
@@ -85,20 +85,25 @@ export default function SimpleCarousel({
   // Simple static display of images without animation
   return (
     <div className={`${height} overflow-hidden bg-background relative`}>
+      <div className="text-white bg-green-500 p-2 absolute top-0 left-0 z-10 text-xs">
+        Debug: {seed} - {images.length} images loaded
+      </div>
       <div className="flex h-full">
         {images.map((image, index) => (
           <div
             key={image.id}
             className="flex-shrink-0 w-full h-full relative"
           >
-            <OptimizedImage
+            <div className="text-white bg-blue-500 p-1 absolute top-0 left-0 z-20 text-xs">
+              Image {index + 1}
+            </div>
+            <Image
               src={image.url}
               alt={image.alt || 'Gallery image'}
               fill
               className="object-cover"
               loading={index < 1 ? 'eager' : 'lazy'}
               priority={priority && index < 1}
-              fetchPriority={priority && index < 1 ? 'high' : 'auto'}
               quality={60}
               sizes="300px"
               placeholder="blur"
