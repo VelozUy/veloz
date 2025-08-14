@@ -1,327 +1,193 @@
 /**
  * Image Optimization Utilities
- *
- * Advanced image optimization for tiled gallery performance.
- * Preserves current loading patterns while adding:
- * - Progressive loading with blur-up effects
- * - Memory management for large galleries
- * - Preloading strategies
- * - Performance monitoring
+ * 
+ * Automatically serves optimized WebP images when available,
+ * with fallback to original images for better performance.
  */
 
-import { GalleryImage } from '@/types/gallery';
-
-export interface ImageOptimizationConfig {
+export interface OptimizedImageConfig {
   quality?: number;
-  format?: 'webp' | 'jpeg' | 'png' | 'auto';
-  sizes?: string;
   priority?: boolean;
-  preloadCount?: number;
-  memoryLimit?: number; // MB
-  maxConcurrentLoads?: number;
-}
-
-export interface OptimizedImageData {
-  src: string;
+  sizes?: string;
+  placeholder?: 'empty' | 'blur';
   blurDataURL?: string;
-  width: number;
-  height: number;
-  quality: number;
-  format: string;
-  sizes: string;
-  priority: boolean;
-  loading: 'eager' | 'lazy';
-  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
-export interface PerformanceMetrics {
-  totalImages: number;
-  loadedImages: number;
-  errorImages: number;
-  averageLoadTime: number;
-  memoryUsage: number;
-  cacheHitRate: number;
+export interface OptimizedImageResult {
+  src: string;
+  srcSet?: string;
+  sizes?: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  priority?: boolean;
+  placeholder?: 'empty' | 'blur';
+  blurDataURL?: string;
 }
-
-// Default optimization configuration
-export const DEFAULT_OPTIMIZATION_CONFIG: ImageOptimizationConfig = {
-  quality: 85,
-  format: 'auto',
-  sizes: '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  priority: false,
-  preloadCount: 8,
-  memoryLimit: 50,
-  maxConcurrentLoads: 4,
-};
-
-// Image cache for performance
-const imageCache = new Map<string, OptimizedImageData>();
-const loadTimes = new Map<string, number>();
-const memoryUsage = { current: 0, limit: 50 };
 
 /**
- * Optimize image data for tiled gallery
- * Preserves current loading patterns while adding performance enhancements
+ * Check if the browser supports WebP format
+ */
+export function supportsWebP(): boolean {
+  if (typeof window === 'undefined') return true; // Server-side, assume support
+  
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  return canvas.toDataURL('image/webp').indexOf('image/webp') === 5;
+}
+
+/**
+ * Convert a Firebase Storage URL to its optimized WebP version
+ */
+export function getOptimizedImageUrl(originalUrl: string): string {
+  if (!originalUrl || typeof originalUrl !== 'string') return originalUrl;
+  
+  // Check if it's already a WebP URL
+  if (originalUrl.includes('.webp')) return originalUrl;
+  
+  // Check if it's a Firebase Storage URL
+  if (!originalUrl.includes('storage.googleapis.com')) return originalUrl;
+  
+  // Convert to optimized WebP URL
+  // The optimization script creates .webp versions with the same path structure
+  const urlParts = originalUrl.split('?')[0]; // Remove query parameters
+  const extension = urlParts.split('.').pop()?.toLowerCase();
+  
+  // Only convert image formats that can be optimized
+  if (!['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension || '')) {
+    return originalUrl;
+  }
+  
+  // Replace extension with .webp
+  const optimizedUrl = urlParts.replace(new RegExp(`\\.${extension}$`, 'i'), '.webp');
+  
+  // Add back query parameters if they exist
+  const queryParams = originalUrl.includes('?') ? originalUrl.split('?')[1] : '';
+  return queryParams ? `${optimizedUrl}?${queryParams}` : optimizedUrl;
+}
+
+/**
+ * Get responsive image URLs for different screen sizes
+ */
+export function getResponsiveImageUrls(originalUrl: string): {
+  [size: number]: string;
+} {
+  if (!originalUrl || typeof originalUrl !== 'string') return {};
+  
+  // Check if it's a Firebase Storage URL
+  if (!originalUrl.includes('storage.googleapis.com')) return {};
+  
+  const urlParts = originalUrl.split('?')[0];
+  const extension = urlParts.split('.').pop()?.toLowerCase();
+  
+  // Only generate responsive URLs for optimizable images
+  if (!['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension || '')) return {};
+  
+  const baseName = urlParts.replace(new RegExp(`\\.${extension}$`, 'i'), '');
+  const queryParams = originalUrl.includes('?') ? originalUrl.split('?')[1] : '';
+  
+  // Generate responsive URLs for common breakpoints
+  const sizes = [200, 400, 800, 1200];
+  const responsiveUrls: { [size: number]: string } = {};
+  
+  sizes.forEach(size => {
+    const responsiveUrl = `${baseName}-${size}.webp`;
+    responsiveUrls[size] = queryParams ? `${responsiveUrl}?${queryParams}` : responsiveUrl;
+  });
+  
+  return responsiveUrls;
+}
+
+/**
+ * Generate srcSet for responsive images
+ */
+export function generateSrcSet(originalUrl: string): string {
+  const responsiveUrls = getResponsiveImageUrls(originalUrl);
+  const sizes = Object.keys(responsiveUrls).map(Number).sort((a, b) => a - b);
+  
+  return sizes
+    .map(size => `${responsiveUrls[size]} ${size}w`)
+    .join(', ');
+}
+
+/**
+ * Optimize image data for use in components
  */
 export function optimizeImageData(
-  image: GalleryImage,
-  config: ImageOptimizationConfig = {}
-): OptimizedImageData {
-  const fullConfig = { ...DEFAULT_OPTIMIZATION_CONFIG, ...config };
-
-  // Check cache first
-  const cacheKey = `${image.id}-${fullConfig.quality}-${fullConfig.format}`;
-  if (imageCache.has(cacheKey)) {
-    return imageCache.get(cacheKey)!;
-  }
-
-  // Determine optimal format
-  const format = determineOptimalFormat(image.src, fullConfig.format);
-
-  // Generate responsive sizes
-  const sizes = generateResponsiveSizes(image, fullConfig.sizes || '');
-
-  // Create optimized image data
-  const optimizedData: OptimizedImageData = {
-    src: image.src,
-    blurDataURL: image.blurDataURL,
-    width: image.width || 800,
-    height: image.height || 600,
-    quality: fullConfig.quality || 85,
-    format,
+  image: {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    priority?: boolean;
+    blurDataURL?: string;
+  },
+  config: OptimizedImageConfig = {}
+): OptimizedImageResult {
+  const {
+    quality = 85,
+    priority = false,
+    sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+    placeholder = 'empty',
+    blurDataURL,
+  } = config;
+  
+  // Get optimized URL
+  const optimizedSrc = getOptimizedImageUrl(image.src);
+  
+  // Generate srcSet for responsive images
+  const srcSet = generateSrcSet(image.src);
+  
+  return {
+    src: optimizedSrc,
+    srcSet: srcSet || undefined,
     sizes,
-    priority: fullConfig.priority || false,
-    loading: fullConfig.priority ? 'eager' : 'lazy',
-    fetchPriority: fullConfig.priority ? 'high' : 'auto',
-  };
-
-  // Cache the result
-  imageCache.set(cacheKey, optimizedData);
-
-  return optimizedData;
-}
-
-/**
- * Determine optimal image format based on browser support and image type
- */
-function determineOptimalFormat(
-  src: string,
-  preferredFormat: string = 'auto'
-): string {
-  if (preferredFormat !== 'auto') {
-    return preferredFormat;
-  }
-
-  // Check file extension
-  const extension = src.split('.').pop()?.toLowerCase();
-
-  if (extension === 'png') return 'png';
-  if (extension === 'gif') return 'gif';
-  if (extension === 'svg') return 'svg';
-
-  // Default to webp for photos, jpeg for compatibility
-  return 'webp';
-}
-
-/**
- * Generate responsive sizes string for optimal loading
- */
-function generateResponsiveSizes(
-  image: GalleryImage,
-  baseSizes: string
-): string {
-  // Use provided sizes or generate based on image dimensions
-  if (baseSizes) return baseSizes;
-
-  const aspectRatio = (image.width || 1) / (image.height || 1);
-
-  if (aspectRatio > 1.5) {
-    // Wide images
-    return '(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw';
-  } else if (aspectRatio < 0.7) {
-    // Tall images
-    return '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
-  } else {
-    // Square-ish images
-    return '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
-  }
-}
-
-/**
- * Preload critical images for better UX
- * Preserves current preloading strategy while adding optimization
- */
-export function preloadCriticalImages(
-  images: GalleryImage[],
-  config: ImageOptimizationConfig = {}
-): void {
-  const fullConfig = { ...DEFAULT_OPTIMIZATION_CONFIG, ...config };
-  const criticalCount = Math.min(4, fullConfig.preloadCount || 8);
-
-  // Preload first few images
-  images.slice(0, criticalCount).forEach(image => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = image.src;
-
-    // Add to head
-    document.head.appendChild(link);
-
-    // Clean up after a delay
-    setTimeout(() => {
-      if (document.head.contains(link)) {
-        document.head.removeChild(link);
-      }
-    }, 10000); // Remove after 10 seconds
-  });
-}
-
-/**
- * Track image load performance
- * Preserves current loading patterns while adding metrics
- */
-export function trackImageLoad(
-  imageId: string,
-  startTime: number,
-  onComplete?: (metrics: PerformanceMetrics) => void
-): void {
-  const loadTime = performance.now() - startTime;
-  loadTimes.set(imageId, loadTime);
-
-  // Update memory usage estimate
-  memoryUsage.current += 0.1; // Rough estimate per image
-
-  // Generate performance metrics
-  const metrics = generatePerformanceMetrics();
-
-  if (onComplete) {
-    onComplete(metrics);
-  }
-}
-
-/**
- * Generate performance metrics for monitoring
- */
-export function generatePerformanceMetrics(): PerformanceMetrics {
-  const totalImages = imageCache.size;
-  const loadedImages = loadTimes.size;
-  const errorImages = 0; // Would need error tracking implementation
-
-  const loadTimeValues = Array.from(loadTimes.values());
-  const averageLoadTime =
-    loadTimeValues.length > 0
-      ? loadTimeValues.reduce((sum, time) => sum + time, 0) /
-        loadTimeValues.length
-      : 0;
-
-  const cacheHitRate =
-    totalImages > 0 ? (imageCache.size / totalImages) * 100 : 0;
-
-  return {
-    totalImages,
-    loadedImages,
-    errorImages,
-    averageLoadTime,
-    memoryUsage: memoryUsage.current,
-    cacheHitRate,
+    alt: image.alt,
+    width: image.width,
+    height: image.height,
+    priority: image.priority || priority,
+    placeholder,
+    blurDataURL: image.blurDataURL || blurDataURL,
   };
 }
 
 /**
- * Clear memory and cache for performance
- * Preserves current patterns while adding memory management
+ * Hook to get optimized image data
  */
-export function clearImageCache(): void {
-  // Clear old load times
-  const now = performance.now();
-  for (const [imageId, loadTime] of loadTimes.entries()) {
-    if (now - loadTime > 300000) {
-      // 5 minutes
-      loadTimes.delete(imageId);
-    }
-  }
-
-  // Clear image cache if memory usage is high
-  if (memoryUsage.current > memoryUsage.limit * 0.8) {
-    imageCache.clear();
-    memoryUsage.current = 0;
-  }
-}
-
-/**
- * Optimize image loading strategy for tiled gallery
- * Preserves current loading patterns while adding performance enhancements
- */
-export function optimizeImageLoading(
-  images: GalleryImage[],
-  config: ImageOptimizationConfig = {}
-): {
-  optimizedImages: OptimizedImageData[];
-  preloadStrategy: () => void;
-  memoryManagement: () => void;
-} {
-  const fullConfig = { ...DEFAULT_OPTIMIZATION_CONFIG, ...config };
-
-  // Optimize all images
-  const optimizedImages = images.map(image =>
-    optimizeImageData(image, fullConfig)
+export function useOptimizedImage(
+  originalUrl: string,
+  alt: string,
+  config: OptimizedImageConfig = {}
+): OptimizedImageResult {
+  return optimizeImageData(
+    {
+      src: originalUrl,
+      alt,
+    },
+    config
   );
-
-  // Preload strategy
-  const preloadStrategy = () => {
-    preloadCriticalImages(images, fullConfig);
-  };
-
-  // Memory management
-  const memoryManagement = () => {
-    clearImageCache();
-  };
-
-  return {
-    optimizedImages,
-    preloadStrategy,
-    memoryManagement,
-  };
 }
 
 /**
- * Generate blur data URL for progressive loading
- * Preserves current blur-up effect patterns
+ * Preload optimized images for critical images
  */
-export function generateBlurDataURL(image: GalleryImage): string | undefined {
-  // If image already has blur data, use it
-  if (image.blurDataURL) {
-    return image.blurDataURL;
-  }
-
-  // For now, return undefined to use existing placeholder patterns
-  // In a full implementation, this would generate a base64 blur
-  return undefined;
+export function preloadOptimizedImage(url: string): void {
+  if (typeof window === 'undefined') return; // Server-side
+  
+  const optimizedUrl = getOptimizedImageUrl(url);
+  if (optimizedUrl === url) return; // No optimization available
+  
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = optimizedUrl;
+  document.head.appendChild(link);
 }
 
 /**
- * Validate image optimization configuration
+ * Batch preload multiple optimized images
  */
-export function validateOptimizationConfig(
-  config: ImageOptimizationConfig
-): boolean {
-  const { quality, memoryLimit, maxConcurrentLoads } = config;
-
-  if (quality && (quality < 1 || quality > 100)) {
-    // Image quality must be between 1 and 100
-    return false;
-  }
-
-  if (memoryLimit && memoryLimit < 10) {
-    // Memory limit should be at least 10MB
-    return false;
-  }
-
-  if (maxConcurrentLoads && maxConcurrentLoads < 1) {
-    // Max concurrent loads must be at least 1
-    return false;
-  }
-
-  return true;
+export function preloadOptimizedImages(urls: string[]): void {
+  urls.forEach(url => preloadOptimizedImage(url));
 }

@@ -11,6 +11,7 @@ import {
 } from 'firebase/storage';
 import { getStorageService } from '@/lib/firebase';
 import type { ApiResponse } from '@/types';
+import { imageOptimizationService, type ImageOptimizationConfig, type OptimizedImageResult } from './image-optimization-service';
 
 // File upload configuration
 export interface FileUploadConfig {
@@ -161,82 +162,42 @@ export class FileUploadService {
   > = new Map();
 
   /**
-   * Optimize image before upload
+   * Optimize image before upload using the new optimization service
    */
   private async optimizeImage(
     file: File,
     config: FileUploadConfig = {}
   ): Promise<ImageOptimizationResult> {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-
-      img.onload = () => {
-        try {
-          const originalWidth = img.width;
-          const originalHeight = img.height;
-          const originalSize = file.size;
-
-          // Calculate new dimensions
-          const { width, height } = this.calculateDimensions(
-            originalWidth,
-            originalHeight,
-            config.maxWidth,
-            config.maxHeight,
-            config.maintainAspectRatio !== false
-          );
-
-          // Set canvas dimensions
-          canvas.width = width;
-          canvas.height = height;
-
-          // Draw and resize image
-          ctx?.drawImage(img, 0, 0, width, height);
-
-          // Determine output format and quality
-          const format = config.targetFormat || 'jpeg';
-          const quality = config.compressionQuality || 0.8;
-          const mimeType =
-            format === 'jpeg'
-              ? 'image/jpeg'
-              : format === 'png'
-                ? 'image/png'
-                : 'image/webp';
-
-          // Convert to blob
-          canvas.toBlob(
-            blob => {
-              if (blob) {
-                const optimizedSize = blob.size;
-                const compressionRatio = originalSize / optimizedSize;
-
-                resolve({
-                  blob,
-                  originalSize,
-                  optimizedSize,
-                  compressionRatio,
-                  width,
-                  height,
-                });
-              } else {
-                reject(new Error('Failed to optimize image'));
-              }
-            },
-            mimeType,
-            quality
-          );
-        } catch (error) {
-          reject(error);
-        }
+    try {
+      // Convert FileUploadConfig to ImageOptimizationConfig
+      const optimizationConfig: ImageOptimizationConfig = {
+        quality: config.compressionQuality ? config.compressionQuality * 100 : 85,
+        maxWidth: config.maxWidth,
+        maxHeight: config.maxHeight,
+        formats: config.targetFormat ? [config.targetFormat] : ['webp', 'jpeg'],
+        generateResponsive: config.generateThumbnails,
+        responsiveSizes: config.generateThumbnails ? [200, 400, 800] : undefined,
+        maintainAspectRatio: config.maintainAspectRatio !== false,
       };
 
-      img.onerror = () => {
-        reject(new Error('Failed to load image for optimization'));
+      // Use the new optimization service
+      const result = await imageOptimizationService.optimizeImageClient(file, optimizationConfig);
+      
+      // Convert OptimizedImageResult to ImageOptimizationResult
+      const blob = await fetch(result.optimizedUrl).then(r => r.blob());
+      
+      return {
+        blob,
+        originalSize: result.metadata.originalSize,
+        optimizedSize: result.metadata.optimizedSize,
+        compressionRatio: result.metadata.compressionRatio,
+        width: result.metadata.width,
+        height: result.metadata.height,
       };
-
-      img.src = URL.createObjectURL(file);
-    });
+    } catch (error) {
+      console.error('Image optimization failed:', error);
+      throw new Error('Failed to optimize image');
+    }
   }
 
   /**
@@ -820,6 +781,68 @@ export class FileUploadService {
       ],
       generateThumbnails: true,
       compressionQuality: 0.8,
+    };
+  }
+
+  /**
+   * Upload and optimize image for production use
+   * This method provides comprehensive image optimization with responsive versions
+   */
+  async uploadAndOptimizeImage(
+    file: File,
+    path: string,
+    config: ImageOptimizationConfig = {},
+    onProgress?: (progress: { percentage: number; message: string }) => void
+  ): Promise<ApiResponse<OptimizedImageResult>> {
+    try {
+      // Validate that it's an image file
+      if (!this.isOptimizableImage(file)) {
+        return {
+          success: false,
+          error: 'File is not an optimizable image',
+          data: undefined,
+        };
+      }
+
+      // Use the new optimization service for production-ready optimization
+      const result = await imageOptimizationService.uploadAndOptimize(
+        file,
+        path,
+        config,
+        (progress) => {
+          onProgress?.({
+            percentage: progress.percentage,
+            message: progress.message,
+          });
+        }
+      );
+
+      return {
+        success: true,
+        data: result,
+        error: undefined,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: `Image optimization failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        data: undefined,
+      };
+    }
+  }
+
+  /**
+   * Get production-ready image optimization configuration
+   */
+  getProductionImageConfig(): ImageOptimizationConfig {
+    return {
+      quality: 85,
+      maxWidth: 1920,
+      maxHeight: 1080,
+      formats: ['webp', 'jpeg'],
+      generateResponsive: true,
+      responsiveSizes: [200, 400, 800, 1200],
+      maintainAspectRatio: true,
     };
   }
 

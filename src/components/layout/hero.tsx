@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useHeroBackground } from '@/hooks/useBackground';
 import { VelozLogo } from '@/components/shared/VelozLogo';
+import { OptimizedImage } from '@/components/shared';
 
 // Helper function for localized paths (same as navigation component)
 function getLocalizedPath(path: string, locale: string): string {
@@ -118,7 +119,7 @@ export default function Hero({
                 index === currentImageIndex ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <Image
+              <OptimizedImage
                 src={imageUrl}
                 alt={`Background image ${index + 1}`}
                 fill

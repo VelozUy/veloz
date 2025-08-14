@@ -2,6 +2,7 @@
 
 import Masonry from 'react-masonry-css';
 import Image from 'next/image';
+import { OptimizedImage } from '@/components/shared';
 
 export interface ProjectMedia {
   id: string;
@@ -123,7 +124,7 @@ export default function MasonryGallery({
                   style={{ borderRadius: 0, background: 'black' }}
                 />
               ) : (
-                <Image
+                <OptimizedImage
                   src={item.url}
                   alt={item.description?.es || projectTitle}
                   fill

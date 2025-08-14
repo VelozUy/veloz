@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { HeroMediaConfig } from '@/types';
 import { ProjectMedia } from '@/services/firebase';
+import { OptimizedImage } from '@/components/shared';
 
 interface HeroLayoutProps {
   heroConfig: HeroMediaConfig;
@@ -116,7 +117,7 @@ export default function HeroLayout({
         }}
       >
         {selectedMedia.type === 'photo' ? (
-          <Image
+          <OptimizedImage
             src={selectedMedia.url}
             alt={selectedMedia.description?.es || projectTitle || 'Hero media'}
             fill

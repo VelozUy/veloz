@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
 import FullscreenModal from '@/components/gallery/FullscreenModal';
+import { OptimizedImage } from '@/components/shared';
 
 interface FeatureMedia {
   id: string;
@@ -250,7 +251,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
                       aspectRatio: `${mediaItem.width}/${mediaItem.height}`,
                     }}
                   >
-                    <Image
+                    <OptimizedImage
                       src={mediaItem.url}
                       alt={mediaItem.alt}
                       fill

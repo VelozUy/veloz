@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { getCarouselImages, type GalleryImage } from '@/lib/gallery-utils';
+import { OptimizedImage } from '@/components/shared';
 
 interface SimpleCarouselProps {
   height: string;
@@ -272,9 +273,9 @@ export default function SimpleCarousel({
                   )}
                 />
 
-                {/* Optimized Next.js Image */}
+                {/* Optimized Image */}
                 {isVisible && (
-                  <Image
+                  <OptimizedImage
                     src={image.url}
                     alt={image.alt || 'Gallery image'}
                     fill

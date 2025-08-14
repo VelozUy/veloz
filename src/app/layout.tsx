@@ -11,12 +11,14 @@ import {
 } from '@/components/seo/StructuredData';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { ServiceWorkerRegistration } from '@/components/performance/ServiceWorkerRegistration';
+import { PerformanceOptimizer } from '@/components/performance/PerformanceOptimizer';
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
 import { QRCodeTracker } from '@/components/QRCodeTracker';
 import { Toaster } from 'sonner';
 import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
 import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
 import { initAccessibilityTesting } from '@/lib/accessibility-testing';
+import { initializeTBTOptimizations } from '@/lib/tbt-optimization';
 import { Suspense } from 'react';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import HomepageBodyClass from '@/components/layout/HomepageBodyClass';
@@ -211,6 +213,24 @@ export default function RootLayout({
             `,
           }}
         />
+
+        {/* Performance optimizations */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Initialize TBT optimizations
+              if (typeof window !== 'undefined') {
+                // This will be called when the script loads
+                window.addEventListener('load', function() {
+                  // Initialize TBT optimizations after page load
+                  if (typeof window.initializeTBTOptimizations === 'function') {
+                    window.initializeTBTOptimizations();
+                  }
+                });
+              }
+            `,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${oswald.variable} antialiased`}
@@ -218,6 +238,7 @@ export default function RootLayout({
         <StructuredData type="organization" data={organizationData} />
         <PerformanceMonitor />
         <ServiceWorkerRegistration />
+        <PerformanceOptimizer />
         <Suspense fallback={null}>
           <QRCodeTracker />
         </Suspense>

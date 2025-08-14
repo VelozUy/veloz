@@ -43,7 +43,9 @@ const baseConfig: NextConfig = {
     },
   },
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    // Performance optimizations
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   eslint: {
     // Only run ESLint on these directories during build
@@ -98,6 +100,27 @@ const baseConfig: NextConfig = {
         'process.env.FIREBASE_CLIENT_ONLY': JSON.stringify(true),
       })
     );
+
+    // Performance optimizations
+    if (!isServer) {
+      // Split chunks for better caching
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      };
+    }
 
     return config;
   },

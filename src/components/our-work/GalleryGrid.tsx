@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
 import { initializePerformanceOptimizations } from '@/lib/gallery-performance-optimization';
+import { OptimizedImage } from '@/components/shared';
 
 export interface ProjectMedia {
   id: string;
@@ -291,7 +292,7 @@ export default function GalleryGrid({
                 ) : (
                   // Enhanced Image with Progressive Loading
                   <div className="relative w-full h-full">
-                    <Image
+                    <OptimizedImage
                       src={item.url}
                       alt={
                         item.description?.es ||

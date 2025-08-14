@@ -28,13 +28,12 @@ import {
   TileAnimationState,
 } from '@/types/gallery';
 import { useTiledGalleryLazyLoad } from '@/hooks/useTiledGalleryLazyLoad';
+import { OptimizedImage } from '@/components/shared';
 import {
-  optimizeImageData,
-  preloadCriticalImages,
-  trackImageLoad,
-  clearImageCache,
-  type ImageOptimizationConfig,
-} from '@/lib/image-optimization';
+  getOptimizedImageProps,
+  initializeLCPOptimizations,
+  preloadCriticalImages as preloadLCPImages,
+} from '@/lib/lcp-optimization';
 import { VelozLoader } from '@/components/shared';
 
 /**
@@ -86,6 +85,17 @@ export function TiledGallery({
 
   // Performance optimization - preserving current patterns while adding enhancements
   const effectiveLazyLoad = lazyLoad && !isMobile; // Disable lazy loading on mobile for better UX
+
+  // Initialize LCP optimizations
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      initializeLCPOptimizations();
+      
+      // Preload critical images for LCP improvement
+      const criticalImageUrls = images.slice(0, 4).map(img => img.url);
+      preloadLCPImages(criticalImageUrls);
+    }
+  }, [images]);
 
   // Lazy loading and performance optimization using new hook
   const {
@@ -328,10 +338,7 @@ export function TiledGallery({
   // Preload critical images - enhancing current preloading strategy
   useEffect(() => {
     if (images.length > 0) {
-      preloadCriticalImages(images, {
-        preloadCount: Math.min(4, preloadCount),
-        quality: 85,
-      });
+      // Preloading is now handled by OptimizedImage component
     }
   }, [images, preloadCount]);
 
@@ -624,44 +631,28 @@ export function TiledGallery({
                   ) : (
                     // Image display - preserving current progressive loading
                     <div className="relative w-full h-full">
-                      {isVisible &&
-                        (() => {
-                          const optimizedImage = optimizeImageData(image, {
-                            quality: 85,
-                            priority: index < 8, // Increase priority range for better LCP
-                            sizes: '100vw',
-                          });
-
-                          return (
-                            <Image
-                              src={optimizedImage.src}
-                              alt={image.alt}
-                              fill
-                              className={cn(
-                                'object-cover transition-opacity duration-500',
-                                isLoaded ? 'opacity-100' : 'opacity-0'
-                              )}
-                              priority={optimizedImage.priority}
-                              onLoad={() => {
-                                handleImageLoad(image.id);
-                                handleImageLoadWithAnimation(image.id);
-                              }}
-                              onError={() => {
-                                handleImageError(image.id);
-                                handleImageErrorWithAnimation(image.id);
-                              }}
-                              placeholder={
-                                optimizedImage.blurDataURL ? 'blur' : 'empty'
-                              }
-                              blurDataURL={optimizedImage.blurDataURL}
-                              loading={optimizedImage.loading}
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              {...(optimizedImage.fetchPriority && {
-                                fetchPriority: optimizedImage.fetchPriority,
-                              })}
-                            />
-                          );
-                        })()}
+                      <OptimizedImage
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className={cn(
+                          'object-cover transition-opacity duration-500',
+                          isLoaded ? 'opacity-100' : 'opacity-0',
+                          // Hide image if not visible on client (but keep it rendered for hydration consistency)
+                          !isVisible && typeof window !== 'undefined' ? 'hidden' : ''
+                        )}
+                        priority={index < 8}
+                        sizes="100vw"
+                        quality={85}
+                        onLoad={() => {
+                          handleImageLoad(image.id);
+                          handleImageLoadWithAnimation(image.id);
+                        }}
+                        onError={() => {
+                          handleImageError(image.id);
+                          handleImageErrorWithAnimation(image.id);
+                        }}
+                      />
 
                       {/* Blur placeholder - preserving current progressive loading */}
                       {image.blurDataURL && !isLoaded && !hasError && (
@@ -741,10 +732,10 @@ export function TiledGallery({
           >
             {row.tiles.map((tile, tileIndex) => {
               const image = tile.image;
-              const isVisible =
-                typeof window === 'undefined'
-                  ? true
-                  : visibleItems.has(image.id);
+              // Ensure consistent rendering between server and client
+              // On server, always render images to prevent hydration mismatch
+              // On client, use lazy loading state
+              const isVisible = typeof window === 'undefined' || visibleItems.has(image.id);
               const isLoaded = loadedImages.has(image.id);
               const hasError = errorImages.has(image.id);
               const animationState = animationStates[image.id];
@@ -840,36 +831,24 @@ export function TiledGallery({
                     ) : (
                       // Image display - preserving current progressive loading
                       <div className="relative w-full h-full">
-                        {isVisible &&
-                          (() => {
-                            const optimizedImage = optimizeImageData(image, {
-                              quality: 85,
-                              priority: image.priority || tileIndex < 4,
-                              sizes:
-                                '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-                            });
-
-                            return (
-                              <Image
-                                src={optimizedImage.src}
-                                alt={image.alt}
-                                fill
-                                className={cn(
-                                  'object-cover transition-opacity duration-500',
-                                  isLoaded ? 'opacity-100' : 'opacity-0'
-                                )}
-                                priority={optimizedImage.priority}
-                                onLoad={() => handleImageLoad(image.id)}
-                                onError={() => handleImageError(image.id)}
-                                placeholder={
-                                  optimizedImage.blurDataURL ? 'blur' : 'empty'
-                                }
-                                blurDataURL={optimizedImage.blurDataURL}
-                                loading={optimizedImage.loading}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              />
-                            );
-                          })()}
+                        <OptimizedImage
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className={cn(
+                            'object-cover transition-opacity duration-500',
+                            isLoaded ? 'opacity-100' : 'opacity-0',
+                            // Hide image if not visible on client (but keep it rendered for hydration consistency)
+                            !isVisible && typeof window !== 'undefined' ? 'hidden' : ''
+                          )}
+                          priority={image.priority || tileIndex < 4}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          quality={85}
+                          placeholder={image.blurDataURL ? 'blur' : 'empty'}
+                          blurDataURL={image.blurDataURL}
+                          onLoad={() => handleImageLoad(image.id)}
+                          onError={() => handleImageError(image.id)}
+                        />
 
                         {/* Blur placeholder - preserving current progressive loading */}
                         {image.blurDataURL && !isLoaded && !hasError && (
