@@ -14,6 +14,14 @@ interface AboutContentProps {
 
 // Philosophy items based on the content structure
 const getPhilosophyItems = (content: LocalizedContent) => {
+  // Check if dynamic philosophy items exist in the content
+  if (
+    content.content.about.philosophy.items &&
+    Array.isArray(content.content.about.philosophy.items)
+  ) {
+    return content.content.about.philosophy.items;
+  }
+
   // Fallback to static philosophy items based on the content locale
   const locale = content.locale;
 

@@ -529,6 +529,50 @@ Não apenas tiramos fotografias; contamos histórias. Cada imagem é uma página
 ## Excelência no Detalhe
 Nos concentramos nos pequenos detalhes que tornam seu evento grandioso. Da decoração às expressões de alegria, tudo merece ser imortalizado.`,
       },
+      philosophyItems: [
+        {
+          id: 'quality',
+          title: {
+            es: 'Calidad',
+            en: 'Quality',
+            pt: 'Qualidade',
+          },
+          description: {
+            es: 'Porque cada persona que nos elige merece lo mejor, desde el primer clic hasta la entrega final.',
+            en: 'Because every person who chooses us deserves the best, from the first click to the final delivery.',
+            pt: 'Porque cada pessoa que nos escolhe merece o melhor, desde o primeiro clique até a entrega final.',
+          },
+          order: 0,
+        },
+        {
+          id: 'sensitivity',
+          title: {
+            es: 'Sensibilidad',
+            en: 'Sensitivity',
+            pt: 'Sensibilidade',
+          },
+          description: {
+            es: 'Porque en cada evento hay historias reales, personas que sienten, viven y confían en que sepamos capturar eso irrepetible.',
+            en: 'Because in every event there are real stories, people who feel, live and trust that we know how to capture that irreplaceable moment.',
+            pt: 'Porque em cada evento há histórias reais, pessoas que sentem, vivem e confiam que sabemos capturar esse momento irrepetível.',
+          },
+          order: 1,
+        },
+        {
+          id: 'speed',
+          title: {
+            es: 'Velocidad',
+            en: 'Speed',
+            pt: 'Velocidade',
+          },
+          description: {
+            es: 'Porque entendemos que el tiempo importa y las historias no esperan. Respondemos con agilidad y con la responsabilidad de estar cuando se nos necesita.',
+            en: "Because we understand that time matters and stories don't wait. We respond with agility and with the responsibility of being there when we are needed.",
+            pt: 'Porque entendemos que o tempo importa e as histórias não esperam. Respondemos com agilidade e com a responsabilidade de estar lá quando somos necessários.',
+          },
+          order: 2,
+        },
+      ],
       methodologyTitle: { es: '', en: '', pt: '' },
       methodologyDescription: { es: '', en: '', pt: '' },
       methodologySteps: [

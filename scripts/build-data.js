@@ -293,6 +293,23 @@ const STATIC_TRANSLATIONS = {
         title: 'Nuestra Filosofía',
         description:
           'Creemos que cada evento es único y merece ser documentado con la máxima dedicación. Nuestro enfoque no es solo capturar imágenes, sino contar historias que perduren en el tiempo. Combinamos técnica profesional con sensibilidad artística para crear recuerdos que emocionan y trascienden generaciones.',
+        items: [
+          {
+            title: 'Calidad',
+            description:
+              'Porque cada persona que nos elige merece lo mejor, desde el primer clic hasta la entrega final.',
+          },
+          {
+            title: 'Sensibilidad',
+            description:
+              'Porque en cada evento hay historias reales, personas que sienten, viven y confían en que sepamos capturar eso irrepetible.',
+          },
+          {
+            title: 'Velocidad',
+            description:
+              'Porque entendemos que el tiempo importa y las historias no esperan. Respondemos con agilidad y con la responsabilidad de estar cuando se nos necesita.',
+          },
+        ],
       },
       methodology: {
         title: 'Nuestra Metodología',
@@ -791,6 +808,23 @@ const STATIC_TRANSLATIONS = {
         title: 'Our Philosophy',
         description:
           'We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.',
+        items: [
+          {
+            title: 'Quality',
+            description:
+              'Because every person who chooses us deserves the best, from the first click to the final delivery.',
+          },
+          {
+            title: 'Sensitivity',
+            description:
+              'Because in every event there are real stories, people who feel, live and trust that we know how to capture that irreplaceable moment.',
+          },
+          {
+            title: 'Speed',
+            description:
+              "Because we understand that time matters and stories don't wait. We respond with agility and with the responsibility of being there when we are needed.",
+          },
+        ],
       },
       methodology: {
         title: 'Our Methodology',
@@ -1289,6 +1323,23 @@ const STATIC_TRANSLATIONS = {
         title: 'Nossa Filosofia',
         description:
           'Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.',
+        items: [
+          {
+            title: 'Qualidade',
+            description:
+              'Porque cada pessoa que nos escolhe merece o melhor, desde o primeiro clique até a entrega final.',
+          },
+          {
+            title: 'Sensibilidade',
+            description:
+              'Porque em cada evento há histórias reais, pessoas que sentem, vivem e confiam que sabemos capturar esse momento irrepetível.',
+          },
+          {
+            title: 'Velocidade',
+            description:
+              'Porque entendemos que o tempo importa e as histórias não esperam. Respondemos com agilidade e com a responsabilidade de estar lá quando somos necessários.',
+          },
+        ],
       },
       methodology: {
         title: 'Nossa Metodologia',
@@ -1968,6 +2019,35 @@ function generateLocaleContent(
                 aboutContent.philosophyContent?.[locale] ||
                 aboutContent.philosophyContent?.es ||
                 STATIC_TRANSLATIONS[locale].about.philosophy.description,
+              // Use philosophy items from admin panel if available
+              items:
+                Array.isArray(aboutContent.philosophyItems) &&
+                aboutContent.philosophyItems.length > 0
+                  ? aboutContent.philosophyItems
+                      .sort((a, b) => (a.order || 0) - (b.order || 0))
+                      .map(item => ({
+                        title: item.title?.[locale] || item.title?.es || '',
+                        description:
+                          item.description?.[locale] ||
+                          item.description?.es ||
+                          '',
+                      }))
+                  : aboutContent.philosophy?.items &&
+                      (Array.isArray(aboutContent.philosophy.items) ||
+                        typeof aboutContent.philosophy.items === 'object')
+                    ? (Array.isArray(aboutContent.philosophy.items)
+                        ? aboutContent.philosophy.items
+                        : Object.values(aboutContent.philosophy.items)
+                      )
+                        .sort((a, b) => (a.order || 0) - (b.order || 0))
+                        .map(item => ({
+                          title: item.title?.[locale] || item.title?.es || '',
+                          description:
+                            item.description?.[locale] ||
+                            item.description?.es ||
+                            '',
+                        }))
+                    : STATIC_TRANSLATIONS[locale].about.philosophy.items || [],
             },
             methodology: {
               title:
@@ -2315,6 +2395,10 @@ export interface LocalizedContent {
       philosophy: {
         title: string;
         description: string;
+        items: Array<{
+          title: string;
+          description: string;
+        }>;
       };
       methodology: {
         title: string;

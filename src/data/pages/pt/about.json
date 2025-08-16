@@ -1,7 +1,7 @@
 {
   "locale": "pt",
   "page": "about",
-  "generatedAt": "2025-08-16T19:44:55.112Z",
+  "generatedAt": "2025-08-16T20:28:49.307Z",
   "translations": {
     "navigation": {
       "home": "Início",
@@ -14,7 +14,21 @@
       "subtitle": "Somos uma equipe apaixonada dedicada a capturar os momentos mais importantes da sua vida com excelência, carinho e agilidade.",
       "philosophy": {
         "title": "Nossa Filosofia",
-        "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações."
+        "description": "Acreditamos que cada evento é único e merece ser documentado com máxima dedicação. Nossa abordagem não é apenas capturar imagens, mas contar histórias que perduram no tempo. Combinamos técnica profissional com sensibilidade artística para criar memórias que emocionam e transcendem gerações.",
+        "items": [
+          {
+            "title": "Qualidade",
+            "description": "Porque cada pessoa que nos escolhe merece o melhor, desde o primeiro clique até a entrega final."
+          },
+          {
+            "title": "Sensibilidade",
+            "description": "Porque em cada evento há histórias reais, pessoas que sentem, vivem e confiam que sabemos capturar esse momento irrepetível."
+          },
+          {
+            "title": "Velocidade",
+            "description": "Porque entendemos que o tempo importa e as histórias não esperam. Respondemos com agilidade e com a responsabilidade de estar lá quando somos necessários."
+          }
+        ]
       },
       "methodology": {
         "title": "Nossa Metodologia",

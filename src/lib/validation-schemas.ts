@@ -270,6 +270,14 @@ export const aboutMethodologyStepSchema = z.object({
   image: z.string().url().optional(),
 });
 
+// Philosophy Item Schema
+export const aboutPhilosophyItemSchema = baseSchema.extend({
+  title: multiLanguageTextSchema,
+  description: multiLanguageTextSchema,
+  order: z.number().int().min(0).default(0),
+  lastModifiedBy: z.string().optional(),
+});
+
 // About Content Schema
 export const aboutContentSchema = baseSchema.extend({
   heroTitle: multiLanguageTextSchema,
@@ -285,6 +293,29 @@ export const aboutContentSchema = baseSchema.extend({
     en: '',
     pt: '',
   }),
+  philosophyItems: z
+    .union([
+      z.array(aboutPhilosophyItemSchema),
+      z.record(z.string(), aboutPhilosophyItemSchema).transform(obj => {
+        // Convert object with numeric keys back to array (Firestore behavior)
+        return Object.keys(obj)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .map(key => obj[key]);
+      }),
+      z.undefined(),
+      z.null(),
+    ])
+    .default([])
+    .transform(val => {
+      // Ensure we always return an array
+      if (Array.isArray(val)) return val;
+      if (val && typeof val === 'object') {
+        return Object.keys(val)
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .map(key => val[key]);
+      }
+      return [];
+    }),
   methodologyTitle: multiLanguageTextSchema,
   methodologyDescription: multiLanguageTextSchema,
   methodologySteps: z
@@ -573,6 +604,8 @@ export type AboutContentData = z.infer<typeof aboutContentSchema>;
 export type AboutMethodologyStepData = z.infer<
   typeof aboutMethodologyStepSchema
 >;
+
+export type AboutPhilosophyItemData = z.infer<typeof aboutPhilosophyItemSchema>;
 
 export type AdminUserData = z.infer<typeof adminUserSchema>;
 export type EmailNotificationPreferencesData = z.infer<

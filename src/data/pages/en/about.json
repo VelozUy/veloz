@@ -1,7 +1,7 @@
 {
   "locale": "en",
   "page": "about",
-  "generatedAt": "2025-08-16T19:44:55.111Z",
+  "generatedAt": "2025-08-16T20:28:49.305Z",
   "translations": {
     "navigation": {
       "home": "Home",
@@ -14,7 +14,21 @@
       "subtitle": "We are a passionate team dedicated to capturing the most important moments of your life with excellence, warmth and agility.",
       "philosophy": {
         "title": "Our Philosophy",
-        "description": "We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations."
+        "description": "We believe that every event is unique and deserves to be documented with maximum dedication. Our approach is not just to capture images, but to tell stories that endure over time. We combine professional technique with artistic sensitivity to create memories that move and transcend generations.",
+        "items": [
+          {
+            "title": "Quality",
+            "description": "Because every person who chooses us deserves the best, from the first click to the final delivery."
+          },
+          {
+            "title": "Sensitivity",
+            "description": "Because in every event there are real stories, people who feel, live and trust that we know how to capture that irreplaceable moment."
+          },
+          {
+            "title": "Speed",
+            "description": "Because we understand that time matters and stories don't wait. We respond with agility and with the responsibility of being there when we are needed."
+          }
+        ]
       },
       "methodology": {
         "title": "Our Methodology",

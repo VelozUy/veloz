@@ -44,6 +44,7 @@ import { aboutContentService } from '@/services/about-content';
 import {
   AboutContentData,
   AboutMethodologyStepData,
+  AboutPhilosophyItemData,
 } from '@/lib/validation-schemas';
 import AboutContentPreview from '@/components/admin/AboutContentPreview';
 import { MarkdownEditor } from '@/components/ui/markdown-editor';
@@ -250,6 +251,201 @@ function SortableMethodologyCard({
   );
 }
 
+// Sortable Philosophy Item Card Component
+function SortablePhilosophyCard({
+  item,
+  index,
+  currentLanguage,
+  onPhilosophyItemChange,
+  onRemovePhilosophyItem,
+  onTranslatePhilosophyItem,
+  isTranslating,
+}: {
+  item: AboutPhilosophyItemData;
+  index: number;
+  currentLanguage: string;
+  onPhilosophyItemChange: (
+    itemId: string,
+    field: 'title' | 'description',
+    language: string,
+    value: string
+  ) => void;
+  onRemovePhilosophyItem: (itemId: string) => void;
+  onTranslatePhilosophyItem: (
+    itemId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => void;
+  isTranslating: (
+    itemId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => boolean;
+}) {
+  // Ensure item has an ID for drag and drop functionality
+  const itemId = item.id || `philosophy-${index}`;
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: itemId });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card className="bg-muted/50">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Drag handle */}
+              <div
+                {...attributes}
+                {...listeners}
+                className="cursor-grab active:cursor-grabbing p-1 hover:bg-muted rounded"
+                aria-label={`Drag to reorder philosophy item ${index + 1}`}
+              >
+                <GripVertical className="w-4 h-4 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-lg">
+                {item.title[currentLanguage as keyof typeof item.title] ||
+                  `Elemento ${index + 1}`}
+              </CardTitle>
+            </div>
+            <Button
+              onClick={() => onRemovePhilosophyItem(itemId)}
+              size="sm"
+              variant="destructive"
+              className="flex items-center gap-2"
+              aria-label={`Remove philosophy item ${index + 1}`}
+            >
+              <Trash2 className="h-4 w-4" />
+              Eliminar
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor={`philosophy-title-${itemId}`}>Título</Label>
+            <div className="flex gap-2">
+              <Input
+                id={`philosophy-title-${itemId}`}
+                value={
+                  item.title[currentLanguage as keyof typeof item.title] || ''
+                }
+                onChange={e =>
+                  onPhilosophyItemChange(
+                    itemId,
+                    'title',
+                    currentLanguage,
+                    e.target.value
+                  )
+                }
+                placeholder={`Título en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+              />
+              <Button
+                onClick={() => onTranslatePhilosophyItem(itemId, 'title', 'en')}
+                size="sm"
+                variant="outline"
+                disabled={isTranslating(itemId, 'title', 'en')}
+                className="flex items-center gap-2"
+              >
+                {isTranslating(itemId, 'title', 'en') ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Globe className="h-4 w-4" />
+                )}
+                EN
+              </Button>
+              <Button
+                onClick={() => onTranslatePhilosophyItem(itemId, 'title', 'pt')}
+                size="sm"
+                variant="outline"
+                disabled={isTranslating(itemId, 'title', 'pt')}
+                className="flex items-center gap-2"
+              >
+                {isTranslating(itemId, 'title', 'pt') ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Globe className="h-4 w-4" />
+                )}
+                PT
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Label htmlFor={`philosophy-description-${itemId}`}>
+              Descripción
+            </Label>
+            <div className="flex gap-2">
+              <Textarea
+                id={`philosophy-description-${itemId}`}
+                value={
+                  item.description[
+                    currentLanguage as keyof typeof item.description
+                  ] || ''
+                }
+                onChange={e =>
+                  onPhilosophyItemChange(
+                    itemId,
+                    'description',
+                    currentLanguage,
+                    e.target.value
+                  )
+                }
+                placeholder={`Descripción en ${LANGUAGES.find(l => l.code === currentLanguage)?.name}`}
+                rows={3}
+              />
+              <div className="flex flex-col gap-2">
+                <Button
+                  onClick={() =>
+                    onTranslatePhilosophyItem(itemId, 'description', 'en')
+                  }
+                  size="sm"
+                  variant="outline"
+                  disabled={isTranslating(itemId, 'description', 'en')}
+                  className="flex items-center gap-2"
+                >
+                  {isTranslating(itemId, 'description', 'en') ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Globe className="h-4 w-4" />
+                  )}
+                  EN
+                </Button>
+                <Button
+                  onClick={() =>
+                    onTranslatePhilosophyItem(itemId, 'description', 'pt')
+                  }
+                  size="sm"
+                  variant="outline"
+                  disabled={isTranslating(itemId, 'description', 'pt')}
+                  className="flex items-center gap-2"
+                >
+                  {isTranslating(itemId, 'description', 'pt') ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Globe className="h-4 w-4" />
+                  )}
+                  PT
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function AboutAdminPage() {
   const { user } = useAuth();
   const [, setAboutContent] = useState<AboutContentData | null>(null);
@@ -312,6 +508,14 @@ export default function AboutAdminPage() {
               en: '',
               pt: '',
             },
+            philosophyItems: Array.isArray(contentData.philosophyItems)
+              ? contentData.philosophyItems.map(
+                  (item: AboutPhilosophyItemData, index) => ({
+                    ...item,
+                    id: item.id || `philosophy-${Date.now()}-${index}`,
+                  })
+                )
+              : [],
             methodologySteps: Array.isArray(contentData.methodologySteps)
               ? contentData.methodologySteps.map(
                   (item: AboutMethodologyStepData, index) => ({
@@ -322,8 +526,9 @@ export default function AboutAdminPage() {
               : [],
           };
 
-          console.log('📥 Loaded methodology steps from database:', {
-            count: processedData.methodologySteps?.length || 0,
+          console.log('📥 Loaded content from database:', {
+            philosophyItems: processedData.philosophyItems?.length || 0,
+            methodologySteps: processedData.methodologySteps?.length || 0,
           });
           setFormData(processedData);
         } else {
@@ -516,6 +721,100 @@ export default function AboutAdminPage() {
     setHasChanges(true);
   };
 
+  // === Philosophy Items Handlers ===
+
+  // Handler for individual philosophy item changes
+  const handlePhilosophyItemChange = (
+    itemId: string,
+    field: 'title' | 'description',
+    language: string,
+    value: string
+  ) => {
+    if (!formData) return;
+
+    setFormData(prev => {
+      if (!prev) return prev;
+
+      const updated = { ...prev };
+      updated.philosophyItems = (
+        updated.philosophyItems as AboutPhilosophyItemData[]
+      ).map((item: AboutPhilosophyItemData) =>
+        item.id === itemId
+          ? {
+              ...item,
+              [field]: {
+                ...item[field],
+                [language]: value,
+              },
+            }
+          : item
+      );
+
+      return updated;
+    });
+
+    setHasChanges(true);
+  };
+
+  // Handler for adding new philosophy item
+  const handleAddPhilosophyItem = () => {
+    if (!formData) return;
+
+    const newId = `philosophy-${Date.now()}`;
+    const currentItems = formData.philosophyItems || [];
+    const maxOrder = Math.max(...currentItems.map(s => s.order || 0), -1);
+
+    const newItem: AboutPhilosophyItemData = {
+      id: newId,
+      order: maxOrder + 1,
+      title: {
+        es: '',
+        en: '',
+        pt: '',
+      },
+      description: {
+        es: '',
+        en: '',
+        pt: '',
+      },
+    };
+
+    console.log('Adding new philosophy item:', newItem);
+    console.log('Current items count:', currentItems.length);
+
+    setFormData(prev => {
+      if (!prev) return prev;
+
+      const updated = { ...prev };
+      updated.philosophyItems = [...updated.philosophyItems, newItem];
+
+      console.log(
+        'Updated philosophy items count:',
+        updated.philosophyItems.length
+      );
+      return updated;
+    });
+
+    setHasChanges(true);
+  };
+
+  // Handler for removing philosophy item
+  const handleRemovePhilosophyItem = (itemId: string) => {
+    if (!formData) return;
+
+    setFormData(prev => {
+      if (!prev) return prev;
+
+      const updated = { ...prev };
+      updated.philosophyItems = (
+        updated.philosophyItems as AboutPhilosophyItemData[]
+      ).filter((item: AboutPhilosophyItemData) => item.id !== itemId);
+      return updated;
+    });
+
+    setHasChanges(true);
+  };
+
   // === Translation Handlers ===
 
   const buildTranslationData = () => {
@@ -598,6 +897,43 @@ export default function AboutAdminPage() {
     }
   };
 
+  const handlePhilosophyDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id && formData) {
+      setFormData(prev => {
+        if (!prev) return prev;
+        if (!Array.isArray(prev.philosophyItems)) return prev;
+
+        const oldIndex = prev.philosophyItems.findIndex(
+          (item: AboutPhilosophyItemData) =>
+            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
+            active.id
+        );
+        const newIndex = prev.philosophyItems.findIndex(
+          (item: AboutPhilosophyItemData) =>
+            (item.id || `philosophy-${Date.now()}-${Math.random()}`) ===
+            over?.id
+        );
+
+        const newItems = arrayMove(prev.philosophyItems, oldIndex, newIndex);
+
+        // Update order values
+        const updatedItems = newItems.map((item, index) => ({
+          ...item,
+          order: index,
+        }));
+
+        return {
+          ...prev,
+          philosophyItems: updatedItems,
+        };
+      });
+
+      setHasChanges(true);
+    }
+  };
+
   const handleTranslateMethodologyStep = async (
     stepId: string,
     field: 'title' | 'description',
@@ -669,6 +1005,79 @@ export default function AboutAdminPage() {
   ) => {
     const translationKey = `${stepId}-${field}-${language}`;
     return translatingMethodology[translationKey] || false;
+  };
+
+  const handleTranslatePhilosophyItem = async (
+    itemId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    if (!formData) return;
+
+    const translationKey = `${itemId}-${field}-${language}`;
+
+    try {
+      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: true }));
+
+      // Find the philosophy item by ID
+      if (!Array.isArray(formData.philosophyItems)) return;
+      const itemIndex = formData.philosophyItems.findIndex(
+        item => item.id === itemId
+      );
+      if (itemIndex === -1) return;
+
+      const item = formData.philosophyItems[itemIndex];
+      const sourceText = item[field].es;
+
+      if (!sourceText) {
+        console.warn(
+          `No Spanish text found for ${field} of philosophy item ${itemId}`
+        );
+        return;
+      }
+
+      // Use the translation service to translate the text
+      const { TranslationClientService } = await import(
+        '@/services/translation-client'
+      );
+      const translationService = new TranslationClientService();
+      const response = await translationService.translateText({
+        text: sourceText,
+        fromLanguage: 'es',
+        toLanguage: language,
+        contentType: 'marketing',
+      });
+
+      setFormData(prev => {
+        if (!prev) return prev;
+
+        const updated = { ...prev };
+        updated.philosophyItems[itemIndex] = {
+          ...updated.philosophyItems[itemIndex],
+          [field]: {
+            ...updated.philosophyItems[itemIndex][field],
+            [language]: response.translatedText,
+          },
+        };
+
+        return updated;
+      });
+
+      setHasChanges(true);
+    } catch (error) {
+      console.error('Error translating philosophy item:', error);
+    } finally {
+      setTranslatingPhilosophy(prev => ({ ...prev, [translationKey]: false }));
+    }
+  };
+
+  const isPhilosophyTranslating = (
+    itemId: string,
+    field: 'title' | 'description',
+    language: 'en' | 'pt'
+  ) => {
+    const translationKey = `${itemId}-${field}-${language}`;
+    return translatingPhilosophy[translationKey] || false;
   };
 
   const handleTranslation = (
@@ -983,6 +1392,78 @@ export default function AboutAdminPage() {
                     rows={15}
                   />
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Elementos de Filosofía</CardTitle>
+                  <Button
+                    onClick={handleAddPhilosophyItem}
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    Agregar Elemento
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Dynamic Philosophy Items */}
+                {(() => {
+                  console.log('🖼️ Rendering UI - philosophy items:', {
+                    isArray: Array.isArray(formData.philosophyItems),
+                    length: formData.philosophyItems?.length || 0,
+                  });
+                  return null;
+                })()}
+                {!Array.isArray(formData.philosophyItems) ||
+                formData.philosophyItems.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <div className="mb-4"></div>
+                    <p>No hay elementos de filosofía agregados aún.</p>
+                    <p className="text-sm">
+                      Haz clic en &quot;Agregar Elemento&quot; para comenzar.
+                    </p>
+                  </div>
+                ) : (
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handlePhilosophyDragEnd}
+                  >
+                    <SortableContext
+                      items={formData.philosophyItems.map(
+                        (item: AboutPhilosophyItemData) =>
+                          item.id || `philosophy-${Date.now()}-${Math.random()}`
+                      )}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      <div className="space-y-4">
+                        {formData.philosophyItems.map(
+                          (item: AboutPhilosophyItemData, index: number) => (
+                            <SortablePhilosophyCard
+                              key={item.id || `philosophy-${index}`}
+                              item={item}
+                              index={index}
+                              currentLanguage={currentLanguage}
+                              onPhilosophyItemChange={
+                                handlePhilosophyItemChange
+                              }
+                              onRemovePhilosophyItem={
+                                handleRemovePhilosophyItem
+                              }
+                              onTranslatePhilosophyItem={
+                                handleTranslatePhilosophyItem
+                              }
+                              isTranslating={isPhilosophyTranslating}
+                            />
+                          )
+                        )}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
