@@ -49,7 +49,7 @@ const baseConfig: NextConfig = {
   },
   experimental: {
     // Performance optimizations
-    optimizeCss: true,
+    optimizeCss: false, // Disabled due to critters compatibility issues
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   eslint: {
@@ -86,6 +86,8 @@ const baseConfig: NextConfig = {
       'firebase/firestore': 'firebase/firestore',
       'firebase/auth': 'firebase/auth',
       'firebase/storage': 'firebase/storage',
+      // Redirect critters to beasties for CSS optimization
+      critters: 'beasties',
     };
 
     // Prevent Firebase from being processed on server side to avoid registerVersion issues
