@@ -121,7 +121,7 @@ export default function MasonryGallery({
                   playsInline
                   autoPlay
                   data-testid={`video-${item.id}`}
-                  style={{ borderRadius: 0, background: 'black' }}
+                  style={{ borderRadius: 0, background: 'var(--background)' }}
                 />
               ) : (
                 <OptimizedImage
@@ -129,7 +129,7 @@ export default function MasonryGallery({
                   alt={item.description?.es || projectTitle}
                   fill
                   className="object-cover transition-all duration-300 ease-out"
-                  style={{ borderRadius: 0, background: 'black' }}
+                  style={{ borderRadius: 0, background: 'var(--background)' }}
                   sizes="100vw"
                 />
               )}
