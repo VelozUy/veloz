@@ -231,7 +231,7 @@ export default function AboutContent({ content }: AboutContentProps) {
             initial={prefersReduced ? undefined : 'hidden'}
             whileInView={prefersReduced ? undefined : 'visible'}
             viewport={{ once: true, amount: 0.2 }}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch"
+            className="grid md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-8 items-stretch"
           >
             {methodologySteps.map((item: any, index: number) => (
               <motion.div
