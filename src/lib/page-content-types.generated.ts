@@ -1,5 +1,5 @@
 // Auto-generated page content types
-// Generated on: 2025-08-14T21:37:56.849Z
+// Generated on: 2025-08-16T19:33:11.711Z
 
 export type Locale = 'es' | 'en' | 'pt';
 

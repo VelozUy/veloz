@@ -159,8 +159,8 @@ export default function Hero({
               className="w-36 sm:w-44 md:w-52 px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 hover:animate-veloz-hover shadow-lg hover:shadow-xl transform hover:-translate-y-1" // Enhanced hierarchy and dynamism
               asChild
             >
-              <Link href={getLocalizedPath('/about', locale)}>
-                {translations?.homepage?.hero?.cta?.about || 'Sobre Nosotros'}
+              <Link href={getLocalizedPath('/our-work', locale)}>
+                {translations?.navigation?.gallery || 'Nuestro Trabajo'}
               </Link>
             </Button>
 
@@ -169,8 +169,8 @@ export default function Hero({
               className="w-36 sm:w-44 md:w-52 px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 hover:animate-veloz-hover shadow-lg hover:shadow-xl transform hover:-translate-y-1" // Enhanced hierarchy and dynamism
               asChild
             >
-              <Link href={getLocalizedPath('/our-work', locale)}>
-                {translations?.homepage?.hero?.cta?.work || 'Nuestro Trabajo'}
+              <Link href={getLocalizedPath('/about', locale)}>
+                {translations?.navigation?.about || 'Sobre Nosotros'}
               </Link>
             </Button>
 
