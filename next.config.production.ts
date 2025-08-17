@@ -50,6 +50,8 @@ const productionConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
+  // Server external packages configuration
+  serverExternalPackages: ['firebase'],
   eslint: {
     // Only run ESLint on these directories during build
     dirs: ['src'],
@@ -66,12 +68,14 @@ const productionConfig: NextConfig = {
 
   // Disable x-powered-by header for security
   poweredByHeader: false,
-  // Add security headers
+
+  // Enhanced caching and CDN configuration for TTFB optimization
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
+          // Security headers
           {
             key: 'X-Frame-Options',
             value: 'DENY',
@@ -87,6 +91,34 @@ const productionConfig: NextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          // Performance and caching headers for TTFB optimization
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Vercel-CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Netlify-CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          // Compression headers
+          {
+            key: 'Accept-Encoding',
+            value: 'gzip, deflate, br',
+          },
+          // Preload hints for critical resources
+          {
+            key: 'Link',
+            value:
+              '</redjola/Redjola.otf>; rel=preload; as=font; crossorigin, </Roboto/static/Roboto-Regular.ttf>; rel=preload; as=font; crossorigin',
           },
           {
             key: 'Content-Security-Policy',
@@ -107,6 +139,60 @@ const productionConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      // Static assets caching - aggressive caching for better TTFB
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/fonts/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // API routes - shorter cache for dynamic content
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, s-maxage=600',
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'public, max-age=300, s-maxage=600',
           },
         ],
       },
@@ -165,7 +251,7 @@ const productionConfig: NextConfig = {
       })
     );
 
-    // Additional production optimizations
+    // Additional production optimizations for TTFB improvement
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
@@ -180,7 +266,25 @@ const productionConfig: NextConfig = {
               chunks: 'all',
               enforce: true,
             },
+            // Optimize vendor chunks for better caching
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 10,
+            },
+            // Separate Firebase chunks for better caching
+            firebase: {
+              test: /[\\/]node_modules[\\/]firebase[\\/]/,
+              name: 'firebase',
+              chunks: 'all',
+              priority: 20,
+            },
           },
+        },
+        // Enable runtime chunk optimization
+        runtimeChunk: {
+          name: 'runtime',
         },
       };
 

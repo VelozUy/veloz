@@ -1,47 +1,80 @@
-const CACHE_NAME = 'veloz-cache-v1';
-const STATIC_CACHE = 'veloz-static-v1';
-const DYNAMIC_CACHE = 'veloz-dynamic-v1';
+// Service Worker for Veloz - Performance Optimization
+// Version: 1.0.0
+// Purpose: Cache static assets and improve repeat visit performance
 
-// Assets to cache immediately
+const CACHE_NAME = 'veloz-cache-v1.0.0';
+const STATIC_CACHE_NAME = 'veloz-static-v1.0.0';
+const DYNAMIC_CACHE_NAME = 'veloz-dynamic-v1.0.0';
+
+// Static assets to cache immediately
 const STATIC_ASSETS = [
   '/',
-  '/contact',
   '/about',
+  '/contact',
   '/our-work',
-  '/_next/static/css/app/layout.css',
-  '/redjola/Redjola.ttf',
-  '/Roboto/static/Roboto-Regular.ttf',
   '/favicon.svg',
-  '/og-image.jpg',
-  '/twitter-image.jpg',
+  '/redjola/Redjola.otf',
+  '/Roboto/static/Roboto-Regular.ttf',
+  '/Roboto/static/Roboto-Bold.ttf',
+  '/Roboto/static/Roboto-Italic.ttf',
+];
+
+// External domains to cache
+const EXTERNAL_DOMAINS = [
+  'https://fonts.googleapis.com',
+  'https://fonts.gstatic.com',
+  'https://www.google-analytics.com',
+  'https://firebasestorage.googleapis.com',
+  'https://storage.googleapis.com',
+  'https://images.unsplash.com',
 ];
 
 // Install event - cache static assets
 self.addEventListener('install', event => {
+  console.log('Service Worker: Installing...');
+
   event.waitUntil(
-    caches.open(STATIC_CACHE).then(cache => {
-      console.log('Caching static assets');
-      return cache.addAll(STATIC_ASSETS);
-    })
+    caches
+      .open(STATIC_CACHE_NAME)
+      .then(cache => {
+        console.log('Service Worker: Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .then(() => {
+        console.log('Service Worker: Static assets cached successfully');
+        return self.skipWaiting();
+      })
+      .catch(error => {
+        console.error('Service Worker: Error caching static assets:', error);
+      })
   );
-  self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
+  console.log('Service Worker: Activating...');
+
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches
+      .keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            if (
+              cacheName !== STATIC_CACHE_NAME &&
+              cacheName !== DYNAMIC_CACHE_NAME
+            ) {
+              console.log('Service Worker: Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        console.log('Service Worker: Activated successfully');
+        return self.clients.claim();
+      })
   );
-  self.clients.claim();
 });
 
 // Fetch event - serve from cache when possible
@@ -54,58 +87,141 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Skip external requests (except for fonts and images)
-  if (
-    !url.origin.includes('veloz.com.uy') &&
-    !url.origin.includes('localhost') &&
-    !url.pathname.includes('fonts.googleapis.com') &&
-    !url.pathname.includes('fonts.gstatic.com')
-  ) {
+  // Skip chrome-extension and other non-http requests
+  if (!url.protocol.startsWith('http')) {
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then(response => {
-      // Return cached response if found
-      if (response) {
-        return response;
-      }
-
-      // Clone the request for network fetch
-      const fetchRequest = request.clone();
-
-      return fetch(fetchRequest)
-        .then(response => {
-          // Check if response is valid
-          if (
-            !response ||
-            response.status !== 200 ||
-            response.type !== 'basic'
-          ) {
-            return response;
-          }
-
-          // Clone the response for caching
-          const responseToCache = response.clone();
-
-          // Cache dynamic content
-          caches.open(DYNAMIC_CACHE).then(cache => {
-            cache.put(request, responseToCache);
-          });
-
+  // Handle static assets (HTML, CSS, JS, images, fonts)
+  if (isStaticAsset(request)) {
+    event.respondWith(
+      caches.match(request).then(response => {
+        if (response) {
+          // Return cached version
           return response;
-        })
-        .catch(() => {
-          // Return offline page for navigation requests
-          if (request.destination === 'document') {
-            return caches.match('/');
+        }
+
+        // Fetch from network and cache
+        return fetch(request)
+          .then(networkResponse => {
+            if (networkResponse.ok) {
+              const responseClone = networkResponse.clone();
+              caches.open(STATIC_CACHE_NAME).then(cache => {
+                cache.put(request, responseClone);
+              });
+            }
+            return networkResponse;
+          })
+          .catch(() => {
+            // Return offline fallback for critical assets
+            if (request.destination === 'document') {
+              return caches.match('/');
+            }
+            return new Response('Offline', { status: 503 });
+          });
+      })
+    );
+    return;
+  }
+
+  // Handle API requests with cache-first strategy
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      caches.match(request).then(response => {
+        if (response) {
+          // Return cached version but update in background
+          fetch(request)
+            .then(networkResponse => {
+              if (networkResponse.ok) {
+                const responseClone = networkResponse.clone();
+                caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+                  cache.put(request, responseClone);
+                });
+              }
+            })
+            .catch(() => {
+              // Silently fail background update
+            });
+          return response;
+        }
+
+        // Fetch from network and cache
+        return fetch(request).then(networkResponse => {
+          if (networkResponse.ok) {
+            const responseClone = networkResponse.clone();
+            caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+              cache.put(request, responseClone);
+            });
           }
+          return networkResponse;
         });
-    })
+      })
+    );
+    return;
+  }
+
+  // Handle external resources (fonts, images, etc.)
+  if (isExternalResource(request)) {
+    event.respondWith(
+      caches.match(request).then(response => {
+        if (response) {
+          return response;
+        }
+
+        return fetch(request).then(networkResponse => {
+          if (networkResponse.ok) {
+            const responseClone = networkResponse.clone();
+            caches.open(STATIC_CACHE_NAME).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
+          return networkResponse;
+        });
+      })
+    );
+    return;
+  }
+
+  // Default: network-first for other requests
+  event.respondWith(
+    fetch(request)
+      .then(response => {
+        if (response.ok) {
+          const responseClone = response.clone();
+          caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+            cache.put(request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        return caches.match(request);
+      })
   );
 });
 
-// Background sync for offline form submissions
+// Helper functions
+function isStaticAsset(request) {
+  const url = new URL(request.url);
+  const staticExtensions = ['.html', '.css', '.js', '.json', '.xml', '.txt'];
+  const staticDestinations = ['document', 'style', 'script', 'font', 'image'];
+
+  return (
+    staticExtensions.some(ext => url.pathname.endsWith(ext)) ||
+    staticDestinations.includes(request.destination) ||
+    url.pathname.startsWith('/_next/static/') ||
+    url.pathname.startsWith('/images/') ||
+    url.pathname.startsWith('/fonts/') ||
+    url.pathname.startsWith('/public/')
+  );
+}
+
+function isExternalResource(request) {
+  const url = new URL(request.url);
+  return EXTERNAL_DOMAINS.some(domain => url.href.startsWith(domain));
+}
+
+// Background sync for offline functionality
 self.addEventListener('sync', event => {
   if (event.tag === 'background-sync') {
     event.waitUntil(doBackgroundSync());
@@ -114,75 +230,35 @@ self.addEventListener('sync', event => {
 
 async function doBackgroundSync() {
   try {
-    // Get pending form submissions from IndexedDB
-    const pendingSubmissions = await getPendingSubmissions();
-
-    for (const submission of pendingSubmissions) {
-      try {
-        // Retry sending the form submission
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submission.data),
-        });
-
-        if (response.ok) {
-          // Remove from pending submissions
-          await removePendingSubmission(submission.id);
-        }
-      } catch (error) {
-        console.error('Background sync failed for submission:', submission.id);
-      }
-    }
+    // Perform background sync tasks
+    console.log('Service Worker: Performing background sync');
   } catch (error) {
-    console.error('Background sync error:', error);
+    console.error('Service Worker: Background sync failed:', error);
   }
 }
 
-// IndexedDB functions for offline form submissions
-async function getPendingSubmissions() {
-  // Implementation would depend on your IndexedDB setup
-  return [];
-}
+// Message handling for cache management
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 
-async function removePendingSubmission(id) {
-  // Implementation would depend on your IndexedDB setup
-}
-
-// Push notifications (if needed in the future)
-self.addEventListener('push', event => {
-  const options = {
-    body: event.data ? event.data.text() : 'New notification from Veloz',
-    icon: '/favicon.svg',
-    badge: '/favicon.svg',
-    vibrate: [100, 50, 100],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1,
-    },
-    actions: [
-      {
-        action: 'explore',
-        title: 'View',
-        icon: '/favicon.svg',
-      },
-      {
-        action: 'close',
-        title: 'Close',
-        icon: '/favicon.svg',
-      },
-    ],
-  };
-
-  event.waitUntil(self.registration.showNotification('Veloz', options));
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-
-  if (event.action === 'explore') {
-    event.waitUntil(clients.openWindow('/'));
+  if (event.data && event.data.type === 'CLEAR_CACHE') {
+    event.waitUntil(
+      caches
+        .keys()
+        .then(cacheNames => {
+          return Promise.all(
+            cacheNames.map(cacheName => {
+              return caches.delete(cacheName);
+            })
+          );
+        })
+        .then(() => {
+          event.ports[0].postMessage({ type: 'CACHE_CLEARED' });
+        })
+    );
   }
 });
+
+console.log('Service Worker: Loaded successfully');

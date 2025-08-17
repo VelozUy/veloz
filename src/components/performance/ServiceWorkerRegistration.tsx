@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { registerServiceWorker } from '@/lib/sw';
 
 export function ServiceWorkerRegistration() {
   useEffect(() => {
@@ -10,47 +11,43 @@ export function ServiceWorkerRegistration() {
       'serviceWorker' in navigator &&
       process.env.NODE_ENV === 'production'
     ) {
-      const registerSW = async () => {
+      const initializeServiceWorker = async () => {
         try {
-          const registration = await navigator.serviceWorker.register(
-            '/sw.js',
-            {
-              scope: '/',
-            }
-          );
+          const registration = await registerServiceWorker();
 
-          console.log('Service Worker registered successfully:', registration);
+          if (registration) {
+            console.log(
+              'Service Worker: Registration successful',
+              registration
+            );
 
-          // Check for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (
-                  newWorker.state === 'installed' &&
-                  navigator.serviceWorker.controller
-                ) {
-                  // New content is available, show update notification
-                  console.log('New content is available; please refresh.');
+            // Monitor service worker performance
+            if ('performance' in window) {
+              const observer = new PerformanceObserver(list => {
+                for (const entry of list.getEntries()) {
+                  if (entry.entryType === 'navigation') {
+                    const navEntry = entry as PerformanceNavigationTiming;
+                    console.log('Service Worker: Navigation timing', {
+                      TTFB: navEntry.responseStart - navEntry.requestStart,
+                      DOMContentLoaded:
+                        navEntry.domContentLoadedEventEnd -
+                        navEntry.domContentLoadedEventStart,
+                      LoadComplete:
+                        navEntry.loadEventEnd - navEntry.loadEventStart,
+                    });
+                  }
                 }
               });
-            }
-          });
 
-          // Handle service worker updates
-          let refreshing = false;
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-              refreshing = true;
-              window.location.reload();
+              observer.observe({ entryTypes: ['navigation'] });
             }
-          });
+          }
         } catch (error) {
-          console.error('Service Worker registration failed:', error);
+          console.error('Service Worker: Registration failed:', error);
         }
       };
 
-      registerSW();
+      initializeServiceWorker();
     }
   }, []);
 
