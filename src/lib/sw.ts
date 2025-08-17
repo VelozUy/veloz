@@ -11,11 +11,18 @@ class ServiceWorkerManager {
   private isSupported: boolean;
 
   constructor() {
-    this.isSupported = 'serviceWorker' in navigator;
+    // Check if we're in a browser environment
+    this.isSupported =
+      typeof window !== 'undefined' && 'serviceWorker' in navigator;
   }
 
   // Register service worker
   async register(): Promise<ServiceWorkerRegistration | null> {
+    if (typeof window === 'undefined') {
+      console.log('Service Worker: Not available on server side');
+      return null;
+    }
+
     if (!this.isSupported) {
       console.log('Service Worker: Not supported in this browser');
       return null;
@@ -44,7 +51,7 @@ class ServiceWorkerManager {
 
   // Handle service worker updates
   private handleUpdates(): void {
-    if (!this.registration) return;
+    if (typeof window === 'undefined' || !this.registration) return;
 
     // Check for updates on page load
     this.registration.update();
@@ -72,12 +79,16 @@ class ServiceWorkerManager {
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       console.log('Service Worker: Controller changed');
       // Reload page to use new service worker
-      window.location.reload();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     });
   }
 
   // Handle service worker messages
   private handleMessages(): void {
+    if (typeof window === 'undefined') return;
+
     navigator.serviceWorker.addEventListener('message', event => {
       const message: ServiceWorkerMessage = event.data;
 
@@ -96,6 +107,9 @@ class ServiceWorkerManager {
 
   // Show update notification
   private showUpdateNotification(): void {
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return;
+
     // Create a simple notification for service worker updates
     const notification = document.createElement('div');
     notification.style.cssText = `
@@ -150,6 +164,11 @@ class ServiceWorkerManager {
 
   // Clear all caches
   async clearCache(): Promise<void> {
+    if (typeof window === 'undefined') {
+      console.log('Service Worker: Not available on server side');
+      return;
+    }
+
     if (!this.isSupported) {
       console.log('Service Worker: Not supported');
       return;
@@ -185,6 +204,10 @@ class ServiceWorkerManager {
 
   // Get cache status
   async getCacheStatus(): Promise<{ [key: string]: number }> {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+
     if (!this.isSupported) {
       return {};
     }
@@ -208,16 +231,22 @@ class ServiceWorkerManager {
 
   // Check if service worker is active
   isActive(): boolean {
+    if (typeof window === 'undefined') return false;
     return this.registration?.active?.state === 'activated';
   }
 
   // Get service worker state
   getState(): string | null {
+    if (typeof window === 'undefined') return null;
     return this.registration?.active?.state || null;
   }
 
   // Unregister service worker (for testing/debugging)
   async unregister(): Promise<boolean> {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
     if (!this.registration) {
       return false;
     }
