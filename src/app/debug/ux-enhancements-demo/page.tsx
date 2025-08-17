@@ -116,7 +116,16 @@ export default function UXEnhancementsDemo() {
       {/* Breadcrumb Section */}
       <section className="py-8 px-4 sm:px-8 lg:px-16 border-b border-border">
         <div className="max-w-border-64 mx-auto">
-          <Breadcrumb />
+          <Breadcrumb
+            items={[
+              { name: 'Debug', href: '/debug' },
+              {
+                name: 'UX Enhancements Demo',
+                href: '/debug/ux-enhancements-demo',
+                current: true,
+              },
+            ]}
+          />
         </div>
       </section>
 

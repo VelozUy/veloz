@@ -3,7 +3,10 @@ import { getDesignElements } from '@/lib/design-elements';
 
 export const dynamic = 'error';
 
-function pickByNameLike(name: string, elements: { name: string }[]) {
+function pickByNameLike(
+  name: string,
+  elements: { name: string; svgContent: string }[]
+) {
   const re = new RegExp(name, 'i');
   return elements.find(e => re.test(e.name));
 }
