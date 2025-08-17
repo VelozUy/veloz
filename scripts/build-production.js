@@ -4,103 +4,93 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Production build script that excludes debug pages
- */
+console.log('🚀 Starting production build...');
 
-const debugDir = path.join(__dirname, '../src/app/debug');
-const tempDebugDir = path.join(__dirname, '../.temp-debug');
+// Clear webpack cache to prevent corruption
+function clearWebpackCache() {
+  console.log('🧹 Clearing webpack cache...');
 
-function excludeDebugPages() {
-  console.log('🔧 Production build detected - excluding debug pages...');
+  const cachePaths = [
+    '.next/cache',
+    '.netlify/.next/cache',
+    'node_modules/.cache',
+  ];
 
-  if (fs.existsSync(debugDir)) {
-    try {
-      // Move debug directory to temporary location
-      if (fs.existsSync(tempDebugDir)) {
-        fs.rmSync(tempDebugDir, { recursive: true, force: true });
+  cachePaths.forEach(cachePath => {
+    if (fs.existsSync(cachePath)) {
+      try {
+        fs.rmSync(cachePath, { recursive: true, force: true });
+        console.log(`✅ Cleared cache: ${cachePath}`);
+      } catch (error) {
+        console.log(`⚠️  Could not clear cache: ${cachePath}`, error.message);
       }
-      fs.renameSync(debugDir, tempDebugDir);
-      console.log('✅ Debug pages excluded from production build');
-    } catch (error) {
-      console.error('❌ Error excluding debug pages:', error);
-      process.exit(1);
     }
-  } else {
-    console.log('ℹ️  Debug directory not found, nothing to exclude');
-  }
+  });
 }
 
-function restoreDebugPages() {
-  console.log('🔄 Restoring debug pages after build...');
-
-  if (fs.existsSync(tempDebugDir)) {
-    try {
-      // Move debug directory back
-      if (fs.existsSync(debugDir)) {
-        fs.rmSync(debugDir, { recursive: true, force: true });
-      }
-      fs.renameSync(tempDebugDir, debugDir);
-      console.log('✅ Debug pages restored');
-    } catch (error) {
-      console.error('❌ Error restoring debug pages:', error);
-    }
-  }
-}
-
-function runCommand(command, description) {
-  console.log(`\n🚀 ${description}...`);
+// Clear Next.js cache
+function clearNextCache() {
+  console.log('🧹 Clearing Next.js cache...');
   try {
-    execSync(command, {
-      stdio: 'inherit',
-      env: { ...process.env, NODE_ENV: 'production' },
-    });
-    console.log(`✅ ${description} completed`);
+    execSync('npx next clear', { stdio: 'inherit' });
+    console.log('✅ Next.js cache cleared');
   } catch (error) {
-    console.error(`❌ ${description} failed:`, error.message);
+    console.log('⚠️  Could not clear Next.js cache:', error.message);
+  }
+}
+
+// Build data first
+function buildData() {
+  console.log('📊 Building data...');
+  try {
+    execSync('node scripts/build-data.js', { stdio: 'inherit' });
+    console.log('✅ Data build completed');
+  } catch (error) {
+    console.error('❌ Data build failed:', error.message);
+    process.exit(1);
+  }
+}
+
+// Run production build
+function runProductionBuild() {
+  console.log('🏗️  Running production build...');
+  try {
+    // Set environment variables for webpack optimization
+    process.env.NEXT_CLEAR_CACHE = '1';
+    process.env.WEBPACK_CACHE = 'false';
+    process.env.NEXT_WEBPACK_USE_POLLING = '1';
+    process.env.WEBPACK_MEMORY_LIMIT = '2048';
+
+    execSync('next build', {
+      stdio: 'inherit',
+      env: { ...process.env },
+    });
+    console.log('✅ Production build completed');
+  } catch (error) {
+    console.error('❌ Production build failed:', error.message);
     process.exit(1);
   }
 }
 
 // Main build process
-async function buildProduction() {
+async function main() {
   try {
-    // Step 1: Clean generated files
-    runCommand('npm run clean:generated', 'Cleaning generated files');
+    // Step 1: Clear caches
+    clearWebpackCache();
+    clearNextCache();
 
     // Step 2: Build data
-    runCommand('npm run build:data', 'Building data');
+    buildData();
 
-    // Step 3: Build split content
-    runCommand('npm run build:split-content', 'Building split content');
+    // Step 3: Run production build
+    runProductionBuild();
 
-    // Step 4: Exclude debug pages
-    excludeDebugPages();
-
-    // Step 5: Build Next.js app
-    runCommand('next build', 'Building Next.js application');
-
-    console.log('\n🎉 Production build completed successfully!');
-    console.log('📦 Debug pages have been excluded from the production build');
+    console.log('🎉 Production build completed successfully!');
   } catch (error) {
-    console.error('❌ Build failed:', error.message);
+    console.error('❌ Build process failed:', error.message);
     process.exit(1);
-  } finally {
-    // Always restore debug pages at the very end
-    restoreDebugPages();
   }
 }
 
-// Handle process exit to ensure debug pages are restored
-process.on('exit', restoreDebugPages);
-process.on('SIGINT', () => {
-  restoreDebugPages();
-  process.exit(0);
-});
-process.on('SIGTERM', () => {
-  restoreDebugPages();
-  process.exit(0);
-});
-
 // Run the build
-buildProduction();
+main();

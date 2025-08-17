@@ -114,7 +114,12 @@ const productionConfig: NextConfig = {
   },
 
   // Webpack configuration for production
-  webpack: (config, { isServer, webpack }) => {
+  webpack: (config, { isServer, webpack, dev }) => {
+    // Disable webpack cache in production to prevent corruption
+    if (!dev) {
+      config.cache = false;
+    }
+
     // Fix Firebase vendor chunks issue and registerVersion error
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -178,7 +183,16 @@ const productionConfig: NextConfig = {
           },
         },
       };
+
+      // Reduce memory usage for large builds
+      config.optimization.minimize = true;
+      config.optimization.minimizer = config.optimization.minimizer || [];
     }
+
+    // Add error handling for webpack cache issues
+    config.infrastructureLogging = {
+      level: 'error',
+    };
 
     return config;
   },

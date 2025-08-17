@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# Netlify cache directories
+.netlify/
+.cache/
+
 # production
 /build
 

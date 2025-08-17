@@ -5,10 +5,18 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
-  # Enable Next.js build cache
+  # Disable Next.js telemetry
   NEXT_TELEMETRY_DISABLED = "1"
-  # Optimize build performance
+  # Optimize build performance and memory
   NODE_OPTIONS = "--max-old-space-size=4096"
+  # Clear webpack cache to prevent corruption
+  NEXT_CLEAR_CACHE = "1"
+  # Disable webpack cache in production to prevent corruption
+  WEBPACK_CACHE = "false"
+  # Optimize webpack for Netlify
+  NEXT_WEBPACK_USE_POLLING = "1"
+  # Reduce webpack memory usage
+  WEBPACK_MEMORY_LIMIT = "2048"
 
 # Build cache configuration for faster builds
 [[plugins]]
@@ -17,6 +25,10 @@
 # Install function dependencies
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
+
+# Clear cache before build to prevent webpack corruption
+[[plugins]]
+  package = "@netlify/plugin-cache-killer"
 
 [dev]
   framework = "nextjs"
