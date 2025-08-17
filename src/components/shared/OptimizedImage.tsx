@@ -33,7 +33,7 @@ export function OptimizedImage({
   className = '',
   priority = false,
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  quality = 75, // Reduced quality for better performance
+  quality = 60, // Reduced from 75 to 60 for better Speed Index performance
   placeholder = 'empty',
   blurDataURL,
   onLoad,
@@ -104,6 +104,9 @@ export function OptimizedImage({
       loading={loading || (priority ? 'eager' : 'lazy')}
       style={style}
       fetchPriority={fetchPriority}
+      // Add Speed Index optimizations
+      unoptimized={false}
+      draggable={false}
     />
   );
 }

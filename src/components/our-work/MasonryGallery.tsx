@@ -58,19 +58,6 @@ export default function MasonryGallery({
     );
   }
 
-  // Debug: Show media info
-  // (You can remove these logs if not needed)
-  // console.log('MasonryGallery received media:', media.length, 'items');
-  // media.forEach((item, index) => {
-  //   console.log(`Item ${index}:`, {
-  //     id: item.id,
-  //     width: item.width,
-  //     height: item.height,
-  //     aspectRatio: item.aspectRatio,
-  //     isVertical: item.width && item.height ? item.width < item.height : 'unknown'
-  //   });
-  // });
-
   // Responsive breakpoints for columns
   const breakpointColumnsObj = {
     default: 4,
@@ -89,7 +76,7 @@ export default function MasonryGallery({
         className="masonry-grid"
         columnClassName="masonry-grid_column"
       >
-        {media.map(item => {
+        {media.map((item, index) => {
           // Calculate aspect ratio (height/width)
           let aspect = 1;
           if (item.width && item.height) {
@@ -99,6 +86,10 @@ export default function MasonryGallery({
             aspect = height / width;
           }
           const paddingBottom = `${aspect * 100}%`;
+
+          // Speed Index optimization: prioritize first 8 images
+          const isPriority = index < 8;
+          const imageQuality = isPriority ? 75 : 60;
 
           return (
             <div
@@ -120,6 +111,8 @@ export default function MasonryGallery({
                   loop
                   playsInline
                   autoPlay
+                  // Speed Index optimization: only preload first 8 videos
+                  preload={isPriority ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                   style={{ borderRadius: 0, background: 'var(--background)' }}
                 />
@@ -130,7 +123,10 @@ export default function MasonryGallery({
                   fill
                   className="object-cover transition-all duration-300 ease-out"
                   style={{ borderRadius: 0, background: 'var(--background)' }}
-                  sizes="100vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  priority={isPriority}
+                  loading={isPriority ? 'eager' : 'lazy'}
+                  quality={imageQuality}
                 />
               )}
             </div>

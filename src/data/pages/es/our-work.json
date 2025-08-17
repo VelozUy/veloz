@@ -1,7 +1,7 @@
 {
   "locale": "es",
   "page": "our-work",
-  "generatedAt": "2025-08-16T20:28:49.303Z",
+  "generatedAt": "2025-08-16T23:21:49.890Z",
   "translations": {
     "navigation": {
       "home": "Inicio",
@@ -33,9 +33,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045121304-pexels-anthonyshkraba-production-8902019.jpg?alt=media&token=43eefeb9-65c5-4e1e-9982-620c17dcd2ce",
             "description": {
-              "es": "Captura cercana de la preparación de pan con harina en una cocina acogedora. Contrata fotografía comercial profesional en Montevideo.",
+              "pt": "Captura de perto da preparação de pão com farinha em uma cozinha aconchegante. Contrate fotografia comercial profissional em Montevidéu.",
               "en": "Close-up capture of bread preparation with flour in a cozy kitchen. Hire professional commercial photography in Montevideo.",
-              "pt": "Captura de perto da preparação de pão com farinha em uma cozinha aconchegante. Contrate fotografia comercial profissional em Montevidéu."
+              "es": "Captura cercana de la preparación de pan con harina en una cocina acogedora. Contrata fotografía comercial profesional en Montevideo."
             },
             "tags": [
               "bread",
@@ -56,9 +56,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045127791-pexels-juanmanunez-9422633.jpg?alt=media&token=88ea78a6-91f1-482c-a049-e76af2fcb1d5",
             "description": {
-              "es": "Captura detallada del proceso de preparación de pizza - contrata fotógrafo profesional de comida en Montevideo.",
+              "pt": "Captura detalhada do processo de preparação de pizza - contrate fotógrafo profissional de comida em Montevidéu.",
               "en": "Detailed capture of pizza preparation process - hire professional food photographer in Montevideo.",
-              "pt": "Captura detalhada do processo de preparação de pizza - contrate fotógrafo profissional de comida em Montevidéu."
+              "es": "Captura detallada del proceso de preparación de pizza - contrata fotógrafo profesional de comida en Montevideo."
             },
             "tags": [
               "food photography",
@@ -101,9 +101,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045140089-pexels-mikhail-nilov-6957812.jpg?alt=media&token=eeab145d-a091-4ce7-8416-b7c3fa01dda9",
             "description": {
-              "es": "Captura el arte de la preparación culinaria con nuestro servicio de fotografía comercial en Montevideo. Perfecto para chefs y restaurantes que buscan destacar.",
+              "pt": "Capture a arte da preparação culinária com nosso serviço de fotografia comercial em Montevidéu. Perfeito para chefs e restaurantes que desejam se destacar.",
               "en": "Capture the art of culinary preparation with our commercial photography service in Montevideo. Perfect for chefs and restaurants looking to stand out.",
-              "pt": "Capture a arte da preparação culinária com nosso serviço de fotografia comercial em Montevidéu. Perfeito para chefs e restaurantes que desejam se destacar."
+              "es": "Captura el arte de la preparación culinaria con nuestro servicio de fotografía comercial en Montevideo. Perfecto para chefs y restaurantes que buscan destacar."
             },
             "tags": [
               "culinary",
@@ -124,9 +124,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045146145-pexels-olga-volkovitskaia-131638009-28907090.jpg?alt=media&token=b33ab04d-0cf5-49a7-b085-7fc876e80a22",
             "description": {
-              "en": "Capture every detail of your culinary creations with our professional food photography service in Montevideo. Perfect for restaurants and chefs.",
+              "es": "Captura cada detalle de tus creaciones culinarias con nuestro servicio de fotografía profesional de alimentos en Montevideo. Ideal para restaurantes y chefs.",
               "pt": "Capture cada detalhe de suas criações culinárias com nosso serviço de fotografia profissional de alimentos em Montevidéu. Perfeito para restaurantes e chefs.",
-              "es": "Captura cada detalle de tus creaciones culinarias con nuestro servicio de fotografía profesional de alimentos en Montevideo. Ideal para restaurantes y chefs."
+              "en": "Capture every detail of your culinary creations with our professional food photography service in Montevideo. Perfect for restaurants and chefs."
             },
             "tags": [
               "food photography",
@@ -148,8 +148,8 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045153869-pexels-paloma-gil-1205746-9391537.jpg?alt=media&token=2f295d6d-1089-4525-8c33-84292b748e4b",
             "description": {
               "pt": "Captura detalhada de ingredientes frescos para pesto em uma sessão de fotografia de alimentos - contrate um fotógrafo profissional em Montevidéu.",
-              "en": "Detailed capture of fresh pesto ingredients during a food photography session - hire a professional photographer in Montevideo.",
-              "es": "Captura detallada de ingredientes frescos para pesto en una sesión de fotografía de alimentos - contrata fotógrafo profesional en Montevideo."
+              "es": "Captura detallada de ingredientes frescos para pesto en una sesión de fotografía de alimentos - contrata fotógrafo profesional en Montevideo.",
+              "en": "Detailed capture of fresh pesto ingredients during a food photography session - hire a professional photographer in Montevideo."
             },
             "tags": [
               "food photography",
@@ -187,8 +187,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045166591-pexels-raffaele-giordano-137431371-14067473.jpg?alt=media&token=bfc26f17-991b-4b51-9acf-326762f50029",
             "description": {
-              "en": "Detailed capture of raw croissants ready for baking. Hire professional food photography services in Montevideo.",
               "es": "Captura detallada de croissants crudos listos para hornear. Contrata servicios de fotografía profesional de alimentos en Montevideo.",
+              "en": "Detailed capture of raw croissants ready for baking. Hire professional food photography services in Montevideo.",
               "pt": "Captura detalhada de croissants crus prontos para assar. Contrate serviços de fotografia profissional de alimentos em Montevidéu."
             },
             "tags": [
@@ -211,8 +211,8 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2F8qdBOjw88pCNuxDIYW4z%2F1754045172623-pexels-rethaferguson-3621225.jpg?alt=media&token=22b7a4a5-2126-409a-b091-9e97dc5e6f96",
             "description": {
               "pt": "Captura requintada de alguém derramando azeite sobre uma salada fresca - serviços de fotografia profissional de alimentos em Montevidéu.",
-              "es": "Captura exquisita de alguien vertiendo aceite de oliva sobre una ensalada fresca - servicios de fotografía profesional de alimentos en Montevideo.",
-              "en": "Exquisite capture of someone pouring olive oil over a fresh salad - professional food photography services in Montevideo."
+              "en": "Exquisite capture of someone pouring olive oil over a fresh salad - professional food photography services in Montevideo.",
+              "es": "Captura exquisita de alguien vertiendo aceite de oliva sobre una ensalada fresca - servicios de fotografía profesional de alimentos en Montevideo."
             },
             "tags": [
               "food photography",
@@ -253,8 +253,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043336721-pexels-0ldpikes-32455853.jpg?alt=media&token=23e266be-090a-4d96-b5b5-6b4f579c0748",
             "description": {
-              "es": "Captura de un evento al aire libre bajo la lluvia con iluminación cálida - contrata fotógrafos de eventos en Montevideo",
               "en": "Capture of an outdoor event in the rain with warm lighting - hire event photographers in Montevideo",
+              "es": "Captura de un evento al aire libre bajo la lluvia con iluminación cálida - contrata fotógrafos de eventos en Montevideo",
               "pt": "Captura de evento ao ar livre na chuva com iluminação quente - contrate fotógrafos de eventos em Montevidéu"
             },
             "tags": [
@@ -276,9 +276,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043348373-pexels-azizico-30640561.jpg?alt=media&token=86978355-3bfa-44cc-b994-f71db3f77b59",
             "description": {
-              "en": "Hire a professional event photographer in Montevideo to capture dynamic moments like this DJ in action.",
               "pt": "Contrate um fotógrafo profissional de eventos em Montevidéu para capturar momentos dinâmicos como este DJ em ação.",
-              "es": "Contrata fotógrafo profesional de eventos en Montevideo para capturar momentos dinámicos como este DJ en acción."
+              "es": "Contrata fotógrafo profesional de eventos en Montevideo para capturar momentos dinámicos como este DJ en acción.",
+              "en": "Hire a professional event photographer in Montevideo to capture dynamic moments like this DJ in action."
             },
             "tags": [
               "event photographer",
@@ -323,9 +323,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043363075-pexels-clam-lo-1782448-3469692.jpg?alt=media&token=3974e01f-3894-4208-836b-2fd9d7e6fd44",
             "description": {
-              "es": "Contrata fotógrafo profesional para capturar actuaciones de conciertos en Montevideo. Especializado en fotografía de eventos musicales con iluminación experta.",
+              "pt": "Contrate um fotógrafo profissional para capturar performances de shows em Montevidéu. Especializado em fotografia de eventos musicais com iluminação especializada.",
               "en": "Hire a professional photographer to capture concert performances in Montevideo. Specializing in music event photography with expert lighting.",
-              "pt": "Contrate um fotógrafo profissional para capturar performances de shows em Montevidéu. Especializado em fotografia de eventos musicais com iluminação especializada."
+              "es": "Contrata fotógrafo profesional para capturar actuaciones de conciertos en Montevideo. Especializado en fotografía de eventos musicales con iluminación experta."
             },
             "tags": [
               "concert photography",
@@ -346,9 +346,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043368971-pexels-eugenia-sol-1769194548-32652835.jpg?alt=media&token=41d58eed-3e5a-4dd4-8113-b79fab2a9600",
             "description": {
+              "en": "Artistic capture of an outdoor event in Montevideo. Hire a professional event photographer to immortalize your special moments.",
               "pt": "Captura artística de um evento ao ar livre em Montevidéu. Contrate um fotógrafo profissional de eventos para imortalizar seus momentos especiais.",
-              "es": "Captura artística de un evento al aire libre en Montevideo. Contrata a un fotógrafo profesional de eventos para inmortalizar tus momentos especiales.",
-              "en": "Artistic capture of an outdoor event in Montevideo. Hire a professional event photographer to immortalize your special moments."
+              "es": "Captura artística de un evento al aire libre en Montevideo. Contrata a un fotógrafo profesional de eventos para inmortalizar tus momentos especiales."
             },
             "tags": [
               "event photographer",
@@ -369,9 +369,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043378228-pexels-faruktokluoglu-9972662.jpg?alt=media&token=1d955fb0-505c-48b8-acda-6e9bf09376b2",
             "description": {
-              "pt": "Capture momentos inesquecíveis em concertos com nosso serviço profissional de fotografia de eventos em Montevidéu.",
               "es": "Captura momentos inolvidables en conciertos con nuestro servicio profesional de fotografía de eventos en Montevideo.",
-              "en": "Capture unforgettable moments at concerts with our professional event photography service in Montevideo."
+              "en": "Capture unforgettable moments at concerts with our professional event photography service in Montevideo.",
+              "pt": "Capture momentos inesquecíveis em concertos com nosso serviço profissional de fotografia de eventos em Montevidéu."
             },
             "tags": [
               "concert",
@@ -393,9 +393,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043384247-pexels-faruktokluoglu-10063046.jpg?alt=media&token=8cd40190-bf80-4ebc-9d81-27b474df2874",
             "description": {
-              "en": "Capture of a live event moment with a performer on stage in front of an enthusiastic audience. Hire our event photography service in Montevideo.",
+              "pt": "Captura de um momento de evento ao vivo com um artista no palco diante de um público entusiástico. Contrate nosso serviço de fotografia de eventos em Montevidéu.",
               "es": "Captura del momento en un evento en vivo con un artista en el escenario frente a una audiencia entusiasta. Contrata nuestro servicio de fotografía de eventos en Montevideo.",
-              "pt": "Captura de um momento de evento ao vivo com um artista no palco diante de um público entusiástico. Contrate nosso serviço de fotografia de eventos em Montevidéu."
+              "en": "Capture of a live event moment with a performer on stage in front of an enthusiastic audience. Hire our event photography service in Montevideo."
             },
             "tags": [
               "event photography",
@@ -415,9 +415,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043390399-pexels-faruktokluoglu-10063147.jpg?alt=media&token=5c9d9df0-1be7-45e3-ac21-a2678f19569a",
             "description": {
+              "es": "Contrata fotógrafos de eventos en Montevideo para capturar momentos únicos en conciertos y presentaciones en vivo.",
               "pt": "Contrate fotógrafos de eventos em Montevidéu para capturar momentos únicos em shows e apresentações ao vivo.",
-              "en": "Hire event photographers in Montevideo to capture unique moments at concerts and live performances.",
-              "es": "Contrata fotógrafos de eventos en Montevideo para capturar momentos únicos en conciertos y presentaciones en vivo."
+              "en": "Hire event photographers in Montevideo to capture unique moments at concerts and live performances."
             },
             "tags": [
               "concert",
@@ -460,9 +460,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043401412-pexels-nano-erdozain-120534369-27570910.jpg?alt=media&token=b847075a-f282-49fb-af94-5b827727d661",
             "description": {
-              "en": "Capture vibrant moments at events with professional photography. Perfect for concerts and large gatherings in Montevideo.",
               "pt": "Capture momentos vibrantes em eventos com fotografia profissional. Perfeito para concertos e grandes reuniões em Montevidéu.",
-              "es": "Captura momentos vibrantes en eventos con fotografía profesional. Ideal para conciertos y grandes reuniones en Montevideo."
+              "es": "Captura momentos vibrantes en eventos con fotografía profesional. Ideal para conciertos y grandes reuniones en Montevideo.",
+              "en": "Capture vibrant moments at events with professional photography. Perfect for concerts and large gatherings in Montevideo."
             },
             "tags": [
               "event photographer",
@@ -483,9 +483,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043407380-pexels-nascimento-jr-1451812733-32601988.jpg?alt=media&token=aa54918d-dd6b-4457-ac15-a5d88c3d34e4",
             "description": {
+              "en": "Close-up of DJ hands adjusting mixer controls at an event. Hire a professional event photographer in Montevideo.",
               "es": "Captura de manos de DJ ajustando controles en un mixer durante un evento. Contrata fotógrafo profesional de eventos en Montevideo.",
-              "pt": "Close-up das mãos de DJ ajustando controles do mixer em um evento. Contrate fotógrafo profissional de eventos em Montevidéu.",
-              "en": "Close-up of DJ hands adjusting mixer controls at an event. Hire a professional event photographer in Montevideo."
+              "pt": "Close-up das mãos de DJ ajustando controles do mixer em um evento. Contrate fotógrafo profissional de eventos em Montevidéu."
             },
             "tags": [
               "DJ",
@@ -506,9 +506,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043412391-pexels-nolandlive-26397141.jpg?alt=media&token=bf0234ec-fc86-41d2-be92-1a36b6d09c34",
             "description": {
-              "es": "Captura momentos inolvidables en eventos con nuestro servicio de fotografía profesional. Contrata un fotógrafo de eventos en Montevideo.",
+              "en": "Capture unforgettable moments at events with our professional photography service. Hire an event photographer in Montevideo.",
               "pt": "Capture momentos inesquecíveis em eventos com nosso serviço de fotografia profissional. Contrate um fotógrafo de eventos em Montevidéu.",
-              "en": "Capture unforgettable moments at events with our professional photography service. Hire an event photographer in Montevideo."
+              "es": "Captura momentos inolvidables en eventos con nuestro servicio de fotografía profesional. Contrata un fotógrafo de eventos en Montevideo."
             },
             "tags": [
               "event",
@@ -529,8 +529,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043419519-pexels-pedro-rebelo-pereira-337908766-29720083.jpg?alt=media&token=8a175f1a-874f-43c0-be80-811661d83824",
             "description": {
-              "es": "Captura vibrante de una multitud en concierto con luces brillantes y confeti. Contrata fotógrafo de eventos en Montevideo.",
               "en": "Vibrant capture of a concert crowd with bright lights and confetti. Hire an event photographer in Montevideo.",
+              "es": "Captura vibrante de una multitud en concierto con luces brillantes y confeti. Contrata fotógrafo de eventos en Montevideo.",
               "pt": "Captura vibrante de multidão em concerto com luzes brilhantes e confete. Contrate fotógrafo de eventos em Montevidéu."
             },
             "tags": [
@@ -552,9 +552,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043424862-pexels-pedro-woch-2862481-16401214.jpg?alt=media&token=e2ab3906-341f-4451-a61c-5749e7117d29",
             "description": {
-              "en": "Professional capture of a DJ in action at a nightclub with colorful lighting, perfect for those seeking event photography in Montevideo.",
               "pt": "Captura profissional de DJ em ação em uma discoteca com iluminação colorida, ideal para quem procura fotografia de eventos em Montevidéu.",
-              "es": "Captura profesional de DJ en acción en una discoteca con iluminación colorida, ideal para quienes buscan fotografía de eventos en Montevideo."
+              "es": "Captura profesional de DJ en acción en una discoteca con iluminación colorida, ideal para quienes buscan fotografía de eventos en Montevideo.",
+              "en": "Professional capture of a DJ in action at a nightclub with colorful lighting, perfect for those seeking event photography in Montevideo."
             },
             "tags": [
               "nightclub",
@@ -575,9 +575,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043430953-pexels-renan-almeida-3218109-13940523.jpg?alt=media&token=47913dee-1796-4c5e-b76a-ce78a480916a",
             "description": {
-              "en": "Capture the emotion of your event with our professional photography service in Montevideo. Specializing in concerts and live events.",
               "es": "Captura la emoción de tu evento con nuestro servicio de fotografía profesional en Montevideo. Especialistas en conciertos y eventos en vivo.",
-              "pt": "Capture a emoção do seu evento com nosso serviço de fotografia profissional em Montevidéu. Especializados em concertos e eventos ao vivo."
+              "pt": "Capture a emoção do seu evento com nosso serviço de fotografia profissional em Montevidéu. Especializados em concertos e eventos ao vivo.",
+              "en": "Capture the emotion of your event with our professional photography service in Montevideo. Specializing in concerts and live events."
             },
             "tags": [
               "concert",
@@ -599,8 +599,8 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043435891-pexels-shalom-ejiofor-2153542296-32772112.jpg?alt=media&token=9de224a0-8fbf-4ed1-b127-9b44ef5ae0db",
             "description": {
               "es": "Captura momentos únicos en conciertos y eventos musicales. Fotografía profesional en Montevideo.",
-              "en": "Capture unique moments at concerts and music events. Professional photography in Montevideo.",
-              "pt": "Capture momentos únicos em shows e eventos musicais. Fotografia profissional em Montevidéu."
+              "pt": "Capture momentos únicos em shows e eventos musicais. Fotografia profissional em Montevidéu.",
+              "en": "Capture unique moments at concerts and music events. Professional photography in Montevideo."
             },
             "tags": ["music", "event", "photography", "guitar", "concert"],
             "aspectRatio": "9:16",
@@ -615,8 +615,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FUKBPYqxNZpR8Qapibkjz%2F1754043443238-pexels-trarete-73723862-8502198.jpg?alt=media&token=bc137c83-9ac6-415b-a7cb-5c38e7a2de6d",
             "description": {
-              "es": "Captura íntima de un músico tocando la batería. Descubre nuestros servicios de fotografía de eventos para capturar cada momento musical en Montevideo.",
               "en": "Intimate capture of a musician playing the drums. Discover our event photography services to capture every musical moment in Montevideo.",
+              "es": "Captura íntima de un músico tocando la batería. Descubre nuestros servicios de fotografía de eventos para capturar cada momento musical en Montevideo.",
               "pt": "Captura íntima de um músico tocando bateria. Descubra nossos serviços de fotografia de eventos para capturar cada momento musical em Montevidéu."
             },
             "tags": [
@@ -650,199 +650,199 @@
         "status": "published",
         "mediaBlocks": [
           {
-            "mediaOffsetY": 0,
-            "x": 0,
-            "y": 0,
-            "id": "block-1752176726619",
-            "height": 9,
             "mediaId": "edrQjkSUX2pOlyXleUXb",
+            "height": 9,
+            "x": 0,
             "mediaOffsetX": 0,
-            "type": "image",
+            "mediaOffsetY": 0,
+            "y": 0,
+            "width": 16,
             "zIndex": 1,
-            "width": 16
+            "id": "block-1752176726619",
+            "type": "image"
           },
           {
-            "type": "title",
-            "title": "Casamiento de Paco y Margarita",
-            "width": 16,
+            "y": 2,
             "id": "title-1752176729459",
-            "x": 0,
-            "zIndex": 2,
-            "font": "inter",
             "height": 5,
-            "color": "#000000",
-            "y": 2
+            "width": 16,
+            "x": 0,
+            "font": "inter",
+            "zIndex": 2,
+            "title": "Casamiento de Paco y Margarita",
+            "type": "title",
+            "color": "#000000"
           }
         ],
         "detailPageBlocks": [
           {
+            "type": "image",
             "zIndex": 0,
-            "height": 5,
             "id": "auto-0",
+            "height": 5,
             "mediaId": "48cCo1kJoAFeOM2iWWBI",
-            "width": 8,
-            "x": 0,
             "y": 0,
-            "type": "image"
+            "x": 0,
+            "width": 8
           },
           {
-            "zIndex": 1,
-            "type": "image",
-            "y": 0,
-            "width": 6,
-            "x": 8,
             "id": "auto-1",
             "height": 6,
-            "mediaId": "4SCEUjX67DJ2jbmTRiaG"
-          },
-          {
-            "zIndex": 2,
-            "height": 2,
-            "id": "auto-2",
-            "width": 2,
-            "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
-            "type": "image",
+            "x": 8,
+            "zIndex": 1,
             "y": 0,
-            "x": 14
-          },
-          {
-            "height": 5,
-            "zIndex": 3,
-            "width": 8,
-            "x": 0,
-            "y": 4,
-            "mediaId": "9pFVXpDET7jWxDq7RoNh",
-            "id": "auto-3",
-            "type": "image"
-          },
-          {
-            "zIndex": 4,
-            "width": 8,
-            "y": 4,
-            "height": 5,
             "type": "image",
-            "id": "auto-4",
+            "mediaId": "4SCEUjX67DJ2jbmTRiaG",
+            "width": 6
+          },
+          {
+            "id": "auto-2",
+            "y": 0,
+            "height": 2,
+            "x": 14,
+            "width": 2,
+            "type": "image",
+            "mediaId": "8zJd9Ip6f5mcBcJ1lznq",
+            "zIndex": 2
+          },
+          {
+            "type": "image",
+            "mediaId": "9pFVXpDET7jWxDq7RoNh",
+            "x": 0,
+            "width": 8,
+            "height": 5,
+            "y": 4,
+            "id": "auto-3",
+            "zIndex": 3
+          },
+          {
+            "width": 8,
+            "type": "image",
+            "zIndex": 4,
             "mediaId": "DjkGYSpAgl0fBpSYJtdJ",
-            "x": 8
+            "x": 8,
+            "id": "auto-4",
+            "y": 4,
+            "height": 5
           },
           {
             "mediaId": "dW52BSrrFYrUs6IztfUs",
             "x": 0,
+            "width": 8,
+            "type": "image",
             "zIndex": 5,
             "y": 4,
-            "height": 5,
-            "type": "image",
             "id": "auto-5",
+            "height": 5
+          },
+          {
+            "type": "image",
+            "mediaId": "edrQjkSUX2pOlyXleUXb",
+            "x": 8,
+            "zIndex": 6,
+            "height": 5,
+            "y": 4,
+            "id": "auto-6",
             "width": 8
           },
           {
-            "mediaId": "edrQjkSUX2pOlyXleUXb",
-            "width": 8,
-            "id": "auto-6",
-            "zIndex": 6,
-            "height": 5,
+            "mediaId": "f9qFLMkKrowonoJvyLaU",
             "type": "image",
             "y": 4,
+            "height": 5,
+            "id": "auto-7",
+            "width": 8,
+            "x": 0,
+            "zIndex": 7
+          },
+          {
+            "y": 4,
+            "type": "image",
+            "zIndex": 8,
+            "mediaId": "fq7VpJxz2h7X01o3Bv8D",
+            "height": 5,
+            "x": 8,
+            "width": 8,
+            "id": "auto-8"
+          },
+          {
+            "y": 4,
+            "width": 8,
+            "id": "auto-9",
+            "type": "image",
+            "mediaId": "gj9s56ogFiZXgZuXTiwQ",
+            "zIndex": 9,
+            "x": 0,
+            "height": 5
+          },
+          {
+            "width": 8,
+            "mediaId": "LMPz9UuWrFXArz4Q5HJN",
+            "height": 5,
+            "x": 8,
+            "type": "image",
+            "zIndex": 10,
+            "y": 4,
+            "id": "auto-10"
+          },
+          {
+            "type": "image",
+            "id": "auto-11",
+            "y": 4,
+            "height": 5,
+            "mediaId": "lP8MCk0xqg0uSkCnvpaN",
+            "zIndex": 11,
+            "x": 0,
+            "width": 8
+          },
+          {
+            "zIndex": 12,
+            "y": 1,
+            "type": "image",
+            "height": 8,
+            "x": 8,
+            "width": 5,
+            "mediaId": "NwBqAs7qwNWCet4AkPgi",
+            "id": "auto-12"
+          },
+          {
+            "x": 13,
+            "type": "image",
+            "width": 3,
+            "zIndex": 13,
+            "id": "auto-13",
+            "height": 3,
+            "y": 6,
+            "mediaId": "OodOx8NGStI3PD1KIO8E"
+          },
+          {
+            "width": 8,
+            "zIndex": 14,
+            "id": "auto-14",
+            "mediaId": "Pm3gGJJcoUc5uxxmjdss",
+            "type": "image",
+            "height": 5,
+            "x": 0,
+            "y": 4
+          },
+          {
+            "id": "auto-15",
+            "y": 4,
+            "width": 8,
+            "type": "image",
+            "mediaId": "pQ5yeKc0k0hZEaDgj0fV",
+            "height": 5,
+            "zIndex": 15,
             "x": 8
           },
           {
             "x": 0,
-            "width": 8,
-            "y": 4,
-            "mediaId": "f9qFLMkKrowonoJvyLaU",
-            "type": "image",
-            "id": "auto-7",
-            "zIndex": 7,
-            "height": 5
-          },
-          {
-            "type": "image",
-            "mediaId": "fq7VpJxz2h7X01o3Bv8D",
-            "zIndex": 8,
-            "y": 4,
-            "height": 5,
-            "x": 8,
-            "id": "auto-8",
-            "width": 8
-          },
-          {
-            "type": "image",
-            "mediaId": "gj9s56ogFiZXgZuXTiwQ",
-            "y": 4,
-            "width": 8,
-            "x": 0,
-            "zIndex": 9,
-            "id": "auto-9",
-            "height": 5
-          },
-          {
-            "id": "auto-10",
-            "height": 5,
-            "y": 4,
-            "zIndex": 10,
-            "type": "image",
-            "mediaId": "LMPz9UuWrFXArz4Q5HJN",
-            "x": 8,
-            "width": 8
-          },
-          {
-            "type": "image",
-            "height": 5,
-            "width": 8,
-            "y": 4,
-            "x": 0,
-            "mediaId": "lP8MCk0xqg0uSkCnvpaN",
-            "zIndex": 11,
-            "id": "auto-11"
-          },
-          {
-            "type": "image",
-            "height": 8,
-            "id": "auto-12",
-            "mediaId": "NwBqAs7qwNWCet4AkPgi",
-            "x": 8,
-            "zIndex": 12,
-            "width": 5,
-            "y": 1
-          },
-          {
-            "x": 13,
-            "width": 3,
-            "y": 6,
-            "mediaId": "OodOx8NGStI3PD1KIO8E",
-            "zIndex": 13,
-            "type": "image",
-            "id": "auto-13",
-            "height": 3
-          },
-          {
-            "width": 8,
-            "type": "image",
-            "zIndex": 14,
-            "id": "auto-14",
-            "y": 4,
-            "x": 0,
-            "mediaId": "Pm3gGJJcoUc5uxxmjdss",
-            "height": 5
-          },
-          {
-            "y": 4,
-            "type": "image",
-            "zIndex": 15,
-            "x": 8,
-            "width": 8,
-            "height": 5,
-            "id": "auto-15",
-            "mediaId": "pQ5yeKc0k0hZEaDgj0fV"
-          },
-          {
             "mediaId": "zTBVfHCpXvFGTWU3jbUI",
-            "height": 8,
-            "id": "auto-16",
-            "zIndex": 16,
-            "x": 0,
-            "y": 1,
             "type": "image",
+            "id": "auto-16",
+            "y": 1,
+            "height": 8,
+            "zIndex": 16,
             "width": 5
           }
         ],
@@ -854,8 +854,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754045932958-black-and-white-2561020.jpg?alt=media&token=8da39d82-548b-46a3-8921-c98622e82aa9",
             "description": {
-              "en": "Intimate capture of a wedding ring being placed - hire a professional wedding photographer in Montevideo.",
               "es": "Captura íntima de un anillo de boda siendo colocado - contrata fotógrafo profesional de bodas en Montevideo.",
+              "en": "Intimate capture of a wedding ring being placed - hire a professional wedding photographer in Montevideo.",
               "pt": "Captura íntima de um anel de casamento sendo colocado - contrate fotógrafo profissional de casamentos em Montevidéu."
             },
             "tags": [
@@ -900,9 +900,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754045950727-pexels-alexander-mass-748453803-32527875.jpg?alt=media&token=7006d4b7-7dc0-4f41-bddd-0c432bcfdccb",
             "description": {
-              "pt": "Casal se abraçando em um ambiente ao ar livre com árvores, ideal para contratar um fotógrafo de casamento profissional em Montevidéu.",
+              "en": "Couple embracing in an outdoor setting with trees, ideal for hiring a professional wedding photographer in Montevideo.",
               "es": "Pareja abrazándose en un entorno al aire libre con árboles, perfecta para contratar un fotógrafo de bodas profesional en Montevideo.",
-              "en": "Couple embracing in an outdoor setting with trees, ideal for hiring a professional wedding photographer in Montevideo."
+              "pt": "Casal se abraçando em um ambiente ao ar livre com árvores, ideal para contratar um fotógrafo de casamento profissional em Montevidéu."
             },
             "tags": [
               "wedding",
@@ -946,9 +946,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754045966490-pexels-alexander-mass-748453803-32805947.jpg?alt=media&token=581445c6-a7c2-4f0a-a4ab-db34d1e09b47",
             "description": {
-              "pt": "Captura de bolo de casamento adornado com flores elegantes e detalhes modernos - contrate um fotógrafo de casamento profissional em Montevidéu",
               "es": "Captura de pastel de bodas decorado con flores elegantes y detalles modernos - contrata fotógrafo de bodas profesional en Montevideo",
-              "en": "Capture of wedding cake adorned with elegant flowers and modern details - hire a professional wedding photographer in Montevideo"
+              "en": "Capture of wedding cake adorned with elegant flowers and modern details - hire a professional wedding photographer in Montevideo",
+              "pt": "Captura de bolo de casamento adornado com flores elegantes e detalhes modernos - contrate um fotógrafo de casamento profissional em Montevidéu"
             },
             "tags": [
               "wedding",
@@ -969,9 +969,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754045973330-pexels-alexander-mass-748453803-32816332.jpg?alt=media&token=c95003f3-831d-45ae-bb8e-232c67689a3d",
             "description": {
-              "es": "Captura íntima de una pareja abrazándose con un ramo de rosas blancas, ideal para contratar fotógrafo profesional de bodas en Montevideo.",
               "en": "Intimate capture of a couple embracing with a bouquet of white roses, perfect for hiring a professional wedding photographer in Montevideo.",
-              "pt": "Captura íntima de um casal se abraçando com um buquê de rosas brancas, ideal para contratar fotógrafo profissional de casamentos em Montevidéu."
+              "pt": "Captura íntima de um casal se abraçando com um buquê de rosas brancas, ideal para contratar fotógrafo profissional de casamentos em Montevidéu.",
+              "es": "Captura íntima de una pareja abrazándose con un ramo de rosas blancas, ideal para contratar fotógrafo profesional de bodas en Montevideo."
             },
             "tags": [
               "wedding",
@@ -1040,9 +1040,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754045995142-pexels-bikareantalya-33120714.jpg?alt=media&token=f1a80514-3924-415d-adc3-268243a184fd",
             "description": {
-              "en": "Couple on the beach in white attire holding a bouquet, perfect for hiring a professional wedding photographer in Montevideo.",
               "es": "Pareja en la playa con atuendo blanco y ramo de flores, ideal para contratar un fotógrafo profesional de bodas en Montevideo.",
-              "pt": "Casal na praia com roupa branca e buquê de flores, ideal para contratar fotógrafo profissional de casamentos em Montevidéu."
+              "pt": "Casal na praia com roupa branca e buquê de flores, ideal para contratar fotógrafo profissional de casamentos em Montevidéu.",
+              "en": "Couple on the beach in white attire holding a bouquet, perfect for hiring a professional wedding photographer in Montevideo."
             },
             "tags": [
               "wedding",
@@ -1064,8 +1064,8 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046001422-pexels-fernanda-leticia-536417725-32920353.jpg?alt=media&token=2f20c208-7f38-4cf2-8170-d09d9bcdb2c7",
             "description": {
               "en": "Couple sharing an intimate and romantic moment. Hire a professional wedding photographer in Montevideo to capture your special moments.",
-              "pt": "Casal compartilhando um momento íntimo e romântico. Contrate um fotógrafo profissional de casamentos em Montevidéu para capturar seus momentos especiais.",
-              "es": "Pareja compartiendo un momento íntimo y romántico. Contrata fotógrafo profesional de bodas en Montevideo para capturar tus momentos especiales."
+              "es": "Pareja compartiendo un momento íntimo y romántico. Contrata fotógrafo profesional de bodas en Montevideo para capturar tus momentos especiales.",
+              "pt": "Casal compartilhando um momento íntimo e romântico. Contrate um fotógrafo profissional de casamentos em Montevidéu para capturar seus momentos especiais."
             },
             "tags": [
               "wedding",
@@ -1086,9 +1086,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046007708-pexels-i-rem-cevik-978247792-32423532.jpg?alt=media&token=16d1a592-7d36-4cbe-a6fb-8677e5f9372d",
             "description": {
-              "en": "Happy couple enjoying their outdoor wedding - hire a wedding photographer in Montevideo.",
               "pt": "Casal feliz aproveitando seu casamento ao ar livre - contrate um fotógrafo de casamento em Montevidéu.",
-              "es": "Pareja feliz disfrutando de su boda al aire libre - contrata fotógrafo de bodas en Montevideo."
+              "es": "Pareja feliz disfrutando de su boda al aire libre - contrata fotógrafo de bodas en Montevideo.",
+              "en": "Happy couple enjoying their outdoor wedding - hire a wedding photographer in Montevideo."
             },
             "tags": [
               "wedding",
@@ -1109,9 +1109,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046013953-pexels-julianemonarifotografia-32769560.jpg?alt=media&token=e874f275-002a-4139-a195-4a6427469ca9",
             "description": {
-              "es": "Captura íntima de manos entrelazadas, perfecta para quienes buscan un fotógrafo de bodas profesional en Montevideo.",
               "en": "Intimate capture of intertwined hands, ideal for those seeking a professional wedding photographer in Montevideo.",
-              "pt": "Captura íntima de mãos entrelaçadas, ideal para quem busca um fotógrafo de casamento profissional em Montevidéu."
+              "pt": "Captura íntima de mãos entrelaçadas, ideal para quem busca um fotógrafo de casamento profissional em Montevidéu.",
+              "es": "Captura íntima de manos entrelazadas, perfecta para quienes buscan un fotógrafo de bodas profesional en Montevideo."
             },
             "tags": [
               "wedding",
@@ -1132,9 +1132,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046021319-pexels-julianemonarifotografia-32769574.jpg?alt=media&token=30ea588f-6abd-4695-9819-ea2d64298314",
             "description": {
-              "en": "Capture special moments with a professional event photographer in Montevideo. Perfect for weddings and celebrations.",
               "pt": "Capture momentos especiais com um fotógrafo profissional de eventos em Montevidéu. Perfeito para casamentos e celebrações.",
-              "es": "Captura momentos especiales con un fotógrafo profesional de eventos en Montevideo. Perfecto para bodas y celebraciones."
+              "es": "Captura momentos especiales con un fotógrafo profesional de eventos en Montevideo. Perfecto para bodas y celebraciones.",
+              "en": "Capture special moments with a professional event photographer in Montevideo. Perfect for weddings and celebrations."
             },
             "tags": [
               "event photographer",
@@ -1156,8 +1156,8 @@
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046029930-pexels-krista-glizdeniece-2150567376-33197965.jpg?alt=media&token=ee5d07d6-11c2-4454-b8a8-4f21cf01317d",
             "description": {
               "pt": "Captura íntima de mãos com alianças em vestido, perfeito para quem procura fotógrafo de casamento em Montevidéu.",
-              "en": "Intimate capture of hands with wedding rings on a dress, perfect for those seeking a wedding photographer in Montevideo.",
-              "es": "Captura íntima de manos con anillos de boda en vestido, ideal para quienes buscan fotógrafo de bodas en Montevideo."
+              "es": "Captura íntima de manos con anillos de boda en vestido, ideal para quienes buscan fotógrafo de bodas en Montevideo.",
+              "en": "Intimate capture of hands with wedding rings on a dress, perfect for those seeking a wedding photographer in Montevideo."
             },
             "tags": [
               "wedding",
@@ -1180,9 +1180,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046035232-pexels-rafaela-freire-2148880808-32435239.jpg?alt=media&token=04dbf910-3de2-4f1b-846a-07543e10018b",
             "description": {
-              "es": "Fotografía de botellas de champán en un evento al aire libre - contrata fotógrafo profesional de eventos en Montevideo",
               "pt": "Garrafas de champanhe em evento ao ar livre - contrate fotógrafo profissional de eventos em Montevidéu",
-              "en": "Champagne bottles at an outdoor event - hire a professional event photographer in Montevideo"
+              "en": "Champagne bottles at an outdoor event - hire a professional event photographer in Montevideo",
+              "es": "Fotografía de botellas de champán en un evento al aire libre - contrata fotógrafo profesional de eventos en Montevideo"
             },
             "tags": [
               "event photography",
@@ -1202,9 +1202,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046042840-pexels-rafaela-freire-2148880808-32435247.jpg?alt=media&token=9b5b8375-a38c-4212-b11b-7e4cf902f2c9",
             "description": {
-              "en": "Capture of an elegant toast, perfect for hiring a professional event photographer in Montevideo.",
               "es": "Captura de un brindis elegante, ideal para contratar fotógrafo profesional de eventos en Montevideo.",
-              "pt": "Captura de um brinde elegante, ideal para contratar fotógrafo profissional de eventos em Montevidéu."
+              "pt": "Captura de um brinde elegante, ideal para contratar fotógrafo profissional de eventos em Montevidéu.",
+              "en": "Capture of an elegant toast, perfect for hiring a professional event photographer in Montevideo."
             },
             "tags": ["event", "champagne", "wedding", "celebration", "luxury"],
             "aspectRatio": "1:1",
@@ -1219,9 +1219,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046050481-portrait-4615580.jpg?alt=media&token=f2bdec76-194c-4ea7-8124-dc8239677613",
             "description": {
-              "es": "Captura íntima de pareja abrazándose junto a un lago tranquilo. Contrata fotógrafo profesional para sesiones de pareja en Montevideo.",
               "pt": "Captura íntima de casal se abraçando junto a um lago sereno. Contrate um fotógrafo profissional para sessões de casal em Montevidéu.",
-              "en": "Intimate capture of a couple embracing by a serene lake. Hire a professional photographer for couple sessions in Montevideo."
+              "en": "Intimate capture of a couple embracing by a serene lake. Hire a professional photographer for couple sessions in Montevideo.",
+              "es": "Captura íntima de pareja abrazándose junto a un lago tranquilo. Contrata fotógrafo profesional para sesiones de pareja en Montevideo."
             },
             "tags": [
               "couple photography",
@@ -1242,9 +1242,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046059291-premium_photo-1675003662150-2569448d2b3b.jpg?alt=media&token=b179e82a-a88d-42a4-93b2-c2d7fc786252",
             "description": {
-              "en": "Capture the beginning of your love story with our professional wedding photography in Montevideo. Elegant details and unique moments.",
               "es": "Captura el inicio de tu historia de amor con nuestra fotografía profesional de bodas en Montevideo. Detalles elegantes y momentos únicos.",
-              "pt": "Capture o início da sua história de amor com nossa fotografia profissional de casamentos em Montevidéu. Detalhes elegantes e momentos únicos."
+              "pt": "Capture o início da sua história de amor com nossa fotografia profissional de casamentos em Montevidéu. Detalhes elegantes e momentos únicos.",
+              "en": "Capture the beginning of your love story with our professional wedding photography in Montevideo. Elegant details and unique moments."
             },
             "tags": [
               "wedding",
@@ -1287,8 +1287,8 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046067522-premium_photo-1704830495873-ffcc7229be88.jpg?alt=media&token=b8cad1fc-7065-4f9a-8371-885ee6c448ad",
             "description": {
-              "es": "Pareja compartiendo un beso romántico con un ramo de rosas en primer plano en luz suave - contrata fotógrafo profesional de bodas en Montevideo.",
               "en": "Couple sharing a romantic kiss with a bouquet of roses in the foreground in soft light - hire a professional wedding photographer in Montevideo.",
+              "es": "Pareja compartiendo un beso romántico con un ramo de rosas en primer plano en luz suave - contrata fotógrafo profesional de bodas en Montevideo.",
               "pt": "Casal compartilhando um beijo romântico com um buquê de rosas em primeiro plano em luz suave - contrate um fotógrafo de casamento profissional em Montevidéu."
             },
             "tags": [
@@ -1310,9 +1310,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046070124-premium_photo-1738682068766-d66bd9b9b7c1.jpg?alt=media&token=8127e670-8d65-45be-964b-02bc52eed286",
             "description": {
+              "en": "Capture intimate and joyful moments of your wedding with a professional photographer in Montevideo. This vibrant scene shows a couple celebrating their love in a natural setting.",
               "pt": "Capture momentos íntimos e alegres do seu casamento com um fotógrafo profissional em Montevidéu. Esta cena vibrante mostra um casal celebrando seu amor em um cenário natural.",
-              "es": "Captura momentos íntimos y felices de tu boda con un fotógrafo profesional en Montevideo. Este emocionante instante muestra a una pareja celebrando su amor en un entorno natural.",
-              "en": "Capture intimate and joyful moments of your wedding with a professional photographer in Montevideo. This vibrant scene shows a couple celebrating their love in a natural setting."
+              "es": "Captura momentos íntimos y felices de tu boda con un fotógrafo profesional en Montevideo. Este emocionante instante muestra a una pareja celebrando su amor en un entorno natural."
             },
             "tags": [
               "wedding",
@@ -1334,9 +1334,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046111981-sinitta-leunen-dS87qokCAC4-unsplash.jpg?alt=media&token=731c61d8-cb54-4fee-bb33-9d0afe06a6dd",
             "description": {
-              "es": "Captura íntima de una pareja de novios sosteniendo sus manos en un elegante entorno interior. Contrata fotógrafo de bodas en Montevideo.",
               "en": "Intimate capture of a couple holding hands in an elegant indoor setting. Hire a wedding photographer in Montevideo.",
-              "pt": "Captura íntima de um casal de mãos dadas em um ambiente interno elegante. Contrate fotógrafo de casamentos em Montevidéu."
+              "pt": "Captura íntima de um casal de mãos dadas em um ambiente interno elegante. Contrate fotógrafo de casamentos em Montevidéu.",
+              "es": "Captura íntima de una pareja de novios sosteniendo sus manos en un elegante entorno interior. Contrata fotógrafo de bodas en Montevideo."
             },
             "tags": [
               "wedding",
@@ -1357,9 +1357,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046121851-tiko-giorgadze-i5SbksX33RM-unsplash.jpg?alt=media&token=ccdfaf94-76ba-4af9-9a7a-b385c75d29ce",
             "description": {
-              "es": "Captura elegante de una persona con vestido de novia - fotografía de bodas profesional en Montevideo.",
               "en": "Elegant capture of a person in a wedding dress - professional wedding photography in Montevideo.",
-              "pt": "Captura elegante de uma pessoa em vestido de noiva - fotografia de casamento profissional em Montevidéu."
+              "pt": "Captura elegante de uma pessoa em vestido de noiva - fotografia de casamento profissional em Montevidéu.",
+              "es": "Captura elegante de una persona con vestido de novia - fotografía de bodas profesional en Montevideo."
             },
             "tags": [
               "wedding",
@@ -1380,9 +1380,9 @@
             "type": "photo",
             "url": "https://firebasestorage.googleapis.com/v0/b/veloz-6efe6.firebasestorage.app/o/projects%2FbrTuE0GdYD34q7WbSiFk%2F1754046128091-wedding-1836315.jpg?alt=media&token=5dcf4b7b-8396-47ec-a8c1-445783d2e5f4",
             "description": {
-              "pt": "Capture os momentos mágicos do seu casamento com um fotógrafo profissional em Montevidéu. Especializados em fotografia de eventos, garantimos memórias inesquecíveis.",
+              "es": "Captura el momento mágico de tu boda con un fotógrafo profesional en Montevideo. Especializados en fotografía de eventos, garantizamos recuerdos inolvidables.",
               "en": "Capture the magical moments of your wedding with a professional photographer in Montevideo. Specializing in event photography, we ensure unforgettable memories.",
-              "es": "Captura el momento mágico de tu boda con un fotógrafo profesional en Montevideo. Especializados en fotografía de eventos, garantizamos recuerdos inolvidables."
+              "pt": "Capture os momentos mágicos do seu casamento com um fotógrafo profissional em Montevidéu. Especializados em fotografia de eventos, garantimos memórias inesquecíveis."
             },
             "tags": [
               "wedding",

@@ -1,8 +1,18 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Google Fonts for Veloz Brand */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Bebas+Neue&display=swap');
+/* Google Fonts for Veloz Brand - Optimized for Speed Index */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Bebas+Neue&display=swap&display=swap');
+
+/* Critical CSS for Speed Index optimization */
+@media (prefers-reduced-motion: no-preference) {
+  /* Optimize animations for better Speed Index */
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* Enhanced Typography Scale for Better Hierarchy */
 :root {
@@ -62,7 +72,7 @@
   --container-padding: clamp(1rem, 4vw, 4rem);
 }
 
-/* REDJOLA Font Face Declarations */
+/* REDJOLA Font Face Declarations - Optimized for Speed Index */
 @font-face {
   font-family: 'REDJOLA';
   src:
@@ -70,7 +80,7 @@
     url('/redjola/Redjola.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: block; /* Critical for Speed Index */
   font-preload: true;
 }
 

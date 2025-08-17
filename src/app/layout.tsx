@@ -29,11 +29,15 @@ import HomepageBodyClass from '@/components/layout/HomepageBodyClass';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap', // Critical for Speed Index
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap', // Critical for Speed Index
+  preload: true,
 });
 
 // Only load fonts needed for main site (logo fallbacks)
@@ -41,12 +45,16 @@ const bebasNeue = Bebas_Neue({
   variable: '--font-bebas-neue',
   weight: ['400'],
   subsets: ['latin'],
+  display: 'swap', // Critical for Speed Index
+  preload: true,
 });
 
 const oswald = Oswald({
   variable: '--font-oswald',
   weight: ['400'],
   subsets: ['latin'],
+  display: 'swap', // Critical for Speed Index
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -155,6 +163,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//firebasestorage.googleapis.com" />
+        <link rel="dns-prefetch" href="//storage.googleapis.com" />
+        <link rel="dns-prefetch" href="//images.unsplash.com" />
 
         {/* Preconnect to external domains */}
         <link
@@ -170,6 +181,21 @@ export default function RootLayout({
         <link
           rel="preconnect"
           href="https://www.google-analytics.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://firebasestorage.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://storage.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://images.unsplash.com"
           crossOrigin="anonymous"
         />
 
@@ -214,20 +240,6 @@ export default function RootLayout({
           rel="preload"
           href="/_next/static/css/app/layout.css"
           as="style"
-        />
-
-        {/* DNS prefetch and preconnect for external resources */}
-        <link rel="dns-prefetch" href="//images.unsplash.com" />
-        <link rel="dns-prefetch" href="//storage.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://images.unsplash.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://storage.googleapis.com"
-          crossOrigin="anonymous"
         />
 
         {/* Web App Manifest */}

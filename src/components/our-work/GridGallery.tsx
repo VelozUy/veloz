@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import Image from 'next/image';
+import { OptimizedImage } from '@/components/shared';
 import { cn } from '@/lib/utils';
 
 export interface ProjectMedia {
@@ -103,6 +103,10 @@ export default function GridGallery({
           );
           const aspectRatio = aspectWidth / aspectHeight;
 
+          // Speed Index optimization: prioritize first 8 images
+          const isPriority = index < 8;
+          const imageQuality = isPriority ? 75 : 60;
+
           return (
             <div
               key={item.id}
@@ -121,19 +125,20 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
-                  // LCP optimization: load poster eagerly for first 8 videos
-                  preload={index < 8 ? 'auto' : 'metadata'}
+                  // Speed Index optimization: only preload first 8 videos
+                  preload={isPriority ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
-                <Image
+                <OptimizedImage
                   src={item.url}
                   alt={item.description?.es || projectTitle}
                   fill
                   className="object-cover"
-                  sizes="100vw"
-                  priority={index < 8}
-                  loading={index < 8 ? 'eager' : 'lazy'}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={isPriority}
+                  loading={isPriority ? 'eager' : 'lazy'}
+                  quality={imageQuality}
                 />
               )}
             </div>
@@ -149,6 +154,10 @@ export default function GridGallery({
           );
           const aspectRatio = aspectWidth / aspectHeight;
 
+          // Speed Index optimization: prioritize first 8 images
+          const isPriority = index < 8;
+          const imageQuality = isPriority ? 75 : 60;
+
           return (
             <div
               key={item.id}
@@ -163,18 +172,19 @@ export default function GridGallery({
                   loop
                   playsInline
                   autoPlay
-                  preload={index < 8 ? 'auto' : 'metadata'}
+                  preload={isPriority ? 'auto' : 'metadata'}
                   data-testid={`video-${item.id}`}
                 />
               ) : (
-                <Image
+                <OptimizedImage
                   src={item.url}
                   alt={item.description?.es || projectTitle}
                   fill
                   className="object-cover"
                   sizes="100vw"
-                  priority={index < 8}
-                  loading={index < 8 ? 'eager' : 'lazy'}
+                  priority={isPriority}
+                  loading={isPriority ? 'eager' : 'lazy'}
+                  quality={imageQuality}
                 />
               )}
             </div>
