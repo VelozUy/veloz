@@ -26,9 +26,7 @@
 [[plugins]]
   package = "@netlify/plugin-functions-install-core"
 
-# Clear cache before build to prevent webpack corruption
-[[plugins]]
-  package = "@netlify/plugin-cache-killer"
+# Note: Cache clearing is handled in the build script instead of plugin
 
 [dev]
   framework = "nextjs"
