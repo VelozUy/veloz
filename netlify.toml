@@ -17,6 +17,8 @@
   NEXT_WEBPACK_USE_POLLING = "1"
   # Reduce webpack memory usage
   WEBPACK_MEMORY_LIMIT = "2048"
+  # Configure secrets scanning to allow public Firebase project ID
+  SECRETS_SCAN_OMIT_KEYS = "FIREBASE_PROJECT_ID"
 
 # Build cache configuration for faster builds
 [[plugins]]
