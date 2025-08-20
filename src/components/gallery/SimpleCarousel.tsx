@@ -214,7 +214,7 @@ export default function SimpleCarousel({
         {images.map((image, index) => (
           <div
             key={`${image.id}-${index}`}
-            className="flex-shrink-0 w-80 h-full relative mx-1 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-out"
+            className="flex-shrink-0 w-80 h-full relative mx-1 animate-in fade-in slide-in-from-bottom-2 duration-500 ease-out bg-background rounded-lg"
             data-image-id={`${image.id}-${index}`}
             style={{
               animationDelay: `${index * 100}ms`,
