@@ -45,6 +45,26 @@
   to = "/index.html"
   status = 200
 
+# Redirect non-www to www for SEO and consistency
+[[redirects]]
+  from = "https://veloz.com.uy/*"
+  to = "https://www.veloz.com.uy/:splat"
+  status = 301
+  force = true
+
+# Redirect HTTP to HTTPS
+[[redirects]]
+  from = "http://veloz.com.uy/*"
+  to = "https://www.veloz.com.uy/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.veloz.com.uy/*"
+  to = "https://www.veloz.com.uy/:splat"
+  status = 301
+  force = true
+
 # Security headers
 [[headers]]
   for = "/*"
