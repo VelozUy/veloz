@@ -47,6 +47,12 @@
     "performance:report": "node scripts/performance-test.js && open performance-report.md",
     "optimize:images": "node scripts/optimize-images.js",
     "optimize:images:report": "node scripts/optimize-images.js && echo 'Image optimization complete!'",
+    "audit:firebase-images": "node scripts/audit-firebase-images.js",
+    "audit:firebase-images:report": "node scripts/audit-firebase-images.js && open firebase-image-audit-report.json",
+    "test:url-conversion": "node scripts/test-url-conversion.js",
+    "test:url-conversion:report": "node scripts/test-url-conversion.js && open url-conversion-test-results.json",
+    "test:website-optimization": "node scripts/test-website-optimization.js",
+    "test:website-optimization:report": "node scripts/test-website-optimization.js && open website-optimization-report.json",
     "clear-cache": "node scripts/clear-cache.js",
     "clear-cache:full": "node scripts/clear-cache.js --full"
   },

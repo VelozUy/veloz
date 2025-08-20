@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { OptimizedImage } from '@/components/shared';
 import { cn } from '@/lib/utils';
 
 import {
@@ -28,7 +29,6 @@ import {
   TileAnimationState,
 } from '@/types/gallery';
 import { useTiledGalleryLazyLoad } from '@/hooks/useTiledGalleryLazyLoad';
-import { OptimizedImage } from '@/components/shared';
 import {
   getOptimizedImageProps,
   initializeLCPOptimizations,
@@ -491,7 +491,7 @@ export function TiledGallery({
                 aspectRatio: `${image.width || 1} / ${image.height || 1}`,
               }}
             >
-              <Image
+              <OptimizedImage
                 src={image.src}
                 alt={image.alt}
                 fill
