@@ -14,6 +14,34 @@ if (typeof window !== 'undefined' && EMAILJS_PUBLIC_KEY) {
   emailjs.init(EMAILJS_PUBLIC_KEY);
 }
 
+// Check if EmailJS is properly configured
+const isEmailJSConfigured = () => {
+  return !!(
+    EMAILJS_SERVICE_ID &&
+    EMAILJS_ADMIN_TEMPLATE_ID &&
+    EMAILJS_PUBLIC_KEY
+  );
+};
+
+// Netlify function fallback URL
+const getNetlifyFunctionUrl = () => {
+  if (typeof window === 'undefined') return null;
+
+  // In development, use local function
+  if (process.env.NODE_ENV === 'development') {
+    return '/.netlify/functions/send-contact-email';
+  }
+
+  // In production, use the deployed function
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return '/.netlify/functions/send-contact-email';
+  }
+
+  // For production domains, use the full URL
+  return `https://${host}/.netlify/functions/send-contact-email`;
+};
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -322,16 +350,30 @@ Equipe Veloz
 
 export const emailService = {
   async sendContactForm(data: ContactFormData): Promise<void> {
-    if (
-      !EMAILJS_SERVICE_ID ||
-      !EMAILJS_ADMIN_TEMPLATE_ID ||
-      !EMAILJS_PUBLIC_KEY
-    ) {
-      throw new Error(
-        'EmailJS configuration is missing. Please check environment variables.'
-      );
+    // Try EmailJS first if configured
+    if (isEmailJSConfigured()) {
+      try {
+        await this.sendWithEmailJS(data);
+        return;
+      } catch (error) {
+        console.warn(
+          'EmailJS failed, trying Netlify function fallback:',
+          error
+        );
+        // Continue to fallback
+      }
     }
 
+    // Fallback to Netlify function
+    try {
+      await this.sendWithNetlifyFunction(data);
+    } catch (error) {
+      console.error('Both EmailJS and Netlify function failed:', error);
+      throw new Error('Failed to send contact form. Please try again later.');
+    }
+  },
+
+  async sendWithEmailJS(data: ContactFormData): Promise<void> {
     // Check if EmailJS is initialized
     if (typeof window !== 'undefined' && !emailjs.init) {
       throw new Error('EmailJS is not properly initialized.');
@@ -440,6 +482,57 @@ export const emailService = {
     }
   },
 
+  async sendWithNetlifyFunction(data: ContactFormData): Promise<void> {
+    const functionUrl = getNetlifyFunctionUrl();
+    if (!functionUrl) {
+      throw new Error('Netlify function URL not available');
+    }
+
+    // Prepare data for Netlify function
+    const contactData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone || '',
+      eventType: data.eventType,
+      eventDate: data.eventDate || '',
+      location: data.location || '',
+      attendees: data.attendees || '',
+      services: data.services || [],
+      contactMethod: data.contactMethod,
+      company: data.company || '',
+      message: data.message || '',
+      source: data.source || 'contact_form',
+      locale: data.locale || 'es',
+    };
+
+    try {
+      const response = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `HTTP ${response.status}: ${response.statusText}`
+        );
+      }
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Netlify function returned error');
+      }
+
+      console.log('Contact form sent successfully via Netlify function');
+    } catch (error) {
+      console.error('Netlify function error:', error);
+      throw new Error('Failed to send contact form via server function');
+    }
+  },
+
   // Test EmailJS configuration
   async testConfiguration(): Promise<boolean> {
     try {
@@ -502,6 +595,15 @@ export const emailService = {
     return (
       emailTemplates[locale as keyof typeof emailTemplates] || emailTemplates.es
     );
+  },
+
+  // Check configuration status
+  getConfigurationStatus() {
+    return {
+      emailJS: isEmailJSConfigured(),
+      netlifyFunction: typeof window !== 'undefined',
+      environment: process.env.NODE_ENV,
+    };
   },
 
   // Test auto-reply configuration

@@ -380,6 +380,7 @@ export default function ContactForm({
     setIsSubmitting(true);
 
     try {
+      // Try the email service first (which has its own fallbacks)
       await emailService.sendContactForm({
         ...formData,
         locale,
