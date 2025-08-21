@@ -313,10 +313,13 @@ export default function ContactForm({
       newErrors.name = 'Name is required';
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    // Email validation only when contact method is email
+    if (formData.contactMethod === 'email') {
+      if (!formData.email.trim()) {
+        newErrors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
     }
 
     // Phone validation when contact method is whatsapp or call
@@ -343,6 +346,17 @@ export default function ContactForm({
 
     if (formData.services.length === 0) {
       newErrors.services = 'At least one service is required';
+    }
+
+    // Validate event date is in the future (if provided)
+    if (formData.eventDate) {
+      const selectedDate = new Date(formData.eventDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+
+      if (selectedDate < today) {
+        newErrors.eventDate = 'Event date must be in the future';
+      }
     }
 
     // Validate hidden captcha field
@@ -543,18 +557,25 @@ export default function ContactForm({
             />
           </motion.div>
 
-          <motion.form
+          <form
             ref={formRef}
             onSubmit={onSubmit}
-            variants={prefersReduced ? undefined : staggerContainer}
-            initial={prefersReduced ? undefined : 'hidden'}
-            whileInView={prefersReduced ? undefined : 'visible'}
-            viewport={{ once: true, amount: 0.2 }}
             className={cn(
-              'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12',
+              'space-y-8 bg-card rounded-lg shadow-xl p-8 md:p-12 relative',
               getBackgroundClasses('form').background
             )}
           >
+            {/* Loading overlay */}
+            {isSubmitting && (
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg flex items-center justify-center z-10">
+                <div className="flex items-center space-x-2 text-primary">
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                  <span className="text-lg font-medium">
+                    Enviando mensaje...
+                  </span>
+                </div>
+              </div>
+            )}
             {/* Name + Company (desktop side-by-side) */}
             <motion.div
               variants={prefersReduced ? undefined : fadeInUp}
@@ -577,11 +598,16 @@ export default function ContactForm({
                   onBlur={() => setFocusedField(null)}
                   data-field="name"
                   aria-invalid={!!errors.name}
+                  disabled={isSubmitting}
                   className={cn(
                     'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0'
+                    'focus:border-2 focus:border-primary focus:ring-0',
+                    errors.name && 'border-destructive focus:border-destructive'
                   )}
                 />
+                {errors.name && (
+                  <p className="text-sm text-destructive mt-1">{errors.name}</p>
+                )}
               </div>
 
               {/* Company Field */}
@@ -600,6 +626,7 @@ export default function ContactForm({
                   onChange={e => handleInputChange('company', e.target.value)}
                   onFocus={() => setFocusedField('company')}
                   onBlur={() => setFocusedField(null)}
+                  disabled={isSubmitting}
                   className={cn(
                     'text-body-md',
                     'focus:border-2 focus:border-primary focus:ring-0'
@@ -641,7 +668,9 @@ export default function ContactForm({
                         errors.contactMethod &&
                           'border-destructive focus:border-destructive',
                         focusedField === 'contactMethod' &&
-                          '!border-primary !border-2'
+                          '!border-primary !border-2',
+                        isSubmitting &&
+                          'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
                       role="button"
                       tabIndex={0}
@@ -774,9 +803,33 @@ export default function ContactForm({
                   }
                   className={cn(
                     'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0'
+                    'focus:border-2 focus:border-primary focus:ring-0',
+                    errors[
+                      formData.contactMethod === 'whatsapp' ||
+                      formData.contactMethod === 'call'
+                        ? 'phone'
+                        : 'email'
+                    ] && 'border-destructive focus:border-destructive'
                   )}
+                  disabled={isSubmitting}
                 />
+                {errors[
+                  formData.contactMethod === 'whatsapp' ||
+                  formData.contactMethod === 'call'
+                    ? 'phone'
+                    : 'email'
+                ] && (
+                  <p className="text-sm text-destructive mt-1">
+                    {
+                      errors[
+                        formData.contactMethod === 'whatsapp' ||
+                        formData.contactMethod === 'call'
+                          ? 'phone'
+                          : 'email'
+                      ]
+                    }
+                  </p>
+                )}
               </div>
             </motion.div>
 
@@ -813,7 +866,9 @@ export default function ContactForm({
                         errors.eventType &&
                           'border-destructive focus:border-destructive',
                         focusedField === 'eventType' &&
-                          '!border-primary !border-2'
+                          '!border-primary !border-2',
+                        isSubmitting &&
+                          'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
                       role="button"
                       tabIndex={0}
@@ -871,6 +926,11 @@ export default function ContactForm({
                     </div>
                   </PopoverContent>
                 </Popover>
+                {errors.eventType && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.eventType}
+                  </p>
+                )}
               </div>
 
               {/* Location Field */}
@@ -895,9 +955,17 @@ export default function ContactForm({
                   aria-invalid={!!errors.location}
                   className={cn(
                     'text-body-md',
-                    'focus:border-2 focus:border-primary focus:ring-0'
+                    'focus:border-2 focus:border-primary focus:ring-0',
+                    errors.location &&
+                      'border-destructive focus:border-destructive'
                   )}
+                  disabled={isSubmitting}
                 />
+                {errors.location && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.location}
+                  </p>
+                )}
               </div>
             </motion.div>
 
@@ -934,7 +1002,9 @@ export default function ContactForm({
                         errors.attendees &&
                           'border-destructive focus:border-destructive',
                         focusedField === 'attendees' &&
-                          '!border-primary !border-2'
+                          '!border-primary !border-2',
+                        isSubmitting &&
+                          'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
                       role="button"
                       tabIndex={0}
@@ -992,6 +1062,11 @@ export default function ContactForm({
                     </div>
                   </PopoverContent>
                 </Popover>
+                {errors.attendees && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.attendees}
+                  </p>
+                )}
               </div>
 
               {/* Event Date Field */}
@@ -1007,14 +1082,18 @@ export default function ContactForm({
                     id="eventDate"
                     type="date"
                     value={formData.eventDate}
+                    min={new Date().toISOString().split('T')[0]}
                     onChange={e =>
                       handleInputChange('eventDate', e.target.value)
                     }
                     onFocus={() => setFocusedField('eventDate')}
                     onBlur={() => setFocusedField(null)}
+                    disabled={isSubmitting}
                     className={cn(
                       'text-body-md pr-10',
-                      'focus:border-2 focus:border-primary focus:ring-0'
+                      'focus:border-2 focus:border-primary focus:ring-0',
+                      errors.eventDate &&
+                        'border-destructive focus:border-destructive'
                     )}
                   />
                   {formData.eventDate && (
@@ -1036,6 +1115,11 @@ export default function ContactForm({
                     </Button>
                   )}
                 </div>
+                {errors.eventDate && (
+                  <p className="text-sm text-destructive mt-1">
+                    {errors.eventDate}
+                  </p>
+                )}
               </div>
             </motion.div>
 
@@ -1066,12 +1150,18 @@ export default function ContactForm({
                 )}
                 data-field="services"
                 aria-invalid={!!errors.services}
+                disabled={isSubmitting}
                 className={cn(
                   'text-body-md',
                   errors.services &&
                     'border-destructive focus:border-destructive'
                 )}
               />
+              {errors.services && (
+                <p className="text-sm text-destructive mt-1">
+                  {errors.services}
+                </p>
+              )}
             </motion.div>
 
             {/* Message Field */}
@@ -1095,11 +1185,19 @@ export default function ContactForm({
                 data-field="message"
                 aria-invalid={!!errors.message}
                 rows={6}
+                disabled={isSubmitting}
                 className={cn(
                   'text-body-md resize-none',
-                  'focus:border-2 focus:border-primary focus:ring-0'
+                  'focus:border-2 focus:border-primary focus:ring-0',
+                  errors.message &&
+                    'border-destructive focus:border-destructive'
                 )}
               />
+              {errors.message && (
+                <p className="text-sm text-destructive mt-1">
+                  {errors.message}
+                </p>
+              )}
             </motion.div>
 
             {/* Hidden Captcha Field */}
@@ -1118,10 +1216,7 @@ export default function ContactForm({
             </motion.div>
 
             {/* Submit Button */}
-            <motion.div
-              variants={prefersReduced ? undefined : fadeInUp}
-              className="flex justify-center"
-            >
+            <div className="flex justify-center">
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -1142,8 +1237,8 @@ export default function ContactForm({
                   </>
                 )}
               </Button>
-            </motion.div>
-          </motion.form>
+            </div>
+          </form>
         </div>
       </section>
 
