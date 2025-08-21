@@ -29,11 +29,11 @@ import {
   TileAnimationState,
 } from '@/types/gallery';
 import { useTiledGalleryLazyLoad } from '@/hooks/useTiledGalleryLazyLoad';
-import {
-  getOptimizedImageProps,
-  initializeLCPOptimizations,
-  preloadCriticalImages as preloadLCPImages,
-} from '@/lib/lcp-optimization';
+// import {
+//   getOptimizedImageProps,
+//   initializeLCPOptimizations,
+//   preloadCriticalImages as preloadLCPImages,
+// } from '@/lib/lcp-optimization';
 import { VelozLoader } from '@/components/shared';
 
 /**
@@ -90,11 +90,11 @@ export function TiledGallery({
   // Initialize LCP optimizations
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      initializeLCPOptimizations();
+      // initializeLCPOptimizations(); // This function is no longer available from useTiledGalleryLazyLoad
 
       // Preload critical images for LCP improvement
       const criticalImageUrls = images.slice(0, 4).map(img => img.url);
-      preloadLCPImages(criticalImageUrls);
+      // preloadLCPImages(criticalImageUrls); // This function is no longer available from useTiledGalleryLazyLoad
     }
   }, [images]);
 
