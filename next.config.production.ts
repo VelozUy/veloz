@@ -92,23 +92,8 @@ const productionConfig: NextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
-          // Performance and caching headers for TTFB optimization
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'CDN-Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Vercel-CDN-Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Netlify-CDN-Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
+          // Do NOT set long-lived cache headers for HTML documents
+          // Static assets have their own long cache headers below
           // Compression headers
           {
             key: 'Accept-Encoding',

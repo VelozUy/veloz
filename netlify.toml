@@ -73,6 +73,9 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    # Ensure HTML pages are always revalidated to avoid serving stale markup
+    # More specific rules for assets (/_next/static/*) below override this
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # Cache static assets
 [[headers]]
@@ -100,3 +103,7 @@
 
 [context.deploy-preview.environment]
   ENABLE_PAGE_WARMUP = "false" 
+
+# Run page warmup after successful deploy
+[[plugins]]
+  package = "./netlify/plugins/page-warmup"

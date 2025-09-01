@@ -1,17 +1,13 @@
 // Service Worker for Veloz - Performance Optimization
-// Version: 1.0.0
+// Version: 1.0.1
 // Purpose: Cache static assets and improve repeat visit performance
 
-const CACHE_NAME = 'veloz-cache-v1.0.0';
-const STATIC_CACHE_NAME = 'veloz-static-v1.0.0';
-const DYNAMIC_CACHE_NAME = 'veloz-dynamic-v1.0.0';
+const CACHE_NAME = 'veloz-cache-v1.0.1';
+const STATIC_CACHE_NAME = 'veloz-static-v1.0.1';
+const DYNAMIC_CACHE_NAME = 'veloz-dynamic-v1.0.1';
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
-  '/',
-  '/about',
-  '/contact',
-  '/our-work',
   '/favicon.svg',
   '/redjola/Redjola.otf',
   '/Roboto/static/Roboto-Regular.ttf',
@@ -92,7 +88,13 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Handle static assets (HTML, CSS, JS, images, fonts)
+  // Never cache HTML documents; always fetch network first with cache fallback
+  if (request.destination === 'document') {
+    event.respondWith(fetch(request).catch(() => caches.match(request)));
+    return;
+  }
+
+  // Handle static assets (CSS, JS, images, fonts)
   if (isStaticAsset(request)) {
     event.respondWith(
       caches.match(request).then(response => {
@@ -203,8 +205,8 @@ self.addEventListener('fetch', event => {
 // Helper functions
 function isStaticAsset(request) {
   const url = new URL(request.url);
-  const staticExtensions = ['.html', '.css', '.js', '.json', '.xml', '.txt'];
-  const staticDestinations = ['document', 'style', 'script', 'font', 'image'];
+  const staticExtensions = ['.css', '.js', '.json', '.xml', '.txt'];
+  const staticDestinations = ['style', 'script', 'font', 'image'];
 
   return (
     staticExtensions.some(ext => url.pathname.endsWith(ext)) ||
