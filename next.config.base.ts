@@ -50,7 +50,8 @@ const baseConfig: NextConfig = {
   experimental: {
     // Performance optimizations
     optimizeCss: false, // Disabled due to critters compatibility issues
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // Avoid optimizing 'framer-motion' in dev; causes runtime bundling issues
+    optimizePackageImports: ['lucide-react'],
   },
   eslint: {
     // Only run ESLint on these directories during build

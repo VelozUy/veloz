@@ -114,16 +114,16 @@ class ServiceWorkerManager {
     const notification = document.createElement('div');
     notification.style.cssText = `
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 1.25rem;
+      right: 1.25rem;
       background: hsl(var(--primary));
       color: hsl(var(--primary-foreground));
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px hsl(var(--shadow));
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
       z-index: 10000;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 14px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
       cursor: pointer;
       transition: opacity 0.3s ease;
     `;

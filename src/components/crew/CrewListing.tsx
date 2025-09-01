@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Image from 'next/image';
+import { OptimizedImage } from '@/components/shared';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -368,12 +368,14 @@ export default function CrewListing({ crewMembers }: CrewListingProps) {
                         <div className="flex items-center space-x-3">
                           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center overflow-hidden">
                             {member.portrait ? (
-                              <Image
+                              <OptimizedImage
                                 src={member.portrait}
                                 alt={member.name.es || 'Crew Member'}
                                 width={64}
                                 height={64}
                                 className="w-full h-full object-cover"
+                                quality={70}
+                                sizes="(max-width: 768px) 64px, 64px"
                               />
                             ) : (
                               <User className="w-8 h-8 text-primary" />

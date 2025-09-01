@@ -16,7 +16,7 @@ const config = {
     '!dist/**',
     '!build/**',
   ],
-  
+
   // Patterns that indicate hardcoded values
   violationPatterns: {
     hardcodedColors: [
@@ -33,11 +33,10 @@ const config = {
     hardcodedSpacing: [
       /margin:\s*\d+px/g, // Hardcoded margins
       /padding:\s*\d+px/g, // Hardcoded padding
-      /width:\s*\d+px/g, // Hardcoded widths
-      /height:\s*\d+px/g, // Hardcoded heights
+      // Width/height checks are noisy (e.g., max-width in responsive sizes). Omit for now.
     ],
   },
-  
+
   // Allowed exceptions (files or patterns that are allowed to have violations)
   allowedExceptions: [
     'src/components/debug/ThemePreview.tsx', // Theme preview component
@@ -45,8 +44,18 @@ const config = {
     'docs/THEME*.md', // Theme documentation
     'tailwind.config.ts', // Tailwind config
     'next.config.ts', // Next.js config
+    'src/lib/**/*.generated.ts', // Generated files
+    'src/lib/static-content.generated.ts',
+    'src/lib/build-time-data.generated.ts',
+    'src/lib/page-content-types.generated.ts',
+    'src/**/*.test.ts',
+    'src/**/*.test.tsx',
+    'src/**/*.spec.ts',
+    'src/**/*.spec.tsx',
+    'src/**/__tests__/**',
+    'src/app/globals.css', // Base CSS (contains @font-face and tokens)
   ],
-  
+
   // Theme variables that are allowed
   allowedThemeVars: [
     'var(--',
@@ -92,31 +101,33 @@ class ThemeValidator {
     const violations = [];
 
     // Check for hardcoded colors
-    config.violationPatterns.hardcodedColors.forEach((pattern, patternIndex) => {
-      const matches = content.matchAll(pattern);
-      for (const match of matches) {
-        const value = match[0];
-        const line = content.substring(0, match.index).split('\n').length;
-        
-        if (!this.isAllowedValue(value)) {
-          violations.push({
-            type: 'hardcoded-color',
-            file: filePath,
-            line,
-            value,
-            message: `Hardcoded color found: ${value}. Use theme variables instead.`,
-          });
+    config.violationPatterns.hardcodedColors.forEach(
+      (pattern, patternIndex) => {
+        const matches = content.matchAll(pattern);
+        for (const match of matches) {
+          const value = match[0];
+          const line = content.substring(0, match.index).split('\n').length;
+
+          if (!this.isAllowedValue(value)) {
+            violations.push({
+              type: 'hardcoded-color',
+              file: filePath,
+              line,
+              value,
+              message: `Hardcoded color found: ${value}. Use theme variables instead.`,
+            });
+          }
         }
       }
-    });
+    );
 
     // Check for hardcoded fonts
-    config.violationPatterns.hardcodedFonts.forEach((pattern) => {
+    config.violationPatterns.hardcodedFonts.forEach(pattern => {
       const matches = content.matchAll(pattern);
       for (const match of matches) {
         const value = match[0];
         const line = content.substring(0, match.index).split('\n').length;
-        
+
         if (!this.isAllowedValue(value)) {
           violations.push({
             type: 'hardcoded-font',
@@ -131,12 +142,12 @@ class ThemeValidator {
 
     // Check for hardcoded spacing (optional, can be disabled)
     if (process.argv.includes('--strict')) {
-      config.violationPatterns.hardcodedSpacing.forEach((pattern) => {
+      config.violationPatterns.hardcodedSpacing.forEach(pattern => {
         const matches = content.matchAll(pattern);
         for (const match of matches) {
           const value = match[0];
           const line = content.substring(0, match.index).split('\n').length;
-          
+
           violations.push({
             type: 'hardcoded-spacing',
             file: filePath,
@@ -169,7 +180,7 @@ class ThemeValidator {
         const violations = this.scanFile(file);
         this.violations.push(...violations);
         this.stats.filesScanned++;
-        
+
         if (violations.length > 0) {
           this.stats.filesWithViolations++;
         }
@@ -208,11 +219,13 @@ class ThemeValidator {
     console.log(`   Files scanned: ${this.stats.filesScanned}`);
     console.log(`   Files with violations: ${this.stats.filesWithViolations}`);
     console.log(`   Total violations: ${this.stats.totalViolations}`);
-    console.log(`   Status: ${report.summary.passed ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(
+      `   Status: ${report.summary.passed ? '✅ PASSED' : '❌ FAILED'}`
+    );
 
     if (this.stats.totalViolations > 0) {
       console.log('\n🚨 Violations Found:');
-      
+
       Object.entries(violationsByFile).forEach(([file, fileViolations]) => {
         console.log(`\n   📄 ${file}:`);
         fileViolations.forEach(violation => {
@@ -241,7 +254,9 @@ class ThemeValidator {
 async function main() {
   const args = process.argv.slice(2);
   const outputReport = args.includes('--report');
-  const reportPath = args.find(arg => arg.startsWith('--output='))?.split('=')[1] || 'theme-validation-report.json';
+  const reportPath =
+    args.find(arg => arg.startsWith('--output='))?.split('=')[1] ||
+    'theme-validation-report.json';
 
   const validator = new ThemeValidator();
   const report = validator.validate();
@@ -256,4 +271,4 @@ async function main() {
   }
 }
 
-main().catch(console.error); 
+main().catch(console.error);

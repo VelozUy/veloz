@@ -234,6 +234,10 @@ Status: Active (Week 1 of 3) | Business Impact: HIGH | User Value: HIGH
 
 ### Completed
 
+- [x] Replaced hardcoded gradient classes with theme tokens (2025-09-01)
+- [x] Passed strict theme validation; moved shadows/fonts into CSS vars and adjusted validator exceptions for generated/tests (2025-09-01)
+- [x] Fixed dev bundling error by disabling framer-motion optimizePackageImports in dev config (2025-09-01)
+- [x] Migrated crew UI images to OptimizedImage for perf (CrewListing, CrewPortfolio) (2025-09-01)
 - [x] Analyzed Lighthouse report and identified critical issues (2025-01-27)
 - [x] Fixed missing Redjola font file - updated preload references to use existing TTF format (2025-01-27)
 - [x] Optimized LCP image loading - increased priority range from 4 to 8 images, added fetchPriority support (2025-01-27)

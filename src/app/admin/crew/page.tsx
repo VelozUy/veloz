@@ -304,7 +304,7 @@ export default function CrewManagementPage() {
                       <TableRow key={member.id}>
                         <TableCell>
                           <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
                               {displayName.charAt(0).toUpperCase()}
                             </div>
                             <div>

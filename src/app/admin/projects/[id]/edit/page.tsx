@@ -1179,7 +1179,7 @@ export default function UnifiedProjectEditPage({
                 {isCreateMode ? (
                   <Card>
                     <CardContent className="p-8 text-center">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
                         <FileText className="w-8 h-8 text-primary-foreground" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground mb-2">
@@ -1252,7 +1252,7 @@ export default function UnifiedProjectEditPage({
                 {isCreateMode ? (
                   <Card>
                     <CardContent className="p-8 text-center">
-                      <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
                         <Instagram className="w-8 h-8 text-primary-foreground" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground mb-2">
@@ -1335,7 +1335,7 @@ export default function UnifiedProjectEditPage({
                 {isCreateMode ? (
                   <Card>
                     <CardContent className="p-8 text-center">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
                         <Users className="w-8 h-8 text-primary-foreground" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground mb-2">

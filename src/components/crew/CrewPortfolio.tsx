@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import { OptimizedImage } from '@/components/shared';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -302,11 +302,14 @@ export default function CrewPortfolio({ crewMember }: CrewPortfolioProps) {
             >
               <CardHeader className="pb-3">
                 <div className="aspect-video relative overflow-hidden rounded-lg">
-                  <Image
+                  <OptimizedImage
                     src={work.thumbnailUrl || work.url}
                     alt={work.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    quality={75}
+                    loading="lazy"
                   />
                   <div className="absolute top-2 right-2">
                     {work.type === 'video' ? (

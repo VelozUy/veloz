@@ -357,7 +357,7 @@ export function BatchTranslationButton({
       variant="default"
       onClick={handleBatchTranslate}
       disabled={disabled || isBatchTranslating}
-      className={`bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 ${className}`}
+      className={`bg-gradient-to-r from-accent to-primary hover:opacity-90 ${className}`}
     >
       {isBatchTranslating ? (
         <>

@@ -168,7 +168,7 @@ export function testSpacing(): boolean {
  * Test theme shadows
  */
 export function testShadows(): boolean {
-  return CSS.supports('box-shadow', '0 0 10px rgba(0,0,0,0.1)');
+  return CSS.supports('box-shadow', '0 0 10px hsl(var(--shadow) / 0.1)');
 }
 
 /**

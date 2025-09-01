@@ -94,7 +94,7 @@ export function testFocusManagement(): boolean {
   const style = document.createElement('style');
   style.textContent = `
     *:focus {
-      outline: 2px solid #007acc;
+      outline: 2px solid hsl(var(--ring));
       outline-offset: 2px;
     }
   `;
@@ -395,7 +395,7 @@ export function applyAccessibilityFixes(): void {
   style.textContent = `
     /* Focus indicators for accessibility */
     *:focus {
-      outline: 2px solid #007acc;
+      outline: 2px solid hsl(var(--ring));
       outline-offset: 2px;
     }
     
@@ -404,9 +404,9 @@ export function applyAccessibilityFixes(): void {
       position: absolute;
       top: -40px;
       left: 6px;
-      background: #007acc;
-      color: white;
-      padding: 8px;
+      background: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      padding: 0.5rem;
       text-decoration: none;
       z-index: 1000;
     }

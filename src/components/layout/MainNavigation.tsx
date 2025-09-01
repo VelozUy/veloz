@@ -29,7 +29,7 @@ interface MainNavigationProps {
  * Uses the shareable NavigationBar component with Veloz-specific styling.
  *
  * Features:
- * - Charcoal background (#212223) with white text
+ * - Charcoal background with high-contrast foreground
  * - Scroll-based visibility
  * - Responsive design with mobile menu
  * - Localized navigation links
