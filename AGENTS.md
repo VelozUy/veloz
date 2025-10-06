@@ -1,74 +1,43 @@
-Project Agent Guide (Codex CLI)
+# Repository Guidelines
 
-Purpose
+## Project Structure & Module Organization
 
-- Define consistent assistant behavior for this repo while keeping context lean.
-- Load extra rules only when needed; avoid auto-loading large files.
+- Next.js App Router lives in `src/app`; shared UI sits in `src/components`, with Tailwind tokens and Radix primitives.
+- Core logic and data helpers live in `src/lib`, `src/data`, `src/services`, and `src/hooks`; static assets land in `public/`.
+- Jest specs live under `src/__tests__` (unit, integration) while Playwright end-to-end suites are in `tests/e2e/`.
+- Server-side utilities and background tasks reside in `functions/`; workflow docs stay in `docs/` (see `docs/WORKFLOW.md`).
 
-Context Loading Policy
+## Build, Test, and Development Commands
 
-- Default context: only this file.
-- Load on demand by task type (use these file references when relevant):
-  - UI/UX rules: `.cursor/rules/design.mdc:1`
-  - Backlog/process guide: `Untitled-2:1`
-  - Active tasks: `docs/TASK.md:1` (if present)
-  - Backlog: `docs/BACKLOG.md:1` (if present)
-  - Requirements/spec: `docs/VELOZ_PROJECT_REQUIREMENTS.md:1` (when feature scope or acceptance criteria are unclear)
-- Do not auto-load entire folders; reference only the files above as needed.
+- `npm run dev` launches the Next dev server on `http://localhost:3000`.
+- `npm run build` runs `scripts/build-production.js`; use `build:dev`, `build:data`, or `build:split-content` for targeted rebuilds.
+- `npm run lint` / `npm run lint:fix` execute ESLint via Next; `npm run format` / `format:check` wrap Prettier.
+- `npm run type-check` runs `tsc --noEmit`.
+- `npm test`, `npm run test:integration`, and `npm run test:coverage` keep Jest suites green; `npm run e2e` drives Playwright.
 
-Persona & Interaction Style
+## Coding Style & Naming Conventions
 
-- Concise, direct, and friendly; prioritize actionable guidance.
-- Ask before running destructive actions or making wide refactors.
-- Prefer minimal diffs; follow existing patterns and style.
+- TypeScript-first codebase; prefer functional React components in PascalCase (`FeatureCard`).
+- Follow Tailwind utility patterns and design tokens; avoid hardcoded color values.
+- Keep modules focused (<500 LOC); colocate hooks under `src/hooks` and service clients in `src/services`.
+- Formatting is governed by Prettier (2-space indent); lint-staged runs `eslint --fix`, `prettier --write`, and `npm run theme:check` before commits.
 
-Execution Rules (Codex CLI)
+## Testing Guidelines
 
-- Search: use `rg` (ripgrep), e.g., `rg -n -S "pattern" path/`.
-- Edits: use `apply_patch` with focused changes.
-- Planning: use `update_plan` for multi-step or ambiguous work.
-- Scripts: run via shell (e.g., `npm run test|lint|type-check`).
-- Do not commit or create branches unless explicitly requested.
+- Use Jest + Testing Library for unit/integration; mirror source paths and suffix files with `.test.ts(x)`.
+- Capture edge cases (happy, error, boundary) and update snapshots when UI shifts.
+- Playwright specs belong in `tests/e2e`; run `npx playwright install` once per machine and gate UI changes with `npm run e2e` when relevant.
+- Verify coverage parity for touched modules via `npm run test:coverage` before opening a PR.
 
-UI/UX Quick Rules (load `.cursor/rules/design.mdc:1` for full details)
+## Commit & Pull Request Guidelines
 
-- Visual hierarchy: typographic scale; consistent design tokens; avoid hardcoded colors.
-- Accessibility: WCAG 2.1 AA contrast; semantic HTML; keyboard navigable; clear focus states; descriptive `alt`.
-- Responsive: mobile-first; CSS Grid/Flexbox; fluid units; sensible breakpoints.
-- Performance: optimize images (Next.js Image where applicable), lazy-load non-critical media, code-split where helpful.
-- Feedback: clear loading and error states; unobtrusive animations; consistent components.
+- Follow Conventional Commits (`type(scope): summary`) as seen in recent history (`perf(seo): …`).
+- Group related changes; explain intent, risks, and rollout notes in the body when work is non-trivial.
+- Reference the corresponding item in `docs/TASK.md`, include acceptance-criteria verification, and attach UI diffs (screenshots or video) for visual updates.
+- Confirm lint, type-check, and relevant tests locally; call out skipped checks with rationale if unavoidable.
 
-Process Conventions (load `Untitled-2:1` for full details)
+## Security & Configuration Tips
 
-- Files and limits: keep `docs/TASK.md` ≤ 500 lines; `docs/BACKLOG.md` ≤ 1000 lines; archive completed epics promptly.
-- Status markers: `[ ]` not started, `[~]` in progress, `[x]` completed, `[!]` blocked, `[>]` moved, `[?]` needs clarification.
-- Epic hygiene: only 2–3 active epics in `docs/TASK.md`; move completed items to `docs/COMPLETED.md`.
-
-Quality Gates
-
-- Tests: add/update unit tests for changed logic when applicable; run `npm test` if available.
-- Type safety: run `npm run type-check` (TypeScript projects).
-- Linting: run `npm run lint`; fix critical issues tied to the change.
-- A11y: verify keyboard access and focus states; ensure alt text and ARIA where needed.
-- Perf: prefer smaller, composable components; avoid unnecessary re-renders; lazy-load expensive parts.
-
-File & Code Conventions
-
-- Keep files small and cohesive (aim ≤ 500 LOC); split when appropriate.
-- Use clear naming; avoid one-letter variables; reuse existing utilities.
-- Follow existing directory structure and import style; prefer relative imports when consistent with the codebase.
-- Never include secrets; do not overwrite secret values.
-
-Security & Safety
-
-- Avoid introducing new dependencies unless necessary and approved.
-- Never remove unrelated code or change behavior outside the task scope.
-- For potentially destructive actions (e.g., file deletions, resets), pause and confirm first.
-
-How To Work With This Guide
-
-- Start with AGENTS.md only. Bring in:
-  - `.cursor/rules/design.mdc:1` for UI or design-related tasks.
-  - `Untitled-2:1` for backlog/process conventions or task hygiene.
-  - `docs/TASK.md:1` / `docs/BACKLOG.md:1` / `docs/VELOZ_PROJECT_REQUIREMENTS.md:1` when the task explicitly references them.
-- Keep output succinct; use bullets; show file paths and line anchors when citing sources.
+- Never commit secrets—bootstrap env files with `npm run setup:env`.
+- Use `scripts/clear-cache.js` before profiling performance or reproducing cache-sensitive bugs.
+- Document any new dependency in the PR description and justify why it is required.

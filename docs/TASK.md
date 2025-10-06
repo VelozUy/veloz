@@ -199,6 +199,30 @@ _Last updated: 2025-01-27_
 
 ## 🎯 **ACTIVE EPICS**
 
+### EPIC: Dropbox API Integration with Project Code Management
+
+Reference: `docs/epics/admin/dropbox-api-integration-project-code-management.md`
+Status: Active (Week 1 of 4) | Business Impact: HIGH | User Value: HIGH
+
+#### Critical (This Week)
+
+- [ ] Environment setup and config validation (`.env`, `env.ts`)
+- [ ] Dropbox client wrapper with token refresh and `dropboxFetch()`
+- [ ] Team Space support via `Dropbox-API-Select-User`
+- [ ] `makeProjectCode()` with uniqueness guard and tests
+- [ ] `createProjectTree(projectCode)` with idempotency and logs
+- [ ] Firestore persistence (metadata, paths, audit) + integration test
+
+#### High Priority (Next Week)
+
+- [ ] Shared link management: create/fetch/export link; revoke flow; Firestore state; audit
+- [ ] Security & auth: `requireAdmin()` and secure routes
+
+#### Medium Priority (Future)
+
+- [ ] Documentation & examples (setup, cURL for create/link/revoke)
+- [ ] Test coverage for link management (mocks) and folder creation
+
 ### EPIC: Performance Optimization - Lighthouse Report Fixes
 
 Reference: `docs/LIGHTHOUSE_PERFORMANCE_IMPROVEMENT_PLAN.md` (Updated with new Lighthouse data)
@@ -489,12 +513,12 @@ Status: Active (Week 1 of 3) | Business Impact: HIGH | User Value: HIGH
 
 #### 🟥 Critical (This Week)
 
-- [ ] Automated testing suite implementation
+- [x] Automated testing suite implementation (2025-09-01)
   - File: `src/__tests__/unit/`, `src/__tests__/integration/`, `src/__tests__/e2e/`
   - Notes: See epic file for full context - Jest, React Testing Library, Playwright, visual regression testing
   - Estimated Time: 5-7 days
 
-- [ ] Manual testing procedures and quality gates
+- [x] Manual testing procedures and quality gates (2025-09-01)
   - File: `docs/testing/manual-testing-checklist.md`, `docs/testing/quality-gates.md`
   - Notes: See epic file for full context - testing checklists, cross-browser testing, quality gates
   - Estimated Time: 3-4 days
@@ -534,7 +558,7 @@ Status: Active (Week 1 of 3) | Business Impact: HIGH | User Value: HIGH
 | 🟧 **MEDIUM PRIORITY** | 8     | Future development                                                                                                                                                                                                                       |
 | ✅ **COMPLETED**       | 16    | SEO & Marketing Enhancement + Accessibility Enhancements + Mobile-First Design Optimization + Performance & Technical UX Optimization + Backward Compatibility Cleanup + Contact Email Template Fix + 10 archived in `docs/COMPLETED.md` |
 
-**Total Active Epics**: 3
+**Total Active Epics**: 4
 
 ---
 

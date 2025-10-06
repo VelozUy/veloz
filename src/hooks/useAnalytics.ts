@@ -1,6 +1,7 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { shouldSkipFirebase } from '@/lib/static-page-detection';
+import { GDPRCompliance, GDPR_CONSENT_EVENT } from '@/lib/gdpr-compliance';
 
 // Import types
 import type {
@@ -23,33 +24,111 @@ let trackError:
   | ((error: Error, context?: Record<string, unknown>) => void)
   | null = null;
 
-// Dynamically import analytics service on client side
-if (typeof window !== 'undefined' && !shouldSkipFirebase()) {
-  import('@/services/analytics').then(analytics => {
-    analyticsService = analytics.analyticsService as unknown as Record<
-      string,
-      unknown
-    >;
-    trackProjectView = analytics.trackProjectView;
-    trackMediaInteraction = analytics.trackMediaInteraction;
-    trackCTAInteraction = analytics.trackCTAInteraction;
-    trackCrewInteraction = analytics.trackCrewInteraction;
-    trackPageView = analytics.trackPageView;
-    trackScrollDepth = analytics.trackScrollDepth;
-    trackError = analytics.trackError;
-  });
-}
+const hasMeasurementId = Boolean(
+  process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+);
+
+let analyticsModulePromise: Promise<void> | null = null;
+
+const loadAnalyticsModule = () => {
+  if (!analyticsModulePromise) {
+    analyticsModulePromise = import('@/services/analytics').then(analytics => {
+      analyticsService = analytics.analyticsService as unknown as Record<
+        string,
+        unknown
+      >;
+      trackProjectView = analytics.trackProjectView;
+      trackMediaInteraction = analytics.trackMediaInteraction;
+      trackCTAInteraction = analytics.trackCTAInteraction;
+      trackCrewInteraction = analytics.trackCrewInteraction;
+      trackPageView = analytics.trackPageView;
+      trackScrollDepth = analytics.trackScrollDepth;
+      trackError = analytics.trackError;
+    });
+  }
+
+  return analyticsModulePromise;
+};
 
 export const useAnalytics = () => {
   const pathname = usePathname();
+  const [consentGranted, setConsentGranted] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return GDPRCompliance.hasAnalyticsConsent();
+  });
+  const [isAnalyticsReady, setIsAnalyticsReady] = useState(
+    typeof window !== 'undefined' && analyticsService !== null
+  );
   const pageViewTracked = useRef(false);
   const scrollDepthTracked = useRef<Set<number>>(new Set());
   const sessionStartTime = useRef<number>(Date.now());
   const projectViewStartTime = useRef<number>(0);
   const currentProjectId = useRef<string | null>(null);
 
+  // Listen for consent changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const updateConsent = () => {
+      setConsentGranted(GDPRCompliance.hasAnalyticsConsent());
+    };
+
+    const consentListener = () => updateConsent();
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === 'gdpr-consent') {
+        updateConsent();
+      }
+    };
+
+    updateConsent();
+
+    window.addEventListener(
+      GDPR_CONSENT_EVENT,
+      consentListener as EventListener
+    );
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      window.removeEventListener(
+        GDPR_CONSENT_EVENT,
+        consentListener as EventListener
+      );
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
+
+  // Lazy-load analytics module once consent is granted
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (!consentGranted) {
+      setIsAnalyticsReady(false);
+      return;
+    }
+
+    const shouldLoadAnalytics = !shouldSkipFirebase() || hasMeasurementId;
+    if (!shouldLoadAnalytics) {
+      return;
+    }
+
+    let cancelled = false;
+
+    loadAnalyticsModule().then(() => {
+      if (!cancelled) {
+        setIsAnalyticsReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [consentGranted]);
+
   // Track page view on route change
   useEffect(() => {
+    if (!isAnalyticsReady) return;
+
     if (pathname && !pageViewTracked.current && trackPageView) {
       trackPageView(pathname, document.title);
       pageViewTracked.current = true;
@@ -59,31 +138,26 @@ export const useAnalytics = () => {
         pageViewTracked.current = false;
       }, 100);
     }
-  }, [pathname]);
+  }, [pathname, isAnalyticsReady]);
 
   // Track session start
   useEffect(() => {
-    if (analyticsService) {
-      (
-        analyticsService as { trackSessionStart: () => void }
-      ).trackSessionStart();
-    }
+    if (!isAnalyticsReady || !analyticsService) return;
+
+    (analyticsService as { trackSessionStart: () => void }).trackSessionStart();
 
     // Track session end on page unload
     const handleBeforeUnload = () => {
-      if (analyticsService) {
-        const sessionDuration = Date.now() - sessionStartTime.current;
-        (
-          analyticsService as { trackSessionEnd: (duration: number) => void }
-        ).trackSessionEnd(sessionDuration);
-      }
+      (
+        analyticsService as { trackSessionEnd: (duration: number) => void }
+      ).trackSessionEnd(Date.now() - sessionStartTime.current);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, [isAnalyticsReady]);
 
   // Scroll depth tracking
   const trackScrollDepthOnPage = useCallback(

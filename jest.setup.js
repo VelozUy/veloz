@@ -165,6 +165,27 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
   disconnect: jest.fn(),
 }));
 
+// Mock PerformanceObserver for web vitals monitoring in tests
+global.PerformanceObserver = class {
+  constructor(callback) {
+    this.callback = callback;
+  }
+  observe() {
+    // no-op
+  }
+  disconnect() {
+    // no-op
+  }
+};
+
+if (!global.performance) {
+  global.performance = {};
+}
+
+if (typeof global.performance.getEntriesByType !== 'function') {
+  global.performance.getEntriesByType = () => [];
+}
+
 // Mock TextEncoder and TextDecoder for QR code generation
 global.TextEncoder = class TextEncoder {
   encode(input) {

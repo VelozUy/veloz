@@ -1,9 +1,9 @@
 import { analyticsService } from '../analytics';
-import { 
-  ProjectViewEventSchema, 
-  MediaInteractionEventSchema, 
-  CTAInteractionEventSchema, 
-  CrewInteractionEventSchema 
+import {
+  ProjectViewEventSchema,
+  MediaInteractionEventSchema,
+  CTAInteractionEventSchema,
+  CrewInteractionEventSchema,
 } from '../analytics';
 
 // Mock Firebase Analytics
@@ -17,15 +17,31 @@ jest.mock('firebase/analytics', () => ({
 // Mock Firebase App
 jest.mock('firebase/app', () => ({
   getApp: jest.fn(() => ({})),
+  getApps: jest.fn(() => [{}]),
+  initializeApp: jest.fn(() => ({})),
 }));
 
 describe('Analytics Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    localStorage.setItem(
+      'gdpr-consent',
+      JSON.stringify({
+        analytics: true,
+        marketing: false,
+        necessary: true,
+        timestamp: Date.now(),
+      })
+    );
     // Reset the analytics service instance
     (analyticsService as any).analytics = null;
     (analyticsService as any).isInitialized = false;
     (analyticsService as any).initializeAnalytics();
+  });
+
+  afterEach(() => {
+    localStorage.removeItem('gdpr-consent');
   });
 
   describe('Project View Tracking', () => {
@@ -43,7 +59,10 @@ describe('Analytics Service', () => {
       expect(result.success).toBe(true);
 
       // Mock the logCustomEvent method
-      const logCustomEventSpy = jest.spyOn(analyticsService as any, 'logCustomEvent');
+      const logCustomEventSpy = jest.spyOn(
+        analyticsService as any,
+        'logCustomEvent'
+      );
       logCustomEventSpy.mockResolvedValue(undefined);
 
       await analyticsService.trackProjectView(validEvent);
@@ -69,14 +88,15 @@ describe('Analytics Service', () => {
       const result = ProjectViewEventSchema.safeParse(invalidEvent);
       // The schema allows empty strings, so we need to test with missing required fields
       expect(result.success).toBe(true); // Zod allows empty strings by default
-      
+
       // Test with missing required fields
       const missingFieldsEvent = {
         projectId: 'test-id',
         // Missing projectTitle
       };
-      
-      const missingResult = ProjectViewEventSchema.safeParse(missingFieldsEvent);
+
+      const missingResult =
+        ProjectViewEventSchema.safeParse(missingFieldsEvent);
       expect(missingResult.success).toBe(false);
     });
   });
@@ -95,7 +115,10 @@ describe('Analytics Service', () => {
       const result = MediaInteractionEventSchema.safeParse(validEvent);
       expect(result.success).toBe(true);
 
-      const logCustomEventSpy = jest.spyOn(analyticsService as any, 'logCustomEvent');
+      const logCustomEventSpy = jest.spyOn(
+        analyticsService as any,
+        'logCustomEvent'
+      );
       logCustomEventSpy.mockResolvedValue(undefined);
 
       await analyticsService.trackMediaInteraction(validEvent);
@@ -136,7 +159,10 @@ describe('Analytics Service', () => {
       const result = CTAInteractionEventSchema.safeParse(validEvent);
       expect(result.success).toBe(true);
 
-      const logCustomEventSpy = jest.spyOn(analyticsService as any, 'logCustomEvent');
+      const logCustomEventSpy = jest.spyOn(
+        analyticsService as any,
+        'logCustomEvent'
+      );
       logCustomEventSpy.mockResolvedValue(undefined);
 
       await analyticsService.trackCTAInteraction(validEvent);
@@ -175,7 +201,10 @@ describe('Analytics Service', () => {
       const result = CrewInteractionEventSchema.safeParse(validEvent);
       expect(result.success).toBe(true);
 
-      const logCustomEventSpy = jest.spyOn(analyticsService as any, 'logCustomEvent');
+      const logCustomEventSpy = jest.spyOn(
+        analyticsService as any,
+        'logCustomEvent'
+      );
       logCustomEventSpy.mockResolvedValue(undefined);
 
       await analyticsService.trackCrewInteraction(validEvent);
@@ -248,12 +277,12 @@ describe('Analytics Service', () => {
 
       // Create a new service instance to test initialization failure
       const { analyticsService: testService } = require('../analytics');
-      
+
       // Reset the test service
       (testService as any).analytics = null;
       (testService as any).isInitialized = false;
       (testService as any).initializeAnalytics();
-      
+
       expect(testService.isAnalyticsInitialized()).toBe(false);
     });
 
@@ -262,7 +291,9 @@ describe('Analytics Service', () => {
       jest.resetModules();
       const { analyticsService } = require('../analytics');
       const { logEvent } = require('firebase/analytics');
-      logEvent.mockImplementation(() => { throw new Error('Network error'); });
+      logEvent.mockImplementation(() => {
+        throw new Error('Network error');
+      });
 
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
@@ -280,4 +311,4 @@ describe('Analytics Service', () => {
       logEvent.mockReset();
     });
   });
-}); 
+});

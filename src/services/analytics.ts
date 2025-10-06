@@ -4,7 +4,9 @@ import {
   setUserId,
   setUserProperties,
 } from 'firebase/analytics';
-import { getApp } from 'firebase/app';
+import { getApp, getApps, initializeApp } from 'firebase/app';
+import { firebaseConfig, validateFirebaseConfig } from '@/lib/firebase-config';
+import { GDPRCompliance } from '@/lib/gdpr-compliance';
 import { z } from 'zod';
 
 // Analytics event schemas
@@ -68,9 +70,41 @@ class AnalyticsService {
     // Don't initialize immediately - wait for client-side usage
   }
 
+  private ensureFirebaseApp(): boolean {
+    try {
+      if (!getApps().length) {
+        const validation = validateFirebaseConfig();
+        if (!validation.isValid) {
+          console.warn(
+            'Firebase Analytics not initialized. Missing config keys:',
+            validation.missing
+          );
+          return false;
+        }
+        initializeApp(firebaseConfig);
+      }
+      return true;
+    } catch (error) {
+      console.error('Failed to initialize Firebase app for analytics:', error);
+      return false;
+    }
+  }
+
   private initializeAnalytics() {
     // Only initialize on client side
     if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!GDPRCompliance.hasAnalyticsConsent()) {
+      this.isInitialized = false;
+      return;
+    }
+
+    this.isGA4Enabled = !!process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
+
+    if (!this.ensureFirebaseApp()) {
+      this.isInitialized = false;
       return;
     }
 
@@ -79,7 +113,6 @@ class AnalyticsService {
       this.analytics = getAnalytics(app);
       this.sessionId = this.generateSessionId();
       this.isInitialized = true;
-      this.isGA4Enabled = !!process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
 
       // Analytics initialized successfully
     } catch (error) {
@@ -128,6 +161,10 @@ class AnalyticsService {
       return;
     }
 
+    if (!GDPRCompliance.hasAnalyticsConsent()) {
+      return;
+    }
+
     try {
       const enrichedParams = {
         ...eventParams,
@@ -142,7 +179,9 @@ class AnalyticsService {
       }
 
       // Analytics event logged
-    } catch (error) {}
+    } catch (error) {
+      console.error('Failed to log analytics event:', error);
+    }
   }
 
   // Project view tracking
