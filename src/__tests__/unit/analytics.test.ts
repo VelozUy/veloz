@@ -36,15 +36,23 @@ jest.mock('@/services/analytics', () => ({
 }));
 
 // Mock GDPR compliance
-jest.mock('@/lib/gdpr-compliance', () => ({
-  GDPRCompliance: {
-    hasAnalyticsConsent: jest.fn(() => true),
-  },
-  GDPR_CONSENT_EVENT: 'gdpr-consent',
-  useGDPRCompliance: () => ({
-    saveConsent: jest.fn(),
-  }),
-}));
+jest.mock('@/lib/gdpr-compliance', () => {
+  const mockSaveConsent = jest.fn();
+  const mockHasAnalyticsConsent = jest.fn(() => true);
+
+  return {
+    GDPRCompliance: {
+      hasAnalyticsConsent: mockHasAnalyticsConsent,
+    },
+    GDPR_CONSENT_EVENT: 'gdpr-consent',
+    useGDPRCompliance: () => ({
+      saveConsent: mockSaveConsent,
+    }),
+    // Export mocks for test access
+    __mockSaveConsent: mockSaveConsent,
+    __mockHasAnalyticsConsent: mockHasAnalyticsConsent,
+  };
+});
 
 // Mock Next.js navigation
 jest.mock('next/navigation', () => ({
@@ -55,6 +63,7 @@ jest.mock('next/navigation', () => ({
 jest.mock('@/lib/utils', () => ({
   getStaticContent: jest.fn(() => ({})),
   t: jest.fn((content, key, fallback) => fallback),
+  cn: jest.fn((...args) => args.filter(Boolean).join(' ')),
 }));
 
 describe('Analytics System', () => {
@@ -279,26 +288,30 @@ describe('Analytics System', () => {
   });
 
   describe('AnalyticsConsentBanner', () => {
+    let mockSaveConsent: jest.Mock;
+    let mockHasAnalyticsConsent: jest.Mock;
+
+    beforeEach(() => {
+      const gdprModule = require('@/lib/gdpr-compliance');
+      mockSaveConsent = gdprModule.__mockSaveConsent;
+      mockHasAnalyticsConsent = gdprModule.__mockHasAnalyticsConsent;
+
+      mockSaveConsent.mockClear();
+      mockHasAnalyticsConsent.mockClear();
+    });
+
     it('should render consent banner when no consent given', () => {
       // Mock no consent
-      jest
-        .mocked(
-          require('@/lib/gdpr-compliance').GDPRCompliance.hasAnalyticsConsent
-        )
-        .mockReturnValue(false);
+      mockHasAnalyticsConsent.mockReturnValue(false);
 
       const { getByText } = render(React.createElement(AnalyticsConsentBanner));
 
-      expect(getByText('Privacy & cookies')).toBeInTheDocument();
+      expect(getByText('Privacidad y cookies')).toBeInTheDocument();
     });
 
     it('should not render when consent is already given', () => {
       // Mock consent given
-      jest
-        .mocked(
-          require('@/lib/gdpr-compliance').GDPRCompliance.hasAnalyticsConsent
-        )
-        .mockReturnValue(true);
+      mockHasAnalyticsConsent.mockReturnValue(true);
 
       const { container } = render(React.createElement(AnalyticsConsentBanner));
 
@@ -306,44 +319,22 @@ describe('Analytics System', () => {
     });
 
     it('should handle accept consent', () => {
-      const mockSaveConsent = jest.fn();
-      jest
-        .mocked(require('@/lib/gdpr-compliance').useGDPRCompliance)
-        .mockReturnValue({
-          saveConsent: mockSaveConsent,
-        });
-
-      jest
-        .mocked(
-          require('@/lib/gdpr-compliance').GDPRCompliance.hasAnalyticsConsent
-        )
-        .mockReturnValue(false);
+      mockHasAnalyticsConsent.mockReturnValue(false);
 
       const { getByText } = render(React.createElement(AnalyticsConsentBanner));
 
-      const acceptButton = getByText('Accept analytics');
+      const acceptButton = getByText('Aceptar analíticas');
       fireEvent.click(acceptButton);
 
       expect(mockSaveConsent).toHaveBeenCalledWith({ analytics: true });
     });
 
     it('should handle decline consent', () => {
-      const mockSaveConsent = jest.fn();
-      jest
-        .mocked(require('@/lib/gdpr-compliance').useGDPRCompliance)
-        .mockReturnValue({
-          saveConsent: mockSaveConsent,
-        });
-
-      jest
-        .mocked(
-          require('@/lib/gdpr-compliance').GDPRCompliance.hasAnalyticsConsent
-        )
-        .mockReturnValue(false);
+      mockHasAnalyticsConsent.mockReturnValue(false);
 
       const { getByText } = render(React.createElement(AnalyticsConsentBanner));
 
-      const declineButton = getByText('Essential only');
+      const declineButton = getByText('Solo esenciales');
       fireEvent.click(declineButton);
 
       expect(mockSaveConsent).toHaveBeenCalledWith({ analytics: false });
