@@ -1,0 +1,245 @@
+---
+description: Auto mode configuration and best practices for Cursor IDE 1.7.33
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx"
+alwaysApply: false
+---
+
+# Auto Mode Configuration for Cursor IDE 1.7.33
+
+## Auto Mode Best Practices
+
+### When to Use Auto Mode
+- **Simple, well-defined tasks**: File creation, basic refactoring, standard patterns
+- **Repetitive operations**: Bulk updates, consistent formatting, standard implementations
+- **Low-risk changes**: Documentation updates, comment additions, non-critical features
+- **Well-tested patterns**: Established code patterns with existing examples
+
+### When NOT to Use Auto Mode
+- **Complex business logic**: Critical algorithms, financial calculations, security-sensitive code
+- **Architecture decisions**: Major refactoring, design pattern changes, system restructuring
+- **Untested patterns**: New technologies, experimental features, unproven approaches
+- **Critical paths**: Authentication, payment processing, data validation, error handling
+
+## Auto Mode Configuration
+Guideline example (not auto-applied by Cursor; enforce via process/hooks):
+
+### Safety Settings
+```json
+{
+  "autoMode": {
+    "enabled": true,
+    "safetyLevel": "high",
+    "requireConfirmation": true,
+    "maxFileSize": 500,
+    "excludePatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.test.*",
+      "**/*.spec.*"
+    ]
+  }
+}
+```
+
+### Guardrails Configuration
+Guideline example (aim to require confirmation for riskier operations rather than blocking outright):
+```json
+{
+  "guardrails": {
+    "allowList": [
+      "search_replace",
+      "edit_file",
+      "read_file",
+      "list_dir",
+      "codebase_search"
+    ],
+    "blockList": [],
+    "requireConfirmation": [
+      "delete_file",
+      "write",
+      "run_terminal_cmd",
+      "MultiEdit",
+      "search_replace"
+    ]
+  }
+}
+```
+
+## Auto Mode Workflow
+
+### 1. Pre-Auto Mode Checklist
+- [ ] Task is well-defined and low-risk
+- [ ] Existing patterns are available for reference
+- [ ] No critical business logic involved
+- [ ] Proper testing strategy in place
+- [ ] Rollback plan available if needed
+
+### 2. During Auto Mode
+- Monitor changes in real-time
+- Validate each modification before proceeding
+- Stop immediately if unexpected behavior occurs
+- Document any deviations from expected behavior
+- Maintain proper error handling throughout
+ - Use `run_terminal_cmd` with `is_background: true` for long-running dev servers
+
+### 3. Post-Auto Mode Validation
+- [ ] Run all existing tests
+- [ ] Verify no breaking changes introduced
+- [ ] Check for proper error handling
+- [ ] Validate performance impact
+- [ ] Review code quality and consistency
+- [ ] Update documentation if needed
+
+## Enhanced Auto Mode Features (v1.7.33)
+
+### Agent Autocomplete
+- Context-aware suggestions based on project patterns
+- Intelligent completion with proper type inference
+- Better integration with existing codebase
+- Reduced false positives and improved accuracy
+
+### Hooks System
+- Customizable behavior at runtime
+- Event-driven architecture for better control
+- Proper error handling and recovery
+- Integration with existing workflows
+
+### Enhanced Context Management
+- Better context window utilization
+- Improved memory management
+- Smart context rotation
+- Optimized performance
+
+## Auto Mode Best Practices
+
+### Code Quality
+- Always maintain existing code patterns
+- Follow established naming conventions
+- Preserve existing error handling
+- Maintain proper TypeScript types
+- Keep functions focused and single-purpose
+
+### Testing
+- Run tests before and after auto mode
+- Verify no regressions introduced
+- Check for proper test coverage
+- Validate edge cases and error conditions
+- Ensure proper integration testing
+
+### Documentation
+- Update relevant documentation
+- Add inline comments for complex logic
+- Maintain clear commit messages
+- Document any deviations from patterns
+- Keep README files current
+
+### Performance
+- Monitor for performance regressions
+- Optimize for Core Web Vitals
+- Implement proper lazy loading
+- Use efficient algorithms and data structures
+- Profile critical paths
+
+## Auto Mode Safety Measures
+
+### File Protection
+- Never modify critical system files
+- Always backup before major changes
+- Use version control properly
+- Implement proper rollback procedures
+- Monitor file size and complexity
+
+### Error Handling
+- Implement proper try-catch blocks
+- Validate all inputs and outputs
+- Provide meaningful error messages
+- Log errors appropriately
+- Implement graceful degradation
+
+### Security
+- Never expose sensitive information
+- Validate all user inputs
+- Use proper authentication
+- Implement proper authorization
+- Follow security best practices
+
+## Auto Mode Monitoring
+
+### Performance Metrics
+- Execution time for operations
+- Memory usage during processing
+- File I/O operations
+- Network requests and responses
+- Error rates and recovery times
+
+### Quality Metrics
+- Code coverage percentage
+- Linting error count
+- TypeScript error count
+- Test pass rate
+- Documentation completeness
+
+### User Experience
+- Task completion time
+- Error recovery time
+- User satisfaction scores
+- Feature adoption rates
+- Support ticket volume
+
+## Troubleshooting Auto Mode
+
+### Common Issues
+- **Context overflow**: Reduce scope or break into smaller tasks
+- **Pattern conflicts**: Clarify requirements or provide more examples
+- **Performance issues**: Optimize queries or reduce complexity
+- **Type errors**: Provide better type definitions or examples
+- **Logic errors**: Review requirements and provide clearer specifications
+
+### Recovery Strategies
+- **Immediate stop**: Halt auto mode if unexpected behavior
+- **Rollback**: Revert to last known good state
+- **Manual intervention**: Take control for complex issues
+- **Context refresh**: Clear and rebuild context
+- **Pattern update**: Provide better examples or patterns
+
+## Auto Mode Optimization
+
+### Performance Optimization
+- Use efficient search patterns
+- Minimize file operations
+- Optimize context usage
+- Implement proper caching
+- Monitor resource usage
+
+### Quality Optimization
+- Improve pattern recognition
+- Enhance error detection
+- Better context understanding
+- Improved code generation
+- Enhanced validation
+
+### User Experience Optimization
+- Faster task completion
+- Better error messages
+- Improved suggestions
+- Enhanced feedback
+- Streamlined workflows
+
+## Migration from Legacy Auto Mode
+
+### Configuration Updates
+1. Update to new rule format (.mdc)
+2. Implement enhanced safety measures
+3. Configure new guardrails
+4. Test with existing workflows
+5. Validate performance improvements
+
+### Best Practices Migration
+1. Review existing auto mode usage
+2. Identify optimization opportunities
+3. Implement new safety measures
+4. Train team on new features
+5. Monitor and iterate
+
+This auto mode configuration ensures safe, efficient, and high-quality automated development while leveraging the latest Cursor IDE 1.7.33 capabilities.

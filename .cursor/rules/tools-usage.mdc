@@ -1,0 +1,368 @@
+---
+description: Comprehensive guide to Cursor IDE tools and their optimal usage patterns for v1.7.33
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx, **/*.md"
+alwaysApply: false
+---
+
+# Cursor IDE Tools Usage Guide v1.7.33
+
+## Tool Categories and Best Practices
+
+### Search Tools (Enhanced)
+
+#### codebase_search
+**Purpose**: Semantic search within indexed codebase
+**Best Use Cases**:
+- Finding components by functionality
+- Locating patterns and implementations
+- Understanding code relationships
+- Discovering similar implementations
+
+**Enhanced Features (v1.7.33)**:
+- Better context understanding with semantic analysis
+- Improved ranking of results
+- Support for complex queries with multiple concepts
+- Better integration with project structure
+
+**Usage Examples**:
+```bash
+# Find authentication components
+codebase_search("React component authentication with error handling")
+
+# Locate API route patterns
+codebase_search("Next.js API route with authentication middleware")
+
+# Discover testing patterns
+codebase_search("Jest test component with mocking")
+```
+
+#### glob_file_search
+**Purpose**: Fuzzy file matching by name
+**Best Use Cases**:
+- Finding files by partial name
+- Locating components by naming patterns
+- Discovering related files
+- Quick file navigation
+
+**Enhanced Features (v1.7.33)**:
+- Better fuzzy matching algorithms
+- Improved ranking based on relevance
+- Support for complex patterns
+- Better integration with project structure
+
+**Usage Examples**:
+```bash
+# Find component files
+glob_file_search("Button.tsx")
+
+# Locate utility files
+glob_file_search("utils")
+
+# Find test files
+glob_file_search("test")
+```
+
+#### grep
+**Purpose**: Exact pattern matching with regex support
+**Best Use Cases**:
+- Finding specific code patterns
+- Locating function definitions
+- Searching for imports
+- Finding configuration values
+
+**Enhanced Features (v1.7.33)**:
+- Multiline pattern matching
+- Better regex support
+- Improved performance
+- Enhanced context display
+
+**Usage Examples**:
+```bash
+# Find function definitions
+grep("function.*Component")
+
+# Locate imports
+grep("import.*from")
+
+# Find configuration
+grep("const.*=.*process\\.env")
+```
+
+### Edit Tools (Enhanced)
+
+#### edit_file
+**Purpose**: Suggest and apply file edits automatically
+**Best Use Cases**:
+- Adding new functionality
+- Implementing features
+- Refactoring code
+- Adding documentation
+
+**Enhanced Features (v1.7.33)**:
+- Better conflict resolution
+- Improved context understanding
+- Enhanced error handling
+- Better integration with existing code
+
+**Usage Examples**:
+```bash
+# Add new component
+edit_file("src/components/NewComponent.tsx", "Create a new React component with TypeScript")
+
+# Implement feature
+edit_file("src/features/auth.ts", "Add authentication logic with proper error handling")
+
+# Refactor existing code
+edit_file("src/utils/helpers.ts", "Refactor utility functions for better performance")
+```
+
+#### search_replace
+**Purpose**: Precise search and replace operations
+**Best Use Cases**:
+- Updating specific patterns
+- Renaming variables
+- Fixing typos
+- Updating configurations
+
+**Enhanced Features (v1.7.33)**:
+- Better regex support
+- Improved validation
+- Enhanced error handling
+- Better conflict detection
+
+**Usage Examples**:
+```bash
+# Update function name
+search_replace("src/utils/helpers.ts", "oldFunctionName", "newFunctionName")
+
+# Fix typo
+search_replace("src/components/Button.tsx", "onClik", "onClick")
+
+# Update configuration
+search_replace("src/config/app.ts", "localhost:3000", "production.example.com")
+```
+
+#### MultiEdit
+**Purpose**: Perform multiple edits in sequence
+**Best Use Cases**:
+- Complex refactoring
+- Bulk updates
+- Consistent changes across files
+- Atomic operations
+
+**Enhanced Features (v1.7.33)**:
+- Atomic operations with rollback
+- Better conflict resolution
+- Enhanced validation
+- Improved error handling
+
+**Usage Examples**:
+```bash
+# Multiple related changes
+MultiEdit("src/components/Button.tsx", [
+  {"old_string": "interface Props {", "new_string": "interface ButtonProps {"},
+  {"old_string": "export function Button", "new_string": "export function Button"},
+  {"old_string": "onClick: () => void", "new_string": "onClick: (event: MouseEvent) => void"}
+])
+```
+
+### Run Tools (Enhanced)
+
+#### run_terminal_cmd
+**Purpose**: Execute terminal commands with monitoring
+**Best Use Cases**:
+- Running tests
+- Building projects
+- Installing dependencies
+- Executing scripts
+
+**Enhanced Features (v1.7.33)**:
+- Better timeout handling
+- Improved error reporting
+- Enhanced output capture
+- Better process management
+
+**Usage Examples**:
+```bash
+# Run tests
+run_terminal_cmd("npm test", false)
+
+# Build project
+run_terminal_cmd("npm run build", false)
+
+# Install dependencies
+run_terminal_cmd("npm install", false)
+```
+
+### MCP Tools (Enhanced)
+
+#### External Service Integration
+**Purpose**: Connect with external services and APIs
+**Best Use Cases**:
+- Database operations
+- API integrations
+- Workflow management
+- Analytics and monitoring
+
+**Enhanced Features (v1.7.33)**:
+- 50+ official integrations
+- Better error handling
+- Enhanced security
+- Improved performance
+
+**Usage Examples**:
+```bash
+# Database operations
+mcp_n8n-mcp_list_nodes({"limit": 200})
+
+# Workflow management
+mcp_n8n-mcp_validate_workflow({"workflow": workflowData})
+
+# Analytics
+mcp_ui-ux_Docs_fetch_ui_ux_documentation("search_term")
+```
+
+## Tool Selection Strategy
+
+### 1. Understanding Phase
+- **codebase_search**: Broad understanding of codebase
+- **file_search**: Locate specific files
+- **list_dir**: Understand directory structure
+- **read_file**: Read specific sections
+
+### 2. Analysis Phase
+- **grep_search**: Find specific patterns
+- **codebase_search**: Understand relationships
+- **read_file**: Analyze implementation details
+- **list_dir**: Explore related directories
+
+### 3. Implementation Phase
+- **edit_file**: Add new functionality
+- **search_replace**: Update existing code
+- **MultiEdit**: Complex changes
+- **write**: Create new files
+
+### 4. Validation Phase
+- **run_terminal_cmd**: Run tests and builds
+- **grep**: Verify changes
+- **read_file**: Review implementation
+- **codebase_search**: Check for conflicts
+
+## Tool Performance Optimization
+
+### Search Optimization
+- Use specific, targeted queries
+- Leverage semantic understanding
+- Combine multiple search types
+- Optimize query complexity
+
+### Edit Optimization
+- Batch related changes
+- Use atomic operations
+- Validate before applying
+- Monitor for conflicts
+
+### Run Optimization
+- Use appropriate timeouts
+- Monitor resource usage
+- Implement proper error handling
+- Optimize command execution
+
+## Tool Safety and Best Practices
+
+### File Operations
+- Always backup before major changes
+- Use version control properly
+- Implement proper rollback procedures
+- Monitor file size and complexity
+
+### Command Execution
+- Validate commands before execution
+- Use appropriate timeouts
+- Monitor resource usage
+- Implement proper error handling
+
+### External Integrations
+- Validate API responses
+- Implement proper error handling
+- Use secure authentication
+- Monitor rate limits
+
+## Troubleshooting Tools
+
+### Common Issues
+- **Context overflow**: Reduce scope or break into smaller tasks
+- **Pattern conflicts**: Clarify requirements or provide more examples
+- **Performance issues**: Optimize queries or reduce complexity
+- **Type errors**: Provide better type definitions or examples
+- **Logic errors**: Review requirements and provide clearer specifications
+
+### Recovery Strategies
+- **Immediate stop**: Halt operations if unexpected behavior
+- **Rollback**: Revert to last known good state
+- **Manual intervention**: Take control for complex issues
+- **Context refresh**: Clear and rebuild context
+- **Pattern update**: Provide better examples or patterns
+
+## Tool Integration Patterns
+
+### Sequential Operations
+```bash
+# 1. Search for existing patterns
+codebase_search("authentication component")
+
+# 2. Read specific implementation
+read_file("src/components/Auth.tsx")
+
+# 3. Create new component
+edit_file("src/components/NewAuth.tsx", "Create new auth component")
+
+# 4. Update related files
+search_replace("src/app/page.tsx", "import Auth", "import NewAuth")
+
+# 5. Run tests
+run_terminal_cmd("npm test", false)
+```
+
+### Parallel Operations
+```bash
+# Search multiple patterns simultaneously
+codebase_search("authentication")
+codebase_search("authorization")
+codebase_search("middleware")
+
+# Read multiple files
+read_file("src/components/Auth.tsx")
+read_file("src/components/ProtectedRoute.tsx")
+read_file("src/middleware/auth.ts")
+```
+
+### Validation Patterns
+```bash
+# Validate changes
+grep_search("export.*Auth")
+run_terminal_cmd("npm run type-check", false)
+run_terminal_cmd("npm test", false)
+```
+
+## Advanced Tool Usage
+
+### Custom Tool Combinations
+- Combine search tools for comprehensive analysis
+- Use edit tools with validation
+- Integrate run tools with monitoring
+- Leverage MCP tools for external services
+
+### Performance Monitoring
+- Track tool execution time
+- Monitor resource usage
+- Measure success rates
+- Optimize based on metrics
+
+### Error Handling
+- Implement proper try-catch patterns
+- Use appropriate error messages
+- Provide recovery options
+- Log errors for analysis
+
+This comprehensive tools guide ensures optimal usage of Cursor IDE 1.7.33 capabilities while maintaining code quality, performance, and safety standards.

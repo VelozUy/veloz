@@ -491,6 +491,14 @@ const STATIC_TRANSLATIONS = {
       cookies: {
         title: 'Configuración de Cookies',
         description: 'Configuración y gestión de cookies en Veloz.',
+        banner: {
+          title: 'Privacidad y cookies',
+          description:
+            'Usamos tecnologías como cookies para entender el rendimiento del sitio y ofrecerte una experiencia más relevante. Puedes aceptar las métricas opcionales o continuar solo con las esenciales.',
+          accept: 'Aceptar analíticas',
+          reject: 'Solo esenciales',
+          policy: 'Ver política de cookies',
+        },
         sections: {
           what: {
             title: '¿Qué son las Cookies?',
@@ -1007,6 +1015,14 @@ const STATIC_TRANSLATIONS = {
       cookies: {
         title: 'Cookies Settings',
         description: 'Cookie settings and management for Veloz.',
+        banner: {
+          title: 'Privacy & cookies',
+          description:
+            'We use technologies like cookies to understand performance and tailor your experience. You can accept optional analytics or continue with essential settings only.',
+          accept: 'Accept analytics',
+          reject: 'Essential only',
+          policy: 'View cookie policy',
+        },
         sections: {
           what: {
             title: 'What are Cookies?',
@@ -1521,6 +1537,14 @@ const STATIC_TRANSLATIONS = {
       cookies: {
         title: 'Configuração de Cookies',
         description: 'Configuração e gerenciamento de cookies da Veloz.',
+        banner: {
+          title: 'Privacidade e cookies',
+          description:
+            'Usamos tecnologias como cookies para entender o desempenho do site e oferecer uma experiência mais relevante. Você pode aceitar as métricas opcionais ou seguir apenas com as essenciais.',
+          accept: 'Aceitar analíticas',
+          reject: 'Somente essenciais',
+          policy: 'Ver política de cookies',
+        },
         sections: {
           what: {
             title: 'O que são Cookies?',

@@ -1,0 +1,284 @@
+---
+description: Team collaboration and workflow management rules for Cursor IDE 1.7.33
+globs: "**/*.md, **/*.json, **/*.yml, **/*.yaml"
+alwaysApply: false
+---
+
+# Team Collaboration Rules for Cursor IDE 1.7.33
+
+## Team Rules Management
+
+### Centralized Rule System
+- **Location**: `.cursor/rules/` directory
+- **Format**: `.mdc` files with metadata
+- **Version Control**: Proper Git integration
+- **Collaboration**: Team-wide rule sharing
+- **Consistency**: Standardized rule format
+
+### Rule Categories
+- **Always Applied**: Core development rules (`alwaysApply: true`)
+- **Auto Attached**: Context-specific via `globs`
+- **Agent Requested**: On-demand rules
+- **Manual**: Explicitly invoked rules
+
+## Team Workflow Integration
+
+### Git Integration
+```bash
+# Rule updates should follow conventional commits
+git add .cursor/rules/
+git commit -m "feat(rules): add team collaboration guidelines" \
+  -m "- Add team workflow integration" \
+  -m "- Update rule management system" \
+  -m "- Enhance collaboration features"
+
+git push origin main
+```
+
+### Rule Synchronization
+- **Pull Updates**: Regular rule updates from team
+- **Conflict Resolution**: Handle rule conflicts gracefully
+- **Version Management**: Track rule changes over time
+- **Rollback Procedures**: Revert to previous rule versions
+
+## Team Communication
+
+### Rule Documentation
+- **Clear Descriptions**: Explain rule purpose and usage
+- **Examples**: Provide practical usage examples
+- **Best Practices**: Include team-specific guidelines
+- **Updates**: Document changes and rationale
+
+### Rule Sharing
+- **Team Repository**: Centralized rule storage
+- **Pull Requests**: Review rule changes
+- **Discussions**: Team feedback on rules
+- **Approval Process**: Team consensus on rule changes
+
+## Enhanced Team Features (v1.7.33)
+
+### Agent Autocomplete for Teams
+- **Shared Patterns**: Team-wide code patterns
+- **Consistent Suggestions**: Uniform autocomplete across team
+- **Context Sharing**: Better understanding of team codebase
+- **Learning**: Improved suggestions based on team usage
+
+### Hooks System for Teams
+- **Team Workflows**: Customizable team behavior
+- **Event Integration**: Team-specific event handling
+- **Process Automation**: Streamlined team processes
+- **Quality Gates**: Team-wide quality standards
+
+### Team Rules Management
+- **Centralized Control**: Single source of truth for rules
+- **Role-Based Access**: Different rule sets for different roles
+- **Environment-Specific**: Rules for different environments
+- **Audit Trail**: Track rule changes and usage
+
+## Team Development Workflow
+
+### 1. Rule Creation
+```bash
+# Create new team rule
+touch .cursor/rules/team-specific.mdc
+
+# Add rule metadata
+cat > .cursor/rules/team-specific.mdc << EOF
+---
+description: Team-specific development rules
+globs: "**/*.ts, **/*.tsx"
+alwaysApply: false
+---
+# Team Rules Content
+EOF
+```
+
+### 2. Rule Review
+- **Code Review**: Review rule changes
+- **Team Discussion**: Discuss rule implications
+- **Testing**: Validate rule effectiveness
+- **Approval**: Team consensus on rule adoption
+
+### 3. Rule Deployment
+- **Staging**: Test rules in development
+- **Production**: Deploy to team environment
+- **Monitoring**: Track rule usage and effectiveness
+- **Iteration**: Improve rules based on feedback
+
+## Team Quality Standards
+
+### Code Quality
+- **Consistency**: Uniform code style across team
+- **Standards**: Team-defined coding standards
+- **Reviews**: Peer review process
+- **Automation**: Automated quality checks
+
+### Testing Standards
+- **Coverage**: Minimum test coverage requirements
+- **Types**: Unit, integration, and e2e tests
+- **Automation**: Automated test execution
+- **Quality Gates**: Tests must pass before merge
+
+### Documentation Standards
+- **README**: Comprehensive project documentation
+- **API Docs**: Clear API documentation
+- **Code Comments**: Inline code documentation
+- **Changelog**: Track changes over time
+
+## Team Security Practices
+
+### Access Control
+- **Role-Based**: Different access levels
+- **Environment Separation**: Dev, staging, production
+- **Secret Management**: Secure credential handling
+- **Audit Logging**: Track access and changes
+
+### Code Security
+- **Input Validation**: Validate all inputs
+- **Authentication**: Proper auth implementation
+- **Authorization**: Role-based access control
+- **Security Scanning**: Regular security audits
+
+### Data Protection
+- **Encryption**: Encrypt sensitive data
+- **Backup**: Regular data backups
+- **Recovery**: Disaster recovery procedures
+- **Compliance**: Meet regulatory requirements
+
+## Team Performance Optimization
+
+### Development Velocity
+- **Tool Efficiency**: Optimize tool usage
+- **Process Streamlining**: Reduce friction
+- **Automation**: Automate repetitive tasks
+- **Knowledge Sharing**: Share best practices
+
+### Code Quality
+- **Static Analysis**: Automated code analysis
+- **Performance Monitoring**: Track performance metrics
+- **Error Handling**: Comprehensive error handling
+- **Optimization**: Continuous performance improvement
+
+### Team Collaboration
+- **Communication**: Clear communication channels
+- **Knowledge Sharing**: Regular knowledge sharing
+- **Mentoring**: Team member development
+- **Feedback**: Regular feedback and improvement
+
+## Team Rule Templates
+
+### Development Rules Template
+```markdown
+---
+description: Development rules for [Team Name]
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx"
+alwaysApply: true
+---
+
+# [Team Name] Development Rules
+
+## Code Standards
+- Use TypeScript for all new code
+- Follow ESLint configuration
+- Implement proper error handling
+- Write comprehensive tests
+
+## Git Workflow
+- Use conventional commits
+- Create feature branches
+- Require code reviews
+- Run tests before merge
+
+## Quality Gates
+- All tests must pass
+- Code coverage > 80%
+- No linting errors
+- Security scan passes
+```
+
+### Testing Rules Template
+```markdown
+---
+description: Testing rules for [Team Name]
+globs: "**/*.test.*, **/*.spec.*"
+alwaysApply: false
+---
+
+# [Team Name] Testing Rules
+
+## Test Requirements
+- Unit tests for all functions
+- Integration tests for APIs
+- E2E tests for critical paths
+- Performance tests for bottlenecks
+
+## Test Quality
+- Clear test descriptions
+- Proper test data setup
+- Comprehensive assertions
+- Clean test teardown
+```
+
+## Team Rule Maintenance
+
+### Regular Reviews
+- **Monthly**: Review rule effectiveness
+- **Quarterly**: Update rules based on team needs
+- **Annually**: Major rule overhauls
+- **As Needed**: Immediate rule updates
+
+### Rule Metrics
+- **Usage**: Track rule usage patterns
+- **Effectiveness**: Measure rule impact
+- **Feedback**: Collect team feedback
+- **Improvement**: Continuous rule improvement
+
+### Rule Documentation
+- **Changelog**: Track rule changes
+- **Rationale**: Explain rule decisions
+- **Examples**: Provide usage examples
+- **Best Practices**: Share team best practices
+
+## Team Onboarding
+
+### New Team Members
+- **Rule Introduction**: Introduce team rules
+- **Training**: Provide rule training
+- **Mentoring**: Assign rule mentors
+- **Feedback**: Regular feedback sessions
+
+### Rule Adoption
+- **Gradual**: Introduce rules gradually
+- **Training**: Provide comprehensive training
+- **Support**: Offer ongoing support
+- **Feedback**: Collect adoption feedback
+
+## Team Rule Governance
+
+### Rule Authority
+- **Team Lead**: Final rule decisions
+- **Tech Lead**: Technical rule oversight
+- **Team Consensus**: Team input on rules
+- **Stakeholder Input**: Business rule input
+
+### Rule Enforcement
+- **Automated**: Automated rule enforcement
+- **Manual**: Manual rule review
+- **Escalation**: Escalation procedures
+- **Appeals**: Rule appeal process
+
+## Team Rule Evolution
+
+### Continuous Improvement
+- **Feedback Loop**: Regular feedback collection
+- **Metrics**: Track rule effectiveness
+- **Experimentation**: Try new rule approaches
+- **Iteration**: Continuous rule improvement
+
+### Rule Innovation
+- **New Features**: Adopt new Cursor features
+- **Best Practices**: Share industry best practices
+- **Team Learning**: Learn from other teams
+- **Innovation**: Encourage rule innovation
+
+This team collaboration guide ensures effective team development with Cursor IDE 1.7.33 while maintaining code quality, consistency, and team productivity.

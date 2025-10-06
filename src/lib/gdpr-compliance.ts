@@ -26,6 +26,8 @@ export interface DataRetentionPolicy {
   backups: number; // Days to keep backup data
 }
 
+export const GDPR_CONSENT_EVENT = 'gdpr-consent-updated';
+
 export class GDPRCompliance {
   private static readonly DEFAULT_RETENTION: DataRetentionPolicy = {
     contactMessages: 365, // 1 year
@@ -39,10 +41,10 @@ export class GDPRCompliance {
    */
   static hasAnalyticsConsent(userId?: string): boolean {
     if (typeof window === 'undefined') return false;
-    
+
     const consent = localStorage.getItem('gdpr-consent');
     if (!consent) return false;
-    
+
     try {
       const preferences: ConsentPreferences = JSON.parse(consent);
       return preferences.analytics === true;
@@ -56,7 +58,7 @@ export class GDPRCompliance {
    */
   static saveConsent(preferences: Partial<ConsentPreferences>): void {
     if (typeof window === 'undefined') return;
-    
+
     const existing = this.getConsentPreferences();
     const updated: ConsentPreferences = {
       ...existing,
@@ -64,8 +66,12 @@ export class GDPRCompliance {
       timestamp: Date.now(),
       necessary: true, // Always required
     };
-    
+
     localStorage.setItem('gdpr-consent', JSON.stringify(updated));
+
+    window.dispatchEvent(
+      new CustomEvent(GDPR_CONSENT_EVENT, { detail: updated })
+    );
   }
 
   /**
@@ -80,7 +86,7 @@ export class GDPRCompliance {
         timestamp: Date.now(),
       };
     }
-    
+
     const consent = localStorage.getItem('gdpr-consent');
     if (!consent) {
       return {
@@ -90,7 +96,7 @@ export class GDPRCompliance {
         timestamp: Date.now(),
       };
     }
-    
+
     try {
       return JSON.parse(consent);
     } catch {
@@ -106,14 +112,20 @@ export class GDPRCompliance {
   /**
    * Revoke consent (opt-out)
    */
-  static revokeConsent(type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>): void {
+  static revokeConsent(
+    type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>
+  ): void {
     if (typeof window === 'undefined') return;
-    
+
     const preferences = this.getConsentPreferences();
     (preferences as unknown as Record<string, boolean>)[type] = false;
     preferences.timestamp = Date.now();
-    
+
     localStorage.setItem('gdpr-consent', JSON.stringify(preferences));
+
+    window.dispatchEvent(
+      new CustomEvent(GDPR_CONSENT_EVENT, { detail: preferences })
+    );
   }
 
   /**
@@ -123,15 +135,17 @@ export class GDPRCompliance {
     if (typeof data !== 'object' || data === null) {
       return data;
     }
-    
+
     if (Array.isArray(data)) {
       return data.map(item => this.anonymizeData(item));
     }
-    
+
     const anonymized: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
       // Skip sensitive fields
-      if (['email', 'phone', 'ipAddress', 'userAgent', 'sessionId'].includes(key)) {
+      if (
+        ['email', 'phone', 'ipAddress', 'userAgent', 'sessionId'].includes(key)
+      ) {
         anonymized[key] = '[ANONYMIZED]';
       } else if (typeof value === 'object' && value !== null) {
         anonymized[key] = this.anonymizeData(value);
@@ -139,7 +153,7 @@ export class GDPRCompliance {
         anonymized[key] = value;
       }
     }
-    
+
     return anonymized;
   }
 
@@ -153,8 +167,8 @@ export class GDPRCompliance {
   ): boolean {
     const policy = { ...this.DEFAULT_RETENTION, ...customPolicy };
     const retentionDays = policy[dataType];
-    const cutoffDate = Date.now() - (retentionDays * 24 * 60 * 60 * 1000);
-    
+    const cutoffDate = Date.now() - retentionDays * 24 * 60 * 60 * 1000;
+
     return timestamp > cutoffDate;
   }
 
@@ -165,8 +179,8 @@ export class GDPRCompliance {
     data: Array<{ timestamp: number; type: keyof DataRetentionPolicy }>,
     customPolicy?: Partial<DataRetentionPolicy>
   ): Array<{ timestamp: number; type: keyof DataRetentionPolicy }> {
-    return data.filter(item => 
-      !this.shouldRetainData(item.type, item.timestamp, customPolicy)
+    return data.filter(
+      item => !this.shouldRetainData(item.type, item.timestamp, customPolicy)
     );
   }
 
@@ -192,21 +206,28 @@ export class GDPRCompliance {
   /**
    * Validate privacy request
    */
-  static validatePrivacyRequest(request: PrivacyRequest): { valid: boolean; errors: string[] } {
+  static validatePrivacyRequest(request: PrivacyRequest): {
+    valid: boolean;
+    errors: string[];
+  } {
     const errors: string[] = [];
-    
+
     if (!request.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(request.email)) {
       errors.push('Valid email address is required');
     }
-    
+
     if (!request.description || request.description.trim().length < 10) {
       errors.push('Description must be at least 10 characters long');
     }
-    
-    if (!['access', 'rectification', 'erasure', 'portability'].includes(request.type)) {
+
+    if (
+      !['access', 'rectification', 'erasure', 'portability'].includes(
+        request.type
+      )
+    ) {
       errors.push('Invalid request type');
     }
-    
+
     return {
       valid: errors.length === 0,
       errors,
@@ -223,7 +244,7 @@ export class GDPRCompliance {
       format: 'JSON',
       version: '1.0',
     };
-    
+
     return JSON.stringify(exportData, null, 2);
   }
 
@@ -232,44 +253,44 @@ export class GDPRCompliance {
    */
   static isEUUser(): boolean {
     if (typeof window === 'undefined') return false;
-    
+
     // This is a basic check - in production, you'd want more sophisticated geo-detection
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const euTimezones = [
-      'Europe/London', 'Europe/Paris', 'Europe/Berlin', 'Europe/Rome',
-      'Europe/Madrid', 'Europe/Amsterdam', 'Europe/Brussels', 'Europe/Vienna',
-      'Europe/Prague', 'Europe/Budapest', 'Europe/Warsaw', 'Europe/Stockholm',
-      'Europe/Copenhagen', 'Europe/Helsinki', 'Europe/Oslo', 'Europe/Dublin',
-      'Europe/Lisbon', 'Europe/Athens', 'Europe/Bucharest', 'Europe/Sofia',
-      'Europe/Zagreb', 'Europe/Ljubljana', 'Europe/Bratislava', 'Europe/Vilnius',
-      'Europe/Riga', 'Europe/Tallinn', 'Europe/Luxembourg', 'Europe/Malta',
-      'Europe/Cyprus', 'Europe/Sofia', 'Europe/Brussels',
+      'Europe/London',
+      'Europe/Paris',
+      'Europe/Berlin',
+      'Europe/Rome',
+      'Europe/Madrid',
+      'Europe/Amsterdam',
+      'Europe/Brussels',
+      'Europe/Vienna',
+      'Europe/Prague',
+      'Europe/Budapest',
+      'Europe/Warsaw',
+      'Europe/Stockholm',
+      'Europe/Copenhagen',
+      'Europe/Helsinki',
+      'Europe/Oslo',
+      'Europe/Dublin',
+      'Europe/Lisbon',
+      'Europe/Athens',
+      'Europe/Bucharest',
+      'Europe/Sofia',
+      'Europe/Zagreb',
+      'Europe/Ljubljana',
+      'Europe/Bratislava',
+      'Europe/Vilnius',
+      'Europe/Riga',
+      'Europe/Tallinn',
+      'Europe/Luxembourg',
+      'Europe/Malta',
+      'Europe/Cyprus',
+      'Europe/Sofia',
+      'Europe/Brussels',
     ];
-    
-    return euTimezones.includes(timezone);
-  }
 
-  /**
-   * Get consent banner text based on user location
-   */
-  static getConsentBannerText(): { title: string; message: string; accept: string; reject: string } {
-    const isEU = this.isEUUser();
-    
-    if (isEU) {
-      return {
-        title: 'Privacy & Cookies',
-        message: 'We use cookies and similar technologies to provide, protect, and improve our services. By clicking "Accept", you consent to our use of cookies for analytics and marketing purposes.',
-        accept: 'Accept All',
-        reject: 'Reject Non-Essential',
-      };
-    } else {
-      return {
-        title: 'Cookie Notice',
-        message: 'This website uses cookies to enhance your browsing experience and analyze site traffic.',
-        accept: 'Accept',
-        reject: 'Decline',
-      };
-    }
+    return euTimezones.includes(timezone);
   }
 }
 
@@ -277,7 +298,9 @@ export class GDPRCompliance {
  * React hook for GDPR compliance
  */
 export function useGDPRCompliance() {
-  const hasConsent = (type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>) => {
+  const hasConsent = (
+    type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>
+  ) => {
     if (type === 'analytics') {
       return GDPRCompliance.hasAnalyticsConsent();
     }
@@ -289,19 +312,16 @@ export function useGDPRCompliance() {
     GDPRCompliance.saveConsent(preferences);
   };
 
-  const revokeConsent = (type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>) => {
+  const revokeConsent = (
+    type: keyof Omit<ConsentPreferences, 'necessary' | 'timestamp'>
+  ) => {
     GDPRCompliance.revokeConsent(type);
-  };
-
-  const getConsentBannerText = () => {
-    return GDPRCompliance.getConsentBannerText();
   };
 
   return {
     hasConsent,
     saveConsent,
     revokeConsent,
-    getConsentBannerText,
     isEUUser: GDPRCompliance.isEUUser,
   };
-} 
+}

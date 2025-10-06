@@ -1,6 +1,6 @@
 ---
-description: Use this rule when asked to do any frontend or UI design
-globs: 
+description: Use this rule when asked to do any frontend or UI design - Updated for Cursor 1.7.33
+globs: "**/*.tsx, **/*.jsx, **/*.css, **/*.scss, **/*.md"
 alwaysApply: false
 ---
 # Role
@@ -119,56 +119,58 @@ Testing
 - Test on actual devices, not just emulators, for real-world performance.
 - Conduct usability testing across different device types and user scenarios.
 
-# Cursor IDE Tools for Implementation
+# Cursor IDE Tools for Implementation (v1.7.33 Enhanced)
 
 Design System & Typography
-- `codebase_search("typography scale")` - Find existing font systems
-- `grep_search("font-size.*rem")` - Locate typography definitions
-- `file_search("theme")` - Find color system files
-- `search_replace` - Update typography consistently
-- `codebase_search("design system")` - Find existing patterns
-- `file_search("components.json")` - Locate component config
-- `grep_search("className.*spacing")` - Find spacing patterns
+- `codebase_search("typography scale")` - Find existing font systems with semantic understanding
+- `grep("font-size.*rem")` - Locate typography definitions with regex support
+- `glob_file_search("theme")` - Find color system files with fuzzy matching
+- `search_replace` - Update typography consistently with proper validation
+- `codebase_search("design system")` - Find existing patterns with better context
+- `glob_file_search("components.json")` - Locate component config with proper ranking
+- `grep("className.*spacing")` - Find spacing patterns with multiline support
+- `MultiEdit` - Perform multiple typography updates atomically
+- `read_file` - Read theme files with smart line range selection
 
 Navigation & Components
 - `codebase_search("navigation component")` - Find existing patterns
-- `file_search("header")` - Locate navigation components
-- `grep_search("className.*nav")` - Find navigation styles
+- `glob_file_search("header")` - Locate navigation components
+- `grep("className.*nav")` - Find navigation styles
 - `codebase_search("card component")` - Find existing card patterns
 - `list_dir("src/components")` - Understand component structure
-- `grep_search("className.*card")` - Find card implementations
+- `grep("className.*card")` - Find card implementations
 
 Animations & Interactions
 - `codebase_search("framer motion")` - Find existing animations
-- `grep_search("motion\\.")` - Locate motion components
-- `file_search("animation")` - Find animation utilities
+- `grep("motion\\.")` - Locate motion components
+- `glob_file_search("animation")` - Find animation utilities
 
 Accessibility
 - `codebase_search("accessibility")` - Find existing a11y patterns
-- `grep_search("aria-")` - Locate ARIA attributes
-- `grep_search("alt=")` - Find image alt text
-- `run_terminal_cmd("npm run lint")` - Check accessibility
+- `grep("aria-")` - Locate ARIA attributes
+- `grep("alt=")` - Find image alt text
+- Note: Lint may not enforce a11y; supplement with manual checks and tools.
 
 Performance & Optimization
 - `codebase_search("image optimization")` - Find existing optimizations
-- `grep_search("next/image")` - Locate Image components
-- `file_search("lazy")` - Find lazy loading implementations
-- `run_terminal_cmd("npm run build")` - Check performance
-- `run_terminal_cmd("lighthouse")` - Check performance metrics
+- `grep("next/image")` - Locate Image components
+- `glob_file_search("lazy")` - Find lazy loading implementations
+- `run_terminal_cmd("npm run build", false)` - Build for performance checks
+- `run_terminal_cmd("lighthouse", false)` - Check performance metrics (if available)
 
 Responsive Design
 - `codebase_search("responsive design")` - Find existing patterns
-- `grep_search("md:|lg:|xl:")` - Find responsive classes
-- `file_search("mobile")` - Locate mobile-specific components
-- `grep_search("className.*grid|flex")` - Find layout patterns
+- `grep("md:|lg:|xl:")` - Find responsive classes (regex alternation)
+- `glob_file_search("mobile")` - Locate mobile-specific components
+- `grep("className.*(grid|flex)")` - Find layout patterns
 - `codebase_search("responsive layout")` - Find existing implementations
 
 Error Handling & Validation
 - `codebase_search("error handling")` - Find existing patterns
-- `grep_search("useState.*error")` - Find error states
-- `file_search("validation")` - Locate validation logic
+- `grep("useState.*error")` - Find error states
+- `glob_file_search("validation")` - Locate validation logic
 - `codebase_search("form validation")` - Find existing patterns
-- `grep_search("input.*type")` - Find form inputs
+- `grep("input.*type")` - Find form inputs
 
 Testing & Quality Assurance
 - `run_terminal_cmd("npm test")` - Run component tests
@@ -177,11 +179,42 @@ Testing & Quality Assurance
 - `run_terminal_cmd("npm run lint")` - Check code quality
 
 Documentation & Organization
-- `file_search("README")` - Locate documentation files
+- `glob_file_search("README")` - Locate documentation files
 - `list_dir("docs")` - Understand documentation structure
 - `codebase_search("component documentation")` - Find existing docs
 - `edit_file` - Update documentation consistently
 
+## Enhanced Features for Cursor 1.7.33
+
+### Agent Autocomplete for Design
+- Context-aware design suggestions based on existing patterns
+- Intelligent component completion with proper TypeScript types
+- Better integration with design system and theme variables
+
+### Hooks System for Design Workflow
+- Customizable design behavior at runtime
+- Event-driven architecture for design consistency
+- Proper error handling for design implementation
+
+### Team Rules for Design Standards
+- Centralized design rule management for team environments
+- Consistent design standards across projects
+- Proper version control for design system changes
+
+### Enhanced Context Management
+- Better context window utilization for design patterns
+- Improved memory management for design sessions
+- Smart context rotation for design optimization
+
 Stay updated with the latest responsive design techniques and browser capabilities.
 Refer to industry-standard guidelines and stay updated with latest UI/UX trends and best practices.
 Use the provided Cursor IDE commands to efficiently implement these design principles while maintaining consistency and quality across your projects.
+
+## Migration from Legacy Design Rules
+
+### From .cursorrules to .cursor/rules/design.mdc
+1. Enhanced metadata with proper glob patterns
+2. Better integration with Cursor 1.7.33 features
+3. Improved tool descriptions with latest capabilities
+4. Better error handling and validation
+5. Enhanced performance with proper caching

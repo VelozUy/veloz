@@ -1,0 +1,479 @@
+---
+description: Comprehensive Cursor IDE rules for version 1.7.33 with latest features and best practices
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx"
+alwaysApply: false
+---
+
+# Cursor IDE Comprehensive Rules v1.7.33
+
+## CRITICAL: AI Context Instructions
+
+You are using Cursor IDE auto mode with the latest tools. Follow these rules EXACTLY for optimal AI-assisted development.
+
+## MANDATORY WORKFLOW
+
+### Tool Selection Strategy (8-Step Process)
+```markdown
+1. SEMANTIC SEARCH → codebase_search (broad understanding)
+2. FILE LOCATION → file_search (find specific files)
+3. EXACT MATCH → grep_search (find specific code)
+4. STRUCTURE → list_dir (understand organization)
+5. CONTENT → read_file (read specific sections)
+6. MODIFY → edit_file/search_replace (make changes)
+7. EXECUTE → run_terminal_cmd (run commands)
+8. VALIDATE → mcp_* tools (verify changes)
+```
+
+### Workflow Phases
+- **Before Changes**: Understand requirements, search patterns, read docs, check context
+- **During Implementation**: Make focused changes, use appropriate tools, follow conventions, test immediately
+- **After Completion**: Run tests, validate build, update status, document changes, archive
+
+### Post-Task Docs & Commit Policy (Mandatory)
+- After completing each task or logical change set:
+  - Update `docs/TASK.md` to reflect status changes and timestamps.
+  - If the work affects an epic, update the relevant file under `docs/epics/`.
+  - Stage only relevant files.
+  - Use a conventional commit message summarizing the change.
+  - Push only after tests/type-checks pass.
+
+Example update + commit flow:
+```bash
+# 1) Update docs first
+# - Mark items [x] in docs/TASK.md and adjust dates
+# - Update affected epic in docs/epics/*.md if scope changed
+
+# 2) Validate code
+npm run lint && npm run type-check && npm test
+
+# 3) Commit only relevant files
+git add src/** docs/TASK.md docs/epics/<affected-epic>.md
+
+git commit -m "feat: implement <short description>\n\nDocs: update TASK and <epic-name>"
+# Optional: git push
+```
+
+## LATEST CURSOR TOOLS & CAPABILITIES (v1.7.33)
+
+### Enhanced Search Tools
+- **codebase_search**: Semantic search within indexed codebase with improved context understanding
+- **file_search**: Fuzzy file matching by name with better ranking
+- **grep_search**: Exact pattern matching with regex support and multiline matching
+- **read_file**: Read up to 250 lines (750 in max mode) with smart line range selection
+- **list_dir**: Directory structure exploration with filtering and sorting
+- **web_search**: External web search capabilities with better result parsing
+- **fetch_rules**: Retrieve specific rules by type/description with improved matching
+
+### Advanced Edit Tools
+- **edit_file**: Suggest and apply file edits automatically with better conflict resolution
+- **search_replace**: Precise search and replace operations with regex support
+- **MultiEdit**: Perform multiple edits in sequence with atomic operations
+- **delete_file**: Autonomous file deletion with safety checks
+- **write**: Create new files with automatic directory creation
+
+### Enhanced Run Tools
+- **run_terminal_cmd**: Execute terminal commands with monitoring and timeout handling
+- **Auto-run**: Automatic command execution with safety guardrails
+- **Terminal Profile Selection**: Configurable terminal environments
+- **Background Process Management**: Better handling of long-running processes
+
+## Tool Name Mapping (Project)
+- glob_file_search: file name search (use instead of file_search)
+- codebase_search: semantic search
+- grep: exact/regex search (use instead of grep_search)
+- run_terminal_cmd: commands (use is_background for long-running tasks)
+- MCP tools: optional; if unavailable, use web_search
+
+### MCP (Model Context Protocol) Tools v2.0
+- **mcp_* commands**: Enhanced external service integration with 50+ official integrations
+- **Toggle MCP Servers**: Enable/disable external tools dynamically
+- **Available MCP Servers**: 
+  - Development: GitHub, GitLab, Linear, Figma, Playwright, Jira
+  - Analytics: PostHog, Sentry, Honeycomb, Tinybird, Mixpanel
+  - Infrastructure: Vercel, Netlify, Railway, Heroku, AWS
+  - Databases: MongoDB, Neon, DuckDB, DBHub, Supabase
+  - Security: Snyk, Semgrep, Socket, Endor Labs, OWASP
+  - Payments: Stripe, PayPal, Mercado Pago, Square
+  - AI/ML: Hugging Face, AWS Documentation, OpenAI, Anthropic
+  - Communication: Slack, Discord, Teams, Zoom
+  - Design: Figma, Adobe Creative Suite, Sketch
+
+### Advanced Configuration (v1.7.33)
+- **Auto-apply Edits**: Automatic edit application with user confirmation
+- **Enhanced Guardrails**: Allow lists for permitted operations with fine-grained control
+- **Auto-fix Errors**: Automatic linter error resolution with intelligent suggestions
+- **Context Management**: Improved context window utilization and memory management
+- **Agent Autocomplete**: Context-aware code suggestions with project-specific patterns
+- **Hooks System**: Customizable agent behavior at runtime with event-driven architecture
+
+## PROMPT ENGINEERING (Enhanced)
+
+### Query Optimization
+- Use specific technical terms: "React component", "TypeScript interface", "Next.js API route"
+- Include file types when relevant: "API route", "utility function", "test file"
+- Use pattern-based searches: "error handling", "validation logic", "authentication flow"
+- Implement iterative refinement techniques with context building
+- Leverage semantic understanding for better code discovery
+
+### Context Management
+- Break large tasks into smaller, manageable chunks with clear dependencies
+- Use @ references: `@filename.tsx` for targeted file context
+- Provide essential context only to optimize performance and reduce noise
+- Use targeted file reading instead of entire file consumption
+- Implement context rotation for long-running sessions
+
+### Prompt Structure
+- Be specific: "Refactor this function to use a `for...of` loop with proper error handling"
+- Include boundary setting: "Don't use hardcoded values, use constants from the theme system"
+- Provide examples when possible: "Follow the pattern in @ComponentExample.tsx"
+- Use declarative language: "Generate a React component that handles form validation with TypeScript"
+- Include success criteria: "The component should pass all existing tests and maintain accessibility standards"
+
+## PROJECT AWARENESS (Enhanced)
+
+### Essential Files
+- Read `PRD.md` at start of conversation for project context
+- Check `TASK.md` before starting tasks for current priorities
+- Use consistent naming and architecture from `PRD.md`
+- Ask questions if uncertain about requirements or constraints
+- Confirm file paths exist before referencing with proper error handling
+
+### Key Commands (Updated)
+```bash
+npm run dev          # Development server with hot reload
+npm run build        # Production build with optimization
+npm run test         # Run tests with coverage
+npm run lint         # Code quality check with auto-fix
+npm run type-check   # TypeScript validation
+npm run e2e          # End-to-end testing with Playwright
+npm run format       # Code formatting with Prettier
+```
+
+## TASK MANAGEMENT (Enhanced)
+
+### File Organization
+```
+docs/
+├── TASK.md (active epics only, max 500 lines)
+├── epics/ (detailed epic files with cross-references)
+│   ├── frontend/
+│   ├── backend/
+│   ├── admin/
+│   ├── infrastructure/
+│   ├── analytics/
+│   ├── marketing/
+│   ├── quality/
+│   └── client-features/
+├── BACKLOG.md (future epics only, max 1000 lines)
+├── COMPLETED.md (archived completed epics)
+└── epic-templates/
+    └── epic-template.md
+```
+
+### Epic Lifecycle (Enhanced)
+- Active Epics: Keep only 2-3 active in `TASK.md` for focus
+- Reference System: Use file references for detailed info with version control
+- Archive Completed: Move to `COMPLETED.md` immediately with metadata
+- Context Rotation: Rotate based on priority and business impact
+- Cross-References: Link related epics and dependencies
+
+### Task Format (Enhanced)
+```md
+### EPIC: Feature Implementation
+Reference: `docs/epics/frontend/feature-implementation.md`
+Status: Active (Week 2 of 4) | Business Impact: HIGH | User Value: HIGH
+Dependencies: [epic-id-1, epic-id-2] | Blocks: [epic-id-3]
+
+#### Critical (This Week)
+- [~] Implement core functionality (feature.tsx, 2 days)
+  - File: src/components/feature.tsx
+  - Notes: See epic file for detailed context
+  - Dependencies: [task-id-1]
+  - Acceptance Criteria: [criteria-1, criteria-2]
+
+#### High (Next Week)
+- [ ] Add error handling (feature.tsx, 1.5 days)
+  - File: src/components/feature.tsx
+  - Notes: Use existing error handling patterns
+  - Dependencies: [task-id-2]
+
+#### Discovered During Epic
+- [ ] Performance optimization needed
+  - File: src/components/feature.tsx
+  - Notes: Identified during testing
+  - Priority: Medium
+
+### Completed
+- [x] Created feature component (2025-01-27)
+  - File: src/components/feature.tsx
+  - Notes: Initial implementation complete
+  - Testing: Unit tests added
+```
+
+### Task Status (Enhanced)
+- [ ] - Not started | [~] - In progress | [x] - Completed | [!] - Blocked | [>] - Moved | [?] - Needs clarification | [@] - Waiting for review
+
+## AGILE PROCESS (BACKLOG → DONE) (Enhanced)
+
+### 1. Refine (Auto Mode)
+- Follow Tool Selection Strategy steps 1-5
+- Confirm task clarity with user and stakeholders
+- Check epic file for context and dependencies
+- Validate requirements against acceptance criteria
+
+### 2. Write in TASK.md
+- Include epic reference path, priority, business impact
+- Affected file/module, state: [~] In progress, estimated time
+- Dependencies and blockers clearly identified
+- Acceptance criteria documented
+
+### 3. Develop (Auto Mode)
+- Follow Tool Selection Strategy steps 6-7
+- Follow project rules, avoid side-effects
+- Add # Reason: comments when needed for complex logic
+- Implement with proper error handling and validation
+
+### 4. Test (Automated)
+- Follow Tool Selection Strategy step 8
+- Write unit tests for success, edge, failure cases
+- Confirm all tests pass, update epic file
+- Run integration tests for affected components
+
+### 5. PO Review
+- Submit for Product Owner review with clear documentation
+- Verify requirements met, confirm completeness
+- Address feedback and iterate if needed
+
+### 6. Close (Auto Mode)
+- Use `search_replace` to mark as [x] in TASK.md
+- Add discovered tasks to epic, archive to COMPLETED.md
+- Commit changes per Post-Task Docs & Commit Policy
+- Update related documentation and dependencies
+
+## CODE QUALITY & PERFORMANCE (Enhanced)
+
+### Code Structure
+- Max file length: 500 LOC with clear separation of concerns
+- Organize by feature/responsibility with proper module boundaries
+- Prefer relative imports, reuse existing code patterns
+- Avoid duplication, use existing patterns and utilities
+- Implement proper error boundaries and fallback components
+
+### Testing & Security (Enhanced)
+- Every feature includes unit tests with >80% coverage
+- Tests in /tests mirroring app structure with proper organization
+- Never overwrite secrets without confirmation and proper validation
+- Only use verified libraries/packages with security audits
+- Implement proper input validation and sanitization
+- Use environment variables for all configuration
+
+### Performance Optimization (Enhanced)
+- Max 500 LOC per file, split large files with clear interfaces
+- Use lazy loading, implement code splitting with dynamic imports
+- Prioritize essential context only with smart loading strategies
+- Use incremental builds, optimize imports with tree shaking
+- Implement proper caching strategies and memoization
+- Monitor Core Web Vitals and performance metrics
+
+### File Optimization (Enhanced)
+- Keep files under size limits (TASK.md: 500 lines, BACKLOG.md: 1000 lines)
+- Use concise language, prefer bullet points with clear hierarchy
+- Reference content instead of duplicating with proper linking
+- Structure for quick scanning, clear headers with navigation
+- Implement proper version control and change tracking
+
+## AI COLLABORATION (Enhanced)
+
+### Best Practices
+- Only modify requested/necessary items with clear scope
+- Avoid new tech/patterns unless needed and properly justified
+- Make single file edits, never remove unrelated code
+- Provide file links, not context copies for better navigation
+- Check epic files for context and dependencies
+- Implement proper error handling and user feedback
+
+### Live Coding Strategies (Enhanced)
+- Use comments to direct AI focus: `// TODO: implement authentication logic with proper error handling`
+- Start simple, build incrementally with proper testing
+- Think aloud through comments with clear reasoning
+- Use AI as a sounding board for design decisions with documentation
+- Implement proper logging and debugging capabilities
+
+### Code Review Assistance (Enhanced)
+- Ask AI to review code for potential issues with specific focus areas
+- Get suggestions for performance improvements with metrics
+- Use AI to ensure consistency with best practices and patterns
+- Request security vulnerability assessments with remediation
+- Implement proper documentation and inline comments
+
+## ERROR PREVENTION (Enhanced)
+
+### Common Pitfalls
+- Avoid hardcoded values and magic numbers with proper constants
+- Prevent circular dependencies with proper module structure
+- Check for memory leaks and performance issues with profiling
+- Validate all user inputs and API responses with proper schemas
+- Ensure proper error handling and logging with structured logging
+- Implement proper type safety with TypeScript strict mode
+
+### Recovery Strategies (Enhanced)
+- Automated rollback procedures for failed deployments with proper monitoring
+- Context restoration techniques for interrupted sessions with state management
+- Error logging and analysis for continuous improvement with metrics
+- Graceful degradation for non-critical features with fallback options
+- Implement proper monitoring and alerting systems
+
+## SUCCESS METRICS (Enhanced)
+
+### Efficiency Indicators
+- Reduced manual file navigation, faster context discovery with semantic search
+- Precise code modifications, automated validation with proper testing
+- Consistent workflow execution with proper documentation
+- Improved development velocity with proper tooling
+
+### Quality Indicators
+- Fewer context errors, better pattern matching with semantic understanding
+- Improved code consistency, faster feedback loops with proper CI/CD
+- Reduced manual intervention with proper automation
+- Better code maintainability with proper documentation
+
+### Performance KPIs
+- Time to first meaningful edit, context discovery accuracy with proper indexing
+- Tool usage optimization, error rate reduction with proper monitoring
+- Build success rate with proper error handling
+- Developer satisfaction with proper tooling and documentation
+
+## TOOL USAGE EXAMPLES (Enhanced)
+
+### Search Patterns (Enhanced)
+```bash
+# Semantic search for components with better context
+codebase_search("React component authentication with error handling")
+
+# Find specific files with better ranking
+glob_file_search("auth.tsx")
+
+# Exact pattern matching with regex support
+grep("useState.*user.*error")
+
+# Directory exploration with filtering
+list_dir("src/components", ignore_globs=["**/*.test.*"])
+```
+
+### Edit Patterns (Enhanced)
+```bash
+# File editing with better conflict resolution
+edit_file("src/components/Auth.tsx", "Add error handling with proper validation", "...")
+
+# Search and replace with regex support
+search_replace("src/utils/validation.ts", "oldPattern", "newPattern")
+
+# Multi-edit operations
+MultiEdit("src/components/Auth.tsx", [
+  {"old_string": "oldCode", "new_string": "newCode"},
+  {"old_string": "oldCode2", "new_string": "newCode2"}
+])
+
+# File deletion with safety checks
+delete_file("src/old-component.tsx")
+```
+
+### Run Patterns (Enhanced)
+```bash
+# Terminal commands with better error handling
+run_terminal_cmd("npm install", false)
+
+# Background processes with proper monitoring
+run_terminal_cmd("npm run dev", true)
+
+# Command with optional explanation
+run_terminal_cmd("npm run build", false)
+```
+
+### MCP Patterns (Enhanced)
+```bash
+# External documentation with better parsing
+mcp_ui-ux_Docs_fetch_ui_ux_documentation("search_term")
+
+# Web searches with better result processing
+mcp_ui-ux_Docs_search_ui_ux_documentation("query")
+
+# Database operations with proper error handling
+mcp_n8n-mcp_list_nodes({"limit": 200})
+
+# Workflow management with proper validation
+mcp_n8n-mcp_validate_workflow({"workflow": workflowData})
+```
+
+## CRITICAL REMINDERS (Enhanced)
+
+1. ALWAYS use semantic search before file operations for better context
+2. ALWAYS validate changes immediately with proper testing
+3. ALWAYS follow the 8-step workflow with proper documentation
+4. ALWAYS test before considering work complete with proper coverage
+5. ALWAYS use targeted file reading for better performance
+6. ALWAYS break large tasks into smaller chunks with clear dependencies
+7. ALWAYS provide specific, actionable prompts with clear success criteria
+8. ALWAYS reference existing patterns and conventions for consistency
+9. ALWAYS check epic files for context and dependencies
+10. ALWAYS update TASK.md with progress and proper metadata
+11. ALWAYS use the latest MCP tools for external integrations with proper error handling
+12. ALWAYS leverage auto-run and guardrails appropriately with proper safety checks
+13. ALWAYS update docs (TASK.md and relevant epic) before committing with proper version control
+14. ALWAYS commit after each completed task (see Post-Task Docs & Commit Policy) with proper conventional commits
+15. ALWAYS implement proper error handling and user feedback mechanisms
+16. ALWAYS use proper TypeScript types and interfaces for better code quality
+17. ALWAYS implement proper accessibility standards and testing
+18. ALWAYS optimize for performance and Core Web Vitals
+19. ALWAYS implement proper security measures and input validation
+20. ALWAYS document changes and maintain proper version control
+
+## NEW FEATURES IN CURSOR 1.7.33
+
+### Agent Autocomplete
+- Context-aware code suggestions based on project patterns
+- Intelligent completion with proper type inference
+- Better integration with existing codebase patterns
+
+### Hooks System
+- Customizable agent behavior at runtime
+- Event-driven architecture for better control
+- Proper error handling and recovery mechanisms
+
+### Team Rules
+- Centralized rule management for team environments
+- Consistent coding standards across projects
+- Proper version control and collaboration features
+
+### Enhanced Context Management
+- Better context window utilization
+- Improved memory management for long sessions
+- Smart context rotation and optimization
+
+### Advanced Error Handling
+- Better error recovery mechanisms
+- Improved debugging capabilities
+- Proper error reporting and logging
+
+### Performance Improvements
+- Faster tool execution with better caching
+- Improved search algorithms with semantic understanding
+- Better resource management and optimization
+
+## MIGRATION FROM LEGACY RULES
+
+### From .cursorrules to .cursor/rules/
+1. Create `.cursor/rules/` directory structure
+2. Convert existing rules to `.mdc` format with proper metadata
+3. Update rule references and dependencies
+4. Test new rule system with proper validation
+5. Archive legacy rules with proper documentation
+
+### Best Practices for Rule Management
+- Use descriptive names for rule files
+- Include proper metadata and descriptions
+- Implement proper version control for rules
+- Regular review and updates of rule effectiveness
+- Proper documentation and examples for each rule
+
+This comprehensive rule set ensures optimal development experience with Cursor IDE 1.7.33 while maintaining code quality, performance, and team collaboration standards.

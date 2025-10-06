@@ -1,0 +1,37 @@
+---
+description: Core Cursor IDE rules (essential workflow and safety) for v1.7.33
+globs: "**/*.ts, **/*.tsx, **/*.js, **/*.jsx"
+alwaysApply: true
+---
+
+# Core Cursor IDE Rules (v1.7.33)
+
+## Essential Workflow
+- Use the 8-step tool flow: codebase_search → glob_file_search → grep → list_dir → read_file → edit_file/search_replace → run_terminal_cmd → validate.
+- Make focused edits; test immediately; document changes in `docs/TASK.md`.
+- Stage only relevant files; use conventional commits.
+
+## Safety & Guardrails
+- Prefer search before edit; prefer targeted reads over whole files.
+- For destructive or shell actions, require confirmation and provide an explanation.
+- Use `run_terminal_cmd` with `is_background: true` for long-running dev servers.
+- Never commit secrets; validate inputs; maintain type safety.
+
+## Quick Quality Gates
+- npm run lint && npm run type-check && npm test
+- Keep file size reasonable (<500 LOC) and use clear module boundaries.
+
+## Do / Don’t
+- Do reuse existing patterns; Do handle errors meaningfully.
+- Don’t introduce new tech without justification; Don’t remove unrelated code.
+
+## Tool Name Mapping (Project)
+- name search: glob_file_search
+- semantic search: codebase_search
+- regex search: grep
+- file ops: read_file, edit_file, search_replace, write, delete_file
+- commands: run_terminal_cmd (use is_background where needed)
+
+## Notes
+- MCP tools are optional; if not configured, fallback to web_search.
+- Keep this core file concise; move extensive guidance to agent-requested rules.
