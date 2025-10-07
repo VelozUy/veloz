@@ -11,18 +11,16 @@ import type {
   CrewInteractionEvent,
 } from '@/services/analytics';
 
-// Only import analytics functions on client side
-let analyticsService: Record<string, unknown> | null = null;
-let trackProjectView: ((data: ProjectViewEvent) => void) | null = null;
-let trackMediaInteraction: ((data: MediaInteractionEvent) => void) | null =
-  null;
-let trackCTAInteraction: ((data: CTAInteractionEvent) => void) | null = null;
-let trackCrewInteraction: ((data: CrewInteractionEvent) => void) | null = null;
-let trackPageView: ((pathname: string, title: string) => void) | null = null;
-let trackScrollDepth: ((pathname: string, depth: number) => void) | null = null;
-let trackError:
-  | ((error: Error, context?: Record<string, unknown>) => void)
-  | null = null;
+// Import simple analytics service
+import {
+  trackPageView as simpleTrackPageView,
+  trackProjectView as simpleTrackProjectView,
+  trackMediaInteraction as simpleTrackMediaInteraction,
+  trackCTAInteraction as simpleTrackCTAInteraction,
+  trackCrewInteraction as simpleTrackCrewInteraction,
+  trackError as simpleTrackError,
+  trackScrollDepth as simpleTrackScrollDepth,
+} from '@/services/analytics-simple';
 
 const hasMeasurementId = Boolean(
   process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
@@ -30,24 +28,9 @@ const hasMeasurementId = Boolean(
 
 let analyticsModulePromise: Promise<void> | null = null;
 
+// Simple analytics module loading - no longer needed since we import directly
 const loadAnalyticsModule = () => {
-  if (!analyticsModulePromise) {
-    analyticsModulePromise = import('@/services/analytics').then(analytics => {
-      analyticsService = analytics.analyticsService as unknown as Record<
-        string,
-        unknown
-      >;
-      trackProjectView = analytics.trackProjectView;
-      trackMediaInteraction = analytics.trackMediaInteraction;
-      trackCTAInteraction = analytics.trackCTAInteraction;
-      trackCrewInteraction = analytics.trackCrewInteraction;
-      trackPageView = analytics.trackPageView;
-      trackScrollDepth = analytics.trackScrollDepth;
-      trackError = analytics.trackError;
-    });
-  }
-
-  return analyticsModulePromise;
+  return Promise.resolve();
 };
 
 export const useAnalytics = () => {
@@ -56,9 +39,7 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return false;
     return GDPRCompliance.hasAnalyticsConsent();
   });
-  const [isAnalyticsReady, setIsAnalyticsReady] = useState(
-    typeof window !== 'undefined' && analyticsService !== null
-  );
+  const [isAnalyticsReady, setIsAnalyticsReady] = useState(false);
   const pageViewTracked = useRef(false);
   const scrollDepthTracked = useRef<Set<number>>(new Set());
   const sessionStartTime = useRef<number>(Date.now());
@@ -70,7 +51,9 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return;
 
     const updateConsent = () => {
-      setConsentGranted(GDPRCompliance.hasAnalyticsConsent());
+      const hasConsent = GDPRCompliance.hasAnalyticsConsent();
+      console.log('🔐 GDPR Consent status:', hasConsent);
+      setConsentGranted(hasConsent);
     };
 
     const consentListener = () => updateConsent();
@@ -114,11 +97,16 @@ export const useAnalytics = () => {
 
     let cancelled = false;
 
-    loadAnalyticsModule().then(() => {
-      if (!cancelled) {
-        setIsAnalyticsReady(true);
-      }
-    });
+    loadAnalyticsModule()
+      .then(() => {
+        if (!cancelled) {
+          console.log('📊 Analytics module loaded successfully');
+          setIsAnalyticsReady(true);
+        }
+      })
+      .catch(error => {
+        console.error('❌ Failed to load analytics module:', error);
+      });
 
     return () => {
       cancelled = true;
@@ -129,8 +117,8 @@ export const useAnalytics = () => {
   useEffect(() => {
     if (!isAnalyticsReady) return;
 
-    if (pathname && !pageViewTracked.current && trackPageView) {
-      trackPageView(pathname, document.title);
+    if (pathname && !pageViewTracked.current) {
+      simpleTrackPageView(pathname, document.title);
       pageViewTracked.current = true;
 
       // Reset for next page
@@ -142,15 +130,14 @@ export const useAnalytics = () => {
 
   // Track session start
   useEffect(() => {
-    if (!isAnalyticsReady || !analyticsService) return;
+    if (!isAnalyticsReady) return;
 
-    (analyticsService as { trackSessionStart: () => void }).trackSessionStart();
+    // Simple session tracking - just log a session start event
+    simpleTrackPageView('session_start', 'Session Started');
 
     // Track session end on page unload
     const handleBeforeUnload = () => {
-      (
-        analyticsService as { trackSessionEnd: (duration: number) => void }
-      ).trackSessionEnd(Date.now() - sessionStartTime.current);
+      simpleTrackPageView('session_end', 'Session Ended');
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -162,8 +149,8 @@ export const useAnalytics = () => {
   // Scroll depth tracking
   const trackScrollDepthOnPage = useCallback(
     (scrollDepth: number) => {
-      if (!scrollDepthTracked.current.has(scrollDepth) && trackScrollDepth) {
-        trackScrollDepth(pathname, scrollDepth);
+      if (!scrollDepthTracked.current.has(scrollDepth)) {
+        simpleTrackScrollDepth(pathname, scrollDepth);
         scrollDepthTracked.current.add(scrollDepth);
       }
     },
@@ -172,22 +159,16 @@ export const useAnalytics = () => {
 
   // Project view tracking with duration
   const trackProjectViewEvent = useCallback((data: ProjectViewEvent) => {
-    if (trackProjectView) {
-      currentProjectId.current = data.projectId;
-      projectViewStartTime.current = Date.now();
-      trackProjectView(data);
-    }
+    currentProjectId.current = data.projectId;
+    projectViewStartTime.current = Date.now();
+    simpleTrackProjectView(data);
   }, []);
 
   // Track project view end with duration
   const trackProjectViewEnd = useCallback(() => {
-    if (
-      currentProjectId.current &&
-      projectViewStartTime.current > 0 &&
-      trackProjectView
-    ) {
+    if (currentProjectId.current && projectViewStartTime.current > 0) {
       const duration = Date.now() - projectViewStartTime.current;
-      trackProjectView({
+      simpleTrackProjectView({
         projectId: currentProjectId.current,
         projectTitle: '', // Will be filled by the calling component
         viewDuration: duration,
@@ -200,26 +181,20 @@ export const useAnalytics = () => {
   // Media interaction tracking
   const trackMediaInteractionEvent = useCallback(
     (data: MediaInteractionEvent) => {
-      if (trackMediaInteraction) {
-        trackMediaInteraction(data);
-      }
+      simpleTrackMediaInteraction(data);
     },
     []
   );
 
   // CTA interaction tracking
   const trackCTAInteractionEvent = useCallback((data: CTAInteractionEvent) => {
-    if (trackCTAInteraction) {
-      trackCTAInteraction(data);
-    }
+    simpleTrackCTAInteraction(data);
   }, []);
 
   // Crew interaction tracking
   const trackCrewInteractionEvent = useCallback(
     (data: CrewInteractionEvent) => {
-      if (trackCrewInteraction) {
-        trackCrewInteraction(data);
-      }
+      simpleTrackCrewInteraction(data);
     },
     []
   );
@@ -227,9 +202,7 @@ export const useAnalytics = () => {
   // Error tracking
   const trackErrorEvent = useCallback(
     (error: Error, context?: Record<string, unknown>) => {
-      if (trackError) {
-        trackError(error, context);
-      }
+      simpleTrackError(error, context);
     },
     []
   );

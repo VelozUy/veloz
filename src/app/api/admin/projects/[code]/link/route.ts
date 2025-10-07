@@ -10,12 +10,12 @@ import {
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
   try {
     const admin = await verifyAdminFromRequest(req);
     const { db } = initFirebaseAdmin();
-    const code = params.code;
+    const { code } = await params;
 
     const snap = await db.collection('projects').doc(code).get();
     if (!snap.exists) {
@@ -60,12 +60,12 @@ export async function POST(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
   try {
     const admin = await verifyAdminFromRequest(req);
     const { db } = initFirebaseAdmin();
-    const code = params.code;
+    const { code } = await params;
 
     const snap = await db.collection('projects').doc(code).get();
     if (!snap.exists) {

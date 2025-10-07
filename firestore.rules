@@ -256,6 +256,25 @@ service cloud.firestore {
       allow read: if isActiveAdmin(); // Admins can read all user data
     }
     
+    // Analytics Collection - Allow public writes for analytics tracking
+    match /analytics/{analyticsId} {
+      allow create: if true; // Allow public creation for analytics tracking
+      allow read, write, delete: if isActiveAdmin(); // Only admins can manage analytics data
+    }
+    
+    // QR Code Scans Collection - Allow public writes for QR code tracking
+    match /qrCodeScans/{scanId} {
+      allow create: if true; // Allow public creation for QR code scan tracking
+      allow read, write, delete: if isActiveAdmin(); // Only admins can manage QR scan data
+    }
+    
+    // QR Codes Collection - Allow public reads, admin writes
+    match /qrCodes/{qrId} {
+      allow read: if true; // Allow public read for QR code validation
+      allow write, delete: if isActiveAdmin(); // Only admins can manage QR codes
+      allow create: if isActiveAdmin(); // Only admins can create QR codes
+    }
+    
     // Default deny rule for any other collections
     match /{document=**} {
       allow read, write: if false;

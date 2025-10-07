@@ -8,6 +8,8 @@ import { getApp, getApps, initializeApp } from 'firebase/app';
 import { firebaseConfig, validateFirebaseConfig } from '@/lib/firebase-config';
 import { GDPRCompliance } from '@/lib/gdpr-compliance';
 import { z } from 'zod';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { getFirestoreService } from '@/lib/firebase';
 
 // Analytics event schemas
 export const AnalyticsEventSchema = z.object({
@@ -174,13 +176,49 @@ class AnalyticsService {
         timestamp: Date.now(),
       };
 
+      // Send to Firebase Analytics (GA4)
       if (this.isGA4Enabled) {
         await logEvent(this.analytics, eventName, enrichedParams);
       }
 
+      // Save to Firestore for admin dashboard
+      await this.saveEventToFirestore(eventName, enrichedParams);
+
       // Analytics event logged
     } catch (error) {
       console.error('Failed to log analytics event:', error);
+    }
+  }
+
+  private async saveEventToFirestore(
+    eventName: string,
+    eventParams: Record<string, unknown>
+  ) {
+    try {
+      const db = await getFirestoreService();
+      if (!db) {
+        console.warn('Firestore not initialized, skipping analytics save');
+        return;
+      }
+
+      const eventData = {
+        eventType: eventName,
+        eventData: eventParams,
+        sessionId: this.sessionId,
+        deviceType: this.getDeviceType(),
+        userLanguage: this.getUserLanguage(),
+        timestamp: Timestamp.now(),
+        userAgent:
+          typeof window !== 'undefined'
+            ? window.navigator.userAgent
+            : undefined,
+        // Note: IP address would need to be captured server-side for GDPR compliance
+      };
+
+      await addDoc(collection(db, 'analytics'), eventData);
+      console.log('✅ Analytics event saved to Firestore:', eventName);
+    } catch (error) {
+      console.error('Failed to save analytics event to Firestore:', error);
     }
   }
 
