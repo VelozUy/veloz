@@ -330,3 +330,93 @@ export const trackError = (error: Error, context?: Record<string, unknown>) =>
 
 export const trackScrollDepth = (pagePath: string, depth: number) =>
   simpleAnalyticsService.trackScrollDepth(pagePath, depth);
+
+// Test helper for traffic source parsing (pure function, no side effects)
+// This is exported only for unit tests and mirrors getTrafficSourceData logic
+export function __parseTrafficSourceForTest(params: {
+  url: string;
+  referrer?: string;
+}): Record<string, unknown> {
+  try {
+    const urlObj = new URL(params.url);
+    const urlParams = urlObj.searchParams;
+    const referrer = params.referrer || '';
+
+    const utmSource = urlParams.get('utm_source');
+    const utmMedium = urlParams.get('utm_medium');
+    const utmCampaign = urlParams.get('utm_campaign');
+    const utmContent = urlParams.get('utm_content');
+    const utmTerm = urlParams.get('utm_term');
+
+    let trafficSource = 'direct';
+    let trafficMedium = 'none';
+    let trafficCampaign = '';
+
+    if (utmSource) {
+      trafficSource = utmSource;
+      trafficMedium = utmMedium || 'unknown';
+      trafficCampaign = utmCampaign || '';
+    } else if (referrer) {
+      const refDomain = (() => {
+        try {
+          return new URL(referrer).hostname;
+        } catch {
+          return '';
+        }
+      })();
+      if (refDomain.includes('google')) {
+        trafficSource = 'google';
+        trafficMedium = 'organic';
+      } else if (
+        refDomain.includes('facebook') ||
+        refDomain.includes('fb.com')
+      ) {
+        trafficSource = 'facebook';
+        trafficMedium = 'social';
+      } else if (refDomain.includes('instagram')) {
+        trafficSource = 'instagram';
+        trafficMedium = 'social';
+      } else if (refDomain.includes('twitter') || refDomain.includes('x.com')) {
+        trafficSource = 'twitter';
+        trafficMedium = 'social';
+      } else if (refDomain.includes('linkedin')) {
+        trafficSource = 'linkedin';
+        trafficMedium = 'social';
+      } else if (refDomain.includes('youtube')) {
+        trafficSource = 'youtube';
+        trafficMedium = 'social';
+      } else if (refDomain.includes('tiktok')) {
+        trafficSource = 'tiktok';
+        trafficMedium = 'social';
+      } else {
+        trafficSource = 'referral';
+        trafficMedium = 'referral';
+      }
+    }
+
+    return {
+      traffic_source: trafficSource,
+      traffic_medium: trafficMedium,
+      traffic_campaign: trafficCampaign,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
+      utm_term: utmTerm,
+      referrer: referrer,
+      referrer_domain: referrer
+        ? (() => {
+            try {
+              return new URL(referrer).hostname;
+            } catch {
+              return '';
+            }
+          })()
+        : '',
+      landing_page: urlObj.pathname,
+      full_url: params.url,
+    };
+  } catch {
+    return {};
+  }
+}

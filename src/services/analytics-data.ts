@@ -62,6 +62,12 @@ export const AnalyticsSummarySchema = z.object({
   ),
   deviceBreakdown: z.record(z.number()),
   languageBreakdown: z.record(z.number()),
+  // Traffic source/UTM aggregations
+  trafficSourceBreakdown: z.record(z.number()).optional(),
+  trafficMediumBreakdown: z.record(z.number()).optional(),
+  utmSourceBreakdown: z.record(z.number()).optional(),
+  utmCampaignBreakdown: z.record(z.number()).optional(),
+  referrerDomainBreakdown: z.record(z.number()).optional(),
   conversionRate: z.number(),
   bounceRate: z.number(),
 });
@@ -142,6 +148,12 @@ export async function aggregateAnalyticsEvents(
   // Device and language breakdown
   const deviceBreakdown: Record<string, number> = {};
   const languageBreakdown: Record<string, number> = {};
+  // Traffic aggregations
+  const trafficSourceBreakdown: Record<string, number> = {};
+  const trafficMediumBreakdown: Record<string, number> = {};
+  const utmSourceBreakdown: Record<string, number> = {};
+  const utmCampaignBreakdown: Record<string, number> = {};
+  const referrerDomainBreakdown: Record<string, number> = {};
 
   // Session tracking
   const sessions = new Set<string>();
@@ -169,6 +181,34 @@ export async function aggregateAnalyticsEvents(
       (deviceBreakdown[event.deviceType] || 0) + 1;
     languageBreakdown[event.userLanguage] =
       (languageBreakdown[event.userLanguage] || 0) + 1;
+
+    // Traffic source fields may be stored inside eventData
+    const ed = (event.eventData || {}) as Record<string, unknown>;
+    const trafficSource = (ed['traffic_source'] as string) || '';
+    const trafficMedium = (ed['traffic_medium'] as string) || '';
+    const utmSource = (ed['utm_source'] as string) || '';
+    const utmCampaign = (ed['utm_campaign'] as string) || '';
+    const referrerDomain = (ed['referrer_domain'] as string) || '';
+
+    if (trafficSource) {
+      trafficSourceBreakdown[trafficSource] =
+        (trafficSourceBreakdown[trafficSource] || 0) + 1;
+    }
+    if (trafficMedium) {
+      trafficMediumBreakdown[trafficMedium] =
+        (trafficMediumBreakdown[trafficMedium] || 0) + 1;
+    }
+    if (utmSource) {
+      utmSourceBreakdown[utmSource] = (utmSourceBreakdown[utmSource] || 0) + 1;
+    }
+    if (utmCampaign) {
+      utmCampaignBreakdown[utmCampaign] =
+        (utmCampaignBreakdown[utmCampaign] || 0) + 1;
+    }
+    if (referrerDomain) {
+      referrerDomainBreakdown[referrerDomain] =
+        (referrerDomainBreakdown[referrerDomain] || 0) + 1;
+    }
 
     // Event type processing
     switch (event.eventType) {
@@ -279,6 +319,11 @@ export async function aggregateAnalyticsEvents(
     topProjects,
     deviceBreakdown,
     languageBreakdown,
+    trafficSourceBreakdown,
+    trafficMediumBreakdown,
+    utmSourceBreakdown,
+    utmCampaignBreakdown,
+    referrerDomainBreakdown,
     conversionRate,
     bounceRate,
   };
