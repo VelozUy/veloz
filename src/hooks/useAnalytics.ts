@@ -128,12 +128,29 @@ export const useAnalytics = () => {
     }
   }, [pathname, isAnalyticsReady]);
 
-  // Track session start
+  // Track session start and traffic source
   useEffect(() => {
     if (!isAnalyticsReady) return;
 
     // Simple session tracking - just log a session start event
     simpleTrackPageView('session_start', 'Session Started');
+
+    // Track traffic source on session start
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasUtmParams =
+        urlParams.get('utm_source') || urlParams.get('utm_campaign');
+      const hasReferrer = document.referrer;
+
+      if (hasUtmParams || hasReferrer) {
+        // Import and call traffic source tracking
+        import('@/services/analytics-simple').then(
+          ({ simpleAnalyticsService }) => {
+            simpleAnalyticsService.trackTrafficSource();
+          }
+        );
+      }
+    }
 
     // Track session end on page unload
     const handleBeforeUnload = () => {

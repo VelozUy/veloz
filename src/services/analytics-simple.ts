@@ -86,6 +86,8 @@ class SimpleAnalyticsService {
         device_type: this.getDeviceType(),
         user_language: this.getUserLanguage(),
         timestamp: Date.now(),
+        // Traffic source tracking
+        ...this.getTrafficSourceData(),
       };
 
       await logEvent(this.analytics, eventName, enrichedParams);
@@ -110,6 +112,87 @@ class SimpleAnalyticsService {
   private getUserLanguage(): string {
     if (typeof window === 'undefined') return 'unknown';
     return navigator.language || 'unknown';
+  }
+
+  private getTrafficSourceData(): Record<string, unknown> {
+    if (typeof window === 'undefined') return {};
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrer = document.referrer || '';
+
+    // UTM parameters
+    const utmSource = urlParams.get('utm_source');
+    const utmMedium = urlParams.get('utm_medium');
+    const utmCampaign = urlParams.get('utm_campaign');
+    const utmContent = urlParams.get('utm_content');
+    const utmTerm = urlParams.get('utm_term');
+
+    // Determine traffic source
+    let trafficSource = 'direct';
+    let trafficMedium = 'none';
+    let trafficCampaign = '';
+
+    if (utmSource) {
+      trafficSource = utmSource;
+      trafficMedium = utmMedium || 'unknown';
+      trafficCampaign = utmCampaign || '';
+    } else if (referrer) {
+      const referrerDomain = this.getDomainFromUrl(referrer);
+      if (referrerDomain.includes('google')) {
+        trafficSource = 'google';
+        trafficMedium = 'organic';
+      } else if (
+        referrerDomain.includes('facebook') ||
+        referrerDomain.includes('fb.com')
+      ) {
+        trafficSource = 'facebook';
+        trafficMedium = 'social';
+      } else if (referrerDomain.includes('instagram')) {
+        trafficSource = 'instagram';
+        trafficMedium = 'social';
+      } else if (
+        referrerDomain.includes('twitter') ||
+        referrerDomain.includes('x.com')
+      ) {
+        trafficSource = 'twitter';
+        trafficMedium = 'social';
+      } else if (referrerDomain.includes('linkedin')) {
+        trafficSource = 'linkedin';
+        trafficMedium = 'social';
+      } else if (referrerDomain.includes('youtube')) {
+        trafficSource = 'youtube';
+        trafficMedium = 'social';
+      } else if (referrerDomain.includes('tiktok')) {
+        trafficSource = 'tiktok';
+        trafficMedium = 'social';
+      } else {
+        trafficSource = 'referral';
+        trafficMedium = 'referral';
+      }
+    }
+
+    return {
+      traffic_source: trafficSource,
+      traffic_medium: trafficMedium,
+      traffic_campaign: trafficCampaign,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
+      utm_term: utmTerm,
+      referrer: referrer,
+      referrer_domain: referrer ? this.getDomainFromUrl(referrer) : '',
+      landing_page: window.location.pathname,
+      full_url: window.location.href,
+    };
+  }
+
+  private getDomainFromUrl(url: string): string {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return '';
+    }
   }
 
   // Public methods
@@ -196,6 +279,29 @@ class SimpleAnalyticsService {
     await this.logEvent('scroll_depth', {
       page_path: pagePath,
       scroll_depth: depth,
+    });
+  }
+
+  // Traffic source tracking
+  async trackTrafficSource() {
+    const trafficData = this.getTrafficSourceData();
+    await this.logEvent('traffic_source', {
+      ...trafficData,
+      event_category: 'traffic',
+      event_action: 'source_detected',
+    });
+  }
+
+  // Campaign tracking
+  async trackCampaign(
+    campaignName: string,
+    campaignData?: Record<string, unknown>
+  ) {
+    await this.logEvent('campaign_tracking', {
+      campaign_name: campaignName,
+      ...campaignData,
+      event_category: 'campaign',
+      event_action: 'campaign_interaction',
     });
   }
 }
