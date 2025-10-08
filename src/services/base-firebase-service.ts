@@ -229,18 +229,7 @@ export abstract class BaseFirebaseService<T = unknown> {
 
   // Network management
   protected async ensureNetworkEnabled(): Promise<void> {
-    if (process.env.NODE_ENV === 'test') {
-      console.log(
-        '[SERVICE] ensureNetworkEnabled called, calling getFirestoreService...'
-      );
-    }
     const db = await getFirestoreService();
-    if (process.env.NODE_ENV === 'test') {
-      console.log(
-        '[SERVICE] getFirestoreService returned:',
-        db ? 'mockDb' : 'null'
-      );
-    }
     if (!db) throw new Error('Firestore not available');
 
     // Network is enabled by default in Firebase v9+
@@ -306,7 +295,7 @@ export abstract class BaseFirebaseService<T = unknown> {
     );
   }
 
-  async getById<R>(id: string): Promise<ApiResponse<R>> {
+  async getById<R>(id: string): Promise<ApiResponse<R | null>> {
     const cacheKey = this.getCacheKey('getById', { id });
     const cached = this.getFromCache<R>(cacheKey);
     if (cached) {
@@ -319,14 +308,18 @@ export abstract class BaseFirebaseService<T = unknown> {
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
-        throw new Error(`Document with id ${id} not found`);
+        // Return success with null data for non-existent documents
+        return { success: true, data: null };
       }
 
       const data = this.processDocument<R>(docSnap);
       this.setCache(cacheKey, data);
       return { success: true, data };
     }, `getById ${id} from ${this.collectionName}`).catch(error =>
-      createErrorResponse<R>(error, `getById ${id} from ${this.collectionName}`)
+      createErrorResponse<R | null>(
+        error,
+        `getById ${id} from ${this.collectionName}`
+      )
     );
   }
 
@@ -352,10 +345,16 @@ export abstract class BaseFirebaseService<T = unknown> {
       await this.ensureNetworkEnabled();
       const docRef = await this.getDocRef(id);
 
-      await updateDoc(docRef, data);
+      // Add updatedAt timestamp
+      const updateData = {
+        ...data,
+        updatedAt: new Date(),
+      };
+
+      await updateDoc(docRef, updateData);
 
       this.invalidateCache();
-      return { success: true, data: { id, ...data } as R };
+      return { success: true, data: { id, ...updateData } as R };
     }, `update ${id} in ${this.collectionName}`).catch(error =>
       createErrorResponse<R>(error, `update ${id} in ${this.collectionName}`)
     );

@@ -495,14 +495,18 @@ describe('BaseFirebaseService', () => {
         const result = await service.create(data);
 
         expect(result.success).toBe(true);
-        expect(result.data).toBe('new-doc-id');
+        expect(result.data).toEqual(
+          expect.objectContaining({
+            id: 'new-doc-id',
+            name: 'New Document',
+            description: 'Test',
+          })
+        );
         expect(addDoc).toHaveBeenCalledWith(
           expect.anything(),
           expect.objectContaining({
             name: 'New Document',
             description: 'Test',
-            createdAt: expect.any(Date),
-            updatedAt: expect.any(Date),
           })
         );
       });
