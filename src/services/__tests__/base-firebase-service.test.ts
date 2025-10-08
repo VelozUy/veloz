@@ -338,19 +338,18 @@ describe('BaseFirebaseService', () => {
 
     it('should cleanup expired cache entries', () => {
       const now = Date.now();
+      const ttl = 5 * 60 * 1000; // Default TTL is 5 minutes
 
-      // Add expired entry
+      // Add expired entry (older than TTL)
       service['cache'].set('expired-key', {
         data: { name: 'Expired' },
-        timestamp: now - 10000,
-        ttl: 5000,
+        timestamp: now - ttl - 1000, // 1 second beyond TTL
       });
 
       // Add valid entry
       service['cache'].set('valid-key', {
         data: { name: 'Valid' },
         timestamp: now,
-        ttl: 5000,
       });
 
       service['cleanupCache']();
