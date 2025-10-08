@@ -54,3 +54,13 @@ next-env.d.ts
 src/data/content-*.json
 src/lib/static-content.generated.ts
 src/lib/build-time-data.generated.ts
+
+# Audit and test reports (debug artifacts)
+*-audit-report.json
+*-report.json
+lighthouse-*.json
+lighthouse-*.html
+test-results/
+url-conversion-test-results.json
+website-optimization-report.json
+pglite-debug.log
