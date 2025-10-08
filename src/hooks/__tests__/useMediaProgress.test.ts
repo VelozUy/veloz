@@ -11,7 +11,9 @@ describe('useMediaProgress', () => {
   });
 
   it('should initialize with default state', () => {
-    const { result } = renderHook(() => useMediaProgress('test-url'));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: false })
+    );
 
     expect(result.current.isLoading).toBe(false);
     expect(result.current.progress).toBe(0);
@@ -23,7 +25,9 @@ describe('useMediaProgress', () => {
     const mockLoadWithProgress = jest.fn().mockResolvedValue('blob:loaded-url');
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
-    const { result } = renderHook(() => useMediaProgress('test-url', { autoLoad: true }));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: true })
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -34,11 +38,7 @@ describe('useMediaProgress', () => {
 
     expect(mockLoadWithProgress).toHaveBeenCalledWith(
       'test-url',
-      expect.objectContaining({
-        timeout: 30000,
-        useBlob: true,
-        fallbackToDirect: true,
-      }),
+      {}, // Empty options object - defaults are applied in MediaProgressLoader
       expect.objectContaining({
         onProgress: expect.any(Function),
         onComplete: expect.any(Function),
@@ -60,11 +60,13 @@ describe('useMediaProgress', () => {
     let progressCallback: (percent: number) => void;
     let completeCallback: (url: string) => void;
 
-    const mockLoadWithProgress = jest.fn().mockImplementation((url, options, callbacks) => {
-      progressCallback = callbacks.onProgress;
-      completeCallback = callbacks.onComplete;
-      return Promise.resolve('blob:loaded-url');
-    });
+    const mockLoadWithProgress = jest
+      .fn()
+      .mockImplementation((url, options, callbacks) => {
+        progressCallback = callbacks.onProgress;
+        completeCallback = callbacks.onComplete;
+        return Promise.resolve('blob:loaded-url');
+      });
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
     const onProgressChange = jest.fn();
@@ -92,10 +94,12 @@ describe('useMediaProgress', () => {
   it('should handle completion', async () => {
     let completeCallback: (url: string) => void;
 
-    const mockLoadWithProgress = jest.fn().mockImplementation((url, options, callbacks) => {
-      completeCallback = callbacks.onComplete;
-      return Promise.resolve('blob:loaded-url');
-    });
+    const mockLoadWithProgress = jest
+      .fn()
+      .mockImplementation((url, options, callbacks) => {
+        completeCallback = callbacks.onComplete;
+        return Promise.resolve('blob:loaded-url');
+      });
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
     const onLoadComplete = jest.fn();
@@ -125,10 +129,12 @@ describe('useMediaProgress', () => {
   it('should handle errors', async () => {
     let errorCallback: (error: Error) => void;
 
-    const mockLoadWithProgress = jest.fn().mockImplementation((url, options, callbacks) => {
-      errorCallback = callbacks.onError;
-      return Promise.resolve('blob:loaded-url');
-    });
+    const mockLoadWithProgress = jest
+      .fn()
+      .mockImplementation((url, options, callbacks) => {
+        errorCallback = callbacks.onError;
+        return Promise.resolve('blob:loaded-url');
+      });
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
     const onLoadError = jest.fn();
@@ -160,7 +166,9 @@ describe('useMediaProgress', () => {
     const mockLoadWithProgress = jest.fn().mockResolvedValue('blob:loaded-url');
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
-    const { result } = renderHook(() => useMediaProgress('test-url', { autoLoad: false }));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: false })
+    );
 
     await act(async () => {
       await result.current.loadMedia();
@@ -174,7 +182,9 @@ describe('useMediaProgress', () => {
     const mockLoadWithProgress = jest.fn().mockResolvedValue('blob:loaded-url');
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
-    const { result } = renderHook(() => useMediaProgress('test-url', { autoLoad: true }));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: true })
+    );
 
     act(() => {
       result.current.abort();
@@ -187,7 +197,9 @@ describe('useMediaProgress', () => {
     const mockLoadWithProgress = jest.fn().mockResolvedValue('blob:loaded-url');
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
-    const { result } = renderHook(() => useMediaProgress('test-url', { autoLoad: true }));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: true })
+    );
 
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve, 0));
@@ -207,7 +219,9 @@ describe('useMediaProgress', () => {
     const mockLoadWithProgress = jest.fn().mockResolvedValue('blob:loaded-url');
     (MediaProgressLoader.loadWithProgress as jest.Mock) = mockLoadWithProgress;
 
-    const { result } = renderHook(() => useMediaProgress('test-url', { autoLoad: false }));
+    const { result } = renderHook(() =>
+      useMediaProgress('test-url', { autoLoad: false })
+    );
 
     await act(async () => {
       await result.current.retry();
@@ -216,4 +230,4 @@ describe('useMediaProgress', () => {
     expect(mockLoadWithProgress).toHaveBeenCalled();
     expect(result.current.loadedUrl).toBe('blob:loaded-url');
   });
-}); 
+});

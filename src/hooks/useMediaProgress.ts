@@ -1,5 +1,9 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { MediaProgressLoader, MediaProgressCallback, MediaLoadOptions } from '../lib/media-progress-loader';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import {
+  MediaProgressLoader,
+  MediaProgressCallback,
+  MediaLoadOptions,
+} from '../lib/media-progress-loader';
 
 export interface MediaProgressState {
   isLoading: boolean;
@@ -26,6 +30,13 @@ export const useMediaProgress = (
     onLoadError,
     ...loaderOptions
   } = options;
+
+  // Memoize loaderOptions to prevent infinite loops in useCallback dependencies
+  const memoizedLoaderOptions = useMemo(
+    () => loaderOptions,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(loaderOptions)]
+  );
 
   const [state, setState] = useState<MediaProgressState>({
     isLoading: false,
@@ -65,42 +76,42 @@ export const useMediaProgress = (
       const callbacks: MediaProgressCallback = {
         onProgress: (percent: number) => {
           if (!isMountedRef.current) return;
-          
+
           setState(prev => ({
             ...prev,
             progress: percent,
           }));
-          
+
           onProgressChange?.(percent);
         },
         onComplete: (loadedUrl: string) => {
           if (!isMountedRef.current) return;
-          
+
           setState(prev => ({
             ...prev,
             isLoading: false,
             progress: 100,
             loadedUrl,
           }));
-          
+
           onLoadComplete?.(loadedUrl);
         },
         onError: (error: Error) => {
           if (!isMountedRef.current) return;
-          
+
           setState(prev => ({
             ...prev,
             isLoading: false,
             error,
           }));
-          
+
           onLoadError?.(error);
         },
       };
 
       const loadedUrl = await MediaProgressLoader.loadWithProgress(
         url,
-        loaderOptions,
+        memoizedLoaderOptions,
         callbacks
       );
 
@@ -117,26 +128,33 @@ export const useMediaProgress = (
       return loadedUrl;
     } catch (error) {
       if (!isMountedRef.current) return;
-      
-      const errorObj = error instanceof Error ? error : new Error(String(error));
-      
+
+      const errorObj =
+        error instanceof Error ? error : new Error(String(error));
+
       setState(prev => ({
         ...prev,
         isLoading: false,
         error: errorObj,
       }));
-      
+
       onLoadError?.(errorObj);
       throw error;
     }
-  }, [url, loaderOptions, onProgressChange, onLoadComplete, onLoadError]);
+  }, [
+    url,
+    memoizedLoaderOptions,
+    onProgressChange,
+    onLoadComplete,
+    onLoadError,
+  ]);
 
   const abort = useCallback(() => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
-    
+
     setState(prev => ({
       ...prev,
       isLoading: false,
@@ -172,4 +190,4 @@ export const useMediaProgress = (
     reset,
     retry,
   };
-}; 
+};
