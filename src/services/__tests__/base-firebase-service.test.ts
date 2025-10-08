@@ -435,7 +435,8 @@ describe('BaseFirebaseService', () => {
         const { getDocs } = require('firebase/firestore');
         const cachedData = [{ id: '1', name: 'Cached' }];
 
-        service['setCache']('test-collection:getAll:{}', cachedData);
+        // Use correct cache key format (empty string for no params)
+        service['setCache']('test-collection:getAll:', cachedData);
 
         const result = await service.getAll();
 

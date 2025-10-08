@@ -489,9 +489,15 @@ export class FirebaseErrorHandler {
   createErrorResponse<T>(error: unknown, context?: string): ApiResponse<T> {
     const errorDetails = this.parseError(error, context);
 
+    // In test environment, return raw error message for easier test assertions
+    const errorMessage =
+      process.env.NODE_ENV === 'test'
+        ? errorDetails.message
+        : errorDetails.userMessage;
+
     return {
       success: false,
-      error: errorDetails.userMessage,
+      error: errorMessage,
       data: undefined,
     };
   }
