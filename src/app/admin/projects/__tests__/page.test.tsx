@@ -71,22 +71,23 @@ jest.mock('@/lib/firebase-config', () => ({
 }));
 
 // Mock Firebase service
-const mockGetFirestoreService = jest.fn();
-jest.mock(
-  '@/lib/firebase',
-  () => ({
-    db: {},
+// IMPORTANT: Use relative path, not @ alias - @ alias doesn't work in jest.mock()
+jest.mock('../../../../lib/firebase', () => {
+  const mockDb = {};
+  const mockGetFirestoreService = jest.fn().mockResolvedValue(mockDb);
+
+  return {
+    db: mockDb,
     auth: {},
     storage: {},
     getFirestoreService: mockGetFirestoreService,
-    getStorageService: jest.fn(() => Promise.resolve({})),
-    getAuthService: jest.fn(() => Promise.resolve({})),
-    getFirestoreSync: jest.fn(() => ({})),
-    getStorageSync: jest.fn(() => ({})),
-    getAuthSync: jest.fn(() => ({})),
-  }),
-  { virtual: true }
-);
+    getStorageService: jest.fn().mockResolvedValue({}),
+    getAuthService: jest.fn().mockResolvedValue({}),
+    getFirestoreSync: jest.fn().mockReturnValue(mockDb),
+    getStorageSync: jest.fn().mockReturnValue({}),
+    getAuthSync: jest.fn().mockReturnValue({}),
+  };
+});
 
 // Mock AdminLayout
 jest.mock('@/components/admin/AdminLayout', () => {
@@ -147,9 +148,6 @@ const mockLimit = firestoreMocks.limit;
 const mockGetDocs = firestoreMocks.getDocs;
 const mockDeleteDoc = firestoreMocks.deleteDoc;
 const mockDoc = firestoreMocks.doc;
-
-// Use a stable mockDb instance
-const mockDb = {};
 
 // Mock data
 const mockProjects = [
@@ -244,7 +242,12 @@ describe('ProjectsPage', () => {
     });
 
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
-    mockGetFirestoreService.mockResolvedValue(mockDb);
+
+    // Reconfigure getFirestoreService mock after clearAllMocks
+    const { getFirestoreService } = require('../../../../lib/firebase');
+    const testMockDb = {};
+    (getFirestoreService as jest.Mock).mockResolvedValue(testMockDb);
+
     mockCollection.mockImplementation((db: any, collectionName: string) => {
       console.log('mockCollection called with:', db, collectionName);
       return 'projects';
