@@ -68,6 +68,32 @@ import {
 describe('Firebase Services', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // IMPORTANT: Reconfigure Firebase mocks after clearAllMocks()
+    // Services in firebase.ts use getFirestoreSync, not getFirestoreService
+    const {
+      getFirestoreService,
+      getFirestoreSync,
+    } = require('../../lib/firebase');
+    const mockDb = {
+      collection: jest.fn(),
+      doc: jest.fn(),
+      enableNetwork: jest.fn(),
+      disableNetwork: jest.fn(),
+      runTransaction: jest.fn(),
+      writeBatch: jest.fn(),
+    };
+    (getFirestoreService as jest.Mock).mockImplementation(async () => mockDb);
+    (getFirestoreSync as jest.Mock).mockImplementation(() => mockDb); // This is what firebase.ts services use!
+
+    // Verify mock is configured
+    const testResult = getFirestoreSync();
+    console.log(
+      '[TEST] Configured mocks - getFirestoreSync returns:',
+      testResult,
+      'truthiness:',
+      !!testResult
+    );
   });
 
   describe('FAQService', () => {
@@ -128,6 +154,10 @@ describe('Firebase Services', () => {
         orderBy.mockReturnValue('mock-orderBy');
 
         const result = await faqService.getByCategory('pricing');
+
+        if (!result.success) {
+          console.log('[DEBUG] Error:', result.error);
+        }
 
         expect(result.success).toBe(true);
         expect(result.data).toHaveLength(2);

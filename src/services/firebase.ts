@@ -78,12 +78,20 @@ export abstract class BaseFirebaseService<T = unknown> {
   }
 
   protected getCollection() {
-    if (!getFirestoreSync()) {
+    const db = getFirestoreSync();
+    if (process.env.NODE_ENV === 'test') {
+      console.log(
+        '[SERVICE getCollection] getFirestoreSync returned:',
+        db ? 'truthy' : 'falsy',
+        typeof db
+      );
+    }
+    if (!db) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
     }
-    return collection(getFirestoreSync()!, this.collectionName);
+    return collection(db, this.collectionName);
   }
 
   protected getDocRef(id: string) {
