@@ -31,7 +31,19 @@ fi
 echo "✅ Type check passed!"
 echo ""
 
-# 3. Unit tests (optional - can skip if there are known failures)
+# 3. Theme consistency check
+echo "🎨 Running theme consistency check..."
+npm run theme:check
+if [ $? -ne 0 ]; then
+  echo "❌ Theme consistency check failed!"
+  echo "Please fix hardcoded colors before pushing."
+  echo "See docs/THEME.md for guidance."
+  exit 1
+fi
+echo "✅ Theme consistency check passed!"
+echo ""
+
+# 4. Unit tests (optional - can skip if there are known failures)
 if [ "$SKIP_TESTS" = "1" ]; then
   echo "⏭️  Skipping unit tests (SKIP_TESTS=1)"
   echo "⚠️  Warning: Make sure your changes don't break existing functionality!"
@@ -52,7 +64,7 @@ else
 fi
 echo ""
 
-# 4. E2E tests (conditional based on branch)
+# 5. E2E tests (conditional based on branch)
 if [ "$SKIP_E2E" = "1" ]; then
   echo "⏭️  Skipping E2E tests (SKIP_E2E=1)"
 elif [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ]; then

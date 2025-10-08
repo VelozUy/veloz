@@ -34,7 +34,7 @@ Runs before every push:
 
 ```bash
 git push origin main
-# Runs: lint → type-check → tests → e2e tests ✅
+# Runs: lint → type-check → theme-check → tests → e2e tests ✅
 ```
 
 #### On Feature Branches
@@ -43,7 +43,7 @@ git push origin main
 
 ```bash
 git push origin feature/my-feature
-# Runs: lint → type-check → tests ⚡
+# Runs: lint → type-check → theme-check → tests ⚡
 # Skips: e2e tests
 ```
 
@@ -108,12 +108,17 @@ git add .
    - Fails if type errors found
    - Fix: Resolve TypeScript errors
 
-3. **Unit Tests** (~5-10s)
+3. **Theme Check** (~0.5-1s)
+   - Validates theme consistency (no hardcoded colors)
+   - Fails if hardcoded colors found
+   - Fix: Use theme variables from design system
+
+4. **Unit Tests** (~5-10s)
    - Runs Jest test suite
    - Fails if tests fail
    - Fix: Resolve failing tests
 
-4. **E2E Tests** (~30-60s, conditional)
+5. **E2E Tests** (~30-60s, conditional)
    - Runs Playwright tests
    - Only on main/master/develop branches
    - Fails if E2E tests fail

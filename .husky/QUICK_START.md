@@ -6,8 +6,9 @@
 
 1. ✅ **ESLint** - Code quality
 2. ✅ **TypeScript** - Type safety
-3. ⚡ **Unit Tests** - Functionality (optional)
-4. 🎭 **E2E Tests** - Browser tests (main branch only)
+3. 🎨 **Theme Check** - No hardcoded colors
+4. ⚡ **Unit Tests** - Functionality (optional)
+5. 🎭 **E2E Tests** - Browser tests (main branch only)
 
 ## 🚀 Common Commands
 
