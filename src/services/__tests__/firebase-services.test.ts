@@ -9,18 +9,29 @@ import {
 import { z } from 'zod';
 
 // Mock Firebase before any imports
-jest.mock('@/lib/firebase', () => ({
-  db: {
+// IMPORTANT: Use relative path, not @ alias - @ alias doesn't work in jest.mock()
+jest.mock('../../lib/firebase', () => {
+  const mockDb = {
     collection: jest.fn(),
     doc: jest.fn(),
     enableNetwork: jest.fn(),
     disableNetwork: jest.fn(),
     runTransaction: jest.fn(),
     writeBatch: jest.fn(),
-  },
-  auth: {},
-  storage: {},
-}));
+  };
+
+  return {
+    db: mockDb,
+    auth: {},
+    storage: {},
+    getFirestoreService: jest.fn().mockResolvedValue(mockDb),
+    getStorageService: jest.fn().mockResolvedValue({}),
+    getAuthService: jest.fn().mockResolvedValue({}),
+    getFirestoreSync: jest.fn().mockReturnValue(mockDb),
+    getStorageSync: jest.fn().mockReturnValue({}),
+    getAuthSync: jest.fn().mockReturnValue({}),
+  };
+});
 
 // Mock firebase/firestore
 jest.mock('firebase/firestore', () => ({
