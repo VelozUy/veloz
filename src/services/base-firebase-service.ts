@@ -28,6 +28,7 @@ import {
   createErrorResponse,
 } from '@/lib/firebase-error-handler';
 import type { ApiResponse } from '@/types';
+import { z } from 'zod';
 
 // Cache configuration
 interface CacheConfig {
@@ -41,6 +42,13 @@ interface CacheEntry<T> {
   timestamp: number;
 }
 
+// Retry configuration
+interface RetryConfig {
+  maxAttempts: number;
+  baseDelay: number;
+  maxDelay: number;
+}
+
 export abstract class BaseFirebaseService<T = unknown> {
   protected collectionName: string;
   protected cache: Map<string, CacheEntry<unknown>> = new Map();
@@ -49,9 +57,37 @@ export abstract class BaseFirebaseService<T = unknown> {
     ttl: 5 * 60 * 1000, // 5 minutes
     maxSize: 100,
   };
+  protected retryConfig: RetryConfig = {
+    maxAttempts: 3,
+    baseDelay: 1000,
+    maxDelay: 5000,
+  };
+  protected validationSchema?: z.ZodSchema;
 
-  constructor(collectionName: string) {
+  constructor(
+    collectionName: string,
+    options: {
+      cacheConfig?: Partial<CacheConfig>;
+      retryConfig?: Partial<RetryConfig>;
+      validationSchema?: z.ZodSchema;
+    } = {}
+  ) {
     this.collectionName = collectionName;
+
+    // Merge cache config with defaults
+    if (options.cacheConfig) {
+      this.cacheConfig = { ...this.cacheConfig, ...options.cacheConfig };
+    }
+
+    // Merge retry config with defaults
+    if (options.retryConfig) {
+      this.retryConfig = { ...this.retryConfig, ...options.retryConfig };
+    }
+
+    // Set validation schema if provided
+    if (options.validationSchema) {
+      this.validationSchema = options.validationSchema;
+    }
   }
 
   // Firebase connection utilities
@@ -88,23 +124,33 @@ export abstract class BaseFirebaseService<T = unknown> {
     operation: () => Promise<R>,
     operationName?: string
   ): Promise<R> {
-    return withRetry(
-      operation,
-      {
-        maxAttempts: 3,
-        baseDelay: 1000,
-        maxDelay: 5000,
-      },
-      operationName
-    );
+    return withRetry(operation, this.retryConfig, operationName);
+  }
+
+  // Validation
+  protected validateData<D = unknown>(data: D): D {
+    if (!this.validationSchema) return data;
+
+    try {
+      return this.validationSchema.parse(data) as D;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw new Error(
+          `Validation failed: ${error.errors.map(e => e.message).join(', ')}`
+        );
+      }
+      throw error;
+    }
   }
 
   // Cache management
   protected getCacheKey(
     operation: string,
-    params: Record<string, unknown> = {}
+    params?: Record<string, unknown>
   ): string {
-    return `${this.collectionName}:${operation}:${JSON.stringify(params)}`;
+    const paramsStr =
+      params && Object.keys(params).length > 0 ? JSON.stringify(params) : '';
+    return `${this.collectionName}:${operation}:${paramsStr}`;
   }
 
   protected getFromCache<R>(key: string): R | null {
@@ -139,8 +185,34 @@ export abstract class BaseFirebaseService<T = unknown> {
     });
   }
 
-  protected invalidateCache(): void {
-    this.cache.clear();
+  protected invalidateCache(pattern?: string): void {
+    if (!pattern) {
+      this.cache.clear();
+      return;
+    }
+
+    // Invalidate by pattern
+    const keys = Array.from(this.cache.keys());
+    keys.forEach(key => {
+      if (key.includes(pattern)) {
+        this.cache.delete(key);
+      }
+    });
+  }
+
+  protected invalidateCacheByPattern(pattern: string): void {
+    this.invalidateCache(pattern);
+  }
+
+  protected cleanupCache(): void {
+    const now = Date.now();
+    const keys = Array.from(this.cache.keys());
+    keys.forEach(key => {
+      const entry = this.cache.get(key);
+      if (entry && now - entry.timestamp > this.cacheConfig.ttl) {
+        this.cache.delete(key);
+      }
+    });
   }
 
   // Cache management methods
@@ -185,10 +257,17 @@ export abstract class BaseFirebaseService<T = unknown> {
 
     // Convert Firestore timestamps to Date objects
     Object.keys(converted).forEach(key => {
-      if (converted[key] instanceof Timestamp) {
-        converted[key] = converted[key].toDate();
-      } else if (converted[key] && typeof converted[key] === 'object') {
-        converted[key] = this.convertTimestamp(converted[key]);
+      const value = converted[key];
+      // Check if it's a Timestamp by checking for toDate method
+      if (
+        value &&
+        typeof value === 'object' &&
+        typeof value.toDate === 'function' &&
+        value.constructor?.name === 'Timestamp'
+      ) {
+        converted[key] = value.toDate();
+      } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+        converted[key] = this.convertTimestamp(value);
       }
     });
 
@@ -241,6 +320,9 @@ export abstract class BaseFirebaseService<T = unknown> {
   }
 
   async create<R>(data: Omit<R, 'id'>): Promise<ApiResponse<R>> {
+    // Validate data if schema is provided
+    this.validateData(data);
+
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
       const collectionRef = await this.getCollection();
@@ -447,6 +529,33 @@ export abstract class BaseFirebaseService<T = unknown> {
       return { success: true };
     }, `batchDelete in ${this.collectionName}`).catch(error =>
       createErrorResponse<void>(error, `batchDelete in ${this.collectionName}`)
+    );
+  }
+
+  // Count documents
+  async count(): Promise<ApiResponse<number>> {
+    return this.withRetry(async () => {
+      await this.ensureNetworkEnabled();
+      const collectionRef = await this.getCollection();
+      const snapshot = await getDocs(collectionRef);
+      return { success: true, data: snapshot.size };
+    }, `count in ${this.collectionName}`).catch(error =>
+      createErrorResponse<number>(error, `count in ${this.collectionName}`)
+    );
+  }
+
+  // Check if document exists
+  async exists(id: string): Promise<ApiResponse<boolean>> {
+    return this.withRetry(async () => {
+      await this.ensureNetworkEnabled();
+      const docRef = await this.getDocRef(id);
+      const docSnap = await getDoc(docRef);
+      return { success: true, data: docSnap.exists() };
+    }, `exists ${id} in ${this.collectionName}`).catch(error =>
+      createErrorResponse<boolean>(
+        error,
+        `exists ${id} in ${this.collectionName}`
+      )
     );
   }
 

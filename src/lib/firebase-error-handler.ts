@@ -221,12 +221,16 @@ export class FirebaseErrorHandler {
   parseError(error: unknown, context?: string): ErrorDetails {
     let errorDetails: ErrorDetails;
 
-    if (
-      error instanceof FirebaseError ||
-      error instanceof FirestoreError ||
-      error instanceof StorageError
-    ) {
-      errorDetails = this.parseFirebaseError(error);
+    // Check if it's a Firebase error by checking properties instead of instanceof
+    // This is more robust for testing environments where instanceof may fail
+    const isFirebaseError =
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      ('name' in error || 'message' in error);
+
+    if (isFirebaseError) {
+      errorDetails = this.parseFirebaseError(error as FirebaseError);
     } else if (error instanceof Error) {
       errorDetails = this.parseGenericError(error);
     } else {

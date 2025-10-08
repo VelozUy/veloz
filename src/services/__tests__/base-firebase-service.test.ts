@@ -8,37 +8,41 @@ import {
 } from '@jest/globals';
 import { z } from 'zod';
 
-// Mock Firebase before any imports
+// Create mocks that can be configured
+const mockGetFirestoreService = jest.fn();
+
+// Mock Firebase before any imports - use @ alias to match imports
 jest.mock('@/lib/firebase', () => ({
-  db: {
-    collection: jest.fn(),
-    doc: jest.fn(),
-    enableNetwork: jest.fn(),
-    disableNetwork: jest.fn(),
-    runTransaction: jest.fn(),
-    writeBatch: jest.fn(),
-  },
+  db: null,
   auth: {},
   storage: {},
+  getFirestoreService: (...args: unknown[]) => mockGetFirestoreService(...args),
 }));
 
 // Mock firebase/firestore
+const mockCollectionRef = { _path: 'test-collection' };
+const mockDocRef = { _path: 'test-collection/test-id' };
+const mockWriteBatch = jest.fn();
+
 jest.mock('firebase/firestore', () => ({
-  collection: jest.fn(),
-  doc: jest.fn(),
+  collection: jest.fn(() => mockCollectionRef),
+  doc: jest.fn(() => mockDocRef),
   getDocs: jest.fn(),
   getDoc: jest.fn(),
   addDoc: jest.fn(),
   updateDoc: jest.fn(),
   deleteDoc: jest.fn(),
-  query: jest.fn(),
+  query: jest.fn(ref => ref),
   where: jest.fn(),
   orderBy: jest.fn(),
   limit: jest.fn(),
   startAfter: jest.fn(),
-  writeBatch: jest.fn(),
+  writeBatch: mockWriteBatch,
   Timestamp: {
-    now: jest.fn(() => ({ toDate: () => new Date('2024-01-01') })),
+    now: jest.fn(() => ({
+      toDate: () => new Date('2024-01-01'),
+      constructor: { name: 'Timestamp' },
+    })),
     fromDate: jest.fn(),
   },
 }));
@@ -64,6 +68,17 @@ describe('BaseFirebaseService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Configure getFirestoreService mock to return a mock db
+    const mockDb = {
+      collection: jest.fn(),
+      doc: jest.fn(),
+      enableNetwork: jest.fn(),
+      disableNetwork: jest.fn(),
+      runTransaction: jest.fn(),
+      writeBatch: jest.fn(),
+    };
+    mockGetFirestoreService.mockResolvedValue(mockDb);
 
     service = new TestFirebaseService();
   });
