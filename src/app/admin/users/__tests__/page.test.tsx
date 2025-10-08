@@ -10,9 +10,19 @@ jest.mock('@/contexts/AuthContext', () => ({
 const mockUseAuth = useAuth as jest.Mock;
 
 // Mock Firebase
-jest.mock('@/lib/firebase', () => ({
-  db: {},
-}));
+// IMPORTANT: Use relative path, not @ alias - @ alias doesn't work in jest.mock()
+jest.mock('../../../../lib/firebase', () => {
+  const mockDb = {};
+  return {
+    db: mockDb,
+    getFirestoreService: jest.fn().mockResolvedValue(mockDb),
+    getStorageService: jest.fn().mockResolvedValue({}),
+    getAuthService: jest.fn().mockResolvedValue({}),
+    getFirestoreSync: jest.fn().mockReturnValue(mockDb),
+    getStorageSync: jest.fn().mockReturnValue({}),
+    getAuthSync: jest.fn().mockReturnValue({}),
+  };
+});
 
 jest.mock('firebase/firestore', () => {
   const mockGetDocs = jest.fn();
@@ -134,6 +144,12 @@ describe('UsersPage', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Reconfigure getFirestoreService mock after clearAllMocks
+    const { getFirestoreService } = require('../../../../lib/firebase');
+    const testMockDb = {};
+    (getFirestoreService as jest.Mock).mockResolvedValue(testMockDb);
+
     mockUseAuth.mockReturnValue({
       user: mockUser,
       loading: false,
