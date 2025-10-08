@@ -8,15 +8,29 @@ import {
 } from '@jest/globals';
 import { z } from 'zod';
 
-// Create mocks that can be configured
-const mockGetFirestoreService = jest.fn();
+// Create mockDb and getFirestoreService mock outside the factory for stability
+const mockDb = {
+  collection: jest.fn(),
+  doc: jest.fn(),
+  enableNetwork: jest.fn(),
+  disableNetwork: jest.fn(),
+  runTransaction: jest.fn(),
+  writeBatch: jest.fn(),
+};
 
-// Mock Firebase before any imports - use @ alias to match imports
-jest.mock('@/lib/firebase', () => ({
-  db: null,
+const mockGetFirestoreService = jest.fn(async () => mockDb);
+
+// Mock Firebase - try using relative path instead of @ alias
+jest.mock('../../lib/firebase', () => ({
+  db: mockDb,
   auth: {},
   storage: {},
-  getFirestoreService: (...args: unknown[]) => mockGetFirestoreService(...args),
+  getFirestoreService: mockGetFirestoreService,
+  getStorageService: jest.fn().mockResolvedValue({}),
+  getAuthService: jest.fn().mockResolvedValue({}),
+  getFirestoreSync: jest.fn().mockReturnValue(mockDb),
+  getStorageSync: jest.fn().mockReturnValue({}),
+  getAuthSync: jest.fn().mockReturnValue({}),
 }));
 
 // Mock firebase/firestore
@@ -47,38 +61,34 @@ jest.mock('firebase/firestore', () => ({
   },
 }));
 
-import { BaseFirebaseService } from '../base-firebase-service';
-
-// Mock implementation of BaseFirebaseService since it's abstract
-class TestFirebaseService extends BaseFirebaseService<any> {
-  constructor(
-    collectionName = 'test-collection',
-    options: {
-      cacheConfig?: Partial<any>;
-      retryConfig?: Partial<any>;
-      validationSchema?: z.ZodSchema;
-    } = {}
-  ) {
-    super(collectionName, options);
-  }
-}
+// Don't use static import - use require() in describe block to ensure mocks are applied first
 
 describe('BaseFirebaseService', () => {
+  // Dynamically load after mocks
+  const { BaseFirebaseService } = require('../base-firebase-service');
+
+  // Mock implementation of BaseFirebaseService since it's abstract
+  class TestFirebaseService extends BaseFirebaseService<any> {
+    constructor(
+      collectionName = 'test-collection',
+      options: {
+        cacheConfig?: Partial<any>;
+        retryConfig?: Partial<any>;
+        validationSchema?: z.ZodSchema;
+      } = {}
+    ) {
+      super(collectionName, options);
+    }
+  }
+
   let service: TestFirebaseService;
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Configure getFirestoreService mock to return a mock db
-    const mockDb = {
-      collection: jest.fn(),
-      doc: jest.fn(),
-      enableNetwork: jest.fn(),
-      disableNetwork: jest.fn(),
-      runTransaction: jest.fn(),
-      writeBatch: jest.fn(),
-    };
-    mockGetFirestoreService.mockResolvedValue(mockDb);
+    // IMPORTANT: Reconfigure mockGetFirestoreService after clearAllMocks()
+    // clearAllMocks() removes the mockImplementation
+    mockGetFirestoreService.mockImplementation(async () => mockDb);
 
     service = new TestFirebaseService();
   });
@@ -396,6 +406,7 @@ describe('BaseFirebaseService', () => {
     describe('getAll', () => {
       it('should fetch all documents successfully', async () => {
         const { getDocs } = require('firebase/firestore');
+
         const mockDocs = [
           { id: '1', data: () => ({ name: 'Test 1' }) },
           { id: '2', data: () => ({ name: 'Test 2' }) },

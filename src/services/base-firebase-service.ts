@@ -229,7 +229,18 @@ export abstract class BaseFirebaseService<T = unknown> {
 
   // Network management
   protected async ensureNetworkEnabled(): Promise<void> {
+    if (process.env.NODE_ENV === 'test') {
+      console.log(
+        '[SERVICE] ensureNetworkEnabled called, calling getFirestoreService...'
+      );
+    }
     const db = await getFirestoreService();
+    if (process.env.NODE_ENV === 'test') {
+      console.log(
+        '[SERVICE] getFirestoreService returned:',
+        db ? 'mockDb' : 'null'
+      );
+    }
     if (!db) throw new Error('Firestore not available');
 
     // Network is enabled by default in Firebase v9+
