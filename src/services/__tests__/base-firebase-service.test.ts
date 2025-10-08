@@ -636,21 +636,18 @@ describe('BaseFirebaseService', () => {
 
         getDocs.mockResolvedValue({ docs: mockDocs });
 
-        const pagination = { page: 1, pageSize: 10 };
-        const result = await service.getPaginated(pagination);
+        const result = await service.getPaginated(10); // Pass pageSize directly
 
         expect(result.success).toBe(true);
         expect(result.data.data).toHaveLength(2);
-        expect(result.data.pagination.page).toBe(1);
-        expect(result.data.pagination.pageSize).toBe(10);
+        expect(result.data.lastDoc).toEqual(mockDocs[1]); // Check lastDoc
       });
 
       it('should handle pagination errors', async () => {
         const { getDocs } = require('firebase/firestore');
         getDocs.mockRejectedValue(new Error('Pagination failed'));
 
-        const pagination = { page: 1, pageSize: 10 };
-        const result = await service.getPaginated(pagination);
+        const result = await service.getPaginated(10);
 
         expect(result.success).toBe(false);
         expect(result.error).toBe('Pagination failed');
@@ -689,7 +686,10 @@ describe('BaseFirebaseService', () => {
         const { getDocs } = require('firebase/firestore');
         const mockDocs = [{ id: '1' }, { id: '2' }, { id: '3' }];
 
-        getDocs.mockResolvedValue({ docs: mockDocs });
+        getDocs.mockResolvedValue({
+          docs: mockDocs,
+          size: mockDocs.length, // Add size property
+        });
 
         const result = await service.count();
 

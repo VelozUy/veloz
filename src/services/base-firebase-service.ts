@@ -325,7 +325,12 @@ export abstract class BaseFirebaseService<T = unknown> {
 
   async create<R>(data: Omit<R, 'id'>): Promise<ApiResponse<R>> {
     // Validate data if schema is provided
-    this.validateData(data);
+    try {
+      this.validateData(data);
+    } catch (error) {
+      // Return validation errors as ApiResponse
+      return createErrorResponse<R>(error, `create in ${this.collectionName}`);
+    }
 
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
