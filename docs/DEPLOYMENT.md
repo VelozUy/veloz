@@ -80,11 +80,43 @@ The project includes optimized Netlify configuration:
 
 ## 🐛 Troubleshooting
 
+### Build Fails with "Host key verification failed"?
+
+**SSH Authentication Issue**
+
+1. Go to Netlify dashboard → **Site settings** → **Build & deploy**
+2. Click **"Unlink repository"** and re-authorize Netlify
+3. Re-select your repository and trigger a new deploy
+
+**Deploy Key Issue**
+
+1. Check your Git repository → **Settings** → **Deploy keys**
+2. Ensure Netlify deploy key has read access
+3. If missing, re-link repository in Netlify to recreate it
+
+### Build Fails with "Plugin missing manifest.yml"?
+
+**Custom Plugin Configuration**
+
+- Ensure all custom Netlify plugins have a `manifest.yml` file
+- Required structure:
+
+```yml
+name: plugin-name
+description: Plugin description
+author: Your Name
+version: 1.0.0
+inputs: []
+```
+
+- Location: `netlify/plugins/[plugin-name]/manifest.yml`
+
 ### Build Fails?
 
 1. Check environment variables are set correctly
 2. Verify Firebase project is active
 3. Check build logs for specific errors
+4. Ensure all custom plugins have manifest files
 
 ### Site Not Loading?
 

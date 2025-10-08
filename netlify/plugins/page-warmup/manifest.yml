@@ -1,0 +1,6 @@
+name: page-warmup
+description: Warms up key pages after deployment to prime CDN and browser caches
+author: Veloz Team
+version: 1.0.0
+inputs: []
+
