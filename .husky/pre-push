@@ -1,0 +1,74 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push checks..."
+echo ""
+
+# Get current branch name
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "📍 Branch: $BRANCH"
+echo ""
+
+# 1. Linting
+echo "🔍 Running ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Linting failed!"
+  echo "Run 'npm run lint:fix' to fix auto-fixable issues."
+  exit 1
+fi
+echo "✅ Linting passed!"
+echo ""
+
+# 2. Type checking
+echo "🔍 Running TypeScript type check..."
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed!"
+  echo "Fix TypeScript errors before pushing."
+  exit 1
+fi
+echo "✅ Type check passed!"
+echo ""
+
+# 3. Unit tests (optional - can skip if there are known failures)
+if [ "$SKIP_TESTS" = "1" ]; then
+  echo "⏭️  Skipping unit tests (SKIP_TESTS=1)"
+  echo "⚠️  Warning: Make sure your changes don't break existing functionality!"
+else
+  echo "🧪 Running unit tests..."
+  npm run test -- --ci --watchAll=false
+  if [ $? -ne 0 ]; then
+    echo "❌ Unit tests failed!"
+    echo ""
+    echo "Options:"
+    echo "  1. Fix the failing tests"
+    echo "  2. Skip tests with: SKIP_TESTS=1 git push"
+    echo "     (Use only if failures are pre-existing)"
+    echo ""
+    exit 1
+  fi
+  echo "✅ Unit tests passed!"
+fi
+echo ""
+
+# 4. E2E tests (conditional based on branch)
+if [ "$SKIP_E2E" = "1" ]; then
+  echo "⏭️  Skipping E2E tests (SKIP_E2E=1)"
+elif [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ]; then
+  echo "🎭 Running E2E tests (critical branch: $BRANCH)..."
+  npm run e2e
+  if [ $? -ne 0 ]; then
+    echo "❌ E2E tests failed!"
+    echo "Fix E2E tests before pushing to $BRANCH."
+    exit 1
+  fi
+  echo "✅ E2E tests passed!"
+else
+  echo "⚡ Skipping E2E tests for feature branch"
+  echo "   Run manually with 'npm run e2e' before merging"
+fi
+
+echo ""
+echo "✅ All pre-push checks passed! Pushing to remote..."
+echo ""
