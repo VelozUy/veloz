@@ -1,5 +1,14 @@
 import '@testing-library/jest-dom';
 
+// Mock HTMLCanvasElement.toDataURL for tests
+Object.defineProperty(HTMLCanvasElement.prototype, 'toDataURL', {
+  value: jest.fn(
+    () =>
+      'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA='
+  ),
+  writable: true,
+});
+
 // Set up environment variables for testing
 process.env.NEXT_PUBLIC_FIREBASE_API_KEY = 'test-api-key';
 process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = 'test-project.firebaseapp.com';
