@@ -4,7 +4,6 @@
 const { spawn } = require('child_process');
 
 module.exports = {
-  name: 'page-warmup',
   onSuccess: async ({ utils }) => {
     try {
       if (process.env.ENABLE_PAGE_WARMUP !== 'true') {
