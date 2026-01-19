@@ -1,10 +1,13 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import CrewMemberAssignment from '../CrewMemberAssignment';
 import { crewMemberService } from '@/services/crew-member';
 
 // Mock the crew member service
 jest.mock('@/services/crew-member');
-const mockCrewMemberService = crewMemberService as jest.Mocked<typeof crewMemberService>;
+const mockCrewMemberService = crewMemberService as jest.Mocked<
+  typeof crewMemberService
+>;
 
 // Mock crew member data
 const mockCrewMembers = [
@@ -13,7 +16,11 @@ const mockCrewMembers = [
     name: { es: 'Juan Pérez', en: 'Juan Perez', pt: 'Juan Perez' },
     role: { es: 'Fotógrafo/a', en: 'Photographer', pt: 'Fotógrafo/a' },
     portrait: 'https://example.com/juan.jpg',
-    bio: { es: 'Fotógrafo/a profesional', en: 'Professional Photographer', pt: 'Fotógrafo/a profissional' },
+    bio: {
+      es: 'Fotógrafo/a profesional',
+      en: 'Professional Photographer',
+      pt: 'Fotógrafo/a profissional',
+    },
     skills: ['Fotografía', 'Edición', 'Iluminación'],
     order: 1,
     createdAt: new Date(),
@@ -24,7 +31,11 @@ const mockCrewMembers = [
     name: { es: 'María García', en: 'Maria Garcia', pt: 'Maria Garcia' },
     role: { es: 'Videógrafo/a', en: 'Videographer', pt: 'Videógrafo/a' },
     portrait: 'https://example.com/maria.jpg',
-    bio: { es: 'Videógrafo/a profesional', en: 'Professional Videographer', pt: 'Videógrafo/a profissional' },
+    bio: {
+      es: 'Videógrafo/a profesional',
+      en: 'Professional Videographer',
+      pt: 'Videógrafo/a profissional',
+    },
     skills: ['Video', 'Edición', 'Sonido'],
     order: 2,
     createdAt: new Date(),
@@ -36,7 +47,7 @@ describe('CrewMemberAssignment', () => {
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
-    
+
     // Mock the getAllCrewMembers method
     mockCrewMemberService.getAllCrewMembers.mockResolvedValue({
       success: true,
@@ -46,7 +57,7 @@ describe('CrewMemberAssignment', () => {
 
   it('renders crew member assignment component', async () => {
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={[]}
@@ -57,7 +68,7 @@ describe('CrewMemberAssignment', () => {
     // Check if the component renders
     expect(screen.getByText('Crew Members')).toBeInTheDocument();
     expect(screen.getByText('Add Crew Member')).toBeInTheDocument();
-    
+
     // Wait for crew members to load
     await waitFor(() => {
       expect(mockCrewMemberService.getAllCrewMembers).toHaveBeenCalled();
@@ -66,7 +77,7 @@ describe('CrewMemberAssignment', () => {
 
   it('shows selected crew members', async () => {
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={['1']}
@@ -86,8 +97,9 @@ describe('CrewMemberAssignment', () => {
   });
 
   it('allows adding crew members', async () => {
+    const user = userEvent.setup();
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={[]}
@@ -102,12 +114,15 @@ describe('CrewMemberAssignment', () => {
 
     // Open the dialog
     const addButton = screen.getByText('Add Crew Member');
-    fireEvent.click(addButton);
+    await user.click(addButton);
 
-    // Check if dialog opens
-    await waitFor(() => {
-      expect(screen.getByText('Select Crew Members')).toBeInTheDocument();
-    });
+    // Check if dialog opens - use findByText which waits automatically
+    const dialogTitle = await screen.findByText(
+      'Select Crew Members',
+      {},
+      { timeout: 3000 }
+    );
+    expect(dialogTitle).toBeInTheDocument();
 
     // Check if crew members are listed in dialog
     expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
@@ -115,8 +130,9 @@ describe('CrewMemberAssignment', () => {
   });
 
   it('allows removing crew members', async () => {
+    const user = userEvent.setup();
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={['1']}
@@ -131,7 +147,7 @@ describe('CrewMemberAssignment', () => {
 
     // Find and click the remove button (X button)
     const removeButton = screen.getByRole('button', { name: /remove/i });
-    fireEvent.click(removeButton);
+    await user.click(removeButton);
 
     // Check if the callback was called with empty array
     expect(onCrewMembersChange).toHaveBeenCalledWith([]);
@@ -139,7 +155,7 @@ describe('CrewMemberAssignment', () => {
 
   it('shows no crew members message when none assigned', async () => {
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={[]}
@@ -149,13 +165,15 @@ describe('CrewMemberAssignment', () => {
 
     // Wait for component to load
     await waitFor(() => {
-      expect(screen.getByText('No crew members assigned to this project')).toBeInTheDocument();
+      expect(
+        screen.getByText('No crew members assigned to this project')
+      ).toBeInTheDocument();
     });
   });
 
   it('disables component when disabled prop is true', async () => {
     const onCrewMembersChange = jest.fn();
-    
+
     render(
       <CrewMemberAssignment
         selectedCrewMemberIds={[]}
@@ -168,4 +186,4 @@ describe('CrewMemberAssignment', () => {
     const addButton = screen.getByText('Add Crew Member');
     expect(addButton).toBeDisabled();
   });
-}); 
+});
