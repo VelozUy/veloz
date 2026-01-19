@@ -15,12 +15,13 @@ const TERMS_METADATA: Record<
   },
 };
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
-}): Metadata {
-  const locale = params.locale === 'pt' ? 'pt' : 'en';
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = TERMS_METADATA[locale];
 
   return {
@@ -33,10 +34,11 @@ export function generateMetadata({
   };
 }
 
-export default function TermsPage({
+export default async function TermsPage({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  return <LegalPage locale={params.locale} pageType="terms" />;
+  const { locale } = await params;
+  return <LegalPage locale={locale} pageType="terms" />;
 }

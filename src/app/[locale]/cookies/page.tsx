@@ -15,12 +15,13 @@ const COOKIES_METADATA: Record<
   },
 };
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
-}): Metadata {
-  const locale = params.locale === 'pt' ? 'pt' : 'en';
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = COOKIES_METADATA[locale];
 
   return {
@@ -33,10 +34,11 @@ export function generateMetadata({
   };
 }
 
-export default function CookiesPage({
+export default async function CookiesPage({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  return <LegalPage locale={params.locale} pageType="cookies" />;
+  const { locale } = await params;
+  return <LegalPage locale={locale} pageType="cookies" />;
 }

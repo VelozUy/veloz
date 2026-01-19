@@ -15,12 +15,13 @@ const PRIVACY_METADATA: Record<
   },
 };
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
-}): Metadata {
-  const locale = params.locale === 'pt' ? 'pt' : 'en';
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = PRIVACY_METADATA[locale];
 
   return {
@@ -33,10 +34,11 @@ export function generateMetadata({
   };
 }
 
-export default function PrivacyPage({
+export default async function PrivacyPage({
   params,
 }: {
-  params: { locale: 'en' | 'pt' };
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  return <LegalPage locale={params.locale} pageType="privacy" />;
+  const { locale } = await params;
+  return <LegalPage locale={locale} pageType="privacy" />;
 }
