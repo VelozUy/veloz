@@ -146,6 +146,7 @@ export default function CrewMemberAssignment({
                     onClick={() => handleRemoveCrewMember(crew.id)}
                     disabled={disabled}
                     className="h-6 w-6 p-0"
+                    aria-label={`Remove ${crew.name.es || crew.name.en}`}
                   >
                     <X className="w-3 h-3" />
                   </Button>

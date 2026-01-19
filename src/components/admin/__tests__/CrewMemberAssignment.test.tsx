@@ -145,8 +145,10 @@ describe('CrewMemberAssignment', () => {
       expect(screen.getByText('Juan Pérez')).toBeInTheDocument();
     });
 
-    // Find and click the remove button (X button)
-    const removeButton = screen.getByRole('button', { name: /remove/i });
+    // Find and click the remove button (X button) - it has aria-label with crew member name
+    const removeButton = screen.getByRole('button', {
+      name: /remove juan pérez/i,
+    });
     await user.click(removeButton);
 
     // Check if the callback was called with empty array
