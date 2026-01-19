@@ -10,6 +10,7 @@ import { Calendar } from '@/components/ui/calendar';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -920,6 +921,10 @@ export function ContactWidget({
       >
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="sr-only">Contact Widget</DialogTitle>
+          <DialogDescription className="sr-only">
+            Contact form to request information about our photography and
+            videography services
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto py-4 px-3" role="main">

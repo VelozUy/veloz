@@ -47,6 +47,7 @@ jest.mock('@/lib/utils', () => ({
         },
         steps: {
           eventType: {
+            title: 'Tell us what you want to celebrate',
             subtitle: 'Tell us what you want to celebrate',
           },
           date: {
