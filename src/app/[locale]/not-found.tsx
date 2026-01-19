@@ -11,7 +11,18 @@ interface NotFoundProps {
 export async function generateMetadata({
   params,
 }: NotFoundProps): Promise<Metadata> {
-  const { locale } = await params;
+  if (!params) {
+    throw new Error('Params Promise is undefined');
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
 
   const titles = {
     es: 'Página No Encontrada | Veloz Fotografía y Videografía',
@@ -37,7 +48,18 @@ export async function generateMetadata({
 }
 
 export default async function LocalizedNotFound({ params }: NotFoundProps) {
-  const { locale } = await params;
+  if (!params) {
+    throw new Error('Params Promise is undefined');
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
   const backgroundClasses = getBackgroundClasses('content', 'high');
 
   // Localized content

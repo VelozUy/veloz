@@ -1,10 +1,6 @@
 import { Metadata } from 'next';
 import { LegalPage } from '@/components/legal/LegalPage';
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'pt' }];
-}
-
 const COOKIES_METADATA: Record<
   'en' | 'pt',
   { title: string; description: string }
@@ -22,13 +18,32 @@ const COOKIES_METADATA: Record<
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  const resolvedParams = await params;
-  if (!resolvedParams) {
-    throw new Error('Resolved params is undefined');
+  if (!params) {
+    // Default to 'en' if params is not provided during static generation
+    const locale = 'en';
+    const meta = COOKIES_METADATA[locale];
+    return {
+      title: meta.title,
+      description: meta.description,
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
-  const { locale: rawLocale } = resolvedParams;
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(
+      `Invalid params in generateMetadata: ${JSON.stringify(resolvedParams)}`
+    );
+  }
+  const rawLocale = resolvedParams.locale;
   const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = COOKIES_METADATA[locale];
 
@@ -42,15 +57,29 @@ export async function generateMetadata({
   };
 }
 
+// Force static generation at build time
+export const dynamic = 'force-static';
+
+// Disable automatic revalidation - content updates require manual build trigger
+export const revalidate = false;
+
 export default async function CookiesPage({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  const resolvedParams = await params;
-  if (!resolvedParams) {
-    throw new Error('Resolved params is undefined');
+  if (!params) {
+    // Default to 'en' if params is not provided during static generation
+    return <LegalPage locale="en" pageType="cookies" />;
   }
-  const { locale } = resolvedParams;
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
   return <LegalPage locale={locale} pageType="cookies" />;
 }

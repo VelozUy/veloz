@@ -2,16 +2,23 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import ContactPageClient from './ContactPageClient';
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'pt' }];
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  if (!params) {
+    throw new Error('Params Promise is undefined');
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
   const metadata = {
     en: {
       title: 'Contact Us | Veloz - Professional Photography & Videography',
@@ -67,7 +74,18 @@ export default async function ContactPage({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  const { locale } = await params;
+  if (!params) {
+    throw new Error('Params Promise is undefined');
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
   return (
     <Suspense
       fallback={

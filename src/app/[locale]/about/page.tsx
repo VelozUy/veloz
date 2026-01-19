@@ -2,21 +2,26 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import AboutPageClient from './AboutPageClient';
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'pt' }];
-}
-
 // Generate metadata for each locale
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  const resolvedParams = await params;
-  if (!resolvedParams) {
-    throw new Error('Params is undefined');
+  if (!params) {
+    throw new Error('Params Promise is undefined');
   }
-  const { locale } = resolvedParams;
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(
+      `Invalid params in generateMetadata: ${JSON.stringify(resolvedParams)}`
+    );
+  }
+  const locale = resolvedParams.locale;
   const metadata = {
     en: {
       title: 'About Us | Veloz - Professional Photography & Videography',
@@ -72,11 +77,18 @@ export default async function AboutPage({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  const resolvedParams = await params;
-  if (!resolvedParams) {
-    throw new Error('Params is undefined');
+  if (!params) {
+    throw new Error('Params Promise is undefined');
   }
-  const { locale } = resolvedParams;
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
+  }
+  const locale = resolvedParams.locale;
   return (
     <Suspense
       fallback={

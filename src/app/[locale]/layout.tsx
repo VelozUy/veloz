@@ -16,7 +16,18 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  if (!params) {
+    return {};
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    return {};
+  }
+  const locale = resolvedParams.locale;
 
   if (!SUPPORTED_LOCALES.includes(locale as 'en' | 'pt')) {
     return {};
@@ -45,7 +56,18 @@ export default async function LocaleLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  if (!params) {
+    notFound();
+  }
+  const resolvedParams = await params;
+  if (
+    !resolvedParams ||
+    typeof resolvedParams !== 'object' ||
+    !('locale' in resolvedParams)
+  ) {
+    notFound();
+  }
+  const locale = resolvedParams.locale;
 
   if (!SUPPORTED_LOCALES.includes(locale as 'en' | 'pt')) {
     notFound();
