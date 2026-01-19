@@ -8,7 +8,7 @@ import {
 } from '@jest/globals';
 import { z } from 'zod';
 
-// Create mockDb and getFirestoreService mock outside the factory for stability
+// Create mockDb outside for reuse - this will be updated in beforeEach
 const mockDb = {
   collection: jest.fn(),
   doc: jest.fn(),
@@ -18,20 +18,37 @@ const mockDb = {
   writeBatch: jest.fn(),
 };
 
-const mockGetFirestoreService = jest.fn(async () => mockDb);
+// Mock Firebase - create the mock function outside so we can reference it
+const mockGetFirestoreServiceFn = jest.fn().mockResolvedValue(mockDb);
 
-// Mock Firebase - try using relative path instead of @ alias
-jest.mock('@/lib/firebase', () => ({
-  db: mockDb,
-  auth: {},
-  storage: {},
-  getFirestoreService: mockGetFirestoreService,
-  getStorageService: jest.fn().mockResolvedValue({}),
-  getAuthService: jest.fn().mockResolvedValue({}),
-  getFirestoreSync: jest.fn().mockReturnValue(mockDb),
-  getStorageSync: jest.fn().mockReturnValue({}),
-  getAuthSync: jest.fn().mockReturnValue({}),
-}));
+jest.mock('@/lib/firebase', () => {
+  // Create a fresh mockDb inside the factory
+  const factoryMockDb = {
+    collection: jest.fn(),
+    doc: jest.fn(),
+    enableNetwork: jest.fn(),
+    disableNetwork: jest.fn(),
+    runTransaction: jest.fn(),
+    writeBatch: jest.fn(),
+  };
+
+  // Create mock function that returns the mockDb
+  const factoryMockGetFirestoreService = jest
+    .fn()
+    .mockResolvedValue(factoryMockDb);
+
+  return {
+    db: factoryMockDb,
+    auth: {},
+    storage: {},
+    getFirestoreService: factoryMockGetFirestoreService,
+    getStorageService: jest.fn().mockResolvedValue({}),
+    getAuthService: jest.fn().mockResolvedValue({}),
+    getFirestoreSync: jest.fn().mockReturnValue(factoryMockDb),
+    getStorageSync: jest.fn().mockReturnValue({}),
+    getAuthSync: jest.fn().mockReturnValue({}),
+  };
+});
 
 // Mock firebase/firestore
 const mockCollectionRef = { _path: 'test-collection' };
@@ -80,15 +97,36 @@ describe('BaseFirebaseService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Reconfigure Firebase mocks after clearAllMocks
-    // Ensure mockGetFirestoreService always returns mockDb
-    mockGetFirestoreService.mockResolvedValue(mockDb);
+    // IMPORTANT: Reconfigure Firebase mocks after clearAllMocks()
+    // Match the pattern from firebase-services.test.ts which works
+    const { getFirestoreService, getFirestoreSync } = require('@/lib/firebase');
+    const testMockDb = {
+      collection: jest.fn(),
+      doc: jest.fn(),
+      enableNetwork: jest.fn(),
+      disableNetwork: jest.fn(),
+      runTransaction: jest.fn(),
+      writeBatch: jest.fn(),
+    };
 
-    const firebase = require('@/lib/firebase');
-    (firebase.getFirestoreService as jest.Mock).mockResolvedValue(mockDb);
-    (firebase.getFirestoreSync as jest.Mock).mockReturnValue(mockDb);
+    // Use mockImplementation like firebase-services.test.ts does
+    (getFirestoreService as jest.Mock).mockImplementation(
+      async () => testMockDb
+    );
+    (getFirestoreSync as jest.Mock).mockImplementation(() => testMockDb);
 
-    // Import BaseFirebaseService (no need to reset modules)
+    // Update the module-level mockDb reference for consistency
+    Object.assign(mockDb, testMockDb);
+
+    // Verify mock is working before importing service (sync check only)
+    const verifyDbSync = getFirestoreSync();
+    if (!verifyDbSync) {
+      throw new Error(
+        'Firebase mock setup failed - getFirestoreSync returned null'
+      );
+    }
+
+    // Import BaseFirebaseService AFTER mocks are verified
     const {
       BaseFirebaseService: BaseService,
     } = require('../base-firebase-service');
@@ -156,14 +194,19 @@ describe('BaseFirebaseService', () => {
   });
 
   describe('Firebase connection utilities', () => {
-    it('should get collection reference', () => {
+    it('should get collection reference', async () => {
       const { collection } = require('firebase/firestore');
       const { getFirestoreService } = require('@/lib/firebase');
 
-      return (service as any)['getCollection']().then(() => {
-        expect(getFirestoreService).toHaveBeenCalledTimes(1);
-        expect(collection).toHaveBeenCalledWith(mockDb, 'test-collection');
-      });
+      // Verify mock is set up
+      const testDb = await getFirestoreService();
+      if (!testDb) {
+        throw new Error('getFirestoreService mock is not working');
+      }
+
+      await (service as any)['getCollection']();
+      expect(getFirestoreService).toHaveBeenCalledTimes(1);
+      expect(collection).toHaveBeenCalledWith(testDb, 'test-collection');
     });
 
     it('should get document reference', () => {
@@ -749,9 +792,15 @@ describe('BaseFirebaseService', () => {
     describe('batchCreate', () => {
       it('should create multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
+        const firebase = require('@/lib/firebase');
 
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
+        // Verify mock is working
+        const testDb = await firebase.getFirestoreService();
+        if (!testDb) {
+          throw new Error(
+            'getFirestoreService mock is not working - returned null'
+          );
+        }
 
         const mockBatch = {
           set: jest.fn(),
@@ -764,6 +813,11 @@ describe('BaseFirebaseService', () => {
 
         const result = await service.batchCreate(items);
 
+        if (!result.success) {
+          console.error('batchCreate failed. Error:', result.error);
+          console.error('Result:', JSON.stringify(result, null, 2));
+        }
+
         expect(result.success).toBe(true);
         expect(result.data).toHaveLength(2);
         expect(mockBatch.set).toHaveBeenCalledTimes(2);
@@ -772,9 +826,6 @@ describe('BaseFirebaseService', () => {
 
       it('should handle batch create errors', async () => {
         const { writeBatch } = require('firebase/firestore');
-
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
 
         const mockBatch = {
           set: jest.fn(),
@@ -794,9 +845,6 @@ describe('BaseFirebaseService', () => {
     describe('batchUpdate', () => {
       it('should update multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
-
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
 
         const mockBatch = {
           update: jest.fn(),
@@ -820,9 +868,6 @@ describe('BaseFirebaseService', () => {
       it('should handle batch update errors', async () => {
         const { writeBatch } = require('firebase/firestore');
 
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
-
         const mockBatch = {
           update: jest.fn(),
           commit: jest.fn().mockRejectedValue(new Error('Batch update failed')),
@@ -842,9 +887,6 @@ describe('BaseFirebaseService', () => {
       it('should delete multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
 
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
-
         const mockBatch = {
           delete: jest.fn(),
           commit: jest.fn().mockResolvedValue(undefined),
@@ -862,9 +904,6 @@ describe('BaseFirebaseService', () => {
 
       it('should handle batch delete errors', async () => {
         const { writeBatch } = require('firebase/firestore');
-
-        // Mock is already set up in beforeEach, but ensure it's still working
-        mockGetFirestoreService.mockImplementation(async () => mockDb);
 
         const mockBatch = {
           delete: jest.fn(),
