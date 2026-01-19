@@ -79,20 +79,20 @@ describe('BaseFirebaseService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.resetModules();
 
-    // Reconfigure Firebase mocks after clearAllMocks/resetModules
+    // Reconfigure Firebase mocks after clearAllMocks
     // Ensure mockGetFirestoreService always returns mockDb
-    mockGetFirestoreService.mockReset();
-    mockGetFirestoreService.mockImplementation(async () => mockDb);
+    mockGetFirestoreService.mockResolvedValue(mockDb);
 
     const firebase = require('@/lib/firebase');
-    (firebase.getFirestoreService as jest.Mock).mockImplementation(
-      async () => mockDb
-    );
+    (firebase.getFirestoreService as jest.Mock).mockResolvedValue(mockDb);
     (firebase.getFirestoreSync as jest.Mock).mockReturnValue(mockDb);
 
-    ({ BaseFirebaseService } = require('../base-firebase-service'));
+    // Import BaseFirebaseService (no need to reset modules)
+    const {
+      BaseFirebaseService: BaseService,
+    } = require('../base-firebase-service');
+    BaseFirebaseService = BaseService;
 
     // Mock implementation of BaseFirebaseService since it's abstract
     class LocalTestFirebaseService extends BaseFirebaseService<any> {
