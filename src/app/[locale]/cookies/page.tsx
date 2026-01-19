@@ -18,33 +18,10 @@ const COOKIES_METADATA: Record<
 export async function generateMetadata({
   params,
 }: {
-  params?: Promise<{ locale: 'en' | 'pt' }>;
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  if (!params) {
-    // Default to 'en' if params is not provided during static generation
-    const locale = 'en';
-    const meta = COOKIES_METADATA[locale];
-    return {
-      title: meta.title,
-      description: meta.description,
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
-  }
   const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(
-      `Invalid params in generateMetadata: ${JSON.stringify(resolvedParams)}`
-    );
-  }
-  const rawLocale = resolvedParams.locale;
-  const locale = rawLocale === 'pt' ? 'pt' : 'en';
+  const locale: 'en' | 'pt' = resolvedParams.locale === 'pt' ? 'pt' : 'en';
   const meta = COOKIES_METADATA[locale];
 
   return {
@@ -57,6 +34,11 @@ export async function generateMetadata({
   };
 }
 
+// Generate static params at build time
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'pt' }];
+}
+
 // Force static generation at build time
 export const dynamic = 'force-static';
 
@@ -66,20 +48,9 @@ export const revalidate = false;
 export default async function CookiesPage({
   params,
 }: {
-  params?: Promise<{ locale: 'en' | 'pt' }>;
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  if (!params) {
-    // Default to 'en' if params is not provided during static generation
-    return <LegalPage locale="en" pageType="cookies" />;
-  }
   const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
+  const locale: 'en' | 'pt' = resolvedParams.locale === 'pt' ? 'pt' : 'en';
   return <LegalPage locale={locale} pageType="cookies" />;
 }

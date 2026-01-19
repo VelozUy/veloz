@@ -16,9 +16,6 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  if (!params) {
-    return {};
-  }
   const resolvedParams = await params;
   if (
     !resolvedParams ||
@@ -56,9 +53,6 @@ export default async function LocaleLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  if (!params) {
-    notFound();
-  }
   const resolvedParams = await params;
   if (
     !resolvedParams ||

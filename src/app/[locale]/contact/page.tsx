@@ -5,19 +5,10 @@ import ContactPageClient from './ContactPageClient';
 export async function generateMetadata({
   params,
 }: {
-  params?: Promise<{ locale: 'en' | 'pt' }>;
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  let locale: 'en' | 'pt' = 'en';
-  if (params) {
-    const resolvedParams = await params;
-    if (
-      resolvedParams &&
-      typeof resolvedParams === 'object' &&
-      'locale' in resolvedParams
-    ) {
-      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
-    }
-  }
+  const resolvedParams = await params;
+  const locale: 'en' | 'pt' = resolvedParams.locale === 'pt' ? 'pt' : 'en';
   const metadata = {
     en: {
       title: 'Contact Us | Veloz - Professional Photography & Videography',
@@ -62,6 +53,11 @@ export async function generateMetadata({
   };
 }
 
+// Generate static params at build time
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'pt' }];
+}
+
 // Force static generation at build time
 export const dynamic = 'force-static';
 
@@ -71,19 +67,10 @@ export const revalidate = false;
 export default async function ContactPage({
   params,
 }: {
-  params?: Promise<{ locale: 'en' | 'pt' }>;
+  params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  let locale: 'en' | 'pt' = 'en';
-  if (params) {
-    const resolvedParams = await params;
-    if (
-      resolvedParams &&
-      typeof resolvedParams === 'object' &&
-      'locale' in resolvedParams
-    ) {
-      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
-    }
-  }
+  const resolvedParams = await params;
+  const locale: 'en' | 'pt' = resolvedParams.locale === 'pt' ? 'pt' : 'en';
   return (
     <Suspense
       fallback={
