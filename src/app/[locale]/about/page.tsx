@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import AboutPageClient from './AboutPageClient';
 
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'pt' }];
+}
+
 // Generate metadata for each locale
 export async function generateMetadata({
   params,
