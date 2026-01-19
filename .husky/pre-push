@@ -43,7 +43,19 @@ fi
 echo "✅ Theme consistency check passed!"
 echo ""
 
-# 4. Unit tests (optional - can skip if there are known failures)
+# 4. Build test (verify production build works)
+echo "🏗️  Testing production build..."
+npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed!"
+  echo "Fix build errors before pushing."
+  echo "This ensures the codebase can be deployed successfully."
+  exit 1
+fi
+echo "✅ Build test passed!"
+echo ""
+
+# 5. Unit tests (optional - can skip if there are known failures)
 if [ "$SKIP_TESTS" = "1" ]; then
   echo "⏭️  Skipping unit tests (SKIP_TESTS=1)"
   echo "⚠️  Warning: Make sure your changes don't break existing functionality!"
@@ -64,7 +76,7 @@ else
 fi
 echo ""
 
-# 5. E2E tests (conditional based on branch)
+# 6. E2E tests (conditional based on branch)
 if [ "$SKIP_E2E" = "1" ]; then
   echo "⏭️  Skipping E2E tests (SKIP_E2E=1)"
 elif [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ]; then

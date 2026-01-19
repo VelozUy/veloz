@@ -12,7 +12,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams) {
+    throw new Error('Params is undefined');
+  }
+  const { locale } = resolvedParams;
   const metadata = {
     en: {
       title: 'About Us | Veloz - Professional Photography & Videography',
@@ -68,7 +72,11 @@ export default async function AboutPage({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  const { locale } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams) {
+    throw new Error('Params is undefined');
+  }
+  const { locale } = resolvedParams;
   return (
     <Suspense
       fallback={

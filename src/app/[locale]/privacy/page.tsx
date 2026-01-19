@@ -1,6 +1,10 @@
 import { Metadata } from 'next';
 import { LegalPage } from '@/components/legal/LegalPage';
 
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'pt' }];
+}
+
 const PRIVACY_METADATA: Record<
   'en' | 'pt',
   { title: string; description: string }
@@ -20,7 +24,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  const { locale: rawLocale } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams) {
+    throw new Error('Params is undefined');
+  }
+  const { locale: rawLocale } = resolvedParams;
   const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = PRIVACY_METADATA[locale];
 
@@ -39,6 +47,10 @@ export default async function PrivacyPage({
 }: {
   params: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  const { locale } = await params;
+  const resolvedParams = await params;
+  if (!resolvedParams) {
+    throw new Error('Params is undefined');
+  }
+  const { locale } = resolvedParams;
   return <LegalPage locale={locale} pageType="privacy" />;
 }

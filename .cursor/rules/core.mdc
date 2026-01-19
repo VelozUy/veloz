@@ -19,6 +19,7 @@ alwaysApply: true
 
 ## Quick Quality Gates
 - npm run lint && npm run type-check && npm test
+- **Before pushing**: Always test production build locally with `npm run build`
 - Keep file size reasonable (<500 LOC) and use clear module boundaries.
 
 ## Do / Don’t

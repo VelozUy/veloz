@@ -34,6 +34,7 @@
 - Follow Conventional Commits (`type(scope): summary`) as seen in recent history (`perf(seo): …`).
 - Group related changes; explain intent, risks, and rollout notes in the body when work is non-trivial.
 - Reference the corresponding item in `docs/TASK.md`, include acceptance-criteria verification, and attach UI diffs (screenshots or video) for visual updates.
+- **Before pushing**: Always verify the production build works locally with `npm run build` (enforced by pre-push hook).
 - Confirm lint, type-check, and relevant tests locally; call out skipped checks with rationale if unavoidable.
 
 ## Security & Configuration Tips
