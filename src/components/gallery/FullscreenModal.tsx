@@ -7,6 +7,7 @@ import React, {
   useState,
   useMemo,
 } from 'react';
+import NextImage from 'next/image';
 import { createPortal } from 'react-dom';
 import { ContactWidget } from './ContactWidget';
 
@@ -82,7 +83,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     if (startIndex !== undefined && currentIndex !== startIndex) {
       setCurrentIndex(startIndex);
     }
-  }, [startIndex]); // Removed media from dependencies to prevent unwanted resets
+  }, [currentIndex, startIndex]); // Removed media from dependencies to prevent unwanted resets
 
   // Handle currentIndex changes (for navigation)
   useEffect(() => {
@@ -191,7 +192,7 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
     // Small delay to ensure modal is fully rendered
     const timeout = setTimeout(preloadAdjacentImages, 100);
     return () => clearTimeout(timeout);
-  }, [isOpen, currentIndex, media, preloadImage]);
+  }, [currentIndex, currentMedia, isOpen, media, preloadImage]);
 
   // Preload images when navigating
   useEffect(() => {
@@ -561,10 +562,11 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
           ) : currentMedia ? (
             <div className="relative w-full h-full">
               {/* Thumbnail image - shown immediately */}
-              <img
+              <NextImage
                 src={currentMedia.thumbnailUrl || currentMedia.url}
                 alt={currentMedia.alt}
-                className={`w-full h-full object-contain ${
+                fill
+                className={`object-contain ${
                   fullResolutionLoaded[currentMedia.id]
                     ? 'opacity-0'
                     : 'opacity-100'
@@ -573,15 +575,18 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                   maxHeight: '100vh',
                   maxWidth: '100vw',
                 }}
+                sizes="100vw"
                 data-testid={`thumbnail-${currentMedia.id}`}
-                key={`thumbnail-${currentIndex}-${currentMedia.id}`} // Force re-render when image changes
+                key={`thumbnail-${currentIndex}-${currentMedia.id}`}
+                priority
               />
 
               {/* Full resolution image - loads in background */}
-              <img
+              <NextImage
                 src={currentMedia.url}
                 alt={currentMedia.alt}
-                className={`absolute inset-0 w-full h-full object-contain ${
+                fill
+                className={`absolute inset-0 object-contain ${
                   fullResolutionLoaded[currentMedia.id]
                     ? 'opacity-100'
                     : 'opacity-0'
@@ -590,14 +595,16 @@ export const FullscreenModal: React.FC<FullscreenModalProps> = ({
                   maxHeight: '100vh',
                   maxWidth: '100vw',
                 }}
+                sizes="100vw"
                 data-testid={`full-resolution-${currentMedia.id}`}
-                key={`full-resolution-${currentIndex}-${currentMedia.id}`} // Force re-render when image changes
+                key={`full-resolution-${currentIndex}-${currentMedia.id}`}
                 onLoad={() => {
                   setFullResolutionLoaded(prev => ({
                     ...prev,
                     [currentMedia.id]: true,
                   }));
                 }}
+                onError={() => handleMediaError(currentMedia.id)}
               />
             </div>
           ) : null}

@@ -45,12 +45,6 @@ export default function SimpleCarousel({
         seed,
         priorityImageCount
       );
-      console.log(
-        'Debug: Loaded',
-        priorityImages.length,
-        'priority images for carousel:',
-        seed
-      );
       setImages(priorityImages);
       setPriorityImagesLoaded(true);
       setLoading(false);
@@ -87,12 +81,6 @@ export default function SimpleCarousel({
     try {
       // Load full set of images (at least 10)
       const allImages = getCarouselImages(locale, seed, totalImageCount);
-      console.log(
-        'Debug: Loaded',
-        allImages.length,
-        'total images for carousel:',
-        seed
-      );
       setImages(allImages);
     } catch (error) {
       console.error('Error loading remaining images:', error);
@@ -227,6 +215,7 @@ export default function SimpleCarousel({
               className="object-cover rounded-lg transition-all duration-300"
               loading={index < 3 ? 'eager' : 'lazy'} // Performance: First 3 images eager
               priority={priority && index < 2} // Performance: First 2 images priority
+              fetchPriority={priority && index === 0 ? 'high' : 'auto'} // LCP: First image high priority
               quality={70} // Performance: Good quality for variety
               sizes="320px"
               placeholder="blur"

@@ -5,14 +5,7 @@ import { VelozLogo } from '@/components/shared/VelozLogo';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-
-// Helper function for localized paths (same as navigation component)
-function getLocalizedPath(path: string, locale: string): string {
-  if (locale === 'es') {
-    return path; // Spanish is default, no prefix
-  }
-  return `/${locale}${path}`;
-}
+import { getLocalizedPath } from '@/lib/navigation-utils';
 
 interface AnimatedHomeContentProps {
   className?: string;

@@ -405,9 +405,11 @@ export function initMobileResponsivenessTesting(): void {
   }
 }
 
-export default {
+const mobileResponsivenessTesting = {
   runMobileResponsivenessTests,
   applyMobileFixes,
   initMobileResponsivenessTesting,
   detectMobileDevice,
 };
+
+export default mobileResponsivenessTesting;

@@ -64,8 +64,8 @@ export function getBackgroundClasses(
 
     case 'form':
       return {
-        background: 'bg-card',
-        text: 'text-card-foreground',
+        background: 'bg-muted',
+        text: 'text-foreground',
         border: 'border-border',
         shadow: 'shadow-sm',
       };
@@ -81,8 +81,8 @@ export function getBackgroundClasses(
     case 'cta':
       if (priority === 'high') {
         return {
-          background: 'bg-card',
-          text: 'text-card-foreground',
+          background: 'bg-primary',
+          text: 'text-primary-foreground',
           border: 'border-primary',
           shadow: 'shadow-lg',
         };

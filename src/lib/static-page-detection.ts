@@ -17,12 +17,16 @@ const STATIC_PAGES = [
   '/en/about',
   '/en/our-work',
   '/en/contact',
+  '/en/cookies',
   '/en/privacy',
+  '/en/terms',
   '/pt',
   '/pt/about',
   '/pt/our-work',
   '/pt/contact',
+  '/pt/cookies',
   '/pt/privacy',
+  '/pt/terms',
 ];
 
 // List of dynamic pages that need Firebase

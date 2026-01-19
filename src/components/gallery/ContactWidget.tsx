@@ -552,7 +552,7 @@ export function ContactWidget({
   }, [isFullscreen]);
 
   // Initialize contact message service
-  const contactMessageService = new ContactMessageService();
+  const contactMessageService = useMemo(() => new ContactMessageService(), []);
 
   // Calculate gallery container bounds for horizontal constraint
   useEffect(() => {
@@ -758,7 +758,7 @@ export function ContactWidget({
         setIsSubmitting(false);
       }
     },
-    [widgetData, language]
+    [widgetData, language, contactMessageService]
   );
 
   const resetWidget = useCallback(() => {
@@ -879,15 +879,14 @@ export function ContactWidget({
     widgetData,
     handleEventTypeSelect,
     handleDateSelect,
-    handleDateSkip,
     handleLocationInput,
-    handleLocationSkip,
-    handleLocationSubmit,
     handleContactChoice,
     handlePhoneSubmit,
     isSubmitting,
     noDate,
+    setNoDate,
     skipLocation,
+    setSkipLocation,
   ]);
 
   return (

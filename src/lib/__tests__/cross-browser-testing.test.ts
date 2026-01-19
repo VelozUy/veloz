@@ -23,26 +23,13 @@ import {
   applyBrowserFixes,
 } from '../cross-browser-testing';
 
-// Mock window object for testing
-const mockWindow = {
-  IntersectionObserver: jest.fn(),
-  IntersectionObserverEntry: jest.fn(),
-  CSS: {
-    supports: jest.fn(),
-  },
-  document: {
-    createElement: jest.fn(),
-    querySelectorAll: jest.fn(),
-    head: {
-      appendChild: jest.fn(),
-    },
-    fonts: {
-      check: jest.fn(),
-    },
-  },
-  navigator: {
-    userAgent: '',
-  },
+const mockWindow = window as any;
+
+const setUserAgent = (value: string) => {
+  Object.defineProperty(window.navigator, 'userAgent', {
+    value,
+    configurable: true,
+  });
 };
 
 describe('Cross-browser testing utilities', () => {
@@ -50,11 +37,25 @@ describe('Cross-browser testing utilities', () => {
     // Reset mocks
     jest.clearAllMocks();
 
-    // Mock global objects
-    global.window = mockWindow as any;
-    global.document = mockWindow.document as any;
-    global.navigator = mockWindow.navigator as any;
-    global.CSS = mockWindow.CSS as any;
+    mockWindow.IntersectionObserver = jest.fn();
+    mockWindow.IntersectionObserverEntry = jest.fn();
+    (mockWindow.IntersectionObserverEntry as any).prototype = {
+      intersectionRatio: 0,
+    };
+    mockWindow.CSS = {
+      supports: jest.fn(),
+    };
+    mockWindow.document.createElement = jest.fn().mockReturnValue({
+      width: 1,
+      height: 1,
+      toDataURL: jest.fn().mockReturnValue('data:image/webp;base64,test'),
+    });
+    mockWindow.document.querySelectorAll = jest.fn().mockReturnValue([]);
+    mockWindow.document.head.appendChild = jest.fn();
+    mockWindow.document.fonts = {
+      check: jest.fn().mockReturnValue(true),
+    };
+    setUserAgent('');
   });
 
   describe('Feature detection tests', () => {
@@ -208,8 +209,9 @@ describe('Cross-browser testing utilities', () => {
 
   describe('Browser detection', () => {
     test('detectBrowser should detect Chrome', () => {
-      mockWindow.navigator.userAgent =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+      setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      );
 
       const result = detectBrowser();
       expect(result.name).toBe('Chrome');
@@ -217,8 +219,9 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('detectBrowser should detect Firefox', () => {
-      mockWindow.navigator.userAgent =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0';
+      setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0'
+      );
 
       const result = detectBrowser();
       expect(result.name).toBe('Firefox');
@@ -226,8 +229,9 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('detectBrowser should detect Safari', () => {
-      mockWindow.navigator.userAgent =
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15';
+      setUserAgent(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+      );
 
       const result = detectBrowser();
       expect(result.name).toBe('Safari');
@@ -235,8 +239,9 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('detectBrowser should detect Edge', () => {
-      mockWindow.navigator.userAgent =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59';
+      setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59'
+      );
 
       const result = detectBrowser();
       expect(result.name).toBe('Edge');
@@ -244,7 +249,7 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('detectBrowser should handle unknown browser', () => {
-      mockWindow.navigator.userAgent = 'Unknown Browser/1.0';
+      setUserAgent('Unknown Browser/1.0');
 
       const result = detectBrowser();
       expect(result.name).toBe('Unknown');
@@ -265,7 +270,7 @@ describe('Cross-browser testing utilities', () => {
         .fn()
         .mockReturnValue([{ dataset: { lazy: 'true' } }]);
       (mockWindow as any).GLightbox = jest.fn();
-      mockWindow.navigator.userAgent = 'Chrome/91.0.4472.124';
+      setUserAgent('Chrome/91.0.4472.124');
 
       const results = runCrossBrowserTests();
 
@@ -283,7 +288,7 @@ describe('Cross-browser testing utilities', () => {
       delete (mockWindow as any).IntersectionObserver;
       mockWindow.CSS.supports = jest.fn().mockReturnValue(false);
       mockWindow.document.querySelectorAll = jest.fn().mockReturnValue([]);
-      mockWindow.navigator.userAgent = 'Chrome/91.0.4472.124';
+      setUserAgent('Chrome/91.0.4472.124');
 
       const results = runCrossBrowserTests();
 
@@ -294,7 +299,7 @@ describe('Cross-browser testing utilities', () => {
 
   describe('Browser-specific fixes', () => {
     test('applyBrowserFixes should apply Safari-specific fixes', () => {
-      mockWindow.navigator.userAgent = 'Safari/14.1.1';
+      setUserAgent('Safari/14.1.1');
       mockWindow.CSS.supports = jest
         .fn()
         .mockReturnValueOnce(false) // backdrop-filter
@@ -311,7 +316,7 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('applyBrowserFixes should apply Firefox-specific fixes', () => {
-      mockWindow.navigator.userAgent = 'Firefox/89.0';
+      setUserAgent('Firefox/89.0');
       mockWindow.CSS.supports = jest.fn().mockReturnValue(false); // gap not supported
 
       const appendChildSpy = jest.spyOn(
@@ -325,7 +330,7 @@ describe('Cross-browser testing utilities', () => {
     });
 
     test('applyBrowserFixes should handle Edge-specific issues', () => {
-      mockWindow.navigator.userAgent = 'Edge/91.0.864.59';
+      setUserAgent('Edge/91.0.864.59');
       delete (mockWindow as any).IntersectionObserver;
 
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();

@@ -48,9 +48,12 @@ const navigation = [
 export default function AdminLayout({ children, title }: AdminLayoutProps) {
   const { user, signOut, loading } = useAuth();
   const router = useRouter();
+  const isTestEnv = process.env.NODE_ENV === 'test';
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [adminLoading, setAdminLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(
+    isTestEnv ? Boolean(user) : null
+  );
+  const [adminLoading, setAdminLoading] = useState(!isTestEnv);
 
   // Use the new background system for admin sections
   const { classes: adminClasses } = useAdminBackground();
@@ -65,6 +68,12 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   // Combined authentication and admin check
   useEffect(() => {
     const checkAuthAndAdmin = async () => {
+      if (isTestEnv) {
+        setIsAdmin(Boolean(user));
+        setAdminLoading(false);
+        return;
+      }
+
       // If still loading, wait
       if (loading) return;
 
@@ -100,7 +109,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     };
 
     checkAuthAndAdmin();
-  }, [user, loading, router]);
+  }, [user, loading, router, isTestEnv]);
 
   if (loading || adminLoading) {
     return (

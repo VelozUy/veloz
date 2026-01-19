@@ -5,7 +5,7 @@ import {
   Users,
   Clock,
   MousePointer,
-  Image,
+  Image as ImageIcon,
   UserCheck,
   TrendingUp,
   TrendingDown,
@@ -239,7 +239,7 @@ export function MediaInteractionsMetricCard({ data }: { data: MetricData }) {
       changeType={
         data?.mediaChange && data.mediaChange > 0 ? 'increase' : 'decrease'
       }
-      icon={<Image className="h-3 w-3" />}
+      icon={<ImageIcon className="h-3 w-3" />}
       trend={{
         value: data?.mediaTrend || 0,
         label: 'vs last period',
@@ -279,7 +279,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
           <CardTitle className="text-xs font-medium">Media Breakdown</CardTitle>
           <div className="text-muted-foreground">
-            <Image className="h-3 w-3" />
+            <ImageIcon className="h-3 w-3" />
           </div>
         </CardHeader>
         <CardContent className="px-4 pb-3">
@@ -304,7 +304,7 @@ export function MediaInteractionBreakdownCard({ data }: { data: MetricData }) {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 py-3">
         <CardTitle className="text-xs font-medium">Media Breakdown</CardTitle>
         <div className="text-muted-foreground">
-          <Image className="h-3 w-3" />
+          <ImageIcon className="h-3 w-3" />
         </div>
       </CardHeader>
       <CardContent className="px-4 pb-3">

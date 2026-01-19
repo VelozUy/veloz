@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,20 +95,20 @@ export default function ClientSignupPage() {
     password: '',
   });
 
-  useEffect(() => {
-    validateInvite();
-  }, [projectId, inviteCode, isPublic]);
-
-  const validateInvite = async () => {
+  const validateInvite = useCallback(async () => {
     if (!projectId) {
-      setError('Invalid invite link. Please contact your project manager for a valid invite.');
+      setError(
+        'Invalid invite link. Please contact your project manager for a valid invite.'
+      );
       setLoading(false);
       return;
     }
 
     // For public access, we don't need an invite code
     if (!isPublic && !inviteCode) {
-      setError('Invalid invite link. Please contact your project manager for a valid invite.');
+      setError(
+        'Invalid invite link. Please contact your project manager for a valid invite.'
+      );
       setLoading(false);
       return;
     }
@@ -131,12 +131,14 @@ export default function ClientSignupPage() {
             title: {
               en: 'Test Project',
               es: 'Proyecto de Prueba',
-              pt: 'Projeto de Teste'
+              pt: 'Projeto de Teste',
             },
             eventType: 'Wedding',
-            eventDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+            eventDate: new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000
+            ).toISOString(), // 30 days from now
             location: 'Test Location',
-            status: 'active'
+            status: 'active',
           };
           setProject(mockProject);
         } else {
@@ -181,14 +183,18 @@ export default function ClientSignupPage() {
 
       // Check if invite is expired
       if (inviteDoc.expiresAt && inviteDoc.expiresAt.toDate() < new Date()) {
-        setError('This invite has expired. Please contact your project manager for a new invite.');
+        setError(
+          'This invite has expired. Please contact your project manager for a new invite.'
+        );
         setLoading(false);
         return;
       }
 
       // Check if invite is already accepted
       if (inviteDoc.status === 'accepted') {
-        setError('This invite has already been used. Please contact your project manager for a new invite.');
+        setError(
+          'This invite has already been used. Please contact your project manager for a new invite.'
+        );
         setLoading(false);
         return;
       }
@@ -200,7 +206,11 @@ export default function ClientSignupPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [inviteCode, isPublic, projectId]);
+
+  useEffect(() => {
+    validateInvite();
+  }, [validateInvite]);
 
   const handleSignin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,7 +226,10 @@ export default function ClientSignupPage() {
 
       // Check if client exists
       const clientsRef = collection(db, 'clients');
-      const emailQuery = query(clientsRef, where('email', '==', signinForm.email));
+      const emailQuery = query(
+        clientsRef,
+        where('email', '==', signinForm.email)
+      );
       const emailSnapshot = await getDocs(emailQuery);
 
       if (emailSnapshot.empty) {
@@ -263,31 +276,31 @@ export default function ClientSignupPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setFormErrors({});
-    
+
     // Validate form
     const errors: typeof formErrors = {};
-    
+
     if (!signupForm.email) {
       errors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(signupForm.email)) {
       errors.email = 'Please enter a valid email address';
     }
-    
+
     if (!signupForm.password) {
       errors.password = 'Password is required';
     } else if (signupForm.password.length < 6) {
       errors.password = 'Password must be at least 6 characters long';
     }
-    
+
     if (!signupForm.confirmPassword) {
       errors.confirmPassword = 'Please confirm your password';
     } else if (signupForm.password !== signupForm.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
     }
-    
+
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
@@ -301,23 +314,28 @@ export default function ClientSignupPage() {
         return;
       }
 
-      console.log('Checking if email already exists:', signupForm.email);
-      
       // Check if email already exists
       const clientsRef = collection(db, 'clients');
-      const emailQuery = query(clientsRef, where('email', '==', signupForm.email));
-      
+      const emailQuery = query(
+        clientsRef,
+        where('email', '==', signupForm.email)
+      );
+
       try {
         const emailSnapshot = await getDocs(emailQuery);
-        console.log('Email check completed, empty:', emailSnapshot.empty);
 
         if (!emailSnapshot.empty) {
-          setFormErrors({ general: 'An account with this email already exists. Please sign in instead.' });
+          setFormErrors({
+            general:
+              'An account with this email already exists. Please sign in instead.',
+          });
           return;
         }
       } catch (emailCheckError) {
         console.error('Error checking email:', emailCheckError);
-        setFormErrors({ general: 'Error checking email availability. Please try again.' });
+        setFormErrors({
+          general: 'Error checking email availability. Please try again.',
+        });
         return;
       }
 
@@ -332,15 +350,14 @@ export default function ClientSignupPage() {
         lastLogin: new Date(),
       };
 
-      console.log('Attempting to create client account with data:', clientData);
-      
       let clientRef;
       try {
         clientRef = await addDoc(collection(db, 'clients'), clientData);
-        console.log('Client account created successfully with ID:', clientRef.id);
       } catch (clientCreationError) {
         console.error('Error creating client account:', clientCreationError);
-        setFormErrors({ general: 'Error creating client account. Please try again.' });
+        setFormErrors({
+          general: 'Error creating client account. Please try again.',
+        });
         return;
       }
 
@@ -366,7 +383,10 @@ export default function ClientSignupPage() {
             status: 'active',
           });
         } catch (publicAccessError) {
-          console.error('Error creating public access record:', publicAccessError);
+          console.error(
+            'Error creating public access record:',
+            publicAccessError
+          );
           // Continue even if this fails
         }
       }
@@ -393,8 +413,6 @@ export default function ClientSignupPage() {
     );
   }
 
-
-
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
@@ -413,7 +431,9 @@ export default function ClientSignupPage() {
                     <Calendar className="w-5 h-5 text-muted-foreground" />
                     <div>
                       <h3 className="font-medium">
-                        {project.title.es || project.title.en || project.title.pt}
+                        {project.title.es ||
+                          project.title.en ||
+                          project.title.pt}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         {project.eventType} Event
@@ -425,7 +445,9 @@ export default function ClientSignupPage() {
                     <MapPin className="w-5 h-5 text-muted-foreground" />
                     <div>
                       <p className="text-sm font-medium">Location</p>
-                      <p className="text-sm text-muted-foreground">{project.location}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {project.location}
+                      </p>
                     </div>
                   </div>
 
@@ -444,10 +466,9 @@ export default function ClientSignupPage() {
                       {isPublic ? 'Public Access' : project.status}
                     </Badge>
                     <p className="text-sm text-muted-foreground">
-                      {isPublic 
+                      {isPublic
                         ? 'This project is publicly accessible. Create your account to view project updates, download files, and communicate with the team.'
-                        : 'You\'re being invited to access the client portal for this project. Create your account to view project updates, download files, and communicate with the team.'
-                      }
+                        : "You're being invited to access the client portal for this project. Create your account to view project updates, download files, and communicate with the team."}
                     </p>
                   </div>
                 </>
@@ -462,17 +483,14 @@ export default function ClientSignupPage() {
                 {isSignIn ? 'Sign In to Your Account' : 'Create Account'}
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                {isPublic 
-                  ? isSignIn 
+                {isPublic
+                  ? isSignIn
                     ? 'Sign in to access this public project'
                     : 'Create your account to access this public project'
-                  : 'Create your account to access your project'
-                }
+                  : 'Create your account to access your project'}
               </p>
             </CardHeader>
             <CardContent>
-
-              
               {/* Toggle for public access */}
               {isPublic && (
                 <div className="mb-4">
@@ -481,8 +499,8 @@ export default function ClientSignupPage() {
                       type="button"
                       onClick={() => setIsSignIn(false)}
                       className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        !isSignIn 
-                          ? 'bg-primary text-primary-foreground' 
+                        !isSignIn
+                          ? 'bg-primary text-primary-foreground'
                           : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
@@ -493,8 +511,8 @@ export default function ClientSignupPage() {
                       type="button"
                       onClick={() => setIsSignIn(true)}
                       className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                        isSignIn 
-                          ? 'bg-primary text-primary-foreground' 
+                        isSignIn
+                          ? 'bg-primary text-primary-foreground'
                           : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
@@ -513,7 +531,12 @@ export default function ClientSignupPage() {
                       id="signin-email"
                       type="email"
                       value={signinForm.email}
-                      onChange={(e) => setSigninForm(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={e =>
+                        setSigninForm(prev => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -525,7 +548,12 @@ export default function ClientSignupPage() {
                         id="signin-password"
                         type={showPassword ? 'text' : 'password'}
                         value={signinForm.password}
-                        onChange={(e) => setSigninForm(prev => ({ ...prev, password: e.target.value }))}
+                        onChange={e =>
+                          setSigninForm(prev => ({
+                            ...prev,
+                            password: e.target.value,
+                          }))
+                        }
                         required
                       />
                       <button
@@ -533,7 +561,11 @@ export default function ClientSignupPage() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -551,86 +583,123 @@ export default function ClientSignupPage() {
                 </form>
               ) : (
                 <form onSubmit={handleSignup} className="space-y-4">
-                {/* General error message */}
-                {formErrors.general && (
-                  <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{formErrors.general}</AlertDescription>
-                  </Alert>
-                )}
-                
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={signupForm.email}
-                    onChange={(e) => setSignupForm(prev => ({ ...prev, email: e.target.value }))}
-                    className={formErrors.email ? 'border-destructive' : ''}
-                    required
-                  />
-                  {formErrors.email && (
-                    <p className="text-sm text-destructive mt-1">{formErrors.email}</p>
+                  {/* General error message */}
+                  {formErrors.general && (
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>{formErrors.general}</AlertDescription>
+                    </Alert>
                   )}
-                </div>
 
-                <div>
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
+                  <div>
+                    <Label htmlFor="email">Email</Label>
                     <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={signupForm.password}
-                      onChange={(e) => setSignupForm(prev => ({ ...prev, password: e.target.value }))}
-                      className={formErrors.password ? 'border-destructive' : ''}
+                      id="email"
+                      type="email"
+                      value={signupForm.email}
+                      onChange={e =>
+                        setSignupForm(prev => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                      className={formErrors.email ? 'border-destructive' : ''}
                       required
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                    {formErrors.email && (
+                      <p className="text-sm text-destructive mt-1">
+                        {formErrors.email}
+                      </p>
+                    )}
                   </div>
-                  {formErrors.password && (
-                    <p className="text-sm text-destructive mt-1">{formErrors.password}</p>
-                  )}
-                </div>
 
-                <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="confirmPassword"
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      value={signupForm.confirmPassword}
-                      onChange={(e) => setSignupForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                      className={formErrors.confirmPassword ? 'border-destructive' : ''}
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    >
-                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                  <div>
+                    <Label htmlFor="password">Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={signupForm.password}
+                        onChange={e =>
+                          setSignupForm(prev => ({
+                            ...prev,
+                            password: e.target.value,
+                          }))
+                        }
+                        className={
+                          formErrors.password ? 'border-destructive' : ''
+                        }
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                    {formErrors.password && (
+                      <p className="text-sm text-destructive mt-1">
+                        {formErrors.password}
+                      </p>
+                    )}
                   </div>
-                  {formErrors.confirmPassword && (
-                    <p className="text-sm text-destructive mt-1">{formErrors.confirmPassword}</p>
-                  )}
-                </div>
 
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Creating Account...' : (
-                    <>
-                      Create Account
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </form>
+                  <div>
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        value={signupForm.confirmPassword}
+                        onChange={e =>
+                          setSignupForm(prev => ({
+                            ...prev,
+                            confirmPassword: e.target.value,
+                          }))
+                        }
+                        className={
+                          formErrors.confirmPassword ? 'border-destructive' : ''
+                        }
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                    {formErrors.confirmPassword && (
+                      <p className="text-sm text-destructive mt-1">
+                        {formErrors.confirmPassword}
+                      </p>
+                    )}
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? (
+                      'Creating Account...'
+                    ) : (
+                      <>
+                        Create Account
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                </form>
               )}
             </CardContent>
           </Card>
@@ -638,4 +707,4 @@ export default function ClientSignupPage() {
       </div>
     </div>
   );
-} 
+}

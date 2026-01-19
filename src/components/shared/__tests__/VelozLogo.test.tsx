@@ -5,51 +5,33 @@ import { VelozLogo } from '../VelozLogo';
 describe('VelozLogo', () => {
   it('renders with default props', () => {
     render(<VelozLogo />);
-    const logo = screen.getByAltText('Veloz Logo');
+    const logo = screen.getByLabelText(/Veloz/);
     expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/veloz-logo-dark.svg');
+    expect(logo).toHaveClass('h-12');
   });
 
   it('renders with blue variant', () => {
-    render(<VelozLogo logoVariant="blue" />);
-    const logo = screen.getByAltText('Veloz Logo');
-    expect(logo).toHaveAttribute('src', '/veloz-logo-blue.svg');
+    render(<VelozLogo variant="blue" />);
+    const logo = screen.getByLabelText(/Veloz/);
+    expect(logo).toHaveClass('fill-primary');
   });
 
   it('renders with dark variant', () => {
-    render(<VelozLogo logoVariant="dark" />);
-    const logo = screen.getByAltText('Veloz Logo');
-    expect(logo).toHaveAttribute('src', '/veloz-logo-dark.svg');
+    render(<VelozLogo variant="dark" />);
+    const logo = screen.getByLabelText(/Veloz/);
+    expect(logo).toHaveClass('fill-foreground');
   });
 
   it('renders with white variant', () => {
-    render(<VelozLogo logoVariant="white" />);
-    const logo = screen.getByAltText('Veloz Logo');
-    expect(logo).toHaveAttribute('src', '/veloz-logo-white.svg');
-  });
-
-  it('renders with light variant', () => {
-    render(<VelozLogo logoVariant="light" />);
-    const logo = screen.getByAltText('Veloz Logo');
-    expect(logo).toHaveAttribute('src', '/veloz-logo-light.svg');
-  });
-
-  it('renders full variant with text', () => {
-    render(<VelozLogo variant="dark" />);
-    const text = screen.getByText('VELOZ');
-    expect(text).toBeInTheDocument();
-  });
-
-  it('renders compact variant without text', () => {
-    render(<VelozLogo variant="compact" />);
-    const text = screen.queryByText('VELOZ');
-    expect(text).not.toBeInTheDocument();
+    render(<VelozLogo variant="white" />);
+    const logo = screen.getByLabelText(/Veloz/);
+    expect(logo).toHaveClass('fill-white');
   });
 
   it('applies correct responsive size classes', () => {
     const { container } = render(<VelozLogo size="xl" />);
     const logoContainer = container.firstChild as HTMLElement;
-    expect(logoContainer).toHaveClass('h-16');
+    expect(logoContainer).toHaveClass('h-20');
     expect(logoContainer).toHaveClass('md:h-24');
   });
 

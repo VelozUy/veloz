@@ -69,12 +69,12 @@ async function warmupPagesAsync(siteUrl: string) {
       '/contact',
 
       // English pages
-      '/en/',
+      '/en',
       '/en/about',
       '/en/contact',
 
       // Portuguese pages
-      '/pt/',
+      '/pt',
       '/pt/about',
       '/pt/contact',
     ];

@@ -292,7 +292,7 @@ export function getBackgroundClasses(
     if (sectionType === 'hero' || sectionType === 'cta') {
       classes = classes
         .replace('bg-background', 'bg-card')
-        .replace('text-foreground', 'text-card-foreground');
+        .replace('text-foreground', 'text-foreground');
     } else if (sectionType === 'content' || sectionType === 'form') {
       classes = classes
         .replace('bg-muted', 'bg-background')
@@ -320,9 +320,9 @@ export function getButtonClasses(
   const buttonClasses = {
     hero: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      secondary: 'bg-card text-card-foreground hover:bg-muted',
+      secondary: 'bg-card text-foreground hover:bg-muted',
       tertiary:
-        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
+        'bg-transparent text-foreground border border-border hover:bg-card hover:text-foreground',
     },
     content: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -340,21 +340,21 @@ export function getButtonClasses(
       tertiary: 'bg-muted text-foreground hover:bg-muted',
     },
     cta: {
-      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+      primary: 'bg-card text-foreground hover:bg-muted',
       secondary: 'bg-background text-foreground hover:bg-background/90',
       tertiary:
-        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
+        'bg-transparent text-foreground border border-border hover:bg-card hover:text-foreground',
     },
     gallery: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      secondary: 'bg-card text-card-foreground hover:bg-muted',
+      secondary: 'bg-card text-foreground hover:bg-muted',
       tertiary:
-        'bg-transparent text-foreground border border-foreground hover:bg-card hover:text-card-foreground',
+        'bg-transparent text-foreground border border-border hover:bg-card hover:text-foreground',
     },
     navigation: {
       primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
       secondary:
-        'bg-transparent text-foreground hover:bg-card hover:text-card-foreground',
+        'bg-transparent text-foreground hover:bg-card hover:text-foreground',
       tertiary: 'bg-muted text-foreground hover:bg-muted',
     },
   };
@@ -369,15 +369,13 @@ export function getButtonClasses(
  */
 export function getInputClasses(sectionType: SectionType): string {
   const inputClasses = {
-    hero: 'bg-card text-card-foreground border-border focus:border-primary',
-    content: 'bg-card text-card-foreground border-border focus:border-primary',
-    form: 'bg-card text-card-foreground border-border focus:border-primary',
-    testimonial:
-      'bg-card text-card-foreground border-border focus:border-primary',
-    cta: 'bg-card text-card-foreground border-border focus:border-primary',
-    gallery: 'bg-card text-card-foreground border-border focus:border-primary',
-    navigation:
-      'bg-card text-card-foreground border-border focus:border-primary',
+    hero: 'bg-input text-foreground border-border focus:ring-ring',
+    content: 'bg-input text-foreground border-border focus:ring-ring',
+    form: 'bg-input text-foreground border-border focus:ring-ring',
+    testimonial: 'bg-input text-foreground border-border focus:ring-ring',
+    cta: 'bg-input text-foreground border-border focus:ring-ring',
+    gallery: 'bg-input text-foreground border-border focus:ring-ring',
+    navigation: 'bg-input text-foreground border-border focus:ring-ring',
   };
 
   return inputClasses[sectionType];
@@ -414,32 +412,32 @@ export function getCardClasses(
 ): string {
   const cardClasses = {
     hero: {
-      primary: 'bg-card text-card-foreground shadow-lg',
+      primary: 'bg-card text-foreground shadow-lg',
       secondary: 'bg-muted text-foreground',
-      tertiary: 'bg-transparent text-foreground border border-foreground',
+      tertiary: 'bg-transparent text-foreground border border-border',
     },
     content: {
-      primary: 'bg-card text-card-foreground border border-border',
+      primary: 'bg-card text-foreground border border-border',
       secondary: 'bg-muted text-foreground',
       tertiary: 'bg-muted/50 text-foreground',
     },
     form: {
-      primary: 'bg-card text-card-foreground border border-border',
+      primary: 'bg-card text-foreground border border-border',
       secondary: 'bg-muted text-foreground',
       tertiary: 'bg-muted/50 text-foreground',
     },
     testimonial: {
-      primary: 'bg-card text-card-foreground border border-border',
+      primary: 'bg-card text-foreground border border-border',
       secondary: 'bg-muted text-foreground',
       tertiary: 'bg-muted/50 text-foreground',
     },
     cta: {
-      primary: 'bg-card text-card-foreground shadow-lg',
+      primary: 'bg-card text-foreground shadow-lg',
       secondary: 'bg-background text-foreground',
       tertiary: 'bg-muted text-foreground',
     },
     gallery: {
-      primary: 'bg-card text-card-foreground shadow-lg',
+      primary: 'bg-card text-foreground shadow-lg',
       secondary: 'bg-muted text-foreground',
       tertiary: 'bg-transparent text-foreground',
     },

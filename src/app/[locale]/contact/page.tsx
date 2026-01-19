@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import ContactPageClient from './ContactPageClient';
 
-// Generate metadata for each locale
-export async function generateMetadata(): Promise<Metadata> {
-  // Define locale-specific metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
   const metadata = {
     en: {
       title: 'Contact Us | Veloz - Professional Photography & Videography',
@@ -30,23 +33,23 @@ export async function generateMetadata(): Promise<Metadata> {
         locale: 'pt_BR',
       },
     },
-    es: {
-      title: 'Contacto | Veloz - Fotografía y Videografía Profesional',
-      description:
-        'Cuéntanos sobre tu evento y lo haremos perfecto. Servicios profesionales de fotografía y videografía en Uruguay.',
-      openGraph: {
-        title: 'Contacto | Veloz - Fotografía y Videografía Profesional',
-        description:
-          'Cuéntanos sobre tu evento y lo haremos perfecto. Servicios profesionales de fotografía y videografía en Uruguay.',
-        type: 'website',
-        locale: 'es_UY',
+  } as const;
+
+  const normalizedLocale = locale === 'pt' ? 'pt' : 'en';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
+
+  return {
+    ...metadata[normalizedLocale],
+    alternates: {
+      canonical: `/${locale}/contact`,
+      languages: {
+        es: '/contact',
+        en: '/en/contact',
+        pt: '/pt/contact',
+        'x-default': '/contact',
       },
     },
   };
-
-  // For now, return Spanish metadata as default
-  // In a more advanced implementation, we could detect locale from build context
-  return metadata.es;
 }
 
 // Force static generation at build time
@@ -55,7 +58,12 @@ export const dynamic = 'force-static';
 // Disable automatic revalidation - content updates require manual build trigger
 export const revalidate = false;
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}) {
+  const { locale } = await params;
   return (
     <Suspense
       fallback={
@@ -64,7 +72,7 @@ export default async function ContactPage() {
         </div>
       }
     >
-      <ContactPageClient />
+      <ContactPageClient initialLocale={locale} />
     </Suspense>
   );
 }

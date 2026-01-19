@@ -7,7 +7,8 @@ export default function HomepageBodyClass() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isHomepage = pathname === '/';
+    const isHomepage =
+      pathname === '/' || pathname === '/en' || pathname === '/pt';
 
     // Apply class immediately
     if (isHomepage) {
@@ -26,13 +27,6 @@ export default function HomepageBodyClass() {
       document.body.classList.remove('homepage');
     };
   }, [pathname]);
-
-  // Apply class immediately on mount if we're on homepage
-  useEffect(() => {
-    if (pathname === '/') {
-      document.body.classList.add('homepage');
-    }
-  }, []); // Empty dependency array for mount-only effect
 
   return null; // This component doesn't render anything
 }

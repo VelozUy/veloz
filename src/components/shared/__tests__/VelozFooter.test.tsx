@@ -6,8 +6,10 @@ describe('VelozFooter', () => {
   it('renders the footer with correct text', () => {
     render(<VelozFooter />);
 
-    expect(screen.getByText('PROCESOS')).toBeInTheDocument();
-    expect(screen.getByText('OPTIMIZADOS')).toBeInTheDocument();
+    expect(screen.getByText(/@veloz_uy/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Política de Privacidad|Privacy Policy/i)
+    ).toBeInTheDocument();
   });
 
   it('renders with correct styling classes', () => {
@@ -15,11 +17,7 @@ describe('VelozFooter', () => {
 
     const footer = container.querySelector('footer');
     expect(footer).toHaveClass('bg-background');
-
-    const textElements = container.querySelectorAll('text');
-    textElements.forEach(element => {
-      expect(element).toHaveAttribute('fill', 'currentColor');
-    });
+    expect(container.querySelectorAll('a').length).toBeGreaterThan(0);
   });
 
   it('renders with custom className', () => {

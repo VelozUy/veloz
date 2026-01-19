@@ -21,7 +21,7 @@ const mockDb = {
 const mockGetFirestoreService = jest.fn(async () => mockDb);
 
 // Mock Firebase - try using relative path instead of @ alias
-jest.mock('../../lib/firebase', () => ({
+jest.mock('@/lib/firebase', () => ({
   db: mockDb,
   auth: {},
   storage: {},
@@ -61,34 +61,50 @@ jest.mock('firebase/firestore', () => ({
   },
 }));
 
-// Don't use static import - use require() in describe block to ensure mocks are applied first
+// Don't use static import - use require() in beforeEach to ensure mocks are applied first
 
 describe('BaseFirebaseService', () => {
-  // Dynamically load after mocks
-  const { BaseFirebaseService } = require('../base-firebase-service');
-
-  // Mock implementation of BaseFirebaseService since it's abstract
-  class TestFirebaseService extends BaseFirebaseService<any> {
-    constructor(
-      collectionName = 'test-collection',
-      options: {
+  let BaseFirebaseService: typeof import('../base-firebase-service').BaseFirebaseService;
+  let TestFirebaseService: {
+    new (
+      collectionName?: string,
+      options?: {
         cacheConfig?: Partial<any>;
         retryConfig?: Partial<any>;
         validationSchema?: z.ZodSchema;
-      } = {}
-    ) {
-      super(collectionName, options);
-    }
-  }
-
+      }
+    ): any;
+  };
   let service: TestFirebaseService;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetModules();
 
-    // IMPORTANT: Reconfigure mockGetFirestoreService after clearAllMocks()
-    // clearAllMocks() removes the mockImplementation
-    mockGetFirestoreService.mockImplementation(async () => mockDb);
+    // Reconfigure Firebase mocks after clearAllMocks/resetModules
+    const firebase = require('@/lib/firebase');
+    mockGetFirestoreService.mockReset();
+    mockGetFirestoreService.mockResolvedValue(mockDb);
+    (firebase.getFirestoreService as jest.Mock).mockResolvedValue(mockDb);
+    (firebase.getFirestoreSync as jest.Mock).mockReturnValue(mockDb);
+
+    ({ BaseFirebaseService } = require('../base-firebase-service'));
+
+    // Mock implementation of BaseFirebaseService since it's abstract
+    class LocalTestFirebaseService extends BaseFirebaseService<any> {
+      constructor(
+        collectionName = 'test-collection',
+        options: {
+          cacheConfig?: Partial<any>;
+          retryConfig?: Partial<any>;
+          validationSchema?: z.ZodSchema;
+        } = {}
+      ) {
+        super(collectionName, options);
+      }
+    }
+    TestFirebaseService =
+      LocalTestFirebaseService as typeof TestFirebaseService;
 
     service = new TestFirebaseService();
   });
@@ -138,40 +154,30 @@ describe('BaseFirebaseService', () => {
   describe('Firebase connection utilities', () => {
     it('should get collection reference', () => {
       const { collection } = require('firebase/firestore');
-      const { db } = require('@/lib/firebase');
+      const { getFirestoreService } = require('@/lib/firebase');
 
-      (service as any)['getCollection']();
-
-      expect(collection).toHaveBeenCalledWith(db, 'test-collection');
+      return (service as any)['getCollection']().then(() => {
+        expect(getFirestoreService).toHaveBeenCalledTimes(1);
+        expect(collection).toHaveBeenCalledWith(mockDb, 'test-collection');
+      });
     });
 
     it('should get document reference', () => {
       const { doc } = require('firebase/firestore');
-      const { db } = require('@/lib/firebase');
+      const { getFirestoreService } = require('@/lib/firebase');
 
-      (service as any)['getDocRef']('test-id');
-
-      expect(doc).toHaveBeenCalledWith(db, 'test-collection', 'test-id');
+      return (service as any)['getDocRef']('test-id').then(() => {
+        expect(getFirestoreService).toHaveBeenCalledTimes(1);
+        expect(doc).toHaveBeenCalledWith(mockDb, 'test-collection', 'test-id');
+      });
     });
 
     it('should throw error when Firebase not initialized', () => {
-      const { db } = require('@/lib/firebase');
-      // Temporarily set db to null
-      const originalDb = db;
-      Object.defineProperty(require('@/lib/firebase'), 'db', {
-        value: null,
-        configurable: true,
-      });
+      mockGetFirestoreService.mockResolvedValueOnce(null);
 
-      expect(() => (service as any)['getCollection']()).toThrow(
+      return expect((service as any)['getCollection']()).rejects.toThrow(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
       );
-
-      // Restore db
-      Object.defineProperty(require('@/lib/firebase'), 'db', {
-        value: originalDb,
-        configurable: true,
-      });
     });
   });
 
@@ -180,6 +186,7 @@ describe('BaseFirebaseService', () => {
       const { Timestamp } = require('firebase/firestore');
       const mockTimestamp = {
         toDate: jest.fn(() => new Date('2024-01-01')),
+        constructor: { name: 'Timestamp' },
       };
 
       const data = {
@@ -363,8 +370,8 @@ describe('BaseFirebaseService', () => {
     it('should retry failed operations', async () => {
       const mockOperation = jest
         .fn()
-        .mockRejectedValueOnce(new Error('First failure'))
-        .mockRejectedValueOnce(new Error('Second failure'))
+        .mockRejectedValueOnce(new Error('Network failure'))
+        .mockRejectedValueOnce(new Error('Network failure again'))
         .mockResolvedValueOnce('Success');
 
       const result = await service['withRetry'](
@@ -379,13 +386,13 @@ describe('BaseFirebaseService', () => {
     it('should throw error after max retries exceeded', async () => {
       const mockOperation = jest
         .fn()
-        .mockRejectedValue(new Error('Persistent failure'));
+        .mockRejectedValue(new Error('Network failure'));
 
       await expect(
         service['withRetry'](mockOperation, 'test-operation')
-      ).rejects.toThrow('Persistent failure');
+      ).rejects.toThrow('Network failure');
 
-      expect(mockOperation).toHaveBeenCalledTimes(4); // Initial + 3 retries
+      expect(mockOperation).toHaveBeenCalledTimes(3); // Initial + 2 retries
     });
 
     it('should succeed on first try', async () => {

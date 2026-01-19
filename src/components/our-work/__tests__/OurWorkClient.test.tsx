@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import OurWorkClient from '../OurWorkClient';
 
-// Mock the ClientOnlyTiledGallery component
-jest.mock('@/components/gallery/ClientOnlyTiledGallery', () => {
-  return function MockClientOnlyTiledGallery({ onImageClick, images }: any) {
+// Mock the TiledGallery component
+jest.mock('@/components/gallery/TiledGallery', () => {
+  return function MockTiledGallery({ onImageClick, images }: any) {
     return (
       <div data-testid="tiled-gallery">
         {images.map((image: any, index: number) => (
@@ -52,6 +52,7 @@ jest.mock('@/components/shared', () => ({
 // Mock the convertProjectMediaBatch function
 jest.mock('@/lib/gallery-layout', () => ({
   convertProjectMediaBatch: (images: any[]) => images,
+  getResponsiveConfig: () => ({ columns: 3, gap: 8, targetRowHeight: 300 }),
 }));
 
 const mockProjects = [

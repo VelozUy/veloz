@@ -31,10 +31,16 @@ export interface OptimizedImageResult {
 export function supportsWebP(): boolean {
   if (typeof window === 'undefined') return true; // Server-side, assume support
 
-  const canvas = document.createElement('canvas');
-  canvas.width = 1;
-  canvas.height = 1;
-  return canvas.toDataURL('image/webp').indexOf('image/webp') === 5;
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    if (typeof canvas.toDataURL !== 'function') return false;
+    const dataUrl = canvas.toDataURL('image/webp');
+    return typeof dataUrl === 'string' && dataUrl.indexOf('image/webp') === 5;
+  } catch (error) {
+    return false;
+  }
 }
 
 /**

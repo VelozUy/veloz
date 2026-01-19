@@ -59,6 +59,8 @@ export const AnalyticsConsentBanner = () => {
   const { saveConsent } = useGDPRCompliance();
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const locale = useMemo(() => getLocaleFromPath(pathname), [pathname]);
   const staticContent = useMemo(() => getStaticContent(locale), [locale]);
@@ -78,6 +80,23 @@ export const AnalyticsConsentBanner = () => {
     };
   }, [locale, staticContent]);
 
+  // Update body padding when banner visibility or state changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (isVisible && hasScrolled) {
+      // Add padding to body when banner is visible to prevent content overlap
+      // Compact version is much smaller now
+      document.body.style.paddingBottom = isMinimized ? '40px' : '60px';
+    } else {
+      document.body.style.paddingBottom = '0';
+    }
+
+    return () => {
+      document.body.style.paddingBottom = '0';
+    };
+  }, [isVisible, hasScrolled, isMinimized]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -91,8 +110,21 @@ export const AnalyticsConsentBanner = () => {
       }
     };
 
+    // Track scroll to show banner after user engagement
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setHasScrolled(true);
+      }
+    };
+
     updateVisibility();
 
+    // Show banner after 3 seconds OR after user scrolls (less intrusive)
+    const showTimer = setTimeout(() => {
+      setHasScrolled(true);
+    }, 3000);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener(
       GDPR_CONSENT_EVENT,
       updateVisibility as EventListener
@@ -100,6 +132,8 @@ export const AnalyticsConsentBanner = () => {
     window.addEventListener('storage', handleStorage);
 
     return () => {
+      clearTimeout(showTimer);
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener(
         GDPR_CONSENT_EVENT,
         updateVisibility as EventListener
@@ -108,7 +142,7 @@ export const AnalyticsConsentBanner = () => {
     };
   }, []);
 
-  if (!isVisible) {
+  if (!isVisible || !hasScrolled) {
     return null;
   }
 
@@ -117,43 +151,94 @@ export const AnalyticsConsentBanner = () => {
   const handleAccept = () => {
     saveConsent({ analytics: true });
     setIsVisible(false);
+    document.body.style.paddingBottom = '0';
   };
 
   const handleDecline = () => {
     saveConsent({ analytics: false });
     setIsVisible(false);
+    document.body.style.paddingBottom = '0';
   };
 
+  const handleMinimize = () => {
+    setIsMinimized(true);
+  };
+
+  const handleExpand = () => {
+    setIsMinimized(false);
+  };
+
+  // Minimized compact version (just a thin bar)
+  if (isMinimized) {
+    return (
+      <div
+        role="dialog"
+        aria-live="polite"
+        aria-label={bannerCopy.title}
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/60 bg-background/95 backdrop-blur-xl animate-in slide-in-from-bottom-4 fade-in-0 duration-500"
+      >
+        <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-2">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />
+            <span className="text-xs text-muted-foreground">
+              {bannerCopy.title}
+            </span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleExpand}
+            className="h-7 px-3 text-xs"
+          >
+            {locale === 'es' ? 'Abrir' : locale === 'pt' ? 'Abrir' : 'Open'}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Full bottom bar version (compact: title, policy link, and buttons only)
   return (
     <div
       role="dialog"
       aria-live="polite"
       aria-label={bannerCopy.title}
-      className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 rounded-2xl border border-border/60 bg-background/95 p-5 shadow-2xl backdrop-blur-xl md:p-6"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/60 bg-background/95 backdrop-blur-xl animate-in slide-in-from-bottom-4 fade-in-0 duration-500"
     >
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
-        <div className="flex shrink-0 items-center justify-center self-start rounded-full bg-primary/15 p-2 text-primary md:self-center">
-          <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-        </div>
-        <div className="flex-1 space-y-2 text-sm text-muted-foreground">
-          <h2 className="text-base font-semibold text-foreground">
-            {bannerCopy.title}
-          </h2>
-          <p>{bannerCopy.description}</p>
-          <Link
-            href={policyHref}
-            className="inline-flex items-center gap-1 text-xs font-medium text-primary underline underline-offset-4 hover:text-primary/80"
-          >
-            {bannerCopy.policy}
-          </Link>
-        </div>
-        <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <Button variant="ghost" onClick={handleDecline} size="sm">
-            {bannerCopy.reject}
-          </Button>
-          <Button onClick={handleAccept} size="sm">
-            {bannerCopy.accept}
-          </Button>
+      <div className="container mx-auto px-4 py-2.5">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          {/* Left side: Icon, title, and policy link */}
+          <div className="flex flex-1 items-center gap-3">
+            <div className="flex shrink-0 items-center justify-center rounded-full bg-primary/15 p-1.5 text-primary">
+              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+            </div>
+            <div className="flex flex-1 items-center gap-2 sm:gap-3">
+              <h2 className="text-sm font-semibold text-foreground">
+                {bannerCopy.title}
+              </h2>
+              <Link
+                href={policyHref}
+                className="text-xs font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                {bannerCopy.policy}
+              </Link>
+            </div>
+          </div>
+
+          {/* Right side: Action buttons */}
+          <div className="flex shrink-0 gap-2">
+            <Button
+              variant="ghost"
+              onClick={handleDecline}
+              size="sm"
+              className="text-xs"
+            >
+              {bannerCopy.reject}
+            </Button>
+            <Button onClick={handleAccept} size="sm" className="text-xs">
+              {bannerCopy.accept}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

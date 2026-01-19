@@ -1,9 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -42,7 +49,7 @@ export default function TestAuthPage() {
 
   const checkAdmin = async () => {
     if (!user?.email) return;
-    
+
     setCheckingAdmin(true);
     try {
       const isAdmin = await checkAdminStatus(user.email);
@@ -97,8 +104,12 @@ export default function TestAuthPage() {
                   </Badge>
                 </div>
                 <div className="text-sm space-y-1">
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>UID:</strong> {user.uid}</p>
+                  <p>
+                    <strong>Email:</strong> {user.email}
+                  </p>
+                  <p>
+                    <strong>UID:</strong> {user.uid}
+                  </p>
                 </div>
                 <Button onClick={handleSignOut} variant="outline" size="sm">
                   Sign Out
@@ -112,8 +123,8 @@ export default function TestAuthPage() {
                     Not Signed In
                   </Badge>
                 </div>
-                <Button 
-                  onClick={handleGoogleSignIn} 
+                <Button
+                  onClick={handleGoogleSignIn}
                   disabled={isSigningIn}
                   className="w-full"
                 >
@@ -136,9 +147,7 @@ export default function TestAuthPage() {
           <Card>
             <CardHeader>
               <CardTitle>Admin Status</CardTitle>
-              <CardDescription>
-                Check if user has admin access
-              </CardDescription>
+              <CardDescription>Check if user has admin access</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -192,28 +201,28 @@ export default function TestAuthPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <a 
-                href="/admin/login" 
+              <Link
+                href="/admin/login"
                 className="block text-primary hover:underline"
               >
                 → Admin Login Page
-              </a>
-              <a 
-                href="/admin/dashboard" 
+              </Link>
+              <Link
+                href="/admin/dashboard"
                 className="block text-primary hover:underline"
               >
                 → Admin Dashboard
-              </a>
-              <a 
-                href="/admin/debug/auth-status" 
+              </Link>
+              <Link
+                href="/admin/debug/auth-status"
                 className="block text-primary hover:underline"
               >
                 → Detailed Auth Debug
-              </a>
+              </Link>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-} 
+}

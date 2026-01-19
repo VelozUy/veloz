@@ -38,6 +38,9 @@ export function MultiSelect({
   ...props
 }: MultiSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const listId = dataField
+    ? `${String(dataField)}-options`
+    : 'multi-select-options';
 
   const handleOptionToggle = (optionValue: string) => {
     const newValue = value.includes(optionValue)
@@ -60,30 +63,26 @@ export function MultiSelect({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <div
+        <button
+          type="button"
           className={cn(
             'flex h-9 w-full items-center justify-between rounded-none border px-3 py-1 text-base shadow-none transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-            // Thicker blue border on focus without outer ring to match other inputs
             'focus:border-2 focus-visible:border-2',
             'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
             'focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!border-primary',
             'aria-invalid:!border-destructive aria-invalid:!border-2',
             'touch-manipulation cursor-pointer',
-            // Use card background to match form card
             'bg-card text-card-foreground border-border',
             isOpen && '!border-primary !border-2',
             className
           )}
-          role="button"
-          tabIndex={0}
           data-field={dataField}
-          aria-invalid={ariaInvalid}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              setIsOpen(!isOpen);
-            }
-          }}
+          role="combobox"
+          aria-invalid={ariaInvalid || undefined}
+          aria-controls={listId}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          disabled={disabled}
           {...props}
         >
           <div className="flex gap-1 flex-1 min-w-0 overflow-hidden">
@@ -117,9 +116,10 @@ export function MultiSelect({
               isOpen && 'rotate-180'
             )}
           />
-        </div>
+        </button>
       </PopoverTrigger>
       <PopoverContent
+        id={listId}
         className={cn(
           'w-[var(--radix-popover-trigger-width)] p-0',
           'bg-card text-card-foreground border-border'

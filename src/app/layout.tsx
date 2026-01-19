@@ -9,20 +9,9 @@ import {
   StructuredData,
   organizationData,
 } from '@/components/seo/StructuredData';
-import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
-import { ServiceWorkerRegistration } from '@/components/performance/ServiceWorkerRegistration';
-import { PerformanceOptimizer } from '@/components/performance/PerformanceOptimizer';
-import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
-import { QRCodeTracker } from '@/components/QRCodeTracker';
-import { Toaster } from 'sonner';
-import { initCrossBrowserTesting } from '@/lib/cross-browser-testing';
-import { initMobileResponsivenessTesting } from '@/lib/mobile-responsiveness-testing';
-import { initAccessibilityTesting } from '@/lib/accessibility-testing';
-import { initializeTBTOptimizations } from '@/lib/tbt-optimization';
-import { initializeSpeedIndexOptimizations } from '@/lib/speed-index-optimization';
-import { initializePerformanceMonitoring } from '@/lib/performance-monitoring';
-import { initializeLCPImageOptimization } from '@/lib/lcp-image-optimization';
 import { Suspense } from 'react';
+import { Toaster } from 'sonner';
+import { ClientComponents } from '@/components/layout/ClientComponents';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import HomepageBodyClass from '@/components/layout/HomepageBodyClass';
 
@@ -95,9 +84,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      en: '/en',
       es: '/',
+      en: '/en',
       pt: '/pt',
+      'x-default': '/',
     },
   },
   openGraph: {
@@ -149,29 +139,49 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Initialize cross-browser, mobile, and accessibility testing in development
-  if (typeof window !== 'undefined') {
-    initCrossBrowserTesting();
-    initMobileResponsivenessTesting();
-    initAccessibilityTesting();
+  // Initialize debug/testing tools only in development, and defer loading
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    // Defer loading of debug tools to reduce initial bundle
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(
+        () => {
+          import('@/lib/cross-browser-testing').then(mod =>
+            mod.initCrossBrowserTesting()
+          );
+          import('@/lib/mobile-responsiveness-testing').then(mod =>
+            mod.initMobileResponsivenessTesting()
+          );
+          import('@/lib/accessibility-testing').then(mod =>
+            mod.initAccessibilityTesting()
+          );
+        },
+        { timeout: 2000 }
+      );
+    } else {
+      setTimeout(() => {
+        import('@/lib/cross-browser-testing').then(mod =>
+          mod.initCrossBrowserTesting()
+        );
+        import('@/lib/mobile-responsiveness-testing').then(mod =>
+          mod.initMobileResponsivenessTesting()
+        );
+        import('@/lib/accessibility-testing').then(mod =>
+          mod.initAccessibilityTesting()
+        );
+      }, 2000);
+    }
   }
 
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        {/* DNS Prefetch for external domains */}
+        {/* DNS Prefetch for critical external domains only */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        <link rel="dns-prefetch" href="//region1.google-analytics.com" />
-        <link rel="dns-prefetch" href="//ssl.google-analytics.com" />
-        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="//stats.g.doubleclick.net" />
         <link rel="dns-prefetch" href="//firebasestorage.googleapis.com" />
-        <link rel="dns-prefetch" href="//storage.googleapis.com" />
         <link rel="dns-prefetch" href="//images.unsplash.com" />
 
-        {/* Preconnect to external domains */}
+        {/* Preconnect to critical external domains only (2-4 essential origins) */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -184,37 +194,7 @@ export default function RootLayout({
         />
         <link
           rel="preconnect"
-          href="https://www.google-analytics.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://region1.google-analytics.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://ssl.google-analytics.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://www.googletagmanager.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://stats.g.doubleclick.net"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
           href="https://firebasestorage.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://storage.googleapis.com"
           crossOrigin="anonymous"
         />
         <link
@@ -259,13 +239,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Preload critical CSS - Fixed path */}
-        <link
-          rel="preload"
-          href="/_next/static/css/app/layout.css"
-          as="style"
-        />
-
         {/* Web App Manifest */}
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="hsl(var(--background))" />
@@ -279,12 +252,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               // Apply homepage class immediately if on homepage
-              if (typeof window !== 'undefined' && window.location.pathname === '/') {
-                if (document.documentElement) {
-                  document.documentElement.classList.add('homepage');
-                }
-                if (document.body) {
-                  document.body.classList.add('homepage');
+              if (typeof window !== 'undefined') {
+                const pathname = window.location.pathname;
+                const isHomepage = pathname === '/' || pathname === '/en' || pathname === '/pt';
+                if (isHomepage) {
+                  if (document.documentElement) {
+                    document.documentElement.classList.add('homepage');
+                  }
+                  if (document.body) {
+                    document.body.classList.add('homepage');
+                  }
                 }
               }
             `,
@@ -365,12 +342,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${oswald.variable} antialiased`}
       >
         <StructuredData type="organization" data={organizationData} />
-        <PerformanceMonitor />
-        <ServiceWorkerRegistration />
-        <PerformanceOptimizer />
-        <Suspense fallback={null}>
-          <QRCodeTracker />
-        </Suspense>
+        <ClientComponents />
         <Toaster />
         <ErrorBoundary>
           <AnalyticsWrapper>

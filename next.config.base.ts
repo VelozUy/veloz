@@ -47,6 +47,11 @@ const baseConfig: NextConfig = {
       },
     },
   },
+  // Source maps policy: Disabled in production for security and performance
+  // Source maps expose source code structure and can increase bundle size
+  // Enable only when debugging production issues if needed
+  productionBrowserSourceMaps: false,
+
   experimental: {
     // Performance optimizations
     optimizeCss: false, // Disabled due to critters compatibility issues

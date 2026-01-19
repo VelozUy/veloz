@@ -52,4 +52,38 @@ export default [
       ],
     },
   },
+  {
+    files: [
+      'src/app/admin/**/*.{ts,tsx}',
+      'src/components/admin/**/*.{ts,tsx}',
+      'src/lib/**/*.{ts,tsx}',
+      'src/services/**/*.{ts,tsx}',
+      'src/app/api/**/*.{ts,tsx}',
+      'src/components/performance/**/*.{ts,tsx}',
+      'src/app/debug/**/*.{ts,tsx}',
+    ],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+  {
+    files: [
+      'src/app/admin/**/*.{ts,tsx}',
+      'src/components/admin/**/*.{ts,tsx}',
+      'src/app/debug/**/*.{ts,tsx}',
+      '**/__tests__/**/*.{ts,tsx}',
+    ],
+    rules: {
+      '@next/next/no-img-element': 'off',
+    },
+  },
+  {
+    files: [
+      'src/app/admin/**/*.{ts,tsx}',
+      'src/components/admin/**/*.{ts,tsx}',
+    ],
+    rules: {
+      'react-hooks/exhaustive-deps': 'off',
+    },
+  },
 ];

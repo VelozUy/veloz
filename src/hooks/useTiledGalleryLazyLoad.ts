@@ -151,48 +151,7 @@ export const useTiledGalleryLazyLoad = (
     }
   }, [options.lazyLoad, visibleItems]);
 
-  // Memory management and performance monitoring
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    // Monitor memory usage if available
-    if ('memory' in performance) {
-      const updateMemoryUsage = () => {
-        const memory = (performance as any).memory;
-        const usedMB = memory.usedJSHeapSize / 1024 / 1024;
-        setMemoryUsage(usedMB);
-
-        // Clear memory if approaching limit
-        if (usedMB > memoryLimit * 0.8) {
-          clearMemory();
-        }
-      };
-
-      const memoryInterval = setInterval(updateMemoryUsage, 5000);
-      return () => clearInterval(memoryInterval);
-    }
-
-    // Monitor performance metrics
-    if ('PerformanceObserver' in window) {
-      performanceObserver.current = new PerformanceObserver(list => {
-        list.getEntries().forEach(entry => {
-          if (entry.entryType === 'measure') {
-            const loadTime = entry.duration;
-            setLoadTimes(prev => [...prev.slice(-50), loadTime]); // Keep last 50 measurements
-          }
-        });
-      });
-
-      performanceObserver.current.observe({ entryTypes: ['measure'] });
-    }
-
-    return () => {
-      if (performanceObserver.current) {
-        performanceObserver.current.disconnect();
-      }
-    };
-  }, [memoryLimit]);
-
+  // Clear memory - new optimization
   // Observe item - preserving current patterns
   const observeItem = useCallback(
     (itemId: string, element: HTMLElement) => {
@@ -224,6 +183,64 @@ export const useTiledGalleryLazyLoad = (
     }
   }, []);
 
+  const clearMemory = useCallback(() => {
+    // Clear old load times
+    setLoadTimes(prev => prev.slice(-20));
+
+    if (virtualScrolling) {
+      const visibleIds = Array.from(visibleItems);
+      const allIds = Array.from(itemRefs.current.keys());
+      const unloadedIds = allIds.filter(id => !visibleIds.includes(id));
+
+      unloadedIds.forEach(id => {
+        unobserveItem(id);
+      });
+    }
+
+    if ('gc' in window) {
+      (window as any).gc();
+    }
+  }, [unobserveItem, visibleItems, virtualScrolling]);
+
+  // Memory management and performance monitoring
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if ('memory' in performance) {
+      const updateMemoryUsage = () => {
+        const memory = (performance as any).memory;
+        const usedMB = memory.usedJSHeapSize / 1024 / 1024;
+        setMemoryUsage(usedMB);
+
+        if (usedMB > memoryLimit * 0.8) {
+          clearMemory();
+        }
+      };
+
+      const memoryInterval = setInterval(updateMemoryUsage, 5000);
+      return () => clearInterval(memoryInterval);
+    }
+
+    if ('PerformanceObserver' in window) {
+      performanceObserver.current = new PerformanceObserver(list => {
+        list.getEntries().forEach(entry => {
+          if (entry.entryType === 'measure') {
+            const loadTime = entry.duration;
+            setLoadTimes(prev => [...prev.slice(-50), loadTime]);
+          }
+        });
+      });
+
+      performanceObserver.current.observe({ entryTypes: ['measure'] });
+    }
+
+    return () => {
+      if (performanceObserver.current) {
+        performanceObserver.current.disconnect();
+      }
+    };
+  }, [clearMemory, memoryLimit]);
+
   // Preload next items - enhancing current preloading strategy
   const preloadNext = useCallback(
     (currentIndex: number, totalItems: number) => {
@@ -247,28 +264,6 @@ export const useTiledGalleryLazyLoad = (
     },
     [preloadCount, maxConcurrentLoads, loadingQueue.size]
   );
-
-  // Clear memory - new optimization
-  const clearMemory = useCallback(() => {
-    // Clear old load times
-    setLoadTimes(prev => prev.slice(-20)); // Keep only last 20 measurements
-
-    // Clear unloaded items from memory if virtual scrolling enabled
-    if (virtualScrolling) {
-      const visibleIds = Array.from(visibleItems);
-      const allIds = Array.from(itemRefs.current.keys());
-      const unloadedIds = allIds.filter(id => !visibleIds.includes(id));
-
-      unloadedIds.forEach(id => {
-        unobserveItem(id);
-      });
-    }
-
-    // Force garbage collection if available
-    if ('gc' in window) {
-      (window as any).gc();
-    }
-  }, [visibleItems, virtualScrolling, unobserveItem]);
 
   // Performance metrics - new feature
   const getPerformanceMetrics = useCallback((): PerformanceMetrics => {

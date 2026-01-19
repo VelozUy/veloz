@@ -47,11 +47,11 @@ export const useNavigationOptimization = (
       '/about',
       '/contact',
       '/our-work',
-      '/en/',
+      '/en',
       '/en/about',
       '/en/contact',
       '/en/our-work',
-      '/pt/',
+      '/pt',
       '/pt/about',
       '/pt/contact',
       '/pt/our-work',
@@ -63,8 +63,9 @@ export const useNavigationOptimization = (
         try {
           router.prefetch(path);
         } catch (error) {
-          // Silently handle prefetch errors
-          console.debug('Prefetch failed for:', path, error);
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn('Prefetch failed for:', path, error);
+          }
         }
       });
     }, prefetchDelay);
@@ -122,7 +123,9 @@ export const useNavigationOptimization = (
       try {
         router.prefetch(path);
       } catch (error) {
-        console.debug('Prefetch failed for:', path, error);
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Prefetch failed for:', path, error);
+        }
       }
     },
     [router, enablePreloading]

@@ -3,8 +3,12 @@ import { Suspense } from 'react';
 import AboutPageClient from './AboutPageClient';
 
 // Generate metadata for each locale
-export async function generateMetadata(): Promise<Metadata> {
-  // Define locale-specific metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
   const metadata = {
     en: {
       title: 'About Us | Veloz - Professional Photography & Videography',
@@ -30,22 +34,23 @@ export async function generateMetadata(): Promise<Metadata> {
         locale: 'pt_BR',
       },
     },
-    es: {
-      title: 'Sobre Nosotros | Veloz - Fotografía y Videografía Profesional',
-      description:
-        'Conoce nuestra filosofía, metodología y valores. Servicios profesionales de fotografía y videografía en Uruguay.',
-      openGraph: {
-        title: 'Sobre Nosotros | Veloz - Fotografía y Videografía Profesional',
-        description:
-          'Conoce nuestra filosofía, metodología y valores. Servicios profesionales de fotografía y videografía en Uruguay.',
-        type: 'website',
-        locale: 'es_UY',
+  } as const;
+
+  const normalizedLocale = locale === 'pt' ? 'pt' : 'en';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
+
+  return {
+    ...metadata[normalizedLocale],
+    alternates: {
+      canonical: `/${locale}/about`,
+      languages: {
+        es: '/about',
+        en: '/en/about',
+        pt: '/pt/about',
+        'x-default': '/about',
       },
     },
   };
-
-  // For now, return Spanish metadata as default
-  return metadata.es;
 }
 
 // Force static generation at build time
@@ -54,7 +59,12 @@ export const dynamic = 'force-static';
 // Disable automatic revalidation - content updates require manual build trigger
 export const revalidate = false;
 
-export default async function AboutPage() {
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}) {
+  const { locale } = await params;
   return (
     <Suspense
       fallback={
@@ -63,7 +73,7 @@ export default async function AboutPage() {
         </div>
       }
     >
-      <AboutPageClient />
+      <AboutPageClient initialLocale={locale} />
     </Suspense>
   );
 }

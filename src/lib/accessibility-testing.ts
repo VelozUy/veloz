@@ -467,8 +467,10 @@ export function initAccessibilityTesting(): void {
   }
 }
 
-export default {
+const accessibilityTesting = {
   runAccessibilityTests,
   applyAccessibilityFixes,
   initAccessibilityTesting,
 };
+
+export default accessibilityTesting;

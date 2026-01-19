@@ -52,7 +52,9 @@ export const useAnalytics = () => {
 
     const updateConsent = () => {
       const hasConsent = GDPRCompliance.hasAnalyticsConsent();
-      console.log('🔐 GDPR Consent status:', hasConsent);
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('🔐 GDPR Consent status:', hasConsent);
+      }
       setConsentGranted(hasConsent);
     };
 
@@ -100,7 +102,9 @@ export const useAnalytics = () => {
     loadAnalyticsModule()
       .then(() => {
         if (!cancelled) {
-          console.log('📊 Analytics module loaded successfully');
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn('📊 Analytics module loaded successfully');
+          }
           setIsAnalyticsReady(true);
         }
       })

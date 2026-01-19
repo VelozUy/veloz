@@ -3,7 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Upload, Image, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import {
+  Upload,
+  Image as ImageIcon,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react';
 import useImageOptimization from '@/hooks/useImageOptimization';
 import { OptimizedImage } from '@/components/shared';
 
@@ -71,7 +77,7 @@ export default function OptimizedImageUpload({
     <Card className={className}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Image className="w-5 h-5" />
+          <ImageIcon className="w-5 h-5" />
           Optimized Image Upload
         </CardTitle>
       </CardHeader>

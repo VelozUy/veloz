@@ -115,7 +115,7 @@ export default function AutomaticGalleryBackground({
     }
 
     return shuffledMedia;
-  }, [content, locale, seed]);
+  }, [content, seed]);
 
   // Start loading images immediately when component mounts
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function AutomaticGalleryBackground({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [allMedia.length]);
+  }, [allMedia]);
 
   // Update item width based on screen size
   useEffect(() => {
@@ -154,7 +154,8 @@ export default function AutomaticGalleryBackground({
 
   // Intersection Observer to pause when not visible
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -163,12 +164,10 @@ export default function AutomaticGalleryBackground({
       { threshold: 0.1 }
     );
 
-    observer.observe(containerRef.current);
+    observer.observe(container);
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      observer.unobserve(container);
     };
   }, []);
 
@@ -248,7 +247,7 @@ export default function AutomaticGalleryBackground({
         cancelAnimationFrame(animationId);
       }
     };
-  }, [isPlaying, isVisible, allMedia.length, speed, direction, itemWidth]);
+  }, [allMedia, direction, isPlaying, isVisible, itemWidth, speed]);
 
   // Image loading handlers
   const handleImageLoad = (imageId: string) => {
@@ -279,7 +278,7 @@ export default function AutomaticGalleryBackground({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [allMedia.length, loadedImages.size]);
+  }, [allMedia, loadedImages.size]);
 
   // Pause on hover
   const handleMouseEnter = () => {
@@ -305,7 +304,7 @@ export default function AutomaticGalleryBackground({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [allMedia.length, loadedImages.size]);
+  }, [allMedia, loadedImages.size]);
 
   // If no media available, show fallback
   if (allMedia.length === 0) {

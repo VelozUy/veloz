@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface LogoHorizontalWhiteProps {
@@ -27,12 +28,14 @@ const LogoHorizontalWhite: React.FC<LogoHorizontalWhiteProps> = ({
       )}
     >
       {/* Text Logo Only - Centered */}
-      <div className={cn('flex-shrink-0', sizeClasses[size])}>
-        <img
+      <div className={cn('relative flex-shrink-0', sizeClasses[size])}>
+        <Image
           src="/veloz-text-white.svg"
           alt="Veloz Text Logo"
-          className="h-full w-auto"
-          style={{ display: 'block' }}
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 33vw, 10vw"
+          priority
         />
       </div>
     </div>

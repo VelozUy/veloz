@@ -22,15 +22,27 @@ function getCurrentLocale(): string {
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
   const locale = getCurrentLocale();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
 
   return {
     title: `Veloz - Capturamos lo irrepetible`,
     description: `Fotografía y videografía profesional para eventos especiales`,
+    alternates: {
+      canonical: '/',
+      languages: {
+        es: '/',
+        en: '/en',
+        pt: '/pt',
+        'x-default': '/',
+      },
+    },
     openGraph: {
       title: `Veloz - Capturamos lo irrepetible`,
       description: `Fotografía y videografía profesional para eventos especiales`,
       type: 'website',
-      locale: locale,
+      locale: 'es_UY',
+      url: '/',
+      siteName: 'Veloz',
     },
   };
 }

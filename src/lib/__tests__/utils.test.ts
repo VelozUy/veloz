@@ -66,7 +66,7 @@ describe('Constants', () => {
     ];
 
     expect(eventTypes).toHaveLength(6);
-    expect(eventTypes).toContain('Casamiento');
+    expect(eventTypes).toContain('Casamientos');
     expect(eventTypes).toContain('Corporativos');
   });
 });

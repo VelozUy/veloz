@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import NavigationBar from '../NavigationBar';
 import { NavItem } from '../NavigationBar';
+import Link from 'next/link';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -15,9 +16,9 @@ describe('NavigationBar', () => {
   ];
 
   const mockRightItems = [
-    <a key="contact" href="/contact">
+    <Link key="contact" href="/contact">
       Contact
-    </a>,
+    </Link>,
     <button key="language">Language</button>,
   ];
 

@@ -12,17 +12,19 @@ jest.mock('next/link', () => {
   };
 });
 
-jest.mock('@/components/ui/locale-switcher', () => {
-  return function MockLocaleSwitcher({ currentLocale }: any) {
+jest.mock('@/components/ui/locale-switcher', () => ({
+  __esModule: true,
+  LocaleSwitcher: function MockLocaleSwitcher({ currentLocale }: any) {
     return <div data-testid="locale-switcher">{currentLocale}</div>;
-  };
-});
+  },
+}));
 
-jest.mock('@/components/shared/LogoHorizontalWhite', () => {
-  return function MockLogo() {
+jest.mock('@/components/shared/TextLogoAnimated', () => ({
+  __esModule: true,
+  default: function MockLogo() {
     return <div data-testid="logo">Logo</div>;
-  };
-});
+  },
+}));
 
 jest.mock('@/lib/navigation-utils', () => ({
   generateNavItems: jest.fn(() => [

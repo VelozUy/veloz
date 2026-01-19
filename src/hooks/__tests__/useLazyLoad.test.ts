@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useLazyLoad } from '../useLazyLoad';
 
 // Mock Intersection Observer
@@ -50,7 +50,7 @@ describe('useLazyLoad', () => {
     expect(result.current.isLoaded).toBe(false);
   });
 
-  it('should handle fallback when Intersection Observer is not supported', () => {
+  it('should handle fallback when Intersection Observer is not supported', async () => {
     delete (global as any).IntersectionObserver;
 
     const div = document.createElement('div');
@@ -60,11 +60,13 @@ describe('useLazyLoad', () => {
       (result.current.ref as any).current = div;
     });
 
-    expect(result.current.isVisible).toBe(true);
-    expect(result.current.isLoaded).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isVisible).toBe(true);
+      expect(result.current.isLoaded).toBe(true);
+    });
   });
 
-  it('should create observer when ref is set', () => {
+  it('should create observer when ref is set', async () => {
     const div = document.createElement('div');
     const { result } = renderHook(() => useLazyLoad());
 
@@ -72,11 +74,13 @@ describe('useLazyLoad', () => {
       (result.current.ref as any).current = div;
     });
 
-    expect(mockIntersectionObserver).toHaveBeenCalled();
-    expect(mockObserve).toHaveBeenCalledWith(div);
+    await waitFor(() => {
+      expect(mockIntersectionObserver).toHaveBeenCalled();
+      expect(mockObserve).toHaveBeenCalledWith(div);
+    });
   });
 
-  it('should handle intersection callback', () => {
+  it('should handle intersection callback', async () => {
     const div = document.createElement('div');
     const { result } = renderHook(() => useLazyLoad());
 
@@ -85,6 +89,9 @@ describe('useLazyLoad', () => {
     });
 
     // Get the callback function
+    await waitFor(() => {
+      expect(mockIntersectionObserver).toHaveBeenCalled();
+    });
     const callback = mockIntersectionObserver.mock.calls[0][0];
     const mockEntry = {
       isIntersecting: true,
@@ -95,11 +102,13 @@ describe('useLazyLoad', () => {
       callback([mockEntry]);
     });
 
-    expect(result.current.isVisible).toBe(true);
-    expect(result.current.isLoaded).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isVisible).toBe(true);
+      expect(result.current.isLoaded).toBe(true);
+    });
   });
 
-  it('should handle non-intersecting callback', () => {
+  it('should handle non-intersecting callback', async () => {
     const div = document.createElement('div');
     const { result } = renderHook(() => useLazyLoad());
 
@@ -108,6 +117,9 @@ describe('useLazyLoad', () => {
     });
 
     // Get the callback function
+    await waitFor(() => {
+      expect(mockIntersectionObserver).toHaveBeenCalled();
+    });
     const callback = mockIntersectionObserver.mock.calls[0][0];
     const mockEntry = {
       isIntersecting: false,
@@ -118,11 +130,13 @@ describe('useLazyLoad', () => {
       callback([mockEntry]);
     });
 
-    expect(result.current.isVisible).toBe(false);
-    expect(result.current.isLoaded).toBe(false);
+    await waitFor(() => {
+      expect(result.current.isVisible).toBe(false);
+      expect(result.current.isLoaded).toBe(false);
+    });
   });
 
-  it('should disconnect observer after intersection', () => {
+  it('should disconnect observer after intersection', async () => {
     const div = document.createElement('div');
     const { result } = renderHook(() => useLazyLoad());
 
@@ -130,6 +144,9 @@ describe('useLazyLoad', () => {
       (result.current.ref as any).current = div;
     });
 
+    await waitFor(() => {
+      expect(mockIntersectionObserver).toHaveBeenCalled();
+    });
     const callback = mockIntersectionObserver.mock.calls[0][0];
     const mockEntry = {
       isIntersecting: true,
@@ -140,10 +157,12 @@ describe('useLazyLoad', () => {
       callback([mockEntry]);
     });
 
-    expect(mockDisconnect).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockDisconnect).toHaveBeenCalled();
+    });
   });
 
-  it('should cleanup observer on unmount', () => {
+  it('should cleanup observer on unmount', async () => {
     const div = document.createElement('div');
     const { result, unmount } = renderHook(() => useLazyLoad());
 
@@ -151,8 +170,14 @@ describe('useLazyLoad', () => {
       (result.current.ref as any).current = div;
     });
 
+    await waitFor(() => {
+      expect(mockIntersectionObserver).toHaveBeenCalled();
+    });
+
     unmount();
 
-    expect(mockDisconnect).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockDisconnect).toHaveBeenCalled();
+    });
   });
 });

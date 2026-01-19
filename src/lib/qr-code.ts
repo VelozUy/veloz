@@ -198,6 +198,7 @@ export class QRCodeGenerator {
       // - Send to Google Analytics
       // - Store in Firestore for custom analytics
       // - Track conversion events
+      console.log(`QR Code scan tracked: ${qrId}`);
     } catch (error) {}
   }
 

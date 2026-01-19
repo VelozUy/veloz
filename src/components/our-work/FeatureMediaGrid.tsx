@@ -102,7 +102,7 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
         });
       }
     },
-    [media]
+    [media, trackProjectView]
   );
 
   // Handle fullscreen modal close
@@ -142,16 +142,6 @@ export const FeatureMediaGrid: React.FC<FeatureMediaGridProps> = ({
         // Use actual dimensions - these are the most accurate
         aspectRatio = mediaItem.width / mediaItem.height;
         cssAspectRatio = (mediaItem.height / mediaItem.width) * 100;
-
-        // Debug logging for all images
-        console.log('Processing media item:', {
-          width: mediaItem.width,
-          height: mediaItem.height,
-          aspectRatio,
-          cssAspectRatio,
-          originalAspectRatio: mediaItem.aspectRatio,
-          isVertical: aspectRatio < 1,
-        });
       } else if (mediaItem.aspectRatio) {
         // Fallback to aspectRatio string from database if width/height not available
         const ratioMap = {

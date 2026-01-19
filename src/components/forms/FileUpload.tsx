@@ -10,7 +10,7 @@ import {
   Upload,
   X,
   File,
-  Image,
+  Image as ImageIcon,
   Video,
   AlertCircle,
   CheckCircle,
@@ -139,7 +139,7 @@ export default function FileUpload({
 
   const getFileIcon = (file: File) => {
     if (file.type.startsWith('image/')) {
-      return <Image className="w-4 h-4" />;
+      return <ImageIcon className="w-4 h-4" />;
     } else if (file.type.startsWith('video/')) {
       return <Video className="w-4 h-4" />;
     } else {

@@ -122,7 +122,7 @@ export const ThemeDebugTools: React.FC = () => {
       themeDebugger.enable();
       setIsEnabled(true);
     }
-  }, []);
+  }, [themeDebugger]);
 
   return (
     <div className="fixed top-5 right-5 z-50 bg-background border border-border rounded-lg p-4 shadow-lg">

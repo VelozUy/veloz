@@ -41,10 +41,12 @@ export interface BrowserFeatureTest {
  * Test for Intersection Observer API support
  */
 export function testIntersectionObserver(): boolean {
-  return (
-    'IntersectionObserver' in window &&
-    'IntersectionObserverEntry' in window &&
-    'intersectionRatio' in window.IntersectionObserverEntry.prototype
+  if (typeof window === 'undefined') return false;
+
+  return Boolean(
+    window.IntersectionObserver &&
+      window.IntersectionObserverEntry &&
+      'intersectionRatio' in window.IntersectionObserverEntry.prototype
   );
 }
 
@@ -52,40 +54,57 @@ export function testIntersectionObserver(): boolean {
  * Test for WebP image format support
  */
 export function testWebPSupport(): boolean {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1;
-  canvas.height = 1;
-  return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  if (typeof window === 'undefined' || !window.document) return false;
+
+  try {
+    const canvas = window.document.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    if (typeof canvas.toDataURL !== 'function') return false;
+    const dataUrl = canvas.toDataURL('image/webp');
+    return (
+      typeof dataUrl === 'string' && dataUrl.indexOf('data:image/webp') === 0
+    );
+  } catch (error) {
+    return false;
+  }
 }
 
 /**
  * Test for CSS Grid support
  */
 export function testCSSGrid(): boolean {
-  return CSS.supports('display', 'grid');
+  return (
+    typeof window !== 'undefined' && !!window.CSS?.supports('display', 'grid')
+  );
 }
 
 /**
  * Test for Flexbox support
  */
 export function testFlexbox(): boolean {
-  return CSS.supports('display', 'flex');
+  return (
+    typeof window !== 'undefined' && !!window.CSS?.supports('display', 'flex')
+  );
 }
 
 /**
  * Test for CSS Custom Properties support
  */
 export function testCustomProperties(): boolean {
-  return CSS.supports('--test', 'value');
+  return (
+    typeof window !== 'undefined' && !!window.CSS?.supports('--test', 'value')
+  );
 }
 
 /**
  * Test for backdrop-filter support
  */
 export function testBackdropFilter(): boolean {
-  return (
-    CSS.supports('backdrop-filter', 'blur(10px)') ||
-    CSS.supports('-webkit-backdrop-filter', 'blur(10px)')
+  if (typeof window === 'undefined') return false;
+  return Boolean(
+    window.CSS?.supports('backdrop-filter', 'blur(10px)') ||
+      window.CSS?.supports('-webkit-backdrop-filter', 'blur(10px)')
   );
 }
 
@@ -93,7 +112,10 @@ export function testBackdropFilter(): boolean {
  * Test for WebKit backdrop-filter support
  */
 export function testWebkitBackdropFilter(): boolean {
-  return CSS.supports('-webkit-backdrop-filter', 'blur(10px)');
+  return (
+    typeof window !== 'undefined' &&
+    !!window.CSS?.supports('-webkit-backdrop-filter', 'blur(10px)')
+  );
 }
 
 /**
@@ -104,7 +126,7 @@ export function testGalleryLazyLoading(): boolean {
   if (!testIntersectionObserver()) return false;
 
   // Test if lazy loading elements exist
-  const lazyElements = document.querySelectorAll('[data-lazy]');
+  const lazyElements = window.document?.querySelectorAll?.('[data-lazy]') || [];
   return lazyElements.length > 0;
 }
 
@@ -115,7 +137,7 @@ export function testLightbox(): boolean {
   // Test if GLightbox is loaded
   return (
     typeof (window as Window & { GLightbox?: (...args: unknown[]) => unknown })
-      .GLightbox === 'function'
+      ?.GLightbox === 'function'
   );
 }
 
@@ -123,9 +145,8 @@ export function testLightbox(): boolean {
  * Test responsive images
  */
 export function testResponsiveImages(): boolean {
-  const responsiveImages = document.querySelectorAll(
-    'picture source, img[srcset]'
-  );
+  const responsiveImages =
+    window.document?.querySelectorAll?.('picture source, img[srcset]') || [];
   return responsiveImages.length > 0;
 }
 
@@ -133,14 +154,20 @@ export function testResponsiveImages(): boolean {
  * Test CSS animations
  */
 export function testAnimations(): boolean {
-  return CSS.supports('animation', 'test 1s ease');
+  return (
+    typeof window !== 'undefined' &&
+    !!window.CSS?.supports('animation', 'test 1s ease')
+  );
 }
 
 /**
  * Test theme color scheme support
  */
 export function testColorScheme(): boolean {
-  return CSS.supports('color-scheme', 'light dark');
+  return (
+    typeof window !== 'undefined' &&
+    !!window.CSS?.supports('color-scheme', 'light dark')
+  );
 }
 
 /**
@@ -148,7 +175,7 @@ export function testColorScheme(): boolean {
  */
 export function testTypography(): boolean {
   // Test if custom fonts are loaded
-  const fontFaceSet = document.fonts;
+  const fontFaceSet = window.document?.fonts;
   if (fontFaceSet && fontFaceSet.check) {
     return (
       fontFaceSet.check('1em "Redjola"') || fontFaceSet.check('1em "Roboto"')
@@ -161,21 +188,27 @@ export function testTypography(): boolean {
  * Test theme spacing
  */
 export function testSpacing(): boolean {
-  return CSS.supports('gap', '1rem');
+  return typeof window !== 'undefined' && !!window.CSS?.supports('gap', '1rem');
 }
 
 /**
  * Test theme shadows
  */
 export function testShadows(): boolean {
-  return CSS.supports('box-shadow', '0 0 10px hsl(var(--shadow) / 0.1)');
+  return (
+    typeof window !== 'undefined' &&
+    !!window.CSS?.supports('box-shadow', '0 0 10px hsl(var(--shadow) / 0.1)')
+  );
 }
 
 /**
  * Detect browser and version
  */
 export function detectBrowser(): { name: string; version: string } {
-  const userAgent = navigator.userAgent;
+  const userAgent =
+    typeof window !== 'undefined' && window.navigator
+      ? window.navigator.userAgent
+      : '';
 
   if (userAgent.includes('Chrome') && !userAgent.includes('Edg')) {
     const match = userAgent.match(/Chrome\/(\d+)/);
@@ -283,23 +316,27 @@ export function applyBrowserFixes(): void {
   // Safari-specific fixes
   if (browser.name === 'Safari') {
     // Fix for backdrop-filter in Safari
-    if (!testBackdropFilter() && testWebkitBackdropFilter()) {
-      const style = document.createElement('style');
+    const supportsBackdrop = window.CSS?.supports(
+      'backdrop-filter',
+      'blur(10px)'
+    );
+    if (!supportsBackdrop && testWebkitBackdropFilter()) {
+      const style = window.document.createElement('style');
       style.textContent = `
         .backdrop-blur {
           -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
         }
       `;
-      document.head.appendChild(style);
+      window.document.head.appendChild(style);
     }
   }
 
   // Firefox-specific fixes
   if (browser.name === 'Firefox') {
     // Fix for CSS Grid gap in older Firefox versions
-    if (!CSS.supports('gap', '1rem')) {
-      const style = document.createElement('style');
+    if (!window.CSS?.supports('gap', '1rem')) {
+      const style = window.document.createElement('style');
       style.textContent = `
         .grid {
           margin: -0.5rem;
@@ -308,7 +345,7 @@ export function applyBrowserFixes(): void {
           margin: 0.5rem;
         }
       `;
-      document.head.appendChild(style);
+      window.document.head.appendChild(style);
     }
   }
 
@@ -316,7 +353,7 @@ export function applyBrowserFixes(): void {
   if (browser.name === 'Edge') {
     // Fix for Intersection Observer in older Edge versions
     if (!testIntersectionObserver()) {
-      // Intersection Observer not supported in this Edge version
+      console.warn('Intersection Observer not supported in this Edge version');
     }
   }
 }

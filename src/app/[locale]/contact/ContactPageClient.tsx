@@ -3,40 +3,22 @@
 import { useState, useEffect } from 'react';
 import ContactForm from '@/components/forms/ContactForm';
 import { getStaticContent } from '@/lib/utils';
+import type { Locale } from '@/lib/static-content.generated';
 
-export default function ContactPageClient() {
-  // Optimize locale detection to reduce content flash
-  const [locale, setLocale] = useState(() => {
-    // Detect locale synchronously during hydration to minimize flash
-    if (typeof window !== 'undefined') {
-      const pathname = window.location.pathname;
-      if (pathname.startsWith('/en')) return 'en';
-      if (pathname.startsWith('/pt')) return 'pt';
-    }
-    return 'es'; // Default fallback
-  });
+interface ContactPageClientProps {
+  initialLocale?: Locale;
+}
 
-  const [isHydrated, setIsHydrated] = useState(false);
+export default function ContactPageClient({
+  initialLocale = 'es',
+}: ContactPageClientProps) {
+  const [locale, setLocale] = useState<Locale>(initialLocale);
 
   useEffect(() => {
-    // Mark as hydrated after first render
-    setIsHydrated(true);
-
-    // Double-check locale detection after hydration for edge cases
-    const pathname = window.location.pathname;
-    let detectedLocale = 'es';
-
-    if (pathname.startsWith('/en')) {
-      detectedLocale = 'en';
-    } else if (pathname.startsWith('/pt')) {
-      detectedLocale = 'pt';
+    if (initialLocale && initialLocale !== locale) {
+      setLocale(initialLocale);
     }
-
-    // Only update if different to avoid unnecessary re-renders
-    if (detectedLocale !== locale) {
-      setLocale(detectedLocale);
-    }
-  }, [locale]);
+  }, [initialLocale, locale]);
 
   // Get static content for the detected locale
   const content = getStaticContent(locale);
@@ -157,18 +139,6 @@ export default function ContactPageClient() {
       },
     },
   };
-
-  // Show loading state during hydration to prevent flash
-  if (!isHydrated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse">
-          <div className="h-8 bg-muted rounded w-64 mb-4"></div>
-          <div className="h-4 bg-muted rounded w-48"></div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">

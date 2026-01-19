@@ -8,12 +8,12 @@ const PAGES_TO_WARM_UP = [
   '/contact',
 
   // English pages
-  '/en/',
+  '/en',
   '/en/about',
   '/en/contact',
 
   // Portuguese pages
-  '/pt/',
+  '/pt',
   '/pt/about',
   '/pt/contact',
 ];

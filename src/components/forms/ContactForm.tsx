@@ -247,6 +247,9 @@ export default function ContactForm({
   const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
+  const contactMethodListId = 'contact-method-options';
+  const eventTypeListId = 'event-type-options';
+  const attendeesListId = 'attendees-options';
 
   // Background hook
   const { classes } = useFormBackground();
@@ -655,7 +658,8 @@ export default function ContactForm({
                   }
                 >
                   <PopoverTrigger asChild>
-                    <div
+                    <button
+                      type="button"
                       className={cn(
                         'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
                         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
@@ -672,20 +676,13 @@ export default function ContactForm({
                         isSubmitting &&
                           'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
-                      role="button"
-                      tabIndex={0}
                       data-field="contactMethod"
-                      aria-invalid={!!errors.contactMethod}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setFocusedField(
-                            focusedField === 'contactMethod'
-                              ? null
-                              : 'contactMethod'
-                          );
-                        }
-                      }}
+                      role="combobox"
+                      aria-invalid={errors.contactMethod ? 'true' : undefined}
+                      aria-controls={contactMethodListId}
+                      aria-expanded={focusedField === 'contactMethod'}
+                      aria-haspopup="listbox"
+                      disabled={isSubmitting}
                     >
                       <span>
                         {formData.contactMethod
@@ -693,9 +690,10 @@ export default function ContactForm({
                           : t.form.contactMethod.placeholder}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
-                    </div>
+                    </button>
                   </PopoverTrigger>
                   <PopoverContent
+                    id={contactMethodListId}
                     className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
                     align="start"
                     sideOffset={0}
@@ -853,7 +851,8 @@ export default function ContactForm({
                   }
                 >
                   <PopoverTrigger asChild>
-                    <div
+                    <button
+                      type="button"
                       className={cn(
                         'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
                         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
@@ -870,18 +869,13 @@ export default function ContactForm({
                         isSubmitting &&
                           'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
-                      role="button"
-                      tabIndex={0}
                       data-field="eventType"
-                      aria-invalid={!!errors.eventType}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setFocusedField(
-                            focusedField === 'eventType' ? null : 'eventType'
-                          );
-                        }
-                      }}
+                      role="combobox"
+                      aria-invalid={errors.eventType ? 'true' : undefined}
+                      aria-controls={eventTypeListId}
+                      aria-expanded={focusedField === 'eventType'}
+                      aria-haspopup="listbox"
+                      disabled={isSubmitting}
                     >
                       <span>
                         {formData.eventType
@@ -893,9 +887,10 @@ export default function ContactForm({
                             )}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
-                    </div>
+                    </button>
                   </PopoverTrigger>
                   <PopoverContent
+                    id={eventTypeListId}
                     className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
                     align="start"
                     sideOffset={0}
@@ -989,7 +984,8 @@ export default function ContactForm({
                   }
                 >
                   <PopoverTrigger asChild>
-                    <div
+                    <button
+                      type="button"
                       className={cn(
                         'flex h-9 w-full items-center justify-between rounded-none border px-3 py-2 text-base shadow-none transition-[border-color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
                         'focus:!ring-0 focus:!ring-transparent focus:!border-primary',
@@ -1006,18 +1002,13 @@ export default function ContactForm({
                         isSubmitting &&
                           'pointer-events-none opacity-50 cursor-not-allowed'
                       )}
-                      role="button"
-                      tabIndex={0}
                       data-field="attendees"
-                      aria-invalid={!!errors.attendees}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          setFocusedField(
-                            focusedField === 'attendees' ? null : 'attendees'
-                          );
-                        }
-                      }}
+                      role="combobox"
+                      aria-invalid={errors.attendees ? 'true' : undefined}
+                      aria-controls={attendeesListId}
+                      aria-expanded={focusedField === 'attendees'}
+                      aria-haspopup="listbox"
+                      disabled={isSubmitting}
                     >
                       <span>
                         {formData.attendees
@@ -1029,9 +1020,10 @@ export default function ContactForm({
                             )}
                       </span>
                       <ChevronDown className="size-4 opacity-50" />
-                    </div>
+                    </button>
                   </PopoverTrigger>
                   <PopoverContent
+                    id={attendeesListId}
                     className="w-[var(--radix-popover-trigger-width)] p-0 bg-card text-card-foreground border-border z-50"
                     align="start"
                     sideOffset={0}

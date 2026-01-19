@@ -274,14 +274,21 @@ describe('ContactForm Component', () => {
     jest.clearAllMocks();
   });
 
+  const selectEmailContactMethod = () => {
+    fireEvent.click(screen.getByText('Select contact method'));
+    fireEvent.click(screen.getByText('Mail'));
+  };
+
   describe('Form Rendering', () => {
     it('renders all form fields', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
-      expect(screen.getByLabelText('Email')).toBeInTheDocument();
       expect(
         screen.getByLabelText('Company (if applicable)')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText('How would you prefer us to contact you?')
       ).toBeInTheDocument();
       expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
       expect(
@@ -322,23 +329,25 @@ describe('ContactForm Component', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Name')).toBeInTheDocument();
-        expect(screen.getByText('Email')).toBeInTheDocument();
+        expect(screen.getByText('Name is required')).toBeInTheDocument();
         expect(
-          screen.getByText('What type of event do you have?')
+          screen.getByText('Phone number is required for this contact method')
         ).toBeInTheDocument();
-        expect(screen.getByText('Event location (city)')).toBeInTheDocument();
+        expect(screen.getByText('Event type is required')).toBeInTheDocument();
+        expect(screen.getByText('Location is required')).toBeInTheDocument();
         expect(
-          screen.getByText('Expected number of attendees')
+          screen.getByText('Number of attendees is required')
         ).toBeInTheDocument();
         expect(
-          screen.getByText('What services are you interested in?')
+          screen.getByText('At least one service is required')
         ).toBeInTheDocument();
       });
     });
 
     it('validates email format', async () => {
       render(<ContactForm translations={mockTranslations} />);
+
+      selectEmailContactMethod();
 
       const emailInput = screen.getByLabelText('Email');
       fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
@@ -349,7 +358,9 @@ describe('ContactForm Component', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Email inválido')).toBeInTheDocument();
+        expect(
+          screen.getByText('Please enter a valid email address')
+        ).toBeInTheDocument();
       });
     });
 
@@ -362,14 +373,14 @@ describe('ContactForm Component', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Name')).toBeInTheDocument();
+        expect(screen.getByText('Name is required')).toBeInTheDocument();
       });
 
       const nameInput = screen.getByLabelText('Name');
       fireEvent.change(nameInput, { target: { value: 'John Doe' } });
 
       await waitFor(() => {
-        expect(screen.queryByText('Name')).not.toBeInTheDocument();
+        expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
       });
     });
   });
@@ -381,6 +392,8 @@ describe('ContactForm Component', () => {
       );
 
       render(<ContactForm translations={mockTranslations} />);
+
+      selectEmailContactMethod();
 
       // Fill required fields
       fireEvent.change(screen.getByLabelText('Name'), {
@@ -413,6 +426,8 @@ describe('ContactForm Component', () => {
       (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
       render(<ContactForm translations={mockTranslations} />);
+
+      selectEmailContactMethod();
 
       // Fill required fields
       fireEvent.change(screen.getByLabelText('Name'), {
@@ -458,6 +473,8 @@ describe('ContactForm Component', () => {
 
       render(<ContactForm translations={mockTranslations} />);
 
+      selectEmailContactMethod();
+
       // Fill required fields
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
@@ -493,6 +510,8 @@ describe('ContactForm Component', () => {
       (emailService.sendContactForm as jest.Mock).mockResolvedValue(undefined);
 
       render(<ContactForm translations={mockTranslations} />);
+
+      selectEmailContactMethod();
 
       // Fill required fields
       fireEvent.change(screen.getByLabelText('Name'), {

@@ -12,13 +12,24 @@
  * @returns The localized path
  */
 export function getLocalizedPath(path: string, locale: string): string {
-  // Default locale (Spanish) doesn't need prefix
+  // Normalize path to always start with a single leading slash
+  const normalizedPath = path
+    ? path.startsWith('/')
+      ? path
+      : `/${path}`
+    : '/';
+
+  // Spanish is the default locale and should never be prefixed
   if (locale === 'es') {
-    return path;
+    return normalizedPath;
   }
 
-  // Other locales get prefix
-  return `/${locale}${path}`;
+  // Avoid generating double slashes for the homepage
+  if (normalizedPath === '/' || normalizedPath === '') {
+    return `/${locale}`;
+  }
+
+  return `/${locale}${normalizedPath}`;
 }
 
 /**

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -131,18 +131,7 @@ export default function ClientPortal({
     type: 'note' as 'email' | 'note' | 'update',
   });
 
-  useEffect(() => {
-    loadClientData();
-  }, [clientId]);
-
-  useEffect(() => {
-    if (selectedProject) {
-      loadProjectFiles();
-      loadProjectMessages();
-    }
-  }, [selectedProject]);
-
-  const loadClientData = async () => {
+  const loadClientData = useCallback(async () => {
     try {
       setLoading(true);
       const db = await getFirestoreService();
@@ -191,9 +180,9 @@ export default function ClientPortal({
     } finally {
       setLoading(false);
     }
-  };
+  }, [clientId]);
 
-  const loadProjectFiles = async () => {
+  const loadProjectFiles = useCallback(async () => {
     if (!selectedProject) return;
 
     try {
@@ -216,9 +205,9 @@ export default function ClientPortal({
 
       setProjectFiles(filesData);
     } catch (error) {}
-  };
+  }, [selectedProject]);
 
-  const loadProjectMessages = async () => {
+  const loadProjectMessages = useCallback(async () => {
     if (!selectedProject) return;
 
     try {
@@ -241,7 +230,18 @@ export default function ClientPortal({
 
       setMessages(messagesData);
     } catch (error) {}
-  };
+  }, [selectedProject]);
+
+  useEffect(() => {
+    loadClientData();
+  }, [loadClientData]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      loadProjectFiles();
+      loadProjectMessages();
+    }
+  }, [loadProjectFiles, loadProjectMessages, selectedProject]);
 
   const sendMessage = async () => {
     if (!selectedProject || !messageForm.subject || !messageForm.content)

@@ -84,8 +84,7 @@ describe('AdminLayout', () => {
 
     render(<AdminLayout {...defaultProps} />);
 
-    // When loading, the component should still render the basic structure
-    expect(screen.getByText('Veloz Admin')).toBeInTheDocument();
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
   });
 
   it('redirects to login when user is not authenticated', () => {
@@ -93,9 +92,7 @@ describe('AdminLayout', () => {
 
     render(<AdminLayout {...defaultProps} />);
 
-    // This test would need to be updated based on actual redirect logic
-    // For now, we'll just verify the component renders without crashing
-    expect(screen.getByText('Cargando...')).toBeInTheDocument();
+    expect(screen.getByText('Redirigiendo al login...')).toBeInTheDocument();
   });
 
   it('renders navigation sidebar with all menu items', () => {

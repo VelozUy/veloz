@@ -88,6 +88,28 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Cache fonts with long-term caching
+[[headers]]
+  for = "/redjola/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/Roboto/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/Roboto_Mono/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache favicon with long-term caching
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Functions configuration
 [functions]
   directory = "functions"

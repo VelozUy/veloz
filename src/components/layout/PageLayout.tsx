@@ -13,9 +13,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
   // Navigation is now relative and scrolls with the page, so no top padding needed
   // Don't show footer on admin pages, homepage, or gallery background demo
+  const isHomepage =
+    pathname === '/' || pathname === '/en' || pathname === '/pt';
   const showFooter =
     !pathname.startsWith('/admin') &&
-    pathname !== '/' &&
+    !isHomepage &&
     pathname !== '/debug/automatic-gallery-background';
 
   return (

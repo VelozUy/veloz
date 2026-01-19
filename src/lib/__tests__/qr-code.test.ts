@@ -1,3 +1,10 @@
+jest.mock('qrcode', () => ({
+  __esModule: true,
+  default: {
+    toDataURL: jest.fn(async () => 'data:image/png;base64,TEST'),
+  },
+}));
+
 import QRCodeGenerator from '../qr-code';
 
 describe('QRCodeGenerator', () => {

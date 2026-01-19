@@ -129,11 +129,15 @@ jest.mock(
 // Mock AuthContext
 jest.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({
-    user: null,
+    user: { uid: 'test-user', email: 'admin@test.com' },
     loading: false,
     signOut: jest.fn(),
   }),
   AuthProvider: ({ children }) => children,
+}));
+
+jest.mock('@/lib/admin-auth', () => ({
+  checkAdminStatus: jest.fn(() => Promise.resolve(true)),
 }));
 
 // Mock window methods

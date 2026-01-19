@@ -37,44 +37,65 @@ export const useLazyLoad = (
   }, []);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    let retries = 0;
+    let retryTimer: NodeJS.Timeout | null = null;
+    let isCancelled = false;
 
-    // Check if Intersection Observer is supported
-    if (!('IntersectionObserver' in window)) {
-      // Fallback for older browsers
-      if (fallback) {
-        setIsVisible(true);
-        // Don't auto-set isLoaded for fallback - let component handle it
+    const setupObserver = () => {
+      const element = ref.current;
+      if (!element || isCancelled) return;
+
+      // Check if Intersection Observer is supported
+      if (typeof window === 'undefined' || !window.IntersectionObserver) {
+        // Fallback for older browsers
+        if (fallback) {
+          setIsVisible(true);
+          setIsLoaded(true);
+        }
+        return;
       }
-      return;
-    }
 
-    // Create intersection observer
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            // Don't auto-set isLoaded - let the component handle it based on actual load events
-            // Disconnect observer once visible
-            if (observerRef.current) {
-              observerRef.current.disconnect();
+      // Create intersection observer
+      observerRef.current = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+              setIsLoaded(true);
+              // Disconnect observer once visible
+              if (observerRef.current) {
+                observerRef.current.disconnect();
+              }
             }
-          }
-        });
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
+          });
+        },
+        {
+          threshold,
+          rootMargin,
+        }
+      );
 
-    // Start observing
-    observerRef.current.observe(element);
+      // Start observing
+      observerRef.current.observe(element);
+    };
+
+    const ensureObserver = () => {
+      if (ref.current || retries >= 5) {
+        setupObserver();
+        return;
+      }
+      retries += 1;
+      retryTimer = setTimeout(ensureObserver, 0);
+    };
+
+    ensureObserver();
 
     // Cleanup function
     return () => {
+      isCancelled = true;
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+      }
       if (observerRef.current) {
         observerRef.current.disconnect();
       }

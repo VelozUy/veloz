@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -152,22 +158,10 @@ export default function ProjectClientPortal() {
     type: 'note' as 'email' | 'note' | 'update',
   });
 
-  useEffect(() => {
-    loadProjectData();
-  }, [projectId]);
-
-  useEffect(() => {
-    if (project) {
-      loadProjectFiles();
-      loadProjectMessages();
-      loadProjectClients();
-    }
-  }, [project]);
-
-  const loadProjectData = async () => {
+  const loadProjectData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // Check if client is logged in
       const clientId = localStorage.getItem('clientId');
       let isPublicAccess = false;
@@ -188,7 +182,7 @@ export default function ProjectClientPortal() {
           where('status', '==', 'active')
         );
         const publicAccessSnapshot = await getDocs(publicAccessQuery);
-        
+
         if (!publicAccessSnapshot.empty) {
           isPublicAccess = true;
           // For public access, we don't need client data
@@ -227,19 +221,21 @@ export default function ProjectClientPortal() {
             title: {
               en: 'Test Project',
               es: 'Proyecto de Prueba',
-              pt: 'Projeto de Teste'
+              pt: 'Projeto de Teste',
             },
             status: 'in-progress',
             eventType: 'Wedding',
-            eventDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            eventDate: new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000
+            ).toISOString(),
             location: 'Test Location',
             progress: 0,
             mediaCount: {
               photos: 0,
-              videos: 0
+              videos: 0,
             },
             lastUpdate: new Date(),
-            milestones: []
+            milestones: [],
           };
           setProject(mockProject);
           setLoading(false);
@@ -252,15 +248,19 @@ export default function ProjectClientPortal() {
       }
 
       const projectData = projectDoc.data() as Project;
-      
+
       // Calculate progress based on milestones
       if (projectData.milestones) {
-        const completed = projectData.milestones.filter(m => m.status === 'completed').length;
-        projectData.progress = Math.round((completed / projectData.milestones.length) * 100);
+        const completed = projectData.milestones.filter(
+          m => m.status === 'completed'
+        ).length;
+        projectData.progress = Math.round(
+          (completed / projectData.milestones.length) * 100
+        );
       } else {
         projectData.progress = 0;
       }
-      
+
       setProject({ ...projectData, id: projectId });
     } catch (error) {
       console.error('Error loading project data:', error);
@@ -268,11 +268,11 @@ export default function ProjectClientPortal() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId, router]);
 
-  const loadProjectFiles = async () => {
+  const loadProjectFiles = useCallback(async () => {
     if (!project) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -295,11 +295,11 @@ export default function ProjectClientPortal() {
     } catch (error) {
       console.error('Error loading project files:', error);
     }
-  };
+  }, [project]);
 
-  const loadProjectMessages = async () => {
+  const loadProjectMessages = useCallback(async () => {
     if (!project) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -322,11 +322,11 @@ export default function ProjectClientPortal() {
     } catch (error) {
       console.error('Error loading project messages:', error);
     }
-  };
+  }, [project]);
 
-  const loadProjectClients = async () => {
+  const loadProjectClients = useCallback(async () => {
     if (!project) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -344,7 +344,9 @@ export default function ProjectClientPortal() {
         const clientData = doc.data() as any;
         clientsData.push({
           id: doc.id,
-          name: clientData.fullName || `${clientData.firstName} ${clientData.lastName}`,
+          name:
+            clientData.fullName ||
+            `${clientData.firstName} ${clientData.lastName}`,
           email: clientData.email,
           signupDate: clientData.signupDate,
           lastLogin: clientData.lastLogin,
@@ -356,11 +358,23 @@ export default function ProjectClientPortal() {
     } catch (error) {
       console.error('Error loading project clients:', error);
     }
-  };
+  }, [project]);
+
+  useEffect(() => {
+    loadProjectData();
+  }, [loadProjectData]);
+
+  useEffect(() => {
+    if (project) {
+      loadProjectFiles();
+      loadProjectMessages();
+      loadProjectClients();
+    }
+  }, [loadProjectClients, loadProjectFiles, loadProjectMessages, project]);
 
   const sendMessage = async () => {
     if (!project || !messageForm.subject || !messageForm.content) return;
-    
+
     try {
       const db = await getFirestoreService();
       if (!db) return;
@@ -378,14 +392,14 @@ export default function ProjectClientPortal() {
       };
 
       await addDoc(messagesRef, newMessage);
-      
+
       // Reset form
       setMessageForm({
         subject: '',
         content: '',
         type: 'note',
       });
-      
+
       // Reload messages
       loadProjectMessages();
     } catch (error) {
@@ -465,7 +479,11 @@ export default function ProjectClientPortal() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" onClick={() => router.push('/client')}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push('/client')}
+              >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
               </Button>
@@ -474,11 +492,13 @@ export default function ProjectClientPortal() {
                   {project.title.es || project.title.en || project.title.pt}
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                  {client ? `Client Portal • Welcome, ${client.fullName}` : 'Public Project View'}
+                  {client
+                    ? `Client Portal • Welcome, ${client.fullName}`
+                    : 'Public Project View'}
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               {client && (
                 <>
@@ -493,7 +513,11 @@ export default function ProjectClientPortal() {
                 </>
               )}
               {!client && (
-                <Button variant="outline" size="sm" onClick={() => router.push('/client/signup')}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push('/client/signup')}
+                >
                   <User className="w-4 h-4 mr-2" />
                   Sign Up
                 </Button>
@@ -553,7 +577,10 @@ export default function ProjectClientPortal() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
+            <Tabs
+              value={activeTab}
+              onValueChange={value => setActiveTab(value as any)}
+            >
               <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="files">Files</TabsTrigger>
@@ -579,23 +606,27 @@ export default function ProjectClientPortal() {
                           </Badge>
                         </div>
                       </div>
-                      
+
                       <div>
-                        <label className="text-sm font-medium">Event Type</label>
+                        <label className="text-sm font-medium">
+                          Event Type
+                        </label>
                         <p className="text-sm text-muted-foreground mt-1">
                           {project.eventType}
                         </p>
                       </div>
-                      
+
                       <div>
                         <label className="text-sm font-medium">Location</label>
                         <p className="text-sm text-muted-foreground mt-1">
                           {project.location}
                         </p>
                       </div>
-                      
+
                       <div>
-                        <label className="text-sm font-medium">Event Date</label>
+                        <label className="text-sm font-medium">
+                          Event Date
+                        </label>
                         <p className="text-sm text-muted-foreground mt-1">
                           {new Date(project.eventDate).toLocaleDateString()}
                         </p>
@@ -616,15 +647,23 @@ export default function ProjectClientPortal() {
                           </div>
                           <Progress value={project.progress} />
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4 text-center">
                           <div>
-                            <div className="text-2xl font-bold">{project.mediaCount.photos}</div>
-                            <div className="text-xs text-muted-foreground">Photos</div>
+                            <div className="text-2xl font-bold">
+                              {project.mediaCount.photos}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Photos
+                            </div>
                           </div>
                           <div>
-                            <div className="text-2xl font-bold">{project.mediaCount.videos}</div>
-                            <div className="text-xs text-muted-foreground">Videos</div>
+                            <div className="text-2xl font-bold">
+                              {project.mediaCount.videos}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Videos
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -641,7 +680,10 @@ export default function ProjectClientPortal() {
                     <CardContent>
                       <div className="space-y-3">
                         {project.milestones.map(milestone => (
-                          <div key={milestone.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div
+                            key={milestone.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
                             <div>
                               <p className="font-medium">{milestone.title}</p>
                               <p className="text-sm text-muted-foreground">
@@ -653,8 +695,8 @@ export default function ProjectClientPortal() {
                                 milestone.status === 'completed'
                                   ? 'default'
                                   : milestone.status === 'overdue'
-                                  ? 'destructive'
-                                  : 'secondary'
+                                    ? 'destructive'
+                                    : 'secondary'
                               }
                             >
                               {milestone.status}
@@ -694,17 +736,23 @@ export default function ProjectClientPortal() {
                   </CardHeader>
                   <CardContent>
                     {projectFiles.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No files uploaded yet</p>
+                      <p className="text-sm text-muted-foreground">
+                        No files uploaded yet
+                      </p>
                     ) : (
                       <div className="space-y-2">
                         {projectFiles.map(file => (
-                          <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div
+                            key={file.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
                             <div className="flex items-center space-x-3">
                               <Download className="w-4 h-4 text-muted-foreground" />
                               <div>
                                 <p className="font-medium">{file.name}</p>
                                 <p className="text-xs text-muted-foreground">
-                                  {file.type} • {(file.size / 1024 / 1024).toFixed(2)} MB
+                                  {file.type} •{' '}
+                                  {(file.size / 1024 / 1024).toFixed(2)} MB
                                 </p>
                               </div>
                             </div>
@@ -737,41 +785,55 @@ export default function ProjectClientPortal() {
                         <input
                           type="text"
                           value={messageForm.subject}
-                          onChange={(e) => setMessageForm(prev => ({ ...prev, subject: e.target.value }))}
+                          onChange={e =>
+                            setMessageForm(prev => ({
+                              ...prev,
+                              subject: e.target.value,
+                            }))
+                          }
                           className="w-full px-3 py-2 border border-input rounded-md bg-background mt-1"
                           placeholder="Message subject"
                         />
                       </div>
-                      
+
                       <div>
                         <label className="text-sm font-medium">Message</label>
                         <textarea
                           value={messageForm.content}
-                          onChange={(e) => setMessageForm(prev => ({ ...prev, content: e.target.value }))}
+                          onChange={e =>
+                            setMessageForm(prev => ({
+                              ...prev,
+                              content: e.target.value,
+                            }))
+                          }
                           className="w-full px-3 py-2 border border-input rounded-md bg-background mt-1"
                           rows={4}
                           placeholder="Your message..."
                         />
                       </div>
-                      
-                      <Button onClick={sendMessage} disabled={!messageForm.subject || !messageForm.content}>
+
+                      <Button
+                        onClick={sendMessage}
+                        disabled={!messageForm.subject || !messageForm.content}
+                      >
                         <Send className="w-4 h-4 mr-2" />
                         Send Message
                       </Button>
                     </CardContent>
                   </Card>
                 )}
-                
+
                 {!client && (
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-center">
                         <User className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
                         <p className="text-sm text-muted-foreground">
-                          Sign up to send messages and access full project features.
+                          Sign up to send messages and access full project
+                          features.
                         </p>
-                        <Button 
-                          className="mt-2" 
+                        <Button
+                          className="mt-2"
                           onClick={() => router.push('/client/signup')}
                         >
                           Sign Up Now
@@ -788,23 +850,36 @@ export default function ProjectClientPortal() {
                   </CardHeader>
                   <CardContent>
                     {messages.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No messages yet</p>
+                      <p className="text-sm text-muted-foreground">
+                        No messages yet
+                      </p>
                     ) : (
                       <div className="space-y-4">
                         {messages.map(message => (
-                          <div key={message.id} className="border rounded-lg p-4">
+                          <div
+                            key={message.id}
+                            className="border rounded-lg p-4"
+                          >
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center space-x-2">
-                                <span className="font-medium">{message.from}</span>
+                                <span className="font-medium">
+                                  {message.from}
+                                </span>
                                 <span className="text-muted-foreground">→</span>
-                                <span className="font-medium">{message.to}</span>
+                                <span className="font-medium">
+                                  {message.to}
+                                </span>
                               </div>
                               <span className="text-xs text-muted-foreground">
                                 {message.date.toLocaleDateString()}
                               </span>
                             </div>
-                            <h4 className="font-medium mb-1">{message.subject}</h4>
-                            <p className="text-sm text-muted-foreground">{message.content}</p>
+                            <h4 className="font-medium mb-1">
+                              {message.subject}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              {message.content}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -821,7 +896,9 @@ export default function ProjectClientPortal() {
                   <CardContent>
                     <div className="text-center py-8">
                       <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-medium mb-2">Calendar View</h3>
+                      <h3 className="text-lg font-medium mb-2">
+                        Calendar View
+                      </h3>
                       <p className="text-muted-foreground">
                         Calendar functionality will be implemented here
                       </p>
@@ -835,50 +912,80 @@ export default function ProjectClientPortal() {
                   <CardHeader>
                     <CardTitle>Other Project Clients</CardTitle>
                     <CardDescription>
-                      View all clients who have signed up for this project. This information is visible to all project participants.
+                      View all clients who have signed up for this project. This
+                      information is visible to all project participants.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     {projectClients.length === 0 ? (
                       <div className="text-center py-8">
                         <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="text-lg font-medium mb-2">No other clients yet</h3>
+                        <h3 className="text-lg font-medium mb-2">
+                          No other clients yet
+                        </h3>
                         <p className="text-muted-foreground">
-                          Other clients will appear here once they sign up for this project
+                          Other clients will appear here once they sign up for
+                          this project
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <h3 className="text-lg font-medium">
-                            {projectClients.length} client{projectClients.length !== 1 ? 's' : ''} signed up
+                            {projectClients.length} client
+                            {projectClients.length !== 1 ? 's' : ''} signed up
                           </h3>
                         </div>
-                        
+
                         <div className="space-y-3">
-                          {projectClients.map((projectClient) => (
-                            <div key={projectClient.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          {projectClients.map(projectClient => (
+                            <div
+                              key={projectClient.id}
+                              className="flex items-center justify-between p-4 border rounded-lg"
+                            >
                               <div className="flex items-center space-x-3">
                                 <Avatar>
                                   <AvatarFallback>
-                                    {projectClient.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                    {projectClient.name
+                                      .split(' ')
+                                      .map(n => n[0])
+                                      .join('')
+                                      .toUpperCase()}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div>
-                                  <p className="font-medium">{projectClient.name}</p>
-                                  <p className="text-sm text-muted-foreground">{projectClient.email}</p>
+                                  <p className="font-medium">
+                                    {projectClient.name}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {projectClient.email}
+                                  </p>
                                   <p className="text-xs text-muted-foreground">
-                                    Signed up: {projectClient.signupDate ? projectClient.signupDate.toDate().toLocaleDateString() : 'N/A'}
+                                    Signed up:{' '}
+                                    {projectClient.signupDate
+                                      ? projectClient.signupDate
+                                          .toDate()
+                                          .toLocaleDateString()
+                                      : 'N/A'}
                                   </p>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-2">
-                                <Badge variant={projectClient.status === 'active' ? 'default' : 'secondary'}>
+                                <Badge
+                                  variant={
+                                    projectClient.status === 'active'
+                                      ? 'default'
+                                      : 'secondary'
+                                  }
+                                >
                                   {projectClient.status}
                                 </Badge>
                                 {projectClient.lastLogin && (
                                   <span className="text-xs text-muted-foreground">
-                                    Last login: {projectClient.lastLogin.toDate().toLocaleDateString()}
+                                    Last login:{' '}
+                                    {projectClient.lastLogin
+                                      .toDate()
+                                      .toLocaleDateString()}
                                   </span>
                                 )}
                               </div>
@@ -896,4 +1003,4 @@ export default function ProjectClientPortal() {
       </div>
     </div>
   );
-} 
+}

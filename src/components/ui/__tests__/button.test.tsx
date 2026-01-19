@@ -1,6 +1,7 @@
 import { render, screen } from '@/lib/test-utils';
 import { Button } from '@/components/ui/button';
 import { userInteraction } from '@/lib/test-utils';
+import Link from 'next/link';
 
 describe('Button Component', () => {
   it('renders correctly with default props', () => {
@@ -124,7 +125,7 @@ describe('Button Component', () => {
   it('handles asChild prop', () => {
     render(
       <Button asChild>
-        <a href="/test">Link Button</a>
+        <Link href="/test">Link Button</Link>
       </Button>
     );
     const link = screen.getByRole('link');

@@ -309,6 +309,7 @@ describe('Validation Schemas', () => {
           es: 'Título del Proyecto',
           pt: 'Título do Projeto',
         },
+        slug: 'project-title',
         description: {
           en: '',
           es: '',
@@ -331,6 +332,7 @@ describe('Validation Schemas', () => {
           es: 'Título del Proyecto',
           pt: 'Título do Projeto',
         },
+        slug: 'project-title',
         eventType: 'invalid-type',
       };
 
@@ -344,6 +346,7 @@ describe('Validation Schemas', () => {
           es: 'Título del Proyecto',
           pt: 'Título do Projeto',
         },
+        slug: 'project-title',
         eventType: 'casamientos' as const,
         coverImageUrl: 'not-a-url',
       };
@@ -358,6 +361,7 @@ describe('Validation Schemas', () => {
           es: 'Título del Proyecto',
           pt: 'Título do Projeto',
         },
+        slug: 'project-title',
         description: {
           en: '',
           es: '',
@@ -893,6 +897,7 @@ describe('Validation Schemas', () => {
           es: 'Título',
           pt: 'Título',
         },
+        slug: 'project-title',
         eventType: 'otros' as const,
         description: {
           en: '',

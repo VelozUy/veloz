@@ -153,7 +153,7 @@ export function useResponsiveGrid(
       orientation,
       touchSupported,
     });
-  }, [initialColumns, initialGap]);
+  }, [gridState.screenWidth, initialColumns, initialGap]);
 
   // Debounced resize handler for performance
   const handleResize = useCallback(() => {
@@ -230,7 +230,12 @@ export function useResponsiveGrid(
         clearTimeout(debounceRef.current);
       }
     };
-  }, [handleResize, handleOrientationChange, updateGridConfig]);
+  }, [
+    gridState.screenWidth,
+    handleResize,
+    handleOrientationChange,
+    updateGridConfig,
+  ]);
 
   return gridState;
 }
@@ -280,8 +285,8 @@ export function getFluidOptimalColumns(
       : screenWidth < 1024
         ? 64
         : screenWidth < 1440
-          ? 64
-          : 128; // 16px*2 mobile, 32px*2 tablet, 32px*2 desktop, 64px*2 large desktop
+          ? 128
+          : 128; // 16px*2 mobile, 32px*2 tablet, 64px*2 desktop+, 64px*2 large desktop
   const availableWidth = containerWidth - containerPadding;
 
   // Calculate how many tiles can fit with the desired width and gap
@@ -294,11 +299,11 @@ export function getFluidOptimalColumns(
 
   // Apply breakpoint-based minimums to ensure good UX
   if (screenWidth < 768) {
-    // Mobile: minimum 1, maximum 2
-    return Math.max(1, Math.min(2, optimalColumns));
+    // Mobile: minimum 1, maximum 1
+    return Math.max(1, Math.min(1, optimalColumns));
   } else if (screenWidth < 1024) {
-    // Tablet: minimum 2, maximum 3
-    return Math.max(2, Math.min(3, optimalColumns));
+    // Tablet: minimum 2, maximum 2
+    return Math.max(2, Math.min(2, optimalColumns));
   } else if (screenWidth < 1440) {
     // Desktop: minimum 3, maximum 4
     return Math.max(3, Math.min(4, optimalColumns));
@@ -324,7 +329,7 @@ export function getAdaptiveTileWidth(
       : screenWidth < 1024
         ? 64
         : screenWidth < 1440
-          ? 64
+          ? 128
           : 128;
   const availableWidth = containerWidth - containerPadding;
 
@@ -343,7 +348,7 @@ export function getResponsiveGap(screenWidth: number, columns: number): number {
   let baseGap = 8; // desktop default
 
   if (screenWidth < 768) {
-    baseGap = 4; // mobile
+    baseGap = 8; // mobile
   } else if (screenWidth < 1024) {
     baseGap = 6; // tablet
   } else if (screenWidth < 1440) {
@@ -355,8 +360,8 @@ export function getResponsiveGap(screenWidth: number, columns: number): number {
   // Adjust gap based on column density
   if (columns > 4) {
     baseGap = Math.max(4, baseGap - 2); // Reduce gap for dense layouts
-  } else if (columns === 1) {
-    baseGap = Math.min(12, baseGap + 4); // Increase gap for single column
+  } else if (columns === 1 && screenWidth >= 1024) {
+    baseGap = Math.min(12, baseGap + 2); // Increase gap for single column on larger screens
   }
 
   return baseGap;

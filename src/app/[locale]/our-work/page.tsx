@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import OurWorkPageClient from './OurWorkPageClient';
 
-// Generate metadata for each locale
-export async function generateMetadata(): Promise<Metadata> {
-  // Define locale-specific metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
   const metadata = {
     en: {
       title: 'Our Work | Veloz - Professional Photography & Videography',
@@ -30,22 +33,23 @@ export async function generateMetadata(): Promise<Metadata> {
         locale: 'pt_BR',
       },
     },
-    es: {
-      title: 'Nuestro Trabajo | Veloz - Fotografía y Videografía Profesional',
-      description:
-        'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Servicios profesionales de fotografía y videografía en Uruguay.',
-      openGraph: {
-        title: 'Nuestro Trabajo | Veloz - Fotografía y Videografía Profesional',
-        description:
-          'Explora nuestro portafolio de bodas, eventos corporativos, cumpleaños y más. Servicios profesionales de fotografía y videografía en Uruguay.',
-        type: 'website',
-        locale: 'es_UY',
+  } as const;
+
+  const normalizedLocale = locale === 'pt' ? 'pt' : 'en';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
+
+  return {
+    ...metadata[normalizedLocale],
+    alternates: {
+      canonical: `/${locale}/our-work`,
+      languages: {
+        es: '/our-work',
+        en: '/en/our-work',
+        pt: '/pt/our-work',
+        'x-default': '/our-work',
       },
     },
   };
-
-  // For now, return Spanish metadata as default
-  return metadata.es;
 }
 
 // Force static generation at build time
@@ -54,7 +58,12 @@ export const dynamic = 'force-static';
 // Disable automatic revalidation - content updates require manual build trigger
 export const revalidate = false;
 
-export default async function OurWorkPage() {
+export default async function OurWorkPage({
+  params,
+}: {
+  params: Promise<{ locale: 'en' | 'pt' }>;
+}) {
+  const { locale } = await params;
   return (
     <Suspense
       fallback={
@@ -63,7 +72,7 @@ export default async function OurWorkPage() {
         </div>
       }
     >
-      <OurWorkPageClient />
+      <OurWorkPageClient initialLocale={locale} />
     </Suspense>
   );
 }

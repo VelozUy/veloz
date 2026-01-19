@@ -4,6 +4,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { FastForwardUnderline } from './animated-underline';
+import { getLocalizedPath } from '@/lib/navigation-utils';
 
 interface LocaleSwitcherProps {
   currentLocale: string;
@@ -50,18 +51,11 @@ export function LocaleSwitcher({
     // Store the locale preference in localStorage
     localStorage.setItem('preferred-locale', newLocale);
 
-    // Build the new path based on current pathname and target locale
-    let newPath = '';
-
-    // Remove current locale prefix if it exists
-    const cleanPath = pathname.replace(/^\/(en|pt)/, '');
-
-    // Add new locale prefix if not Spanish (default)
-    if (newLocale === 'es') {
-      newPath = cleanPath || '/';
-    } else {
-      newPath = `/${newLocale}${cleanPath}`;
-    }
+    const cleanPath = pathname.replace(/^\/(en|pt)/, '') || '/';
+    const normalizedPath = cleanPath.startsWith('/')
+      ? cleanPath
+      : `/${cleanPath}`;
+    const newPath = getLocalizedPath(normalizedPath, newLocale);
 
     // Navigate to the new localized route
     router.push(newPath);
