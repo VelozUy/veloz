@@ -82,10 +82,14 @@ describe('BaseFirebaseService', () => {
     jest.resetModules();
 
     // Reconfigure Firebase mocks after clearAllMocks/resetModules
-    const firebase = require('@/lib/firebase');
+    // Ensure mockGetFirestoreService always returns mockDb
     mockGetFirestoreService.mockReset();
-    mockGetFirestoreService.mockResolvedValue(mockDb);
-    (firebase.getFirestoreService as jest.Mock).mockResolvedValue(mockDb);
+    mockGetFirestoreService.mockImplementation(async () => mockDb);
+
+    const firebase = require('@/lib/firebase');
+    (firebase.getFirestoreService as jest.Mock).mockImplementation(
+      async () => mockDb
+    );
     (firebase.getFirestoreSync as jest.Mock).mockReturnValue(mockDb);
 
     ({ BaseFirebaseService } = require('../base-firebase-service'));
@@ -745,6 +749,10 @@ describe('BaseFirebaseService', () => {
     describe('batchCreate', () => {
       it('should create multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           set: jest.fn(),
           commit: jest.fn().mockResolvedValue(undefined),
@@ -764,6 +772,10 @@ describe('BaseFirebaseService', () => {
 
       it('should handle batch create errors', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           set: jest.fn(),
           commit: jest.fn().mockRejectedValue(new Error('Batch create failed')),
@@ -782,6 +794,10 @@ describe('BaseFirebaseService', () => {
     describe('batchUpdate', () => {
       it('should update multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           update: jest.fn(),
           commit: jest.fn().mockResolvedValue(undefined),
@@ -803,6 +819,10 @@ describe('BaseFirebaseService', () => {
 
       it('should handle batch update errors', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           update: jest.fn(),
           commit: jest.fn().mockRejectedValue(new Error('Batch update failed')),
@@ -821,6 +841,10 @@ describe('BaseFirebaseService', () => {
     describe('batchDelete', () => {
       it('should delete multiple documents', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           delete: jest.fn(),
           commit: jest.fn().mockResolvedValue(undefined),
@@ -838,6 +862,10 @@ describe('BaseFirebaseService', () => {
 
       it('should handle batch delete errors', async () => {
         const { writeBatch } = require('firebase/firestore');
+
+        // Mock is already set up in beforeEach, but ensure it's still working
+        mockGetFirestoreService.mockImplementation(async () => mockDb);
+
         const mockBatch = {
           delete: jest.fn(),
           commit: jest.fn().mockRejectedValue(new Error('Batch delete failed')),
