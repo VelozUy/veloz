@@ -35,21 +35,19 @@ const HOME_METADATA: Record<
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const rawLocale = resolvedParams.locale;
-  const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = HOME_METADATA[locale];
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://veloz.com.uy';
 
@@ -79,20 +77,19 @@ export async function generateMetadata({
 export default async function LocalizedHomePage({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
 
   return (
     <>

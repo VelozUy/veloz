@@ -18,23 +18,19 @@ const PRIVACY_METADATA: Record<
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(
-      `Invalid params in generateMetadata: ${JSON.stringify(resolvedParams)}`
-    );
-  }
-  const rawLocale = resolvedParams.locale;
-  const locale = rawLocale === 'pt' ? 'pt' : 'en';
   const meta = PRIVACY_METADATA[locale];
 
   return {
@@ -56,21 +52,18 @@ export const revalidate = false;
 export default async function PrivacyPage({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(
-      `Invalid params in PrivacyPage: ${JSON.stringify(resolvedParams)}`
-    );
-  }
-  const locale = resolvedParams.locale;
   return <LegalPage locale={locale} pageType="privacy" />;
 }

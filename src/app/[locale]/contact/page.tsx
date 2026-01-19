@@ -5,20 +5,19 @@ import ContactPageClient from './ContactPageClient';
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }): Promise<Metadata> {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
   const metadata = {
     en: {
       title: 'Contact Us | Veloz - Professional Photography & Videography',
@@ -72,20 +71,19 @@ export const revalidate = false;
 export default async function ContactPage({
   params,
 }: {
-  params: Promise<{ locale: 'en' | 'pt' }>;
+  params?: Promise<{ locale: 'en' | 'pt' }>;
 }) {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: 'en' | 'pt' = 'en';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale === 'pt' ? 'pt' : 'en';
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
   return (
     <Suspense
       fallback={

@@ -5,24 +5,23 @@ import { getBackgroundClasses } from '@/lib/background-utils';
 import { cn } from '@/lib/utils';
 
 interface NotFoundProps {
-  params: Promise<{ locale: string }>;
+  params?: Promise<{ locale: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: NotFoundProps): Promise<Metadata> {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: string = 'es';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale;
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
 
   const titles = {
     es: 'Página No Encontrada | Veloz Fotografía y Videografía',
@@ -48,18 +47,17 @@ export async function generateMetadata({
 }
 
 export default async function LocalizedNotFound({ params }: NotFoundProps) {
-  if (!params) {
-    throw new Error('Params Promise is undefined');
+  let locale: string = 'es';
+  if (params) {
+    const resolvedParams = await params;
+    if (
+      resolvedParams &&
+      typeof resolvedParams === 'object' &&
+      'locale' in resolvedParams
+    ) {
+      locale = resolvedParams.locale;
+    }
   }
-  const resolvedParams = await params;
-  if (
-    !resolvedParams ||
-    typeof resolvedParams !== 'object' ||
-    !('locale' in resolvedParams)
-  ) {
-    throw new Error(`Invalid params: ${JSON.stringify(resolvedParams)}`);
-  }
-  const locale = resolvedParams.locale;
   const backgroundClasses = getBackgroundClasses('content', 'high');
 
   // Localized content
