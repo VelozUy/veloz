@@ -91,8 +91,13 @@ export abstract class BaseFirebaseService<T = unknown> {
   }
 
   // Firebase connection utilities
+  // Wrapped in a protected method so tests can override and inject a mock DB
+  protected async getDb() {
+    return getFirestoreService();
+  }
+
   protected async getCollection() {
-    const db = await getFirestoreService();
+    const db = await this.getDb();
     if (!db) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
@@ -102,7 +107,7 @@ export abstract class BaseFirebaseService<T = unknown> {
   }
 
   protected async getDocRef(id: string) {
-    const db = await getFirestoreService();
+    const db = await this.getDb();
     if (!db) {
       throw new Error(
         'Firebase Firestore not initialized. Please check your Firebase configuration.'
@@ -229,7 +234,7 @@ export abstract class BaseFirebaseService<T = unknown> {
 
   // Network management
   protected async ensureNetworkEnabled(): Promise<void> {
-    const db = await getFirestoreService();
+    const db = await this.getDb();
     if (!db) throw new Error('Firestore not available');
 
     // Network is enabled by default in Firebase v9+
@@ -479,9 +484,9 @@ export abstract class BaseFirebaseService<T = unknown> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
 
-      const db = await getFirestoreService();
+      const db = await this.getDb();
       if (!db) throw new Error('Firestore not available');
-      const batch = writeBatch(db);
+      const batch = this.getWriteBatch(db);
 
       const collectionRef = await this.getCollection();
       const createdItems: R[] = [];
@@ -507,9 +512,9 @@ export abstract class BaseFirebaseService<T = unknown> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
 
-      const db = await getFirestoreService();
+      const db = await this.getDb();
       if (!db) throw new Error('Firestore not available');
-      const batch = writeBatch(db);
+      const batch = this.getWriteBatch(db);
 
       for (const update of updates) {
         const docRef = await this.getDocRef(update.id);
@@ -529,9 +534,9 @@ export abstract class BaseFirebaseService<T = unknown> {
     return this.withRetry(async () => {
       await this.ensureNetworkEnabled();
 
-      const db = await getFirestoreService();
+      const db = await this.getDb();
       if (!db) throw new Error('Firestore not available');
-      const batch = writeBatch(db);
+      const batch = this.getWriteBatch(db);
 
       for (const id of ids) {
         const docRef = await this.getDocRef(id);
@@ -588,5 +593,11 @@ export abstract class BaseFirebaseService<T = unknown> {
         `healthCheck for ${this.collectionName}`
       )
     );
+  }
+
+  // Wrapper around Firestore writeBatch so test subclasses can override batching behavior
+  // and avoid depending on the concrete firebase implementation.
+  protected getWriteBatch(db: unknown) {
+    return writeBatch(db as any);
   }
 }
