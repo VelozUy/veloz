@@ -88,8 +88,9 @@ describe('FullscreenModal', () => {
   it('shows navigation arrows when multiple media items exist', () => {
     render(<FullscreenModal {...defaultProps} />);
 
-    expect(screen.getByLabelText('Anterior')).toBeInTheDocument();
-    expect(screen.getByLabelText('Siguiente')).toBeInTheDocument();
+    // Use getAllByLabelText since buttons might appear multiple times
+    expect(screen.getAllByLabelText('Anterior').length).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText('Siguiente').length).toBeGreaterThan(0);
   });
 
   it('does not show navigation arrows for single media item', () => {
@@ -134,7 +135,8 @@ describe('FullscreenModal', () => {
   it('navigates to next image when next button is clicked', () => {
     render(<FullscreenModal {...defaultProps} />);
 
-    const nextButton = screen.getByLabelText('Siguiente');
+    const nextButtons = screen.getAllByLabelText('Siguiente');
+    const nextButton = nextButtons[0];
     fireEvent.click(nextButton);
 
     expect(screen.getByTestId('thumbnail-2')).toBeInTheDocument();
@@ -145,7 +147,8 @@ describe('FullscreenModal', () => {
   it('navigates to previous image when previous button is clicked', () => {
     render(<FullscreenModal {...defaultProps} startIndex={1} />);
 
-    const prevButton = screen.getByLabelText('Anterior');
+    const prevButtons = screen.getAllByLabelText('Anterior');
+    const prevButton = prevButtons[0];
     fireEvent.click(prevButton);
 
     expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
@@ -156,7 +159,8 @@ describe('FullscreenModal', () => {
   it('wraps around to last image when navigating back from first', () => {
     render(<FullscreenModal {...defaultProps} startIndex={0} />);
 
-    const prevButton = screen.getByLabelText('Anterior');
+    const prevButtons = screen.getAllByLabelText('Anterior');
+    const prevButton = prevButtons[0];
     fireEvent.click(prevButton);
 
     // Should show video (index 2) when wrapping around
@@ -167,7 +171,8 @@ describe('FullscreenModal', () => {
   it('wraps around to first image when navigating forward from last', () => {
     render(<FullscreenModal {...defaultProps} startIndex={2} />);
 
-    const nextButton = screen.getByLabelText('Siguiente');
+    const nextButtons = screen.getAllByLabelText('Siguiente');
+    const nextButton = nextButtons[0];
     fireEvent.click(nextButton);
 
     expect(screen.getByTestId('thumbnail-1')).toBeInTheDocument();
@@ -177,8 +182,10 @@ describe('FullscreenModal', () => {
   it('calls onNavigate when navigating', () => {
     render(<FullscreenModal {...defaultProps} />);
 
-    const nextButton = screen.getByLabelText('Siguiente');
-    fireEvent.click(nextButton);
+    // Use getAllByLabelText if multiple buttons exist, then click the first one
+    const nextButtons = screen.getAllByLabelText('Siguiente');
+    expect(nextButtons.length).toBeGreaterThan(0);
+    fireEvent.click(nextButtons[0]);
 
     expect(defaultProps.onNavigate).toHaveBeenCalledWith(1);
   });

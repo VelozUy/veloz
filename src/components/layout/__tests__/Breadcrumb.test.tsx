@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Breadcrumb from '../Breadcrumb';
+import { Breadcrumb } from '../Breadcrumb';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -14,27 +14,29 @@ describe('Breadcrumb', () => {
     mockUsePathname.mockReturnValue('/');
   });
 
-  it('renders nothing when only home and no other items', () => {
-    mockUsePathname.mockReturnValue('/');
-
-    const { container } = render(<Breadcrumb />);
-    expect(container.firstChild).toBeNull();
+  it('renders home icon when no items provided', () => {
+    render(<Breadcrumb items={[]} />);
+    // Home icon is always rendered
+    const homeLink = screen.getByLabelText('Inicio');
+    expect(homeLink).toBeInTheDocument();
   });
 
   it('renders breadcrumbs for nested paths', () => {
-    mockUsePathname.mockReturnValue('/our-work/weddings');
+    const items = [
+      { name: 'Our Work', href: '/our-work' },
+      { name: 'Weddings', href: '/our-work/weddings', current: true },
+    ];
+    render(<Breadcrumb items={items} />);
 
-    render(<Breadcrumb />);
-
-    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByLabelText('Inicio')).toBeInTheDocument();
     expect(screen.getByText('Our Work')).toBeInTheDocument();
     expect(screen.getByText('Weddings')).toBeInTheDocument();
   });
 
   it('renders custom items when provided', () => {
     const customItems = [
-      { label: 'Custom Home', href: '/custom' },
-      { label: 'Custom Page', current: true },
+      { name: 'Custom Home', href: '/custom' },
+      { name: 'Custom Page', href: '/custom/page', current: true },
     ];
 
     render(<Breadcrumb items={customItems} />);
@@ -43,19 +45,20 @@ describe('Breadcrumb', () => {
     expect(screen.getByText('Custom Page')).toBeInTheDocument();
   });
 
-  it('converts path segments to readable labels', () => {
-    mockUsePathname.mockReturnValue('/about-us/team-members');
-
-    render(<Breadcrumb />);
+  it('renders items with readable labels', () => {
+    const items = [
+      { name: 'About Us', href: '/about-us' },
+      { name: 'Team Members', href: '/about-us/team-members', current: true },
+    ];
+    render(<Breadcrumb items={items} />);
 
     expect(screen.getByText('About Us')).toBeInTheDocument();
     expect(screen.getByText('Team Members')).toBeInTheDocument();
   });
 
   it('marks current page correctly', () => {
-    mockUsePathname.mockReturnValue('/our-work');
-
-    render(<Breadcrumb />);
+    const items = [{ name: 'Our Work', href: '/our-work', current: true }];
+    render(<Breadcrumb items={items} />);
 
     const currentItem = screen.getByText('Our Work');
     expect(currentItem).toHaveAttribute('aria-current', 'page');
@@ -63,11 +66,10 @@ describe('Breadcrumb', () => {
   });
 
   it('renders home icon for home link', () => {
-    mockUsePathname.mockReturnValue('/our-work');
+    const items = [{ name: 'Our Work', href: '/our-work', current: true }];
+    render(<Breadcrumb items={items} />);
 
-    render(<Breadcrumb />);
-
-    const homeLink = screen.getByText('Home').closest('a');
+    const homeLink = screen.getByLabelText('Inicio');
     expect(homeLink).toBeInTheDocument();
 
     // Check for home icon
@@ -75,30 +77,33 @@ describe('Breadcrumb', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it('applies custom aria-label', () => {
-    mockUsePathname.mockReturnValue('/our-work');
-
-    render(<Breadcrumb ariaLabel="Custom breadcrumb" />);
+  it('applies default aria-label', () => {
+    const items = [{ name: 'Our Work', href: '/our-work', current: true }];
+    render(<Breadcrumb items={items} />);
 
     const nav = screen.getByRole('navigation');
-    expect(nav).toHaveAttribute('aria-label', 'Custom breadcrumb');
+    expect(nav).toHaveAttribute('aria-label', 'Breadcrumb');
   });
 
   it('applies custom className', () => {
-    mockUsePathname.mockReturnValue('/our-work');
-
-    const { container } = render(<Breadcrumb className="custom-class" />);
+    const items = [{ name: 'Our Work', href: '/our-work', current: true }];
+    const { container } = render(
+      <Breadcrumb items={items} className="custom-class" />
+    );
 
     const nav = container.querySelector('nav');
     expect(nav).toHaveClass('custom-class');
   });
 
-  it('hides home when showHome is false', () => {
-    mockUsePathname.mockReturnValue('/our-work/weddings');
+  it('always shows home icon', () => {
+    const items = [
+      { name: 'Our Work', href: '/our-work' },
+      { name: 'Weddings', href: '/our-work/weddings', current: true },
+    ];
+    render(<Breadcrumb items={items} />);
 
-    render(<Breadcrumb showHome={false} />);
-
-    expect(screen.queryByText('Home')).not.toBeInTheDocument();
+    // Home icon is always rendered
+    expect(screen.getByLabelText('Inicio')).toBeInTheDocument();
     expect(screen.getByText('Our Work')).toBeInTheDocument();
     expect(screen.getByText('Weddings')).toBeInTheDocument();
     expect(screen.getByText('Weddings')).toHaveAttribute(
@@ -107,33 +112,42 @@ describe('Breadcrumb', () => {
     );
   });
 
-  it('renders custom separator', () => {
-    mockUsePathname.mockReturnValue('/our-work');
+  it('renders default chevron separator', () => {
+    const items = [{ name: 'Our Work', href: '/our-work', current: true }];
+    const { container } = render(<Breadcrumb items={items} />);
 
-    render(
-      <Breadcrumb separator={<span data-testid="custom-separator">/</span>} />
-    );
-
-    expect(screen.getByTestId('custom-separator')).toBeInTheDocument();
+    // ChevronRight icons are used as separators (lucide-react icons)
+    const chevrons = container.querySelectorAll('svg');
+    expect(chevrons.length).toBeGreaterThan(0);
   });
 
   it('has proper accessibility structure', () => {
-    mockUsePathname.mockReturnValue('/our-work/weddings');
-
-    render(<Breadcrumb />);
+    const items = [
+      { name: 'Our Work', href: '/our-work' },
+      { name: 'Weddings', href: '/our-work/weddings', current: true },
+    ];
+    render(<Breadcrumb items={items} />);
 
     const nav = screen.getByRole('navigation');
     const list = nav.querySelector('ol');
 
     expect(nav).toBeInTheDocument();
     expect(list).toBeInTheDocument();
-    expect(list?.children.length).toBe(3); // Home, Our Work, Weddings
+    // Home + 2 items = 3 list items
+    expect(list?.children.length).toBe(3);
   });
 
   it('handles complex path segments', () => {
-    mockUsePathname.mockReturnValue('/our-work/event-photography/2024-events');
-
-    render(<Breadcrumb />);
+    const items = [
+      { name: 'Our Work', href: '/our-work' },
+      { name: 'Event Photography', href: '/our-work/event-photography' },
+      {
+        name: '2024 Events',
+        href: '/our-work/event-photography/2024-events',
+        current: true,
+      },
+    ];
+    render(<Breadcrumb items={items} />);
 
     expect(screen.getByText('Our Work')).toBeInTheDocument();
     expect(screen.getByText('Event Photography')).toBeInTheDocument();
@@ -141,11 +155,13 @@ describe('Breadcrumb', () => {
   });
 
   it('renders links with proper href attributes', () => {
-    mockUsePathname.mockReturnValue('/our-work/weddings');
+    const items = [
+      { name: 'Our Work', href: '/our-work' },
+      { name: 'Weddings', href: '/our-work/weddings', current: true },
+    ];
+    render(<Breadcrumb items={items} />);
 
-    render(<Breadcrumb />);
-
-    const homeLink = screen.getByText('Home').closest('a');
+    const homeLink = screen.getByLabelText('Inicio');
     const ourWorkLink = screen.getByText('Our Work').closest('a');
 
     expect(homeLink).toHaveAttribute('href', '/');

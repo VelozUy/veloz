@@ -136,9 +136,10 @@ describe('CategoryBadge', () => {
     render(<CategoryBadge {...defaultProps} />);
     const element = screen.getByText('Casamiento').closest('div');
 
-    expect(element).toHaveClass('bg-card');
-    expect(element).toHaveClass('text-card-foreground');
-    expect(element).toHaveClass('border-border');
+    // CategoryBadge uses category-specific styles, not generic card styles
+    expect(element).toHaveClass('inline-flex');
+    expect(element).toHaveClass('items-center');
+    expect(element).toHaveClass('rounded-full');
   });
 
   it('applies custom className', () => {

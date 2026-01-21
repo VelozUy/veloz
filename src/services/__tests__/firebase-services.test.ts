@@ -67,11 +67,8 @@ import {
 
 describe('Firebase Services', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-
-    // IMPORTANT: Reconfigure Firebase mocks after clearAllMocks()
+    // IMPORTANT: Reconfigure Firebase mocks
     // Services in firebase.ts use getFirestoreSync, not getFirestoreService
-    const { getFirestoreService, getFirestoreSync } = require('@/lib/firebase');
     const mockDb = {
       collection: jest.fn(),
       doc: jest.fn(),
@@ -80,17 +77,24 @@ describe('Firebase Services', () => {
       runTransaction: jest.fn(),
       writeBatch: jest.fn(),
     };
+
+    // Get firebase module and set up mocks
+    const { getFirestoreService, getFirestoreSync } = require('@/lib/firebase');
+
+    // Clear call history but preserve implementations
+    (getFirestoreService as jest.Mock).mockClear();
+    (getFirestoreSync as jest.Mock).mockClear();
+
+    // CRITICAL: Re-setup implementations to ensure they always return mockDb
+    // Use mockImplementation to ensure it always returns mockDb, never null
     (getFirestoreService as jest.Mock).mockImplementation(async () => mockDb);
     (getFirestoreSync as jest.Mock).mockImplementation(() => mockDb); // This is what firebase.ts services use!
 
     // Verify mock is configured
     const testResult = getFirestoreSync();
-    console.log(
-      '[TEST] Configured mocks - getFirestoreSync returns:',
-      testResult,
-      'truthiness:',
-      !!testResult
-    );
+    if (!testResult) {
+      throw new Error('getFirestoreSync mock setup failed - returned null');
+    }
   });
 
   describe('FAQService', () => {

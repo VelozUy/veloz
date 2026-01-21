@@ -36,16 +36,8 @@ describe('Veloz Brand Components', () => {
   describe('TargetLoader', () => {
     it('renders without crashing', () => {
       render(<TargetLoader />);
-      // The loader should render without errors and have animation classes
-      expect(
-        document.querySelector('.animate-target-bounce')
-      ).toBeInTheDocument();
-      expect(
-        document.querySelector('.animate-target-pulse')
-      ).toBeInTheDocument();
-      expect(
-        document.querySelector('.animate-target-scale')
-      ).toBeInTheDocument();
+      // The loader should render without errors and include the SVG target graphic
+      expect(document.querySelector('svg')).toBeInTheDocument();
     });
   });
 

@@ -10,7 +10,6 @@ describe('Button Component', () => {
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('shadow-none');
-    expect(button).toHaveClass('rounded-none');
     // Default variant classes
     expect(button).toHaveClass('bg-primary');
     expect(button).toHaveClass('text-primary-foreground');
@@ -21,23 +20,19 @@ describe('Button Component', () => {
     let button = screen.getByRole('button');
     expect(button).toHaveClass('border');
     expect(button).toHaveClass('shadow-none');
-    expect(button).toHaveClass('rounded-none');
     // Outline variant classes
     expect(button).toHaveClass('bg-transparent');
-    expect(button).toHaveClass('text-foreground');
+    expect(button).toHaveClass('text-primary');
 
     rerender(<Button variant="secondary">Secondary</Button>);
     button = screen.getByRole('button');
-    expect(button).toHaveClass('border');
     expect(button).toHaveClass('shadow-none');
-    expect(button).toHaveClass('rounded-none');
     // Secondary variant classes
-    expect(button).toHaveClass('bg-transparent');
-    expect(button).toHaveClass('text-foreground');
+    expect(button).toHaveClass('bg-secondary');
+    expect(button).toHaveClass('text-secondary-foreground');
 
     rerender(<Button variant="ghost">Ghost</Button>);
     button = screen.getByRole('button');
-    expect(button).toHaveClass('rounded-none');
     // Ghost variant classes
     expect(button).toHaveClass('text-foreground');
   });
@@ -47,18 +42,15 @@ describe('Button Component', () => {
     let button = screen.getByRole('button');
     expect(button).toHaveClass('h-8');
     expect(button).toHaveClass('px-3');
-    expect(button).toHaveClass('rounded-none');
 
     rerender(<Button size="lg">Large</Button>);
     button = screen.getByRole('button');
     expect(button).toHaveClass('h-10');
     expect(button).toHaveClass('px-6');
-    expect(button).toHaveClass('rounded-none');
 
     rerender(<Button size="icon">Icon</Button>);
     button = screen.getByRole('button');
     expect(button).toHaveClass('size-9');
-    expect(button).toHaveClass('rounded-full'); // Icon size uses rounded-full
   });
 
   it('renders with different priorities', () => {

@@ -55,7 +55,7 @@ describe('MultiSelect Component', () => {
       />
     );
 
-    const trigger = screen.getByRole('button');
+    const trigger = screen.getByRole('combobox');
     fireEvent.click(trigger);
 
     // Check that unselected options are shown
@@ -76,7 +76,7 @@ describe('MultiSelect Component', () => {
       />
     );
 
-    const trigger = screen.getByRole('button');
+    const trigger = screen.getByRole('combobox');
     fireEvent.click(trigger);
 
     const photographyOption = screen.getByText('Fotografía');
@@ -115,9 +115,9 @@ describe('MultiSelect Component', () => {
       />
     );
 
-    // Use getAllByRole to get all buttons and click the first one (the main trigger)
-    const buttons = screen.getAllByRole('button');
-    fireEvent.click(buttons[0]);
+    // Click the combobox trigger
+    const trigger = screen.getByRole('combobox');
+    fireEvent.click(trigger);
 
     expect(
       screen.getByText('Todas las opciones seleccionadas')
@@ -134,15 +134,18 @@ describe('MultiSelect Component', () => {
       />
     );
 
-    const trigger = screen.getByRole('button');
+    const trigger = screen.getByRole('combobox');
 
-    // Test Enter key
-    fireEvent.keyDown(trigger, { key: 'Enter' });
+    // Open popover first by clicking
+    fireEvent.click(trigger);
     expect(screen.getByText('Fotografía')).toBeInTheDocument();
 
-    // Test Space key - close and reopen
+    // Test Escape key to close
     fireEvent.keyDown(trigger, { key: 'Escape' });
-    fireEvent.keyDown(trigger, { key: ' ' });
+    expect(screen.queryByText('Fotografía')).not.toBeInTheDocument();
+
+    // Reopen with click
+    fireEvent.click(trigger);
     expect(screen.getByText('Fotografía')).toBeInTheDocument();
   });
 });

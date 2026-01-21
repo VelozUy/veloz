@@ -318,26 +318,56 @@ describe('Analytics System', () => {
       expect(container.firstChild).toBeNull();
     });
 
-    it('should handle accept consent', () => {
+    it('should handle accept consent', async () => {
       mockHasAnalyticsConsent.mockReturnValue(false);
 
+      // Use jest.useFakeTimers to control the 3-second delay
+      jest.useFakeTimers();
+
       const { getByText } = render(React.createElement(AnalyticsConsentBanner));
+
+      // Fast-forward time to trigger banner visibility
+      act(() => {
+        jest.advanceTimersByTime(3000);
+      });
+
+      // Wait for banner to appear
+      await waitFor(() => {
+        expect(getByText('Aceptar analíticas')).toBeInTheDocument();
+      });
 
       const acceptButton = getByText('Aceptar analíticas');
       fireEvent.click(acceptButton);
 
       expect(mockSaveConsent).toHaveBeenCalledWith({ analytics: true });
+
+      jest.useRealTimers();
     });
 
-    it('should handle decline consent', () => {
+    it('should handle decline consent', async () => {
       mockHasAnalyticsConsent.mockReturnValue(false);
 
+      // Use jest.useFakeTimers to control the 3-second delay
+      jest.useFakeTimers();
+
       const { getByText } = render(React.createElement(AnalyticsConsentBanner));
+
+      // Fast-forward time to trigger banner visibility
+      act(() => {
+        jest.advanceTimersByTime(3000);
+      });
+
+      // Wait for banner to appear
+      await waitFor(() => {
+        expect(getByText('Solo esenciales')).toBeInTheDocument();
+      });
 
       const declineButton = getByText('Solo esenciales');
       fireEvent.click(declineButton);
 
       expect(mockSaveConsent).toHaveBeenCalledWith({ analytics: false });
+
+      jest.useRealTimers();
     });
   });
 });

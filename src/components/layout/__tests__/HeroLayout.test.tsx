@@ -102,9 +102,10 @@ describe('HeroLayout', () => {
     const video = container.querySelector('video');
     expect(video).toBeInTheDocument();
     expect(video).toHaveAttribute('src', 'https://example.com/video1.mp4');
-    expect(video).toHaveAttribute('autoPlay');
-    expect(video).toHaveAttribute('muted');
-    expect(video).toHaveAttribute('loop');
+    // Boolean attributes in React are either present (true) or absent (false)
+    expect(video).toHaveProperty('autoplay', true);
+    expect(video).toHaveProperty('muted', true);
+    expect(video).toHaveProperty('loop', true);
   });
 
   it('applies correct aspect ratio classes', () => {
@@ -140,7 +141,8 @@ describe('HeroLayout', () => {
     );
 
     const heroContainer = container.querySelector('.relative');
-    expect(heroContainer).toHaveStyle('aspect-ratio: 3/2');
+    // The component applies aspect-ratio via inline style object, check computed style or class
+    expect(heroContainer).toHaveClass('aspect-[3/2]');
   });
 
   it('shows project title overlay when provided', () => {

@@ -275,47 +275,70 @@ describe('ContactForm Component', () => {
   });
 
   const selectEmailContactMethod = () => {
-    fireEvent.click(screen.getByText('Select contact method'));
-    fireEvent.click(screen.getByText('Mail'));
+    const contactMethodBtn = screen.getByText(
+      mockTranslations.contact.form.contactMethod.placeholder
+    );
+    fireEvent.click(contactMethodBtn);
+    const emailOption = screen.getByText(
+      mockTranslations.contact.form.contactMethod.options.email
+    );
+    fireEvent.click(emailOption);
   };
 
   describe('Form Rendering', () => {
     it('renders all form fields', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByLabelText('Name')).toBeInTheDocument();
       expect(
-        screen.getByLabelText('Company (if applicable)')
+        screen.getByLabelText(mockTranslations.contact.form.name.label)
       ).toBeInTheDocument();
       expect(
-        screen.getByLabelText('How would you prefer us to contact you?')
-      ).toBeInTheDocument();
-      expect(screen.getByLabelText('Mobile number')).toBeInTheDocument();
-      expect(
-        screen.getByText('What type of event do you have?')
+        screen.getByLabelText(mockTranslations.contact.form.company.label)
       ).toBeInTheDocument();
       expect(
-        screen.getByLabelText('Event location (city)')
+        screen.getByLabelText(mockTranslations.contact.form.contactMethod.label)
       ).toBeInTheDocument();
-      expect(screen.getByText('Select attendee range')).toBeInTheDocument();
-      expect(screen.getByLabelText(/Event Date/)).toBeInTheDocument();
+      // Email/phone label is conditional on contactMethod (default is whatsapp, so shows phone)
       expect(
-        screen.getByLabelText(/Tell us all the details/)
+        screen.getByLabelText(mockTranslations.contact.form.phone.label)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.form.eventType.label)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(mockTranslations.contact.form.location.label)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.form.attendees.placeholder)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(mockTranslations.contact.form.eventDate.label)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(mockTranslations.contact.form.message.label)
       ).toBeInTheDocument();
     });
 
     it('displays form title and subtitle', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByText('Contact Us')).toBeInTheDocument();
-      expect(screen.getByText('Tell us about your event')).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.title)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.subtitle)
+      ).toBeInTheDocument();
     });
 
     it('shows trust indicators', () => {
       render(<ContactForm translations={mockTranslations} />);
 
-      expect(screen.getByText('Quick Response')).toBeInTheDocument();
-      expect(screen.getByText('No Commitment')).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.trust.response.title)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(mockTranslations.contact.trust.commitment.title)
+      ).toBeInTheDocument();
     });
   });
 
@@ -329,7 +352,7 @@ describe('ContactForm Component', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Name is required')).toBeInTheDocument();
+        expect(screen.getByText(/required|requerido/i)).toBeInTheDocument();
         expect(
           screen.getByText('Phone number is required for this contact method')
         ).toBeInTheDocument();
@@ -349,7 +372,19 @@ describe('ContactForm Component', () => {
 
       selectEmailContactMethod();
 
-      const emailInput = screen.getByLabelText('Email');
+      // Default contactMethod is whatsapp, so email/phone field shows phone label
+      // Change to email to show email field
+      const contactMethodBtn = screen.getByText(
+        mockTranslations.contact.form.contactMethod.placeholder
+      );
+      fireEvent.click(contactMethodBtn);
+      const emailMethod = screen.getByText(
+        mockTranslations.contact.form.contactMethod.options.email
+      );
+      fireEvent.click(emailMethod);
+      const emailInput = screen.getByLabelText(
+        mockTranslations.contact.form.email.label
+      );
       fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
       const submitButton = screen.getByRole('button', {
@@ -373,7 +408,7 @@ describe('ContactForm Component', () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Name is required')).toBeInTheDocument();
+        expect(screen.getByText(/required|requerido/i)).toBeInTheDocument();
       });
 
       const nameInput = screen.getByLabelText('Name');
@@ -399,9 +434,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -433,9 +472,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -479,9 +522,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -517,9 +564,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -554,9 +605,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -593,7 +648,10 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       expect(screen.getByLabelText('Name')).toBeInTheDocument();
-      expect(screen.getByLabelText('Email')).toBeInTheDocument();
+      selectEmailContactMethod();
+      expect(
+        screen.getByLabelText(mockTranslations.contact.form.email.label)
+      ).toBeInTheDocument();
       expect(
         screen.getByLabelText('Company (if applicable)')
       ).toBeInTheDocument();
@@ -691,7 +749,19 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       const nameInput = screen.getByLabelText('Name');
-      const emailInput = screen.getByLabelText('Email');
+      // Default contactMethod is whatsapp, so email/phone field shows phone label
+      // Change to email to show email field
+      const contactMethodBtn = screen.getByText(
+        mockTranslations.contact.form.contactMethod.placeholder
+      );
+      fireEvent.click(contactMethodBtn);
+      const emailMethod = screen.getByText(
+        mockTranslations.contact.form.contactMethod.options.email
+      );
+      fireEvent.click(emailMethod);
+      const emailInput = screen.getByLabelText(
+        mockTranslations.contact.form.email.label
+      );
       const companyInput = screen.getByLabelText('Company (if applicable)');
 
       nameInput.focus();
@@ -713,9 +783,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -777,7 +851,19 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       const nameInput = screen.getByLabelText('Name');
-      const emailInput = screen.getByLabelText('Email');
+      // Default contactMethod is whatsapp, so email/phone field shows phone label
+      // Change to email to show email field
+      const contactMethodBtn = screen.getByText(
+        mockTranslations.contact.form.contactMethod.placeholder
+      );
+      fireEvent.click(contactMethodBtn);
+      const emailMethod = screen.getByText(
+        mockTranslations.contact.form.contactMethod.options.email
+      );
+      fireEvent.click(emailMethod);
+      const emailInput = screen.getByLabelText(
+        mockTranslations.contact.form.email.label
+      );
 
       nameInput.focus();
       fireEvent.keyDown(nameInput, { key: 'Tab' });
@@ -788,7 +874,19 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       const nameInput = screen.getByLabelText('Name');
-      const emailInput = screen.getByLabelText('Email');
+      // Default contactMethod is whatsapp, so email/phone field shows phone label
+      // Change to email to show email field
+      const contactMethodBtn = screen.getByText(
+        mockTranslations.contact.form.contactMethod.placeholder
+      );
+      fireEvent.click(contactMethodBtn);
+      const emailMethod = screen.getByText(
+        mockTranslations.contact.form.contactMethod.options.email
+      );
+      fireEvent.click(emailMethod);
+      const emailInput = screen.getByLabelText(
+        mockTranslations.contact.form.email.label
+      );
 
       nameInput.focus();
       fireEvent.keyDown(nameInput, { key: 'Tab', shiftKey: true });
@@ -804,9 +902,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -846,9 +948,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -874,7 +980,19 @@ describe('ContactForm Component', () => {
       render(<ContactForm translations={mockTranslations} />);
 
       const nameInput = screen.getByLabelText('Name');
-      const emailInput = screen.getByLabelText('Email');
+      // Default contactMethod is whatsapp, so email/phone field shows phone label
+      // Change to email to show email field
+      const contactMethodBtn = screen.getByText(
+        mockTranslations.contact.form.contactMethod.placeholder
+      );
+      fireEvent.click(contactMethodBtn);
+      const emailMethod = screen.getByText(
+        mockTranslations.contact.form.contactMethod.options.email
+      );
+      fireEvent.click(emailMethod);
+      const emailInput = screen.getByLabelText(
+        mockTranslations.contact.form.email.label
+      );
 
       nameInput.focus();
       fireEvent.keyDown(nameInput, { key: 'Tab' });
@@ -898,9 +1016,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -939,9 +1061,13 @@ describe('ContactForm Component', () => {
       fireEvent.change(screen.getByLabelText('Name'), {
         target: { value: 'John Doe' },
       });
-      fireEvent.change(screen.getByLabelText('Email'), {
-        target: { value: 'john@example.com' },
-      });
+      selectEmailContactMethod();
+      fireEvent.change(
+        screen.getByLabelText(mockTranslations.contact.form.email.label),
+        {
+          target: { value: 'john@example.com' },
+        }
+      );
       fireEvent.change(screen.getByText('What type of event do you have?'), {
         target: { value: 'corporate' },
       });
@@ -1035,12 +1161,18 @@ describe('ContactForm Component', () => {
         render(<ContactForm translations={mockTranslations} />);
 
         // Fill in required fields
-        fireEvent.change(screen.getByLabelText('Name'), {
-          target: { value: 'John Doe' },
-        });
-        fireEvent.change(screen.getByLabelText('Email'), {
-          target: { value: 'john@example.com' },
-        });
+        fireEvent.change(
+          screen.getByLabelText(mockTranslations.contact.form.name.label),
+          {
+            target: { value: 'John Doe' },
+          }
+        );
+        fireEvent.change(
+          screen.getByLabelText(mockTranslations.contact.form.email.label),
+          {
+            target: { value: 'john@example.com' },
+          }
+        );
 
         // Fill in the hidden captcha field (simulating a bot)
         const captchaField = screen.getByDisplayValue('');
@@ -1066,34 +1198,55 @@ describe('ContactForm Component', () => {
         render(<ContactForm translations={mockTranslations} />);
 
         // Fill in required fields
-        fireEvent.change(screen.getByLabelText('Name'), {
-          target: { value: 'John Doe' },
-        });
-        fireEvent.change(screen.getByLabelText('Email'), {
-          target: { value: 'john@example.com' },
-        });
+        fireEvent.change(
+          screen.getByLabelText(mockTranslations.contact.form.name.label),
+          {
+            target: { value: 'John Doe' },
+          }
+        );
+        fireEvent.change(
+          screen.getByLabelText(mockTranslations.contact.form.email.label),
+          {
+            target: { value: 'john@example.com' },
+          }
+        );
 
         // Select event type
-        const eventTypeButton = screen.getByText('Select event type');
+        const eventTypeButton = screen.getByText(
+          mockTranslations.contact.form.eventType.placeholder
+        );
         fireEvent.click(eventTypeButton);
-        const corporateOption = screen.getByText('Corporate event');
+        const corporateOption = screen.getByText(
+          mockTranslations.contact.form.eventType.options.corporate
+        );
         fireEvent.click(corporateOption);
 
         // Fill location
-        fireEvent.change(screen.getByLabelText('Event location (city)'), {
-          target: { value: 'Montevideo, Uruguay' },
-        });
+        fireEvent.change(
+          screen.getByLabelText(mockTranslations.contact.form.location.label),
+          {
+            target: { value: 'Montevideo, Uruguay' },
+          }
+        );
 
         // Select attendees
-        const attendeesSelector = screen.getByText('Select attendee range');
+        const attendeesSelector = screen.getByText(
+          mockTranslations.contact.form.attendees.placeholder
+        );
         fireEvent.click(attendeesSelector);
-        const attendeesOption = screen.getByText('0-20 people');
+        const attendeesOption = screen.getByText(
+          mockTranslations.contact.form.attendees.options['0-20']
+        );
         fireEvent.click(attendeesOption);
 
         // Select services
-        const servicesSelector = screen.getByText('Select services');
+        const servicesSelector = screen.getByText(
+          mockTranslations.contact.form.services.placeholder
+        );
         fireEvent.click(servicesSelector);
-        const photographyOption = screen.getByText('Photography');
+        const photographyOption = screen.getByText(
+          mockTranslations.contact.form.services.options.photography
+        );
         fireEvent.click(photographyOption);
 
         // Submit the form

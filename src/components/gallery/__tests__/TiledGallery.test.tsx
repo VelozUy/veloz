@@ -3,6 +3,37 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { TiledGallery } from '../TiledGallery';
 import { GalleryImage } from '@/types/gallery';
 
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => {
+      const {
+        whileHover,
+        whileTap,
+        whileInView,
+        initial,
+        animate,
+        exit,
+        transition,
+        ...restProps
+      } = props;
+      return <div {...restProps}>{children}</div>;
+    },
+  },
+  AnimatePresence: ({ children }: any) => <div>{children}</div>,
+}));
+
+// Mock useResponsiveGrid hook
+jest.mock('@/hooks/useResponsiveGrid', () => ({
+  useResponsiveGrid: jest.fn(() => ({
+    columns: 2,
+    gap: 8,
+    isMobile: false,
+    containerWidth: 1024,
+  })),
+  getFluidOptimalColumns: jest.fn(() => 2),
+}));
+
 // Mock the layout calculation functions
 jest.mock('@/lib/gallery-layout', () => ({
   calculateTileLayout: jest.fn(() => ({
