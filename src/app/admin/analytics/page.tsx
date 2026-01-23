@@ -326,7 +326,6 @@ export default function AnalyticsDashboardPage() {
                   viewsChange: 20.1,
                   viewsProgress: 75,
                 }}
-                isLoading={isLoading}
               />
               <VisitorsMetricCard
                 data={{
@@ -334,7 +333,6 @@ export default function AnalyticsDashboardPage() {
                   visitorsChange: 15.3,
                   visitorsProgress: 80,
                 }}
-                isLoading={isLoading}
               />
               <TimeOnPageMetricCard
                 data={{
@@ -342,7 +340,6 @@ export default function AnalyticsDashboardPage() {
                   timeChange: 5.2,
                   timeTrend: 5.2,
                 }}
-                isLoading={isLoading}
               />
               <CtaClicksMetricCard
                 data={{
@@ -350,7 +347,6 @@ export default function AnalyticsDashboardPage() {
                   ctaChange: 12.7,
                   ctaProgress: 65,
                 }}
-                isLoading={isLoading}
               />
               <MediaInteractionsMetricCard
                 data={{
@@ -358,7 +354,6 @@ export default function AnalyticsDashboardPage() {
                   mediaChange: 8.9,
                   mediaTrend: 8.9,
                 }}
-                isLoading={isLoading}
               />
               <CrewInteractionsMetricCard
                 data={{
@@ -366,7 +361,6 @@ export default function AnalyticsDashboardPage() {
                   crewChange: 3.4,
                   crewTrend: 3.4,
                 }}
-                isLoading={isLoading}
               />
               <MediaInteractionBreakdownCard
                 data={{
