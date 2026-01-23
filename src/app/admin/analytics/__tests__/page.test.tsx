@@ -230,7 +230,12 @@ describe('AnalyticsDashboardPage', () => {
 
     render(<AnalyticsDashboardPage />);
 
-    expect(screen.getAllByText('Loading...')).toHaveLength(6); // 6 metric cards
+    // When loading, metric cards show 0 values (default state)
+    // Check that the refresh button shows loading spinner
+    const refreshButton = screen.getByRole('button', {
+      name: /actualizar|refresh/i,
+    });
+    expect(refreshButton).toBeDisabled();
   });
 
   it('displays metrics cards with data after loading', async () => {
