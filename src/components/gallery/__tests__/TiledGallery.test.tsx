@@ -192,6 +192,45 @@ jest.mock('@/lib/image-optimization', () => ({
   clearImageCache: jest.fn(),
 }));
 
+// Mock OptimizedImage component
+jest.mock('@/components/shared', () => ({
+  OptimizedImage: ({ src, alt, ...props }: any) => (
+    <img
+      src={src}
+      alt={alt}
+      data-testid={`optimized-image-${alt}`}
+      {...props}
+    />
+  ),
+}));
+
+// Mock OptimizedImage and VelozLoader components
+jest.mock('@/components/shared', () => ({
+  ...jest.requireActual('@/components/shared'),
+  OptimizedImage: ({ src, alt, blurDataURL, ...props }: any) => {
+    // Filter out blurDataURL and other non-DOM props
+    const { fill, priority, sizes, quality, onLoad, onError, ...domProps } =
+      props;
+    return (
+      <img
+        src={src}
+        alt={alt}
+        data-testid={`optimized-image-${alt}`}
+        {...domProps}
+      />
+    );
+  },
+  VelozLoader: ({ orientation, size }: any) => (
+    <div
+      data-testid="veloz-loader"
+      data-orientation={orientation}
+      data-size={size}
+    >
+      Loading...
+    </div>
+  ),
+}));
+
 describe('TiledGallery', () => {
   const mockImages: GalleryImage[] = [
     {

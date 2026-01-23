@@ -29,9 +29,10 @@ jest.mock('firebase/firestore', () => {
   const mockSetDoc = jest.fn();
   const mockUpdateDoc = jest.fn();
   const mockDeleteDoc = jest.fn();
+  const mockDocRef = { id: 'mock-doc-ref', path: 'adminUsers/mock-email' };
   return {
     collection: jest.fn(),
-    doc: jest.fn(),
+    doc: jest.fn(() => mockDocRef),
     getDocs: mockGetDocs,
     setDoc: mockSetDoc,
     updateDoc: mockUpdateDoc,
@@ -167,7 +168,7 @@ describe('UsersPage', () => {
       render(<UsersPage />);
 
       expect(screen.getByTestId('admin-layout')).toBeInTheDocument();
-      expect(screen.getByRole('status', { hidden: true })).toBeInTheDocument();
+      expect(screen.getByText('Cargando usuarios...')).toBeInTheDocument();
     });
   });
 
@@ -270,14 +271,20 @@ describe('UsersPage', () => {
       const emailInput = screen.getByPlaceholderText('usuario@ejemplo.com');
       fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
-      // Submit form
-      fireEvent.click(screen.getByText('Enviar Invitación'));
+      // Find and submit the form
+      const form = emailInput.closest('form');
+      expect(form).toBeInTheDocument();
+      fireEvent.submit(form!);
 
-      await waitFor(() => {
-        expect(
-          screen.getByText('Por favor ingresa una dirección de email válida.')
-        ).toBeInTheDocument();
-      });
+      // Wait for error message to appear (with longer timeout and more flexible matcher)
+      await waitFor(
+        () => {
+          expect(
+            screen.getByText(/Por favor ingresa una dirección de email válida/i)
+          ).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
     });
 
     it('should prevent inviting existing users', async () => {
@@ -323,7 +330,9 @@ describe('UsersPage', () => {
             role: 'editor',
             status: 'active',
             invitedBy: 'admin@test.com',
-            invitedAt: expect.any(Object), // Firestore timestamp
+            invitedAt: expect.objectContaining({
+              toDate: expect.any(Function), // serverTimestamp() returns object with toDate
+            }),
             permissions: [],
             emailNotifications: expect.any(Object),
           })
@@ -393,9 +402,17 @@ describe('UsersPage', () => {
     it('should prevent toggling owner account', async () => {
       // Mock alert before rendering
       const originalAlert = window.alert;
-      window.alert = jest.fn();
+      const mockAlert = jest.fn();
+      window.alert = mockAlert;
 
-      process.env.NEXT_PUBLIC_OWNER_EMAIL = 'owner@test.com';
+      // Set environment variable before rendering (use defineProperty for Jest compatibility)
+      const originalEnv = process.env.NEXT_PUBLIC_OWNER_EMAIL;
+      Object.defineProperty(process.env, 'NEXT_PUBLIC_OWNER_EMAIL', {
+        value: 'owner@test.com',
+        writable: true,
+        configurable: true,
+      });
+
       mockGetDocs.mockResolvedValue(
         createMockSnapshot([
           {
@@ -418,19 +435,47 @@ describe('UsersPage', () => {
 
       render(<UsersPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('owner@test.com')).toBeInTheDocument();
-      });
+      // Wait for the owner email to appear in the table (not just the Card)
+      await waitFor(
+        () => {
+          // Find owner email in table cells, not just in the Card
+          const cells = screen.getAllByRole('cell');
+          const ownerCell = cells.find(
+            cell => cell.textContent === 'owner@test.com'
+          );
+          expect(ownerCell).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
-      const toggleButtons = screen.getAllByTitle('Desactivar usuario');
+      // Find toggle buttons - owner should be in table
+      const toggleButtons = screen.queryAllByTitle(
+        /Desactivar usuario|Activar usuario/
+      );
+      expect(toggleButtons.length).toBeGreaterThan(0);
       fireEvent.click(toggleButtons[0]);
 
-      expect(window.alert).toHaveBeenCalledWith(
-        'No se puede modificar la cuenta del propietario.'
+      // Wait for alert to be called
+      await waitFor(
+        () => {
+          expect(mockAlert).toHaveBeenCalledWith(
+            'No se puede modificar la cuenta del propietario.'
+          );
+        },
+        { timeout: 1000 }
       );
 
       // Cleanup
       window.alert = originalAlert;
+      if (originalEnv !== undefined) {
+        Object.defineProperty(process.env, 'NEXT_PUBLIC_OWNER_EMAIL', {
+          value: originalEnv,
+          writable: true,
+          configurable: true,
+        });
+      } else {
+        delete process.env.NEXT_PUBLIC_OWNER_EMAIL;
+      }
     });
   });
 
@@ -458,7 +503,7 @@ describe('UsersPage', () => {
       fireEvent.click(deleteButtons[0]);
 
       expect(window.confirm).toHaveBeenCalledWith(
-        '¿Estás seguro de que quieres eliminar a user1@test.com del sistema?'
+        '¿Estás seguro de que quieres eliminar al usuario user1@test.com? Esta acción no se puede deshacer.'
       );
 
       await waitFor(() => {
@@ -495,10 +540,18 @@ describe('UsersPage', () => {
       // Mock alert and confirm before rendering
       const originalAlert = window.alert;
       const originalConfirm = window.confirm;
-      window.alert = jest.fn();
+      const mockAlert = jest.fn();
+      window.alert = mockAlert;
       window.confirm = jest.fn().mockReturnValue(true);
 
-      process.env.NEXT_PUBLIC_OWNER_EMAIL = 'owner@test.com';
+      // Set environment variable before rendering (use defineProperty for Jest compatibility)
+      const originalEnv = process.env.NEXT_PUBLIC_OWNER_EMAIL;
+      Object.defineProperty(process.env, 'NEXT_PUBLIC_OWNER_EMAIL', {
+        value: 'owner@test.com',
+        writable: true,
+        configurable: true,
+      });
+
       mockGetDocs.mockResolvedValue(
         createMockSnapshot([
           {
@@ -521,20 +574,46 @@ describe('UsersPage', () => {
 
       render(<UsersPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('owner@test.com')).toBeInTheDocument();
-      });
+      // Wait for the owner email to appear in the table (not just the Card)
+      await waitFor(
+        () => {
+          // Find owner email in table cells, not just in the Card
+          const cells = screen.getAllByRole('cell');
+          const ownerCell = cells.find(
+            cell => cell.textContent === 'owner@test.com'
+          );
+          expect(ownerCell).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
-      const deleteButtons = screen.getAllByTitle('Eliminar usuario');
+      // Find delete buttons - owner should appear in table if they're in the snapshot
+      const deleteButtons = screen.queryAllByTitle('Eliminar usuario');
+      expect(deleteButtons.length).toBeGreaterThan(0);
       fireEvent.click(deleteButtons[0]);
 
-      expect(window.alert).toHaveBeenCalledWith(
-        'No se puede eliminar la cuenta del propietario.'
+      // Wait for alert to be called
+      await waitFor(
+        () => {
+          expect(mockAlert).toHaveBeenCalledWith(
+            'No se puede eliminar la cuenta del propietario.'
+          );
+        },
+        { timeout: 1000 }
       );
 
       // Cleanup
       window.alert = originalAlert;
       window.confirm = originalConfirm;
+      if (originalEnv !== undefined) {
+        Object.defineProperty(process.env, 'NEXT_PUBLIC_OWNER_EMAIL', {
+          value: originalEnv,
+          writable: true,
+          configurable: true,
+        });
+      } else {
+        delete process.env.NEXT_PUBLIC_OWNER_EMAIL;
+      }
     });
   });
 

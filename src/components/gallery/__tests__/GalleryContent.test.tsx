@@ -1,6 +1,35 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { GalleryContent } from '../GalleryContent';
 
+// Mock Next.js router
+const mockPush = jest.fn();
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  }),
+  usePathname: () => '/gallery',
+}));
+
+// Mock analytics
+jest.mock('@/hooks/useAnalytics', () => ({
+  useAnalytics: () => ({
+    trackProjectView: jest.fn(),
+    trackMediaInteraction: jest.fn(),
+    trackCTAInteraction: jest.fn(),
+    trackCrewInteraction: jest.fn(),
+    trackPageView: jest.fn(),
+    trackScrollDepth: jest.fn(),
+    trackError: jest.fn(),
+    trackSessionStart: jest.fn(),
+    trackSessionEnd: jest.fn(),
+  }),
+}));
+
 // Mock the component with a simpler interface for testing
 const mockContent = {
   locale: 'es' as const,
@@ -11,6 +40,7 @@ const mockContent = {
     projects: [
       {
         id: '1',
+        slug: 'test-project-1',
         title: 'Test Project 1',
         description: 'Test description 1',
         eventType: 'Wedding',
@@ -42,6 +72,7 @@ const mockContent = {
       },
       {
         id: '2',
+        slug: 'test-project-2',
         title: 'Test Project 2',
         description: 'Test description 2',
         eventType: 'Corporate',
@@ -66,6 +97,10 @@ const mockContent = {
 } as any; // Use any to bypass complex type checking for tests
 
 describe('GalleryContent', () => {
+  beforeEach(() => {
+    mockPush.mockClear();
+  });
+
   it('renders projects correctly', () => {
     render(<GalleryContent content={mockContent} />);
 
@@ -88,21 +123,25 @@ describe('GalleryContent', () => {
     render(<GalleryContent content={mockContent} />);
 
     // GalleryContent displays all projects without filtering
-    expect(screen.getByText('Test Project 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Project 2')).toBeInTheDocument();
+    // Use getAllByText since project titles may appear multiple times
+    expect(screen.getAllByText('Test Project 1').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Test Project 2').length).toBeGreaterThan(0);
   });
 
   it('opens project dialog when view button is clicked', async () => {
     render(<GalleryContent content={mockContent} />);
 
     // ProjectsDisplay uses clickable project titles, not "Ver Proyecto" buttons
-    // Click on the project title to navigate
-    const projectTitles = screen.getAllByText('Test Project 1');
-    expect(projectTitles.length).toBeGreaterThan(0);
-    fireEvent.click(projectTitles[0]);
+    // Find the clickable element by role="button" with aria-label containing the project title
+    const clickableElement = screen.getByRole('button', {
+      name: /Ver detalles del proyecto: Test Project 1/i,
+    });
 
-    // The component may navigate or show details - check for project title presence
-    expect(projectTitles[0]).toBeInTheDocument();
+    fireEvent.click(clickableElement);
+
+    // The component should navigate (router.push is mocked)
+    // Verify the router was called
+    expect(mockPush).toHaveBeenCalledWith('/our-work/test-project-1');
   });
 
   it('displays project information', () => {
@@ -116,16 +155,18 @@ describe('GalleryContent', () => {
     render(<GalleryContent content={mockContent} />);
 
     // ProjectsDisplay shows projects with featured media
-    expect(screen.getByText('Test Project 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Project 2')).toBeInTheDocument();
+    // Use getAllByText since project titles may appear multiple times
+    expect(screen.getAllByText('Test Project 1').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Test Project 2').length).toBeGreaterThan(0);
   });
 
   it('displays project titles', () => {
     render(<GalleryContent content={mockContent} />);
 
     // ProjectsDisplay shows project titles
-    expect(screen.getByText('Test Project 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Project 2')).toBeInTheDocument();
+    // Use getAllByText since project titles may appear multiple times
+    expect(screen.getAllByText('Test Project 1').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Test Project 2').length).toBeGreaterThan(0);
   });
 
   it('handles projects without featured media gracefully', () => {
@@ -158,27 +199,34 @@ describe('GalleryContent', () => {
 
     // ProjectsDisplay uses TiledGallery which shows images
     // Check that projects are rendered (media is shown via TiledGallery)
-    expect(screen.getByText('Test Project 1')).toBeInTheDocument();
+    // Use getAllByText since project titles may appear multiple times
+    expect(screen.getAllByText('Test Project 1').length).toBeGreaterThan(0);
   });
 
   it('allows clicking on project titles', () => {
     render(<GalleryContent content={mockContent} />);
 
     // ProjectsDisplay has clickable project titles
-    const projectTitles = screen.getAllByText('Test Project 1');
-    expect(projectTitles.length).toBeGreaterThan(0);
-    fireEvent.click(projectTitles[0]);
+    // Find the clickable element by role="button" with aria-label
+    const clickableElement = screen.getByRole('button', {
+      name: /Ver detalles del proyecto: Test Project 1/i,
+    });
 
-    // Title should still be visible after click
-    expect(projectTitles[0]).toBeInTheDocument();
+    fireEvent.click(clickableElement);
+
+    // The component should navigate (router.push is mocked)
+    expect(mockPush).toHaveBeenCalledWith('/our-work/test-project-1');
   });
 
   it('displays projects with media galleries', () => {
     render(<GalleryContent content={mockContent} />);
 
     // ProjectsDisplay shows projects with TiledGallery for media
-    expect(screen.getByText('Test Project 1')).toBeInTheDocument();
-    expect(screen.getByText('Test Project 2')).toBeInTheDocument();
+    // Use getAllByText since there may be multiple instances
+    const project1Elements = screen.getAllByText('Test Project 1');
+    const project2Elements = screen.getAllByText('Test Project 2');
+    expect(project1Elements.length).toBeGreaterThan(0);
+    expect(project2Elements.length).toBeGreaterThan(0);
   });
 
   it('handles keyboard navigation', () => {

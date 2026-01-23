@@ -81,9 +81,12 @@ describe('HeroLayout', () => {
 
     render(<HeroLayout {...defaultProps} heroConfig={heroConfig} />);
 
-    const image = screen.getByAltText('Foto de prueba');
+    // The mock Image component renders a div with data-testid="mock-image"
+    // Check for the image using the mock's data attributes
+    const image = screen.getByTestId('mock-image');
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', 'https://example.com/image1.jpg');
+    expect(image).toHaveAttribute('data-alt', 'Foto de prueba');
+    expect(image).toHaveAttribute('data-src', 'https://example.com/image1.jpg');
   });
 
   it('renders video when video media is selected', () => {

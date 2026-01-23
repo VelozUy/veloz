@@ -83,8 +83,15 @@ export abstract class BaseFirebaseService<T = unknown> {
       console.log(
         '[SERVICE getCollection] getFirestoreSync returned:',
         db ? 'truthy' : 'falsy',
-        typeof db
+        typeof db,
+        db === null ? 'null' : db === undefined ? 'undefined' : 'other'
       );
+      if (!db) {
+        console.log(
+          '[SERVICE getCollection] getFirestoreSync function:',
+          getFirestoreSync.toString()
+        );
+      }
     }
     if (!db) {
       throw new Error(
@@ -295,7 +302,7 @@ export class FAQService extends BaseFirebaseService<FAQ> {
     try {
       const q = query(
         this.getCollection(),
-        where('status', '==', 'published'),
+        where('isPublished', '==', true),
         orderBy('order', 'asc')
       );
 
@@ -325,7 +332,30 @@ export class PhotoService extends BaseFirebaseService<Photo> {
       const q = query(
         this.getCollection(),
         where('eventType', '==', eventType),
-        orderBy('createdAt', 'desc')
+        orderBy('order', 'asc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as Photo[];
+
+      return { success: true, data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getFeatured(): Promise<ApiResponse<Photo[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('featured', '==', true),
+        orderBy('order', 'asc')
       );
 
       const snapshot = await getDocs(q);
@@ -354,7 +384,30 @@ export class VideoService extends BaseFirebaseService<Video> {
       const q = query(
         this.getCollection(),
         where('eventType', '==', eventType),
-        orderBy('createdAt', 'desc')
+        orderBy('order', 'asc')
+      );
+
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...this.convertTimestamp(doc.data()),
+      })) as Video[];
+
+      return { success: true, data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  async getFeatured(): Promise<ApiResponse<Video[]>> {
+    try {
+      const q = query(
+        this.getCollection(),
+        where('featured', '==', true),
+        orderBy('order', 'asc')
       );
 
       const snapshot = await getDocs(q);

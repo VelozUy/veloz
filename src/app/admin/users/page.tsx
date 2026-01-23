@@ -84,7 +84,8 @@ interface AdminUserFirestore {
 // Type for the component state
 type AdminUser = AdminUserFirestore;
 
-const OWNER_EMAIL = process.env.NEXT_PUBLIC_OWNER_EMAIL || '';
+// Helper to get owner email dynamically (for test compatibility)
+const getOwnerEmail = () => process.env.NEXT_PUBLIC_OWNER_EMAIL || '';
 
 export default function UsersPage() {
   const { user } = useAuth();
@@ -140,6 +141,7 @@ export default function UsersPage() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(inviteEmail)) {
         setInviteError('Por favor ingresa una dirección de email válida.');
+        setInviteLoading(false);
         return;
       }
 
@@ -147,6 +149,7 @@ export default function UsersPage() {
       const existingUser = users.find(u => u.email === inviteEmail);
       if (existingUser) {
         setInviteError('Este usuario ya ha sido invitado.');
+        setInviteLoading(false);
         return;
       }
 
@@ -204,6 +207,13 @@ export default function UsersPage() {
   ) => {
     if (!user) return;
 
+    // Prevent modifying owner account
+    const ownerEmail = getOwnerEmail();
+    if (ownerEmail && email === ownerEmail) {
+      alert('No se puede modificar la cuenta del propietario.');
+      return;
+    }
+
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
       await updateDoc(doc(db!, 'adminUsers', email), {
@@ -224,6 +234,13 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (email: string) => {
     if (!user) return;
+
+    // Prevent deleting owner account
+    const ownerEmail = getOwnerEmail();
+    if (ownerEmail && email === ownerEmail) {
+      alert('No se puede eliminar la cuenta del propietario.');
+      return;
+    }
 
     if (
       !confirm(
@@ -390,7 +407,7 @@ export default function UsersPage() {
                 </div>
                 <div>
                   <p className="font-medium text-sm">
-                    {OWNER_EMAIL || 'No configurado'}
+                    {getOwnerEmail() || 'No configurado'}
                   </p>
                   <p className="text-xs text-muted-foreground">Propietario</p>
                 </div>
